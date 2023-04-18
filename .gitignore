@@ -1,0 +1,13 @@
+.idea
+.vscode
+
+node_modules
+
+# sst
+.sst
+.build
+
+.contentlayer
+
+.turbo
+
