@@ -1,4 +1,4 @@
-import { StackContext, Api } from "sst/constructs";
+import {  StackContext, Api } from "sst/constructs";
 
 export function API({ stack }: StackContext) {
   const api = new Api(stack, "api", {
@@ -9,4 +9,5 @@ export function API({ stack }: StackContext) {
   stack.addOutputs({
     ApiEndpoint: api.url,
   });
-}
+
+ }
