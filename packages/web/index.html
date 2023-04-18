@@ -7,10 +7,23 @@
     <title>Vite + Lit + TS</title>
     <link rel="stylesheet" href="./src/index.css" />
     <script type="module" src="/src/my-element.ts"></script>
+    <script
+            src="https://jspm.dev/@spectrum-web-components/bundle/elements.js"
+            type="module" async
+    ></script>
   </head>
   <body>
-    <my-element>
-      <h1>Vite + Lit</h1>
-    </my-element>
+    <sp-theme
+            theme="classic"
+            color="light"
+            scale="large"
+            >
+      <sp-top-nav size="xl">
+        <sp-top-nav-item href="/"><strong>Evony TKR Tips</strong></sp-top-nav-item>
+      </sp-top-nav>
+      <my-element>
+        <h1>Vite + Lit</h1>
+      </my-element>
+    </sp-theme>
   </body>
 </html>
