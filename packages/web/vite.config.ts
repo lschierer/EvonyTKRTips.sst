@@ -4,7 +4,10 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   build: {
     lib: {
-      entry: 'src/my-element.ts',
+      entry: {
+        myelement: 'src/my-element.ts',
+        ASCompoents: 'src/ASComponents.tsx'
+      },
       formats: ['es'],
     },
     rollupOptions: {
