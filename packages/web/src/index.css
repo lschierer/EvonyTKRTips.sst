@@ -1,7 +1,6 @@
-@import '@spectrum-web-components/styles/scale-medium.css';
-@import '@spectrum-web-components/styles/scale-large.css';
 @import '@spectrum-web-components/styles/typography.css';
-@import '@spectrum-web-components/styles/theme-light.css';
+@import '@spectrum-web-components/styles/all-large-light.css';
+
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -31,8 +30,9 @@ a:hover {
 body {
   margin: 0;
   display: flex;
-  place-items: center;
+  flex: 1 1 auto;
   min-width: 320px;
+  width: 100%;
   min-height: 100vh;
 }
 
@@ -43,3 +43,12 @@ body {
   }
 }
 
+top-nav {
+  width: 100%;
+  background-color: var(--spectrum-blue-600)
+}
+
+sp-theme {
+  width: 100%;
+  background-color: var(--spectrum-global-color-gray-100);
+}
