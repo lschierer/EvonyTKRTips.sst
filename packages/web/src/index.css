@@ -1,3 +1,8 @@
+@import '@spectrum-web-components/styles/scale-medium.css';
+@import '@spectrum-web-components/styles/scale-large.css';
+@import '@spectrum-web-components/styles/typography.css';
+@import '@spectrum-web-components/styles/theme-light.css';
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -37,3 +42,4 @@ body {
     background-color: #ffffff;
   }
 }
+
