@@ -1,5 +1,13 @@
 {
   "extends": "@tsconfig/node18/tsconfig.json",
-  "experimentalDecorators": true,
-  "exclude": ["packages"]
+  "compilerOptions": {
+    "experimentalDecorators": true
+  },
+  "exclude": ["packages"],
+  "include": [
+    "sst.config.ts",
+    "stacks/**/*.ts",
+    "stacks/**/*.tsx",
+    "./.eslintrc.cjs"
+  ]
 }

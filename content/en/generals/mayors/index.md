@@ -1,19 +1,10 @@
-+++
-title = "Picking Mayors for your Subcities"
-author = "Luke Schierer"
-weight = 5
-tags = ['recommendation']
-+++
 
-{{% alert title="Explanation" color="Primary" %}}
 In the [Overview][], I explain my thinking.  This is a fairly long article, but
 contains a lot of useful background information if you want to understand how I
 arrived at these conclusions. If you just want to be told what to do, you can
 skip it and dive right in here. 
 
-[Overview]: <{{< relref "overview.md" >}}>
-
-{{% /alert %}}
+[Overview]: <overview.md>
 
 ## Philosophy
 
@@ -40,9 +31,9 @@ among the top choices available.
 At this time, I do not recommend the use of peace time mayors for either free
 or light spenders.  I explain why [here][peace].
 
-[peace]: <{{< relref "peace_time_subcity_mayors" >}}>
+[peace]: <peace_time_subcity_mayors>
 
-[debuff]: <{{< relref "../reference/glossary#debuff" >}}>
+[debuff]: <../reference/glossary#debuff>
 
 ## Reducing the Enemy's Ability to Attack You
 
@@ -56,7 +47,7 @@ list and everyone else use the 3 Orange list. Further note, generals marked
 with a 'Y' in the 'Availability' column are the only ones available without
 getting lucky in paid events.
 
-{{< sp-table csv="attack_mayors.csv" >}}
+< sp-table csv="attack_mayors.csv" ></sp-table>
 
 ## Reducing the Enemy's Ability to Survive Your Attack
 
@@ -71,7 +62,7 @@ list and everyone else use the 3 Orange list. Further note, generals marked
 with a 'Y' in the 'Availability' column are the only ones available without
 getting lucky in paid events. 
 
-{{< sp-table csv="toughness_mayors.csv" >}}
+< sp-table csv="toughness_mayors.csv" ></sp-table>
 
 ## Trying to find balance
 
@@ -89,5 +80,5 @@ because another use for this list is as a tie breaker: if you are debating
 between two generals in one of the other lists, knowing where they fall here
 can help make the decision.
 
-{{< sp-table csv="overall_mayors.csv" >}}
+< sp-table csv="overall_mayors.csv" ></sp-table>
 

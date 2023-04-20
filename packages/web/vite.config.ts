@@ -10,7 +10,8 @@ export default defineConfig({
 
       input: {
         main: path.resolve(__dirname, 'index.html'),
-
+        generals: path.resolve(__dirname, 'generals/index.html'),
+        mayors: path.resolve(__dirname, 'generals/mayors/index.html'),
       }
     },
   },
