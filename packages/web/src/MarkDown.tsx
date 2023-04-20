@@ -1,10 +1,9 @@
-import { LitElement, html, PropertyValueMap } from 'lit'
-import {until} from 'lit/directives/until.js';
-import { DirectiveResult } from 'lit/directive.js';
-import { customElement, query, state } from 'lit/decorators.js'
+import { LitElement, html,PropertyValues  } from 'lit'
+import {asyncReplace} from 'lit/directives/async-replace.js';
+import { DirectiveClass } from 'lit/directive.js';
+import { getDirectiveClass } from 'lit/directive-helpers.js';
+import { customElement, property, state} from 'lit/decorators.js'
 import { resolveMarkdown, MarkdownDirective } from "lit-markdown";
-import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
-import { Bucket } from "sst/node/bucket";
 
 
 
@@ -16,21 +15,36 @@ import { Bucket } from "sst/node/bucket";
  */
 @customElement('mark-down')
 export class MarkDown extends LitElement {
-  @query("textarea")
-  private textarea!: HTMLTextAreaElement;
 
   @state()
-  private raw = this.fetchFile();
+  private raw: MarkdownDirective|string;
 
+  @property({type: String})
+  path: string;
 
   @state()
-  private myPath = document.location.pathname;
+  private myPath
 
+  constructor() {
+    super();
+    this.myPath = this.path ? this.path : document.location.pathname;
+    console.log(`in constuctor, path is ${this.myPath}`)
+    this.raw = "";
+  }
+
+  protected async willUpdate(_changedProperties: PropertyValues<this>) {
+    super.willUpdate(_changedProperties);
+    if (_changedProperties.has('path')){
+      console.log('detected changed path');
+      this.myPath = this.path;
+      this.raw = await this.fetchFile();
+    }
+  }
 
   private parseMarkdown(incoming: string) {
     const value = incoming? incoming.trim() : "";
     console.log(`value was ${value}`);
-    return resolveMarkdown(value, { includeImages: true, includeCodeBlockClassNames: true });
+    return resolveMarkdown(value, { skipSanitization: true });
   }
 
   private async fetchFile() {
@@ -51,20 +65,19 @@ export class MarkDown extends LitElement {
     let fileUrl = new URL(filename, import.meta.url).href;
     fileUrl = fileUrl.replace(/public\//,'');
     console.log(`resulting url is ${fileUrl}`);
-    let text = await fetch(fileUrl)
+    let _text = await fetch(fileUrl)
         .then((response) => response.text())
-        .then((text) => {
-          console.log(`text retrieved was ${text}`);
-          return this.parseMarkdown( text);
-          return text;
+        .then((t) => {
+          console.log(`text retrieved was ${t}`);
+          return this.parseMarkdown( t);
         });
-    return text;
+    return _text;
   }
 
   render() {
     return html`
       <div>
-        ${until(this.raw, html`<span>Loading...</span>`)}
+        ${asyncReplace(this.raw)}
       </div>
 
     `;

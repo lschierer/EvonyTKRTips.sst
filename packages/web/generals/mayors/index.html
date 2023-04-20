@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Picking Mayors for your Subcities</title>
+    <link rel="stylesheet" href="/src/index.css" />
+    <script type="module" src="/src/ASComponents.tsx"></script>
+    <script type="module" src="/src/TopNav.tsx"></script>
+    <script type="module" src="./mayors.tsx"></script>
+  </head>
+  <body>
+    <sp-theme
+            color="light"
+            scale="large"
+            style=""
+            flex={1}
+            >
+      <div flex="1 1 auto">
+        <top-nav />
+      </div>
+      <main>
+        <mayor-main/>
+      </main>
+    </sp-theme>
+  </body>
+</html>
