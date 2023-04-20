@@ -5,10 +5,10 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite + Lit + TS</title>
-    <link rel="stylesheet" href="./src/index.css" />
-    <script type="module" src="/src/my-element.ts"></script>
+    <link rel="stylesheet" href="/src/index.css" />
     <script type="module" src="/src/ASComponents.tsx"></script>
     <script type="module" src="/src/TopNav.tsx"></script>
+    <script type="module" src="/src/MarkDown.tsx"></script>
   </head>
   <body>
     <sp-theme
@@ -18,12 +18,11 @@
             flex={1}
             >
       <div flex="1 1 auto">
-        <top-nav/>
+        <top-nav />
       </div>
-      <my-element>
-        <h1>Vite + Lit</h1>
-      </my-element>
-      <a href="/generals">generals</a>
+      <main>
+        <mark-down />
+      </main>
     </sp-theme>
   </body>
 </html>
