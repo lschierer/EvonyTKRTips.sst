@@ -1,43 +1,26 @@
-import { html} from 'lit';
-import {customElement, property,  state} from 'lit/decorators.js';
+import { html } from "lit";
+import { customElement, property, state } from "lit/decorators.js";
+import {ref, createRef} from 'lit/directives/ref.js';
 
-import {csv} from 'd3';
+import * as dsv from "d3-dsv";
 
-import '@spectrum-web-components/table/elements.js';
+import "@spectrum-web-components/table/elements.js";
 import {
-    Table,
+  Table, TableCell
 
-} from '@spectrum-web-components/table';
+} from "@spectrum-web-components/table";
+import { PropertyValues } from "lit/development";
 
-export interface Mayor {
-    name: string|undefined,
-    free: string|undefined,
-    mrank: string|undefined,
-    mgrade: string|undefined,
-    mps: string|undefined,
-    mns: string|undefined,
-    yrank: string|undefined,
-    ygrade: string|undefined,
-    yps: string|undefined,
-    yns: string|undefined,
-    orank: string|undefined,
-    ograde: string|undefined,
-    ops: string|undefined,
-    ons: string|undefined,
-    prank: string|undefined,
-    pgrade: string|undefined,
-    pps: string|undefined,
-    pns: string|undefined,
-  }
-
-// @ts-ignore
-@customElement('sp-table')
+@customElement("mayor-table")
 export class MayorTable extends Table {
 
   // @ts-ignore
-    @property({type: String, reflect: true})
-  public CsvUrl: string;
-  
+  @property({ type: String, reflect: true })
+  public CsvName: string;
+
+  @state()
+  private CsvUrl: string;
+
   @state()
   protected _headings: string[];
 
@@ -45,12 +28,16 @@ export class MayorTable extends Table {
   protected _ids: string[];
 
   @state()
-  private _items?: Mayor[];
+  private _items;
 
-    constructor() {
+  private tableRef= createRef();
+
+  constructor() {
     super();
-
-    this.CsvUrl = '';
+    this.CsvName = "";
+    this.CsvUrl = "";
+    this._items = [];
+    this._ids = [];
 
     this._headings = [
       "Name",
@@ -70,101 +57,70 @@ export class MayorTable extends Table {
       "3 Purple Rank",
       "3 Purple Grade",
       "3 Purple # Grade",
-      "3 Purple Score",
+      "3 Purple Score"
     ];
 
-    this._ids = [
-      "name",
-      "free",
-      "mrank",
-      "mgrade",
-      "mps",
-      "mns",
-      "yrank",
-      "ygrade",
-      "yps",
-      "yns",
-      "orank",
-      "ograde",
-      "ops",
-      "ons",
-      "prank",
-      "ograde",
-      "ops",
-      "ons",
-      "prank",
-      "pgrade",
-      "pps",
-      "pns"
-    ];
-     
   }
 
-  public connectedCallback() {
-    super.connectedCallback();
-    this.getMayors();
+
+  async willUpdate(changedProperties: PropertyValues<this>) {
+    if (changedProperties.has('CsvName')) {
+      console.log(`detected Name change, new value: ${this.CsvName}`);
+      let f = "../../public/CSVs/".concat(this.CsvName);
+      this.CsvUrl = new URL(f, import.meta.url).href;
+      console.log(`URL is ${this.CsvUrl}`);
+      this.getMayors();
+    }
   }
 
-  public disconnectedCallback() {
-    console.log('disconnected callback');
-    super.disconnectedCallback();
+
+  protected async getMayors() {
+    fetch(this.CsvUrl)
+      .then((response) => response.text())
+      .then((t) => {
+        let r = dsv.csvParse(t);
+        let c = r.columns;
+        this._ids = JSON.parse(JSON.stringify(c));
+        console.log(`items are ${JSON.stringify(r)}`);
+        console.log(`ids are ${this._ids}`);
+        this._items = r;
+      })
   }
 
-  protected getMayors() {
-    csv(this.CsvUrl).then((data) => {
-      for(let i = 0; i < data.length; i++) {
-        if (this._items === undefined) {
-          this._items = new Array<Mayor>;
-        }
-        this._items = this._items.concat([{
-            name: data[i].name,
-            free: data[i].free,
-            mrank: data[i].mrank,
-            mgrade: data[i].mgrade,
-            mps: data[i].mps,
-            mns: data[i].mns,
-            yrank: data[i].yrank,
-            ygrade: data[i].ygrade,
-            yps: data[i].yps,
-            yns: data[i].yns,
-            orank: data[i].orank,
-            ograde: data[i].ograde,
-            ops: data[i].ops,
-            ons: data[i].ons,
-            prank: data[i].prank,
-            pgrade: data[i].pgrade,
-            pps: data[i].pps,
-            pns: data[i].pns
-        }]);
+
+  private initTable(element: Element | undefined) {
+    console.log(`init table called, we have ${this._items.length} rows`);
+    const t = (element! as Table);
+    t.items = this._items;
+    t.renderItem = (item, index) => {
+      let cells = [];
+      for (let i = 0; i < this._ids.length; i++) {
+        let cell = document.createElement("sp-table-cell");
+        cell.textContent = `$this._items[i].${this._ids[i]}`;
+        console.log(`created context ${cell.textContent}`);
+        cells.push(cell);
       }
-      this.requestUpdate();
-    });
+      return cells;
+    };
   }
 
   render() {
-      const headerTemplates = [];
-      for(let i =0; i < this._headings.length; i++){
-          headerTemplates.push(html`<sp-table-head-cell>${this._headings[i]}</sp-table-head-cell>`);
-      }
-    const itemTemplates = [];
+    const headerTemplates = [];
     for (let i = 0; i < this._headings.length; i++) {
-      itemTemplates.push(html`<vaadin-grid-sort-column header="${this._headings[i]}" path="${this._ids[i]}" direction="asc"></vaadin-grid-sort-column>` );
+      headerTemplates.push(html`
+        <sp-table-head-cell>${this._headings[i]}</sp-table-head-cell>`);
     }
-    /*return html`
-      <vaadin-grid .items="${this.items}" theme="wrap-cell-content" >
-        ${itemTemplates}
-       </vaadin-grid>
-    `;*/
-      return html`
-          <sp-table size="l" items={${this._items}}>
-              <sp-table-head>
-                  ${headerTemplates}
-              </sp-table-head>
-              <sp-table-body>
-                  
-              </sp-table-body>
-          </sp-table>
-      `;
+
+    return html`
+      <sp-table scroller="true" size="l" ${ref(this.initTable)}>
+        <sp-table-head>
+          ${headerTemplates}
+        </sp-table-head>
+        <sp-table-body>
+
+        </sp-table-body>
+      </sp-table>
+    `;
   }
 
 

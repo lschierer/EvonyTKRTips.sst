@@ -1,7 +1,5 @@
 import { LitElement, html,PropertyValues  } from 'lit'
-import {asyncReplace} from 'lit/directives/async-replace.js';
-import { DirectiveClass } from 'lit/directive.js';
-import { getDirectiveClass } from 'lit/directive-helpers.js';
+import {when} from 'lit/directives/when.js';
 import { customElement, property, state} from 'lit/decorators.js'
 import { resolveMarkdown, MarkdownDirective } from "lit-markdown";
 
@@ -25,38 +23,43 @@ export class MarkDown extends LitElement {
   @state()
   private myPath
 
+  @state()
+  private _parsed: boolean;
+
   constructor() {
     super();
-    this.myPath = this.path ? this.path : document.location.pathname;
+    this._parsed = false;
+    this.path = "";
+    this.myPath = document.location.pathname;
     console.log(`in constuctor, path is ${this.myPath}`)
     this.raw = "";
   }
 
-  protected async willUpdate(_changedProperties: PropertyValues<this>) {
-    super.willUpdate(_changedProperties);
-    if (_changedProperties.has('path')){
-      console.log('detected changed path');
-      this.myPath = this.path;
-      this.raw = await this.fetchFile();
+
+  async willUpdate(changedProperties: PropertyValues<this>) {
+    // only need to check changed properties for an expensive computation.
+    if (changedProperties.has('path')) {
+      console.log(`path change detected: ${this.path}`);
+      if(this.path.length > 1) {
+        this.myPath = this.path;
+      }
+      this.raw = (await this.fetchFile() as MarkdownDirective);
+
     }
   }
 
   private parseMarkdown(incoming: string) {
     const value = incoming? incoming.trim() : "";
     console.log(`value was ${value}`);
-    return resolveMarkdown(value, { skipSanitization: true });
+    let result = resolveMarkdown(value, { skipSanitization: true });
+    this._parsed = true;
+    this.raw = (result as MarkdownDirective);
+    return result;
   }
 
   private async fetchFile() {
-    if ((this.myPath === undefined) || (this.myPath === "")) {
-      console.log("no path defined");
-      console.log(`location is ${document.location.pathname}`);
-      if (typeof (document.location.pathname) === "string") {
-        this.myPath = document.location.pathname;
-      }
-    }
     let filename = "../public/en";
-    if (this.myPath.at(-1) === '/') {
+    if (this.myPath[this.myPath.length -1] === '/') {
       filename = filename.concat(this.myPath.concat("index.md"));
     } else {
       filename = filename.concat(this.myPath.concat(".md"));
@@ -77,7 +80,7 @@ export class MarkDown extends LitElement {
   render() {
     return html`
       <div>
-        ${asyncReplace(this.raw)}
+        ${when(this._parsed, () => html`${this.raw}`)}
       </div>
 
     `;

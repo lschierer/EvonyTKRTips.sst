@@ -1,5 +1,5 @@
-import {LitElement, css, html} from 'lit';
-import {customElement, property} from 'lit/decorators.js';
+import {html} from 'lit';
+import {customElement} from 'lit/decorators.js';
 
 import '@spectrum-web-components/theme/sp-theme.js';
 import '@spectrum-web-components/theme/src/themes.js';
