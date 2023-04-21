@@ -1,4 +1,4 @@
-name,free,mrank,mgrade,mps,mns,yrank,ygrade,yps,yns,orank,ograde,ops,ons,prank,pgrade,pps,pns
+Name,Availability,Maxed Out Rank,Maxed Out Grade,Maxed Out # Grade,Maxed Out Score,Yellows Rank,Yellows Grade,Yellows # Grade,Yellows Score,Orange Rank,Orange Grade,Orange # Grade,Orange Score,Purple Rank,Purple Grade,Purple # Grade,Purple Score
 Yeon Gaesomun,N,02,A,94.7,603,02,A+,99.1,331,01,A+,100,219,01,A+,100,213
 Darius I,N,01,A+,100,637,01,A+,100,334,02,A+,96.8,212,02,A,93,198
 Baldwin IV,N,09,B,82.4,525,03,A,94.9,317,03,A,95.4,209,03,A,91.5,195
