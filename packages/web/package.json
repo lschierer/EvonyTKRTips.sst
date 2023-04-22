@@ -1,54 +1,90 @@
 {
-  "name": "example-project-rollup",
-  "version": "0.6.17",
-  "private": true,
-  "description": "An example project that uses the web components and gives an example of how to bundle them minimally with rollup.",
-  "license": "Apache-2.0",
-  "author": "example-app",
-  "main": "index.js",
+  "name": "evony-tips",
+  "description": "Webcomponent evony-tips following open-wc recommendations",
+  "license": "MIT",
+  "author": "evony-tips",
+  "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "build": "rimraf dist && yarn build:tsc && rollup -c rollup.config.js",
-    "build:tsc": "tsc && cp src/styles.css out-tsc/src",
-    "format": "npm run format:eslint && npm run format:prettier",
-    "format:eslint": "eslint --ext .ts,.html . --fix --ignore-path .gitignore",
-    "format:prettier": "prettier \"**/*.js\" \"**/*.ts\" --write --ignore-path .gitignore",
-    "lint:eslint": "eslint --ext .ts,.html . --ignore-path .gitignore",
-    "lint:prettier": "prettier \"**/*.js\" \"**/*.ts\" --check --ignore-path .gitignore",
-    "postbuild": "mv dist/*.css dist/styles.css",
-    "start": "concurrently --kill-others --names tsc,wds \"npm run tsc:watch\" \"wds --config wds.config.js\"",
-    "start:build": "npm run build && wds --root-dir dist --app-index index.html --open --compatibility none",
-    "tsc:watch": "tsc --watch"
+    "lint": "eslint --ext .ts,.html . --ignore-path .gitignore && prettier \"**/*.ts\" --check --ignore-path .gitignore",
+    "format": "eslint --ext .ts,.html . --fix --ignore-path .gitignore && prettier \"**/*.ts\" --write --ignore-path .gitignore",
+    "test": "tsc && wtr --coverage",
+    "test:watch": "tsc && concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"wtr --watch\"",
+    "build": "rimraf dist && tsc && rollup -c rollup.config.js && npm run analyze -- --exclude dist",
+    "start:build": "web-dev-server --root-dir dist --app-index index.html --open",
+    "analyze": "cem analyze --litelement",
+    "start": "tsc && concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"wds\""
   },
   "dependencies": {
-    "@spectrum-web-components/button": "^0.20.4",
-    "@spectrum-web-components/field-label": "^0.10.9",
-    "@spectrum-web-components/menu": "^0.16.16",
-    "@spectrum-web-components/picker": "^0.15.1",
-    "@spectrum-web-components/styles": "^0.23.3"
+    "lit": "^2.0.2"
   },
   "devDependencies": {
-    "@open-wc/building-rollup": "^2.2.1",
-    "@open-wc/eslint-config": "^10.0.0",
-    "@rollup/plugin-commonjs": "^21.0.1",
-    "@types/node": "^18.11.0",
-    "@typescript-eslint/eslint-plugin": "^5.35.0",
-    "@typescript-eslint/parser": "^5.35.0",
-    "@web/dev-server": "^0.1.38",
+    "@babel/preset-env": "^7.16.4",
+    "@custom-elements-manifest/analyzer": "^0.4.17",
+    "@open-wc/building-rollup": "^2.0.2",
+    "@open-wc/eslint-config": "^9.2.1",
+    "@open-wc/testing": "^3.1.6",
+    "@rollup/plugin-babel": "^5.3.0",
+    "@rollup/plugin-node-resolve": "^13.0.6",
+    "@typescript-eslint/eslint-plugin": "^5.48.0",
+    "@typescript-eslint/parser": "^5.48.0",
+    "@web/dev-server": "^0.1.34",
+    "@web/rollup-plugin-html": "^1.11.0",
+    "@web/rollup-plugin-import-meta-assets": "^1.0.7",
+    "@web/test-runner": "^0.14.0",
+    "babel-plugin-template-html-minifier": "^4.1.0",
     "concurrently": "^5.3.0",
-    "eslint": "^8.23.0",
-    "eslint-config-prettier": "^8.5.0",
-    "prettier": "^2.7.1",
+    "deepmerge": "^4.2.2",
+    "eslint": "^8.31.0",
+    "eslint-config-prettier": "^8.3.0",
+    "husky": "^4.3.8",
+    "lint-staged": "^10.5.4",
+    "prettier": "^2.4.1",
     "rimraf": "^3.0.2",
-    "rollup": "^2.78.0",
-    "rollup-plugin-styles": "^4.0.0",
-    "rollup-plugin-visualizer": "^5.5.4",
+    "rollup": "^2.60.0",
+    "rollup-plugin-esbuild": "^5.0.0",
+    "rollup-plugin-workbox": "^6.2.0",
     "tslib": "^2.3.1",
-    "typescript": "^4.7.2"
+    "typescript": "^4.5.2"
   },
-  "customElements": "custom-elements.json",
+  "eslintConfig": {
+    "parser": "@typescript-eslint/parser",
+    "extends": [
+      "@open-wc",
+      "prettier"
+    ],
+    "plugins": [
+      "@typescript-eslint"
+    ],
+    "rules": {
+      "no-unused-vars": "off",
+      "@typescript-eslint/no-unused-vars": [
+        "error"
+      ],
+      "import/no-unresolved": "off",
+      "import/extensions": [
+        "error",
+        "always",
+        {
+          "ignorePackages": true
+        }
+      ]
+    }
+  },
   "prettier": {
     "singleQuote": true,
     "arrowParens": "avoid"
-  }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.ts": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  },
+  "customElements": "custom-elements.json"
 }

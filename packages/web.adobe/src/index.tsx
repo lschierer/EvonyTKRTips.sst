@@ -27,3 +27,7 @@ import '@spectrum-web-components/link/sp-link.js';
 import '@spectrum-web-components/textfield/sp-textfield.js';
 import '@spectrum-web-components/tooltip/sp-tooltip.js';
 import '@spectrum-web-components/dialog/sp-dialog.js';
+
+//include my components
+
+import './components/TopNav';

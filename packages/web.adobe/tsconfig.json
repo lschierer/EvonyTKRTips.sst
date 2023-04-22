@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
-    "target": "es2018",
+    "target": "es2017",
     "module": "esnext",
     "moduleResolution": "node",
     "noEmitOnError": true,
-    "lib": ["es2017", "dom"],
+    "lib": ["es2017", "dom", "dom.iterable"],
     "strict": true,
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
@@ -12,9 +12,9 @@
     "importHelpers": true,
     "outDir": "out-tsc",
     "sourceMap": true,
+    "skipLibCheck": true,
     "inlineSources": true,
-    "rootDir": "./",
-    "incremental": true
+    "rootDir": "./"
   },
-  "include": ["**/*.ts"]
+  "include": ["**/*.tsx"]
 }

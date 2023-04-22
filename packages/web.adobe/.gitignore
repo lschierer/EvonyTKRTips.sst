@@ -20,5 +20,6 @@
 /dist/
 /out-tsc/
 
-storybook-static
-custom-elements.json
+stats.html
+
+!wds.config.js
