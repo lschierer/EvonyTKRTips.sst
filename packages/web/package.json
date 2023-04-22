@@ -83,44 +83,15 @@
     "tslib": "^2.5.0",
     "typescript": "^5.0.4"
   },
-  "eslintConfig": {
-    "parser": "@typescript-eslint/parser",
-    "extends": [
-      "@open-wc",
-      "prettier"
-    ],
-    "plugins": [
-      "@typescript-eslint"
-    ],
-    "rules": {
-      "no-unused-vars": "off",
-      "@typescript-eslint/no-unused-vars": [
-        "error"
-      ],
-      "import/no-unresolved": "off",
-      "import/extensions": [
-        "error",
-        "always",
-        {
-          "ignorePackages": true
-        }
-      ]
-    }
-  },
   "prettier": {
     "singleQuote": true,
     "arrowParens": "avoid"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+
     }
   },
-  "lint-staged": {
-    "*.ts": [
-      "eslint --fix",
-      "prettier --write"
-    ]
-  },
+
   "customElements": "custom-elements.json"
 }
