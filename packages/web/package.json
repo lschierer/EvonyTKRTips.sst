@@ -1,0 +1,54 @@
+{
+  "name": "example-project-rollup",
+  "version": "0.6.17",
+  "private": true,
+  "description": "An example project that uses the web components and gives an example of how to bundle them minimally with rollup.",
+  "license": "Apache-2.0",
+  "author": "example-app",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "build": "rimraf dist && yarn build:tsc && rollup -c rollup.config.js",
+    "build:tsc": "tsc && cp src/styles.css out-tsc/src",
+    "format": "npm run format:eslint && npm run format:prettier",
+    "format:eslint": "eslint --ext .ts,.html . --fix --ignore-path .gitignore",
+    "format:prettier": "prettier \"**/*.js\" \"**/*.ts\" --write --ignore-path .gitignore",
+    "lint:eslint": "eslint --ext .ts,.html . --ignore-path .gitignore",
+    "lint:prettier": "prettier \"**/*.js\" \"**/*.ts\" --check --ignore-path .gitignore",
+    "postbuild": "mv dist/*.css dist/styles.css",
+    "start": "concurrently --kill-others --names tsc,wds \"npm run tsc:watch\" \"wds --config wds.config.js\"",
+    "start:build": "npm run build && wds --root-dir dist --app-index index.html --open --compatibility none",
+    "tsc:watch": "tsc --watch"
+  },
+  "dependencies": {
+    "@spectrum-web-components/button": "^0.20.4",
+    "@spectrum-web-components/field-label": "^0.10.9",
+    "@spectrum-web-components/menu": "^0.16.16",
+    "@spectrum-web-components/picker": "^0.15.1",
+    "@spectrum-web-components/styles": "^0.23.3"
+  },
+  "devDependencies": {
+    "@open-wc/building-rollup": "^2.2.1",
+    "@open-wc/eslint-config": "^10.0.0",
+    "@rollup/plugin-commonjs": "^21.0.1",
+    "@types/node": "^18.11.0",
+    "@typescript-eslint/eslint-plugin": "^5.35.0",
+    "@typescript-eslint/parser": "^5.35.0",
+    "@web/dev-server": "^0.1.38",
+    "concurrently": "^5.3.0",
+    "eslint": "^8.23.0",
+    "eslint-config-prettier": "^8.5.0",
+    "prettier": "^2.7.1",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.78.0",
+    "rollup-plugin-styles": "^4.0.0",
+    "rollup-plugin-visualizer": "^5.5.4",
+    "tslib": "^2.3.1",
+    "typescript": "^4.7.2"
+  },
+  "customElements": "custom-elements.json",
+  "prettier": {
+    "singleQuote": true,
+    "arrowParens": "avoid"
+  }
+}
