@@ -114,17 +114,43 @@ export class MayorTable extends Table {
       t.append((d3.create('sp-table').node() as Table));
       table= d3.select(t!).selectAll('sp-table');
     }
-    console.log(`selected table ${table}`);
+
+    //first remove old entries
+    table.selectAll('sp-table-head').remove();
+    table.selectAll('sp-table-body').remove();
+
     let thead = table.append('sp-table-head')
-    console.log(`thead is ${typeof(thead)}`);
     let tbody = table.append('sp-table-body')
+
+    table.style("flex", "1 1 auto");
+    table.style("max-width", "100%");
+    table.on('sorted',(event) =>{
+      console.log('called sort event');
+      const { sortDirection, sortKey } = event.detail;
+      if (sortDirection === 'asc') {
+        this._items = data.sort((a,b) => d3.ascending(a[sortKey], b[sortKey]));
+      } else {
+        this._items = data.sort((a,b) => d3.descending(a[sortKey], b[sortKey]));
+      }
+      this.initTable();
+      this.requestUpdate();
+    })
+
+    thead.style("flex", "1 1 auto ");
+    thead.style("max-width", "100%");
+
 
     thead.selectAll('sp-table-head-cell')
         .data(columns)
         .enter()
         .append('sp-table-head-cell')
+
         .text(function (d) {
           return d
+        })
+        .attr("sortable", true)
+        .attr("sort-key", function(d){
+          return d.replace(/\W/g, '');
         })
 
     let rows = tbody.selectAll('sp-table-row')
@@ -150,7 +176,7 @@ export class MayorTable extends Table {
     console.log('ready to return table from initTable');
     this.tableRendered = true;
     console.log(`table is ${table}`);
-    
+
   }
 
   render() {
