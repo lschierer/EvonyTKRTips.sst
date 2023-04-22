@@ -19,3 +19,20 @@ body {
   font-family: sans-serif;
   background-color: #ededed;
 }
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+}
+
+top-nav {
+  width: 100%;
+  background-color: var(--spectrum-blue-600)
+}
+
+sp-theme {
+  width: 100%;
+  background-color: var(--spectrum-global-color-gray-100);
+}
