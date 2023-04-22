@@ -15,6 +15,9 @@
     "@aws-sdk/client-s3": "^3.316.0",
     "@lit-labs/ssr": "^3.1.1",
     "@lit-labs/ssr-client": "^1.1.1",
+    "@spectrum-css/button": "^9.1.6",
+    "@spectrum-css/page": "^5.0.22",
+    "@spectrum-css/vars": "^9.0.2",
     "@spectrum-web-components/base": "^0.7.5",
     "@spectrum-web-components/shared": "^0.15.6",
     "@spectrum-web-components/sidenav": "^0.14.2",
@@ -30,7 +33,8 @@
     "d3-hierarchy": "^3.1.2",
     "d3-selection": "^3.0.0",
     "lit": "^2.7.2",
-    "lit-markdown": "^1.3.2"
+    "lit-markdown": "^1.3.2",
+    "zero-md": "^2.4.0"
   },
   "devDependencies": {
     "@types/d3": "^7.4.0",
