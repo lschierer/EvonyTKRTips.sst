@@ -1,8 +1,8 @@
 import { html } from 'lit';
 import { fixture, expect } from '@open-wc/testing';
 
-import type { EvonyTips } from '../src/evony-tips.js';
-import '../src/evony-tips.js';
+import type { EvonyTips } from '../components/evony-tips';
+import '../components/evony-tips';
 
 describe('EvonyTips', () => {
   let element: EvonyTips;
