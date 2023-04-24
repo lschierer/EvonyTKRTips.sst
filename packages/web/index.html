@@ -1,21 +1,23 @@
 <!DOCTYPE html>
-
 <html lang="en" class="spectrum spectrum--medium spectrum--light">
-<head>
-  <meta charset='utf-8'>
-  <meta name='viewport' content='width=device-width, initial-scale=1.0, viewport-fit=cover'>
-  <meta name='Description' content='Tips for Budget Gamers'>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <meta name="Description" content="Tips for Budget Gamers" />
+    <link rel="stylesheet" href="./out-tsc/src/styles.css" />
+    <base href="/" />
 
-  <link rel="stylesheet" href="node_modules/@spectrum-css/vars/dist/spectrum-global.css">
-  <link rel="stylesheet" href="node_modules/@spectrum-css/vars/dist/spectrum-medium.css">
-  <link rel="stylesheet" href="node_modules/@spectrum-css/vars/dist/spectrum-light.css">
-  <link rel='stylesheet' href='./style.css' type='text/css'>
-  <script type='module' src='./components/evony-tips.js'></script>
+    <title>Evony TKR Tips</title>
+  </head>
 
-  <title>Evony TKR Tips</title>
-</head>
+  <body>
+    <sp-theme theme="classic" color="light" scale="medium">
+      <top-nav></top-nav>
+    </sp-theme>
 
-<body>
-  <evony-tips></evony-tips>
-</body>
+    <script type="module" src="./out-tsc/src/index.js"></script>
+  </body>
 </html>
