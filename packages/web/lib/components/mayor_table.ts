@@ -16,7 +16,6 @@ import { PropertyValues } from "lit/development";
 @customElement("mayor-table")
 export class MayorTable extends Table {
 
-  // @ts-ignore
   @property({type: String, reflect: true})
   public CsvName: string;
 
@@ -29,19 +28,16 @@ export class MayorTable extends Table {
   @state()
   private _items: DSVRowArray<string> | undefined;
 
-  @state()
-  private _tableTemplate;
-
   private tableRef: Ref<HTMLTableElement> = createRef();
 
   @state()
-  private tableRendered: Boolean;
+  private tableRendered: boolean;
 
   @state()
-  private fetchingMayors: Boolean;
+  private fetchingMayors: boolean;
 
   @state()
-  protected fetchMayorsComplete: Boolean
+  protected fetchMayorsComplete: boolean
 
   constructor() {
     super();
@@ -76,8 +72,8 @@ export class MayorTable extends Table {
       fetch(this.CsvUrl)
           .then((response) => response.text())
           .then((t) => {
-            let r = dsv.csvParse(t);
-            let c = r.columns;
+            const r = dsv.csvParse(t);
+            const c = r.columns;
             this._ids = JSON.parse(JSON.stringify(c));
             console.log(`items are ${JSON.stringify(r)}`);
             console.log(`ids are ${this._ids}`);
@@ -103,24 +99,24 @@ export class MayorTable extends Table {
     console.log(`ids now at length ${this._ids.length}`)
     const data = this._items!;
     const columns = this._ids;
-    let t = this.tableRef.value;
+    const t = this.tableRef.value;
     if(t === undefined) {
       console.log('cannot find my table ref');
       return;
     }
-    let table= d3.select(t!).selectAll('sp-table');
+    let table= d3.select(t).selectAll('sp-table');
     if((table === undefined) || (table.empty())) {
       console.log('div has no sp-table')
       t.append((d3.create('sp-table').node() as Table));
-      table= d3.select(t!).selectAll('sp-table');
+      table= d3.select(t).selectAll('sp-table');
     }
 
     //first remove old entries
     table.selectAll('sp-table-head').remove();
     table.selectAll('sp-table-body').remove();
 
-    let thead = table.append('sp-table-head')
-    let tbody = table.append('sp-table-body')
+    const thead = table.append('sp-table-head')
+    const tbody = table.append('sp-table-body')
 
     table.style("flex", "1 1 auto");
     table.style("max-width", "100%");
@@ -153,7 +149,7 @@ export class MayorTable extends Table {
           return d.replace(/\W/g, '');
         })
 
-    let rows = tbody.selectAll('sp-table-row')
+    const rows = tbody.selectAll('sp-table-row')
         .data(data)
         .enter()
         .append('sp-table-row')
@@ -185,7 +181,7 @@ export class MayorTable extends Table {
       console.log('render thinks the table rendered');
       return html`
         <div ${ref(this.tableRef)}>
-          
+
         </div>
       `;
     } else {

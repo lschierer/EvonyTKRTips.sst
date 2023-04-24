@@ -17,4 +17,6 @@ export default {
   watch: true,
   open: false,
   //appIndex: 'index.html',
+  debug: true,
+  rootDir: './dist/',
 };

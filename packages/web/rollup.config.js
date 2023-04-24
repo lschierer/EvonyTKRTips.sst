@@ -1,27 +1,25 @@
 import merge from 'deepmerge';
 import path from 'path';
 import { createMpaConfig } from '@open-wc/building-rollup';
-import typescript from '@rollup/plugin-typescript';
+import { importMetaAssets } from '@web/rollup-plugin-import-meta-assets';
 
 const baseConfig = createMpaConfig({
+  html: {
+    flattenOutput: false,
+    strictCSPInlineScripts: true,
+  },
   developmentMode: true,
   injectServiceWorker: true,
   rootDir: process.cwd(),
   outputDir: path.join(process.cwd(), 'dist'),
+
+
 });
 
 export default merge(baseConfig, {
-    input: './index.html',
+    input: '*.html',
     plugins: [
-      typescript({
-        tsconfig: path.join(process.cwd(), '/tsconfig.json'),
-        experimentalDecorators: true,
-        target: 'esnext',
-        compilerOptions:{
-          jsx: 'preserve',
-          outDir: path.join(process.cwd(),'dist'),
-        }
-      })
+
     ],
   });
 
