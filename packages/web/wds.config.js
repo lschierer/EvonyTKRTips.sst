@@ -15,6 +15,6 @@ export default {
   },
   clearTerminalOnReload: false,
   watch: true,
-  open: true,
+  open: false,
   //appIndex: 'index.html',
 };
