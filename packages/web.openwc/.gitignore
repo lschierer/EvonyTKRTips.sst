@@ -5,6 +5,14 @@
 ## system files
 .DS_Store
 
+.rollup.cache
+
+## build artifacts
+/components/**/*.js
+/components/**/*.js.map
+/test/**/*.js
+/test/**/*.js.map
+
 ## npm
 /node_modules/
 /npm-debug.log
@@ -20,6 +28,5 @@
 /dist/
 /out-tsc/
 
-stats.html
-
-!wds.config.js
+storybook-static
+custom-elements.json

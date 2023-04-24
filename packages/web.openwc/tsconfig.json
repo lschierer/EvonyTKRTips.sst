@@ -4,16 +4,16 @@
     "module": "esnext",
     "moduleResolution": "node",
     "noEmitOnError": true,
-    "lib": ["es2017", "dom", "dom.iterable"],
+    "lib": ["es2017", "dom"],
     "strict": true,
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "importHelpers": true,
-    "outDir": "out-tsc",
     "sourceMap": true,
     "inlineSources": true,
-    "rootDir": "./"
+    "rootDir": "./",
+    "incremental": true
   },
-  "include": ["**/*.tsx"]
+  "include": ["**/*.ts"]
 }
