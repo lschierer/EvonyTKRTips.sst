@@ -8,20 +8,18 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "format:eslint": "eslint --ext .ts . --fix --ignore-path .gitignore",
+    "build:tsc": "tsc ",
     "build:babelrc": "rimraf dist && rollup -c demo/babelrc/rollup.config.js",
     "build:modify-babel-plugin": "rimraf dist && rollup -c demo/modify-babel-plugin/rollup.config.js",
-    "build:mpa": "rimraf dist && rollup -c",
-    "start:build": "wds --root-dir dist ",
-    "start:demo": "wds --app-index demo/js/index.html --open",
+    "build:mpa": "pnpm run build:tsc && rimraf dist && cp -a public/ dist/ && rollup -c",
+    "start:build": "wds ",
+    "start:demo": "wds  --open",
     "start:modify-babel-plugin": "pnpm run build:modify-babel-plugin && pnpm run start:build",
     "start:mpa": "pnpm run build:mpa && pnpm run start:build",
     "test": "npm run test:node",
     "test:node": "mocha test-node"
   },
-  "files": [
-    "*.js",
-    "src"
-  ],
   "dependencies": {
     "@spectrum-css/button": "^9.1.6",
     "@spectrum-css/page": "^5.0.22",
