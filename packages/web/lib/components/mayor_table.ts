@@ -16,7 +16,7 @@ import { PropertyValues } from "lit/development";
 @customElement("mayor-table")
 export class MayorTable extends Table {
 
-  @property({type: String, reflect: true})
+  @property({type: String, reflect: true, attribute: "csv"})
   public CsvName: string;
 
   @state()
@@ -65,25 +65,28 @@ export class MayorTable extends Table {
   protected async getMayors() {
     console.log('fetching mayors');
     if (this.fetchingMayors) {
-      console.log('already done')
+      console.log('already done');
       return;
-    } else{
+    } else {
       this.fetchingMayors = true;
       fetch(this.CsvUrl)
-          .then((response) => response.text())
-          .then((t) => {
-            const r = dsv.csvParse(t);
-            const c = r.columns;
-            this._ids = JSON.parse(JSON.stringify(c));
-            console.log(`items are ${JSON.stringify(r)}`);
-            console.log(`ids are ${this._ids}`);
-            this._items = r;
-          }).then(() =>{
-            this.fetchMayorsComplete = true;
-            return true;
-          });
+        .then((response) => {
+          if (response.ok) return response.text();
+          else throw new Error('Status code error :' + response.status);
+        }).then((t) => {
+        const r = dsv.csvParse(t);
+        const c = r.columns;
+        this._ids = JSON.parse(JSON.stringify(c));
+        console.log(`items are ${JSON.stringify(r)}`);
+        console.log(`ids are ${this._ids}`);
+        this._items = r;
+      }).then(() => {
+        this.fetchMayorsComplete = true;
+        return true;
+      }).catch((error) => console.log(error));
     }
   }
+
 
   private async initTable() {
     console.log('in the initTable function');
