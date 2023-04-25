@@ -2,6 +2,8 @@ import { html } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import {ref, Ref, createRef} from 'lit/directives/ref.js';
 
+import path from 'path';
+
 import * as dsv from "d3-dsv";
 import type {DSVRowArray} from "d3-dsv";
 import * as d3 from 'd3';
@@ -18,6 +20,9 @@ export class MayorTable extends Table {
 
   @property({type: String, reflect: true, attribute: "csv"})
   public CsvName: string;
+
+  @state()
+  protected _id: string;
 
   @state()
   private CsvUrl: string;
@@ -41,6 +46,7 @@ export class MayorTable extends Table {
 
   constructor() {
     super();
+    this._id = "";
     this.CsvName = "";
     this.CsvUrl = "";
     this._ids = [];
@@ -53,6 +59,8 @@ export class MayorTable extends Table {
   willUpdate(changedProperties: PropertyValues<this>) {
     if (changedProperties.has('CsvName')) {
       console.log(`detected Name change, new value: ${this.CsvName}`);
+      const re = /\.\w{3}$/;
+      this._id = this.CsvName.replace(re,'');
       let f = "../../public/CSVs/".concat(this.CsvName);
       f = f.replace(/public\//,'');
       this.CsvUrl = new URL(f, import.meta.url).href;
@@ -121,8 +129,10 @@ export class MayorTable extends Table {
     const thead = table.append('sp-table-head')
     const tbody = table.append('sp-table-body')
 
-    table.style("flex", "1 1 auto");
-    table.style("max-width", "100%");
+    table.attr("scroller", true);
+    table.style("max-width", "80vm");
+    table.style("height", "400px");
+    table.classed("mayor-table", true);
     table.on('sorted',(event) =>{
       console.log('called sort event');
       const { sortDirection, sortKey } = event.detail;
@@ -135,43 +145,42 @@ export class MayorTable extends Table {
       this.requestUpdate();
     })
 
-    thead.style("flex", "1 1 auto ");
-    thead.style("max-width", "100%");
-
-
+    thead.classed("mayor-row", true)
+    thead.style("max-width", "80vm")
     thead.selectAll('sp-table-head-cell')
-        .data(columns)
-        .enter()
-        .append('sp-table-head-cell')
-
-        .text(function (d) {
-          return d
-        })
-        .attr("sortable", true)
-        .attr("sort-key", function(d){
-          return d.replace(/\W/g, '');
-        })
+      .data(columns)
+      .enter()
+      .append('sp-table-head-cell')
+      .text(function (d) {
+        return d
+      })
+      .attr("sortable", true)
+      .attr("sort-key", function(d){
+        return d.replace(/\W/g, '');
+      });
 
     const rows = tbody.selectAll('sp-table-row')
         .data(data)
         .enter()
-        .append('sp-table-row')
+        .append('sp-table-row');
 
     rows.selectAll('sp-table-cell')
-        .data(function (row) {
-          return columns.map(function (column) {
-            return {column: column, value: row[column]}
-          })
+      .data(function (row) {
+        return columns.map(function (column) {
+          return {column: column, value: row[column]}
         })
-        .enter()
-        .append('sp-table-cell')
-        .text(function (d) {
-          if (d.value === undefined) {
-            return "";
-          } else {
-            return d.value;
-          }
-        })
+      })
+      .classed("mayor-row", true)
+      .enter()
+      .append('sp-table-cell')
+      .text(function (d) {
+        if (d.value === undefined) {
+          return "";
+        } else {
+          return d.value;
+        }
+      })
+
     console.log('ready to return table from initTable');
     this.tableRendered = true;
     console.log(`table is ${table}`);
@@ -183,7 +192,7 @@ export class MayorTable extends Table {
     if(this.tableRendered) {
       console.log('render thinks the table rendered');
       return html`
-        <div ${ref(this.tableRef)}>
+        <div id='${this._id}' ${ref(this.tableRef)}>
 
         </div>
       `;

@@ -16,9 +16,9 @@ export default {
   plugins:[
     'mimeTypesPlugin',
   ],
-  MimeTypeMappings: {
-    '**/*.csv': 'text/csv',
-  },
+  MimeTypeMappings: [
+    {'**/*.csv': 'text/csv',},
+  ],
   clearTerminalOnReload: false,
   watch: true,
   open: false,
