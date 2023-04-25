@@ -9,7 +9,7 @@ const baseConfig = createMpaConfig({
     strictCSPInlineScripts: true,
   },
   developmentMode: true,
-  injectServiceWorker: true,
+  injectServiceWorker: false,
   rootDir: process.cwd(),
   outputDir: path.join(process.cwd(), 'dist'),
 

@@ -13,6 +13,12 @@ export default {
   nodeResolve: {
     exportConditions: ['browser', 'development'],
   },
+  plugins:[
+    'mimeTypesPlugin',
+  ],
+  MimeTypeMappings: {
+    '**/*.csv': 'text/csv',
+  },
   clearTerminalOnReload: false,
   watch: true,
   open: false,
