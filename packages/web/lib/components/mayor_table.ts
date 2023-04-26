@@ -131,10 +131,7 @@ export class MayorTable extends Table {
 
 
     table.attr("scroller", true);
-    table.style("height", "400px")
-      .style('overflow-x', "auto")
-      .style("max-width", "80vw")
-      .style('font-size','var(--spectrum-font-size-75)')
+
     table.classed("mayor-table", true);
     table.on('sorted',(event) =>{
       console.log('called sort event');
@@ -148,9 +145,23 @@ export class MayorTable extends Table {
       this.requestUpdate();
     })
 
+    table.style("height", "450px")
+      .style('overflow-x', "auto")
+      .style('overflow-y', "auto")
+      .style('scrollbar-gutter', 'stable both-edges')
+      .style("max-width", "80vw")
+      .style('font-size','var(--spectrum-font-size-75)')
+
     thead.classed("mayor-row", true)
     thead.style('overflow-x', 'auto')
+      .style('overflow-y', 'auto')
       .style("max-width", "80vw")
+      .style("flex", '1 1 auto')
+      .style('flex-direction', 'row')
+      .style('border-radius', 'var(--spectrum-table-regular-border-radius)')
+      .style('border-width', 'var(--spectrum-table-regular-border-size)')
+      .style('display', 'block')
+
 
     tbody.style('overflow-x', 'auto')
       .style("max-width", "80vw")
