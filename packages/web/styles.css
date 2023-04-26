@@ -33,6 +33,19 @@ top-nav {
 }
 
 sp-theme {
-  width: 100%;
+  box-sizing: content-box;
+
   background-color: var(--spectrum-global-color-gray-100);
+}
+
+#attack_mayors {
+  height: 400px;
+  flex: 1 1 auto;
+  max-width: 80vw;
+  overflow-x: auto;
+  overflow-y: auto;
+}
+
+#attack_mayors sp-table-head {
+  max-width: 80vw;
 }
