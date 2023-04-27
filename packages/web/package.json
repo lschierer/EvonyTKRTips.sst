@@ -22,6 +22,7 @@
     "test:node": "mocha test-node"
   },
   "dependencies": {
+    "@lit-labs/virtualizer": "^2.0.1",
     "@spectrum-css/button": "^10.0.2",
     "@spectrum-css/page": "^5.0.24",
     "@spectrum-css/vars": "^9.0.4",
