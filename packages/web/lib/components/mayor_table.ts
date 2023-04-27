@@ -1,5 +1,4 @@
 import { html,  } from "lit";
-import type { TemplateResult } from '@spectrum-web-components/base';
 import { customElement, property, state } from "lit/decorators.js";
 import {ref, Ref, createRef} from 'lit/directives/ref.js';
 
@@ -9,15 +8,17 @@ import * as dsv from "d3-dsv";
 import type {DSVRowArray} from "d3-dsv";
 import * as d3 from 'd3';
 
-import "@spectrum-web-components/table/elements.js";
-import {
-  Table,
-  TableCell
-} from "@spectrum-web-components/table";
+import '@spectrum-web-components/table/sp-table-body.js';
+import '@spectrum-web-components/table/sp-table-cell.js';
+import '@spectrum-web-components/table/sp-table-checkbox-cell.js';
+import '@spectrum-web-components/table/sp-table-head.js';
+import '@spectrum-web-components/table/sp-table-head-cell.js';
+import '@spectrum-web-components/table/sp-table-row.js';
+import * as Table from "@spectrum-web-components/table";
 import { PropertyValues } from "lit/development";
 
-@customElement("mayor-table")
-export class MayorTable extends Table {
+@customElement("sp-table")
+export class MayorTable extends Table.Table {
 
   @property({type: String, reflect: true, attribute: "csv"})
   public CsvName: string;
@@ -34,8 +35,6 @@ export class MayorTable extends Table {
   @state()
   private _items: DSVRowArray<string> | undefined;
 
-  private tableRef: Ref<HTMLTableElement> = createRef();
-
   @state()
   private tableRendered: boolean;
 
@@ -43,7 +42,7 @@ export class MayorTable extends Table {
   private fetchingMayors: boolean;
 
   @state()
-  protected fetchMayorsComplete: boolean
+  protected fetchMayorsComplete: boolean;
 
   constructor() {
     super();
@@ -56,8 +55,8 @@ export class MayorTable extends Table {
     this.fetchMayorsComplete = false;
   }
 
-
-  willUpdate(changedProperties: PropertyValues<this>) {
+  override willUpdate(changedProperties: PropertyValues<this>) {
+    super.willUpdate(changedProperties);
     if (changedProperties.has('CsvName')) {
       console.log(`detected Name change, new value: ${this.CsvName}`);
       const re = /\.\w{3}$/;
@@ -101,8 +100,6 @@ export class MayorTable extends Table {
       }).catch((error) => console.log(error));
     }
   }
-
-
   private async initTable() {
     console.log('in the initTable function');
 
@@ -115,40 +112,10 @@ export class MayorTable extends Table {
       return ;
     }
     console.log(`ids now at length ${this._ids.length}`)
-    const t = this.tableRef.value;
-    if(t === undefined) {
-      console.log('cannot find my table ref');
-      return;
-    }
-    let table= d3.select(t).selectAll('sp-table');
-    if((table === undefined) || (table.empty())) {
-      console.log('div has no sp-table')
-      return;
-    } else {
-      (table.node() as Table).items = super.items;
-    }
 
-    table.on('sorted',(event) =>{
-      console.log('called sort event');
-
-      this.requestUpdate();
-
-    })
-
-    table.style("height", "450px")
-      .style('overflow-x', "auto")
-      .style('overflow-y', "auto")
-      .style('scrollbar-gutter', 'stable both-edges')
-      .style("max-width", "80vw")
-      .style('font-size','var(--spectrum-font-size-75)')
-
-    table.attr("scroller", true);
-
-    table.classed("mayor-table", true);
-
-    (table.node() as Table).renderItem = (item:Record<string, unknown>,index) => {
+    super.renderItem = (item:Record<string, unknown>, index) => {
       let a:dsv.DSVRowString<string> = (item.row as dsv.DSVRowString<string>);
-      let tc:TableCell[] = [];
+      let tc:Table.TableCell[] = [];
       for(let i = 0; i < this._ids.length; i++) {
         const cell = document.createElement('sp-table-cell');
         let content:string = '';
@@ -164,33 +131,35 @@ export class MayorTable extends Table {
     }
 
     console.log('ready to return table from initTable');
-    this.tableRendered = true;
-  }
-
-  render() {
-
-      return html`
-        <div id='${this._id}' ${ref(this.tableRef)}>
-          <sp-table>
-            <sp-table-head>
-              ${this._ids.map((id) =>
-                html`
-                  <sp-table-head-cell sortable sort-direction="desc" sort-key="${id.replace(/ /g,"")}">
-                    ${id}
-                  </sp-table-head-cell>
-                `
-              )}
-            </sp-table-head>
-          </sp-table>
-        </div>
-      `;
 
   }
+
+
+
+  protected override manageCheckboxes(): void {
+    return;
+  }
+
+  override render() {
+    return html`
+      <sp-table-head>
+        ${this._ids.map((id) =>
+          html`
+            <sp-table-head-cell sortable sort-direction="desc" sort-key="${id.replace(/ /g,"")} ">
+              ${id}
+            </sp-table-head-cell>
+          `
+        )}
+        </sp-table-head>
+        ${super.render()}
+    `;
+  }
+
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    "mayor-table": MayorTable;
+    "sp-table": MayorTable;
   }
 }
 
