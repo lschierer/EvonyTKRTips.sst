@@ -1,4 +1,5 @@
-import { html } from "lit";
+import { html,  } from "lit";
+import type { TemplateResult } from '@spectrum-web-components/base';
 import { customElement, property, state } from "lit/decorators.js";
 import {ref, Ref, createRef} from 'lit/directives/ref.js';
 
@@ -10,8 +11,8 @@ import * as d3 from 'd3';
 
 import "@spectrum-web-components/table/elements.js";
 import {
-  Table
-
+  Table,
+  TableCell
 } from "@spectrum-web-components/table";
 import { PropertyValues } from "lit/development";
 
@@ -118,24 +119,21 @@ export class MayorTable extends Table {
     let table= d3.select(t).selectAll('sp-table');
     if((table === undefined) || (table.empty())) {
       console.log('div has no sp-table')
-      t.append((d3.create('sp-table').node() as Table));
-      table= d3.select(t).selectAll('sp-table');
+      return;
     }
 
-    //first remove old entries
-    table.selectAll('sp-table-head').remove();
-    table.selectAll('sp-table-body').remove();
+    for(let i = 0; i < data.length; i ++) {
+      for (let j = 0; j < columns.length; j++) {
+        let row:dsv.DSVRowString<string> = data[i];
+        let c:string = columns[j];
+        console.log(`c is ${c}`);
+        let nR:Record<string,dsv.DSVRowString<string>> = { "row": row }
+        console.log(`pushing item ${j} row is ${JSON.stringify(nR)}`);
+        super.items.push(nR);
+        (table.node() as Table).items.push(nR);
+      }
+    }
 
-    const thead = table.append('sp-table-head')
-    const tbody = table.append('sp-table-body')
-
-
-    table.attr("scroller", true);
-    table.style("height", "400px")
-      .style('overflow-x', "auto")
-      .style("max-width", "80vw")
-      .style('font-size','var(--spectrum-font-size-75)')
-    table.classed("mayor-table", true);
     table.on('sorted',(event) =>{
       console.log('called sort event');
       const { sortDirection, sortKey } = event.detail;
@@ -148,46 +146,30 @@ export class MayorTable extends Table {
       this.requestUpdate();
     })
 
-    thead.classed("mayor-row", true)
-    thead.style('overflow-x', 'auto')
+    table.attr("scroller", true);
+    table.style("height", "400px")
+      .style('overflow-x', "auto")
       .style("max-width", "80vw")
+      .style('font-size','var(--spectrum-font-size-75)')
+    table.classed("mayor-table", true);
 
-    tbody.style('overflow-x', 'auto')
-      .style("max-width", "80vw")
-
-    thead.selectAll('sp-table-head-cell')
-      .data(columns)
-      .enter()
-      .append('sp-table-head-cell')
-      .text(function (d) {
-        return d
-      })
-      .attr("sortable", true)
-      .attr("sort-key", function(d){
-        return d.replace(/\W/g, '');
-      });
-
-    const rows = tbody.selectAll('sp-table-row')
-        .data(data)
-        .enter()
-        .append('sp-table-row');
-
-    rows.selectAll('sp-table-cell')
-      .data(function (row) {
-        return columns.map(function (column) {
-          return {column: column, value: row[column]}
-        })
-      })
-      .classed("mayor-row", true)
-      .enter()
-      .append('sp-table-cell')
-      .text(function (d) {
-        if (d.value === undefined) {
-          return "";
+    (table.node() as Table).renderItem = (item:Record<string, unknown>,index) => {
+      let a:dsv.DSVRowString<string> = (item.row as dsv.DSVRowString<string>);
+      let tc:TableCell[] = [];
+      for(let i = 0; i < this._ids.length; i++) {
+        const cell = document.createElement('sp-table-cell');
+        console.log(`adding text content ${a[this._ids[i]]}`);
+        let content:string = '';
+        if (!a[this._ids[i]]) {
+          content = '';
         } else {
-          return d.value;
+          content = a[this._ids[i]]!;
         }
-      })
+        cell.textContent = content;
+        tc.push(cell);
+      }
+      return html`${tc}`;
+    }
 
     console.log('ready to return table from initTable');
     this.tableRendered = true;
@@ -197,18 +179,22 @@ export class MayorTable extends Table {
 
   render() {
 
-    if(this.tableRendered) {
-      console.log('render thinks the table rendered');
       return html`
         <div id='${this._id}' ${ref(this.tableRef)}>
-
+          <sp-table>
+            <sp-table-head>
+              ${this._ids.map((id) =>
+                html`
+                  <sp-table-head-cell sortable sort-direction="desc" sort-key="${id.replace(/ /g,"")}">
+                    ${id}
+                  </sp-table-head-cell>
+                `
+              )}
+            </sp-table-head>
+          </sp-table>
         </div>
       `;
-    } else {
-      return html`
-        <div ${ref(this.tableRef)}>Loading....</div>
-      `
-    }
+
   }
 }
 
