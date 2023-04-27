@@ -44,8 +44,7 @@ sp-theme {
   max-width: 80vw;
   overflow-x: auto;
   overflow-y: auto;
+  scrollbar-gutter: stable both-edges;
+  font-size: var(--spectrum-font-size-75)
 }
 
-#attack_mayors sp-table-head {
-  max-width: 80vw;
-}

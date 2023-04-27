@@ -1,4 +1,4 @@
-import {html} from 'lit';
+import {html, LitElement} from 'lit';
 import {customElement} from 'lit/decorators.js';
 
 import '@spectrum-web-components/theme/sp-theme.js';
@@ -9,9 +9,9 @@ import { TopNav } from '@spectrum-web-components/top-nav';
 
 
 @customElement('top-nav')
-export class myTopNav extends TopNav {
+export class myTopNav extends LitElement {
 
-  render(){
+  override render(){
     return html`
             <sp-top-nav size="xl" >
                 <sp-top-nav-item></sp-top-nav-item>
