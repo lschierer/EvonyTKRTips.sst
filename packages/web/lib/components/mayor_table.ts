@@ -90,6 +90,12 @@ export class MayorTable extends Table {
         console.log(`ids are ${this._ids}`);
         this._items = r;
       }).then(() => {
+        for(let i = 0; i < this._items!.length; i ++) {
+          let row:dsv.DSVRowString<string> = this._items![i];
+          let nR:Record<string,dsv.DSVRowString<string>> = { "row": row }
+          console.log(`pushing item ${i} row is ${JSON.stringify(nR)}`);
+          super.items.push(nR);
+        }
         this.fetchMayorsComplete = true;
         return true;
       }).catch((error) => console.log(error));
@@ -109,8 +115,6 @@ export class MayorTable extends Table {
       return ;
     }
     console.log(`ids now at length ${this._ids.length}`)
-    const data = this._items!;
-    const columns = this._ids;
     const t = this.tableRef.value;
     if(t === undefined) {
       console.log('cannot find my table ref');
@@ -120,15 +124,8 @@ export class MayorTable extends Table {
     if((table === undefined) || (table.empty())) {
       console.log('div has no sp-table')
       return;
-    }
-
-    for(let i = 0; i < data.length; i ++) {
-        let row:dsv.DSVRowString<string> = data[i];
-        let nR:Record<string,dsv.DSVRowString<string>> = { "row": row }
-        console.log(`pushing item ${i} row is ${JSON.stringify(nR)}`);
-        super.items.push(nR);
-        (table.node() as Table).items.push(nR);
-
+    } else {
+      (table.node() as Table).items = super.items;
     }
 
     table.on('sorted',(event) =>{
@@ -164,8 +161,6 @@ export class MayorTable extends Table {
 
     console.log('ready to return table from initTable');
     this.tableRendered = true;
-    console.log(`table is ${table}`);
-
   }
 
   render() {
