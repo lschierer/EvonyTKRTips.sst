@@ -123,27 +123,19 @@ export class MayorTable extends Table {
     }
 
     for(let i = 0; i < data.length; i ++) {
-      for (let j = 0; j < columns.length; j++) {
         let row:dsv.DSVRowString<string> = data[i];
-        let c:string = columns[j];
-        console.log(`c is ${c}`);
         let nR:Record<string,dsv.DSVRowString<string>> = { "row": row }
-        console.log(`pushing item ${j} row is ${JSON.stringify(nR)}`);
+        console.log(`pushing item ${i} row is ${JSON.stringify(nR)}`);
         super.items.push(nR);
         (table.node() as Table).items.push(nR);
-      }
+
     }
 
     table.on('sorted',(event) =>{
       console.log('called sort event');
-      const { sortDirection, sortKey } = event.detail;
-      if (sortDirection === 'asc') {
-        this._items = data.sort((a,b) => d3.ascending(a[sortKey], b[sortKey]));
-      } else {
-        this._items = data.sort((a,b) => d3.descending(a[sortKey], b[sortKey]));
-      }
-      this.initTable();
+
       this.requestUpdate();
+
     })
 
     table.attr("scroller", true);
@@ -158,7 +150,6 @@ export class MayorTable extends Table {
       let tc:TableCell[] = [];
       for(let i = 0; i < this._ids.length; i++) {
         const cell = document.createElement('sp-table-cell');
-        console.log(`adding text content ${a[this._ids[i]]}`);
         let content:string = '';
         if (!a[this._ids[i]]) {
           content = '';
