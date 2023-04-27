@@ -8,6 +8,7 @@
     "strict": true,
     "esModuleInterop": false,
     "useDefineForClassFields": false,
+    "noImplicitOverride": true,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "importHelpers": true,
