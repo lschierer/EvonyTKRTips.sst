@@ -1,6 +1,8 @@
-import { html,  } from "lit";
+import { html, css } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import {ref, Ref, createRef} from 'lit/directives/ref.js';
+import {styleMap} from 'lit/directives/style-map.js';
+
 
 import path from 'path';
 
@@ -16,9 +18,10 @@ import '@spectrum-web-components/table/sp-table-head-cell.js';
 import '@spectrum-web-components/table/sp-table-row.js';
 import * as Table from "@spectrum-web-components/table";
 import { PropertyValues } from "lit/development";
+import { SpectrumElement } from '@spectrum-web-components/base';
 
 @customElement("sp-table")
-export class MayorTable extends Table.Table {
+class MayorTable extends Table.Table {
 
   @property({type: String, reflect: true, attribute: "csv"})
   public CsvName: string;
@@ -111,6 +114,7 @@ export class MayorTable extends Table.Table {
       console.log('second check, still 0');
       return ;
     }
+
     console.log(`ids now at length ${this._ids.length}`)
 
     super.renderItem = (item:Record<string, unknown>, index) => {
