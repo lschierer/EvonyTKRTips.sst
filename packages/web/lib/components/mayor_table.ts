@@ -129,9 +129,12 @@ export class MayorTable extends Table {
     const thead = table.append('sp-table-head')
     const tbody = table.append('sp-table-body')
 
+
     table.attr("scroller", true);
-    table.style("max-width", "80vm");
-    table.style("height", "400px");
+    table.style("height", "400px")
+      .style('overflow-x', "auto")
+      .style("max-width", "80vw")
+      .style('font-size','var(--spectrum-font-size-75)')
     table.classed("mayor-table", true);
     table.on('sorted',(event) =>{
       console.log('called sort event');
@@ -146,7 +149,12 @@ export class MayorTable extends Table {
     })
 
     thead.classed("mayor-row", true)
-    thead.style("max-width", "80vm")
+    thead.style('overflow-x', 'auto')
+      .style("max-width", "80vw")
+
+    tbody.style('overflow-x', 'auto')
+      .style("max-width", "80vw")
+
     thead.selectAll('sp-table-head-cell')
       .data(columns)
       .enter()
