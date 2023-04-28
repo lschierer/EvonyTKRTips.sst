@@ -89,7 +89,7 @@ class MayorTable extends Table.Table {
         const c = r.columns;
         this._ids = JSON.parse(JSON.stringify(c));
         console.log(`items are ${JSON.stringify(r)}`);
-        console.log(`ids are ${this._ids}`);
+        console.log(`ids are "${this._ids}"`);
         this._items = r;
       }).then(() => {
         for(let i = 0; i < this._items!.length; i ++) {
@@ -134,6 +134,23 @@ class MayorTable extends Table.Table {
       return html`${tc}`;
     }
 
+    super.addEventListener('sorted', (event) => {
+      const { sortDirection, sortKey } = (event as CustomEvent).detail;
+      let items: dsv.DSVRowString<string>[] = [];
+      if (sortDirection === 'asc') {
+        items = this._items!.slice()
+          .sort((a, b) => {
+            return d3.ascending(a[this._ids[sortKey]], b[this._ids[sortKey]]);
+          });
+      } else {
+        items = this._items!.slice()
+          .sort((a, b) => {
+            return d3.descending(a[this._ids[sortKey]], b[this._ids[sortKey]]);
+          });
+      }
+      super.items = [...items];
+    });
+
     console.log('ready to return table from initTable');
 
   }
@@ -149,7 +166,7 @@ class MayorTable extends Table.Table {
       <sp-table-head>
         ${this._ids.map((id) =>
           html`
-            <sp-table-head-cell sortable sort-direction="desc" sort-key="${id.replace(/ /g,"")} ">
+            <sp-table-head-cell sortable sort-direction="desc" sort-key="${id}">
               ${id}
             </sp-table-head-cell>
           `
