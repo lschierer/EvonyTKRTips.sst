@@ -6,17 +6,8 @@ import * as process from 'process';
 import { rimraf } from 'rimraf';
 import {mkdirp} from 'mkdirp';
 
-function* readAllFiles(dir: string): Generator<string> {
-  const files = fs.readdirSync(dir, { withFileTypes: true });
+import {readAllFiles} from '../lib/pageMaker/utils';
 
-  for (const file of files) {
-    if (file.isDirectory()) {
-      yield* readAllFiles(path.join(dir, file.name));
-    } else {
-      yield path.join(dir, file.name);
-    }
-  }
-}
 console.log(`cwd is ${process.cwd()}`);
 
 console.log(`project root is ${path.resolve(path.join(process.cwd(),'../..'))}`)

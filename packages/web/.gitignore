@@ -18,6 +18,8 @@
 # build
 /_site/
 /dist/
+/bin/*.js
+/bin/*.js.map
 /lib/*.js
 /lib/*.js.map
 /lib/*/*.js
