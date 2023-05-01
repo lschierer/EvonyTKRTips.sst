@@ -1,13 +1,3 @@
 {
-  "extends": "@tsconfig/node18/tsconfig.json",
-  "compilerOptions": {
-    "experimentalDecorators": true
-  },
-  "exclude": ["packages"],
-  "include": [
-    "sst.config.ts",
-    "stacks/**/*.ts",
-    "stacks/**/*.tsx",
-    "./.eslintrc.cjs"
-  ]
+  "extends": "astro/tsconfigs/strict"
 }

@@ -11,6 +11,10 @@ governing permissions and limitations under the License.
 */
 
 /* import the global stylesheets */
+@import '@spectrum-web-components/styles/typography.css';
+@import '@spectrum-web-components/styles/all-medium-light.css';
+@import '@spectrum-web-components/styles/scale-medium.css';
+@import '@spectrum-web-components/styles/theme-light.css';
 
 html,
 body {
@@ -27,15 +31,18 @@ body {
   }
 }
 
-top-nav {
-  width: 100%;
-  background-color: var(--spectrum-blue-600)
-}
+
 
 sp-theme {
   box-sizing: content-box;
 
   background-color: var(--spectrum-global-color-gray-100);
+}
+
+sp-top-nav,
+top-nav {
+  width: 100%;
+  background-color: var(--spectrum-global-color-cyan-600)
 }
 
 #attack_mayors {
@@ -45,5 +52,5 @@ sp-theme {
   overflow-x: auto;
   overflow-y: auto;
   scrollbar-gutter: stable both-edges;
-  font-size: var(--spectrum-font-size-75)
+  font-size: var(--spectrum-global-dimension-static-font-size-75)
 }
