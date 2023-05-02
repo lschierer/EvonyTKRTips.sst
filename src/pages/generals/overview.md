@@ -1,9 +1,9 @@
-+++
-title = "Overview of Picking Generals"
-author = "Luke Schierer"
-weight = 1
-tags = ['guide']
-+++
+---
+title: "Overview of Picking Generals"
+author: "Luke Schierer"
+tags: 
+  - 'guide'
+---
 
 Knowing what generals to keep and what generals to get rid of is an important
 topic as you start building your keep. It is a complicated question.  Most of
@@ -17,7 +17,7 @@ between them.  Use whichever guide you feel you understand best.
 
 [^230107-1]: See the list of pages on the [Home page][]
 
-[Home page]: <{{< ref "/" >}}>
+[Home page]: </>
 
 When picking your generals, you need to consider several things. 
 
@@ -48,7 +48,7 @@ attributes (such as ore exploitation as a specialty), these are the exception.
 Also note, that the advice below represents lessons learned, things I wish I
 had understood months ago.
 
-[ascend]: <{{< relref "../reference/glossary#ascend" >}}>
+[ascend]: <../reference/glossary#ascend>
 
 In general, unless you have more slots for generals than you know what to do
 with, stick to Historic Gold Generals.  The attributes on these will be better,
@@ -72,7 +72,7 @@ accept compromises based on the generals you randomly happen to get first.
    only join them.  If you do, you need a good monster general pair.  This is
    different than a mounted PVP pair (the generals you pick for each role are
    different).   If you care about running rallies, this general and his/her
-   assistant needs to be your priority.  ([2 generals]({{< relref "mounted" >}}))
+   assistant needs to be your priority.  ([2 generals](mounted))
 
 2. Decide on make-up of your main PVP march.  This will determine your main PVP
    general and main PVP assistant.  If you run rallies, this will be the *second*
@@ -83,7 +83,7 @@ accept compromises based on the generals you randomly happen to get first.
    *someday* use this as the bulk of your meat shield and the bulk of your keep's
    defenses.  Look for Wall Defense generals that complement this troop type.
    You need a main general and an assistant general.  The main general will be
-   the *third* general you max out.  ([2 generals]({{< relref "wall" >}}))
+   the *third* general you max out.  ([2 generals](wall))
 
 4. Look for generals that are specialized as duty generals for your keep and
    other buildings.  If you find one for a building that is too small to get a
@@ -95,10 +95,10 @@ accept compromises based on the generals you randomly happen to get first.
    your sub city mayors.  You have to be careful with these.  If you do not
    plan on investing rune stones on these, they rate *very* differently than if
    you do plan on investing rune stones on them.  ([between 4 and 8 generals
-   needed, depending on how many sub cities you have]({{< relref "mayors" >}}))
+   needed, depending on how many sub cities you have](mayors))
 
 6. Look for Baibars and Queen Jindock.  You will someday want four Baibars and
    five Queen Jindock generals.  Take your time finding these, but if you see
    one and you have slots available, do not pass them up.  Use Baibars to join
-   rallies, and Jindock to gather.   (9 generals)
+   rallies, and Jindock to gather.   ([9 generals](misc))
 
