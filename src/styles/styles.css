@@ -39,12 +39,6 @@ sp-theme {
   background-color: var(--spectrum-global-color-gray-100);
 }
 
-sp-top-nav,
-top-nav {
-  width: 100%;
-  background-color: var(--spectrum-global-color-cyan-600)
-}
-
 #attack_mayors {
   height: 400px;
   flex: 1 1 auto;
