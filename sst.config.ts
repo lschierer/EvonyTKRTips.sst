@@ -1,5 +1,5 @@
 import type { SSTConfig } from "sst";
-import { AstroSite } from "sst/constructs";
+import { Web } from "./stacks/Web";
 
 export default {
   config(_input) {
@@ -10,11 +10,7 @@ export default {
     };
   },
   stacks(app) {
-    app.stack(function Site({ stack }) {
-      const site = new AstroSite(stack, "site");
-      stack.addOutputs({
-        url: site.url,
-      });
-    });
-  },
+    app.stack(Web);
+  }
+
 } satisfies SSTConfig;

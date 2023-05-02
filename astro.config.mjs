@@ -1,5 +1,6 @@
 import { defineConfig } from "astro/config";
 import aws from "astro-sst/lambda";
+import node from '@astrojs/node';
 import lit from "@astrojs/lit";
 
 import markdoc from "@astrojs/markdoc";
@@ -10,5 +11,20 @@ export default defineConfig({
   trailingSlash: 'ignore',
   output: "server",
   adapter: aws(),
-  integrations: [lit(), markdoc()]
+  integrations: [ markdoc()],
+  vite: {
+    build: {
+      minify: false,
+    },
+    ssr: {
+      target: 'node',
+      external:[
+        'node:path',
+        'node:fs',
+        'path-scurry',
+        'stream',
+      ]
+    }
+  }
+
 });
