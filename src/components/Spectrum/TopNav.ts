@@ -2,7 +2,8 @@ import {html, LitElement} from 'lit';
 import {customElement} from 'lit/decorators.js';
 import {styleMap} from 'lit/directives/style-map.js';
 
-
+import '@spectrum-web-components/theme/sp-theme.js';
+import '@spectrum-web-components/theme/src/themes.js';
 import '@spectrum-web-components/top-nav/sp-top-nav.js';
 import '@spectrum-web-components/top-nav/sp-top-nav-item.js';
 import { TopNav } from '@spectrum-web-components/top-nav';
@@ -14,7 +15,7 @@ export class myTopNav extends LitElement {
 
   override render(){
     const styles = {
-      backgroundColor: 'var(--spectrum-global-color-cyan-600)',
+      backgroundColor: 'var(--spectrum-global-color-blue-400)',
     }
     return html`
             <sp-top-nav size="xl" client:load style=${styleMap(styles)}>
