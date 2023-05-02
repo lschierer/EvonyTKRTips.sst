@@ -32,4 +32,3 @@ import '@spectrum-web-components/dialog/sp-dialog.js';
 
 //include my components
 
-import './TopNav';
