@@ -1,16 +1,17 @@
-+++
-title = "Miscellaneous Generals You Ought to Have"
-author = "Luke Schierer"
-weight = 8
-tags = ['recommendation']
-+++
+---
+title: "Miscellaneous Generals You Ought to Have"
+author: "Luke Schierer"
+layout: '../../layouts/Layout.astro'
+tags:
+  - 'recommendation'
+---
 
 In the [Overview][], I explain my thinking.  This is a fairly long article, but
 contains a lot of useful background information if you want to understand how I
 arrived at these conclusions. If you just want to be told what to do, you can
 skip it and dive right in here. 
 
-[Overview]: <{{< relref "overview" >}}>
+[Overview]: <overview>
 
 Interestingly, this advice applies almost equally well to both free players and
 light spenders.  The only exception is Theodora, who is only available as a
@@ -57,10 +58,10 @@ several different things.
    selling a general seems like a waste of gold, however the things that
    activating your general's hall unlocks is worth the cost.
 
-[Duty]: <{{< relref "duty" >}}>
+[Duty]: <duty>
 
-[General's Hall]: <{{< relref "../reference/glossary#Generals_Hall" >}}>
+[General's Hall]: <../reference/glossary#Generals_Hall>
 
-[RSS]: <{{< relref "../reference/glossary#RSS" >}}>
+[RSS]: <../reference/glossary#RSS>
 
-[Mayors]: <{{< relref "mayors" >}}>
+[Mayors]: <mayors>
