@@ -4,7 +4,7 @@ export interface Props {
 }
 
 const { title } = Astro.props;
-import '../styles/styles.css';
+import stylesUrl from '../styles/styles.css?url';
 ---
 
 <!DOCTYPE html>
@@ -13,6 +13,7 @@ import '../styles/styles.css';
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="stylesheet" href={stylesUrl} />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 		<script >
@@ -36,7 +37,7 @@ import '../styles/styles.css';
 	}
 	html {
 		font-family: system-ui, sans-serif;
-		background-color: #F6F6F6;
+
 	}
 	code {
 		font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
