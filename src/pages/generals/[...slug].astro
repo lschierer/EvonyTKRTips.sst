@@ -1,0 +1,27 @@
+---
+import { getCollection,getEntryBySlug } from 'astro:content';
+import MarkdownPostLayout from '../../layouts/MarkdownPostLayout.astro';
+
+let { slug } = Astro.params;
+if (slug === undefined) {
+    slug = 'generals/index';
+} else {
+    slug = 'generals/' + slug;
+    console.log(`slug is ${slug}`)
+
+}
+const curUrl = new URL(Astro.request.url);
+console.log(`in slug file, url is ${curUrl}`);
+// 2. Query for the entry directly using the request slug
+const entry = await getEntryBySlug("docs", slug);
+// 3. Redirect if the entry does not exist
+if (entry === undefined) {
+    console.log(`failed to find ${'generals/' + slug}`)
+    return Astro.redirect("/404");
+}
+// 4. (Optional) Render the entry to HTML in the template
+const { Content } = await entry.render();
+---
+<MarkdownPostLayout frontmatter={entry.data}>
+    <Content />
+</MarkdownPostLayout>
