@@ -16,8 +16,8 @@
     "@astrojs/markdoc": "^0.1.1",
     "@astrojs/node": "^5.1.2",
     "@lit-labs/ssr-dom-shim": "^1.1.1",
-    "@spectrum-css/button": "^10.0.3",
-    "@spectrum-css/page": "^5.0.25",
+    "@spectrum-css/button": "^10.0.4",
+    "@spectrum-css/page": "^5.0.26",
     "@spectrum-css/vars": "^9.0.5",
     "@spectrum-web-components/base": "^0.7.5",
     "@spectrum-web-components/button": "^0.20.5",
@@ -39,20 +39,20 @@
     "@spectrum-web-components/tooltip": "^0.11.17",
     "@spectrum-web-components/top-nav": "^0.7.2",
     "@webcomponents/template-shadowroot": "^0.2.1",
-    "astro": "^2.3.3",
+    "astro": "^2.3.4",
     "glob": "^10.2.2",
-    "lit": "^2.7.0",
+    "lit": "^2.7.3",
     "path-scurry": "^1.7.0"
   },
   "devDependencies": {
-    "astro-sst": "2.7.2",
+    "astro-sst": "2.8.3",
     "aws-cdk-lib": "2.72.1",
     "constructs": "10.1.156",
     "d3": "^7.8.4",
     "d3-dsv": "^3.0.1",
     "dotenv": "^16.0.3",
     "eslint": "^8.39.0",
-    "sst": "2.7.2",
+    "sst": "2.8.3",
     "tslib": "^2.5.0"
   }
 }
