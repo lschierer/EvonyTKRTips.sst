@@ -15,7 +15,7 @@ export class myTopNav extends LitElement {
 
   override render(){
     const styles = {
-      backgroundColor: 'var(--spectrum-global-color-blue-400)',
+      backgroundColor: 'var(--spectrum-cyan-600)',
     }
     return html`
             <sp-top-nav size="xl" client:load style=${styleMap(styles)}>
