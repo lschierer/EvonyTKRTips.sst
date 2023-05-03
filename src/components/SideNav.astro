@@ -1,0 +1,17 @@
+---
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+interface Props {
+    entries: CollectionEntry<'docs'>;
+}
+
+const curUrl = new URL(Astro.request.url);
+const selection = curUrl.pathname;
+console.log(`selection is ${selection}`)
+const { entries } = Astro.props;
+---
+
+<script>
+    import {SideNav} from './Spectrum/SideNav';
+</script>
+<side-nav entries={entries} selection={selection} ></side-nav>

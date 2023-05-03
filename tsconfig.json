@@ -3,5 +3,6 @@
   "compilerOptions": {
     "experimentalDecorators": true,
     "strictNullChecks": true,
+    "useDefineForClassFields": false
   }
 }

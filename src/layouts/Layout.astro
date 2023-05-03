@@ -2,9 +2,9 @@
 export interface Props {
 	title: string;
 }
-
 const { title } = Astro.props;
 import stylesUrl from '../styles/styles.css?url';
+import SideNav from '../components/SideNav.astro';
 ---
 
 <!DOCTYPE html>
@@ -19,14 +19,16 @@ import stylesUrl from '../styles/styles.css?url';
 		<script >
 			import '../components/Spectrum/index'
 			import '../components/Spectrum/TopNav'
+
 		</script>
 	</head>
 	<body>
-
+	<SideNav />
 		<sp-theme theme="classic" color="light" scale="medium">
 			<header>
 				<top-nav ></top-nav>
 			</header>
+			<SideNav />
 			<slot />
 		</sp-theme>
 	</body>
