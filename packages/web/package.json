@@ -9,7 +9,6 @@
   "type": "module",
   "scripts": {
     "format:eslint": "eslint --ext .ts . --fix --ignore-path .gitignore",
-    "build": "pnpm run build:mpa",
     "build:tsc": "tsc ",
     "build:babelrc": "rimraf dist && rollup -c demo/babelrc/rollup.config.js",
     "build:modify-babel-plugin": "rimraf dist && rollup -c demo/modify-babel-plugin/rollup.config.js",
