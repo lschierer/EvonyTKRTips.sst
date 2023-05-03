@@ -1,9 +1,8 @@
-+++
-title = "Picking your first ground pair"
-author = "Luke Schierer"
-weight = 5
-tags = ['recommendation']
-+++
+---
+title: "Picking your first ground pair"
+author: "Luke Schierer"
+sortOrder: 5
+---
 
 In the [Overview][], I explain my thinking.  This is a fairly long article, but
 contains a lot of useful background information if you want to understand how I
