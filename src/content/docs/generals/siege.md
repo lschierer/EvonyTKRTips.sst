@@ -1,9 +1,8 @@
-+++
-title = "Picking your first seige pair"
-author = "Luke Schierer"
-weight = 7
-tags = ['recommendation']
-+++
+---
+title: "Picking your first seige pair"
+author: "Luke Schierer"
+sortOrder: 7
+---
 
 In the [Overview][], I explain my thinking.  This is a fairly long article, but
 contains a lot of useful background information if you want to understand how I

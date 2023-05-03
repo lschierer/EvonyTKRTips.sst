@@ -1,9 +1,8 @@
-+++
-title = "Picking your duty generals"
-author = "Luke Schierer"
-weight = 6
-tags = ['recommendation']
-+++
+---
+title: "Picking your duty generals"
+author: "Luke Schierer"
+sortOrder: 6
+---
 
 In the [Overview][], I explain my thinking.  This is a fairly long article, but
 contains a lot of useful background information if you want to understand how I

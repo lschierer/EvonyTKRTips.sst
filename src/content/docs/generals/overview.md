@@ -1,8 +1,6 @@
 ---
 title: "Overview of Picking Generals"
 author: "Luke Schierer"
-tags: 
-  - 'guide'
 ---
 
 Knowing what generals to keep and what generals to get rid of is an important

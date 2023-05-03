@@ -1,9 +1,6 @@
 ---
 title: "Miscellaneous Generals You Ought to Have"
 author: "Luke Schierer"
-layout: '../../layouts/Layout.astro'
-tags:
-  - 'recommendation'
 ---
 
 In the [Overview][], I explain my thinking.  This is a fairly long article, but
