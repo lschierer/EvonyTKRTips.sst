@@ -1,7 +1,7 @@
-+++
-title = 'Prerequisites'
-tags = ['guide']
-+++
+---
+title: 'Prerequisites'
+sortOrder: 1
+---
 
 First off there are two types of participation, [minimal][], and active player
 versus player (PvP).  This article is looking at the latter.
