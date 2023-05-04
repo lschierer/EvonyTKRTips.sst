@@ -1,27 +1,10 @@
 ---
-import { getEntryBySlug } from "astro:content";
-import MarkdownPostLayout from '../../layouts/MarkdownPostLayout.astro';
-
-let { slug } = Astro.params;
-if (slug === undefined) {
-    slug = 'generals';
-} else {
-    slug = 'generals/' + slug;
-    console.log(`slug is ${slug}`)
-
-}
-const curUrl = new URL(Astro.request.url);
-console.log(`in slug file, url is ${curUrl}`);
-// 2. Query for the entry directly using the request slug
-const entry = await getEntryBySlug("docs", slug);
-// 3. Redirect if the entry does not exist
-if (entry === undefined) {
-    console.log(`failed to find ${slug}`)
-    return Astro.redirect("/404");
-}
-// 4. (Optional) Render the entry to HTML in the template
-const { Content } = await entry.render();
+export const prerender = true;
+const title = 'Tips for SvS Participation';
+import Layout from '../../layouts/Layout.astro';
 ---
-<MarkdownPostLayout frontmatter={entry.data}>
-    <Content />
-</MarkdownPostLayout>
+<Layout title={title}>
+<main>
+<p>The pages in this section will attempt to provide what advice I can about participating in <a href="../reference/glossary/#SvS">SvS</a> on a budget.  Much of this advice is under-tested, or even un-tested, as I am still just starting my own SvS journey in many ways.  If you will allow a mixed metaphor, Take anything you find here with a grain of salt, because your mileage may vary. </p>
+</main>
+</Layout >
