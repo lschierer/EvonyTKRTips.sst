@@ -2,9 +2,7 @@ import { html, css } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import {ref, Ref, createRef} from 'lit/directives/ref.js';
 import {styleMap} from 'lit/directives/style-map.js';
-
-
-import path from 'path';
+import type { PropertyValues } from "lit/development";
 
 import * as dsv from "d3-dsv";
 import type {DSVRowArray} from "d3-dsv";
@@ -17,7 +15,6 @@ import '@spectrum-web-components/table/sp-table-head.js';
 import '@spectrum-web-components/table/sp-table-head-cell.js';
 import '@spectrum-web-components/table/sp-table-row.js';
 import * as Table from "@spectrum-web-components/table";
-import { PropertyValues } from "lit/development";
 import { SpectrumElement } from '@spectrum-web-components/base';
 
 @customElement("sp-table")
