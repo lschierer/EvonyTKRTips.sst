@@ -1,5 +1,6 @@
 ---
-title: 'Prerequisites'
+title: 'Next Steps'
+sortOrder: 3
 tags: 
   - 'guide'
 ---

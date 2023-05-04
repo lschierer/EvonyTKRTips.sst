@@ -1,7 +1,7 @@
-+++
-title = "SvS for Small Keeps"
-tags = ['guide']
-+++
+---
+title: "SvS for Small Keeps"
+sortOrder: 2
+---
 
 ## Introduction
 
