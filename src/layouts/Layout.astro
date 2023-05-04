@@ -1,19 +1,25 @@
 ---
+import stylesUrl from '../styles/styles.css';
+import SideNav from '../components/SideNav.astro';
+import '@spectrum-css/vars/dist/spectrum-global.css';
+import '@spectrum-css/vars/dist/spectrum-medium.css';
+import '@spectrum-css/vars/dist/spectrum-light.css';
+import '@spectrum-css/page/dist/index-vars.css';
+import '@spectrum-css/sidenav/dist/index-vars.css';
 export interface Props {
 	title: string;
 }
+
 const { title } = Astro.props;
-import stylesUrl from '../styles/styles.css?url';
-import SideNav from '../components/SideNav.astro';
 ---
 
 <!DOCTYPE html>
-<html lang="en" class="spectrum spectrum--light spectrum--medium">
+<html lang="en" class:list={['spectrum', 'spectrum--light', 'spectrum--medium',]}>
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="stylesheet" href={stylesUrl} />
+
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 		<script >
@@ -23,13 +29,18 @@ import SideNav from '../components/SideNav.astro';
 		</script>
 	</head>
 	<body>
-	<SideNav />
 		<sp-theme theme="classic" color="light" scale="medium">
 			<header>
 				<top-nav ></top-nav>
 			</header>
-			<SideNav />
-			<slot />
+			<sp-split-view resizable primary-min="50" secondary-min="5" primary-size="100">
+				<div >
+					<SideNav client:idle />
+				</div>
+				<div>
+					<slot />
+				</div>
+			</sp-split-view>
 		</sp-theme>
 	</body>
 </html>
