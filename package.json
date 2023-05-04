@@ -61,6 +61,7 @@
     "d3-dsv": "^3.0.1",
     "dotenv": "^16.0.3",
     "eslint": "^8.39.0",
+    "postcss": "^8.4.23",
     "postcss-dropunusedvars": "^1.2.1",
     "postcss-import": "^15.1.0",
     "postcss-varfallback": "^1.1.3",
