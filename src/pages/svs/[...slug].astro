@@ -4,9 +4,9 @@ import MarkdownPostLayout from '../../layouts/MarkdownPostLayout.astro';
 
 let { slug } = Astro.params;
 if (slug === undefined) {
-    slug = 'generals/index';
+    slug = 'svs/index';
 } else {
-    slug = 'generals/' + slug;
+    slug = 'svs/' + slug;
     console.log(`slug is ${slug}`)
 
 }
@@ -16,7 +16,7 @@ console.log(`in slug file, url is ${curUrl}`);
 const entry = await getEntryBySlug("docs", slug);
 // 3. Redirect if the entry does not exist
 if (entry === undefined) {
-    console.log(`failed to find ${'generals/' + slug}`)
+    console.log(`failed to find ${'svs/' + slug}`)
     return Astro.redirect("/404");
 }
 // 4. (Optional) Render the entry to HTML in the template
