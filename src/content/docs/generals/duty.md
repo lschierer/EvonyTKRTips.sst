@@ -9,7 +9,7 @@ contains a lot of useful background information if you want to understand how I
 arrived at these conclusions. If you just want to be told what to do, you can
 skip it and dive right in here. 
 
-[Overview]: <{{< relref "overview.md" >}}>
+[Overview]: <overview>
 
 ## In General (no pun intended)
 
@@ -77,7 +77,7 @@ Speed.  There are strong arguments both ways.
 ### Keep 
 
 * You can start using a duty general at keep level 16
-* Depends on the buffs of the officer.  Officers that offer troop buffs must be
+* Depends on the [buffs][] of the officer.  Officers that offer troop buffs must be
   present when those troops are used.  Construction buffs are only used when
   construction is initiated.  You need not keep the general assigned for the
   duration of the construction.
@@ -122,7 +122,7 @@ Speed.  There are strong arguments both ways.
 ### Academy 
 
 * You can start using a duty general at academy level 20
-* Depends on the buffs of the officer.  Officers that offer troop buffs must be
+* Depends on the [buffs][] of the officer.  Officers that offer troop buffs must be
   present when those troops are used.  Research buffs are only used when
   research is initiated.  You need not keep the general assigned for the
   duration of the research.
@@ -259,7 +259,7 @@ Speed.  There are strong arguments both ways.
     * March Size Increase (when Rally Spot Officer):  +9%
 
 
-[debuffs]: <{{< relref "../reference/glossary#debuff" >}}>
+[debuffs]: <../reference/glossary#debuff>
 
-[buffs]: <{{< relref "../reference/glossary#buff" >}}>
+[buffs]: <../reference/glossary#buff>
 
