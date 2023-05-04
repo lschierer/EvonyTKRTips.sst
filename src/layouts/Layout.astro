@@ -1,14 +1,11 @@
 ---
-import stylesUrl from '../styles/styles.css';
+import '../styles/styles.css';
 import SideNav from '../components/SideNav.astro';
 import '@spectrum-css/vars/dist/spectrum-global.css';
 import '@spectrum-css/vars/dist/spectrum-medium.css';
 import '@spectrum-css/vars/dist/spectrum-light.css';
 import '@spectrum-css/page/dist/index-vars.css';
 import '@spectrum-css/sidenav/dist/index-vars.css';
-export interface Props {
-	title: string;
-}
 
 const { title } = Astro.props;
 ---
@@ -35,7 +32,7 @@ const { title } = Astro.props;
 			</header>
 			<sp-split-view resizable primary-min="50" secondary-min="5" primary-size="100">
 				<div >
-					<SideNav client:idle />
+					<SideNav />
 				</div>
 				<div>
 					<slot />
