@@ -23,13 +23,13 @@ entries = entries.sort((a,b) =>{
   import '@spectrum-web-components/sidenav/sp-sidenav-item.js';
 </script>
 
-<sp-sidenav value={selection} style='flex: 1 1 auto; min-height: 1px; height: 90%; min-width: 1px; width: 100%;' client:idle>
+<sp-sidenav value={selection} style='flex: 1 1 auto; min-height: 1px; height: 90%; min-width: 1px; width: 100%;' >
   { entries.map((e) => {
     const thisUrl = '/' + e.slug.toString();
     if(selection === thisUrl) {
-      return <sp-sidenav-item value={thisUrl} selected=true  href={'/' + e.slug} client:idle >{e.data.title}</sp-sidenav-item>;
+      return <sp-sidenav-item value={thisUrl} selected=true  href={'/' + e.slug}  >{e.data.title}</sp-sidenav-item>;
     } else {
-      return <sp-sidenav-item value={thisUrl} href={thisUrl} client:idle >{e.data.title}</sp-sidenav-item>;
+      return <sp-sidenav-item value={thisUrl} href={thisUrl}  >{e.data.title}</sp-sidenav-item>;
     }
   })}
 </sp-sidenav>
