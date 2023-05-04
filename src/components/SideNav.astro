@@ -1,17 +1,34 @@
 ---
+import { z, defineCollection } from 'astro:content';
 import { getCollection } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
-interface Props {
-    entries: CollectionEntry<'docs'>;
-}
 
 const curUrl = new URL(Astro.request.url);
 const selection = curUrl.pathname;
 console.log(`selection is ${selection}`)
-const { entries } = Astro.props;
+let entries= await getCollection('docs');
+entries = entries.sort((a,b) =>{
+  const temp = [a.slug.toString().toLowerCase(), b.slug.toString().toLowerCase()];
+  console.log(temp.sort());
+  return a.slug.toString().toLowerCase().localeCompare(b.slug.toString().toLowerCase());
+})
+
 ---
 
 <script>
-    import {SideNav} from './Spectrum/SideNav';
+  import stylesUrl from '../styles/styles.css';
+  import '@spectrum-web-components/sidenav/sp-sidenav.js';
+  import '@spectrum-web-components/sidenav/sp-sidenav-heading.js';
+  import '@spectrum-web-components/sidenav/sp-sidenav-item.js';
 </script>
-<side-nav entries={entries} selection={selection} ></side-nav>
+
+<sp-sidenav value={selection} style='flex: 1 1 auto; min-height: 1px; height: 90%; min-width: 1px; width: 100%;'>
+  { entries.map((e) => {
+    const thisUrl = '/' + e.slug.toString();
+    if(selection === thisUrl) {
+      return <sp-sidenav-item value={thisUrl} selected=true  href={'/' + e.slug}>{e.data.title}</sp-sidenav-item>;
+    } else {
+      return <sp-sidenav-item value={thisUrl} href={thisUrl}>{e.data.title}</sp-sidenav-item>;
+    }
+  })}
+</sp-sidenav>
