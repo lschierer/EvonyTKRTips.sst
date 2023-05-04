@@ -10,6 +10,9 @@ let entries= await getCollection('docs', ({id}) => {
 });
 entries = entries.sort((a,b) =>{
   const temp = [a.slug.toString().toLowerCase(), b.slug.toString().toLowerCase()];
+  if(a.data.sortOrder && b.data.sortOrder){
+      return a.data.sortOrder - b.data.sortOrder;
+  }
   return a.slug.toString().toLowerCase().localeCompare(b.slug.toString().toLowerCase());
 })
 
