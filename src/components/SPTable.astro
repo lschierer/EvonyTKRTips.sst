@@ -1,0 +1,15 @@
+---
+import { MayorTable } from './Spectrum/sp_table';
+
+export interface Props {
+  csv: string;
+
+}
+
+const { csv } = Astro.props;
+---
+<script>
+  import './Spectrum/sp_table';
+</script>
+
+<sp-table size="s" density="compact" csv={csv} scroller='true' style='height: 400px'></sp-table>

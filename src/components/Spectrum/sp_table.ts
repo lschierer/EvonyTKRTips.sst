@@ -14,11 +14,19 @@ import '@spectrum-web-components/table/sp-table-checkbox-cell.js';
 import '@spectrum-web-components/table/sp-table-head.js';
 import '@spectrum-web-components/table/sp-table-head-cell.js';
 import '@spectrum-web-components/table/sp-table-row.js';
-import * as Table from "@spectrum-web-components/table";
+import { Table } from '@spectrum-web-components/table';
+import type {
+  TableBody,
+  TableCell,
+  TableCheckboxCell,
+  TableHead,
+  TableHeadCell,
+  TableRow
+} from '@spectrum-web-components/table';
 import { SpectrumElement } from '@spectrum-web-components/base';
 
 @customElement("sp-table")
-class MayorTable extends Table.Table {
+export class MayorTable extends Table {
 
   @property({type: String, reflect: true, attribute: "csv"})
   public CsvName: string;
@@ -36,9 +44,6 @@ class MayorTable extends Table.Table {
   private _items: DSVRowArray<string> | undefined;
 
   @state()
-  private tableRendered: boolean;
-
-  @state()
   private fetchingMayors: boolean;
 
   @state()
@@ -50,7 +55,6 @@ class MayorTable extends Table.Table {
     this.CsvName = "";
     this.CsvUrl = "";
     this._ids = [];
-    this.tableRendered = false;
     this.fetchingMayors = false;
     this.fetchMayorsComplete = false;
   }
@@ -61,7 +65,7 @@ class MayorTable extends Table.Table {
       console.log(`detected Name change, new value: ${this.CsvName}`);
       const re = /\.\w{3}$/;
       this._id = this.CsvName.replace(re,'');
-      let f = "../../public/CSVs/".concat(this.CsvName);
+      let f = "../../../public/CSVs/".concat(this.CsvName);
       f = f.replace(/public\//,'');
       this.CsvUrl = new URL(f, import.meta.url).href;
       console.log(`URL is ${this.CsvUrl}`);
@@ -116,16 +120,17 @@ class MayorTable extends Table.Table {
 
     super.renderItem = (item:Record<string, unknown>, index) => {
       let a:dsv.DSVRowString<string> = (item.row as dsv.DSVRowString<string>);
-      let tc:Table.TableCell[] = [];
+      let tc:TableCell[] = [];
       for(let i = 0; i < this._ids.length; i++) {
-        const cell = document.createElement('sp-table-cell');
+
         let content:string = '';
         if (!a[this._ids[i]]) {
           content = '';
         } else {
           content = a[this._ids[i]]!;
         }
-        cell.textContent = content;
+        const cell = html`<sp-table-cell style='text-align: center; box-sizing: content-box;'>${content}</sp-table-cell>`;
+
         tc.push(cell);
       }
       return html`${tc}`;
@@ -152,24 +157,41 @@ class MayorTable extends Table.Table {
 
   }
 
-
-
   protected override manageCheckboxes(): void {
-    return;
+
   }
 
   override render() {
     return html`
-      <sp-table-head>
+      
+      <sp-table-head >
+        <style>
+          sp-table-head-cell {
+            
+            writing-mode: vertical-lr;
+          }
+          sp-table-head {
+            box-sizing: content-box;
+            flex: 0 1 auto;
+            background-color: var(--spectrum-green-800);
+            --spectrum-table-regular-header-padding-left: var(--spectrum-global-dimension-static-size-10);
+            --spectrum-table-regular-header-padding-right: var(--spectrum-global-dimension-static-size-10);
+            --spectrum-table-compact-header-padding-left: var(--spectrum-global-dimension-static-size-10);
+            --spectrum-table-compact-header-padding-right: var(--spectrum-global-dimension-static-size-10);
+            --spectrum-table-compact-header-border-radius: var(--my-small-size, 1px);
+            --spectrum-table-regular-header-border-radius: var(--my-small-size, 1px);
+
+          }
+        </style>
         ${this._ids.map((id) =>
           html`
-            <sp-table-head-cell sortable sort-direction="desc" sort-key="${id}">
+            <sp-table-head-cell sortable sort-direction="desc" sort-key="${id}" >
               ${id}
             </sp-table-head-cell>
           `
         )}
         </sp-table-head>
-        ${super.render()}
+        <slot @change=${super.handleChange}></slot>
     `;
   }
 
