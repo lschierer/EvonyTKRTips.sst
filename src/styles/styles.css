@@ -42,17 +42,10 @@ main {
 
 
 sp-theme {
-  box-sizing: content-box;
 
   background-color: var(--spectrum-global-color-gray-100);
 }
 
-#attack_mayors {
-  height: 400px;
-  flex: 1 1 auto;
-  max-width: 80vw;
-  overflow-x: auto;
-  overflow-y: auto;
-  scrollbar-gutter: stable both-edges;
-  font-size: var(--spectrum-global-dimension-static-font-size-75)
+sp-table {
+  max-width: 100%;
 }
