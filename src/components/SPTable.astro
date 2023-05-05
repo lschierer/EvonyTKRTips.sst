@@ -1,15 +1,114 @@
 ---
-import { MayorTable } from './Spectrum/sp_table';
+
+
+import * as dsv from "d3-dsv";
+import type {DSVRowArray} from "d3-dsv";
+import * as d3 from 'd3';
 
 export interface Props {
   csv: string;
 
 }
 
-const { csv } = Astro.props;
----
-<script>
-  import './Spectrum/sp_table';
-</script>
+let ids: string[] = [];
+let items: DSVRowArray<string> | undefined;
+let records = [];
 
-<sp-table size="s" density="compact" csv={csv} scroller='true' style='height: 400px'></sp-table>
+const { csv } = Astro.props;
+const re = /\.\w{3}$/;
+const tableName = csv.replace(re,'');
+const tableName_as_ID = '#' + tableName;
+const cvsName = "../../../public/CSVs/".concat(csv).replace(/public\//,'');
+const csvUrl = new URL(cvsName, Astro.url);
+console.log(`url is ${csvUrl}`);
+
+const r = await fetch(csvUrl).then((response) => {
+    if (response.ok) return response.text();
+    else throw new Error('Status code error :' + response.status);
+}).then((t) => {
+    const r = dsv.csvParse(t);
+    const c = r.columns;
+    ids = JSON.parse(JSON.stringify(c));
+    console.log(`items are ${JSON.stringify(r)}`);
+    console.log(`ids are "${ids}"`);
+    items = r;
+}).then(() => {
+    for(let i = 0; i < items!.length; i ++) {
+        let row:dsv.DSVRowString<string> = items![i];
+        let nR = { "row": row }
+        console.log(`pushing item ${i} row is ${JSON.stringify(nR)}`);
+        records.push(nR);
+    }
+    return true;
+}).catch((error) => {
+    console.log(error);
+    return false;
+});
+
+---
+<script >
+    import '@spectrum-web-components/table/elements.js';
+
+    import {Table} from '@spectrum-web-components/table';
+
+    import type {
+        TableBody,
+        TableCell,
+        TableCheckboxCell,
+        TableHead,
+        TableHeadCell,
+        TableRow
+    } from '@spectrum-web-components/table';
+
+    import {LitElement, css, html} from 'lit';
+    import {customElement, property} from 'lit/decorators.js';
+
+    @customElement('s-p')
+    export class SP extends LitElement {
+
+        constructor(props) {
+            super(props);
+
+        }
+
+        public initTable() {
+            console.log('in initTable')
+            const table: Table = this.querySelector('sp-table');
+            if(!table) {
+                console.log('failed to find table')
+                return;
+            }
+            table.items = table.dataset.records;
+
+            table.renderItem = (item, index) => {
+                let a = item.row;
+                let tc: string[] = [];
+                for (let i = 0; i < this._ids.length; i++) {
+
+                    let content = '';
+                    if (!a[this.ids[i]]) {
+                        content = '';
+                    } else {
+                        content = a[this.ids[i]];
+                    }
+                    const cell = `
+                <sp-table-cell style='text-align: center; box-sizing: content-box;'>${content}</sp-table-cell>`;
+
+                    tc.push(cell);
+                }
+                return tc.toString();
+            }
+        }
+    }
+    customElements.whenDefined({}).then(() => {
+        const s = new SP({name=${tableName_as_ID}});
+        s.initTable();
+    });
+</script>
+<sp-table id={tableName} size="s" density="compact" csv={csv} scroller='true' style='height: 400px'>
+    <sp-table-head >
+        {ids.map((id) => {
+            return <sp-table-head-cell sortable sort-direction="desc" sort-key={id} >{id}</sp-table-head-cell>
+        })}
+    </sp-table-head>
+</sp-table>

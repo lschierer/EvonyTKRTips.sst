@@ -10,5 +10,9 @@
         "name": "@astrojs/ts-plugin"
       }
     ]
-  }
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.astro"
+  ]
 }
