@@ -4,22 +4,19 @@ import node from '@astrojs/node';
 import lit from "@astrojs/lit";
 import markdoc from "@astrojs/markdoc";
 
-import mdx from "@astrojs/mdx";
-
 // https://astro.build/config
 export default defineConfig({
   site: 'https://beta.evonytkrtips.net',
   trailingSlash: 'ignore',
   output: "server",
   adapter: aws(),
-  integrations: [markdoc(), mdx()],
+  integrations: [
+    markdoc(),
+    lit(),
+  ],
   vite: {
     build: {
       minify: false
     },
-    ssr: {
-      target: 'node',
-      external: ['node:path', 'node:fs', 'path-scurry', 'stream']
-    }
   }
 });
