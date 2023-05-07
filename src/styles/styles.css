@@ -54,7 +54,7 @@ sp-theme {
   max-height: 400px;
   max-width: 90vw;
   width: min-content;
-  min-width: calc(2 * --spectrum-global-dimension-size-3400);
+  min-width: calc(2 * var(--spectrum-global-dimension-size-3400));
   box-sizing: border-box;
   align-items: stretch;
   padding: 0 var(--spectrum-global-dimension-size-700);
@@ -65,7 +65,7 @@ sp-theme {
   position: relative;
   overflow-y: auto;
   overflow-x: visible;
-  min-width: calc(2 * --spectrum-global-dimension-size-3400);
+  min-width: calc(2 * var(--spectrum-global-dimension-size-3400));
   max-width: calc(90vw - var(--spectrum-global-dimension-size-700));
 }
 
