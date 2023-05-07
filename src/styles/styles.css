@@ -45,39 +45,69 @@ sp-theme {
   background-color: var(--spectrum-global-color-gray-100);
 }
 
-sp-table {
-  /*max-width: 90vw;*/
+.table-container {
+  overflow: auto;
+  margin: 0 calc(-1 * var(--spectrum-global-dimension-size-700));
+}
+
+.table-container sp-table {
   max-height: 400px;
-  /*align-items: stretch;*/
-  /*padding: 0 0*/
-
+  max-width: 90vw;
+  width: min-content;
+  min-width: calc(2 * --spectrum-global-dimension-size-3400);
+  box-sizing: border-box;
+  align-items: stretch;
+  padding: 0 var(--spectrum-global-dimension-size-700);
 }
 
-sp-table-body,
-sp-table-head {
+.table-container sp-table-body,
+.table-container sp-table-head {
+  position: relative;
   overflow-y: auto;
-  /*min-width: max-content;*/
+  overflow-x: visible;
+  min-width: calc(2 * --spectrum-global-dimension-size-3400);
+  max-width: calc(90vw - var(--spectrum-global-dimension-size-700));
 }
 
-#Name {
+.table-container #Name {
   min-width: var(--spectrum-global-dimension-size-400);
   max-width: var(--spectrum-global-dimension-size-1200);
   flex: 1.5 1 auto;
 }
 
-sp-table-cell,
-sp-table-head-cell {
-  /*box-sizing: border-box;*/
-  /*word-break: break-word;*/
-  /*min-width: var(--spectrum-global-dimension-size-150);*/
+.table-container sp-table-cell {
+  min-width: var(--spectrum-global-dimension-size-200);
+  width: min-content;
+  max-width: max-content;
 }
 
-sp-table-head {
+.table-container sp-table-cell,
+.table-container sp-table-head-cell {
+  box-sizing: border-box;
+  word-break: break-word;
+
+}
+
+
+.table-container sp-table-head {
   /* these have to be the same so that it does not get squished by the body*/
   min-height: var(--spectrum-global-dimension-size-1200);
   max-height: var(--spectrum-global-dimension-size-1200);
 }
 
-sp-table-head-cell{
+.table-container sp-table-head-cell{
   writing-mode: vertical-rl;
+  min-width: var(--spectrum-global-dimension-size-300);
+  min-height: var(--spectrum-global-dimension-size-400);
+}
+
+@media screen and (max-width: 960px) {
+  .table-container {
+    overflow: auto;
+    margin: 0 -16px;
+  }
+
+  .table-container > sp-table {
+    padding: 0 16px;
+  }
 }
