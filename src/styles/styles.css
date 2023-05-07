@@ -42,10 +42,42 @@ main {
 
 
 sp-theme {
-
   background-color: var(--spectrum-global-color-gray-100);
 }
 
 sp-table {
-  max-width: 100%;
+  /*max-width: 90vw;*/
+  max-height: 400px;
+  /*align-items: stretch;*/
+  /*padding: 0 0*/
+
+}
+
+sp-table-body,
+sp-table-head {
+  overflow-y: auto;
+  /*min-width: max-content;*/
+}
+
+#Name {
+  min-width: var(--spectrum-global-dimension-size-400);
+  max-width: var(--spectrum-global-dimension-size-1200);
+  flex: 1.5 1 auto;
+}
+
+sp-table-cell,
+sp-table-head-cell {
+  /*box-sizing: border-box;*/
+  /*word-break: break-word;*/
+  /*min-width: var(--spectrum-global-dimension-size-150);*/
+}
+
+sp-table-head {
+  /* these have to be the same so that it does not get squished by the body*/
+  min-height: var(--spectrum-global-dimension-size-1200);
+  max-height: var(--spectrum-global-dimension-size-1200);
+}
+
+sp-table-head-cell{
+  writing-mode: vertical-rl;
 }

@@ -1,6 +1,6 @@
 ---
 
-import {
+import type {
     Table,
     TableBody,
     TableCell,
@@ -19,7 +19,7 @@ export interface Props {
 
 }
 
-let ids: string[] = [];
+let ids:string[] = [];
 let items: DSVRowArray<string> | undefined;
 let records = [];
 
@@ -58,23 +58,23 @@ const r = await fetch(csvUrl).then((response) => {
 <script >
     import '@spectrum-web-components/table/elements.js';
 </script>
-<sp-table id={tableName} size="s" density="compact" csv={csv} scroller='true' style='height: 400px'>
+<script>
+
+</script>
+<sp-table id={tableName} size="m" >
     <sp-table-head >
         {ids.map((id) => {
-            return <sp-table-head-cell sortable sort-direction="desc" sort-key={id} >{id}</sp-table-head-cell>
+            return <sp-table-head-cell id={id.replace(/ /g, '_')} sortable sort-direction="desc" sort-key={id} >{id}</sp-table-head-cell>
         })}
     </sp-table-head>
     <sp-table-body>
         {items.map((item) => {
-            <>
-                <sp-table-row value=''>
-                    {ids.map((id) => {
-                        <sp-table-cell>{item[id]}</sp-table-cell>
+                return <sp-table-row value={item[1]} role='row' dir='ltr'>
+                    {Object.keys(item).map((id) => {
+                        return <sp-table-cell id={id.replace(' ', '_')} dir='ltr' role='gridcell'>{item[id]}</sp-table-cell>
                     })}
                 </sp-table-row>
-            </>
         })}
-
-
     </sp-table-body>
-</sp-table-row>
+</sp-table>
+
