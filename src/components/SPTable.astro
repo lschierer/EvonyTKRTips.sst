@@ -61,6 +61,7 @@ const r = await fetch(csvUrl).then((response) => {
 <script>
 
 </script>
+<div class="table-container">
 <sp-table id={tableName} size="m" >
     <sp-table-head >
         {ids.map((id) => {
@@ -77,4 +78,4 @@ const r = await fetch(csvUrl).then((response) => {
         })}
     </sp-table-body>
 </sp-table>
-
+</div>
