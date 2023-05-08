@@ -1,15 +1,5 @@
 ---
 
-import type {
-    Table,
-    TableBody,
-    TableCell,
-    TableCheckboxCell,
-    TableHead,
-    TableHeadCell,
-    TableRow
-} from '@spectrum-web-components/table';
-
 import * as dsv from "d3-dsv";
 import type {DSVRowArray} from "d3-dsv";
 import * as d3 from 'd3';
@@ -19,10 +9,6 @@ export interface Props {
 
 }
 
-let ids:string[] = [];
-let items: DSVRowArray<string> | undefined;
-let records = [];
-
 const { csv } = Astro.props;
 const re = /\.\w{3}$/;
 const tableName = csv.replace(re,'');
@@ -31,51 +17,11 @@ const cvsName = "../../../public/CSVs/".concat(csv).replace(/public\//,'');
 const csvUrl = new URL(cvsName, Astro.url);
 console.log(`url is ${csvUrl}`);
 
-const r = await fetch(csvUrl).then((response) => {
-    if (response.ok) return response.text();
-    else throw new Error('Status code error :' + response.status);
-}).then((t) => {
-    const r = dsv.csvParse(t);
-    const c = r.columns;
-    ids = JSON.parse(JSON.stringify(c));
-    console.log(`items are ${JSON.stringify(r)}`);
-    console.log(`ids are "${ids}"`);
-    items = r;
-}).then(() => {
-    for(let i = 0; i < items!.length; i ++) {
-        let row:dsv.DSVRowString<string> = items![i];
-        let nR = { "row": row }
-        console.log(`pushing item ${i} row is ${JSON.stringify(nR)}`);
-        records.push(nR);
-    }
-    return true;
-}).catch((error) => {
-    console.log(error);
-    return false;
-});
-
 ---
 <script >
     import '@spectrum-web-components/table/elements.js';
+    import {CompareMayors} from './mayors';
 </script>
-<script>
-
-</script>
-<div class="table-container">
-<sp-table id={tableName} size="m" >
-    <sp-table-head >
-        {ids.map((id) => {
-            return <sp-table-head-cell id={id.replace(/ /g, '_')} sortable sort-direction="desc" sort-key={id} >{id}</sp-table-head-cell>
-        })}
-    </sp-table-head>
-    <sp-table-body>
-        {items.map((item) => {
-                return <sp-table-row value={item[1]} role='row' dir='ltr'>
-                    {Object.keys(item).map((id) => {
-                        return <sp-table-cell id={id.replace(' ', '_')} dir='ltr' role='gridcell'>{item[id]}</sp-table-cell>
-                    })}
-                </sp-table-row>
-        })}
-    </sp-table-body>
-</sp-table>
-</div>
+<compare-mayors dataurl={csvUrl}>
+    <slot></slot>
+</compare-mayors>
