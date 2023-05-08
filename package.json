@@ -64,7 +64,7 @@
     "@types/d3-selection": "^3.0.5",
     "@types/mime": "^3.0.1",
     "@types/node": "^20.1.0",
-    "astro-sst": "2.8.6",
+    "astro-sst": "2.8.7",
     "autoprefixer": "^10.4.14",
     "aws-cdk-lib": "2.72.1",
     "constructs": "10.1.156",
@@ -78,7 +78,7 @@
     "remark-gfm": "^3.0.1",
     "remark-html": "^15.0.2",
     "remark-rehype": "^10.1.0",
-    "sst": "2.8.6",
+    "sst": "2.8.7",
     "tslib": "^2.5.0",
     "typescript": "5.0.4"
   }
