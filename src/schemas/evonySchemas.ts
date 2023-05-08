@@ -10,24 +10,25 @@ export const docsSchema = z.object({
 export const monsterSchema = z.object({
   name: z.string(),
   level: z.number(),
-})
-
-const ColorEnum = z.enum ( {
-  green ="Green",
-  blue = "Blue",
-  purple = "Purple",
-  orange = "Orange",
-  gold = "Gold",
 });
+
+const ColorEnum = z.enum ( [
+  "Green",
+  "Blue",
+  "Purple",
+  "Orange",
+  "Gold",
+]);
 
 const specialty = z.object({
   name: z.string(),
   level: z.enum<ColorEnum>(),
-})
+});
 
 const generalSchema = z.object({
   name: z.string(),
   level: z.number(),
-  specialities: z.array(specialty()).optional(),
-    
-})
+  specialities: z.array(specialty).optional(),
+  stars: z.number().default(0),
+
+});
