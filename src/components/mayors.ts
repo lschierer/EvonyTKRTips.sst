@@ -39,17 +39,18 @@ export default class CompareMayors extends LitElement {
     static styles = css`
       .table-container {
         overflow: auto;
-        margin: 0 calc(-1 * var(--spectrum-global-dimension-size-700));
+        /*margin: 0 calc(-1 * var(--spectrum-global-dimension-size-600));*/
       }
 
       .table-container sp-table {
         max-height: 400px;
-        width: 90vw;
-        max-width: 90vw;
-        min-width: calc(2 * var(--spectrum-global-dimension-size-3400));
-        box-sizing: border-box;
+        width: 85vw;
+        max-width: 99%;
+        flex: auto;
+        /*min-width: calc(2 * var(--spectrum-global-dimension-size-3400));*/
+        box-sizing: content-box;
         align-items: stretch;
-        padding: 0 var(--spectrum-global-dimension-size-700);
+        /*padding: 0 var(--spectrum-global-dimension-size-700);*/
       }
 
       .table-container sp-table-body,
@@ -57,26 +58,24 @@ export default class CompareMayors extends LitElement {
         position: relative;
         overflow-y: auto;
         overflow-x: visible;
-        min-width: calc(2 * var(--spectrum-global-dimension-size-3400));
-        max-width: calc(90vw - var(--spectrum-global-dimension-size-700));
+        /*min-width: calc(2 * var(--spectrum-global-dimension-size-3400));*/
+        /*max-width: calc(90vw - var(--spectrum-global-dimension-size-600));*/
+        width: 100%;
       }
 
       .table-container #Name {
-        min-width: var(--spectrum-global-dimension-size-400);
-        max-width: max(var(--spectrum-global-dimension-size-1200), 12%);
+        width: clamp(var(--spectrum-global-dimension-size-400), var(--spectrum-global-dimension-size-1200), 12%);
         flex: 1.5 1 auto;
       }
 
       .table-container #Name ~ sp-table-cell {
         font-feature-settings: "tnum";
-        max-width: max(var(--spectrum-global-dimension-size-600), 6%);
+        width: clamp(var(--spectrum-global-dimension-size-100), var(--spectrum-global-dimension-size-300), 6%);
         flex: 1 1 auto;
       }
 
       .table-container sp-table-cell {
         min-width: var(--spectrum-global-dimension-size-200);
-        width: min-content;
-        max-width: max-content;
         font-size: x-small;
       }
 
@@ -210,7 +209,7 @@ export default class CompareMayors extends LitElement {
     render() {
         return html`
             <div class="table-container">
-                <sp-table id=${this.tableName} size="m">
+                <sp-table id=${this.tableName} size="m" scroller="true">
                     <sp-table-head>
                         ${this.ids.map((id)=> {
                             console.log(`id is ${id}`)
