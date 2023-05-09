@@ -23,6 +23,7 @@
     "@spectrum-css/splitview": "^3.0.39",
     "@spectrum-css/typography": "^5.0.12",
     "@spectrum-css/vars": "^9.0.5",
+    "@spectrum-web-components/banner": "^0.30.0",
     "@spectrum-web-components/base": "^0.30.0",
     "@spectrum-web-components/button": "^0.30.0",
     "@spectrum-web-components/checkbox": "^0.30.0",

@@ -1,6 +1,7 @@
 ---
 title: "Peace Time Subcity Mayors"
-author: "Luke Schierer"
+author: 
+  - "Luke Schierer"
 sortOrder: 10
 ---
 

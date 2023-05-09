@@ -1,6 +1,7 @@
 ---
 title: "Picking your first ranged pair"
-author: "Luke Schierer"
+author: 
+  - "Luke Schierer"
 sortOrder: 3
 ---
 
@@ -9,7 +10,7 @@ contains a lot of useful background information if you want to understand how I
 arrived at these conclusions. If you just want to be told what to do, you can
 skip it and dive right in here. 
 
-[Overview]: <{{< relref "overview.md" >}}>
+[Overview]: <overview>
 
 ### For Free to Play Players:
 

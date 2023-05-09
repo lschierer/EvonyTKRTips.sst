@@ -1,0 +1,15 @@
+---
+export interface Props {
+    type: string;
+    header: string;
+}
+
+const {type, header } = Astro.props;
+---
+<script>
+    import '@spectrum-web-components/banner/sp-banner.js';
+</script>
+<sp-banner type={type}>
+    <div slot="header">{header}</div>
+    <div slot="content"><slot></slot></div>
+</sp-banner>

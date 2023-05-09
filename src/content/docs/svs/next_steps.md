@@ -1,5 +1,7 @@
 ---
 title: 'Next Steps'
+author: 
+  - 'Luke Schierer'
 sortOrder: 3
 tags: 
   - 'guide'

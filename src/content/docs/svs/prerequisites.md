@@ -6,7 +6,7 @@ sortOrder: 1
 First off there are two types of participation, [minimal][], and active player
 versus player (PvP).  This article is looking at the latter.
 
-[minimal]: <{{< relref "minimal" >}}>
+[minimal]: <minimal>
 
 For now be aware that everything here is somewhat speculative - I am not yet an
 active participant myself in SvS.  I am collecting here the knowledge of those
@@ -25,4 +25,4 @@ Measure this by attacking an empty keep and looking at the report.
 Do not [splat][].  This will just annoy the other players on your server. While
 it might generate lots of points, it will not help your server win. 
 
-[splat]: <{{< relref "../reference/glossary#spat" >}}>
+[splat]: <../reference/glossary#spat>

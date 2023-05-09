@@ -1,6 +1,7 @@
 ---
 title: "Picking your duty generals"
-author: "Luke Schierer"
+author: 
+  - "Luke Schierer"
 sortOrder: 6
 ---
 

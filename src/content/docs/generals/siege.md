@@ -1,6 +1,7 @@
 ---
 title: "Picking your first seige pair"
-author: "Luke Schierer"
+author: 
+  - "Luke Schierer"
 sortOrder: 7
 ---
 
@@ -9,14 +10,14 @@ contains a lot of useful background information if you want to understand how I
 arrived at these conclusions. If you just want to be told what to do, you can
 skip it and dive right in here. 
 
-[Overview]: <{{< relref "overview.md" >}}>
+[Overview]: <overview>
 
 Your Siege generals will be the *last* PvP generals you invest [rune stones][]
 and [BoA][] on.  This is because siege troops require gems to heal. 
 
-[rune stones]: <{{< relref "../reference/glossary#rune_stones" >}}>
+[rune stones]: <../reference/glossary#rune_stones>
 
-[BoA]: <{{< relref "../reference/glossary#BoA" >}}>
+[BoA]: <../reference/glossary#BoA>
 
 ### For Free to Play Players:
 
@@ -34,7 +35,7 @@ For your assistant general, assemble Suleiman the Magnificent from fragments
 from relics.  He makes one of the best assistant generals for siege troops even
 if you do have a premium general, and he pairs with all of these options. 
 
-[ascended]: <{{< relref "../reference/glossary#ascend" >}}>
+[ascended]: <../reference/glossary#ascend>
 
 ### For Light Spenders
 
@@ -65,17 +66,17 @@ developing.  In fact, you might even wait until you have *Suleiman's*
 specialties maxed out to four gold as well before deciding (although because
 Suleiman is an assistant, do not ascend him).
 
-[mounted]: <{{< relref "mounted" >}}>
+[mounted]: <mounted>
 
-[wall]: <{{< relref "wall" >}}>
+[wall]: <wall>
 
-[ground]: <{{< relref "ground" >}}>
+[ground]: <ground>
 
-[ranged]: <{{< relref "ranged" >}}>
+[ranged]: <ranged>
 
-[ascend]: <{{< relref "../reference/glossary#ascend" >}}>
+[ascend]: <../reference/glossary#ascend>
 
-[BoC]: <{{< relref "../reference/glossary#BoC" >}}>
+[BoC]: <../reference/glossary#BoC>
 
-[BoG]: <{{< relref "../reference/glossary#BoG" >}}>
+[BoG]: <../reference/glossary#BoG>
 
