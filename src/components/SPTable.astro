@@ -1,9 +1,5 @@
 ---
 
-import * as dsv from "d3-dsv";
-import type {DSVRowArray} from "d3-dsv";
-import * as d3 from 'd3';
-
 export interface Props {
   csv: string;
 
@@ -12,7 +8,6 @@ export interface Props {
 const { csv } = Astro.props;
 const re = /\.\w{3}$/;
 const tableName = csv.replace(re,'');
-const tableName_as_ID = '#' + tableName;
 const cvsName = "../../../public/CSVs/".concat(csv).replace(/public\//,'');
 const csvUrl = new URL(cvsName, Astro.url);
 console.log(`url is ${csvUrl}`);
