@@ -1,5 +1,7 @@
 ---
 import {  getCollection } from 'astro:content';
+import { Debug } from 'astro/components';
+
 
 const curUrl = new URL(Astro.request.url);
 const selection = curUrl.pathname;
@@ -7,6 +9,10 @@ let base = selection.substring(1).includes('/') ? selection.substring(1).split('
 base = base.endsWith('/')? base : base + '/';
 base = base.startsWith('/')? base.substring(1) : base;
 console.log(`selection is ${selection}, base is ${base}`)
+
+let ReportsVisible = false;
+
+
 let entries= await getCollection('docs', ({id}) => {
   return id.startsWith(base)
 });
@@ -17,6 +23,21 @@ entries = entries.sort((a,b) =>{
   }
   return a.slug.toString().toLowerCase().localeCompare(b.slug.toString().toLowerCase());
 })
+
+let reports = []
+if(base === 'monsters/') {
+    console.log(`detected base monsters`)
+    ReportsVisible = true;
+    reports = await getCollection('oldReports');
+    reports = reports.sort((a,b) => {
+        if(a.data.sortOrder && b.data.sortOrder) {
+            return a.data.sortOrder - b.data.sortOrder;
+        }
+        return a.slug.toString().toLowerCase().localeCompare(b.slug.toString().toLowerCase());
+    });
+    console.log(`retrieved ${reports.length}`)
+
+}
 
 ---
 
@@ -30,10 +51,20 @@ entries = entries.sort((a,b) =>{
 <sp-sidenav value={selection} style='flex: 1 1 auto; min-height: 1px; height: 90%; min-width: 1px; width: 100%;' >
   { entries.map((e) => {
     const thisUrl = '/' + e.slug.toString();
+      console.log(`main section, rendering ${thisUrl}`);
     if(selection === thisUrl) {
       return <sp-sidenav-item value={thisUrl} selected=true  href={'/' + e.slug}  >{e.data.title}</sp-sidenav-item>;
     } else {
       return <sp-sidenav-item value={thisUrl} href={thisUrl}  >{e.data.title}</sp-sidenav-item>;
     }
   })}
+    {ReportsVisible && reports.map((e) => {
+        const thisUrl = '/monsters/reports/' + e.slug.toString();
+        console.log(`Reports should be visible, rendering ${thisUrl}`);
+        if(selection === thisUrl) {
+            return <sp-sidenav-item value={thisUrl} selected=true  href={'/' + e.slug}  >{e.data.title}</sp-sidenav-item>;
+        } else {
+            return <sp-sidenav-item value={thisUrl} href={thisUrl}  >{e.data.title}</sp-sidenav-item>;
+        }
+    })}
 </sp-sidenav>
