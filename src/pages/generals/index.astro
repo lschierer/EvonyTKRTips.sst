@@ -4,6 +4,7 @@ import MarkdownPostLayout from '../../layouts/MarkdownPostLayout.astro';
 
 let { slug } = Astro.params;
 if (slug === undefined) {
+    console.log(`in index file, slug was undefined`)
     slug = 'generals';
 } else {
     slug = 'generals/' + slug;
@@ -11,7 +12,7 @@ if (slug === undefined) {
 
 }
 const curUrl = new URL(Astro.request.url);
-console.log(`in slug file, url is ${curUrl}`);
+console.log(`in index file, url is ${curUrl}`);
 // 2. Query for the entry directly using the request slug
 const entry = await getEntryBySlug("docs", slug);
 // 3. Redirect if the entry does not exist

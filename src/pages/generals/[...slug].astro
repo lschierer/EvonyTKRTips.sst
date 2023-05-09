@@ -4,6 +4,7 @@ import MarkdownPostLayout from '../../layouts/MarkdownPostLayout.astro';
 
 let { slug } = Astro.params;
 if (slug === undefined) {
+    console.log(`in slug file, slug was undefined`)
     slug = 'generals/index';
 } else {
     slug = 'generals/' + slug;
