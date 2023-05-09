@@ -2,7 +2,7 @@ import { z, defineCollection } from 'astro:content';
 
 export const docsSchema = z.object({
   title: z.string(),
-  author: z.string().default('Anonymous'),
+  author: z.array(z.string()).optional(),
   sortOrder: z.number().optional(),
   date: z.date().optional(),
 });
