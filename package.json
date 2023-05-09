@@ -26,6 +26,7 @@
     "@spectrum-web-components/banner": "^0.30.0",
     "@spectrum-web-components/base": "^0.30.0",
     "@spectrum-web-components/button": "^0.30.0",
+    "@spectrum-web-components/card": "^0.30.0",
     "@spectrum-web-components/checkbox": "^0.30.0",
     "@spectrum-web-components/dialog": "^0.30.0",
     "@spectrum-web-components/field-label": "^0.30.0",

@@ -1,0 +1,27 @@
+---
+export interface Props {
+    heading: string,
+    subheading: string,
+    img: string,
+    alt: string,
+}
+
+const { heading, subheading, img, alt, footer } = Astro.props;
+
+const imgUrl = new URL(img, Astro.url);
+
+---
+<script>
+    import '@spectrum-web-components/card/sp-card.js';
+</script>
+<sp-card heading={heading} subheading={subheading}>
+    <img
+            slot="preview"
+            src={imgUrl}
+            alt={alt}
+            style=`
+            height: calc(var(--spectrum-global-dimension-size-6000) + var(--spectrum-global-dimension-size-3000)); 
+            `
+    />
+    <div slot="footer"><slot></slot></div>
+</sp-card>
