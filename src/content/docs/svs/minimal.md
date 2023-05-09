@@ -34,9 +34,9 @@ If you are willing to invest enough time, I have proven (to myself) that it is
 possible, though very difficult, to even earn your first personal activity
 chest from these two things alone.
 
-[SvS]: <{{< relref "../reference/glossary#SvS" >}}>
+[SvS]: <../reference/glossary#SvS>
 
-[speed-ups]: <{{< relref "../reference/glossary#speed-up" >}}>
+[speed-ups]: <../reference/glossary#speed-up>
 
 ### High Risk, Medium Reward Activities
 
@@ -64,4 +64,4 @@ too long by accident, and end up being attacked.  If that happens, you will not
 only have a huge cost in healing, you will have earned a lot of negative points
 for your server and upset a bunch of keeps that are more powerful than you are.
 
-[bubble]: <{{< relref "../reference/glossary#bubble" >}}>
+[bubble]: <./reference/glossary#bubble>

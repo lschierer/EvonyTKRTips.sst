@@ -1,6 +1,8 @@
 ---
 title: "Boss Hunting Overview"
-author: "Luke Schierer"
+author: 
+   - "Luke Schierer"
+sortOrder: 2
 ---
 
 ### The beginning of hunting 
@@ -19,7 +21,7 @@ point, it will be exciting.
 
 [griffin]: <https://www.evonytkrguide.com/bosses/griffin>
 
-[Getting Started]: <{{< relref "getting_started" >}}>
+[Getting Started]: <getting_started>
 
 ### Next Steps
 
@@ -39,29 +41,32 @@ point, it will be exciting.
 1. You won't care about your t10s once you have t12s.  
 1. When you can train t11s, you do not need more than about 750,000 of them for
    monster hunting.  
+   * You will continue to use your t11s as a second, backup, march even after
+       you have t12s, and as a third march when you get t13s.
    * Train a *few* extra so that you do not have to heal *immediately* if you 
 	 do take wounded, but not too many.  
-	 * If your 750k t11s cannot kill it, then more of them won't help.
-	 * *However*, some of the other things mentioned in the first bullet point
-	   *might* help.
-   * You will continue to use your t11s as a second, backup, march even after
-     you have t12s, and as a third march when you get t13s.
+   * If your 750k t11s cannot kill it, then more of them won't help.
+   * More troops t11s will start to matter again sometime around when
+     * your march size starts to reach somewhere around one million,
+     * your generals reach level 35, have orange specialties, and/or your main general has red stars.
+     * you give your generals Ares or Achaemenidae gear
+   
 1. Having t12 mounted troops opens up a number of different monsters that have
    been tantalizingly close to killable.  
    * When you get to 800k of them, you have a good solid march.  You can kill a lot.
    * When you get to 900k you can kill more. 
-   * When you get to 1m you can kill still more.  However, anything above this
-     and you start to get more and more wounded for less and less effect.
-   * You may even consider having *two* marches of t12s if you do not care
-     about [ghosting][].  
+   * When you get to 1m you can kill still more.  
+     * Just like with t11s, anything above this will require good generals or else you start to get 
+       more and more wounded for less and less effect.
+     * You may consider having *two* marches of t12s if you do not care about [ghosting][].  
 1. Your t13 march is probably just as good as your 900k t12 march when it has
    somewhere between 600k and 700k troops in it.  The author has not fully
    explored the limits of t13s.
 
-[ghosting]: <{{< relref "../../reference/glossary#ghosting" >}}>
+[ghosting]: <../../reference/glossary#ghosting>
 
-[buffs]: <{{< relref "../../reference/glossary#buff" >}}> 
+[buffs]: <../../reference/glossary#buff> 
 
-[Reports]: <{{< relref "../killing" >}}>
+[Reports]: <../killing>
 
-[march size]: <{{< relref "../../reference/march_size" >}}>
+[march size]: <../../reference/march_size.mdoc>

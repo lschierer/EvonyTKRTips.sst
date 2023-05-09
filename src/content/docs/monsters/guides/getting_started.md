@@ -1,7 +1,8 @@
 ---
 title: "Getting Started"
-author: "Luke Schierer"
-weight: 1
+author: 
+  - "Luke Schierer"
+sortOrder: 1
 ---
 
 ### Get a General
@@ -58,8 +59,8 @@ using mounted troops.  Some tips here.
      gems, and even though much of it will be either upgraded into Ares gear or
      replaced by Achaemenidae gear. 
    * Most players who avoid spending a _**great deal**_ will have trouble
-     crafting meaningful amounts of civilization gear.  Watch out for the
-     impact of losing those set bonuses. 
+     crafting full sets of civilization gear.  Watch out for the
+     impact of losing those set bonuses.  You may want to hold off until you can craft at least two pieces.
 1. Use the Bird of Hurricane until you have a fafnir (purple) dragon.  Then switch to that. 
    * Go ahead and level the spiritual beast up.  Yes, it requires gems, gold,
      and medals.  Everything in the game takes something that you wish you had
@@ -68,7 +69,7 @@ using mounted troops.  Some tips here.
      is really a PvP beast, but will work for monster hunting also.
 1. When you get the fafnir (purple) dragon 
    * you need to feed it to make it be worthwhile. 
-   * refines on your dragon also matter
+   * refines on your dragon also matter.  For monster hunting, you want four mounted attack refines.
    * activate the talents on the dragon.  These can be leveled up as well.  The
      siege talent on this dragon doesn't help you.
 1. Switching your beast or dragon requires a one hour cool down period.  This
@@ -77,4 +78,4 @@ using mounted troops.  Some tips here.
 
 [roman numerals]: <https://wikipedia.org/wiki/Roman_numerals>
 
-[mg]: <{{< relref "../../generals//mounted" >}}>
+[mg]: <../../generals//mounted>

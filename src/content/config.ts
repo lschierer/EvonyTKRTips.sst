@@ -11,6 +11,6 @@ const monsterReports = defineCollection({
 
 export const collections = {
   docs: docsCollection,
-  killing: monsterSchema,
+  killing: monsterReports,
 };
 

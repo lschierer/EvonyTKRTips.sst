@@ -3,6 +3,7 @@ title: 'The T1 Defense'
 author:
   - 'Luke Schierer' 
   - 'Redwood'
+sortOrder: 3
 --- 
  
 This article leans heavily on a set of king's mails that another
@@ -188,7 +189,7 @@ Defense and HP do.
 
 * Refine your helmet and leg armor looking for mounted HP. 
 * Look for HP values in excess of 1800.
-* If you cannot build enough mounted, find that for some reason you are losing 
+* If you cannot build enough mounted, or find that for some reason you are losing 
   your t1 ground despite your high numbers of t1 mounted,
   * Flat refines on 6 of the 8 possible values for mounted HP
   * Flat refines on the other 2 for ground HP
