@@ -3,7 +3,9 @@ import {  getCollection } from 'astro:content';
 
 const curUrl = new URL(Astro.request.url);
 const selection = curUrl.pathname;
-const base = selection.substring(1).includes('/') ? selection.substring(1).split('/').reverse().pop() : selection;
+let base = selection.substring(1).includes('/') ? selection.substring(1).split('/').reverse().pop() : selection;
+base = base.endsWith('/')? base : base + '/';
+base = base.startsWith('/')? base.substring(1) : base;
 console.log(`selection is ${selection}, base is ${base}`)
 let entries= await getCollection('docs', ({id}) => {
   return id.startsWith(base)
