@@ -1,6 +1,5 @@
 ---
 title: 'About Monsters'
-layout: '../../layouts/Layout.astro'
 ---
 ## Introduction
 

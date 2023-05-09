@@ -1,8 +1,8 @@
 ---
-title: 'Next Steps'
+title: 'A Rough Estimate of Layering'
 author: 
   - 'Luke Schierer'
-sortOrder: 3
+sortOrder: 4
 tags: 
   - 'guide'
 ---
@@ -140,7 +140,9 @@ more of an attack off as well.  You will want to adjust *ONLY THE ATTACK*
 refines if that is the case.  For siege only the attack statistic matters, use
 other troop types to keep your siege alive.  If you are being attacked *by*
 siege, then your only two options are to dodge the attack (port away) or to
-have more siege and more range than your attacker.
+have more siege and more range than your attacker.  Refer back to the [T1 Defense][] for more on this.
+
+[T1 Defense]: <t1_defense>
 
 ### for your wall general
 
@@ -157,6 +159,7 @@ have more siege and more range than your attacker.
   * 2x on his boots
   * 2x on his armor  
   * you can do 4x on one piece here and 4x on the other piece in the previous section.
+  * You may choose to devote anywhere between six and eight lines (four for the boots, four for the armor) to mounted instead of four and four.
 * 1700+ mounted HP
   * 2x on his helmet
   * 2x on his leg armor
@@ -165,6 +168,7 @@ have more siege and more range than your attacker.
   * 2x on his helmet
   * 2x on his leg armor
   * you can do 4x on one piece here and 4x on the other piece in the previous section.
+  * You may choose to devote anywhere between six and eight lines (four for the boots, four for the armor) to mounted instead of four and four.
 
 ### for your subcities
 
