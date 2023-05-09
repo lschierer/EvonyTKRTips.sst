@@ -39,14 +39,17 @@ export default class CompareMayors extends LitElement {
     static styles = css`
       .table-container {
         overflow: auto;
+        min-height: var(--spectrum-global-dimension-size-400);
+        max-height: calc(var(--spectrum-global-dimension-size-6000)*2);
+        flex: 1 1 auto;
         /*margin: 0 calc(-1 * var(--spectrum-global-dimension-size-600));*/
       }
 
       .table-container sp-table {
-        max-height: 400px;
+        height: var(--spectrum-global-dimension-size-5000);
         width: 85vw;
         max-width: 99%;
-        flex: auto;
+        flex: 1 1 auto;
         /*min-width: calc(2 * var(--spectrum-global-dimension-size-3400));*/
         box-sizing: content-box;
         align-items: stretch;
@@ -76,7 +79,7 @@ export default class CompareMayors extends LitElement {
 
       .table-container sp-table-cell {
         min-width: var(--spectrum-global-dimension-size-200);
-        font-size: x-small;
+        font-size: small;
       }
 
       .table-container sp-table-cell,
@@ -88,17 +91,20 @@ export default class CompareMayors extends LitElement {
 
       .table-container sp-table-head {
         /* these have to be the same so that it does not get squished by the body*/
-        min-height: var(--spectrum-global-dimension-size-1200);
-        max-height: var(--spectrum-global-dimension-size-1200);
+        height: clamp(var(--spectrum-global-dimension-size-1200),var(--spectrum-global-dimension-size-1600),var(--spectrum-global-dimension-size-1700));
+        
+      }
+      
+      .table-container sp-table-head :first-child {
+        width: clamp(var(--spectrum-global-dimension-size-400), var(--spectrum-global-dimension-size-1200), 12%);
       }
 
       .table-container sp-table-head-cell{
         writing-mode: vertical-rl;
-        min-width: var(--spectrum-global-dimension-size-300);
-        max-width: max(var(--spectrum-global-dimension-size-300),6%);
+        width: clamp(var(--spectrum-global-dimension-size-300),var(--spectrum-global-dimension-size-300),6%);
         min-height: var(--spectrum-global-dimension-size-400);
         flex: 1 1 auto;
-        font-size: x-small;
+        font-size: small;
       }
 
       @media screen and (max-width: 960px) {
@@ -111,7 +117,8 @@ export default class CompareMayors extends LitElement {
           padding: 0 16px;
         }
 
-        .table-container sp-table-cell {
+        .table-container sp-table-cell,
+        .table-container sp-table-head-cell {
           font-size: x-small;
         }
       }
