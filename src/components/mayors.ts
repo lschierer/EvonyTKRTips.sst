@@ -14,7 +14,7 @@ import {DSVRowArray} from "d3-dsv";
 import * as dsv from "d3-dsv";
 
 @customElement('compare-mayors')
-export default class CompareMayors extends LitElement {
+export class CompareMayors extends LitElement {
 
     @property()
     public DataUrl: string;
