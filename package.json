@@ -15,6 +15,7 @@
     "@astrojs/lit": "^2.0.1",
     "@astrojs/mdx": "^0.19.1",
     "@astrojs/node": "^5.1.2",
+    "@lit-labs/router": "^0.1.1",
     "@lit-labs/ssr-dom-shim": "^1.1.1",
     "@spectrum-css/button": "^10.0.6",
     "@spectrum-css/icon": "^3.0.42",
@@ -50,7 +51,8 @@
     "astro": "^2.4.4",
     "d3": "^7.8.4",
     "d3-dsv": "^3.0.1",
-    "glob": "^10.2.2",
+    "d3-selection": "^3.0.0",
+    "glob": "^10.2.3",
     "lit": "^2.7.4",
     "path-scurry": "^1.7.0",
     "zod": "^3.21.4"
@@ -65,8 +67,8 @@
     "@types/d3-hierarchy": "^3.1.2",
     "@types/d3-selection": "^3.0.5",
     "@types/mime": "^3.0.1",
-    "@types/node": "^20.1.1",
-    "astro-sst": "2.8.12",
+    "@types/node": "^20.1.2",
+    "astro-sst": "2.8.15",
     "autoprefixer": "^10.4.14",
     "aws-cdk-lib": "2.72.1",
     "constructs": "10.1.156",
@@ -80,7 +82,7 @@
     "remark-gfm": "^3.0.1",
     "remark-html": "^15.0.2",
     "remark-rehype": "^10.1.0",
-    "sst": "2.8.12",
+    "sst": "2.8.15",
     "tslib": "^2.5.0",
     "typescript": "5.0.4"
   }
