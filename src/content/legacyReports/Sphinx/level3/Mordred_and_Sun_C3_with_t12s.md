@@ -1,7 +1,7 @@
-+++
-title = 'Killing Spinx 3 with Mordred and T12s'
-author = 'Luke Schierer'
-+++
+---
+title: 'Killing Spinx 3 with Mordred and T12s'
+author:  'Luke Schierer'
+---
 
 * Main General: Mordred
   * Level 36

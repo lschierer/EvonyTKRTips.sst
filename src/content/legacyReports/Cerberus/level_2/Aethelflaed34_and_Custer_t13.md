@@ -1,7 +1,7 @@
-+++
-title = 'Killing Medium Cerberus with Aethelflaed and t13s'
-author = 'Luke Schierer'
-+++
+---
+title: 'Killing Medium Cerberus with Aethelflaed and t13s'
+author: 'Luke Schierer'
+---
 
 * Main General: Aethelflaed
   * Level 35

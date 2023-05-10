@@ -1,7 +1,7 @@
-+++
-title = 'Killing Kamaitachi with Mordred, Zhao Yun and T12s'
-author = 'Luke Schierer'
-+++
+---
+title: 'Killing Kamaitachi with Mordred, Zhao Yun and T12s'
+author:  'Luke Schierer'
+---
 
 * Main General: Mordred
   * Level 36

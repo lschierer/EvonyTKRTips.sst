@@ -1,8 +1,8 @@
-+++
-title = 'Killing Sphinx 4 with Aethelflaed and t13s'
-author = 'Luke Schierer'
-weight = 1
-+++
+---
+title: 'Killing Sphinx 4 with Aethelflaed and t13s'
+author:  'Luke Schierer'
+sortOrder: 1
+---
 
 * Main General: Aethelflaed
   * Level 35

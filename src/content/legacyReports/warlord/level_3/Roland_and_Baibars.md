@@ -1,7 +1,7 @@
-+++
-title = 'Killing Warlord3 with Roland'
-author = 'Luke Schierer'
-+++
+---
+title: 'Killing Warlord3 with Roland'
+author:  'Luke Schierer'
+---
 
 * Main General: Roland
   * Level 34

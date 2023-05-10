@@ -1,7 +1,7 @@
-+++
-title = 'Killing Ground Pan2 with Mordred and T12s'
-author = 'Luke Schierer'
-+++
+---
+title: 'Killing Ground Pan2 with Mordred and T12s'
+author:  'Luke Schierer'
+---
 
 * Main General: Mordred
   * Level 33

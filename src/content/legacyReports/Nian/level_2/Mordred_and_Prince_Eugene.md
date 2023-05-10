@@ -1,7 +1,7 @@
-+++
-title = 'Killing Nian with Mordred'
-author = 'Luke Schierer'
-+++
+---
+title: 'Killing Nian with Mordred'
+author:  'Luke Schierer'
+---
 
 * Main General: Mordred
   * Level 29

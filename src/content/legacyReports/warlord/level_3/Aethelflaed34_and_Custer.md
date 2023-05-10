@@ -1,7 +1,7 @@
-+++
-title = 'Killing Warlord3 with Aethelflaed'
-author = 'Luke Schierer'
-+++
+---
+title: 'Killing Warlord3 with Aethelflaed'
+author:  'Luke Schierer'
+---
 
 * Main General: Aethelflaed
   * Level 34

@@ -1,7 +1,7 @@
-+++
-title = 'Killing Witch4 with Aethelflaed, Custer and T13s'
-author = 'Luke Schierer'
-+++
+---
+title: 'Killing Witch4 with Aethelflaed, Custer and T13s'
+author:  'Luke Schierer'
+---
 
 * Main General: Aethelflaed
   * Level 36

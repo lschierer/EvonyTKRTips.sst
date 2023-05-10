@@ -1,7 +1,7 @@
-+++
-title = 'Killing Kamaitachi with Roland'
-author = 'Luke Schierer'
-+++
+---
+title: 'Killing Kamaitachi with Roland'
+author:  'Luke Schierer'
+---
 
 * Main General: Roland
   * Level 35
