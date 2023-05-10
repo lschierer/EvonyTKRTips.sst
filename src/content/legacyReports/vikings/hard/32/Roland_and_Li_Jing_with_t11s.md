@@ -1,7 +1,7 @@
-+++
-title = 'Killing Hard Viking 32s with Roland, Li Jing and t11s'
-author = 'Luke Schierer'
-+++
+---
+title: 'Killing Hard Viking 32s with Roland, Li Jing and t11s'
+author:  'Luke Schierer'
+---
 
 This report replicates the march size of a k29 keep, but has the monarch gear, research, civilization treasure, art treasure, and so on of a k33 keep, so not particularly useful.
 

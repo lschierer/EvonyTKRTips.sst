@@ -1,8 +1,8 @@
-+++
-title = 'Killing Hydra 2 with Aethelflaed and t13s v2'
-author = 'Luke Schierer'
-weight = 2
-+++
+---
+title: 'Killing Hydra 2 with Aethelflaed and t13s v2'
+author: 'Luke Schierer'
+sortOrder: 2
+---
 
 * Main General: Aethelflaed
   * Level 35

@@ -1,7 +1,7 @@
-+++
-title = 'Killing Ymir2 with Roland, Sun Ce, and T11s'
-author = 'Luke Schierer'
-+++
+---
+title: 'Killing Ymir2 with Roland, Sun Ce, and T11s'
+author:  'Luke Schierer'
+---
 
 * Main General: Roland
   * Level 33

@@ -1,7 +1,7 @@
-+++
-title = 'Killing Normal Vikings with Mordred and T12s'
-author = 'Luke Schierer'
-+++
+---
+title: 'Killing Normal Vikings with Mordred and T12s'
+author:  'Luke Schierer'
+---
 
 * Main General: Mordred
   * Level33 

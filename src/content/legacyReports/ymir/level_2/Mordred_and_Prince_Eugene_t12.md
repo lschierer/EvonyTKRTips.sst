@@ -1,7 +1,7 @@
-+++
-title = 'Killing Ymir2 with Mordred and T12s'
-author = 'Luke Schierer'
-+++
+---
+title: 'Killing Ymir2 with Mordred and T12s'
+author:  'Luke Schierer'
+---
 
 * Main General: Mordred
   * Level 33

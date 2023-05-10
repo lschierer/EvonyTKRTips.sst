@@ -1,8 +1,8 @@
-+++
-weight = 1
-title = 'Killing Ranged Pan Level 3 with Guan'
-author = 'Luke Schierer'
-+++
+---
+sortOrder:  1
+title: 'Killing Ranged Pan Level 3 with Guan'
+author:  'Luke Schierer'
+---
 
 * Main General: Guan Yu
   * Level 34

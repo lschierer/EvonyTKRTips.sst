@@ -1,7 +1,7 @@
-+++
-title = 'Killing Kamaitachi with Mordred'
-author = 'Luke Schierer'
-+++
+---
+title: 'Killing Kamaitachi with Mordred'
+author:  'Luke Schierer'
+---
 
 * Main General: Mordred
   * Level 33

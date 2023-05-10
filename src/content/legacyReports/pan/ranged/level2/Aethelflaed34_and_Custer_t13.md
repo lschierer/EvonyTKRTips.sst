@@ -1,7 +1,7 @@
-+++
-title = 'Killing Ranged Pan Level 2 with Aethelflaed and t13s'
-author = 'Luke Schierer'
-+++
+---
+title: 'Killing Ranged Pan Level 2 with Aethelflaed and t13s'
+author:  'Luke Schierer'
+---
 
 * Main General: Aethelflaed
   * Level 34
