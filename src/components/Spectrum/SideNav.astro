@@ -10,13 +10,23 @@ base = base.endsWith('/')? base : base + '/';
 base = base.startsWith('/')? base.substring(1) : base;
 console.log(`selection is ${selection}, base is ${base}`)
 
-let ReportsVisible = false;
+let collection:collection = '';
+let entries:collection = [];
+switch(base) {
+    case 'reports/':
+        console.log(`matched reports section`)
+        collection = 'legacyReports';
+        entries= await getCollection(collection);
+        break;
+    default:
+        collection = 'docs';
+        entries= await getCollection(collection, ({id}) => {
+            return id.startsWith(base)
+        });
 
-let items: string[] = [];
+        break;
+}
 
-let entries= await getCollection('docs', ({id}) => {
-  return id.startsWith(base)
-});
 entries = entries.sort((a,b) =>{
   const temp = [a.slug.toString().toLowerCase(), b.slug.toString().toLowerCase()];
   if(a.data.sortOrder && b.data.sortOrder){
@@ -25,27 +35,14 @@ entries = entries.sort((a,b) =>{
   return a.slug.toString().toLowerCase().localeCompare(b.slug.toString().toLowerCase());
 });
 
+let items: string[] = [];
 entries.forEach((e) => {
-    items.push(e.slug);
+    items.push({
+        slug: e.slug,
+        title: e.data.title
+    });
 })
 
-if(base === 'reports/') {
-    console.log(`detected base monsters`)
-    ReportsVisible = true;
-    let results = await getCollection('legacyReports');
-    results = results.sort((a,b) => {
-        if(a.data.sortOrder && b.data.sortOrder) {
-            return a.data.sortOrder - b.data.sortOrder;
-        }
-        return a.slug.toString().toLowerCase().localeCompare(b.slug.toString().toLowerCase());
-    });
-    console.log(`retrieved ${results.length}`);
-    results.forEach((r) => {
-        console.log(`processing result ${r.slug}`);
-        items.push(r.slug);
-
-    })
-}
 
 console.log(`items of size ${items.length}`)
 ---
@@ -56,4 +53,4 @@ console.log(`items of size ${items.length}`)
     import '@spectrum-web-components/sidenav/sp-sidenav-item.js';
     import './SideNav'
 </script>
-<sp-nm items={items}></sp-nm>
+<sp-nm items={JSON.stringify(items)}></sp-nm>
