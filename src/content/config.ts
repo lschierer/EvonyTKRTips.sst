@@ -13,12 +13,12 @@ const legacyReports = defineCollection({
   schema: z.object({
     title: z.string(),
     author: z.string(),
-    sortOrder: z.string().optional(),
+    sortOrder: z.number().optional(),
   }),
 });
 
 export const collections = {
   docs: docsCollection,
-  oldReports: legacyReports,
+  legacyReports: legacyReports,
 };
 

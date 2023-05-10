@@ -12,6 +12,7 @@ console.log(`selection is ${selection}, base is ${base}`)
 
 let ReportsVisible = false;
 
+let items: string[] = [];
 
 let entries= await getCollection('docs', ({id}) => {
   return id.startsWith(base)
@@ -22,49 +23,37 @@ entries = entries.sort((a,b) =>{
       return a.data.sortOrder - b.data.sortOrder;
   }
   return a.slug.toString().toLowerCase().localeCompare(b.slug.toString().toLowerCase());
+});
+
+entries.forEach((e) => {
+    items.push(e.slug);
 })
 
-let reports = []
-if(base === 'monsters/') {
+if(base === 'reports/') {
     console.log(`detected base monsters`)
     ReportsVisible = true;
-    reports = await getCollection('oldReports');
-    reports = reports.sort((a,b) => {
+    let results = await getCollection('legacyReports');
+    results = results.sort((a,b) => {
         if(a.data.sortOrder && b.data.sortOrder) {
             return a.data.sortOrder - b.data.sortOrder;
         }
         return a.slug.toString().toLowerCase().localeCompare(b.slug.toString().toLowerCase());
     });
-    console.log(`retrieved ${reports.length}`)
+    console.log(`retrieved ${results.length}`);
+    results.forEach((r) => {
+        console.log(`processing result ${r.slug}`);
+        items.push(r.slug);
 
+    })
 }
 
+console.log(`items of size ${items.length}`)
 ---
 
 <script>
-  import '@spectrum-web-components/sidenav/sp-sidenav.js';
-  import '@spectrum-web-components/sidenav/sp-sidenav.js';
-  import '@spectrum-web-components/sidenav/sp-sidenav-heading.js';
-  import '@spectrum-web-components/sidenav/sp-sidenav-item.js';
+    import '@spectrum-web-components/sidenav/sp-sidenav.js';
+    import '@spectrum-web-components/sidenav/sp-sidenav-heading.js';
+    import '@spectrum-web-components/sidenav/sp-sidenav-item.js';
+    import './SideNav'
 </script>
-
-<sp-sidenav value={selection} style='flex: 1 1 auto; min-height: 1px; height: 90%; min-width: 1px; width: 100%;' >
-  { entries.map((e) => {
-    const thisUrl = '/' + e.slug.toString();
-      console.log(`main section, rendering ${thisUrl}`);
-    if(selection === thisUrl) {
-      return <sp-sidenav-item value={thisUrl} selected=true  href={'/' + e.slug}  >{e.data.title}</sp-sidenav-item>;
-    } else {
-      return <sp-sidenav-item value={thisUrl} href={thisUrl}  >{e.data.title}</sp-sidenav-item>;
-    }
-  })}
-    {ReportsVisible && reports.map((e) => {
-        const thisUrl = '/monsters/reports/' + e.slug.toString();
-        console.log(`Reports should be visible, rendering ${thisUrl}`);
-        if(selection === thisUrl) {
-            return <sp-sidenav-item value={thisUrl} selected=true  href={'/' + e.slug}  >{e.data.title}</sp-sidenav-item>;
-        } else {
-            return <sp-sidenav-item value={thisUrl} href={thisUrl}  >{e.data.title}</sp-sidenav-item>;
-        }
-    })}
-</sp-sidenav>
+<sp-nm items={items}></sp-nm>
