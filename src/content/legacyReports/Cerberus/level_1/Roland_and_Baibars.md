@@ -1,5 +1,5 @@
 ---
-title: 'Killing Kamaitachi with Roland'
+title: 'Killing Cerebus Level 1 with Roland'
 author: 'Luke Schierer'
 ---
 
