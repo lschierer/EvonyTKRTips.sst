@@ -1,7 +1,19 @@
 ---
 import {  getCollection } from 'astro:content';
 import { Debug } from 'astro/components';
+import * as console from "console";
 
+export interface Props {
+    navsections?: string;
+
+}
+
+const {navsections }= Astro.props;
+let _navsec:string[] | null = null;
+if(navsections) {
+    console.log(`navsections is ${navsections} with type ${typeof(navsections)}`)
+    _navsec = navsections.split(',')
+}
 
 const curUrl = new URL(Astro.request.url);
 const selection = curUrl.pathname;
@@ -13,29 +25,59 @@ console.log(`selection is ${selection}, base is ${base}`)
 let collection:collection = '';
 let entries:collection = [];
 let prefix = '';
-switch(base) {
-    case 'reports/':
-        console.log(`matched reports section`)
-        collection = 'legacyReports';
-        entries= await getCollection(collection);
-        let host = Astro.url.host;
-        prefix = Astro.url.protocol + '//' + host + '/' + base;
-        break;
-    default:
-        collection = 'docs';
-        entries= await getCollection(collection, ({id}) => {
-            return id.startsWith(base)
-        });
-        prefix = Astro.url.protocol + '//' + Astro.url.host;
-        break;
+
+if(!_navsec || _navsec.length === 0) {
+    switch(base) {
+        case 'reports/':
+            console.log(`matched reports section`)
+            collection = 'legacyReports';
+            entries= await getCollection(collection);
+            let host = Astro.url.host;
+            prefix = Astro.url.protocol + '//' + host + '/' + base;
+            break;
+        default:
+            collection = 'docs';
+            entries= await getCollection(collection, ({id}) => {
+                return id.startsWith(base)
+            });
+            prefix = Astro.url.protocol + '//' + Astro.url.host;
+            break;
+    }
+} else {
+    console.log(`_navsec is set, length is ${_navsec.length}`)
+    for(const sect of _navsec) {
+        switch (sect) {
+            case 'reports':
+                console.log(`matched reports section in navsection`);
+                collection = 'legacyReports';
+                let result = await getCollection(collection);
+                result.forEach((r) => {
+                    r.slug = 'monsters/reports/' + r.slug;
+                })
+                console.log(`found ${result.length} reports`)
+                entries = entries.concat(result);
+                break;
+            default:
+                collection = 'docs';
+                entries = entries.concat(await getCollection(collection, ({id}) => {
+                    return id.startsWith(sect)
+                }));
+                break;
+        }
+    }
+    prefix = Astro.url.protocol + '//' + Astro.url.host;
 }
 
 entries = entries.sort((a,b) =>{
   const temp = [a.slug.toString().toLowerCase(), b.slug.toString().toLowerCase()];
   if(a.data.sortOrder && b.data.sortOrder){
       return a.data.sortOrder - b.data.sortOrder;
+  } else {
+      let a_name = a.data.title? a.data.title.toString().toLowerCase() :a.slug.toString().toLowerCase();
+      let b_name = b.data.title? b.data.title.toString().toLowerCase() :b.slug.toString().toLowerCase();
+      return a_name.localeCompare(b_name);
   }
-  return a.slug.toString().toLowerCase().localeCompare(b.slug.toString().toLowerCase());
+
 });
 
 let items: string[] = [];

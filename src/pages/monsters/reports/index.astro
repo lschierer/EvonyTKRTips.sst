@@ -1,19 +1,20 @@
 ---
 import { getEntryBySlug } from "astro:content";
-import MarkdownPostLayout from '../../layouts/MarkdownPostLayout.astro';
+import MarkdownPostLayout from '../../../layouts/MarkdownPostLayout.astro';
 
 let { slug } = Astro.params;
 if (slug === undefined) {
-    console.log(`in reports slug file, slug was undefined`)
-    slug = 'index';
+    console.log(`in index file, slug was undefined`)
+    slug = 'monsters';
 } else {
-    console.log(`in reports slug is ${slug}`)
+    slug = 'monsters/reports/' + slug;
+    console.log(`slug is ${slug}`)
 
 }
 const curUrl = new URL(Astro.request.url);
-console.log(`in slug file, url is ${curUrl}`);
+console.log(`in index file, url is ${curUrl}`);
 // 2. Query for the entry directly using the request slug
-const entry = await getEntryBySlug("legacyReports", slug);
+const entry = await getEntryBySlug("docs", slug);
 // 3. Redirect if the entry does not exist
 if (entry === undefined) {
     console.log(`failed to find ${slug}`)
@@ -21,7 +22,8 @@ if (entry === undefined) {
 }
 // 4. (Optional) Render the entry to HTML in the template
 const { Content } = await entry.render();
+const navsections = ['reports','monsters']
 ---
-<MarkdownPostLayout frontmatter={entry.data}>
+<MarkdownPostLayout frontmatter={entry.data} navsections={navsections.join(',')}>
     <Content />
 </MarkdownPostLayout>
