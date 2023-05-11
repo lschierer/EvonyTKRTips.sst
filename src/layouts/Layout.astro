@@ -33,10 +33,11 @@ const { title, navsections } = Astro.props;
 	</head>
 	<body>
 		<sp-theme theme="classic" color="light" scale="medium">
+			<sp-icons-medium></sp-icons-medium>
 			<header>
 				<top-nav ></top-nav>
 			</header>
-			<sp-split-view resizable primary-min="50" secondary-min="5" primary-size="100">
+			<sp-split-view resizable primary-min="50" secondary-min="10" primary-size="250">
 				<div >
 					<SideNav navsections={navsections ? navsections : ''} />
 				</div>
