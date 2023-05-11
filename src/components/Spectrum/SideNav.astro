@@ -12,18 +12,21 @@ console.log(`selection is ${selection}, base is ${base}`)
 
 let collection:collection = '';
 let entries:collection = [];
+let prefix = '';
 switch(base) {
     case 'reports/':
         console.log(`matched reports section`)
         collection = 'legacyReports';
         entries= await getCollection(collection);
+        let host = Astro.url.host;
+        prefix = Astro.url.protocol + '//' + host + '/' + base;
         break;
     default:
         collection = 'docs';
         entries= await getCollection(collection, ({id}) => {
             return id.startsWith(base)
         });
-
+        prefix = Astro.url.protocol + '//' + Astro.url.host;
         break;
 }
 
@@ -40,7 +43,7 @@ entries.forEach((e) => {
     items.push({
         slug: e.slug,
         title: e.data.title,
-        base: base
+        base: prefix
     });
 })
 

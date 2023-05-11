@@ -21,7 +21,7 @@ export class SpNavMenu extends LitElement {
     @property()
     public items: entry[] | string;
 
-    private _entries: Map<string>;
+    private _entries: Set<string>;
 
     private _directories: string[];
 
@@ -50,7 +50,7 @@ export class SpNavMenu extends LitElement {
         super(props);
 
         this.itemsTemplates = [];
-        this._entries = new Map();
+        this._entries = new Set();
         this.items_size = 0;
         this.selection = '';
     }
@@ -72,52 +72,75 @@ export class SpNavMenu extends LitElement {
         this.requestUpdate();
     }
 
-    protected renderItem(dirstack: string[], item: entry){
-        let table = this.navRef;
-        const slot = this.shadowRoot.querySelector('slot');
-        let children = null;
-        if(slot) {
-            children = slot.assignedElements({flatten: true});
-        }
+    protected renderDir(dirstack: string, level: number) {
 
-        let itemsTemplates: TemplateResult[] = [];
-        let a = item.slug.split('/');
-        let b = a.shift();
-        let s = a.join('/');
-        if (s.at(0) === '/') {
-            s = s.substring(1);
-        }
-        if(s.includes('/')){
-            console.log(`ri / in i is ${item.slug} s is ${s}`)
-            let a2 = s.split('/');
-            let b2 = a2.shift();
-
-            if(!children){
-                console.log(`made it to not children with base ${b2}`)
-                let new_i = {
-                    slug: a2.join('/'),
-                    title: item.title,
-                    base: item.base
-                }
-                let d = dirstack.concat([b,b2]);
-                console.log(`about to recurse d is ${d} new_i is ${new_i.slug}`)
-                return html`
-                    <sp-sidenav-item value=${b2} label=${b2} >
-                        ${this.renderItem(d,new_i)}
-                    </sp-sidenav-item>
-                `
-            } else {
-                console.log(`there are children`)
+        console.log(`going to render ${dirstack}`)
+        console.log(`dirstack is ${dirstack} and level is ${level}`)
+        this._entries.add(dirstack);
+        let itemTemplates = [];
+        for (let item of this.items) {
+            console.log(`eval of ${item.slug} looking for ${dirstack}`)
+            if (dirstack === item.slug) {
+                continue;
             }
-        } else {
-            console.log(`ri there was no / item is ${item.slug}`)
-            console.log(`dirstack is ${dirstack}`)
-            let u = item.base + dirstack.flat().join('/') + '/' + item.slug;
-            console.log(`u is ${u} t is ${item.title}`)
-            return html`
-                <sp-sidenav-item value=${b} href=${u} > ${item.title}</sp-sidenav-item>
-                `
+            let s = item.slug;
+            let d = dirstack.split('/')
+
+
+            if (s.at(0) === '/') {
+                s = s.substring(1);
+            }
+            let valid = false
+
+            let a = s.split('/');
+            for (let i = 0; i <= level; i++) {
+                if(d[i] === a[i]) {
+                    console.log(`compared ${d[i]} to ${a[i]} looking for ${dirstack}`)
+                    valid = true;
+                } else {
+                    valid = false;
+                    break;
+                }
+            }
+            if(valid) {
+                console.log(`${item.slug} is a valid match for ${dirstack}`);
+                let b = '';
+                a = s.split('/')
+                let l = level;
+                do{
+                    b = a.shift();
+                    console.log(`rejecting ${b} out of hand, l is ${l}`)
+                    l--;
+                }while(l >= 0);
+
+                if (a.length > 1) {
+                    b = a.shift();
+                    if(!this._entries.has(dirstack + '/' + b)) {
+                        itemTemplates.push( html`
+                            <sp-sidenav-item value=${b} label=${b}>
+                                ${this.renderDir(dirstack + '/' + b, level+1)}
+                            </sp-sidenav-item>
+                        `);
+                    }
+
+                } else {
+                    let u = item.base;
+                    console.log(`u starts as ${u}`)
+                    if(!u.endsWith('/')){
+                        u = u + '/';
+                        console.log(`u is now ${u}`);
+                    }
+                    console.log(`about to add dirstack ${dirstack} and slug ${item.slug}`);
+                    u = u + item.slug;
+                    console.log(`u is now ${u}`)
+                    itemTemplates.push( html`
+                        <sp-sidenav-item value=${a} href=${u}>${item.title}</sp-sidenav-item>
+                    `);
+                }
+
+            }
         }
+        return itemTemplates;
     }
     protected renderItems(table: Element | undefined) {
         let itemsTemplates: TemplateResult[] = [];
@@ -140,31 +163,19 @@ export class SpNavMenu extends LitElement {
                     console.log(`ris / in ${item.slug}`)
                     let a = item.slug.split('/');
                     let b = a.shift();
-                    let t = this.navRef.value;
-                    let slot = this.shadowRoot.querySelector('slot');
-                    children = slot ? slot.assignedElements({flatten: true}) : null;
-                    if(children) {
-                        console.log(`ri in / children found`)
-                            children.forEach((child) => {
-                                let v = child.getAttribute('value');
-                                if(v){
-                                    console.log(`comparing v ${v} to b ${b}`)
-                                    if(v === b) {
-                                        return;
-                                    }
-                                } else {
-                                    console.log(`no value retrieved`)
-                                }
-                            })
-                        } else {
-                            console.log(`no children found`)
-                        }
-
-                    itemsTemplates.push(html`
+                    let ni = {
+                        slug: a.join('/'),
+                        title: item.title,
+                        base: item.base
+                    }
+                    if(!this._entries.has(b)) {
+                        itemsTemplates.push(html`
                         <sp-sidenav-item value=${b} label=${b} >
-                            ${this.renderItem([],item)}
+                            ${this.renderDir(b, 0)}
                         </sp-sidenav-item>
                     `);
+                    }
+
                     this.itemsTemplates = itemsTemplates;
                     this.requestUpdate();
                 }
@@ -191,7 +202,7 @@ export class SpNavMenu extends LitElement {
     protected render() {
 
         return html`
-            <sp-sidenav variant="multilevel" defaultValue=${this.selection} ${ref(this.renderItems)} >
+            <sp-sidenav variant="multilevel" defaultValue=${this.selection} id="SideMenu" ${ref(this.renderItems)} >
                 ${this.itemsTemplates}
             </sp-sidenav>
         `;
