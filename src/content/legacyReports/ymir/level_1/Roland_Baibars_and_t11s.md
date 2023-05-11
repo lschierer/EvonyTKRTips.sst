@@ -1,6 +1,6 @@
 ---
-title: 'Killing Kamaitachi with Roland'
-author:  'Luke Schierer'
+title: 'Killing Ymir Level 1 with Roland and Baibars'
+author: 'Luke Schierer'
 ---
 
 * Main General: Roland
