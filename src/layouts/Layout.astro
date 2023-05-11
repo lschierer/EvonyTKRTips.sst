@@ -7,7 +7,13 @@ import '@spectrum-css/vars/dist/spectrum-light.css';
 import '@spectrum-css/page/dist/index-vars.css';
 import '@spectrum-css/sidenav/dist/index-vars.css';
 
-const { title } = Astro.props;
+export interface Props {
+	title: string,
+	navsections: string;
+
+}
+
+const { title, navsections } = Astro.props;
 ---
 
 <!DOCTYPE html>
@@ -32,7 +38,7 @@ const { title } = Astro.props;
 			</header>
 			<sp-split-view resizable primary-min="50" secondary-min="5" primary-size="100">
 				<div >
-					<SideNav />
+					<SideNav navsections={navsections ? navsections : ''} />
 				</div>
 				<div>
 					<main>

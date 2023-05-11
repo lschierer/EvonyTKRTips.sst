@@ -1,7 +1,7 @@
 ---
 title: 'Reports on Killing Monsters'
-author: 'Luke Schierer'
-layout: '../../layouts/MarkdownPostLayout.astro'
+author: 
+ - 'Luke Schierer'
 ---
 
 The reports on the troops, generals and gear needed to kill the various
