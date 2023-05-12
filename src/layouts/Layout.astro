@@ -33,7 +33,6 @@ const { title, navsections } = Astro.props;
 	</head>
 	<body>
 		<sp-theme theme="classic" color="light" scale="medium">
-			<sp-icons-medium></sp-icons-medium>
 			<header>
 				<top-nav ></top-nav>
 			</header>
@@ -42,6 +41,7 @@ const { title, navsections } = Astro.props;
 					<SideNav navsections={navsections ? navsections : ''} />
 				</div>
 				<div>
+					<h1 class:list={['title', ]}>{title}</h1>
 					<main>
 						<slot />
 					</main>
