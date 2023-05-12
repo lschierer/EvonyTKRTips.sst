@@ -1,11 +1,97 @@
 ---
 export const prerender = true;
 const title = 'Tips for Budget Gamers';
-import Layout from '../layouts/Layout.astro';
+import Layout from '../layouts/landing.astro';
+import {IconPeopleGroup} from '@spectrum-web-components/icons-workflow/icons/sp-icon-people-group.js';
+import {IconFlag} from '@spectrum-web-components/icons-workflow/icons/sp-icon-flag.js';
+
 ---
 <Layout title={title}>
+    <style>
+       #title {
+           position: absolute;
+           top: 10%;
+           left: 50%;
+           margin-right: -50%;
+           transform: translate(-50%, -50%);
+        }
+       #title h2 {
+           font-size: var(--spectrum-global-dimension-font-size-1000);
+           font-kerning: none;
+           margin-top: 1px;
+           margin-bottom: 1px;
+       }
+       #title h3 {
+           text-align: center;
+           margin-top: 1px;
+           margin-bottom: 1px;
+       }
+        #first {
+            display: flex;
+            align-items: center;
+            background-color: var(--spectrum-blue-1000);
+            height: 30vh;
+            vertical-align: bottom;
+        }
+        #first p {
+            font-size: var(--spectrum-global-dimension-font-size-300);
+            vertical-align: middle;
+            padding-right: 10%;
+            padding-left: 10%;
+        }
+        body p
+        {
+            padding-right: 1em;
+            padding-left: 1em;
+        }
+       #cards {
+           color: var(--spectrum-neutral-content-color-default);
+           display: flex;
+           flex-direction: row;
+           flex-wrap: wrap;
+           width: 100%;
+           height: clamp(var(--spectrum-global-dimension-size-3000),50vh,60vh);
+           box-sizing: content-box;
+           align-items: center;
+           justify-content: center;
+       }
+       sp-card {
+           height: clamp(var(--spectrum-global-dimension-size-3000),var(--spectrum-global-dimension-size-3400),var(--spectrum-global-dimension-size-3600));
+           display: flow;
+           max-width: 10em;
+           align-items: start;
+           overflow-x: hidden;
+           margin: 5%
+       }
+       sp-icon-people-group,
+       sp-icon-flag {
+           height: clamp( var( --spectrum-icon-tshirt-size-height,var( --spectrum-alias-workflow-icon-size,var(--spectrum-global-dimension-size-225) ) ), var(--spectrum-global-dimension-size-700), var(--spectrum-icon-size-xxl));
+       }
+       #cards h3 {
+           text-align: center;
+           margin-top: 1px;
+           margin-bottom: 1px;
+           margin-right: 1px;
+           margin-left: 1px;
+           text-overflow: ellipsis;
 
-<h2>Why Another Evony Tips Site</h2>
+       }
+       #cards sp-asset {
+           background-color: green;
+           height: var(--spectrum-global-dimension-size-700);
+
+       }
+
+       #cards p {
+           text-align: center;
+       }
+
+    </style>
+<div id="title">
+    <h2>Why Another Evony Tips Site</h2>
+    <h3>Tips for Budget Gamers</h3>
+</div>
+<div id="first">
 <p>There are lots of sites out there with tips on playing Evony.  Why am I
 creating yet another?  I find that the advice I am giving younger and/or less
 knowledgable players differs from what I find on any single site out there.
@@ -14,8 +100,9 @@ far more on the game than I do.  While they have tons of very valuable info,
 figuring out the right course for the player with a smaller budget can be a
 real challenge.  This site is based on my experiences playing on a more limited
 budget.</p>
+</div>
 
-<p/>Much of the information here comes from other authors' work on other sites.  In particular, I am heavily relying on the work of:
+<p>Much of the information here comes from other authors' work on other sites.  In particular, I am heavily relying on the work of:
 <ul>
     <li> <a href="https://www.evonyanswers.com/">Evony Answers</a></li>
     <li> <a href="https://evonyguidewiki.com/">Evony: The King's Return GUIDE WIKI</a></li>
@@ -25,5 +112,24 @@ budget.</p>
 
 
 <p>Many thanks to the incredible work put forth by those who have come before me on these sites in documenting Evony TKR.</p>
+<div id="cards" >
 
+    <sp-card size="l" >
+        <sp-icon-people-group slot="cover-photo" size="xxl"></sp-icon-people-group>
+        <h3 slot="heading">Learn More<br/>About Generals</h3>
+        <div slot="footer"><p>For information on picking your first pairs of generals, click <a href="/generals/">here</a>.</div>
+    </sp-card>
+    <sp-card size="l" >
+    <sp-icon-flag slot="cover-photo" size="xxl"></sp-icon-flag>
+    <h3 slot="heading">Learn More About<br/>Server Vs Server</h3>
+    <div slot="footer"><p>For information on participating in the every other week Server versus Server event, click <a href="/svs/">here</a>.</div>
+    </sp-card>
+</div>
+<script>
+    import '@spectrum-web-components/icon';
+    import '@spectrum-web-components/icons-workflow';
+    import '@spectrum-web-components/card/sp-card.js';
+    import '@spectrum-web-components/icons-workflow/icons/sp-icon-people-group.js';
+    import '@spectrum-web-components/icons-workflow/icons/sp-icon-flag.js';
+</script>
 </Layout >
