@@ -1,7 +1,25 @@
 ---
-title: "Glossary of Evony Terms"
----
+import Layout from '../../layouts/Layout.astro';
+import { Debug } from 'astro/components';
+import json from './glossary.json'
 
+
+const title= "Glossary of Evony Terms"
+
+const entries = json;
+console.log(typeof(json))
+---
+<Layout title={title} navsections=''>
 Evony has a number of terms that require explanation.  I will attempt to define
 those I use.
 
+    <dl>
+        {entries.map((e) => {
+            return <>
+                <dt ><a name={e.term} >{e.term}</a></dt>
+                <dd>{e.definition}</dd>
+                    </>
+        })}
+    </dl>
+
+</Layout>
