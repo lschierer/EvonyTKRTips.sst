@@ -1,6 +1,7 @@
 ---
 title: 'Killing Ymir2 with Roland'
 author:  'Luke Schierer'
+sortOrder: 1
 ---
 
 * Main General: Roland
