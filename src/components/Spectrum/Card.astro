@@ -8,7 +8,7 @@ export interface Props {
 
 const { heading, subheading, img, alt, footer } = Astro.props;
 
-const imgUrl = new URL(img, Astro.url);
+const imgUrl = new URL(img.replace(/public\//, ''), Astro.url);
 
 ---
 <script>
