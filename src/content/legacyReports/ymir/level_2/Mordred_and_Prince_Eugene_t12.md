@@ -1,6 +1,7 @@
 ---
 title: 'Killing Ymir2 with Mordred and T12s'
 author:  'Luke Schierer'
+sortOrder: 2
 ---
 
 * Main General: Mordred

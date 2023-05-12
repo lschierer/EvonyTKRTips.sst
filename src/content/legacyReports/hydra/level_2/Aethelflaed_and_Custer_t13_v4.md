@@ -1,11 +1,11 @@
 ---
-title: 'Killing Medium Cerberus with Aethelflaed and t13s'
+title: 'Killing Hydra 2 with Aethelflaed and t13s v4'
 author: 'Luke Schierer'
-sortOrder: 1
+sortOrder: 4
 ---
 
 * Main General: Aethelflaed
-  * Level 35
+  * Level 36
   * 4 gold specialties
   * 3 red stars
   * All 5 stars: ares spear and fear less ares leg armor, courageous dragon armor, fearless dragon boots, fearless dragon helmet, courageous dragon ring
@@ -13,21 +13,21 @@ sortOrder: 1
     * mounted troop attack l4
     * mounted troop defense against monsters l4
     * mounted troop hp against monsters l4
-  * 5.1m power
+  * 5.4m power
 * Assistant General: George A. Custer
-  * 3 purple specialties
+  * orange specialties: Mounted Troop Defense, Strike, Mounted Troop Ares
   * skill books:
     * mounted troop defense l4
     * mounted troop hp l4
     * march size l4
 * Monarch Gear:
-  * L7 Thunder Staff
-  * L7 Thunder Grail
-  * L7 Thunder Decoration
+  * L8 Thunder Staff
+  * L8 Thunder Grail
+  * L8 Thunder Decoration
 * Blazons:
   * full soul set
-  * highest blazon at l6
+  * highest blazon at l9
 * Troops:
-  * 1,086,575 t13 mounted
-  * 10,577 wounded
+  * 1,273,925 t13 mounted
+  * 6,192 wounded
 

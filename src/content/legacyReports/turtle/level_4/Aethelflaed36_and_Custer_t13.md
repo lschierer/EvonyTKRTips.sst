@@ -1,33 +1,32 @@
 ---
-title: 'Killing Medium Cerberus with Aethelflaed and t13s'
+title: 'Killing Lava Turtle 4 with Aethelflaed and t13s'
 author: 'Luke Schierer'
-sortOrder: 1
 ---
 
 * Main General: Aethelflaed
-  * Level 35
+  * Level 36
   * 4 gold specialties
   * 3 red stars
-  * All 5 stars: ares spear and fear less ares leg armor, courageous dragon armor, fearless dragon boots, fearless dragon helmet, courageous dragon ring
+  * All 5 stars: ares spear and fear less ares leg armor, courageous dragon armor, fearless dragon boots, Rurik Helment, Rurik Bracers
   * skill books:
     * mounted troop attack l4
     * mounted troop defense against monsters l4
     * mounted troop hp against monsters l4
-  * 5.1m power
+  * 6.1m power
 * Assistant General: George A. Custer
-  * 3 purple specialties
+  * orange specialty: Strike, Mounted Troop Defense, Mounted Troop Ares
   * skill books:
     * mounted troop defense l4
     * mounted troop hp l4
     * march size l4
 * Monarch Gear:
-  * L7 Thunder Staff
-  * L7 Thunder Grail
-  * L7 Thunder Decoration
+  * L8 Thunder Staff
+  * L8 Thunder Grail
+  * L8 Thunder Decoration
 * Blazons:
   * full soul set
-  * highest blazon at l6
+  * highest blazon at l9
 * Troops:
-  * 1,086,575 t13 mounted
-  * 10,577 wounded
+  * 1,121,175 t13 mounted
+  * 0 wounded
 
