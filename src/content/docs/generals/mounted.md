@@ -43,7 +43,7 @@ give him a dragon.  Since you won't have two dragons until level 30, I dislike
 this approach.  Roland is useful far sooner, and saves your (red) Celtic dragon
 for your [ranged][] march.
 
-[ranged]: <ranged>
+[ranged]: <ranged.mdoc>
 
 ### For PvP Assistant:
 * As a FTP or light spending player, I strongly recommend that Mounted not

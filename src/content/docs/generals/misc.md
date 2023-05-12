@@ -2,6 +2,7 @@
 title: "Miscellaneous Generals You Ought to Have"
 author: 
    - "Luke Schierer"
+sortOrder: 9
 ---
 
 In the [Overview][], I explain my thinking.  This is a fairly long article, but
@@ -56,7 +57,7 @@ several different things.
    selling a general seems like a waste of gold, however the things that
    activating your general's hall unlocks is worth the cost.
 
-[Duty]: <duty>
+[Duty]: <duty.mdoc>
 
 [General's Hall]: <../reference/glossary#Generals_Hall>
 
