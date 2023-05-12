@@ -14,14 +14,18 @@ const imgUrl = new URL(img, Astro.url);
 <script>
     import '@spectrum-web-components/card/sp-card.js';
 </script>
+<style>
+    img {
+        height: calc(var(--spectrum-global-dimension-size-6000) + var(--spectrum-global-dimension-size-3000));
+
+    }
+</style>
 <sp-card heading={heading} subheading={subheading}>
     <img
             slot="preview"
             src={imgUrl}
             alt={alt}
-            style=`
-            height: calc(var(--spectrum-global-dimension-size-6000) + var(--spectrum-global-dimension-size-3000)); 
-            `
+
     />
     <div slot="footer"><slot></slot></div>
 </sp-card>
