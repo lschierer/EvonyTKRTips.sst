@@ -1,18 +1,35 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import MarkdownPostLayout from '../../layouts/MarkdownPostLayout.astro';
 import { Debug } from 'astro/components';
 import json from './glossary.json'
+import { getEntryBySlug } from "astro:content";
 
+let { slug } = Astro.params;
+if (slug === undefined) {
+    console.log(`in index file, slug was undefined`)
+    slug = 'reference/glossary';
+} else {
+    slug = 'reference/' + slug;
+    console.log(`slug is ${slug}`)
 
-const title= "Glossary of Evony Terms"
+}
+const curUrl = new URL(Astro.request.url);
+console.log(`in index file, url is ${curUrl}`);
+// 2. Query for the entry directly using the request slug
+const entry = await getEntryBySlug("docs", slug);
+// 3. Redirect if the entry does not exist
+if (entry === undefined) {
+    console.log(`failed to find ${slug}`)
+    return Astro.redirect("/404");
+}
+// 4. (Optional) Render the entry to HTML in the template
+const { Content } = await entry.render();
 
 const entries = json;
-console.log(typeof(json))
 ---
-<Layout title={title} navsections=''>
-Evony has a number of terms that require explanation.  I will attempt to define
-those I use.
-
+<MarkdownPostLayout frontmatter={entry.data} navsections=''>
+    <Content />
+    
     <dl>
         {entries.map((e) => {
             return <>
@@ -22,4 +39,4 @@ those I use.
         })}
     </dl>
 
-</Layout>
+</MarkdownPostLayout>
