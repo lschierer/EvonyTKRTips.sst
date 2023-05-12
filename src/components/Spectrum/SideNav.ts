@@ -166,7 +166,8 @@ export class SpNavMenu extends LitElement {
                     }
 
                     let index = temp_items.indexOf(item);
-                    temp_items.splice(index,1);
+
+
                 }
 
             }
