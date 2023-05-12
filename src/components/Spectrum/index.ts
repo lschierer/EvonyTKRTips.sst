@@ -17,11 +17,12 @@ import '@spectrum-web-components/theme/sp-theme.js';
 // import the components we'll use in this page
 
 import '@spectrum-web-components/button/sp-button.js';
+import '@spectrum-web-components/card/sp-card.js';
 import '@spectrum-web-components/checkbox/sp-checkbox.js';
 import '@spectrum-web-components/dialog/sp-dialog.js';
 import '@spectrum-web-components/icon/sp-icon.js';
 import '@spectrum-web-components/icons/sp-icons-medium.js';
-import '@spectrum-web-components/icons-workflow/icons/sp-icon-abc.js';
+import '@spectrum-web-components/icons-workflow';
 import '@spectrum-web-components/link/sp-link.js';
 import '@spectrum-web-components/menu/sp-menu-item.js';
 import '@spectrum-web-components/split-view/sp-split-view.js';
