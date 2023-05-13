@@ -6,8 +6,7 @@ import markdoc from "@astrojs/markdoc";
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://beta.evonytkrtips.net',
-  trailingSlash: 'ignore',
+  site: 'https://evonytkrtips.net',
   output: "server",
   adapter: aws(),
   integrations: [
