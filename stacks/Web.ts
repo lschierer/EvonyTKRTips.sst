@@ -19,8 +19,8 @@ export function Web({ app, stack }: StackContext) {
       sourcemap: true,
     },
     customDomain: {
-      domainName: app.stage === "prod" ? "beta.evonytkrtips.net" : `${app.stage}.evonytkrtips.net`,
-      domainAlias: app.stage === "prod" ? "www.beta.evonytkrtips.net" : `www.${app.stage}.evonytkrtips.net`,
+      domainName: app.stage === "prod" ? "evonytkrtips.net" : `${app.stage}.evonytkrtips.net`,
+      domainAlias: app.stage === "prod" ? "www.evonytkrtips.net" : `www.${app.stage}.evonytkrtips.net`,
       hostedZone: "evonytkrtips.net",
     },
 
