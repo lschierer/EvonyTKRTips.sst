@@ -14,6 +14,11 @@ export function Web({ app, stack }: StackContext) {
 
   const site = new AstroSite(stack, "Site", {
     path: './',
+    cdk: {
+      distribution: {
+        defaultRootObject: "index.html",
+      },
+    },
     nodejs: {
       minify: false,
       sourcemap: true,
