@@ -1,5 +1,5 @@
 ---
-title: 'Killing Golem 4 with Aethelflaed and t13s v3'
+title: 'Killing Hard Viking Level 50 with Aethelflaed, Custer and t13s'
 author: 'Luke Schierer'
 sortOrder: 1
 ---
