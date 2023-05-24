@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@astrojs/lit": "^2.0.2",
-    "@astrojs/mdx": "^0.19.3",
+    "@astrojs/mdx": "^0.19.4",
     "@astrojs/node": "^5.1.4",
     "@lit-labs/router": "^0.1.1",
     "@lit-labs/ssr-dom-shim": "^1.1.1",
@@ -51,7 +51,7 @@
     "@spectrum-web-components/tooltip": "^0.31.0",
     "@spectrum-web-components/top-nav": "^0.31.0",
     "@webcomponents/template-shadowroot": "^0.2.1",
-    "astro": "^2.5.4",
+    "astro": "^2.5.5",
     "d3": "^7.8.4",
     "d3-dsv": "^3.0.1",
     "d3-selection": "^3.0.0",
@@ -61,9 +61,9 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
-    "@astrojs/markdoc": "^0.2.2",
+    "@astrojs/markdoc": "^0.2.3",
     "@astrojs/ts-plugin": "^1.0.6",
-    "@markdoc/markdoc": "^0.2.2",
+    "@markdoc/markdoc": "^0.3.0",
     "@types/d3": "^7.4.0",
     "@types/d3-dsv": "^3.0.1",
     "@types/d3-format": "^3.0.1",
@@ -71,7 +71,7 @@
     "@types/d3-selection": "^3.0.5",
     "@types/mime": "^3.0.1",
     "@types/node": "^20.2.3",
-    "astro-sst": "2.8.28",
+    "astro-sst": "2.8.29",
     "autoprefixer": "^10.4.14",
     "aws-cdk-lib": "2.72.1",
     "constructs": "10.1.156",
@@ -85,7 +85,7 @@
     "remark-gfm": "^3.0.1",
     "remark-html": "^15.0.2",
     "remark-rehype": "^10.1.0",
-    "sst": "2.8.28",
+    "sst": "2.8.29",
     "tslib": "^2.5.2",
     "typescript": "5.0.4"
   }
