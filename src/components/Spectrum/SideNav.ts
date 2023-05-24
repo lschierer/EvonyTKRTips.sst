@@ -174,6 +174,7 @@ export class SpNavMenu extends LitElement {
         }
         return itemTemplates;
     }
+
     protected renderItems(table: Element | undefined) {
         let itemsTemplates: TemplateResult[] = [];
         let children = this.querySelector('sp-sidenav-item');
