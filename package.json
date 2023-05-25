@@ -71,9 +71,9 @@
     "@types/d3-selection": "^3.0.5",
     "@types/mime": "^3.0.1",
     "@types/node": "^20.2.3",
-    "astro-sst": "2.8.29",
+    "astro-sst": "2.10.3",
     "autoprefixer": "^10.4.14",
-    "aws-cdk-lib": "2.72.1",
+    "aws-cdk-lib": "2.79.1",
     "constructs": "10.1.156",
     "cssnano": "^6.0.1",
     "dotenv": "^16.0.3",
@@ -85,7 +85,7 @@
     "remark-gfm": "^3.0.1",
     "remark-html": "^15.0.2",
     "remark-rehype": "^10.1.0",
-    "sst": "2.8.29",
+    "sst": "2.10.3",
     "tslib": "^2.5.2",
     "typescript": "5.0.4"
   }
