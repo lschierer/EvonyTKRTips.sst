@@ -70,8 +70,8 @@
     "@types/d3-hierarchy": "^3.1.2",
     "@types/d3-selection": "^3.0.5",
     "@types/mime": "^3.0.1",
-    "@types/node": "^20.2.3",
-    "astro-sst": "2.10.3",
+    "@types/node": "^20.2.5",
+    "astro-sst": "2.10.4",
     "autoprefixer": "^10.4.14",
     "aws-cdk-lib": "2.79.1",
     "constructs": "10.1.156",
@@ -85,7 +85,7 @@
     "remark-gfm": "^3.0.1",
     "remark-html": "^15.0.2",
     "remark-rehype": "^10.1.0",
-    "sst": "2.10.3",
+    "sst": "2.10.4",
     "tslib": "^2.5.2",
     "typescript": "5.0.4"
   }
