@@ -1,5 +1,7 @@
-import { AstroSite, StackContext } from "sst/constructs";
+import { AstroSite, StackContext, use } from "sst/constructs";
 import * as cdk from "aws-cdk-lib";
+import { Api } from "./Api.js";
+
 
 import { RemovalPolicy } from "aws-cdk-lib";
 import {
@@ -11,6 +13,8 @@ import * as cloudfrontOrigins from "aws-cdk-lib/aws-cloudfront-origins";
 
 
 export function Web({ app, stack }: StackContext) {
+
+  const api = use(Api);
 
   const site = new AstroSite(stack, "Site", {
     path: './',
