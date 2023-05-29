@@ -68,7 +68,7 @@ sortOrder: 1
     * Reinforcing Mounted Attack +8%
 * Troops:
   * 1,551,750 t13 mounted
-  * 0 wounded
+  * 14,745 wounded
 * Civilization Treasure
   * Imperial Seal L2
     * Attacking Mounted Troop Defense +15%
