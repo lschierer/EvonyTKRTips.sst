@@ -60,6 +60,7 @@
     "d3-selection": "^3.0.0",
     "electrodb": "^2.5.1",
     "glob": "^10.2.6",
+    "hugo-extended": "^0.112.3",
     "lit": "^2.7.4",
     "path-scurry": "^1.9.2",
     "zod": "^3.21.4"
