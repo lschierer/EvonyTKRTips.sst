@@ -1,0 +1,19 @@
+[[main]]
+  name = "Generals"
+  url = "/generals"
+  weight = 10
+
+[[main]]
+  name = "Monsters"
+  url = "/monsters"
+  weight = 20
+
+[[main]]
+  name = "SvS"
+  url = "/svs"
+  weight = 30
+
+[[main]]
+  name = "Reference"
+  url = "/reference"
+  weight = 100

@@ -7,7 +7,7 @@ titleAddition = "Tips for Budget Gamers"
 description = ""
 
 ## Documentation
-# docsVersion = "0.3"
+docsVersion = "0.4"
 
 ## Sitelinks Search Box
 siteLinksSearchBox = false
@@ -35,10 +35,10 @@ defaultImage = "default-image.png" # put in `./assets/images/`
 fillImage = "1270x740 Center" # normalize image size
 
 # Footer
-footer = "Powered by <a class=\"text-muted\" href=\"https://sst.dev/\">SST</a>, <a class=\"text-muted\" href=\"https://gohugo.io/\">Hugo</a>, and <a class=\"text-muted\" href=\"https://getdoks.org/\">Doks</a>"
+footer = 'Powered by <a class="text-muted" href="https://sst.dev/">SST</a>, <a class="text-muted" href="https://gohugo.io/">Hugo</a>, and <a class="text-muted" href="https://getdoks.org/">Doks</a><br><br> <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>.'
 
 # Feed
-copyRight = 'Copyright (c) 2020-2023 Luke Schierer. <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>.'
+copyRight = 'Copyright (c) 2020-2023 Luke Schierer.'
 
 # Alert
 alert = false
