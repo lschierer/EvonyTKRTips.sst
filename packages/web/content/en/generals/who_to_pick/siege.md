@@ -1,23 +1,24 @@
 ---
 title: "Picking your first siege pair"
-author: 
+author:
   - "Luke Schierer"
-sortOrder: 7
+weight: 7
+type: docs
 ---
-{% banner %}
+{{< alert context="info" >}}
 In the [Overview][], I explain my thinking.  This is a fairly long article, but
 contains a lot of useful background information if you want to understand how I
 arrived at these conclusions. If you just want to be told what to do, you can
-skip it and dive right in here. 
+skip it and dive right in here.
 
-[Overview]: <overview>
-{% /banner %}
+[Overview]: <{{< relref "overview" >}}>
+{{< /alert >}}
 Your Siege generals will be the *last* PvP generals you invest [rune stones][]
-and [BoA][] on.  This is because siege troops require gems to heal. 
+and [BoA][] on.  This is because siege troops require gems to heal.
 
-[rune stones]: <../reference/glossary#rune_stones>
+[rune stones]: <{{< ref "/reference/glossary#rune_stones" >}}>
 
-[BoA]: <../reference/glossary#BoA>
+[BoA]: <{{< ref "/reference/glossary#BoA" >}}>
 
 ### For Free to Play Players:
 
@@ -33,9 +34,9 @@ compares to a Matthias with three or more red stars.
 
 For your assistant general, assemble Suleiman the Magnificent from fragments
 from relics.  He makes one of the best assistant generals for siege troops even
-if you do have a premium general, and he pairs with all of these options. 
+if you do have a premium general, and he pairs with all of these options.
 
-[ascended]: <../reference/glossary#ascend>
+[ascended]: <{{ ref "/reference/glossary#ascend" >}}>
 
 ### For Light Spenders
 
@@ -49,7 +50,7 @@ four of the following generals that you come across:
 * Zucca (738)
 * John Churchill (712)
 * Edward Teach [D S] (700)
-* Petronas (702) 
+* Petronas (702)
 
 However, only actually add skill books to whichever one you happen to get
 first, and only ever use this general in [BoC][] or [BoG][].
@@ -60,14 +61,14 @@ assistant general space. Edward Teach is noticeably better, especially if you
 have enough dragons and spiritual beasts to give both your primary and
 assistant generals a beast, but even without that, he is still the superior
 choice.  That being said, Suleiman still scores A to A+ depending on who is is
-assistant for and remains a respectable choice.  
+assistant for and remains a respectable choice.
 
 Do note that Edward Teach is also listed as a possible primary general.
 Obviously he cannot be both primary and assistant, and he is one of the rare
 generals who conflicts with Suleiman.  Simply use any of the other three
 suggested primary generals as your assistant, with the preference being Zucca,
 Petronas, John Churchill (because of the way assistants work, Petronas brings
-more to the table than Churchill). 
+more to the table than Churchill).
 
 Eventually you will have your [ranged][], [ground][], [wall][], and not just
 one [mounted][] but both a PvP and Monster pair in this type all maxed out on
@@ -85,17 +86,16 @@ invest in using siege this way, but if you can, having a strong general to lead
 them will be key.  Pair Septimus with either Teach or Suleiman, whichever you
 picked as assistant for your attacking pair.
 
-[mounted]: <mounted>
+[mounted]: <{{< relref "mounted" >}}>
 
-[wall]: <wall>
+[wall]: <{{< relref "wall" >}}>
 
-[ground]: <ground>
+[ground]: <{{< relref "ground" >}}>
 
-[ranged]: <ranged>
+[ranged]: <{{< relref "ranged" >}}>
 
-[ascend]: <../reference/glossary#ascend>
+[ascend]: <{{< relref "/reference/glossary#ascend" >}}>
 
-[BoC]: <../reference/glossary#BoC>
+[BoC]: <{{ relref "/reference/glossary#BoC" >}}>
 
-[BoG]: <../reference/glossary#BoG>
-
+[BoG]: <{{ relref "/reference/glossary#BoG" >}}>
