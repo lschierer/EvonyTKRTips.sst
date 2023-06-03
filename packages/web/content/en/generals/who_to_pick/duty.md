@@ -1,17 +1,18 @@
 ---
 title: "Picking your duty generals"
-author: 
-  - "Luke Schierer"
-sortOrder: 6
+author: "Luke Schierer"
+weight: 6
+type: docs
+toc: true
 ---
-{% banner %}
+{{< alert context="info">}}
 In the [Overview][], I explain my thinking.  This is a fairly long article, but
 contains a lot of useful background information if you want to understand how I
 arrived at these conclusions. If you just want to be told what to do, you can
-skip it and dive right in here. 
+skip it and dive right in here.
 
 [Overview]: <overview>
-{% /banner %}
+{{< /alert >}}
 ## In General (no pun intended)
 
 As you upgrade your various buildings, many of them allow you to appoint duty
@@ -20,12 +21,12 @@ officers.  This is highly advantageous.  In rough terms, there is either
 1. a general who specializes in being a duty officer for this building available in the tavern
 1. a premium general who specializes in being a duty officer for this building available to win during events
 1. a premium general who specializes in being a duty officer for this building available only if you pay thousands of dollars
-1. no general at all who specializes in being a duty officer for this building; 
+1. no general at all who specializes in being a duty officer for this building;
 
-* Where the premium generals exist, the tavern option also generally exists. 
-  * The premium general is almost always worth getting even if you cannot ascend the general. 
+* Where the premium generals exist, the tavern option also generally exists.
+  * The premium general is almost always worth getting even if you cannot ascend the general.
   * You *may* be able to offset the difference by ascending the tavern general,
-    but I have not fully explored an unbalanced comparison of that type. 
+    but I have not fully explored an unbalanced comparison of that type.
   * Hold off on using any rune stones or Blood of Ares until you are sure you
     are going to stick with a given duty general.
 * Duty generals do _**NOT**_ benefit from skill books.
@@ -34,7 +35,7 @@ officers.  This is highly advantageous.  In rough terms, there is either
   This is very important, as it means you can take the set of armor you craft
   for your wall general and cycle it through all your duty generals, saving a
   TON of time and money.
-* Some buildings require an officer full time.  Others do not. 
+* Some buildings require an officer full time.  Others do not.
 
 ## Buildings with Dedicated Generals
 
@@ -44,7 +45,7 @@ officers.  This is highly advantageous.  In rough terms, there is either
 * A duty general is necessary whenever you might be attacked.
 * Maurice of Nassau
   * Premium General
-    * occasionally available to win for free from events. 
+    * occasionally available to win for free from events.
     * typically requires very high spending in the King's Party Bonus event
   * Strongest Buffs (at 3-Orange Specialties Level):
     * In-City Ranged Attack Increase (when Archer Tower Officer):  +20%
@@ -63,7 +64,7 @@ officers.  This is highly advantageous.  In rough terms, there is either
 * You can start using a duty general at hospital level 15
 * A duty officer is necessary whenever you are initiating the healing of
   troops.  The officer need not stay assigned for the full duration.
-* Skanderbeg 
+* Skanderbeg
   * Tavern General
   * Strongest Buffs (at 3-Orange Specialties Level):
     * Hospital Capacity Increase (when Hospital Officer):  +25%
@@ -72,10 +73,10 @@ officers.  This is highly advantageous.  In rough terms, there is either
 {% banner %}
 Some strong players actively dislike having a hospital duty officer, they
 prefer to rely on Source of Life rather than on Hospital Capacity and Healing
-Speed.  There are strong arguments both ways. 
+Speed.  There are strong arguments both ways.
 {% /banner %}
 
-### Keep 
+### Keep
 
 * You can start using a duty general at keep level 16
 * Depends on the [buffs][] of the officer.  Officers that offer troop buffs must be
@@ -84,10 +85,10 @@ Speed.  There are strong arguments both ways.
   duration of the construction.
 * Ashoka
   * Premium General
-    * occasionally available to win for free from events. 
+    * occasionally available to win for free from events.
     * typically requires very high spending in the King's Party Bonus event
   Strongest Buffs (at 3-Orange Specialties Level):
-  * Ranged Attack Increase (when Keep Officer):  +20% 
+  * Ranged Attack Increase (when Keep Officer):  +20%
   * Reduce Enemy Ground HP (when Keep Officer):  +15%
   * Construction Speed Increase (when Keep Officer):  +6%
 * Zhuge Liang or Menshikov (these generals are equivalent)
@@ -120,7 +121,7 @@ Speed.  There are strong arguments both ways.
     * Trap Building Speed Increase (when Trap Factory Officer):  +24%
     * Damaged Siege Capacity Increase (when Trap Factory Officer):  +12%
 
-### Academy 
+### Academy
 
 * You can start using a duty general at academy level 20
 * Depends on the [buffs][] of the officer.  Officers that offer troop buffs must be
@@ -160,7 +161,7 @@ Speed.  There are strong arguments both ways.
     * Ranged Defense Increase (when Archer Camp Officer):  +10%
     * Ranged Training Speed Increase (when Archer Camp Officer):  +12%
     * Ranged Training Capacity Increase (when Archer Camp Officer):  +12%
-* John I of Portugal 
+* John I of Portugal
   * Tavern General
   * Strongest Buffs (at 3-Orange Specialties Level):
     * Ranged Attack Increase (when Archer Camp Officer):  +5%
@@ -183,7 +184,7 @@ Speed.  There are strong arguments both ways.
     * Ground Defense Increase (when Barracks Officer):  +15%
     * Ground Training Speed Increase (when Barracks Officer):  +12%
     * Ground Training Capacity Increase (when Barracks Officer):  +12%
-* Abd al-Rahman I 
+* Abd al-Rahman I
   * Relics General and Tavern General
   * Strongest Buffs (at 3-Orange Specialties Level):
     * Ground Attack Increase (when Barracks Officer):  +5%
@@ -206,7 +207,7 @@ Speed.  There are strong arguments both ways.
     * Siege Defense Increase (when Workshop Officer):  +10%
     * Siege Training Speed Increase (when Workshop Officer):  +12%
     * Siege Training Capacity Increase (when Workshop Officer):  +12%
-* Gwon Ryul 
+* Gwon Ryul
   * Tavern General
   * Strongest Buffs (at 3-Orange Specialties Level):
     * Siege Attack Increase (when Workshop Officer):  +5%
@@ -253,7 +254,7 @@ Speed.  There are strong arguments both ways.
     * Attacking Mounted HP Increase (when Rally Spot Officer):  +15%
     * March Size Increase (when Rally Spot Officer):  +17%
 * Toyotomi Hideyoshi
-  * Tavern General 
+  * Tavern General
   * Strongest Buffs (at 3-Orange Specialties Level):
     * All Troop Attack Increase (when Rally Spot Officer):  +5%
     * All Troop HP Increase (when Rally Spot Officer):  +5%
