@@ -1,16 +1,19 @@
 ---
 title: "Picking your wall generals"
-author: 
+author:
   - "Luke Schierer"
-sortOrder: 4
+weight: 4
+type: docs
 ---
 
-{% banner type="info" %}
+{{< alert context="info" >}}
 In the [Overview][], I explain my thinking.  This is a fairly long article, but
 contains a lot of useful background information if you want to understand how I
 arrived at these conclusions. If you just want to be told what to do, you can
-skip it and dive right in here. 
-{% /banner %}
+skip it and dive right in here.
+
+[Overview]: <{{< relref "overview" >}}>
+{{< /alert >}}
 
 When you first start out, you ought to be [ghosting][] your troops whenever you
 might be attacked.  As a result, your Wall generals are not going to help you
@@ -30,7 +33,7 @@ George Dewey is available in the General's Chest in the Tavern.  He is
 unquestionably the best main wall defense general available for those who do
 not spend heavily.  Collect every fragment and copy of him that you can.  You
 need a total of 16 copies of him - one to use, the others in the form of
-fragments.[^230107-2]  
+fragments.[^230107-2]
 
 Looking at your troops in your Rally Spot, mentally subtract out your main PvP
 march. You want to think about what is left when that is out attacking someone.
@@ -60,10 +63,10 @@ If you see any of the following, they are superior choices for assistants availa
 
 [ascending]: <https://www.evonyanswers.com/post/evony-ascending-enhancement-awakened-upgrades>
 
-[ranged]: <ranged>
+[ranged]: <{{< relref "ranged" >}}>
 
-[Overview]: <overview.md>
+[Overview]: <{{< relref "overview" >}}>
 
-[mounted]: <mounted>
+[mounted]: <{{< relref "mounted" >}}>
 
 [ghosting]: <https://www.evonytkrguide.com/guides/evony-tkr-guide-to-ghosting-troops>

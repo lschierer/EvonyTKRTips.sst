@@ -1,16 +1,18 @@
 ---
 title: "Miscellaneous Generals You Ought to Have"
-author: 
+author:
    - "Luke Schierer"
-sortOrder: 9
+weight: 9
+type: docs
 ---
-
+{{< alert context="info" >}}
 In the [Overview][], I explain my thinking.  This is a fairly long article, but
 contains a lot of useful background information if you want to understand how I
 arrived at these conclusions. If you just want to be told what to do, you can
-skip it and dive right in here. 
+skip it and dive right in here.
 
-[Overview]: <overview>
+[Overview]: <{{< relref "overview" >}}>
+{{< /alert >}}
 
 Interestingly, this advice applies almost equally well to both free players and
 light spenders.  The only exception is Theodora, who is only available as a
@@ -21,7 +23,7 @@ While you can get lucky, you are best off waiting until your tavern is at level
 its options looking for generals.  With each level up, the odds of getting a
 good general in the tavern goes up in small, but noticeable increments.  By keep
 27 the consensus seems to be that you start to have a reasonable chance of
-getting the general(s) you want within a couple *thousand* refreshes.  
+getting the general(s) you want within a couple *thousand* refreshes.
 
 Yes, that is right, I said a couple *thousand*.  And yes, these do need to all
 be done at the same time, because something about the lottery engine behind the
@@ -46,7 +48,7 @@ several different things.
    influence the speed of relic exploration with research, but nothing your
    general is or does will matter.  Amir also makes a useful assistant if you
    find an empty keep that for some reason has a ton of available [RSS][].
-1. Some [Duty][] generals are also available in the tavern. 
+1. Some [Duty][] generals are also available in the tavern.
 1. Certain generals necessary for the [General's Hall][] are available in the
    tavern.  If these generals come up, get them.  _**However**_, if they are
    not listed somewhere in these recommendation pages, you are going to keep

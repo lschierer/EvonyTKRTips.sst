@@ -1,54 +1,55 @@
 ---
 title: "Overview of Picking Generals"
-author: 
+author:
    - "Luke Schierer"
-sortOrder: 1
+weight: 1
+type: docs
 ---
 
 Knowing what generals to keep and what generals to get rid of is an important
 topic as you start building your keep. It is a complicated question.  Most of
 us will never have as many skill books, rune stones, general fragments, or
 blood of ares as we would like.  Hard decisions need to be made, and the
-consequences of a poor decision can be intimidating. 
+consequences of a poor decision can be intimidating.
 
 If you look my sources[^230107-1], you will see that there is a 80 to 90 percent overlap in
 the information they provide in generals, but there is some disagreement
-between them.  Use whichever guide you feel you understand best.   
+between them.  Use whichever guide you feel you understand best.
 
 [^230107-1]: See the list of pages on the [Home page][]
 
 [Home page]: </>
 
-When picking your generals, you need to consider several things. 
+When picking your generals, you need to consider several things.
 
 1. If you play long enough, you will get premium generals.  You may not,
    however, be able to *ever* fully [ascend][] these premium generals.  This
    matters a great deal when picking your main general, but assistants are
    *comparatively* easy to replace, *until* you are ready to invest rune stones
-   in an assistant general. 
-1. Following up on the above, a general that you can get fragments for may be 
+   in an assistant general.
+1. Following up on the above, a general that you can get fragments for may be
    *theoretically* weaker than some other general, but if you cannot get
-   fragments for the other general, the one you can is *in practice* stronger. 
+   fragments for the other general, the one you can is *in practice* stronger.
 1. Most dragons are *really* only available to paying players.  If you play
    long enough you will *probably*, *eventually* get your wings, and after
    that, your second level wonder.  For a Free to Play player, this may be over
    a year.  However, that means 4 dragons.  You are unlikely to ever have any
    others.  If a general requires a dragon, do you have one for him/her?  Will
-   you ever? If so, when?  Who will you use in the mean time? 
+   you ever? If so, when?  Who will you use in the mean time?
 1. Rune Stones are incredibly scarce.  You don't actually need most of your
    generals to be fully maxed out however.  You can get noticeable benefit from
    a general with 3 purple specialties if you pick the right generals.  Pick
    one general to max out, either your main monster general or your main PVP
    general.  Forget going beyond purple for the rest until that one is done.
    If some other general needs rune stones to be useful, consider an
-   alternative. 
+   alternative.
 
 While I have seen generic generals that by random chance have attractive
 attributes (such as ore exploitation as a specialty), these are the exception.
 Also note, that the advice below represents lessons learned, things I wish I
 had understood months ago.
 
-[ascend]: <../reference/glossary#ascend>
+[ascend]: <{{< ref "/reference/glossary#ascend" >}}>
 
 In general, unless you have more slots for generals than you know what to do
 with, stick to Historic Gold Generals.  The attributes on these will be better,

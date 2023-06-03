@@ -1,18 +1,18 @@
 ---
 title: "Picking your first ground pair"
-author: 
+author:
   - "Luke Schierer"
-sortOrder: 5
+weight: 5
+type: 'docs'
 ---
-{% banner type="info" %}
+{{< alert context="info"  >}}
 In the [Overview][], I explain my thinking.  This is a fairly long article, but
 contains a lot of useful background information if you want to understand how I
 arrived at these conclusions. If you just want to be told what to do, you can
-skip it and dive right in here. 
-{% /banner %}
+skip it and dive right in here.
 
-[Overview]: <overview.md>
-
+[Overview]: <{{< relref "overview" >}}>
+{{< /alert >}}
 
 ### For Free to Play Players:
 
@@ -50,11 +50,12 @@ skill books between your two generals:
 * March Size
 * March Speed
 
-{% banner header="Specific General Notes" type="warning" %}
+{{< alert header="" context="warning" >}}
+#### Specific General Notes
 Note that if you use Turenne, or Soult, you _**cannot**_ use the Ground Troop Attack skill book on *either* general.
 
 Note that if you use Alessandra, she _**must**_ have the March Size Increase Skill Book.
-{% /banner %}
+{{< /alert >}}
 
 
 ### For light spenders

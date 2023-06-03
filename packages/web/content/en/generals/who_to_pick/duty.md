@@ -1,7 +1,7 @@
 ---
 title: "Picking your duty generals"
 author: "Luke Schierer"
-weight: 6
+weight: 8
 type: docs
 toc: true
 ---
@@ -11,7 +11,7 @@ contains a lot of useful background information if you want to understand how I
 arrived at these conclusions. If you just want to be told what to do, you can
 skip it and dive right in here.
 
-[Overview]: <overview>
+[Overview]: <{{< relref "overview" >}}>
 {{< /alert >}}
 ## In General (no pun intended)
 
@@ -70,11 +70,11 @@ officers.  This is highly advantageous.  In rough terms, there is either
     * Hospital Capacity Increase (when Hospital Officer):  +25%
     * Healing Speed Increase (when Hospital Officer):  +12%
 
-{% banner %}
+{{< alert context="info">}}
 Some strong players actively dislike having a hospital duty officer, they
 prefer to rely on Source of Life rather than on Hospital Capacity and Healing
 Speed.  There are strong arguments both ways.
-{% /banner %}
+{{< /alert >}}
 
 ### Keep
 
@@ -261,7 +261,7 @@ Speed.  There are strong arguments both ways.
     * March Size Increase (when Rally Spot Officer):  +9%
 
 
-[debuffs]: <../reference/glossary#debuff>
+[debuffs]: <{{< ref "/reference/glossary#debuff" >}}>
 
-[buffs]: <../reference/glossary#buff>
+[buffs]: <{{< ref "/reference/glossary#buff" >}}>
 

@@ -1,13 +1,13 @@
 ---
 title: "Peace Time Subcity Mayors"
-author: 
-  - "Luke Schierer"
-sortOrder: 10
+author: "Luke Schierer"
+weight: 20
+type: docs
 ---
 
 Periodically someone asks about Catherine II, or another of the peace time
 subcity mayors.  To answer this question, we need to compare the two following
-generals. 
+generals.
 
 {% h_flex %}
 {% card heading="Catherine II" alt="Catherine II" img="/public/images/generals/Catherine_II.jpg" %}
@@ -42,4 +42,4 @@ spending levels.  If you want to have peace time subcity mayors, be prepared to
 invest significant amounts of gems, rune stones, and medals in them.  If you
 are not willing to do so, your more fully developed war time generals will
 probably provide better training, construction, and gold bonuses than a poorly
-developed set of peace time generals. 
+developed set of peace time generals.
