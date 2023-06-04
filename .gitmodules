@@ -1,0 +1,3 @@
+[submodule "packages/web/themes/spectrum"]
+	path = packages/web/themes/spectrum
+	url = git@github.com:lschierer/hugo-spectrum.git
