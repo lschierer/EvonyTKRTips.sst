@@ -1,6 +1,6 @@
 {
-  "name": "@hyas/doks",
-  "description": "Doks theme",
+  "name": "@EvonyTKRTips/web",
+  "description": "EvonyTKRTips Frontend",
   "version": "0.5.0",
   "engines": {
     "node": ">=16.16.0"
@@ -8,16 +8,14 @@
   "browserslist": [
     "defaults"
   ],
-  "repository": "https://github.com/h-enk/doks",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
-    "init": "shx rm -rf .git && git init -b main",
     "create": "pnpm hugo new",
     "prestart": "npm run clean",
-    "start": "pnpm hugo server --bind=0.0.0.0 --disableFastRender",
+    "start": "pnpm hugo server --bind=0.0.0.0 --disableFastRender --navigateToChanged --verbose ",
     "prebuild": "npm run clean",
     "build": "pnpm hugo --gc --minify",
     "build:preview": "npm run build -D -F",
@@ -63,7 +61,10 @@
     "stylelint": "^14.16.1",
     "stylelint-config-standard-scss": "^4.0.0"
   },
-  "Dependencies": {
-    "hugo": "^0.112.3"
+  "dependencies": {
+    "@adobe/coral-spectrum": "^4.15.18",
+    "hugo-extended": "^0.112.3",
+    "mathjax": "^3.2.2",
+    "mermaid": "^10.2.2"
   }
 }
