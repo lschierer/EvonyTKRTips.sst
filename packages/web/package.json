@@ -63,6 +63,9 @@
   },
   "dependencies": {
     "@adobe/coral-spectrum": "^4.15.18",
+    "@spectrum-css/page": "^5.0.30",
+    "@spectrum-css/site": "^3.0.20",
+    "@spectrum-css/vars": "^9.0.7",
     "hugo-extended": "^0.112.3",
     "mathjax": "^3.2.2",
     "mermaid": "^10.2.2"
