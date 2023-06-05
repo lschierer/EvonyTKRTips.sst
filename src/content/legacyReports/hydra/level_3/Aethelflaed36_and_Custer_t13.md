@@ -1,5 +1,5 @@
 ---
-title: 'Killing Behemoth with Aethelflaed, Custer and t13s'
+title: 'Killing Hydra Level 3 with Aethelflaed, Custer and t13s'
 author: 'Luke Schierer'
 sortOrder: 1
 ---
@@ -58,7 +58,7 @@ sortOrder: 1
     * Mounted Attack on Monsters +30%
     * Mounted HP on Monsters +30%
     * Mounted Defense on Monsters +30%
-  * Shadow L11 
+  * Shadow L11
     * +10.2% Mounted Attack on Monsters
     * +10.2% Mounted Attack on Monsters
     * +5.8% Mounted Attack
@@ -105,7 +105,7 @@ sortOrder: 1
     * Military tree
     * Military Advance tree
     * Subordinate City tree
-    * Advancement tree complete 
+    * Advancement tree complete
     * Defense tree complete
   * From Academy level 35
     * Military Advance Tree
