@@ -1,13 +1,6 @@
 import { z, defineCollection } from 'astro:content';
-import {docsSchema, monsterSchema} from '../schemas/evonySchemas';
+import { docsSchema, i18nSchema } from '@astrojs/starlight/schema';
 
-const docsCollection = defineCollection({
-  schema: docsSchema,
-});
-
-const monsterReports = defineCollection({
-  schema: monsterSchema,
-});
 
 const legacyReports = defineCollection({
   schema: z.object({
@@ -18,7 +11,8 @@ const legacyReports = defineCollection({
 });
 
 export const collections = {
-  docs: docsCollection,
+  docs: defineCollection({ schema: docsSchema() }),
+  i18n: defineCollection({ type: 'data', schema: i18nSchema() }),
   legacyReports: legacyReports,
 };
 
