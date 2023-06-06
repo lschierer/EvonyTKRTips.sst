@@ -1,7 +1,8 @@
 ---
 title: 'Killing Hydra Level 1 with Elektra and Eleanor using t12 ranged'
-author: 'Luke Schierer'
-weight: 1
+author: 
+ - 'Luke Schierer'
+sortOrder: 1
 type: docs
 ---
 
