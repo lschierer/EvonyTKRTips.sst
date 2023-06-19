@@ -1,5 +1,5 @@
 ---
-title: 'Killing Level 3 Hydra with Aethelflaed, Custer and t13s v2'
+title: 'Killing Level 5 Lava Turtle with Aethelflaed, Custer and t13s'
 author: 'Luke Schierer'
 sortOrder: 2
 ---
@@ -87,7 +87,7 @@ sortOrder: 2
     * Reinforcing Mounted Attack +8%
 * Troops:
   * 1,682,750 t13 mounted
-  * 0 wounded
+  * 16,843 wounded
 * Civilization Treasure
   * Imperial Seal L2
     * Attacking Mounted Troop Defense +15%
