@@ -1,19 +1,38 @@
 ---
-title: 'Killing Behemoth with Aethelflaed, Custer and t13s'
+title: 'Killing Level 5 Lava Turtle with Aethelflaed, Custer and t13s'
 author: 'Luke Schierer'
-sortOrder: 1
+sortOrder: 2
 ---
 
 * Main General: Aethelflaed
-  * Level 36
+  * Level 37
   * 4 gold specialties
   * 3 red stars
-  * All 5 stars: ares spear and fearless ares boots, courageous dragon armor, Rurik Helmet, Rurik Leg Armor, Rurik Bracers
+  * All 5 stars: 
+    * ares spear
+      * Mounted Troop Attack +24% refine
+      * March Speed to monsters +24.9% refine
+      * Mounted Troop Attack +1005 refine
+      * Mounted Troop Attack +22.6% refine
+    * fearless ares boots
+      * Mounted Troop Defense +13 refine
+    * courageous dragon armor
+      * Mounted Troop Defense +400 refine
+      * Mounted Troop Defense +176 refine
+      * Mounted Troop Defense +17.9% refine
+    * Rurik Helmet
+      * No refines
+    * Rurik Leg Armor
+      * No refines
+    * Rurik Bracers
+      * Mounted Troop Attack +25.6% refine
+      * Mounted Troop Attack +26.8% refine
+      * Mounted Troop Attack +1070 refine
   * skill books:
     * mounted troop attack l4
     * mounted troop defense against monsters l4
     * mounted troop hp against monsters l4
-  * 6.4m power
+  * 6.5m power
   * Fafnir L10
     * General Attack +110
     * General Politics +100
@@ -36,8 +55,8 @@ sortOrder: 1
       * March Speed +30%
       * General Survival Rate +100%
 * Assistant General: George A. Custer
-  * Gold Specalties: Mounted Troop Defense, Strike
-  * orange specialty: Mounted Troop Ares
+  * Gold Specalties: Mounted Troop Defense, Strike, Mounted Troop Ares
+  * purple specialty: Battle of Gettysburg
   * skill books:
     * mounted troop defense l4
     * mounted troop hp l4
@@ -47,10 +66,10 @@ sortOrder: 1
 * Rally Spot Officer: Toyotomi Hideyoshi
   * March Size +5%
   * Attacking Troops Attack +5%
-  * March Size Capacity +15%
-  * March Size Capacity +20,000
+  * March Size Capacity +25%
+  * March Size Capacity +50,000
 * Monarch Gear:
-  * L8 Thunder Staff
+  * L8.2 Thunder Staff
   * L8 Thunder Grail
   * L8 Thunder Decoration
 * Blazons:
@@ -58,7 +77,7 @@ sortOrder: 1
     * Mounted Attack on Monsters +30%
     * Mounted HP on Monsters +30%
     * Mounted Defense on Monsters +30%
-  * Shadow L11 
+  * Shadow L12 
     * +10.2% Mounted Attack on Monsters
     * +10.2% Mounted Attack on Monsters
     * +5.8% Mounted Attack
@@ -67,8 +86,8 @@ sortOrder: 1
     * Mounted Attack on Monsters +9%
     * Reinforcing Mounted Attack +8%
 * Troops:
-  * 1,551,750 t13 mounted
-  * 14,745 wounded
+  * 1,682,750 t13 mounted
+  * 16,843 wounded
 * Civilization Treasure
   * Imperial Seal L2
     * Attacking Mounted Troop Defense +15%
@@ -100,8 +119,10 @@ sortOrder: 1
     * Marching Mounted Troop Attack +25%
     * Marching Mounted Troop Defense +25%
     * Marching Mounted Troop HP +25%
+  * Golden Eagle Flag
+    * All Troops Attack +13%
 * Research
-  * All attack buff relevent research up through academy level 34
+  * All attack buff relevant research up through academy level 34
     * Military tree
     * Military Advance tree
     * Subordinate City tree
@@ -109,7 +130,7 @@ sortOrder: 1
     * Defense tree complete
   * From Academy level 35
     * Military Advance Tree
-      * Adv Fearless Level 9
-      * Adv Prestige Level 24
+      * Adv Fearless Level 24
+      * Adv Prestige Level 25
     * Military Tree complete
     * Defense Tree complete

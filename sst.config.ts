@@ -7,7 +7,7 @@ export default {
   config(_input) {
     return {
       name: "EvonyTKRTips",
-      profile: "default",
+      profile: "home",
       region: "us-east-2",
     };
   },
