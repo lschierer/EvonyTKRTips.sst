@@ -1,5 +1,5 @@
 ---
-title: 'Killing Level 3 Hydra with Aethelflaed, Custer and t13s v2'
+title: 'Killing Level 4 Hydra with Aethelflaed, Custer and t13s'
 author: 'Luke Schierer'
 sortOrder: 2
 ---
