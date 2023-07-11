@@ -37,7 +37,7 @@ mounted troops for your meat shield.  For Mounted troops, your tiers look like t
 For your defense, the HP and Defense figures are how much your
 troops can absorb, and the attack is how much damage they give back.
 
-If you are trying to build what is known as a trap keep, one that
+If you are trying to build what is known as a [trap keep], one that
 entices the enemy to attack but has 1) very little of value in it
 (in case you misjudge the size of the attack you attract) and 2)
 hopefully costs the enemy more points than it gives up, you care a
@@ -179,8 +179,6 @@ on mounted attack, each with a value of 950 or better.  This will give your
 meat shield the best ability to hit back. If you are ghosting everything else,
 this attack *is* the bulk of your counter-attack, so that is important.
 
-[wall]: <../generals/wall.mdoc>
-
 Regardless of whether or not you are ghosting everything else, it is important 
 that your meat shield *survive*.  To do that, attack does not actually matter.  
 Defense and HP do.
@@ -228,4 +226,8 @@ You focus on t11 and t12 siege, and t12 archers for your defense.
     mechanics that constitute a single report).
 
 [next]: <next_steps>
+
+[trap keep]: <trap_keeps>
+
+[wall]: <../generals/wall.mdoc>
 
