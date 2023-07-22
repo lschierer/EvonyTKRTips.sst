@@ -16,6 +16,12 @@
     "@astrojs/mdx": "^0.19.7",
     "@lit-labs/router": "^0.1.1",
     "@spectrum-css/button": "^10.1.10",
+    "@astrojs/node": "^5.3.0",
+    "@aws-sdk/client-dynamodb": "^3.359.0",
+    "@aws-sdk/lib-dynamodb": "^3.359.0",
+    "@lit-labs/router": "^0.1.1",
+    "@lit-labs/ssr-dom-shim": "^1.1.1",
+    "@spectrum-css/button": "^10.1.6",
     "@spectrum-css/icon": "^3.0.49",
     "@spectrum-css/page": "^5.0.31",
     "@spectrum-css/sidenav": "^3.0.50",
@@ -49,6 +55,7 @@
     "@spectrum-web-components/top-nav": "^0.34.0",
     "@webcomponents/template-shadowroot": "^0.2.1",
     "astro": "^2.8.5",
+    "aws-sdk": "^2.1404.0",
     "bcp-47": "^2.1.0",
     "d3": "^7.8.5",
     "d3-dsv": "^3.0.1",
@@ -77,6 +84,9 @@
     "sharp": "^0.32.3",
     "sst": "^2.22.3",
     "tslib": "^2.6.0",
-    "typescript": "^5.1.6"
+    "typescript": "^5.1.6",
+    "remark-gfm": "^3.0.1",
+    "remark-html": "^15.0.2",
+    "remark-rehype": "^10.1.0"
   }
 }
