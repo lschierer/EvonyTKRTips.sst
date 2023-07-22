@@ -1,4 +1,4 @@
-import { AstroSite, StackContext, use } from "sst/constructs";
+import { StaticSite, StackContext, use } from "sst/constructs";
 import * as cdk from "aws-cdk-lib";
 import { Api } from "./Api.js";
 
@@ -16,8 +16,13 @@ export function Web({ app, stack }: StackContext) {
 
   const api = use(Api);
 
-  const site = new AstroSite(stack, "Site", {
+  const site = new StaticSite(stack, "Site", {
     path: './',
+    buildCommand: "pnpm run build",
+    buildOutput: "dist",
+    environment: {
+      VITE_GRAPHQL_URL: api.url + "/graphql",
+    },
     cdk: {
       distribution: {
         defaultRootObject: "index.html",
