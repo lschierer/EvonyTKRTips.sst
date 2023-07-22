@@ -1,9 +1,7 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
-import aws from "astro-sst/lambda";
-import node from '@astrojs/node';
+
 import lit from "@astrojs/lit";
-import markdoc from "@astrojs/markdoc";
 
 // https://astro.build/config
 export default defineConfig({
@@ -13,10 +11,8 @@ export default defineConfig({
       title: 'Evony TKR Site',
       sidebar: [
         {
-          label: 'Guides',
-          items: [
-            { label: 'Example Guide', link: '/guides/example/' },
-          ],
+          label: 'Generals',
+          autogenerate: { directory: 'generals' },
         },
         {
           label: 'Reference',
@@ -24,12 +20,12 @@ export default defineConfig({
         },
       ],
     }),
-    markdoc(),
     lit(),
   ],
   vite: {
     build: {
       minify: false
     },
-  }
+  },
+  image: { service: { entrypoint: 'astro/assets/services/sharp' } }
 });

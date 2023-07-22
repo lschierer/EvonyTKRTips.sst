@@ -1,12 +1,14 @@
 ---
 title: 'Picking Subcity Mayors'
 ---
-{% banner type="info" %}
+import SPTable from '../../../components/SPTable.astro';
+
+:::note
 In the [Overview][], I explain my thinking.  This is a fairly long article, but
 contains a lot of useful background information if you want to understand how I
 arrived at these conclusions. If you just want to be told what to do, you can
 skip it and dive right in here. 
-{% /banner %}
+:::
 
 ## Philosophy
 
@@ -49,7 +51,7 @@ list and everyone else use the 3 Orange list. Further note, generals marked
 with a 'Y' in the 'Availability' column are the only ones available without
 getting lucky in paid events.
 
-{% sptable csv="attack_mayors.csv" %}{% /sptable %}
+SPTable csv="attack_mayors.csv"
 
 ## Reducing the Enemy's Ability to Survive Your Attack
 
@@ -64,7 +66,7 @@ list and everyone else use the 3 Orange list. Further note, generals marked
 with a 'Y' in the 'Availability' column are the only ones available without
 getting lucky in paid events. 
 
-{% sptable csv="toughness_mayors.csv" %}{% /sptable %}
+SPTable csv="toughness_mayors.csv"
 
 ## Trying to find balance
 
@@ -82,6 +84,6 @@ because another use for this list is as a tie breaker: if you are debating
 between two generals in one of the other lists, knowing where they fall here
 can help make the decision.
 
-{% sptable csv="overall_mayors.csv" %}{% /sptable %}
+SPTable csv="overall_mayors.csv"
 
-[Overview]: overview.md
+[Overview]: <../overview>
