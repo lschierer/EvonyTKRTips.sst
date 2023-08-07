@@ -9,6 +9,9 @@ export default defineConfig({
   site: 'https://evonytkrtips.net',
   output: "server",
   adapter: aws(),
+  experimental: {
+    assets: true,
+  },
   integrations: [
     markdoc(),
     lit(),
