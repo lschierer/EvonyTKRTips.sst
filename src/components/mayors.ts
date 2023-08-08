@@ -10,7 +10,7 @@ import type {
     TableHeadCell,
     TableRow
 } from '@spectrum-web-components/table';
-import {DSVRowArray} from "d3-dsv";
+import type {DSVRowArray} from "d3-dsv";
 import * as dsv from "d3-dsv";
 
 @customElement('compare-mayors')
