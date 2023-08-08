@@ -12,33 +12,10 @@ governing permissions and limitations under the License.
 
 /* import the global stylesheets */
 @import '@spectrum-web-components/styles/typography.css';
-@import '@spectrum-web-components/styles/all-medium-light.css';
 @import '@spectrum-web-components/styles/scale-medium.css';
-@import '@spectrum-web-components/styles/theme-light.css';
 @import "@spectrum-css/vars/dist/spectrum-global.css";
 @import "@spectrum-css/vars/dist/spectrum-medium.css";
-@import "@spectrum-css/vars/dist/spectrum-light.css";
 @import "@spectrum-css/page/dist/index-vars.css";
-
-html,
-body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
-  background-color: #ededed;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-}
-
-main {
-  max-width: 90%;
-  margin: 0 auto;
-}
 
 
 sp-theme {
@@ -46,3 +23,6 @@ sp-theme {
   flex: 1 1 auto;
 }
 
+.header {
+  backgroundColor: 'var(--spectrum-blue-600)',
+}
