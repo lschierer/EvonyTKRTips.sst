@@ -1,8 +1,8 @@
 import { defineConfig } from "astro/config";
 import aws from "astro-sst/lambda";
 import node from '@astrojs/node';
+import mdx from '@astrojs/mdx';
 import lit from "@astrojs/lit";
-import markdoc from "@astrojs/markdoc";
 
 // https://astro.build/config
 export default defineConfig({
@@ -13,7 +13,7 @@ export default defineConfig({
     assets: true,
   },
   integrations: [
-    markdoc(),
+    mdx(),
     lit(),
   ],
   vite: {
