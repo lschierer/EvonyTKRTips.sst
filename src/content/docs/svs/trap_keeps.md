@@ -1,9 +1,9 @@
 --- 
-title: 'The T1 Defense'
+title: 'T1s and Trap Keeps'
 author:
 - 'Luke Schierer'
 - 'Redwood'
-  sortOrder: 4
+sortOrder: 6
 --- 
 
 At some point, as an alliance if not as an individual, you will want to build what is known as a "trap keep."  This is not an account that you will use for regular play, rather it is dedicated to SvS play, and in particular is configured to be attacked by the enemy.  
