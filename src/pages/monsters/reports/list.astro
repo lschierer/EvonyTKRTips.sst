@@ -1,0 +1,16 @@
+---
+import {getCollection, getEntry, getEntries } from "astro:content";
+
+const allReports = await getCollection('legacyReports');
+
+---
+<html>
+<body>
+test
+<ul>
+    {allReports.map((r) => {
+        return <li>{r.slug}</li>;
+    })}
+</ul>
+</body>
+</html>
