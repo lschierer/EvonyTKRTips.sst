@@ -57,7 +57,7 @@ several different things.
    selling a general seems like a waste of gold, however the things that
    activating your general's hall unlocks is worth the cost.
 
-[Duty]: <duty.mdoc>
+[Duty]: <duty.mdx>
 
 [General's Hall]: <../reference/glossary#Generals_Hall>
 

@@ -1,12 +1,15 @@
 ---
 title: 'Picking Subcity Mayors'
 ---
-{% banner type="info" %}
-In the [Overview][], I explain my thinking.  This is a fairly long article, but
-contains a lot of useful background information if you want to understand how I
-arrived at these conclusions. If you just want to be told what to do, you can
-skip it and dive right in here. 
-{% /banner %}
+import CompareMayors from '../../../components/CompareMayors.js'
+import Banner from '../../../components/Spectrum/Banner.astro';
+
+<Banner type="info" >
+    In the [Overview][], I explain my thinking.  This is a fairly long article, but
+    contains a lot of useful background information if you want to understand how I
+    arrived at these conclusions. If you just want to be told what to do, you can
+    skip it and dive right in here.
+</Banner>
 
 ## Philosophy
 
@@ -49,7 +52,7 @@ list and everyone else use the 3 Orange list. Further note, generals marked
 with a 'Y' in the 'Availability' column are the only ones available without
 getting lucky in paid events.
 
-{% sptable csv="attack_mayors.csv" %}{% /sptable %}
+<CompareMayors csv="attack_mayors.csv" client:only></CompareMayors>
 
 ## Reducing the Enemy's Ability to Survive Your Attack
 
@@ -64,13 +67,13 @@ list and everyone else use the 3 Orange list. Further note, generals marked
 with a 'Y' in the 'Availability' column are the only ones available without
 getting lucky in paid events. 
 
-{% sptable csv="toughness_mayors.csv" %}{% /sptable %}
+SPTable csv="toughness_mayors.csv"
 
 ## Trying to find balance
 
 Some authors advocate an approach where you look at the overall amount that
 each general reduces the enemy's stats, regardless of what specific attribute
-is being debuffed.  There are trade offs with this hybrid approach,
+is being debuffed.  There are tradeoffs with this hybrid approach,
 as while it is great that you are both reducing attack and reducing toughness,
 the resulting generals are not the strongest in either category.  My instinct
 is that a free or light spender is probably better off specializing with
@@ -78,10 +81,10 @@ generals from either the attack debuff set or the toughness debuff set,
 rather than attempting to do both with one of these lists.
 
 I have included rather more generals in this section than in the other two
-because another use for this list is as a tie breaker: if you are debating
+because another use for this list is as a tiebreaker: if you are debating
 between two generals in one of the other lists, knowing where they fall here
 can help make the decision.
 
-{% sptable csv="overall_mayors.csv" %}{% /sptable %}
+SPTable csv="overall_mayors.csv"
 
 [Overview]: overview.md

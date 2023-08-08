@@ -179,7 +179,7 @@ on mounted attack, each with a value of 950 or better.  This will give your
 meat shield the best ability to hit back. If you are ghosting everything else,
 this attack *is* the bulk of your counter-attack, so that is important.
 
-[wall]: <../generals/wall.mdoc>
+[wall]: <../generals/wall.mdx>
 
 Regardless of whether or not you are ghosting everything else, it is important 
 that your meat shield *survive*.  To do that, attack does not actually matter.  
