@@ -83,7 +83,7 @@ accept compromises based on the generals you randomly happen to get first.
    *someday* use this as the bulk of your meat shield and the bulk of your keep's
    defenses.  Look for Wall Defense generals that complement this troop type.
    You need a main general and an assistant general.  The main general will be
-   the *third* general you max out.  ([2 generals](wall.mdoc))
+   the *third* general you max out.  ([2 generals](wall.mdx))
 
 4. Look for generals that are specialized as duty generals for your keep and
    other buildings.  If you find one for a building that is too small to get a
