@@ -12,11 +12,26 @@ export default defineConfig({
       sidebar: [
         {
           label: 'Generals',
-          autogenerate: { directory: 'generals' },
+          collapsed: true,
+          autogenerate: {
+            directory: 'generals',
+            collapsed: true,
+          },
+        },
+        {
+          label: 'SvS',
+          collapsed: true,
+          autogenerate: {
+            directory: 'svs',
+            collapsed: true,
+          },
         },
         {
           label: 'Reference',
-          autogenerate: { directory: 'reference' },
+          collapsed: true,
+          autogenerate: {
+            directory: 'reference'
+          },
         },
       ],
     }),
