@@ -1,0 +1,14 @@
+---
+export interface Props {
+    frontmatter: any,
+}
+
+const { frontmatter, navsections } = Astro.props;
+import Layout from './Layout.astro';
+const title = frontmatter.title;
+---
+
+<Layout title={title} navsections={navsections? navsections : ''} >
+    <slot />
+</Layout>
+

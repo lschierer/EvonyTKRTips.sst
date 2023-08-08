@@ -18,6 +18,37 @@ export default defineConfig({
           },
         },
         {
+          label: 'Monsters',
+          collapsed: true,
+          items: [
+            {
+              label: 'About Monsters',
+              link: 'monsters/',
+
+            },
+            {
+              label: 'Getting Started',
+              link: 'monsters/getting_started/',
+            },
+            {
+              label: 'Boss Monster Overview',
+              link: 'monsters/boss_overview/',
+            },
+            {
+              label: 'Reports',
+              link: 'monsters/reports/',
+            },
+            {
+              label: 'Reports',
+              collapsed: true,
+              autogenerate: {
+                directory: 'monsters/legacyReports',
+                collapsed: true,
+              },
+            },
+          ]
+        },
+        {
           label: 'SvS',
           collapsed: true,
           autogenerate: {
