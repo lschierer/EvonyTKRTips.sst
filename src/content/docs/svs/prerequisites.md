@@ -1,5 +1,6 @@
 ---
 title: 'Prerequisites'
+author: 'Luke Schierer'
 sortOrder: 1
 ---
 
@@ -8,9 +9,9 @@ versus player (PvP).  This article is looking at the latter.
 
 [minimal]: <minimal>
 
-For now be aware that everything here is somewhat speculative - I am not yet an
-active participant myself in SvS.  I am collecting here the knowledge of those
-who are for when I will be.
+For now be aware that everything here is somewhat speculative - I have just started
+as an active participant myself in SvS.  I am collecting here the knowledge of those
+who are more experienced to augment my own very minimal time in role.
 
 ### Minimums
 
