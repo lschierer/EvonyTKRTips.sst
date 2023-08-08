@@ -8,6 +8,9 @@ export default defineConfig({
   integrations: [
     starlight({
       title: 'Evony TKR Tips',
+      customCss: [
+        './src/styles/styles.css',
+      ],
       sidebar: [
         {
           label: 'Generals',
