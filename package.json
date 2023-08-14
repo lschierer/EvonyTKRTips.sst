@@ -76,6 +76,7 @@
     "constructs": "10.2.69",
     "cssnano": "^6.0.1",
     "electrodb": "^2.8.1",
+    "is-stream": "^3.0.0",
     "postcss-dropunusedvars": "^2.2.1",
     "postcss-import": "^15.1.0",
     "postcss-varfallback": "^1.1.3",
