@@ -1,6 +1,5 @@
 import { StaticSite, StackContext, use } from "sst/constructs";
 import * as cdk from "aws-cdk-lib";
-import { Api } from "./Api.js";
 
 
 import { RemovalPolicy } from "aws-cdk-lib";
