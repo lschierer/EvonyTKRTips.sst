@@ -8,8 +8,11 @@
   },
   "devDependencies": {
     "@types/node": "^20.1.4",
+    "sst": "2.24.8",
+    "vitest": "^0.31.0"
     "@types/aws-lambda": "^8.10.115",
-    "vitest": "^0.31.0",
-    "sst": "2.24.1"
+  },
+  "dependencies": {
+    "@pothos/core": "^3.30.0",
   }
 }
