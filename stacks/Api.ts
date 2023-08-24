@@ -1,20 +1,33 @@
-import { use, GraphQLApi, StackContext, Api as ApiGateway } from "sst/constructs";
+import { use, StackContext, Api as ApiGateway } from "sst/constructs";
 import { Database } from "./Database.js";
 
 export function Api({ stack }: StackContext) {
-    const api = new GraphQLApi(stack, "ApolloApi", {
-        server: {
-            handler: "packages/functions/src/lambda.handler",
-            bundle: {
-                format: "cjs",
-            },
+  const api = new ApiGateway(stack, "api", {
+    defaults: {
+      function: {
+        bind: [use(Database)],
+      },
+    },
+    routes: {
+      "POST /graphql": {
+        type: "graphql",
+        function: {
+          handler: "packages/functions/src/graphql/graphql.handler",
         },
-    });
+        pothos: {
+          schema: "packages/functions/src/graphql/schema.ts",
+          output: "packages/graphql/schema.graphql",
+          commands: [
+            "cd packages/graphql && npx @genql/cli --output ./genql --schema ./schema.graphql --esm",
+          ],
+        },
+      },
+    },
+  });
 
-    // Show the API endpoint in output
-    stack.addOutputs({
-        ApiEndpoint: api.url,
-    });
+  stack.addOutputs({
+    API: api.url,
+  });
 
-    return api;
+  return api;
 }
