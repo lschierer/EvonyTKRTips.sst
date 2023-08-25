@@ -1,7 +1,6 @@
 {
   "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
-    "experimentalDecorators": true,
     "strictNullChecks": true,
     "useDefineForClassFields": false,
     "verbatimModuleSyntax": true,
@@ -9,7 +8,9 @@
       {
         "name": "@astrojs/ts-plugin"
       }
-    ]
+    ],
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact"
   },
   "include": [
     "src/**/*.ts",
