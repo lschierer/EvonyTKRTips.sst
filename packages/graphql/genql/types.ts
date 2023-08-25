@@ -2,7 +2,7 @@ export default {
     "scalars": [
         1,
         2,
-        5
+        6
     ],
     "types": {
         "Article": {
@@ -21,6 +21,14 @@ export default {
         },
         "ID": {},
         "String": {},
+        "General": {
+            "name": [
+                2
+            ],
+            "__typename": [
+                2
+            ]
+        },
         "Mutation": {
             "createArticle": [
                 0,
@@ -51,6 +59,15 @@ export default {
             ],
             "articles": [
                 0
+            ],
+            "general": [
+                3,
+                {
+                    "name": [
+                        2,
+                        "String!"
+                    ]
+                }
             ],
             "__typename": [
                 2
