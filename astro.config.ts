@@ -1,5 +1,6 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import preact from '@astrojs/preact';
 import lit from "@astrojs/lit";
 
 // https://astro.build/config
@@ -69,6 +70,7 @@ export default defineConfig({
       ],
     }),
     lit(),
+    preact(),
   ],
   vite: {
     build: {

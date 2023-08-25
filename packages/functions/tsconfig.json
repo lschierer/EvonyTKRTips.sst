@@ -1,5 +1,5 @@
 {
-  "extends": "@tsconfig/node16/tsconfig.json",
+  "extends": "@tsconfig/node20/tsconfig.json",
   "compilerOptions": {
     "module": "esnext",
     "moduleResolution": "node",
@@ -7,5 +7,6 @@
     "paths": {
       "@graphql-dynamo/core/*": ["../core/src/*"]
     }
+
   }
 }
