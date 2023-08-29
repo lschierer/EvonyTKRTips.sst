@@ -1,5 +1,11 @@
 ---
 import {GeneralTable} from "./GeneralTable";
+export interface Props {
+    name: string;
+}
+
+const { name } = Astro.props;
 ---
 
-<general-table></general-table>
+test 1
+<GeneralTable name={name} client:only/>
