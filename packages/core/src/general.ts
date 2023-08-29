@@ -53,11 +53,11 @@ const GeneralEntity = new Entity(
             primary: {
                 pk: {
                     field: "pk",
-                    composite: [],
+                    composite: ["generalID"],
                 },
                 sk: {
                     field: "sk",
-                    composite: ["generalID"],
+                    composite: ["name"],
                 },
             },
         },
@@ -68,7 +68,7 @@ const GeneralEntity = new Entity(
 export type GeneralEntityType = EntityItem<typeof GeneralEntity>;
 
 export async function create(name: string, leadership?: number, attack?: number, defense?: number, politics?: number, maxStars?: number){
-    const result = await ArticleEntity.create({
+    const result = await GeneralEntity.create({
         generalID: ulid(),
         name,
         leadership,
@@ -80,14 +80,16 @@ export async function create(name: string, leadership?: number, attack?: number,
     return result.data;
 }
 
-export async function get(generalID: string) {
+export async function get(generalID: string, name: string) {
     const result = await GeneralEntity.get({
-        generalID
+        generalID,
+        name
     }).go();
     return result.data;
 }
 
 export async function list() {
-    const result = await GeneralEntity.query.primary({}).go();
+    const result = await GeneralEntity.find({
+    }).go();
     return result.data;
 }
