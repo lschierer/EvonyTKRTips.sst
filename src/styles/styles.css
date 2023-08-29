@@ -11,11 +11,7 @@ governing permissions and limitations under the License.
 */
 
 /* import the global stylesheets */
-@import '@spectrum-web-components/styles/typography.css';
-@import '@spectrum-web-components/styles/scale-medium.css';
-@import "@spectrum-css/vars/dist/spectrum-global.css";
-@import "@spectrum-css/vars/dist/spectrum-medium.css";
-@import "@spectrum-css/page/dist/index-vars.css";
+@import "@cloudscape-design/global-styles/index.css"
 
 
 sp-theme {

@@ -1,11 +1,14 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
-import preact from '@astrojs/preact';
+import react from '@astrojs/react';
 import lit from "@astrojs/lit";
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://evonytkrtips.net',
+  build: {
+    //split: true
+  },
   integrations: [
     starlight({
       title: 'Evony TKR Tips',
@@ -69,8 +72,10 @@ export default defineConfig({
         },
       ],
     }),
+    react({
+      experimentalReactChildren: true,
+    }),
     lit(),
-    preact(),
   ],
   vite: {
     build: {
