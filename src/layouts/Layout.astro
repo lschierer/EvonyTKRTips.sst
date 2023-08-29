@@ -1,11 +1,6 @@
 ---
 import '../styles/styles.css';
-import SideNav from '../components/Spectrum/SideNav.astro';
-import '@spectrum-css/vars/dist/spectrum-global.css';
-import '@spectrum-css/vars/dist/spectrum-medium.css';
-import '@spectrum-css/vars/dist/spectrum-light.css';
-import '@spectrum-css/page/dist/index-vars.css';
-import '@spectrum-css/sidenav/dist/index-vars.css';
+import "@cloudscape-design/global-styles/index.css"
 
 export interface Props {
 	title: string,
@@ -37,9 +32,7 @@ const { title, navsections } = Astro.props;
 				<top-nav ></top-nav>
 			</header>
 			<sp-split-view resizable primary-min="50" secondary-min="10" primary-size="250">
-				<div >
-					<SideNav navsections={navsections ? navsections : ''} />
-				</div>
+
 				<div>
 					<h1 class:list={['title', ]}>{title}</h1>
 					<main>

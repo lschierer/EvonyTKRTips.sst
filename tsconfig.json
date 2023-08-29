@@ -1,19 +1,9 @@
 {
   "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
-    "strictNullChecks": true,
-    "useDefineForClassFields": false,
-    "verbatimModuleSyntax": true,
-    "plugins": [
-      {
-        "name": "@astrojs/ts-plugin"
-      }
-    ],
     "jsx": "react-jsx",
-    "jsxImportSource": "preact"
+    "jsxImportSource": "react"
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.astro"
-  ]
+
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.astro"]
 }
