@@ -10,6 +10,8 @@ import type {
     TableHeadCell,
     TableRow
 } from '@spectrum-web-components/table';
+import '@spectrum-web-components/table/elements.js';
+
 import type {DSVRowArray} from "d3-dsv";
 import * as dsv from "d3-dsv";
 
