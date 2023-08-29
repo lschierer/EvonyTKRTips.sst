@@ -1,6 +1,7 @@
 ---
 title: 'Picking Subcity Mayors'
 ---
+import GeneralTable from '../../../components/GeneralTable.astro';
 import SPTable from '../../../components/SPTable.astro';
 
 :::note
@@ -51,7 +52,7 @@ list and everyone else use the 3 Orange list. Further note, generals marked
 with a 'Y' in the 'Availability' column are the only ones available without
 getting lucky in paid events.
 
-<SPTable csv="attack_mayors.csv" ></SPTable>
+<GeneralTable name="attack_mayors" ></GeneralTable>
 
 ## Reducing the Enemy's Ability to Survive Your Attack
 
@@ -66,7 +67,7 @@ list and everyone else use the 3 Orange list. Further note, generals marked
 with a 'Y' in the 'Availability' column are the only ones available without
 getting lucky in paid events. 
 
-SPTable csv="toughness_mayors.csv"
+<SPTable csv="toughness_mayors.csv"></SPTable>
 
 ## Trying to find balance
 

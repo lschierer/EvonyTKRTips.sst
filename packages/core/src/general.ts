@@ -89,7 +89,6 @@ export async function get(generalID: string, name: string) {
 }
 
 export async function list() {
-    const result = await GeneralEntity.find({
-    }).go();
+    const result = await GeneralEntity.scan.go();
     return result.data;
 }
