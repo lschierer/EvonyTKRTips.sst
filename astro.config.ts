@@ -72,10 +72,10 @@ export default defineConfig({
         },
       ],
     }),
+    lit(),
     react({
       experimentalReactChildren: true,
     }),
-    lit(),
   ],
   vite: {
     build: {
