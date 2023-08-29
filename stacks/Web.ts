@@ -1,5 +1,5 @@
 import { StaticSite, StackContext, use } from "sst/constructs";
-import { Api } from "./Api.js";
+import { Database } from "./Database.js";
 import * as cdk from "aws-cdk-lib";
 
 
@@ -14,15 +14,13 @@ import * as cloudfrontOrigins from "aws-cdk-lib/aws-cloudfront-origins";
 
 export function Web({ app, stack }: StackContext) {
 
-  const api = use(Api);
+  bind: [use(Database)];
 
   const site = new StaticSite(stack, "Site", {
     path: './',
     buildCommand: "pnpm run build",
     buildOutput: "dist",
-    environment: {
-      VITE_GRAPHQL_URL: api.url + "/graphql",
-    },
+    
     cdk: {
       distribution: {
         defaultRootObject: "index.html",
