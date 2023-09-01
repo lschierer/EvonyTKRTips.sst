@@ -20,7 +20,7 @@ export function Web({ app, stack }: StackContext) {
     path: './',
     buildCommand: "pnpm run build",
     buildOutput: "dist",
-    
+
     cdk: {
       distribution: {
         defaultRootObject: "index.html",
