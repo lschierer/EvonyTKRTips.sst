@@ -1,46 +1,69 @@
-import { StaticSite, StackContext, use } from "sst/constructs";
-import { Database } from "./Database.js";
+import {use, StackContext, StaticSite, Table, Api} from "sst/constructs";
 import * as cdk from "aws-cdk-lib";
 
+export function Web({ stack }: StackContext) {
 
-import { RemovalPolicy } from "aws-cdk-lib";
-import {
-  ViewerProtocolPolicy,
-  AllowedMethods,
-} from "aws-cdk-lib/aws-cloudfront";
-import * as cloudfront from "aws-cdk-lib/aws-cloudfront";
-import * as cloudfrontOrigins from "aws-cdk-lib/aws-cloudfront-origins";
+  const table = new Table(stack, "db", {
+    fields: {
+      pk: "string",
+      sk: "string",
+      gsi1pk: "string",
+      gsi1sk: "string",
+    },
+    primaryIndex: {
+      partitionKey: "pk",
+      sortKey: "sk",
+    },
+    globalIndexes: {
+      gsi1: {
+        partitionKey: "gsi1pk",
+        sortKey: "gsi1sk",
+      },
 
+    },
+    cdk: {
+      table: {
+        removalPolicy: cdk.RemovalPolicy.DESTROY,
+      }
+    },
+  });
 
-export function Web({ app, stack }: StackContext) {
-
-  bind: [use(Database)];
+  // Create the API
+  const api = new Api(stack, "Api", {
+    defaults: {
+      function: {
+        bind: [table],
+      },
+    },
+    routes: {
+      "POST /notes": "packages/functions/src/create.main",
+    },
+  });
 
   const site = new StaticSite(stack, "Site", {
     path: './',
     buildCommand: "pnpm run build",
     buildOutput: "dist",
-
     cdk: {
       distribution: {
         defaultRootObject: "index.html",
       },
     },
-    nodejs: {
-      minify: false,
-      sourcemap: true,
-    },
+
     customDomain: {
-      domainName: app.stage === "prod" ? "evonytkrtips.net" : `${app.stage}.evonytkrtips.net`,
-      domainAlias: app.stage === "prod" ? "www.evonytkrtips.net" : `www.${app.stage}.evonytkrtips.net`,
+      domainName: stack.stage === "prod" ? "evonytkrtips.net" : `${stack.stage}.evonytkrtips.net`,
+      domainAlias: stack.stage === "prod" ? "www.evonytkrtips.net" : `www.${stack.stage}.evonytkrtips.net`,
       hostedZone: "evonytkrtips.net",
     },
-
+    environment: {
+      VITE_GRAPHQL_URL: api.url + "/graphql",
+    },
   });
 
   stack.addOutputs({
-    URL: site.url,
+    SITE: site.url,
   });
 }
 
 // vi: ts=2:sw=2:expandtab:
+
