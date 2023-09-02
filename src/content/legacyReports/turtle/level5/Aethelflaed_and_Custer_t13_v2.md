@@ -130,4 +130,3 @@ sortOrder: 2
     * Subordinate City tree
     * Advancement tree complete
     * Defense tree complete
-  
