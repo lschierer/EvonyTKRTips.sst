@@ -5,7 +5,8 @@
     "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
-      "@graphql-dynamo/core/*": ["../core/src/*"]
+      "@core/*": ["../core/src/*"]
     }
   }
 }
+
