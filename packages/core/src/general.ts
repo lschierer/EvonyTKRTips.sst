@@ -1,7 +1,6 @@
 import { ulid } from "ulid";
 import { Entity, EntityItem } from "electrodb";
 import { Dynamo } from "./dynamo";
-import {ArticleEntity} from "./article";
 
 export * as General from "./general";
 
@@ -10,7 +9,7 @@ const GeneralEntity = new Entity(
         model: {
             version: "1",
             entity: "General",
-            service: "scratch",
+            service: "evonytips",
         },
         attributes: {
             generalID: {

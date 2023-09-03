@@ -1,4 +1,4 @@
-import {use, StackContext, StaticSite, Table, Api} from "sst/constructs";
+import {use, StackContext, StaticSite, Table, Api as ApiGateway} from "sst/constructs";
 import * as cdk from "aws-cdk-lib";
 
 export function Web({ stack }: StackContext) {
@@ -29,14 +29,26 @@ export function Web({ stack }: StackContext) {
   });
 
   // Create the API
-  const api = new Api(stack, "Api", {
+  const api = new ApiGateway(stack, "api", {
     defaults: {
       function: {
         bind: [table],
       },
     },
     routes: {
-      "POST /notes": "packages/functions/src/create.main",
+      "POST /graphql": {
+        type: "graphql",
+        function: {
+          handler: "packages/functions/src/graphql/graphql.handler",
+        },
+        pothos: {
+          schema: "packages/functions/src/graphql/schema.ts",
+          output: "packages/graphql/schema.graphql",
+          commands: [
+            "cd packages/graphql && pnpx @genql/cli --output ./genql --schema ./schema.graphql --esm",
+          ],
+        },
+      },
     },
   });
 
