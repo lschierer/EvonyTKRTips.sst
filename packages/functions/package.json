@@ -13,7 +13,11 @@
     "vitest": "^0.34.2"
   },
   "dependencies": {
+    "@apollo/server": "^4.9.3",
+    "@as-integrations/aws-lambda": "^3.1.0",
     "@pothos/core": "^3.33.0",
+    "@trpc/client": "^10.38.1",
+    "@trpc/server": "^10.38.1",
     "@types/aws-lambda": "^8.10.119",
     "graphql": "^16.8.0",
     "ulid": "^2.3.0"
