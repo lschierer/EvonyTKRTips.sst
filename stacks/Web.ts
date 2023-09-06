@@ -1,4 +1,4 @@
-import {use, StackContext, StaticSite, Table, Api as ApiGateway} from "sst/constructs";
+import {use, AppSyncApi, StackContext, StaticSite, Table, Api as ApiGateway} from "sst/constructs";
 import * as cdk from "aws-cdk-lib";
 
 export function Web({ stack }: StackContext) {
@@ -29,28 +29,17 @@ export function Web({ stack }: StackContext) {
   });
 
   // Create the API
-  const api = new ApiGateway(stack, "api", {
-    defaults: {
-      function: {
-        bind: [table],
-      },
+  const api = new ApiGateway(stack, "ApiGateway", {
+    cors: {
+      allowMethods: ["GET"],
     },
     routes: {
-      "POST /graphql": {
-        type: "graphql",
-        function: {
-          handler: "packages/functions/src/graphql/graphql.handler",
-        },
-        pothos: {
-          schema: "packages/functions/src/graphql/schema.ts",
-          output: "packages/graphql/schema.graphql",
-          commands: [
-            "cd packages/graphql && pnpx @genql/cli --output ./genql --schema ./schema.graphql --esm",
-          ],
-        },
-      },
-    },
+      "GET /generalList": "packages/functions/src/server/index.handler",
+      "GET /generalByID": "packages/functions/src/server/index.handler",
+    }
   });
+  
+  api.bind([table]);
 
   const site = new StaticSite(stack, "Site", {
     path: './',
@@ -68,11 +57,12 @@ export function Web({ stack }: StackContext) {
       hostedZone: "evonytkrtips.net",
     },
     environment: {
-      VITE_GRAPHQL_URL: api.url + "/graphql",
+      VITE_APP_API_URL: api.url ,
     },
   });
 
   stack.addOutputs({
+    ApiEndpoint: api.url,
     SITE: site.url,
   });
 }
