@@ -84,7 +84,6 @@
     "electrodb": "^2.9.3",
     "eslint": "^8.49.0",
     "is-stream": "^3.0.0",
-    "node": "^20.6.0",
     "postcss": "^8.4.29",
     "postcss-dropunusedvars": "^2.2.1",
     "postcss-import": "^15.1.0",
