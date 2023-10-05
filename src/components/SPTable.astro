@@ -15,8 +15,10 @@ console.log(`url is ${csvUrl}`);
 ---
 <script >
     import '@spectrum-web-components/table/elements.js';
+    
     import {CompareMayors} from './mayors';
 </script>
+
 <compare-mayors dataurl={csvUrl}>
     <slot></slot>
 </compare-mayors>

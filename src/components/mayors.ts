@@ -1,5 +1,7 @@
-import { LitElement, html, css } from "lit";
+import { LitElement, html, css, type PropertyValues } from "lit";
 import {customElement, property, state} from 'lit/decorators.js';
+
+import type { APIContext } from 'astro';
 
 import type {
     Table,
@@ -10,7 +12,7 @@ import type {
     TableHeadCell,
     TableRow
 } from '@spectrum-web-components/table';
-import {DSVRowArray} from "d3-dsv";
+import { type DSVRowArray } from 'd3-dsv';
 import * as dsv from "d3-dsv";
 
 @customElement('compare-mayors')
@@ -20,7 +22,7 @@ export class CompareMayors extends LitElement {
     public DataUrl: string;
 
     private _DataUrl: URL;
-    
+
     @state()
     public ids:string[];
 
@@ -28,13 +30,13 @@ export class CompareMayors extends LitElement {
     public items: DSVRowArray<string> | undefined;
 
     @state()
-    private records;
+    private records:dsv.DSVRowString<string>[];
 
     @state()
     private tableName: string;
 
     @state()
-    private table: Table | undefined;
+    private table: Table | null;
 
     static styles = css`
       .table-container {
@@ -124,45 +126,44 @@ export class CompareMayors extends LitElement {
       }
     `
 
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
 
         this.ids = [];
 
-        this.records = [];
+        this.records = new Array<dsv.DSVRowString<string>>();
+
+        this.DataUrl = '';
+        this._DataUrl = new URL('/', 'http://localhost');
+        this.table = null;
+        this.tableName = '';
 
     }
 
     connectedCallback() {
         super.connectedCallback()
 
-        this.tableName = "Table";
     }
 
     firstUpdated() {
-        if(this.renderRoot){
+        if(this.renderRoot && (this.tableName.length > 0)){
             this.table = this.renderRoot.querySelector('#'+ this.tableName);
             if(this.table){
                 console.log(`in firstUpdated, found table ${this.tableName}`);
 
-                this.table.renderItem = (item,index) => {
-                    return html
-                        `${this.ids.map((id) => {
-                            console.log(`in renderItem, id is ${id}`)
-                            return html`<sp-table-cell id=${id.replace(' ', '_')} dir='ltr' role='gridcell'>${item[id]}</sp-table-cell>`
-                        })}
-                        `;
-                };
-
                 this.table.addEventListener('sorted', (event) => {
-                    const {sortDirection, sortKey} = event.detail;
-                    let items = this.table.items.sort((a, b) => {
-                        return sortDirection === 'asc' ?
-                            a[sortKey].localeCompare(b[sortKey]) :
-                            b[sortKey].localeCompare(a[sortKey]);
+                    const {sortDirection, sortKey} = (event as CustomEvent).detail;
+                    if(this.table) {
+                        let items = this.table.items.sort((a, b) => {
+                            const itemA: string = (a[sortKey] as string);
+                            const itemB:string  = (b[sortKey] as string);
+                            return sortDirection === 'asc' ?
+                              itemA.localeCompare(itemB) :
+                              itemB.localeCompare(itemA);
+                        });
+                        this.table.items = [...items];
+                    }
 
-                    });
-                    this.table.items = [...items];
                 });
 
             }
@@ -171,18 +172,37 @@ export class CompareMayors extends LitElement {
 
     async willUpdate(changedProperties: PropertyValues<this>) {
         if(changedProperties.has('DataUrl')) {
+            console.log(`willUpdate; changedProperties has DataUrl`)
             this._DataUrl = new URL(this.DataUrl);
-            this.tableName = this._DataUrl.pathname;
-            if(this.tableName.includes('/')) {
-                this.tableName = this.tableName.split('/').pop();
+            let tempTableName = this._DataUrl.pathname;
+            console.log(`tempTableName currently ${tempTableName}`)
+            if(tempTableName.includes('/')) {
+                const tableParts = tempTableName.split('/');
+                const name = tableParts.pop();
+                tempTableName = (typeof name !== 'undefined') ? name : tempTableName;
             }
-            if(this.tableName.includes('.')){
-                this.tableName = this.tableName.split('.').shift();
+            console.log(`tempTableName currently ${tempTableName}`)
+            
+            if(tempTableName.includes('.')){
+                const tableParts = tempTableName.split('.');
+                const name = tableParts.shift();
+                tempTableName = (typeof name !== 'undefined') ? name : tempTableName;
             }
-            const r = await fetch(this._DataUrl).then((response) => {
-                if (response.ok) return response.text();
-                else throw new Error('Status code error :' + response.status);
+            console.log(`tempTableName currently ${tempTableName}`)
+            
+            if((!tempTableName.localeCompare(this.tableName)) || (tempTableName.length > 0 && this.tableName.length === 0)) {
+                console.log(`setting table name to ${tempTableName}`)
+                this.tableName = tempTableName;
+            } else {
+                console.log(`table name already set: ${this.tableName}`)
+            }
+            const r = await fetch(this._DataUrl)
+              .then((response) => {
+                  console.log(`first then`);
+                  if (response.ok) return response.text();
+                  else throw new Error('Status code error :' + response.status);
             }).then((t) => {
+                  console.log(`second then`);
                 const r = dsv.csvParse(t);
                 const c = r.columns;
                 this.ids = JSON.parse(JSON.stringify(c));
@@ -190,24 +210,46 @@ export class CompareMayors extends LitElement {
                 console.log(`ids are "${this.ids}"`);
                 this.items =r;
             }).then(() => {
-                for(let i = 0; i < this.items!.length; i ++) {
-                    let row:dsv.DSVRowString<string> = this.items![i];
-                    let nR = { "row": row }
-                    console.log(`pushing item ${i} row is ${JSON.stringify(nR)}`);
-                    this.records.push(nR.row);
-                }
-                return true;
+                  console.log(`third then`);
+                  for(let i = 0; i < this.items!.length; i ++) {
+                      let row:dsv.DSVRowString<string> = this.items![i];
+                      let nR = { "row": row }
+                      console.log(`pushing item ${i} row is ${JSON.stringify(nR)}`);
+                      this.records.push(nR.row);
+                  }
+                  return true;
             }).catch((error) => {
                 console.log(error);
                 return false;
             });
-            if(this.renderRoot){
-                let table:Table|null = this.renderRoot.querySelector('#'+ this.tableName);
-                if(table){
+            if(this.renderRoot && (this.tableName.length > 0)){
+                console.log(`renderRoot set with tableName: ${this.tableName}`)
+                this.table = this.renderRoot.querySelector('#'+ this.tableName);
+                if(this.table){
                     console.log(`found table`);
-                    table.items = this.records;
+                    console.log(`I have ${this.table.items.length} items`);
+                    this.table.renderItem = (item,index) => {
+                        console.log(`in table's renderItem ${item.toString()}`)
+                        return html`
+                            ${this.ids.map((id) => {
+                              console.log(`in renderItem, id is ${id}`)
+                              return html`
+                                  <sp-table-cell id=${id.replace(' ', '_')} dir='ltr' role='gridcell'>
+                                      ${item[id]}
+                                  </sp-table-cell>
+                              `
+                          })}
+                        `;
+                    };
+
+                    this.table.items = this.records;
+                    this.requestUpdate();
                 } else {
                     console.log(`in changedProperties with no ${this.tableName}`);
+                }
+            } else {
+                if(this.tableName.length <= 0) {
+                    console.log(`no table name set`)
                 }
             }
         }
@@ -216,7 +258,7 @@ export class CompareMayors extends LitElement {
     render() {
         return html`
             <div class="table-container">
-                <sp-table id=${this.tableName} size="m" scroller="true">
+                <sp-table id=${this.tableName} scroller="true">
                     <sp-table-head>
                         ${this.ids.map((id)=> {
                             console.log(`id is ${id}`)
