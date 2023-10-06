@@ -20,7 +20,13 @@ const appRouter = router({
       const general = await General.generalByID(input);
       return general;
     }),
-  
+
+  createGeneral: publicProcedure
+      .input(General.zodGeneral)
+      .mutation(async (opts) => {
+          const {input} = opts;
+          const general = await General.create(input)
+      })
   
 });
 
