@@ -1,4 +1,5 @@
-import {use, AppSyncApi, StackContext, StaticSite, Table, Api as ApiGateway} from "sst/constructs";
+import {use, AppSyncApi, StaticSite, Table, Api as ApiGateway} from "sst/constructs";
+import type { StackContext } from 'sst/constructs';
 import * as cdk from "aws-cdk-lib";
 
 export function Web({ stack }: StackContext) {
@@ -65,6 +66,12 @@ export function Web({ stack }: StackContext) {
     ApiEndpoint: api.url,
     SITE: site.url,
   });
+
+  return {
+    table,
+    api,
+    site
+  };
 }
 
 // vi: ts=2:sw=2:expandtab:
