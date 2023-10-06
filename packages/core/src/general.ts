@@ -1,6 +1,7 @@
 import {ulid} from "ulid";
 import {Entity, EntityItem} from "electrodb";
 import {Dynamo} from "./dynamo";
+import {z} from 'zod';
 
 export * as General from "./general";
 
@@ -88,9 +89,24 @@ const GeneralEntity = new Entity(
 
 export type GeneralEntityType = EntityItem<typeof GeneralEntity>;
 
-export async function create(name: string, leadership?: number, attack?: number, defense?: number, politics?: number, maxStars?: number) {
-  // no general can have less than 5 stars, if I did not send a number, assume that default.
-  maxStars = maxStars ? maxStars : 5;
+export const zodGeneral = z.object({
+  name: z.string(),
+  leadership: z.number().optional(),
+  attack: z.number().optional(),
+  defense: z.number().optional(),
+  politics: z.number().optional(),
+  maxStars: z.number().positive().multipleOf(5).max(10).optional(),
+})
+
+type zodGeneralType = z.infer<typeof zodGeneral>;
+
+export async function create(general: zodGeneralType) {
+  const name = general.name;
+  const leadership = general.leadership ? general.leadership : 0;
+  const attack = general.attack ? general.attack : 0;
+  const defense = general.defense ? general.defense : 0;
+  const politics = general.politics ? general.politics : 0;
+  const maxStars = general.maxStars ? general.maxStars : 5;
   const result = await GeneralEntity.create({
     generalID: ulid(),
     name,
