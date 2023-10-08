@@ -1,5 +1,5 @@
 ---
-title: 'Killing Level 3 Bayar Knight with Aethelflaed, Custer and T14s'
+title: 'Killing Level 5 Lava Turtle with Aethelflaed, Custer and T14s'
 author: 'Luke Schierer'
 sortOrder: 1
 ---
