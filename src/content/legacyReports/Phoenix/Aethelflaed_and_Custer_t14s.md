@@ -1,7 +1,7 @@
 ---
-title: 'Killing Level 3 Bayar Knight with Aethelflaed, Custer and T14s'
+title: 'Killing Phoenix with Aethelflaed, George A. Custer and T14s'
 author: 'Luke Schierer'
-sortOrder: 1
+sortOrder: 15
 ---
 
 * Main General: Aethelflaed
@@ -89,7 +89,7 @@ sortOrder: 1
     * Marching Mounted Attack +12.2%
 * Troops:
   * 1,584,750 t14 mounted
-  * 0 wounded
+  * 8,141 wounded
 * Civilization Treasure
   * Imperial Seal L3
     * Attacking Mounted Troop Defense +30%
