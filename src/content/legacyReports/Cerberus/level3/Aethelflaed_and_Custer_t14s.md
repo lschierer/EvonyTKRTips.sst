@@ -88,7 +88,7 @@ sortOrder: 1
     * Mounted Attack on Monsters +14.5%
     * Marching Mounted Attack +12.2%
 * Troops:
-  * 1,584,750 t13 mounted
+  * 1,584,750 t14 mounted
   * 0 wounded
 * Civilization Treasure
   * Imperial Seal L3
