@@ -46,10 +46,6 @@ export default defineConfig({
             },
             {
               label: 'Reports',
-              link: 'monsters/reports/',
-            },
-            {
-              label: 'Reports',
               collapsed: true,
               autogenerate: {
                 directory: 'monsters/legacyReports',
