@@ -35,36 +35,54 @@ export class SpectrumTopNav extends LitElement {
     super();
   }
   
+  private loadTheme() {
+    console.log(`loadTheme`)
+    const theme = typeof localStorage !== 'undefined' && localStorage.getItem(SpectrumTopNav.#key);
+    const validate = themeEnum.safeParse(theme);
+    if(validate.success) {
+      console.log(`valid ${validate.data}`)
+      this.setTheme(validate.data);
+    } else {
+      this.setTheme('auto')
+    }
+  }
+  
   private getPreferredColorScheme(): themeSchema {
     return matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
   }
   
   private setTheme(newTheme: themeSchema | Event) {
-    console.log(`setTheme called`)
+    console.log(`setTheme called ${newTheme}`)
     const validate = themeEnum.safeParse(newTheme);
-    let toSet = 'auto';
+    let toSet: themeSchema = 'auto';
     if(validate.success) {
+      console.log(`setTheme valid ${validate.data}`)
       toSet = validate.data;
     } else {
       const _event = (newTheme as Event);
-      toSet = (_event.target as Picker).value;
+      const v = (_event.target as Picker).value;
+      const valid  = themeEnum.safeParse(v)
+      if(valid.success) {
+        toSet = valid.data;
+      }
       console.log(`getting value from Event, ${toSet}`)
     }
+    toSet === 'auto' ? this.getPreferredColorScheme() : toSet;
+    console.log(`toSet final value: ${toSet}`)
     if(this._themePicker !== null && this._themePicker !== undefined) {
       console.log(`and picker was not null, theme is ${toSet}`)
       this._themePicker.value = toSet;
       const themeElement = document.querySelector('sp-theme');
       if(themeElement !== null && themeElement !== undefined) {
-        const key = toSet === 'auto' ? this.getPreferredColorScheme() : toSet;
-        if(key === 'light') {
+        if(toSet === 'light') {
           (themeElement as SPTheme).color = "light";
         }
-        if(key === 'dark') {
+        if(toSet === 'dark') {
           (themeElement as SPTheme).color = "dark";
         }
       }
-      document.documentElement.dataset.theme =
-        toSet === 'auto' ? this.getPreferredColorScheme() : toSet;
+      document.documentElement.dataset.theme = toSet;
+      this.updatePickers(toSet);
       if (typeof localStorage !== 'undefined') {
         if (toSet === 'light' || toSet === 'dark') {
           localStorage.setItem(SpectrumTopNav.#key, toSet);
@@ -75,20 +93,20 @@ export class SpectrumTopNav extends LitElement {
     }
   }
   
-  public updatePickers(target?: Element) {
-    console.log(`updatePickers;`)
+  public updatePickers(nv: themeSchema) {
+    console.log(`updatePickers; ${nv}`)
     const windowPref = this.getPreferredColorScheme();
-    if(target !== null && target !== undefined) {
-      const picker = (target as Picker);
-      let theme = 'light';
-      if(picker.value === null || picker.value === undefined || picker.value === '') {
-        this.setTheme('auto');
-        theme = windowPref;
+    if(this._themePicker !== null && this._themePicker !== undefined) {
+      if(nv === 'auto') {
+        this._themePicker.value=windowPref;
       } else {
-        theme = picker ? picker.value ? picker.value : windowPref : windowPref;
+        this._themePicker.value = nv;
       }
-      
     }
+  }
+  
+  firstUpdated() {
+    this.loadTheme();
   }
   
   static styles = css`
@@ -112,11 +130,10 @@ export class SpectrumTopNav extends LitElement {
                 <sp-top-nav-item href="/svs/">SvS</sp-top-nav-item>
                 <sp-top-nav-item href="/reference/">Reference</sp-top-nav-item>
                 <sp-picker
-                        ${ref(this.updatePickers)}
                         id="themeSelect"
                         size="xs"
                         label="" quiet
-                        value="auto"
+                        value=""
                         @change="${this.setTheme}"
                 >
                     <sp-menu-item value="light">
