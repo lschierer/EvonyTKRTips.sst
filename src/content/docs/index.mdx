@@ -4,7 +4,7 @@ description: 'Tips for Budget Gamers'
 template: 'splash'
 
 ---
-import { Card, CardGrid } from '@astrojs/starlight/components';
+import { LinkCard, CardGrid } from '@astrojs/starlight/components';
 
 ## Why Another Evony Tips Site
 ### Tips for Budget Gamers
@@ -29,8 +29,14 @@ Much of the information here comes from other authors' work on other sites.  In 
 Many thanks to the incredible work put forth by those who have come before me on these sites in documenting Evony TKR.
 
 <CardGrid stagger>
-    <a href="/generals/"><Card title="Generals">An opinionated guide to picking the various generals you need.</Card></a>
-    <a href="/svs/"><Card title="SvS">An introductory reference to preparing to participate in the bi-weekly Server versus Server event.</Card></a>
-    <a href="/monsters/"><Card title="Monsters">An introduction to hunting monsters, with a collection of example reports.</Card></a>
-    <a href="/reference/"><Card title="Reference">Bare-bones reference material to help make sense of the other content.</Card></a>
+    <LinkCard href="/generals/" title="Generals">An opinionated guide
+        to picking the various generals you need.</LinkCard>
+    <LinkCard href="/svs/" title="SvS">An introductory reference to
+        preparing to
+        participate in the bi-weekly Server versus Server event.</LinkCard>
+     <LinkCard href="/monsters/" title="Monsters">An introduction to
+    hunting monsters, with
+    a collection of example reports.</LinkCard>
+    <LinkCard href="/reference/" title="Reference">Bare-bones reference
+        material to help make sense of the other content.</LinkCard>
 </CardGrid>
