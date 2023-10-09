@@ -11,7 +11,6 @@ governing permissions and limitations under the License.
 */
 
 // import our stylesheets
-import '@spectrum-web-components/theme/sp-theme.js';
 
 
 // import the components we'll use in this page
@@ -26,8 +25,6 @@ import '@spectrum-web-components/icons-workflow';
 import '@spectrum-web-components/link/sp-link.js';
 import '@spectrum-web-components/menu/sp-menu-item.js';
 import '@spectrum-web-components/split-view/sp-split-view.js';
-import '@spectrum-web-components/theme/sp-theme.js';
-import '@spectrum-web-components/theme/src/themes.js';
 import '@spectrum-web-components/tooltip/sp-tooltip.js';
 
 
