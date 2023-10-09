@@ -17,12 +17,15 @@ governing permissions and limitations under the License.
 @import "@spectrum-css/vars/dist/spectrum-medium.css";
 @import "@spectrum-css/page/dist/index-vars.css";
 
+:root {
+  --sl-nav-pad-x: 0px;
+  --sl-nav-pad-y: 0px;
+}
 
 sp-theme {
   background-color: var(--spectrum-global-color-gray-100);
   flex: 1 1 auto;
 }
 
-.header {
-  backgroundColor: 'var(--spectrum-blue-600)',
-}
+
+

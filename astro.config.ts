@@ -5,9 +5,16 @@ import lit from "@astrojs/lit";
 // https://astro.build/config
 export default defineConfig({
   site: 'https://evonytkrtips.net',
+  compressHTML: false,
   integrations: [
+    lit(),
     starlight({
       title: 'Evony TKR Tips',
+      components: {
+        // Override the default `SocialLinks` component.
+        PageFrame: './src/components/Spectrum/PageFrame.astro',
+        Header: './src/components/Spectrum/TopNav.astro',
+      },
       customCss: [
         './src/styles/styles.css',
       ],
@@ -68,7 +75,6 @@ export default defineConfig({
         },
       ],
     }),
-    lit(),
   ],
   vite: {
     build: {
