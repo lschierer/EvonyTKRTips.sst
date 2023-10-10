@@ -20,6 +20,7 @@ governing permissions and limitations under the License.
 :root {
   --sl-nav-pad-x: 0px;
   --sl-nav-pad-y: 0px;
+  --sl-content-width: 55rem;
 }
 
 sp-theme {
@@ -27,5 +28,6 @@ sp-theme {
   flex: 1 1 auto;
 }
 
-
-
+section.footnotes {
+  border-top: 1px solid; padding-top: 1.5rem
+}
