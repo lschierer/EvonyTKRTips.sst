@@ -1,8 +1,6 @@
 import {html, css, LitElement} from 'lit';
-import {customElement} from 'lit/decorators.js';
 import {query} from 'lit/decorators/query.js';
 import {ref} from 'lit/directives/ref.js';
-import {styleMap} from 'lit/directives/style-map.js';
 
 import {z} from 'zod';
 
@@ -23,7 +21,6 @@ export const tagName = 'top-nav';
 const themeEnum = z.enum(['light', 'dark', 'auto'])
 type themeSchema = z.infer<typeof themeEnum>;
 
-@customElement('top-nav')
 export class SpectrumTopNav extends LitElement {
   
   @query('#themeSelect')
@@ -48,7 +45,9 @@ export class SpectrumTopNav extends LitElement {
   }
   
   private getPreferredColorScheme(): themeSchema {
-    return matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    const mm = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    console.log(`getPreferredColorScheme chose ${mm}`)
+    return mm;
   }
   
   private setTheme(newTheme: themeSchema | Event) {
@@ -67,13 +66,14 @@ export class SpectrumTopNav extends LitElement {
       }
       console.log(`getting value from Event, ${toSet}`)
     }
-    toSet === 'auto' ? this.getPreferredColorScheme() : toSet;
+    toSet = toSet === 'auto' ? this.getPreferredColorScheme() : toSet;
     console.log(`toSet final value: ${toSet}`)
     if(this._themePicker !== null && this._themePicker !== undefined) {
       console.log(`and picker was not null, theme is ${toSet}`)
       this._themePicker.value = toSet;
       const themeElement = document.querySelector('sp-theme');
       if(themeElement !== null && themeElement !== undefined) {
+        console.log(`theme element found`)
         if(toSet === 'light') {
           (themeElement as SPTheme).color = "light";
         }
@@ -155,6 +155,5 @@ export class SpectrumTopNav extends LitElement {
         `
   }
 }
-
-type Theme = 'auto' | 'dark' | 'light';
+customElements.define('top-nav', SpectrumTopNav);
 
