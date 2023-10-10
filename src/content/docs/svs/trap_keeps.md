@@ -107,4 +107,4 @@ total cost in rss, including optional siege:
   * 15,000M stone
   * 15,000M ore
 
-[t1 defense]: <t1_defense> 
+[t1 defense]: <../t1_defense/> 
