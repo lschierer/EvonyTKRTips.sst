@@ -1,7 +1,6 @@
 ---
 title: 'Killing Level 3 Cerberus with Aethelflaed, George A. Custer and T14s'
 author: 'Luke Schierer'
-sortOrder: 1
 ---
 
 * Main General: Aethelflaed
