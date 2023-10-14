@@ -41,6 +41,6 @@ slug is {slug}<br/>
 
 <CardGrid stagger>
   { searchPages.map((p) => (
-    <LinkCard href={'../'.concat(p.slug)} title={p.data.title} description={p.data.description}/>
+    <LinkCard href={'/'.concat(p.slug)} title={p.data.title} description={p.data.description}/>
   ))}
 </CardGrid>
