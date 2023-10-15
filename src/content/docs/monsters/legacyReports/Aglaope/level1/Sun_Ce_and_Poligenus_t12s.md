@@ -1,5 +1,5 @@
 ---
-title: 'Killing Level 1 Aglaope with Zhao Yun, Mordred and T12ss'
+title: 'Killing Level 1 Aglaope with Zhao Yun, Mordred and T12s'
 author: 'Luke Schierer'
 sortOrder: 1
 ---
@@ -111,7 +111,7 @@ sortOrder: 1
   * Golden Eagle Flag L4
     * All Troops Attack +16%
 * Research
-  * All attack buff relevant research up through academy level 35
+  * All attack buff relevant research up through academy level 36
     * Military tree
     * Military Advance tree
     * Subordinate City tree
