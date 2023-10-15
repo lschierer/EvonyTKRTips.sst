@@ -1,0 +1,112 @@
+---
+import { Debug } from 'astro:components';
+import {getEntry, z} from "astro:content";
+import { Card, CardGrid } from '@astrojs/starlight/components';
+import {blazonTypes, blazonSet} from '../schemas/evonySchemas';
+
+const { setId } = Astro.props;
+if(setId === null || setId === undefined || setId.length <= 0) {
+    console.error(`bogus setId`);
+    exit(1)
+}
+const entry = await getEntry('blazons', setId);
+if (entry === undefined) {
+    return Astro.redirect("/404");
+}
+const data = entry.data;
+const set = data.set;
+
+let setHash: Record<z.infer<typeof blazonSet>, number> = {
+    'Justice': 0,
+    'Valor': 0,
+    'Honor': 0,
+    'Honesty': 0,
+    'Sacrifice': 0,
+    'Compassion': 0,
+    'Soul': 0,
+    'Humility': 0,
+}
+let setKey = '';
+if(set.earth !== null && set.earth !== undefined) {
+    setKey = set.earth.blazon.set;
+    setHash[setKey]++;
+}
+if(set.wind !== null && set.wind !== undefined) {
+    setKey = set.wind.blazon.set;
+    setHash[setKey]++;
+}
+if(set.fire !== null && set.fire !== undefined) {
+    setKey = set.fire.blazon.set;
+    setHash[setKey]++;
+}
+if(set.ocean !== null && set.ocean !== undefined) {
+    setKey = set.ocean.blazon.set;
+    setHash[setKey]++;
+}
+if(set.light !== null && set.light !== undefined) {
+    setKey = set.light.blazon.set;
+    setHash[setKey]++;
+}
+if(set.shadow !== null && set.shadow !== undefined) {
+    setKey = set.shadow.blazon.set;
+    setHash[setKey]++;
+}
+
+---
+
+<h5>Blazons</h5>
+<div class="BlazonsSet" id="BlazonSet">
+    <div class="Blazon" id="Shadow">
+        <h6>{set.shadow ? (set.shadow.blazon.set.concat(" Shadow ").concat(set.shadow.blazon.level)) : ("Shadow Blazon Not Present")}</h6>
+        {set.shadow && <ul>{set.shadow.blazon.buff.map((b) => (
+                <li>{b.condition} {b.class} {b.attribute} {(b.value[0] < 0) ? '-' : '+'} {b.value[0]}{(b.value[1] === 'percentage') ? '%': ''}</li>
+        ))}</ul>}
+    </div>
+    <div class="Blazon" id="Light">
+        <h6>{set.light ? (set.light.blazon.set.concat(" Light ").concat(set.light.blazon.level)) : ("Light Blazon Not Present")}</h6>
+        {set.light && <ul>{set.light.blazon.buff.map((b) => (
+            <li>{b.condition} {b.class} {b.attribute} {(b.value[0] < 0) ? '-' : '+'} {b.value[0]}{(b.value[1] === 'percentage') ? '%': ''}</li>
+        ))}</ul>}
+    </div>
+
+    <div class="Blazon" id="Fire">
+        <h6>{set.fire ? (set.fire.blazon.set.concat(" Fire ").concat(set.fire.blazon.level)) : ("Light Fire Not Present")}</h6>
+        {set.fire && <ul>{set.fire.blazon.buff.map((b) => (
+                <li>{b.condition} {b.class} {b.attribute} {(b.value[0] < 0) ? '-' : '+'} {b.value[0]}{(b.value[1] === 'percentage') ? '%': ''}</li>
+        ))}</ul>}
+    </div>
+    <div class="Blazon" id="Wind">
+        <h6>{set.wind ? (set.wind.blazon.set.concat(" Wind ").concat(set.wind.blazon.level)) : ("Light Wind Not Present")}</h6>
+        {set.wind && <ul>{set.wind.blazon.buff.map((b) => (
+                <li>{b.condition} {b.class} {b.attribute} {(b.value[0] < 0) ? '-' : '+'} {b.value[0]}{(b.value[1] === 'percentage') ? '%': ''}</li>
+        ))}</ul>}
+    </div>
+    <div class="Blazon" id="Ocean">
+        <h6>{set.ocean ? (set.ocean.blazon.set.concat(" Ocean ").concat(set.ocean.blazon.level)) : ("Ocean Blazon Not Present")}</h6>
+
+    </div>
+    <div class="Blazon" id="Earth">
+        <h6>{set.earth ? (set.earth.blazon.set.concat(" Earth ").concat(set.earth.blazon.level)) : ("Earth Blazon Not Present")}</h6>
+
+    </div>
+</div>
+
+<style>
+    .BlazonsSet {
+        display: grid;
+        grid-template-columns: repeat(2,  1fr);
+        grid-auto-flow: row;
+        align-content: start;
+
+    }
+
+    #BlazonSet > div.Blazon {
+        margin-top: 0px;
+        margin: 0px;
+        align-self: start;
+        width: 100%;
+        justify-self: stretch;
+    }
+</style>
+
+<Debug {setHash} />
