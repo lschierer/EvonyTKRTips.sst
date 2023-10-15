@@ -1,0 +1,22 @@
+---
+import { Debug } from 'astro:components';
+import {getEntry} from "astro:content";
+
+const { artId } = Astro.props;
+if(artId === null || artId === undefined || artId.length <= 0) {
+    console.error(`bogus artId`);
+    exit(1)
+}
+const entry = await getEntry('art', artId);
+if (entry === undefined) {
+    return Astro.redirect("/404");
+}
+const data = entry.data;
+const art = data.art;
+---
+<h5>{art.name} Level {art.level}</h5>
+<ul>
+    {art.buff.map((b) => (
+            <li>{b.condition} {b.class} {b.attribute} {(b.value[0] < 0) ? '-' : '+'}{b.value[0]}{b.value[1] ? '%': ''}</li>
+                    ))}
+</ul>

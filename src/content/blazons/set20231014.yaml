@@ -1,0 +1,59 @@
+---
+set:
+  earth: null
+  wind: null
+  fire: null
+  ocean: null
+  shadow:
+    blazon:
+      type: Shadow
+      set: Soul
+      level: '15'
+      buff:
+        - condition: Against Monsters
+          attribute: Attack
+          class: mounted
+          value:
+            - 14.5
+            - percentage
+        - condition: Against Monsters
+          attribute: Attack
+          class: mounted
+          value:
+            - 14.5
+            - percentage
+        - condition: Defending
+          attribute: Attack
+          class: mounted
+          value:
+            - 13.4
+            - percentage
+        - attribute: Load
+          class: mounted
+          value:
+            - 8.9
+            - percentage
+  light:
+    blazon:
+      type: Light
+      set: Soul
+      level: '15'
+      buff:
+        - condition: Against Monsters
+          attribute: Attack
+          class: mounted
+          value:
+            - 14.5
+            - percentage
+        - condition: Against Monsters
+          attribute: Attack
+          class: mounted
+          value:
+            - 14.5
+            - percentage
+        - condition: Marching
+          attribute: Attack
+          class: mounted
+          value:
+            - 12.2
+            - percentage
