@@ -5,13 +5,21 @@ import type { HTMLAttributes } from 'astro/types'
 
 
 const {slug} = Astro.params;
+const { dir } = Astro.props;
 
 let count2 = 0;
 const allPages = await getCollection('docs');
 let searchPages = allPages.filter((p) => {
+  if(dir !== null && dir !== undefined) {
     //using undefined because I do not know how to get the actual locale for the browser reliably.
-  if(p.slug.localeCompare(slug,undefined, {sensitivity: 'base'})) {
-    return p.id.toLocaleLowerCase().startsWith(slug);
+    if(p.slug.localeCompare(dir,undefined, {sensitivity: 'base'})) {
+      return p.id.toLocaleLowerCase().startsWith(dir);
+    }
+  } else { //default to using the current directory
+    //using undefined because I do not know how to get the actual locale for the browser reliably.
+    if(p.slug.localeCompare(slug,undefined, {sensitivity: 'base'})) {
+      return p.id.toLocaleLowerCase().startsWith(slug);
+    }
   }
   count2++;
   return false;

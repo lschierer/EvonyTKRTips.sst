@@ -14,7 +14,6 @@ const legacyReports = defineCollection({
 export const collections = {
   docs: defineCollection({ schema: docsSchema() }),
   i18n: defineCollection({ type: 'data', schema: i18nSchema() }),
-  legacyReports: legacyReports,
   art: defineCollection({type: 'data', schema: artTreasure}),
   blazons: defineCollection({type: 'data', schema: BlazonSet}),
   generals: defineCollection({type: 'data', schema: generalSchema}),

@@ -45,12 +45,21 @@ export default defineConfig({
               link: 'monsters/boss_overview/',
             },
             {
-              label: 'Reports',
-              collapsed: true,
-              autogenerate: {
-                directory: 'monsters/legacyReports',
-                collapsed: true,
-              },
+              label: 'Monster Hunting',
+              items: [
+                {
+                  label: "Overview of Reports",
+                  link: 'monsters/overview/'
+                },
+                {
+                  label: 'Reports',
+                  collapsed: true,
+                  autogenerate: {
+                    directory: 'monsters/reports',
+                    collapsed: true,
+                  },
+                },
+              ],
             },
           ]
         },
