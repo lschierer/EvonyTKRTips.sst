@@ -12,24 +12,24 @@ set:
       buff:
         - condition: Against Monsters
           attribute: Attack
-          class: mounted
+          class: Mounted
           value:
             - 14.5
             - percentage
         - condition: Against Monsters
           attribute: Attack
-          class: mounted
+          class: Mounted
           value:
             - 14.5
             - percentage
         - condition: Defending
           attribute: Attack
-          class: mounted
+          class: Mounted
           value:
             - 13.4
             - percentage
         - attribute: Load
-          class: mounted
+          class: Mounted
           value:
             - 8.9
             - percentage
@@ -41,19 +41,19 @@ set:
       buff:
         - condition: Against Monsters
           attribute: Attack
-          class: mounted
+          class: Mounted
           value:
             - 14.5
             - percentage
         - condition: Against Monsters
           attribute: Attack
-          class: mounted
+          class: Mounted
           value:
             - 14.5
             - percentage
         - condition: Marching
           attribute: Attack
-          class: mounted
+          class: Mounted
           value:
             - 12.2
             - percentage

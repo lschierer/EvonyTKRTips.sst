@@ -1,6 +1,6 @@
 import { z, defineCollection } from 'astro:content';
 import { docsSchema, i18nSchema } from '@astrojs/starlight/schema';
-import {artTreasure,BlazonSet} from '../schemas/evonySchemas.js';
+import {artTreasure,BlazonSet, generalSchema} from '../schemas/evonySchemas.js';
 
 
 const legacyReports = defineCollection({
@@ -17,4 +17,5 @@ export const collections = {
   legacyReports: legacyReports,
   art: defineCollection({type: 'data', schema: artTreasure}),
   blazons: defineCollection({type: 'data', schema: BlazonSet}),
+  generals: defineCollection({type: 'data', schema: generalSchema}),
 };

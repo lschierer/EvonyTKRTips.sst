@@ -2,6 +2,7 @@ import { z, reference, defineCollection } from 'astro:content';
 import {union} from "zod";
 
 const levelSchema = z.enum([
+    '0',
   '1',
   '2',
   '3',
@@ -16,7 +17,37 @@ const levelSchema = z.enum([
   '12',
   '13',
   '14',
-  '15'
+  '15',
+  '16',
+    '17',
+    '18',
+    '19',
+    '20',
+    '21',
+    '22',
+    '23',
+    '24',
+    '25',
+    '26',
+    '27',
+    '28',
+    '29',
+    '30',
+    '31',
+    '32',
+    '33',
+    '34',
+    '35',
+    '36',
+    '37',
+    '38',
+    '39',
+    '40',
+    '41',
+    '42',
+    '43',
+    '44',
+    '45',
 ]);
 
 const qualitySchema = z.enum([
@@ -80,7 +111,7 @@ const RefineAttributes = z.enum([
 export const buffSchema = z.object({
   condition: z.union([RefineAdverbs, z.array(RefineAdverbs)]).optional(),
   attribute: z.union([RefineAttributes, z.array(RefineAttributes)]).optional(),
-  class: z.enum(['mounted', 'ground','archers','siege']).optional(),
+  class: z.enum(['Mounted', 'Ground','Archers','Siege','all']).optional(),
   value: z.union([
     z.number(),
     z.tuple([
@@ -90,28 +121,66 @@ export const buffSchema = z.object({
   ]),
 });
 
-const refine = z.union([buffSchema,z.array(buffSchema)]);
+const buffUnion = z.union([buffSchema,z.array(buffSchema)]);
 
-const specialty = z.object({
-  name: z.string(),
-  level: qualitySchema,
+const specialtyIncrement = z.object({
+    level: qualitySchema,
+    buff: buffUnion
 });
 
+const specialty = z.object({
+    name: z.string(),
+    attribute: z.union([specialtyIncrement,z.array(specialtyIncrement)]),
+})
+
 const redStar = z.object({
-  level: levelSchema,
-  attributes: z.union([refine, z.array(refine)])
+    level: levelSchema,
+    bars: levelSchema.refine((l) => {
+        if(l !== null && l !== undefined ) {
+            switch (l) {
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                    return true;
+                default:
+                    return false;
+            }
+        }
+        return false;
+    }),
+    buff: buffUnion.nullable(),
 })
 
 const ascendingAttribute = z.object({
 
 })
 
-
-const skillBook = z.object({
-  attribute: z.string(),
-  level: levelSchema,
+export const specialSkillBook = z.object({
+    name: z.string(),
+    buff: buffUnion,
 })
 
+export const standardSkillBook = z.object({
+  attribute: buffUnion,
+  level: levelSchema.refine((l) => {
+      if(l !== null && l !== undefined ) {
+          switch (l) {
+              case '1':
+              case '2':
+              case '3':
+              case '4':
+                  return true;
+              default:
+                  return false;
+          }
+      }
+      return false;
+  }),
+})
+
+const skillBook = z.union([specialSkillBook,standardSkillBook])
 
 const beast = z.object({
   name: z.string(),
@@ -128,11 +197,11 @@ const beast = z.object({
 const dragon = z.object({
   name: z.string(),
   level: levelSchema,
-  refines: z.array(refine).optional(),
+  refines: z.array(buffUnion).optional(),
   talents: z.array(z.object({
     name: z.string(),
     level: z.number(),
-    grants: z.union([refine, z.array(refine)])
+    grants: z.union([buffUnion, z.array(buffUnion)])
   })).optional()
 })
 export const monsterSchema = z.object({
@@ -173,12 +242,35 @@ export const BlazonSet = z.object({
   })
 })
 
-const generalSchema = z.object({
-  name: z.string().optional(),
-  role: z.enum(['primary', 'assistant']),
-  level: z.number().optional(),
-  specialities: z.array(specialty).nullable(),
-  stars: z.number().default(0).refine((n) => (n >=0 && n <= 10)),
-  books: z.array(skillBook),
-  equipped: z.union([reference('beast'), reference('dragon')]).optional(),
+export const generalSchema = z.object({
+    general: z.object({
+        name: z.string(),
+        level: levelSchema.default('1'),
+        specialities: z.array(specialty).nullable(),
+        stars: levelSchema.refine((l) => {
+            if(l !== null && l !== undefined ) {
+                switch (l) {
+                    case '0':
+                    case '1':
+                    case '2':
+                    case '3':
+                    case '4':
+                    case '5':
+                    case '6':
+                    case '7':
+                    case '8':
+                    case '9':
+                    case '10':
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+            return false;
+        }).nullable(),
+        books: z.array(skillBook).nullish(),
+        role: z.enum(['primary', 'assistant']).optional(),
+        equipped: z.union([reference('beast'), reference('dragon')]).optional(),
+    })
+
 });
