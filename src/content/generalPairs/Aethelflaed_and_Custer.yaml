@@ -1,0 +1,81 @@
+---
+generals:
+  - name: Aethelflaed
+    role: primary
+    level: 38
+    stars: 9
+    specialties:
+      - name: Hunter
+        level: gold
+      - name: Fortune
+        level: gold
+      - name: Mounted Troop Ares
+        level: gold
+      - name: Lord of the Mercians
+        level: gold
+    gear:
+      weapon:
+        type: Ares Spear
+        refines:
+          - attribute: March Speed to Monsters
+            type: percentage
+            value: 24.9
+          - attribute: Mounted Attack
+            type: percentage
+            value: 24
+          - attribute: Mounted Attack
+            type: percentage
+            value: 22.6
+          - attribute: Mounted Attack
+            type: flat
+            value: 1005
+      boots:
+        type: Fearless Ares
+        refines:
+          - attribute: Mounted Defense
+            type: percentage
+            value: 13
+      helm:
+        type: Rurik
+        refines: ~
+      legs:
+        type: Rurik
+        refines: ~
+      ring:
+        type: Rurik Bracers
+        refines:
+          - attribute: Mounted Attack
+            type: percentage
+            value: 25.6
+          - attribute: Mounted Attack
+            type: percentage
+            value: 26.8
+          - attribute: Mounted Attack
+            type: flat
+            value: 1070
+    skill books:
+      - attribute: Mounted Attack
+        level: 4
+      - attribute: Mounted Defense Against Monsters
+        level: 4
+      - attribute: Mounted HP Against Monsters
+        level: 4
+    beast: fafnir
+  - name: George A. Custer
+    role: assistant
+    specialities:
+      - name: Mounted Troop Defense
+        level: gold
+      - name: Strike
+        level: gold
+      - name: Mounted Troop Ares
+        level: gold
+      - name: Battle of Gettysburg
+        level: gold
+    skill books:
+      - attribute: Mounted Defense
+        level: 4
+      - attribute: Mounted HP
+        level: 4
+      - attribute: March Size
+        level: 4

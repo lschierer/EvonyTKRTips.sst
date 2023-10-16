@@ -1,0 +1,29 @@
+---
+general:
+  name: Pyrrhus
+  level: '1'
+  stars: '0'
+  specialities: null
+  books:
+    - name: Pyrrhic War
+      buff:
+        - attribute: Attack
+          class: Ground
+          value:
+            - 35
+            - percentage
+        - attribute: Defense
+          class: Ground
+          value:
+            - 35
+            - percentage
+        - attribute: HP
+          class: Ground
+          value:
+            - 15
+            - percentage
+        - attribute: HP
+          class: Mounted
+          value:
+            - 15
+            - percentage

@@ -5,7 +5,7 @@ import {getEntry} from "astro:content";
 const { artId } = Astro.props;
 if(artId === null || artId === undefined || artId.length <= 0) {
     console.error(`bogus artId`);
-    exit(1)
+    return Astro.redirect("/404");
 }
 const entry = await getEntry('art', artId);
 if (entry === undefined) {
