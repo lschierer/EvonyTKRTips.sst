@@ -4,43 +4,6 @@ import * as cdk from "aws-cdk-lib";
 
 export function Web({ stack }: StackContext) {
 
-  const table = new Table(stack, "db", {
-    fields: {
-      pk: "string",
-      sk: "string",
-      gsi1pk: "string",
-      gsi1sk: "string",
-    },
-    primaryIndex: {
-      partitionKey: "pk",
-      sortKey: "sk",
-    },
-    globalIndexes: {
-      gsi1: {
-        partitionKey: "gsi1pk",
-        sortKey: "gsi1sk",
-      },
-
-    },
-    cdk: {
-      table: {
-        removalPolicy: cdk.RemovalPolicy.DESTROY,
-      }
-    },
-  });
-
-  // Create the API
-  const api = new ApiGateway(stack, "ApiGateway", {
-    cors: {
-      allowMethods: ["GET"],
-    },
-    routes: {
-      "GET /generalList": "packages/functions/src/server/index.handler",
-      "GET /generalByID": "packages/functions/src/server/index.handler",
-    }
-  });
-  
-  api.bind([table]);
 
   const site = new StaticSite(stack, "Site", {
     path: './',
@@ -58,18 +21,16 @@ export function Web({ stack }: StackContext) {
       hostedZone: "evonytkrtips.net",
     },
     environment: {
-      VITE_APP_API_URL: api.url ,
+
     },
   });
 
   stack.addOutputs({
-    ApiEndpoint: api.url,
     SITE: site.url,
   });
 
   return {
-    table,
-    api,
+
     site
   };
 }
