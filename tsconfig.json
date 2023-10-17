@@ -1,7 +1,9 @@
 {
   "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
-    "moduleResolution": "node16",
+    "baseUrl": ".",
+    "module": "es2020",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "experimentalDecorators": true,
     "strictNullChecks": true,
