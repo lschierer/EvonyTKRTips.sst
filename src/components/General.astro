@@ -1,11 +1,14 @@
 ---
 import { Debug } from 'astro:components';
 import {getEntry, z} from "astro:content";
-import {standardSkillBook, specialSkillBook} from '../schemas/evonySchemas';
+import {standardSkillBook,
+    specialSkillBook,
+    type specialSkillBookType,
+    skillBook} from '../schemas/evonySchemas';
 
 const { generalEntry } = Astro.props;
 if( generalEntry === null || generalEntry === undefined || generalEntry.length <= 0) {
-    console.error(`bogus generalEntry`);
+    console.log(`bogus generalEntry`);
 
 }
 const entry = await getEntry('generals', generalEntry);
@@ -15,27 +18,37 @@ if (entry === undefined) {
 const data = entry.data;
 const general = data.general;
 
-type standardSkillBookType = z.infer<typeof standardSkillBook>;
-type specialSkillBookType = z.infer<typeof specialSkillBook>;
 
 const generalName = general.name.toLocaleLowerCase().replace(/\s+/g, '_');
 
 ---
 
-<div class="GeneralDetails" id={generalName}>
-    <h4>{general.name}</h4>
-    Level: {general.level}
-    Stars: {general.stars}
+<div class="GeneralDetails not-content" id={generalName}>
+    <span class="center spectrum-Heading spectrum-Heading--sizeS">{general.name}</span>
+    <div style="display: flex; flex-direction: row; justify-content: space-evenly">
+        <div class="Level "><span class="label">Level:</span> {general.level}</div>
+        <div class="Stars "><span class="label">Stars:</span> {general.stars}</div>
+    </div>
+    <div class="IntrinsicAttributes">
+        <div class="Leadership"><span class="label">Leadership:</span> {general.leadership}</div>
+        <div class="Attack"><span class="label">Attack:</span> {general.attack}</div>
+        <div class="Defense"><span class="label">Defense:</span> {general.defense}</div>
+        <div class="Politics"><span class="label">Politics:</span> {general.politics}</div>
+    </div>
     {general.specialities && <div class="Specialities">
-        test
+        <div class="first"></div>
+        <div class="second"></div>
+        <div class="third"></div>
+        <div class="fourth"></div>
+        <div class="flex"></div>
     </div> }
     {general.books && <div class="SkillBooks" style="margin: 1px;">
-        <h5 style="margin-bottom: 3px;">Special Skill:</h5>
-            {general.books.map((book) => (
+        <span class="spectrum-Heading spectrum-Heading--sizeXS">Special Skill:</span>
+            {general.books.map((book: skillBook) => (
                     (specialSkillBook.safeParse(book)).success && (
                             <>
-                                <h6 style="margin-top: 6px; margin-bottom: 3px;">{book.name}</h6>
-                                {Array.isArray(book.buff) && (
+                                <span class="spectrum-Heading spectrum-Heading--sizeXXS">{book.name}</span>
+                                {Array.isArray((book as specialSkillBookType).buff) && (
                                         <ul style="margin: 0px;" id={book.name.toLocaleLowerCase().replace(/\s+/g, '_')}>
                                             {book.buff.map((b) => (
                                                     <li style="margin: 0px;">
@@ -50,6 +63,37 @@ const generalName = general.name.toLocaleLowerCase().replace(/\s+/g, '_');
     </div> }
 </div>
 
+<style>
+    .GeneralDetails {
+        display: flex;
+        flex-direction: column;
+
+        & .spectrum-Heading {
+            color: var(--sl-color-text-accent);
+
+
+        }
+        & .center {
+            align-self: center;
+        }
+        :is(div) {
+            margin: .5px;
+        }
+    }
+    .IntrinsicAttributes {
+        columns: 2;
+
+    }
+
+    .Specialities {
+        display: flex;
+    }
+
+    div.GeneralDetails  .label {
+        color: var(--sl-color-text-accent);
+
+    }
+</style>
 
 
 <Debug {general} />

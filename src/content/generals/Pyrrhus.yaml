@@ -3,7 +3,73 @@ general:
   name: Pyrrhus
   level: '1'
   stars: '0'
-  specialities: null
+  leadership: 119
+  attack: 117
+  defense: 121
+  politics: 107
+  specialities:
+    - name: Ground Troop Defense
+      attribute:
+        - level: Green
+          buff:
+            - attribute: HP
+              class: Ground
+              value:
+                - 1
+                - percentage
+            - attribute: Defense
+              class: Ground
+              value:
+                - 1
+                - percentage
+        - level: Blue
+          buff:
+            - attribute: HP
+              class: Ground
+              value:
+                - 1
+                - percentage
+            - attribute: Defense
+              class: Ground
+              value:
+                - 1
+                - percentage
+        - level: Purple
+          buff:
+            - attribute: HP
+              class: Ground
+              value:
+                - 2
+                - percentage
+            - attribute: Defense
+              class: Ground
+              value:
+                - 2
+                - percentage
+        - level: Orange
+          buff:
+            - attribute: HP
+              class: Ground
+              value:
+                - 2
+                - percentage
+            - attribute: Defense
+              class: Ground
+              value:
+                - 2
+                - percentage
+        - level: Gold
+          buff:
+            - attribute: HP
+              class: Ground
+              value:
+                - 4
+                - percentage
+            - attribute: Defense
+              class: Ground
+              value:
+                - 4
+                - percentage
   books:
     - name: Pyrrhic War
       buff:
