@@ -22,7 +22,6 @@
     }
   },
   "include": [
-    "src/**/*.ts",
-    "src/**/*.astro"
+    "src/**/*",
   ]
 }
