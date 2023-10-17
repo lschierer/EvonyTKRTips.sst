@@ -1,4 +1,4 @@
-import { LitElement, html, css } from "lit";
+import { LitElement, html, css, type PropertyValues} from "lit";
 import {customElement, property, state} from 'lit/decorators.js';
 
 import type {
@@ -15,6 +15,7 @@ import '@spectrum-web-components/table/elements.js';
 import type {DSVRowArray} from "d3-dsv";
 import * as dsv from "d3-dsv";
 
+
 @customElement('compare-mayors')
 export class CompareMayors extends LitElement {
 
@@ -30,13 +31,13 @@ export class CompareMayors extends LitElement {
     public items: DSVRowArray<string> | undefined;
 
     @state()
-    private records;
+    private records: Record<string, string>[];
 
     @state()
     private tableName: string;
 
     @state()
-    private table: Table | undefined;
+    private table: Table | null;
 
     static styles = css`
       .table-container {
@@ -126,11 +127,14 @@ export class CompareMayors extends LitElement {
       }
     `
 
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
 
         this.ids = [];
-
+        this.DataUrl = 'http://localhost';
+        this._DataUrl = new URL(this.DataUrl);
+        this.table = null;
+        this.tableName = '';
         this.records = [];
 
     }
@@ -144,7 +148,7 @@ export class CompareMayors extends LitElement {
     firstUpdated() {
         if(this.renderRoot){
             this.table = this.renderRoot.querySelector('#'+ this.tableName);
-            if(this.table){
+            if(this.table !== undefined && this.table !== null){
                 console.log(`in firstUpdated, found table ${this.tableName}`);
 
                 this.table.renderItem = (item,index) => {
@@ -157,14 +161,13 @@ export class CompareMayors extends LitElement {
                 };
 
                 this.table.addEventListener('sorted', (event) => {
-                    const {sortDirection, sortKey} = event.detail;
-                    let items = this.table.items.sort((a, b) => {
+                    const {sortDirection, sortKey} = (event as CustomEvent).detail;
+                    let items = this.table!.items.sort((a, b) => {
                         return sortDirection === 'asc' ?
-                            a[sortKey].localeCompare(b[sortKey]) :
-                            b[sortKey].localeCompare(a[sortKey]);
-
+                            (a[sortKey] as string).localeCompare((b[sortKey] as string)) :
+                            (b[sortKey]as string).localeCompare((a[sortKey] as string));
                     });
-                    this.table.items = [...items];
+                    this.table!.items = [...items];
                 });
 
             }
@@ -176,10 +179,16 @@ export class CompareMayors extends LitElement {
             this._DataUrl = new URL(this.DataUrl);
             this.tableName = this._DataUrl.pathname;
             if(this.tableName.includes('/')) {
-                this.tableName = this.tableName.split('/').pop();
+                const rtn = this.tableName.split('/').pop();
+                if(rtn !== undefined) {
+                    this.tableName = rtn;
+                }
             }
             if(this.tableName.includes('.')){
-                this.tableName = this.tableName.split('.').shift();
+                const rtn = this.tableName.split('.').shift();
+                if(rtn !== undefined) {
+                    this.tableName = rtn;
+                }
             }
             const r = await fetch(this._DataUrl).then((response) => {
                 if (response.ok) return response.text();
