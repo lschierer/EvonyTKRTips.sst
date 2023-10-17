@@ -121,7 +121,7 @@ export const buffSchema = z.object({
   ]),
 });
 
-const buffUnion = z.union([buffSchema,z.array(buffSchema)]);
+export const buffUnion = z.union([buffSchema,z.array(buffSchema)]);
 
 const specialtyIncrement = z.object({
     level: qualitySchema,
@@ -180,7 +180,11 @@ export const standardSkillBook = z.object({
   }),
 })
 
-const skillBook = z.union([specialSkillBook,standardSkillBook])
+export const skillBook = z.union([specialSkillBook,standardSkillBook])
+
+export type standardSkillBookType = z.infer<typeof standardSkillBook>;
+export type specialSkillBookType = z.infer<typeof specialSkillBook>;
+
 
 const beast = z.object({
   name: z.string(),
@@ -245,6 +249,10 @@ export const BlazonSet = z.object({
 export const generalSchema = z.object({
     general: z.object({
         name: z.string(),
+        leadership: z.number(),
+        attack: z.number(),
+        defense: z.number(),
+        politics: z.number(),
         level: levelSchema.default('1'),
         specialities: z.array(specialty).nullable(),
         stars: levelSchema.refine((l) => {
