@@ -2,6 +2,8 @@ import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import lit from "@astrojs/lit";
 
+import {sidebar} from './src/sidebar.ts';
+
 // https://astro.build/config
 export default defineConfig({
   site: 'https://evonytkrtips.net',
@@ -18,72 +20,13 @@ export default defineConfig({
       customCss: [
         './src/styles/styles.css',
       ],
-      sidebar: [
-        {
-          label: 'Generals',
-          collapsed: true,
-          autogenerate: {
-            directory: 'generals',
-            collapsed: true,
-          },
-        },
-        {
-          label: 'Monsters',
-          collapsed: true,
-          items: [
-            {
-              label: 'About Monsters',
-              link: 'monsters/',
-
-            },
-            {
-              label: 'Getting Started',
-              link: 'monsters/getting_started/',
-            },
-            {
-              label: 'Boss Monster Overview',
-              link: 'monsters/boss_overview/',
-            },
-            {
-              label: 'Monster Hunting',
-              items: [
-                {
-                  label: "Overview of Reports",
-                  link: 'monsters/overview/'
-                },
-                {
-                  label: 'Reports',
-                  collapsed: true,
-                  autogenerate: {
-                    directory: 'monsters/reports',
-                    collapsed: true,
-                  },
-                },
-              ],
-            },
-          ]
-        },
-        {
-          label: 'SvS',
-          collapsed: true,
-          autogenerate: {
-            directory: 'svs',
-            collapsed: true,
-          },
-        },
-        {
-          label: 'Reference',
-          collapsed: true,
-          autogenerate: {
-            directory: 'reference'
-          },
-        },
-      ],
+      sidebar: sidebar,
     }),
   ],
   vite: {
     build: {
-      minify: false
+      minify: false,
+      cssMinify: false,
     },
   },
 
