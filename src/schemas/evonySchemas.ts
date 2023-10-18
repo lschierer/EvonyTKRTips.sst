@@ -1,7 +1,6 @@
-import { z, reference, defineCollection } from 'astro:content';
-import {union} from "zod";
+import {z} from 'zod';
 
-const levelSchema = z.enum([
+export const levelSchema = z.enum([
     '0',
   '1',
   '2',
@@ -52,7 +51,7 @@ const levelSchema = z.enum([
 
 export const troopClass = z.enum(['Mounted', 'Ground','Archers','Siege','all']);
 
-const qualitySchema = z.enum([
+export const qualitySchema = z.enum([
   "Green",
   "Blue",
   "Purple",
@@ -80,15 +79,16 @@ export const blazonSet =z.enum([
     'Humility',
 ]);
 
-const BuffAdverbs =z.enum([
+export const BuffAdverbs =z.enum([
   'Attacking',
   'Marching',
-  'Defending',
+  'When Rallying',
+  'leading the army to attack',
   'Reinforcing',
+  'In City',
+  'Defending',
   'When The Main Defense General',
   'When the City Mayor',
-  'In City',
-  'When Rallying',
   'During SvS',
   'When an officer',
   'Against Monsters',
@@ -96,7 +96,7 @@ const BuffAdverbs =z.enum([
   'Reduces Monster',
 ])
 
-const BuffAttributes = z.enum([
+export const BuffAttributes = z.enum([
  'Attack',
  'Defense',
  'HP',
@@ -123,19 +123,22 @@ export const buffSchema = z.object({
     ]),
 });
 
+export type buff = z.infer<typeof buffSchema>;
 export const buffUnion = z.union([buffSchema,z.array(buffSchema)]);
 
-const specialtyIncrement = z.object({
+export const specialtyIncrement = z.object({
     level: qualitySchema,
     buff: buffUnion
 });
 
-const specialty = z.object({
+export type specialtyIncrementType = z.infer<typeof specialtyIncrement>;
+
+export const specialty = z.object({
     name: z.string(),
     attribute: z.array(specialtyIncrement),
 })
 
-const ascendingIncrement = z.object({
+export const ascendingIncrement = z.object({
     level: levelSchema.refine((l) => {
         switch (l) {
             case '6':
@@ -151,7 +154,7 @@ const ascendingIncrement = z.object({
     buff: buffUnion
 });
 
-const ascendingAttributes = z.array(ascendingIncrement).max(5);
+export const ascendingAttributes = z.array(ascendingIncrement).max(5);
 
 const redStar = z.object({
     level: levelSchema,
@@ -171,10 +174,6 @@ const redStar = z.object({
         return false;
     }),
     buff: buffUnion.nullable(),
-})
-
-const ascendingAttribute = z.object({
-
 })
 
 export const specialSkillBook = z.object({
@@ -206,13 +205,13 @@ export type standardSkillBookType = z.infer<typeof standardSkillBook>;
 export type specialSkillBookType = z.infer<typeof specialSkillBook>;
 
 
-const beast = z.object({
+export const beast = z.object({
   name: z.string(),
   quality: qualitySchema,
   level: z.number().refine((n) => (n > 0 && n <= 20))
 })
 
-const dragon = z.object({
+export const dragon = z.object({
   name: z.string(),
   level: levelSchema,
   refines: z.array(buffUnion).optional(),
@@ -223,14 +222,17 @@ const dragon = z.object({
   })).optional()
 })
 
-export const artTreasure = z.object({
+export const artTreasureSchema = z.object({
   art: z.object({
     name: z.string(),
     level: levelSchema,
     buff: z.union([buffSchema, z.array(buffSchema)])
   })
 })
-export const Blazon = z.object({
+
+export type artTreasure = z.infer<typeof artTreasureSchema>;
+
+export const BlazonSchema = z.object({
   blazon: z.object({
     type: blazonTypes,
     set: blazonSet,
@@ -239,16 +241,20 @@ export const Blazon = z.object({
   })
 })
 
-export const BlazonSet = z.object({
+export type Blazon = z.infer<typeof BlazonSchema>;
+
+export const BlazonSetSechma = z.object({
   set: z.object({
-    earth: Blazon.refine((b: z.infer<typeof Blazon>) => b.blazon.type === 'Earth').nullable(),
-    wind: Blazon.refine((b: z.infer<typeof Blazon>) => b.blazon.type === 'Wind').nullable(),
-    fire: Blazon.refine((b: z.infer<typeof Blazon>) => b.blazon.type === 'Fire').nullable(),
-    ocean: Blazon.refine((b: z.infer<typeof Blazon>) => b.blazon.type === 'Ocean').nullable(),
-    light: Blazon.refine((b: z.infer<typeof Blazon>) => b.blazon.type === 'Light').nullable(),
-    shadow: Blazon.refine((b: z.infer<typeof Blazon>) => b.blazon.type === 'Shadow').nullable()
+    earth: BlazonSchema.refine((b: Blazon) => b.blazon.type === 'Earth').nullable(),
+    wind: BlazonSchema.refine((b: Blazon) => b.blazon.type === 'Wind').nullable(),
+    fire: BlazonSchema.refine((b: Blazon) => b.blazon.type === 'Fire').nullable(),
+    ocean: BlazonSchema.refine((b: Blazon) => b.blazon.type === 'Ocean').nullable(),
+    light: BlazonSchema.refine((b: Blazon) => b.blazon.type === 'Light').nullable(),
+    shadow: BlazonSchema.refine((b: Blazon) => b.blazon.type === 'Shadow').nullable()
   })
 })
+
+export type BlazonSet = z.infer<typeof BlazonSetSechma>;
 
 export const generalSchema = z.object({
     general: z.object({
@@ -289,7 +295,6 @@ export const generalSchema = z.object({
         books: z.array(skillBook).nullish(),
         role: z.enum(['primary', 'assistant']).optional(),
         score_as: troopClass.optional(),
-        equipped: z.union([reference('beast'), reference('dragon')]).optional(),
     })
 
 });
