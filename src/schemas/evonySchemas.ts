@@ -50,6 +50,8 @@ const levelSchema = z.enum([
     '45',
 ]);
 
+export const troopClass = z.enum(['Mounted', 'Ground','Archers','Siege','all']);
+
 const qualitySchema = z.enum([
   "Green",
   "Blue",
@@ -78,7 +80,8 @@ export const blazonSet =z.enum([
     'Humility',
 ]);
 
-const RefineAdverbs =z.enum([
+const BuffAdverbs =z.enum([
+  'Attacking',
   'Marching',
   'Defending',
   'Reinforcing',
@@ -93,7 +96,7 @@ const RefineAdverbs =z.enum([
   'Reduces Monster',
 ])
 
-const RefineAttributes = z.enum([
+const BuffAttributes = z.enum([
  'Attack',
  'Defense',
  'HP',
@@ -102,6 +105,8 @@ const RefineAttributes = z.enum([
  'Range',
  'Training Speed',
  'Marching Speed',
+ 'March Size Capacity',
+ 'Rally Capacity',
  'Attack Speed',
  'Wounded to Death',
  'Death to Wounded',
@@ -109,16 +114,13 @@ const RefineAttributes = z.enum([
 ])
 
 export const buffSchema = z.object({
-  condition: z.union([RefineAdverbs, z.array(RefineAdverbs)]).optional(),
-  attribute: z.union([RefineAttributes, z.array(RefineAttributes)]).optional(),
-  class: z.enum(['Mounted', 'Ground','Archers','Siege','all']).optional(),
-  value: z.union([
-    z.number(),
-    z.tuple([
+  condition: z.union([BuffAdverbs, z.array(BuffAdverbs)]).optional(),
+  attribute: z.union([BuffAttributes, z.array(BuffAttributes)]).optional(),
+  class: troopClass.optional(),
+  value: z.tuple([
       z.number(),
       z.enum(['percentage','flat']),
     ]),
-  ]),
 });
 
 export const buffUnion = z.union([buffSchema,z.array(buffSchema)]);
@@ -130,8 +132,26 @@ const specialtyIncrement = z.object({
 
 const specialty = z.object({
     name: z.string(),
-    attribute: z.union([specialtyIncrement,z.array(specialtyIncrement)]),
+    attribute: z.array(specialtyIncrement),
 })
+
+const ascendingIncrement = z.object({
+    level: levelSchema.refine((l) => {
+        switch (l) {
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+            case '10':
+                return true;
+            default:
+                return false;
+        }
+    }),
+    buff: buffUnion
+});
+
+const ascendingAttributes = z.array(ascendingIncrement).max(5);
 
 const redStar = z.object({
     level: levelSchema,
@@ -188,13 +208,7 @@ export type specialSkillBookType = z.infer<typeof specialSkillBook>;
 
 const beast = z.object({
   name: z.string(),
-  quality: z.enum([
-    "Green",
-    "Blue",
-    "Purple",
-    "Orange",
-    "Gold",
-  ]),
+  quality: qualitySchema,
   level: z.number().refine((n) => (n > 0 && n <= 20))
 })
 
@@ -208,16 +222,6 @@ const dragon = z.object({
     grants: z.union([buffUnion, z.array(buffUnion)])
   })).optional()
 })
-export const monsterSchema = z.object({
-  name: z.string(),
-  level: levelSchema.optional(),
-  caveats: z.array(z.object({
-    class: z.enum(['mounted', 'ground','archers','siege']),
-    attribute: z.enum(['attack','defense','hp']),
-    type: z.enum(['flat', 'percentage']),
-    value: z.union([z.string(),z.number()])
-  })).optional(),
-});
 
 export const artTreasure = z.object({
   art: z.object({
@@ -250,11 +254,16 @@ export const generalSchema = z.object({
     general: z.object({
         name: z.string(),
         leadership: z.number(),
+        leadership_increment: z.number(),
         attack: z.number(),
+        attack_increment: z.number(),
         defense: z.number(),
+        defense_increment: z.number(),
         politics: z.number(),
+        politics_increment: z.number(),
         level: levelSchema.default('1'),
         specialities: z.array(specialty).nullable(),
+        ascending: ascendingAttributes.nullish(),
         stars: levelSchema.refine((l) => {
             if(l !== null && l !== undefined ) {
                 switch (l) {
@@ -276,9 +285,13 @@ export const generalSchema = z.object({
             }
             return false;
         }).nullable(),
+
         books: z.array(skillBook).nullish(),
         role: z.enum(['primary', 'assistant']).optional(),
+        score_as: troopClass.optional(),
         equipped: z.union([reference('beast'), reference('dragon')]).optional(),
     })
 
 });
+
+export type General = z.infer<typeof generalSchema>;
