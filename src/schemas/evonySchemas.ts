@@ -113,14 +113,20 @@ export const BuffAttributes = z.enum([
  'Load',
 ])
 
+export const buffTypeEnum = z.enum(['percentage','flat']);
+
+export type buffType = z.infer<typeof buffTypeEnum>;
+
+export const buffValueSchema = z.object({
+    number: z.number(),
+    unit: buffTypeEnum,
+})
+
 export const buffSchema = z.object({
   condition: z.union([BuffAdverbs, z.array(BuffAdverbs)]).optional(),
   attribute: z.union([BuffAttributes, z.array(BuffAttributes)]).optional(),
   class: troopClass.optional(),
-  value: z.tuple([
-      z.number(),
-      z.enum(['percentage','flat']),
-    ]),
+  value: buffValueSchema,
 });
 
 export type buff = z.infer<typeof buffSchema>;

@@ -1,8 +1,12 @@
 import {
+    buffSchema,
+    type buffType, buffTypeEnum,
+    buffValueSchema,
     type General
 } from '@schemas/evonySchemas.ts';
 
 export function attack_score(eg: General){
+    console.log(`attack_score`)
     let attack = 0;
     if(eg.score_as !== null && eg.score_as !== undefined) {
         //const general = eg.general;
@@ -19,10 +23,12 @@ export function attack_score(eg: General){
                                 (b.condition === 'Marching') ||
                                 (b.condition === 'When Rallying')||
                                 (b.condition === 'leading the army to attack')) {
+                                console.log(`Attacking buff detected`)
                                 switch (general.score_as) {
                                     case 'Ground':
                                     case 'Mounted':
                                     case 'Archers':
+                                        console.log(`score_as matched`)
                                         multiplier = 0.5;
                                         break;
                                     case 'Siege':
@@ -40,13 +46,17 @@ export function attack_score(eg: General){
                         }
                         if(b.class !== undefined && b.class !== null) {
                             if (b.class !== 'Ground') {
+                                console.log(`class was ${b.class}`)
                                 multiplier = 0;
                             }
                         }
-                        if(b.value[2] === 'percentage') {
-                            attack = attack + (attack * (b.value[1] * multiplier));
-                        } else if( b.value[2] === 'flat' && multiplier) {
-                            attack = attack + b.value[1];
+                        if(b.value !== undefined && b.value !== null) {
+                            const buff_type = b.value.unit;
+                            if(!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
+                                attack = attack + (attack * (b.value.number * multiplier));
+                            } else if (!buff_type.localeCompare(buffTypeEnum.enum.flat)) {
+                                attack = attack + attack;
+                            }
                         }
                     }
                 })
@@ -91,10 +101,13 @@ export function defense_score(eg: General){
                                 multiplier = 0;
                             }
                         }
-                        if(b.value[2] === 'percentage') {
-                            defense = defense + (defense * (b.value[1] * multiplier));
-                        } else if( b.value[2] === 'flat' && multiplier) {
-                            defense = defense + b.value[1];
+                        if(b.value !== undefined && b.value !== null) {
+                            const buff_type = b.value.unit;
+                            if(!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
+                                defense = defense + (defense * (b.value.number * multiplier));
+                            } else if (!buff_type.localeCompare(buffTypeEnum.enum.flat)) {
+                                defense = defense + defense;
+                            }
                         }
                     }
                 })
@@ -139,10 +152,13 @@ export function hp_score(eg: General){
                                 multiplier = 0;
                             }
                         }
-                        if(b.value[2] === 'percentage') {
-                            hp = hp + (hp * (b.value[1] * multiplier));
-                        } else if( b.value[2] === 'flat' && multiplier) {
-                            hp = hp + b.value[1];
+                        if(b.value !== undefined && b.value !== null) {
+                            const buff_type = b.value.unit;
+                            if(!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
+                                hp = hp + (hp * (b.value.number * multiplier));
+                            } else if (!buff_type.localeCompare(buffTypeEnum.enum.flat)) {
+                                hp = hp + hp;
+                            }
                         }
                     }
                 })
