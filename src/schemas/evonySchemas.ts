@@ -206,7 +206,7 @@ export const standardSkillBook = z.object({
 })
 
 export const skillBook = z.union([specialSkillBook,standardSkillBook])
-
+export type skillBookType = z.infer<typeof skillBook>;
 export type standardSkillBookType = z.infer<typeof standardSkillBook>;
 export type specialSkillBookType = z.infer<typeof specialSkillBook>;
 
@@ -263,46 +263,51 @@ export const BlazonSetSechma = z.object({
 export type BlazonSet = z.infer<typeof BlazonSetSechma>;
 
 export const generalSchema = z.object({
-    general: z.object({
-        name: z.string(),
-        leadership: z.number(),
-        leadership_increment: z.number(),
-        attack: z.number(),
-        attack_increment: z.number(),
-        defense: z.number(),
-        defense_increment: z.number(),
-        politics: z.number(),
-        politics_increment: z.number(),
-        level: levelSchema.default('1'),
-        specialities: z.array(specialty).nullable(),
-        ascending: ascendingAttributes.nullish(),
-        stars: levelSchema.refine((l) => {
-            if(l !== null && l !== undefined ) {
-                switch (l) {
-                    case '0':
-                    case '1':
-                    case '2':
-                    case '3':
-                    case '4':
-                    case '5':
-                    case '6':
-                    case '7':
-                    case '8':
-                    case '9':
-                    case '10':
-                        return true;
-                    default:
-                        return false;
-                }
-            }
-            return false;
-        }).nullable(),
-
-        books: z.array(skillBook).nullish(),
-        role: z.enum(['primary', 'assistant']).optional(),
-        score_as: troopClass.optional(),
-    })
-
+  name: z.string(),
+  leadership: z.number(),
+  leadership_increment: z.number(),
+  attack: z.number(),
+  attack_increment: z.number(),
+  defense: z.number(),
+  defense_increment: z.number(),
+  politics: z.number(),
+  politics_increment: z.number(),
+  level: levelSchema.default('1'),
+  specialities: z.array(specialty).nullable(),
+  ascending: ascendingAttributes.nullish(),
+  stars: levelSchema.refine((l) => {
+    if(l !== null && l !== undefined ) {
+      switch (l) {
+        case '0':
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+        case '9':
+        case '10':
+          return true;
+        default:
+          return false;
+      }
+    }
+    return false;
+  }).nullable(),
+  
+  books: z.array(skillBook).nullish(),
+  role: z.enum(['primary', 'assistant']).optional(),
+  score_as: troopClass.optional(),
 });
 
 export type General = z.infer<typeof generalSchema>;
+
+export const generalObjectSchema = z.object({
+    general: generalSchema,
+
+});
+
+export type generalObject = z.infer<typeof generalObjectSchema>;
+
