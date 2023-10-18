@@ -1,12 +1,17 @@
 ---
 general:
   name: Pyrrhus
-  level: '1'
-  stars: '0'
+  score_as: Ground
+  level: '45'
+  stars: '10'
   leadership: 119
+  leadership_increment: 9.02
   attack: 117
+  attack_increment: 8.92
   defense: 121
+  defense_increment: 8.78
   politics: 107
+  politics_increment: 8.69
   specialities:
     - name: Ground Troop Defense
       attribute:
@@ -70,6 +75,397 @@ general:
               value:
                 - 4
                 - percentage
+    - name: Annihilation
+      attribute:
+      - level: Green
+        buff:
+          - attribute: March Size Capacity
+            value:
+              - 1
+              - percentage
+          - attribute: Attack
+            condition: Attacking
+            class: Mounted
+            value:
+              - 1
+              - percentage
+          - attribute: Attack
+            condition: Attacking
+            class: Ground
+            value:
+              - 1
+              - percentage
+      - level: Blue
+        buff:
+          - attribute: March Size Capacity
+            value:
+              - 1
+              - percentage
+          - attribute: Attack
+            condition: Attacking
+            class: Mounted
+            value:
+              - 1
+              - percentage
+          - attribute: Attack
+            condition: Attacking
+            class: Ground
+            value:
+              - 1
+              - percentage
+      - level: Purple
+        buff:
+          - attribute: March Size Capacity
+            value:
+              - 1
+              - percentage
+          - attribute: Attack
+            condition: Attacking
+            class: Mounted
+            value:
+              - 2
+              - percentage
+          - attribute: Attack
+            condition: Attacking
+            class: Ground
+            value:
+              - 2
+              - percentage
+      - level: Orange
+        buff:
+          - attribute: March Size Capacity
+            value:
+              - 1
+              - percentage
+          - attribute: Attack
+            condition: Attacking
+            class: Mounted
+            value:
+              - 2
+              - percentage
+          - attribute: Attack
+            condition: Attacking
+            class: Ground
+            value:
+              - 2
+              - percentage
+      - level: Gold
+        buff:
+          - attribute: March Size Capacity
+            value:
+              - 2
+              - percentage
+          - attribute: Attack
+            condition: Attacking
+            class: Mounted
+            value:
+              - 4
+              - percentage
+          - attribute: Attack
+            condition: Attacking
+            class: Ground
+            value:
+              - 4
+              - percentage
+    - name: Ground Troop Ares
+      attribute:
+        - level: Green
+          buff:
+            - attribute: Attack
+              class: Ground
+              value:
+                - 1
+                - percentage
+            - attribute: HP
+              class: Ground
+              value:
+                - 1
+                - percentage
+            - attribute: Defense
+              class: Ground
+              value:
+                - 1
+                - percentage
+        - level: Blue
+          buff:
+            - attribute: Attack
+              class: Ground
+              value:
+                - 1
+                - percentage
+            - attribute: HP
+              class: Ground
+              value:
+                - 1
+                - percentage
+            - attribute: Defense
+              class: Ground
+              value:
+                - 1
+                - percentage
+        - level: Purple
+          buff:
+            - attribute: Attack
+              class: Ground
+              value:
+                - 2
+                - percentage
+            - attribute: HP
+              class: Ground
+              value:
+                - 2
+                - percentage
+            - attribute: Defense
+              class: Ground
+              value:
+                - 2
+                - percentage
+        - level: Orange
+          buff:
+            - attribute: Attack
+              class: Ground
+              value:
+                - 2
+                - percentage
+            - attribute: HP
+              class: Ground
+              value:
+                - 2
+                - percentage
+            - attribute: Defense
+              class: Ground
+              value:
+                - 2
+                - percentage
+        - level: Gold
+          buff:
+            - attribute: Attack
+              class: Ground
+              value:
+                - 4
+                - percentage
+            - attribute: HP
+              class: Ground
+              value:
+                - 4
+                - percentage
+            - attribute: Defense
+              class: Ground
+              value:
+                - 4
+                - percentage
+    - name: Pyrrhic Victory
+      attribute:
+        - level: Green
+          buff:
+            - attribute: Attack
+              class: Ground
+              value:
+                - 3
+                - percentage
+            - attribute: Defense
+              class: Ground
+              value:
+                - 1
+                - percentage
+            - attribute: Defense
+              class: Mounted
+              value:
+                - 1
+                - percentage
+            - attribute: HP
+              class: Ground
+              value:
+                - 1
+                - percentage
+            - attribute: HP
+              class: Mounted
+              value:
+                - 1
+                - percentage
+        - level: Blue
+          buff:
+          - attribute: Attack
+            class: Ground
+            value:
+              - 4
+              - percentage
+          - attribute: Defense
+            class: Ground
+            value:
+              - 2
+              - percentage
+          - attribute: Defense
+            class: Mounted
+            value:
+              - 2
+              - percentage
+          - attribute: HP
+            class: Ground
+            value:
+              - 2
+              - percentage
+          - attribute: HP
+            class: Mounted
+            value:
+              - 2
+              - percentage
+        - level: Purple
+          buff:
+            - attribute: Attack
+              class: Ground
+              value:
+                - 7
+                - percentage
+            - attribute: Defense
+              class: Ground
+              value:
+                - 3
+                - percentage
+            - attribute: Defense
+              class: Mounted
+              value:
+                - 3
+                - percentage
+            - attribute: HP
+              class: Ground
+              value:
+                - 3
+                - percentage
+            - attribute: HP
+              class: Mounted
+              value:
+                - 3
+                - percentage
+        - level: Orange
+          buff:
+            - attribute: Attack
+              class: Ground
+              value:
+                - 7
+                - percentage
+            - attribute: Defense
+              class: Ground
+              value:
+                - 3
+                - percentage
+            - attribute: Defense
+              class: Mounted
+              value:
+                - 3
+                - percentage
+            - attribute: HP
+              class: Ground
+              value:
+                - 3
+                - percentage
+            - attribute: HP
+              class: Mounted
+              value:
+                - 3
+                - percentage
+        - level: Gold
+          buff:
+            - attribute: Attack
+              class: Ground
+              value:
+                - 14
+                - percentage
+            - attribute: Defense
+              class: Ground
+              value:
+                - 6
+                - percentage
+            - attribute: Defense
+              class: Mounted
+              value:
+                - 6
+                - percentage
+            - attribute: HP
+              class: Ground
+              value:
+                - 6
+                - percentage
+            - attribute: HP
+              class: Mounted
+              value:
+                - 6
+                - percentage
+  ascending:
+    - level: '6'
+      buff:
+        - attribute: Attack
+          class: Ground
+          value:
+            - 10
+            - percentage
+        - attribute: HP
+          class: Ground
+          value:
+            - 10
+            - percentage
+        - attribute: HP
+          class: Mounted
+          value:
+            - 10
+            - percentage
+    - level: '7'
+      buff:
+        - attribute: Death to Wounded
+          condition: Marching
+          value:
+            - 10
+            - percentage
+    - level: '8'
+      buff:
+        - attribute: Rally Capacity
+          condition: When Rallying
+          value:
+            - 8
+            - percentage
+    - level: '9'
+      buff:
+        - attribute: Attack
+          class: Mounted
+          condition: Marching
+          value:
+            - 15
+            - percentage
+        - attribute: Attack
+          class: Ground
+          condition: Marching
+          value:
+            - 15
+            - percentage
+        - attribute: Defense
+          class: Mounted
+          condition: Marching
+          value:
+            - 15
+            - percentage
+        - attribute: Defense
+          class: Ground
+          condition: Marching
+          value:
+            - 15
+            - percentage
+    - level: '10'
+      buff:
+        - attribute: Attack
+          class: Ground
+          value:
+            - 25
+            - percentage
+        - attribute: Defense
+          class: Ground
+          value:
+            - 15
+            - percentage
+        - attribute: HP
+          class: Ground
+          value:
+            - 15
+            - percentage
   books:
     - name: Pyrrhic War
       buff:
