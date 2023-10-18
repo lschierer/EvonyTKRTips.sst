@@ -30,8 +30,11 @@ if (entry === undefined) {
 let general = null;
 let generalName = '';
 let attack = 0;
+let attackBuff = 0;
 let defense = 0;
+let defenseBuff = 0;
 let hp = 0;
+let hpBuff = 0;
 let starsNum = 0;
 let starsLimit = 0;
 let starsHtml = ' ';
@@ -56,10 +59,12 @@ if (validation.success) {
   
    generalName = general.name.toLocaleLowerCase().replace(/\s+/g, '_');
   
-  attack = toNumber(attack_score(generaLObject)).toFixed(2);
-  defense = toNumber(defense_score(generaLObject)).toFixed(2);
-  hp = toNumber(hp_score(generaLObject)).toFixed(2);
-  
+  [attackBuff,attack] = attack_score(generaLObject);
+  [defenseBuff,defense] = defense_score(generaLObject);
+  [hpBuff,hp] = hp_score(generaLObject);
+  attack = attack.toFixed(2);
+  defense = defense.toFixed(2);
+  hp = hp.toFixed(2);
 }
 ---
 
@@ -80,14 +85,17 @@ if (validation.success) {
                   <span class="label spectrum-Body spectrum-Body--sizeS">Max:</span> {(general[ia] + (general[ia + '_increment'] * 45)).toFixed(2)}<br/>
                 {(!ia.localeCompare("attack")) &&
                         <>
+                            <span class="label spectrum-Body spectrum-Body--sizeS">Effective Buff:</span> {attackBuff}<br/>
                             <span class="label spectrum-Body spectrum-Body--sizeS">Score:</span> {attack}<br/>
                         </>}
                 {(!ia.localeCompare("defense")) &&
                         <>
+                            <span class="label spectrum-Body spectrum-Body--sizeS">Effective Buff:</span> {defenseBuff}<br/>
                             <span class="label spectrum-Body spectrum-Body--sizeS">Score:</span> {defense}<br/>
                         </>}
                 {(!ia.localeCompare("leadership")) &&
                         <>
+                            <span class="label spectrum-Body spectrum-Body--sizeS">Effective Buff:</span> {hpBuff}<br/>
                             <span class="label spectrum-Body spectrum-Body--sizeS">Score:</span> {hp}<br/>
                         </>}
               </div>
@@ -110,7 +118,7 @@ if (validation.success) {
                                                   {s.buff.map((b: buff) => (
                                                           <>
                                                               <li style="margin: 0px;">
-                                                                {b.condition} {b.class !== 'all' ? b.class : 'all troops '} {b.attribute} {(b.value[0] < 0) ? '-' : '+'}{b.value[0]}{b.value[1] ? '%' : ''}
+                                                                {b.condition} {b.class !== 'all' ? b.class : 'all troops '} {b.attribute} {(b.value.number < 0) ? '-' : '+'}{b.value.number}{b.value.unit ? '%' : ''}
                                                               </li>
                                                           </>
                                                   ))}
@@ -135,7 +143,7 @@ if (validation.success) {
                                                   {s.buff.map((b: buff) => (
                                                           <>
                                                               <li style="margin: 0px;">
-                                                                {b.condition} {b.class !== 'all' ? b.class : 'all troops '} {b.attribute} {(b.value[0] < 0) ? '-' : '+'}{b.value[0]}{b.value[1] ? '%' : ''}
+                                                                {b.condition} {b.class !== 'all' ? b.class : 'all troops '} {b.attribute} {(b.value.number < 0) ? '-' : '+'}{b.value.number}{b.value.unit ? '%' : ''}
                                                               </li>
                                                           </>
                                                   ))}
@@ -160,7 +168,7 @@ if (validation.success) {
                                                   {s.buff.map((b: buff) => (
                                                           <>
                                                               <li style="margin: 0px;">
-                                                                {b.condition} {b.class !== 'all' ? b.class : 'all troops '} {b.attribute} {(b.value[0] < 0) ? '-' : '+'}{b.value[0]}{b.value[1] ? '%' : ''}
+                                                                {b.condition} {b.class !== 'all' ? b.class : 'all troops '} {b.attribute} {(b.value.number < 0) ? '-' : '+'}{b.value.number}{b.value.unit ? '%' : ''}
                                                               </li>
                                                           </>
                                                   ))}
@@ -185,7 +193,7 @@ if (validation.success) {
                                                   {s.buff.map((b: buff) => (
                                                           <>
                                                               <li style="margin: 0px;">
-                                                                {b.condition} {b.class !== 'all' ? b.class : 'all troops '} {b.attribute} {(b.value[0] < 0) ? '-' : '+'}{b.value[0]}{b.value[1] ? '%' : ''}
+                                                                {b.condition} {b.class !== 'all' ? b.class : 'all troops '} {b.attribute} {(b.value.number < 0) ? '-' : '+'}{b.value.number}{b.value.unit ? '%' : ''}
                                                               </li>
                                                           </>
                                                   ))}
@@ -210,7 +218,7 @@ if (validation.success) {
                                                   {s.buff.map((b: buff) => (
                                                           <>
                                                               <li style="margin: 0px;">
-                                                                {b.condition} {b.class !== 'all' ? b.class : 'all troops '} {b.attribute} {(b.value[0] < 0) ? '-' : '+'}{b.value[0]}{b.value[1] ? '%' : ''}
+                                                                {b.condition} {b.class !== 'all' ? b.class : 'all troops '} {b.attribute} {(b.value.number < 0) ? '-' : '+'}{b.value.number}{b.value.unit ? '%' : ''}
                                                               </li>
                                                           </>
                                                   ))}
@@ -237,7 +245,7 @@ if (validation.success) {
                               {a.buff.map((b: buff) => (
                                       <>
                                           <li style="margin: 0px;">
-                                            {b.condition} {(b.class === undefined || b.class === null) ? '' : b.class !== 'all' ? b.class : 'all troops '} {b.attribute} {(b.value[0] < 0) ? '-' : '+'}{b.value[0]}{b.value[1] ? '%' : ''}
+                                            {b.condition} {(b.class === undefined || b.class === null) ? '' : b.class !== 'all' ? b.class : 'all troops '} {b.attribute} {(b.value.number < 0) ? '-' : '+'}{b.value.number}{b.value.unit ? '%' : ''}
                                           </li>
                                       </>
                               ))}
@@ -259,7 +267,7 @@ if (validation.success) {
                                 <ul style="margin: 0px;" id={book.name.toLocaleLowerCase().replace(/\s+/g, '_')}>
                                   {book.buff.map((b) => (
                                           <li style="margin: 0px;">
-                                            {b.condition} {(b.class === undefined || b.class === null) ? '' : b.class !== 'all' ? b.class : 'all troops '} {b.attribute} {(b.value[0] < 0) ? '-' : '+'}{b.value[0]}{b.value[1] ? '%' : ''}
+                                            {b.condition} {(b.class === undefined || b.class === null) ? '' : b.class !== 'all' ? b.class : 'all troops '} {b.attribute} {(b.value.number < 0) ? '-' : '+'}{b.value.number}{b.value.unit ? '%' : ''}
                                           </li>
                                   ))}
                                 </ul>
