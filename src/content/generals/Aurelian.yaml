@@ -1,0 +1,36 @@
+---
+general:
+  name: Aurelian
+  score_as: Ground
+  leadership: 118
+  leadership_increment: 9.01
+  attack: 120
+  attack_increment: 9.01
+  defense: 114
+  defense_increment: 8.82
+  politics: 105
+  politics_increment: 8.57
+  level: '45'
+  stars: '10'
+  books:
+    - name: Restorer of the World
+      buff:
+        - condition: leading the army to attack
+          class: Ground
+          attribute: Attack
+          value:
+            number: 40
+            unit: percentage
+        - condition: leading the army to attack
+          class: Ground
+          attribute: HP
+          value:
+            number: 35
+            unit: percentage
+        - condition: leading the army to attack
+          class: Mounted
+          attribute: HP
+          value:
+            number: 35
+            unit: percentage
+  specialities: null
