@@ -251,12 +251,12 @@ export type Blazon = z.infer<typeof BlazonSchema>;
 
 export const BlazonSetSechma = z.object({
   set: z.object({
-    earth: BlazonSchema.refine((b: Blazon) => b.blazon.type === 'Earth').nullable(),
-    wind: BlazonSchema.refine((b: Blazon) => b.blazon.type === 'Wind').nullable(),
-    fire: BlazonSchema.refine((b: Blazon) => b.blazon.type === 'Fire').nullable(),
-    ocean: BlazonSchema.refine((b: Blazon) => b.blazon.type === 'Ocean').nullable(),
-    light: BlazonSchema.refine((b: Blazon) => b.blazon.type === 'Light').nullable(),
-    shadow: BlazonSchema.refine((b: Blazon) => b.blazon.type === 'Shadow').nullable()
+    earth: BlazonSchema.refine((b: Blazon) => b.blazon.type === 'Earth').nullish(),
+    wind: BlazonSchema.refine((b: Blazon) => b.blazon.type === 'Wind').nullish(),
+    fire: BlazonSchema.refine((b: Blazon) => b.blazon.type === 'Fire').nullish(),
+    ocean: BlazonSchema.refine((b: Blazon) => b.blazon.type === 'Ocean').nullish(),
+    light: BlazonSchema.refine((b: Blazon) => b.blazon.type === 'Light').nullish(),
+    shadow: BlazonSchema.refine((b: Blazon) => b.blazon.type === 'Shadow').nullish()
   })
 })
 

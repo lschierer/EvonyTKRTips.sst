@@ -1,334 +1,359 @@
 ---
-import { Debug } from 'astro:components';
-import {getEntry, z} from "astro:content";
+import {Debug} from 'astro:components';
+import {getEntry} from "astro:content";
 import 'iconify-icon';
 import toNumber from 'strnum';
+import {z} from 'zod';
 
 import {
-    type buff,
-    buffSchema,
-    standardSkillBook,
-    specialSkillBook,
-    type specialSkillBookType,
-    skillBook, buffUnion,
-} from '../schemas/evonySchemas';
+  type buff,
+  buffSchema,
+  generalSchema,
+  standardSkillBook,
+  specialSkillBook,
+  type specialSkillBookType,
+  skillBook, buffUnion,
+} from '@schemas/evonySchemas.ts';
 
-import {attack_score, defense_score,hp_score} from './general/score';
+import {attack_score, defense_score, hp_score} from './general/score';
 
-const { generalEntry } = Astro.props;
-if( generalEntry === null || generalEntry === undefined || generalEntry.length <= 0) {
-    console.log(`bogus generalEntry`);
-
+const {generalEntry} = Astro.props;
+if (generalEntry === null || generalEntry === undefined || generalEntry.length <= 0) {
+  console.log(`bogus generalEntry`);
+  
 }
 const entry = await getEntry('generals', generalEntry);
 if (entry === undefined) {
-    return Astro.redirect("/404");
+  return Astro.redirect("/404");
 }
-const data = entry.data;
-const general = data.general;
 
+let general = null;
+let generalName = '';
+let attack = 0;
+let defense = 0;
+let hp = 0;
+let starsNum = 0;
+let starsLimit = 0;
 let starsHtml = ' ';
-const starsNum = toNumber(general.stars)
-const starsLimit = (starsNum <= 5) ? starsNum : 5;
-for(let i = 0; i < starsLimit; i++) {
-    if((starsNum >= 6) && (i < (starsNum - 5) )) {
-        starsHtml = starsHtml.concat('<iconify-icon style="color: var(--spectrum-red-900)" icon="mdi:star"></iconify-icon>');
-    } else {
-        starsHtml = starsHtml.concat('<iconify-icon style="color: var(--spectrum-yellow-300)" icon="mdi:star"></iconify-icon>');
-    }
-
-}
-
-const generalName = general.name.toLocaleLowerCase().replace(/\s+/g, '_');
-
 const intrinsic = ["leadership", "attack", "defense", "politics"]
 
-const attack = attack_score(general).toFixed(2);
-const defense = defense_score(general).toFixed(2);
-const hp = hp_score(general).toFixed(2);
+const data = entry.data;
+const validation = generalSchema.safeParse(data);
+if (validation.success) {
+    const generaLObject = validation.data;
+    general = generaLObject.general;
+  
+  starsNum = toNumber(general.stars)
+  starsLimit = (starsNum <= 5) ? starsNum : 5;
+  for (let i = 0; i < starsLimit; i++) {
+    if ((starsNum >= 6) && (i < (starsNum - 5))) {
+      starsHtml = starsHtml.concat('<iconify-icon style="color: var(--spectrum-red-900)" icon="mdi:star"></iconify-icon>');
+    } else {
+      starsHtml = starsHtml.concat('<iconify-icon style="color: var(--spectrum-yellow-300)" icon="mdi:star"></iconify-icon>');
+    }
+    
+  }
+  
+   generalName = general.name.toLocaleLowerCase().replace(/\s+/g, '_');
+  
+  attack = toNumber(attack_score(generaLObject)).toFixed(2);
+  defense = toNumber(defense_score(generaLObject)).toFixed(2);
+  hp = toNumber(hp_score(generaLObject)).toFixed(2);
+  
+}
 ---
 
+{general && (
 <div class="GeneralDetails not-content" id={generalName}>
     <span class="center spectrum-Heading spectrum-Heading--sizeS">{general.name}: (Level: {general.level})</span>
-    {general.stars && (<div class="Stars" >
-        <Fragment set:html={starsHtml} />
-    </div>)}
+  {general.stars && (
+          <div class="Stars">
+              <Fragment set:html={starsHtml}/>
+          </div>)}
     <br/>
     <div class="IntrinsicAttributes">
-        {intrinsic.map((ia) => (
-                <div class=ia>
-                    <span class="label spectrum-Body spectrum-Body--sizeM">{ia[0].toUpperCase() + ia.slice(1)}</span><br/>
-                    <span class="label spectrum-Body spectrum-Body--sizeS">Base:</span> {general[ia]}<br/>
-                    <span class="label spectrum-Body spectrum-Body--sizeS">Growth Rate:</span> {general[ia + '_increment']}<br/>
-                    <span class="label spectrum-Body spectrum-Body--sizeS">Max:</span> {(general[ia] + (general[ia + '_increment'] * 45)).toFixed(2)}<br/>
-                    {(!ia.localeCompare("attack")) && <>
+      {intrinsic.map((ia) => (
+              <div class=ia>
+                  <span class="label spectrum-Body spectrum-Body--sizeM">{ia[0].toUpperCase() + ia.slice(1)}</span><br/>
+                  <span class="label spectrum-Body spectrum-Body--sizeS">Base:</span> {general[ia]}<br/>
+                  <span class="label spectrum-Body spectrum-Body--sizeS">Growth Rate:</span> {general[ia + '_increment']}<br/>
+                  <span class="label spectrum-Body spectrum-Body--sizeS">Max:</span> {(general[ia] + (general[ia + '_increment'] * 45)).toFixed(2)}<br/>
+                {(!ia.localeCompare("attack")) &&
+                        <>
                             <span class="label spectrum-Body spectrum-Body--sizeS">Score:</span> {attack}<br/>
-                    </>}
-                    {(!ia.localeCompare("defense")) && <>
-                        <span class="label spectrum-Body spectrum-Body--sizeS">Score:</span> {defense}<br/>
-                    </>}
-                    {(!ia.localeCompare("leadership")) && <>
-                        <span class="label spectrum-Body spectrum-Body--sizeS">Score:</span> {hp}<br/>
-                    </>}
-                </div>
-        ))}
+                        </>}
+                {(!ia.localeCompare("defense")) &&
+                        <>
+                            <span class="label spectrum-Body spectrum-Body--sizeS">Score:</span> {defense}<br/>
+                        </>}
+                {(!ia.localeCompare("leadership")) &&
+                        <>
+                            <span class="label spectrum-Body spectrum-Body--sizeS">Score:</span> {hp}<br/>
+                        </>}
+              </div>
+      ))}
     </div>
     <br/>
-    {general.specialities && (
-        <span class="label spectrum-Heading spectrum-Heading--sizeXS">Specialities</span>
-        <div class="Specialities non-content">
-            <div class="first">
+  {general.specialities && (
+          <span class="label spectrum-Heading spectrum-Heading--sizeXS">Specialities</span>
+          <div class="Specialities non-content">
+              <div class="first">
                 {general.specialities[0] && (
                         <>
                             <span class="label spectrum-Heading spectrum-Heading--sizeXXS">{general.specialities[0].name}</span>
-                            {Array.isArray(general.specialities[0].attribute) && (
-                                    <ul style="margin: 0px;">
-                                        {general.specialities[0].attribute.map((s) => (
-                                                <li class={s.level} style="marin: 0px;">
-                                                    {s.level} Level:
-                                                    <ul style="marin: 0px;">
-                                                        {s.buff.map((b:buff ) => (
-                                                            <>
-                                                                <li style="margin: 0px;">
-                                                                    {b.condition } {b.class !== 'all' ? b.class : 'all troops '} {b.attribute} {(b.value[0] < 0) ? '-' : '+'}{b.value[0]}{b.value[1] ? '%': ''}
-                                                                </li>
-                                                            </>
-                                                        ))}
-                                                    </ul>
-                                                </li>
-                                        ))}
-                                    </ul>
-                            )}
+                          {Array.isArray(general.specialities[0].attribute) && (
+                                  <ul style="margin: 0px;">
+                                    {general.specialities[0].attribute.map((s) => (
+                                            <li class={s.level} style="marin: 0px;">
+                                              {s.level} Level:
+                                                <ul style="marin: 0px;">
+                                                  {s.buff.map((b: buff) => (
+                                                          <>
+                                                              <li style="margin: 0px;">
+                                                                {b.condition} {b.class !== 'all' ? b.class : 'all troops '} {b.attribute} {(b.value[0] < 0) ? '-' : '+'}{b.value[0]}{b.value[1] ? '%' : ''}
+                                                              </li>
+                                                          </>
+                                                  ))}
+                                                </ul>
+                                            </li>
+                                    ))}
+                                  </ul>
+                          )}
                         </>
                 )}
-            </div>
-            <div class="second">
+              </div>
+              <div class="second">
                 {general.specialities[1] && (
                         <>
                             <span class="label spectrum-Heading spectrum-Heading--sizeXXS">{general.specialities[1].name}</span>
-                            {Array.isArray(general.specialities[1].attribute) && (
-                                    <ul style="margin: 0px;">
-                                        {general.specialities[1].attribute.map((s) => (
-                                                <li class={s.level} style="marin: 0px;">
-                                                    {s.level} Level:
-                                                    <ul style="marin: 0px;">
-                                                        {s.buff.map((b:buff ) => (
-                                                                <>
-                                                                    <li style="margin: 0px;">
-                                                                        {b.condition } {b.class !== 'all' ? b.class : 'all troops '} {b.attribute} {(b.value[0] < 0) ? '-' : '+'}{b.value[0]}{b.value[1] ? '%': ''}
-                                                                    </li>
-                                                                </>
-                                                        ))}
-                                                    </ul>
-                                                </li>
-                                        ))}
-                                    </ul>
-                            )}
+                          {Array.isArray(general.specialities[1].attribute) && (
+                                  <ul style="margin: 0px;">
+                                    {general.specialities[1].attribute.map((s) => (
+                                            <li class={s.level} style="marin: 0px;">
+                                              {s.level} Level:
+                                                <ul style="marin: 0px;">
+                                                  {s.buff.map((b: buff) => (
+                                                          <>
+                                                              <li style="margin: 0px;">
+                                                                {b.condition} {b.class !== 'all' ? b.class : 'all troops '} {b.attribute} {(b.value[0] < 0) ? '-' : '+'}{b.value[0]}{b.value[1] ? '%' : ''}
+                                                              </li>
+                                                          </>
+                                                  ))}
+                                                </ul>
+                                            </li>
+                                    ))}
+                                  </ul>
+                          )}
                         </>
                 )}
-            </div>
-            <div class="third">
+              </div>
+              <div class="third">
                 {general.specialities[2] && (
                         <>
                             <span class="label spectrum-Heading spectrum-Heading--sizeXXS">{general.specialities[2].name}</span>
-                            {Array.isArray(general.specialities[2].attribute) && (
-                                    <ul style="margin: 0px;">
-                                        {general.specialities[2].attribute.map((s) => (
-                                                <li class={s.level} style="marin: 0px;">
-                                                    {s.level} Level:
-                                                    <ul style="marin: 0px;">
-                                                        {s.buff.map((b:buff ) => (
-                                                                <>
-                                                                    <li style="margin: 0px;">
-                                                                        {b.condition } {b.class !== 'all' ? b.class : 'all troops '} {b.attribute} {(b.value[0] < 0) ? '-' : '+'}{b.value[0]}{b.value[1] ? '%': ''}
-                                                                    </li>
-                                                                </>
-                                                        ))}
-                                                    </ul>
-                                                </li>
-                                        ))}
-                                    </ul>
-                            )}
+                          {Array.isArray(general.specialities[2].attribute) && (
+                                  <ul style="margin: 0px;">
+                                    {general.specialities[2].attribute.map((s) => (
+                                            <li class={s.level} style="marin: 0px;">
+                                              {s.level} Level:
+                                                <ul style="marin: 0px;">
+                                                  {s.buff.map((b: buff) => (
+                                                          <>
+                                                              <li style="margin: 0px;">
+                                                                {b.condition} {b.class !== 'all' ? b.class : 'all troops '} {b.attribute} {(b.value[0] < 0) ? '-' : '+'}{b.value[0]}{b.value[1] ? '%' : ''}
+                                                              </li>
+                                                          </>
+                                                  ))}
+                                                </ul>
+                                            </li>
+                                    ))}
+                                  </ul>
+                          )}
                         </>
                 )}
-            </div>
-            <div class="fourth">
+              </div>
+              <div class="fourth">
                 {general.specialities[3] && (
                         <>
                             <span class="label spectrum-Heading spectrum-Heading--sizeXXS">{general.specialities[3].name}</span>
-                            {Array.isArray(general.specialities[3].attribute) && (
-                                    <ul style="margin: 0px;">
-                                        {general.specialities[3].attribute.map((s) => (
-                                                <li class={s.level} style="marin: 0px;">
-                                                    {s.level} Level:
-                                                    <ul style="marin: 0px;">
-                                                        {s.buff.map((b:buff ) => (
-                                                                <>
-                                                                    <li style="margin: 0px;">
-                                                                        {b.condition } {b.class !== 'all' ? b.class : 'all troops '} {b.attribute} {(b.value[0] < 0) ? '-' : '+'}{b.value[0]}{b.value[1] ? '%': ''}
-                                                                    </li>
-                                                                </>
-                                                        ))}
-                                                    </ul>
-                                                </li>
-                                        ))}
-                                    </ul>
-                            )}
+                          {Array.isArray(general.specialities[3].attribute) && (
+                                  <ul style="margin: 0px;">
+                                    {general.specialities[3].attribute.map((s) => (
+                                            <li class={s.level} style="marin: 0px;">
+                                              {s.level} Level:
+                                                <ul style="marin: 0px;">
+                                                  {s.buff.map((b: buff) => (
+                                                          <>
+                                                              <li style="margin: 0px;">
+                                                                {b.condition} {b.class !== 'all' ? b.class : 'all troops '} {b.attribute} {(b.value[0] < 0) ? '-' : '+'}{b.value[0]}{b.value[1] ? '%' : ''}
+                                                              </li>
+                                                          </>
+                                                  ))}
+                                                </ul>
+                                            </li>
+                                    ))}
+                                  </ul>
+                          )}
                         </>
                 )}
-            </div>
-            <div class="flex">
+              </div>
+              <div class="flex">
                 {general.specialities[4] && (
                         <>
                             <span class="label spectrum-Heading spectrum-Heading--sizeXXS">{general.specialities[4].name}</span>
-                            {Array.isArray(general.specialities[4].attribute) && (
-                                    <ul style="margin: 0px;">
-                                        {general.specialities[4].attribute.map((s) => (
-                                                <li class={s.level} style="marin: 0px;">
-                                                    {s.level} Level:
-                                                    <ul style="margin: 0px;">
-                                                        {s.buff.map((b:buff) => (
-                                                                <>
-                                                                    <li style="margin: 0px;">
-                                                                        {b.condition } {b.class !== 'all' ? b.class : 'all troops '} {b.attribute} {(b.value[0] < 0) ? '-' : '+'}{b.value[0]}{b.value[1] ? '%': ''}
-                                                                    </li>
-                                                                </>
-                                                        ))}
-                                                    </ul>
-                                                </li>
-                                        ))}
-                                    </ul>
-                            )}
+                          {Array.isArray(general.specialities[4].attribute) && (
+                                  <ul style="margin: 0px;">
+                                    {general.specialities[4].attribute.map((s) => (
+                                            <li class={s.level} style="marin: 0px;">
+                                              {s.level} Level:
+                                                <ul style="margin: 0px;">
+                                                  {s.buff.map((b: buff) => (
+                                                          <>
+                                                              <li style="margin: 0px;">
+                                                                {b.condition} {b.class !== 'all' ? b.class : 'all troops '} {b.attribute} {(b.value[0] < 0) ? '-' : '+'}{b.value[0]}{b.value[1] ? '%' : ''}
+                                                              </li>
+                                                          </>
+                                                  ))}
+                                                </ul>
+                                            </li>
+                                    ))}
+                                  </ul>
+                          )}
                         </>
                 )}
-            </div>
-        </div>
-    )}
+              </div>
+          </div>
+  )}
     <br/>
-    {(starsNum && general.ascending) && (
-            <span class="label spectrum-Heading spectrum-Heading--sizeXS">Ascending Attributes</span>
-            <div class="Ascending non-content">
-                {general.ascending.map((a) => (
+  {(starsNum && general.ascending) && (
+          <span class="label spectrum-Heading spectrum-Heading--sizeXS">Ascending Attributes</span>
+          <div class="Ascending non-content">
+            {general.ascending.map((a) => (
                     <>
                         <div class="ascendingAttribute non-content">
-                            <span class="spectrum-Heading spectrum-Heading--sizeXXS">{(toNumber(a.level) -5)}{a.level >= 9 ? 'th' : toNumber(a.level) === 8 ? 'rd' : toNumber(a.level) === 7 ? "nd" : 'st'} Star</span><br/>
-                            <ul >
-                            {a.buff.map((b:buff) => (
-                                    <>
-                                        <li style="margin: 0px;">
-                                            {b.condition } {(b.class === undefined || b.class === null) ? '' : b.class !== 'all' ? b.class : 'all troops '} {b.attribute} {(b.value[0] < 0) ? '-' : '+'}{b.value[0]}{b.value[1] ? '%': ''}
-                                        </li>
-                                    </>
-                            ))}
+                            <span class="spectrum-Heading spectrum-Heading--sizeXXS">{(toNumber(a.level) - 5)}{a.level >= 9 ? 'th' : toNumber(a.level) === 8 ? 'rd' : toNumber(a.level) === 7 ? "nd" : 'st'}
+                                Star</span><br/>
+                            <ul>
+                              {a.buff.map((b: buff) => (
+                                      <>
+                                          <li style="margin: 0px;">
+                                            {b.condition} {(b.class === undefined || b.class === null) ? '' : b.class !== 'all' ? b.class : 'all troops '} {b.attribute} {(b.value[0] < 0) ? '-' : '+'}{b.value[0]}{b.value[1] ? '%' : ''}
+                                          </li>
+                                      </>
+                              ))}
                             </ul>
                         </div>
                     </>
-                ))}
-            </div>
-    )}
-    <b/>
-    {general.books && <div class="SkillBooks" style="margin: 1px;">
-        <span class="spectrum-Heading spectrum-Heading--sizeXS">Special Skill:</span>
-            {general.books.map((book: skillBook) => (
-                    (specialSkillBook.safeParse(book)).success && (
-                            <>
-                                <span class="spectrum-Heading spectrum-Heading--sizeXXS">{book.name}</span>
-                                {Array.isArray((book as specialSkillBookType).buff) && (
-                                        <ul style="margin: 0px;" id={book.name.toLocaleLowerCase().replace(/\s+/g, '_')}>
-                                            {book.buff.map((b) => (
-                                                    <li style="margin: 0px;">
-                                                        {b.condition } {(b.class === undefined || b.class === null) ? '' : b.class !== 'all' ? b.class : 'all troops '} {b.attribute} {(b.value[0] < 0) ? '-' : '+'}{b.value[0]}{b.value[1] ? '%': ''}
-                                                    </li>
-                                            ))}
-                                        </ul>
-                                )}
-                            </>
-                    )
             ))}
-    </div> }
+          </div>
+  )}
+    <b/>
+  {general.books &&
+          <div class="SkillBooks" style="margin: 1px;">
+              <span class="spectrum-Heading spectrum-Heading--sizeXS">Special Skill:</span>
+            {general.books.map((book: skillBook) => (
+              (specialSkillBook.safeParse(book)).success && (
+                      <>
+                          <span class="spectrum-Heading spectrum-Heading--sizeXXS">{book.name}</span>
+                        {Array.isArray((book as specialSkillBookType).buff) && (
+                                <ul style="margin: 0px;" id={book.name.toLocaleLowerCase().replace(/\s+/g, '_')}>
+                                  {book.buff.map((b) => (
+                                          <li style="margin: 0px;">
+                                            {b.condition} {(b.class === undefined || b.class === null) ? '' : b.class !== 'all' ? b.class : 'all troops '} {b.attribute} {(b.value[0] < 0) ? '-' : '+'}{b.value[0]}{b.value[1] ? '%' : ''}
+                                          </li>
+                                  ))}
+                                </ul>
+                        )}
+                      </>
+              )
+            ))}
+          </div>}
 </div>
 
 <style>
-    .GeneralDetails {
-        display: flex;
-        flex-direction: column;
+  .GeneralDetails {
+    display: flex;
+    flex-direction: column;
 
-        & .spectrum-Heading {
-            color: var(--sl-color-text-accent);
+    & .spectrum-Heading {
+      color: var(--sl-color-text-accent);
 
-
-        }
-        & .center {
-            align-self: center;
-        }
-
-        & .Stars {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-        }
-
-        & .Ascending {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-
-
-            :is(div) {
-                align-content: center;
-                justify-content: center;
-                margin: 1px;
-            }
-
-            & ul {
-                margin: 0px;
-                padding: 1rem;
-                & li {
-                }
-            }
-        }
-
-        :is(div) {
-            margin: .1px;
-        }
-    }
-    .IntrinsicAttributes {
-        columns: 4;
 
     }
 
-    .Specialities {
+    & .center {
+      align-self: center;
+    }
+
+    & .Stars {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+    }
+
+    & .Ascending {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+
+      :is(div) {
+        align-content: center;
+        justify-content: center;
         margin: 1px;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
+      }
 
-        & .Green {
-            background-color: var(--spectrum-celery-400);
-        }
+      & ul {
+        margin: 0px;
+        padding: 1rem;
 
-        & .Blue {
-            background-color: var(--spectrum-blue-400);
+        & li {
         }
-
-        & .Purple {
-            background-color: var(--spectrum-purple-400);
-        }
-
-        & .Orange {
-            background-color: var(--spectrum-orange-400);
-        }
-
-        & .Gold {
-            background-color: var(--spectrum-yellow-400);
-        }
+      }
     }
 
-    div.GeneralDetails  .label {
-
-        color: var(--sl-color-text-accent);
-
+    :is(div) {
+      margin: .1px;
     }
+  }
+
+  .IntrinsicAttributes {
+    columns: 4;
+
+  }
+
+  .Specialities {
+    margin: 1px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    & .Green {
+      background-color: var(--spectrum-celery-400);
+    }
+
+    & .Blue {
+      background-color: var(--spectrum-blue-400);
+    }
+
+    & .Purple {
+      background-color: var(--spectrum-purple-400);
+    }
+
+    & .Orange {
+      background-color: var(--spectrum-orange-400);
+    }
+
+    & .Gold {
+      background-color: var(--spectrum-yellow-400);
+    }
+  }
+
+  div.GeneralDetails .label {
+
+    color: var(--sl-color-text-accent);
+
+  }
 </style>
-
-<Debug {general} />>
+  )}
+<Debug {general}/>>
