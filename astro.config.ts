@@ -22,6 +22,14 @@ export default defineConfig({
       ],
       sidebar: sidebar,
     }),
+    {
+      name: "sidebar-watch",
+      hooks: {
+        "astro:config:setup": ({ addWatchFile, config }) => {
+          addWatchFile(new URL("./src/sidebar.ts", config.root));
+        },
+      },
+    },
   ],
   vite: {
     build: {
