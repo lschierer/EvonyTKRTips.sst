@@ -59,26 +59,26 @@ if(set.shadow !== null && set.shadow !== undefined) {
     <div class="Blazon" id="Shadow">
         <h6>{set.shadow ? (set.shadow.blazon.set.concat(" Shadow ").concat(set.shadow.blazon.level)) : ("Shadow Blazon Not Present")}</h6>
         {set.shadow && <ul>{set.shadow.blazon.buff.map((b) => (
-                <li>{b.condition} {b.class} {b.attribute} {(b.value[0] < 0) ? '-' : '+'} {b.value[0]}{(b.value[1] === 'percentage') ? '%': ''}</li>
+                <li>{b.condition} {b.class} {b.attribute} {(b.value.number < 0) ? '-' : '+'} {b.value.number}{(b.value.unit === 'percentage') ? '%': ''}</li>
         ))}</ul>}
     </div>
     <div class="Blazon" id="Light">
         <h6>{set.light ? (set.light.blazon.set.concat(" Light ").concat(set.light.blazon.level)) : ("Light Blazon Not Present")}</h6>
         {set.light && <ul>{set.light.blazon.buff.map((b) => (
-            <li>{b.condition} {b.class} {b.attribute} {(b.value[0] < 0) ? '-' : '+'} {b.value[0]}{(b.value[1] === 'percentage') ? '%': ''}</li>
+            <li>{b.condition} {b.class} {b.attribute} {(b.value.number < 0) ? '-' : '+'} {b.value.number}{(b.value.unit === 'percentage') ? '%': ''}</li>
         ))}</ul>}
     </div>
 
     <div class="Blazon" id="Fire">
         <h6>{set.fire ? (set.fire.blazon.set.concat(" Fire ").concat(set.fire.blazon.level)) : ("Light Fire Not Present")}</h6>
         {set.fire && <ul>{set.fire.blazon.buff.map((b) => (
-                <li>{b.condition} {b.class} {b.attribute} {(b.value[0] < 0) ? '-' : '+'} {b.value[0]}{(b.value[1] === 'percentage') ? '%': ''}</li>
+                <li>{b.condition} {b.class} {b.attribute} {(b.value.number < 0) ? '-' : '+'} {b.value.number}{(b.value.unit === 'percentage') ? '%': ''}</li>
         ))}</ul>}
     </div>
     <div class="Blazon" id="Wind">
         <h6>{set.wind ? (set.wind.blazon.set.concat(" Wind ").concat(set.wind.blazon.level)) : ("Light Wind Not Present")}</h6>
         {set.wind && <ul>{set.wind.blazon.buff.map((b) => (
-                <li>{b.condition} {b.class} {b.attribute} {(b.value[0] < 0) ? '-' : '+'} {b.value[0]}{(b.value[1] === 'percentage') ? '%': ''}</li>
+                <li>{b.condition} {b.class} {b.attribute} {(b.value.number < 0) ? '-' : '+'} {b.value.number}{(b.value.unit === 'percentage') ? '%': ''}</li>
         ))}</ul>}
     </div>
     <div class="Blazon" id="Ocean">
