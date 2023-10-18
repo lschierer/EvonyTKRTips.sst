@@ -9,9 +9,9 @@ export function attack_score(eg: General){
     console.log(`attack_score`)
     let attack = 0;
     let totalBuff = 0;
-    if(eg.general.score_as !== null && eg.general.score_as !== undefined) {
-        const general = eg.general;
-        //const general = eg;
+    if(eg.score_as !== null && eg.score_as !== undefined) {
+        //const general = eg.general;
+        const general = eg;
         attack = (general.attack + (general.attack_increment * 45 ));
         if(general.specialities !== undefined && general.specialities !== null) {
             general.specialities.map((s) => {
@@ -93,8 +93,9 @@ export function attack_score(eg: General){
 export function defense_score(eg: General){
     let defense = 0;
     let totalBuff = 0;
-    if(eg.general.score_as !== null && eg.general.score_as !== undefined) {
-        const general = eg.general;
+    if(eg.score_as !== null && eg.score_as !== undefined) {
+        //const general = eg.general;
+        const general = eg;
         defense = (general.defense + (general.defense_increment * 45))
         if(general.specialities !== undefined && general.specialities !== null) {
             general.specialities.map((s) => {
@@ -157,8 +158,9 @@ export function defense_score(eg: General){
 export function hp_score(eg: General){
     let hp = 0;
     let totalBuff = 0;
-    if(eg.general.score_as !== null && eg.general.score_as !== undefined) {
-        const general = eg.general;
+    if(eg.score_as !== null && eg.score_as !== undefined) {
+        //const general = eg.general;
+        const general = eg;
         hp = (general.leadership + (general.leadership_increment * 45))
         if(general.specialities !== undefined && general.specialities !== null) {
             general.specialities.map((s) => {

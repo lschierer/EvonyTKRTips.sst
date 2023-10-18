@@ -8,7 +8,11 @@ import {z} from 'zod';
 import {
   type buff,
   buffSchema,
+  type General,
+  type generalObject,
   generalSchema,
+    generalObjectSchema,
+  type skillBookType,
   standardSkillBook,
   specialSkillBook,
   type specialSkillBookType,
@@ -16,6 +20,7 @@ import {
 } from '@schemas/evonySchemas.ts';
 
 import {attack_score, defense_score, hp_score} from './general/score';
+import type {skillBookType} from "../schemas/evonySchemas";
 
 const {generalEntry} = Astro.props;
 if (generalEntry === null || generalEntry === undefined || generalEntry.length <= 0) {
@@ -27,7 +32,7 @@ if (entry === undefined) {
   return Astro.redirect("/404");
 }
 
-let general = null;
+let general: General = null;
 let generalName = '';
 let attack = 0;
 let attackBuff = 0;
@@ -41,7 +46,7 @@ let starsHtml = ' ';
 const intrinsic = ["leadership", "attack", "defense", "politics"]
 
 const data = entry.data;
-const validation = generalSchema.safeParse(data);
+const validation = generalObjectSchema.safeParse(data);
 if (validation.success) {
     const generaLObject = validation.data;
     general = generaLObject.general;
@@ -59,9 +64,9 @@ if (validation.success) {
   
    generalName = general.name.toLocaleLowerCase().replace(/\s+/g, '_');
   
-  [attackBuff,attack] = attack_score(generaLObject);
-  [defenseBuff,defense] = defense_score(generaLObject);
-  [hpBuff,hp] = hp_score(generaLObject);
+  [attackBuff,attack] = attack_score(general);
+  [defenseBuff,defense] = defense_score(general);
+  [hpBuff,hp] = hp_score(general);
   attack = attack.toFixed(2);
   defense = defense.toFixed(2);
   hp = hp.toFixed(2);
@@ -259,7 +264,7 @@ if (validation.success) {
   {general.books &&
           <div class="SkillBooks" style="margin: 1px;">
               <span class="spectrum-Heading spectrum-Heading--sizeXS">Special Skill:</span>
-            {general.books.map((book: skillBook) => (
+            {general.books.map((book: skillBookType) => (
               (specialSkillBook.safeParse(book)).success && (
                       <>
                           <span class="spectrum-Heading spectrum-Heading--sizeXXS">{book.name}</span>
