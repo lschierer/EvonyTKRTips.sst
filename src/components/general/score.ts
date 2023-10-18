@@ -85,8 +85,9 @@ export function attack_score(eg: General){
         }
     }
     console.log(`total buff is ${totalBuff}`)
-    attack = attack + (attack * totalBuff);
-    return attack;
+    totalBuff = totalBuff / 100; //make it a percent;
+    attack = attack + (attack * totalBuff );
+    return [totalBuff,attack];
 }
 
 export function defense_score(eg: General){
@@ -148,8 +149,9 @@ export function defense_score(eg: General){
             })
         }
     }
+    totalBuff = totalBuff / 100; //make it a percent;
     defense = defense + (defense * totalBuff);
-    return defense;
+    return [totalBuff,defense];
 }
 
 export function hp_score(eg: General){
@@ -211,6 +213,7 @@ export function hp_score(eg: General){
             })
         }
     }
+    totalBuff = totalBuff / 100; //make it a percent;
     hp = hp + (hp * totalBuff);
-    return hp;
+    return [totalBuff,hp];
 }
