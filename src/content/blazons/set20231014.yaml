@@ -14,25 +14,25 @@ set:
           attribute: Attack
           class: Mounted
           value:
-            - 14.5
-            - percentage
+            number: 14.5
+            unit: percentage
         - condition: Against Monsters
           attribute: Attack
           class: Mounted
           value:
-            - 14.5
-            - percentage
+            number: 14.5
+            unit: percentage
         - condition: Defending
           attribute: Attack
           class: Mounted
           value:
-            - 13.4
-            - percentage
+            number: 13.4
+            unit: percentage
         - attribute: Load
           class: Mounted
           value:
-            - 8.9
-            - percentage
+            number: 8.9
+            unit: percentage
   light:
     blazon:
       type: Light
@@ -43,17 +43,17 @@ set:
           attribute: Attack
           class: Mounted
           value:
-            - 14.5
-            - percentage
+            number: 14.5
+            unit: percentage
         - condition: Against Monsters
           attribute: Attack
           class: Mounted
           value:
-            - 14.5
-            - percentage
+            number: 14.5
+            unit: percentage
         - condition: Marching
           attribute: Attack
           class: Mounted
           value:
-            - 12.2
-            - percentage
+            number: 12.2
+            unit: percentage
