@@ -7,17 +7,17 @@ art:
      attribute: Attack
      class: Mounted
      value:
-       - 25
-       - percentage
+       number: 25
+       unit: percentage
    - condition: Marching
      attribute: Defense
      class: Mounted
      value:
-       - 25
-       - percentage
+       number: 25
+       unit: percentage
    - condition: Marching
      attribute: HP
      class: Mounted
      value:
-       - 25
-       - percentage
+       number: 25
+       unit: percentage
