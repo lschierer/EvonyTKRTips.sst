@@ -4,6 +4,7 @@
     "baseUrl": ".",
     "module": "es2020",
     "moduleResolution": "bundler",
+    "jsx": "preserve",
     "resolveJsonModule": true,
     "experimentalDecorators": true,
     "strictNullChecks": true,
@@ -19,6 +20,7 @@
       "@components/*": ["src/components/*"],
       "@layouts/*": ["src/layouts/*"],
       "@lib/*": ["src/lib/*"],
+      "@schemas/*": ["src/schemas/*"],
       "@styles/*": ["src/styles/*"],
       "@public/*": ["public/*"],
     }

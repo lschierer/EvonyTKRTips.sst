@@ -68,9 +68,11 @@
     "lit": "^2.8.0",
     "path-scurry": "^1.10.1",
     "sharp": "^0.32.6",
+    "strnum": "^1.0.5",
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.2.1",
     "@astrojs/ts-plugin": "^1.2.0",
     "@tsconfig/node20": "^20.1.2",
     "@types/d3": "^7.4.1",

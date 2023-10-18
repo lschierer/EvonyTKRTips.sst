@@ -1,6 +1,5 @@
 import {html, css, LitElement} from 'lit';
 import {query} from 'lit/decorators/query.js';
-import {ref} from 'lit/directives/ref.js';
 
 import {z} from 'zod';
 
@@ -12,7 +11,7 @@ import '@spectrum-web-components/icon/sp-icon.js';
 import '@spectrum-web-components/menu/sp-menu-item.js';
 import '@spectrum-web-components/picker/sp-picker.js';
 
-import { Theme as SPTheme, type Color} from '@spectrum-web-components/theme';
+import { Theme as SPTheme, } from '@spectrum-web-components/theme';
 import { type TopNav } from '@spectrum-web-components/top-nav';
 import { Picker } from '@spectrum-web-components/picker';
 

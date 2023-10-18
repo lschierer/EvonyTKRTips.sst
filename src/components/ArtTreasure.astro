@@ -1,10 +1,16 @@
 ---
 import { Debug } from 'astro:components';
 import {getEntry} from "astro:content";
+import {
+    type artTreasure,
+    type buff,
+    BuffAttributes,
+    BuffAdverbs,
+} from '@schemas/evonySchemas';
 
 const { artId } = Astro.props;
 if(artId === null || artId === undefined || artId.length <= 0) {
-    console.error(`bogus artId`);
+    console.log(`bogus artId`);
     return Astro.redirect("/404");
 }
 const entry = await getEntry('art', artId);
@@ -12,11 +18,11 @@ if (entry === undefined) {
     return Astro.redirect("/404");
 }
 const data = entry.data;
-const art = data.art;
+const art: artTreasure = data.art;
 ---
 <h5>{art.name} Level {art.level}</h5>
 <ul>
-    {art.buff.map((b) => (
+    {art.buff.map((b: buff) => (
             <li>{b.condition} {b.class} {b.attribute} {(b.value[0] < 0) ? '-' : '+'}{b.value[0]}{b.value[1] ? '%': ''}</li>
                     ))}
 </ul>
