@@ -1,14 +1,22 @@
 import {
-    type buff,
+    type ascendingAttributesType,
+    type ascendingIncrementType,
+    type buff, BuffAttributes,
+    type BuffAttributesType,
     buffSchema,
-    type buffType, buffTypeEnum,
+    type buffType,
+    buffTypeEnum,
     buffValueSchema,
-    type General
+    type General,
+    skillBook,
+    type skillBookType,
+    type specialtyIncrementType,
+    type specialtyType
 } from '@schemas/evonySchemas.ts';
 
-function attack_multiplier(b: buff) {
+function multiplier(b: buff, general: General,score_for: BuffAttributesType) {
     let multiplier = 0;
-    if (b.attribute === 'Attack') {
+
         multiplier = 1;
         if (b.condition !== undefined && b.condition !== null) {
             switch (b.condition){
@@ -17,27 +25,41 @@ function attack_multiplier(b: buff) {
                 case 'When Rallying':
                 case 'leading the army to attack':
                     console.log(`Attacking buff detected`)
-                    switch (general.score_as) {
-                        case 'Ground':
-                        case 'Mounted':
-                        case 'Archers':
-                            console.log(`score_as matched`)
-                            multiplier = 0.5;
-                            break;
-                        case 'Siege':
-                            multiplier = 0.25;
-                            break;
-                        default:
-                            multiplier = 0;
+                    if(score_for.toString().localeCompare('Attack')) {
+                        console.log(`when scoring for attack`)
+                        switch (general.score_as) {
+                            case 'Ground':
+                            case 'Mounted':
+                            case 'Archers':
+                                console.log(`score_as matched`)
+                                multiplier = 0.5;
+                                break;
+                            case 'Siege':
+                                multiplier = 0.25;
+                                break;
+                            default:
+                                multiplier = 0;
+                        }
+                    } else {
+                        multiplier = 0;
                     }
                     break;
                 case 'Reduces Enemy':
-                    multiplier = 1; // see my explanation
+                    multiplier = 1.1; // see my explanation
                     break;
                 case 'Reinforcing':
                 case 'In City':
+                    //due to reduced utility
+                    multiplier = 0.75;
+                    break;
                 case 'Defending':
-                    multiplier = 0.75; //due to reduced utility
+                    if(score_for.toString().localeCompare('Attack')) {
+                        //due to reduced utility
+                        multiplier = 0.75;
+                    } else {
+                        multiplier = 1;
+                        // because for HP and Defense, Defending actually helps.
+                    }
                     break;
                 case 'When The Main Defense General':
                 case 'When the City Mayor':
@@ -52,16 +74,23 @@ function attack_multiplier(b: buff) {
                     multiplier = 1;
             }
         }
-        if (b.class !== undefined && b.class !== null) {
-            if (b.class !== 'Ground') {
-                console.log(`class was ${b.class}`)
+        if (
+            (b.class !== undefined && b.class !== null) &&
+            (b.condition !== undefined && b.condition !== null)
+        ) {
+            if(!b.condition.toLocaleString().localeCompare('Reduces Enemy')){
+                multiplier = 1.1;
+            } else if (b.class.toString().localeCompare(general.score_as!.toLocaleString())){
                 multiplier = 0;
             } else {
-                console.log(`leaving multiplier unchanged with ${multiplier}`)
+                console.log(`leaving multiplier alone`);
             }
+        } else if(
+            (b.condition !== undefined && b.condition !== null) &&
+            (!b.condition.toLocaleString().localeCompare('Reduces Enemy'))
+        ) {
+                multiplier = 1.1;
         }
-        
-    }
     return multiplier;
 }
 
@@ -75,17 +104,19 @@ export function attack_score(eg: General){
         attack = (general.attack + (general.attack_increment * 45 ));
         if(general.specialities !== undefined && general.specialities !== null) {
             console.log(`speciality buffs`)
-            general.specialities.map((s) => {
+            general.specialities.map((s: specialtyType) => {
                 s.attribute.map((sa) => {
-                    const buff = [sa.buff].flat()
+                    const buff: buff[] = [sa.buff].flat()
                     buff.map((b) => {
-                        const m = attack_multiplier(buff);
-                        if (b.value !== undefined && b.value !== null) {
-                            const buff_type = b.value.unit;
-                            if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
-                                totalBuff = totalBuff + (b.value.number * m);
-                            } else if (!buff_type.localeCompare(buffTypeEnum.enum.flat)) {
-                                attack = attack + b.value.number;
+                        if(b !== undefined && b !== null) {
+                            const m = multiplier(b, general,BuffAttributes.enum.Attack );
+                            if (b.value !== undefined && b.value !== null) {
+                                const buff_type = b.value.unit;
+                                if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
+                                    totalBuff = totalBuff + (b.value.number * m);
+                                } else if (!buff_type.localeCompare(buffTypeEnum.enum.flat)) {
+                                    attack = attack + b.value.number;
+                                }
                             }
                         }
                     })
@@ -95,15 +126,37 @@ export function attack_score(eg: General){
         if(general.books !== undefined && general.books !== null) {
             console.log(`book buffs`)
             general.books.map((bb) => {
-                const buff = [bb].flat();
+                const buff: buff[] = [bb.buff].flat();
                 buff.map((b) => {
-                    const m = attack_multiplier(b);
-                    if (b.value !== undefined && b.value !== null) {
-                        const buff_type = b.value.unit;
-                        if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
-                            totalBuff = totalBuff + (b.value.number * m);
-                        } else if (!buff_type.localeCompare(buffTypeEnum.enum.flat)) {
-                            attack = attack + b.value.number;
+                    if(b !== undefined && b !== null) {
+                        const m = multiplier(b, general, BuffAttributes.enum.Attack);
+                        if (b.value !== undefined && b.value !== null) {
+                            const buff_type = b.value.unit;
+                            if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
+                                totalBuff = totalBuff + (b.value.number * m);
+                            } else if (!buff_type.localeCompare(buffTypeEnum.enum.flat)) {
+                                attack = attack + b.value.number;
+                            }
+                        }
+                    }
+
+                })
+            })
+        }
+        if(general.ascending !== undefined && general.ascending !== null) {
+            console.log(`ascending buffs`);
+            general.ascending.map((ga: ascendingIncrementType) => {
+                const buff: buff[] = [ga.buff].flat();
+                buff.map((b) => {
+                    if(b !== undefined && b !== null) {
+                        const m = multiplier(b, general, BuffAttributes.enum.Attack);
+                        if (b.value !== undefined && b.value !== null) {
+                            const buff_type = b.value.unit;
+                            if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
+                                totalBuff = totalBuff + (b.value.number * m);
+                            } else if (!buff_type.localeCompare(buffTypeEnum.enum.flat)) {
+                                attack = attack + b.value.number;
+                            }
                         }
                     }
                 })
@@ -124,63 +177,71 @@ export function defense_score(eg: General){
         const general = eg;
         defense = (general.defense + (general.defense_increment * 45))
         if(general.specialities !== undefined && general.specialities !== null) {
-            general.specialities.map((s) => {
-                s.attribute.map((sa) => {
-                    const buff = [sa.buff].flat()
+            general.specialities.map((s: specialtyType) => {
+                s.attribute.map((sa: specialtyIncrementType) => {
+                    const buff: buff[] = [sa.buff].flat()
                     buff.map((b) => {
-                        if (b.attribute === 'Defense') {
-                            let multiplier = 1;
-                            if (b.condition !== undefined && b.condition !== null) {
-                                switch (b.condition){
-                                    case 'Attacking':
-                                    case 'Marching':
-                                    case 'When Rallying':
-                                    case 'leading the army to attack':
-                                    case 'When The Main Defense General':
-                                    case 'When the City Mayor':
-                                    case 'During SvS':
-                                    case 'When an officer':
-                                    case 'Against Monsters':
-                                    case 'Reduces Monster':
-                                        multiplier = 0;
-                                        break;
-                                    case 'Reinforcing':
-                                    case 'In City':
-                                    case 'Defending':
-                                        multiplier = 1; //not debuffed here because I am looking for defense
-                                    case 'Reduces Enemy':
-                                        multiplier = 1.5; // see my explanation
-                                        break;
-                                    default:
-                                        console.log(`no adverb matched`)
-                                        
-                                    
-                                }
-                            }
-                            if (b.class !== undefined && b.class !== null) {
-                                if (b.class !== 'Ground') {
-                                    multiplier = 0;
-                                }
-                            }
+                        if (b.condition !== undefined && b.condition !== null) {
+                            const m = multiplier(b, general, BuffAttributes.enum.Defense);
                             if (b.value !== undefined && b.value !== null) {
                                 const buff_type = b.value.unit;
                                 if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
-                                    totalBuff = totalBuff +  (b.value.number * multiplier);
+                                    totalBuff = totalBuff + (b.value.number * m);
                                 } else if (!buff_type.localeCompare(buffTypeEnum.enum.flat)) {
                                     defense = defense + b.value.number;
                                 }
                             }
                         }
                     })
+
+                })
+            })
+        }
+        if(general.books !== undefined && general.books !== null) {
+            console.log(`book buffs`)
+            general.books.map((bb) => {
+                const buff: buff[] = [bb.buff].flat();
+                buff.map((b) => {
+                    if(b !== undefined && b !== null) {
+                        const m = multiplier(b, general, BuffAttributes.enum.Defense);
+                        if (b.value !== undefined && b.value !== null) {
+                            const buff_type = b.value.unit;
+                            if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
+                                totalBuff = totalBuff + (b.value.number * m);
+                            } else if (!buff_type.localeCompare(buffTypeEnum.enum.flat)) {
+                                defense = defense + b.value.number;
+                            }
+                        }
+                    }
+
+                })
+            })
+        }
+        if(general.ascending !== undefined && general.ascending !== null) {
+            console.log(`ascending buffs`);
+            general.ascending.map((ga: ascendingIncrementType) => {
+                const buff: buff[] = [ga.buff].flat();
+                buff.map((b) => {
+                    if(b !== undefined && b !== null) {
+                        const m = multiplier(b, general, BuffAttributes.enum.Defense);
+                        if (b.value !== undefined && b.value !== null) {
+                            const buff_type = b.value.unit;
+                            if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
+                                totalBuff = totalBuff + (b.value.number * m);
+                            } else if (!buff_type.localeCompare(buffTypeEnum.enum.flat)) {
+                                defense = defense + b.value.number;
+                            }
+                        }
+                    }
                 })
             })
         }
     }
+    console.log(`total buff is ${totalBuff}`)
     totalBuff = totalBuff / 100; //make it a percent;
-    defense = defense + (defense * totalBuff);
+    defense = defense + (defense * totalBuff );
     return [totalBuff,defense];
 }
-
 export function hp_score(eg: General){
     let hp = 0;
     let totalBuff = 0;
@@ -193,55 +254,64 @@ export function hp_score(eg: General){
                 s.attribute.map((sa) => {
                     const buff = [sa.buff].flat()
                     buff.map((b) => {
-                        if (b.attribute === 'HP') {
-                            let multiplier = 1;
-                            if (b.condition !== undefined && b.condition !== null) {
-                                console.log(`setting multiplier by condition`)
-                                switch (b.condition){
-                                    case 'Attacking':
-                                    case 'Marching':
-                                    case 'When Rallying':
-                                    case 'leading the army to attack':
-                                    case 'When The Main Defense General':
-                                    case 'When the City Mayor':
-                                    case 'During SvS':
-                                    case 'When an officer':
-                                    case 'Against Monsters':
-                                    case 'Reduces Monster':
-                                        multiplier = 0;
-                                        break;
-                                    case 'Reduces Enemy':
-                                        multiplier = 1.5; // see my explanation
-                                        break;
-                                    case 'Reinforcing':
-                                    case 'In City':
-                                        multiplier = 0.75; // due to reduced utility, partially debuffed
-                                        break;
-                                    case 'Defending':
-                                    default:
-                                        multiplier = 1;
-                                }
-                            }
-                            if (b.class !== undefined && b.class !== null) {
-                                if (b.class !== 'Ground') {
-                                    multiplier = 0;
-                                }
-                            }
+                        if (b.condition !== undefined && b.condition !== null) {
+                            const m = multiplier(b, general, BuffAttributes.enum.Attack);
                             if (b.value !== undefined && b.value !== null) {
                                 const buff_type = b.value.unit;
                                 if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
-                                    totalBuff = totalBuff + (b.value.number * multiplier);
+                                    totalBuff = totalBuff + (b.value.number * m);
                                 } else if (!buff_type.localeCompare(buffTypeEnum.enum.flat)) {
                                     hp = hp + b.value.number;
                                 }
                             }
                         }
                     })
+
+                })
+            })
+        }
+        if(general.books !== undefined && general.books !== null) {
+            console.log(`book buffs`)
+            general.books.map((bb) => {
+                const buff: buff[] = [bb.buff].flat();
+                buff.map((b) => {
+                    if(b !== undefined && b !== null) {
+                        const m = multiplier(b, general, BuffAttributes.enum.HP);
+                        if (b.value !== undefined && b.value !== null) {
+                            const buff_type = b.value.unit;
+                            if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
+                                totalBuff = totalBuff + (b.value.number * m);
+                            } else if (!buff_type.localeCompare(buffTypeEnum.enum.flat)) {
+                                hp = hp + b.value.number;
+                            }
+                        }
+                    }
+
+                })
+            })
+        }
+        if(general.ascending !== undefined && general.ascending !== null) {
+            console.log(`ascending buffs`);
+            general.ascending.map((ga: ascendingIncrementType) => {
+                const buff: buff[] = [ga.buff].flat();
+                buff.map((b) => {
+                    if(b !== undefined && b !== null) {
+                        const m = multiplier(b, general, BuffAttributes.enum.HP);
+                        if (b.value !== undefined && b.value !== null) {
+                            const buff_type = b.value.unit;
+                            if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
+                                totalBuff = totalBuff + (b.value.number * m);
+                            } else if (!buff_type.localeCompare(buffTypeEnum.enum.flat)) {
+                                hp = hp + b.value.number;
+                            }
+                        }
+                    }
                 })
             })
         }
     }
+    console.log(`total buff is ${totalBuff}`)
     totalBuff = totalBuff / 100; //make it a percent;
-    hp = hp + (hp * totalBuff);
+    hp = hp + (hp * totalBuff );
     return [totalBuff,hp];
 }
