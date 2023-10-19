@@ -33,4 +33,383 @@ general:
           value:
             number: 35
             unit: percentage
-  specialities: null
+  specialities:
+    - name: Ground Troop Formation
+      attribute:
+        - level: Green
+          buff:
+            - attribute: Attack
+              class: Ground
+              value:
+                number: 1
+                unit: percentage
+            - attribute: Defense
+              class: Ground
+              value:
+                number: 1
+                unit: percentage
+        - level: Blue
+          buff:
+            - attribute: Attack
+              class: Ground
+              value:
+                number: 1
+                unit: percentage
+            - attribute: Defense
+              class: Ground
+              value:
+                number: 1
+                unit: percentage
+        - level: Purple
+          buff:
+            - attribute: Attack
+              class: Ground
+              value:
+                number: 2
+                unit: percentage
+            - attribute: Defense
+              class: Ground
+              value:
+                number: 2
+                unit: percentage
+        - level: Orange
+          buff:
+            - attribute: Attack
+              class: Ground
+              value:
+                number: 2
+                unit: percentage
+            - attribute: Defense
+              class: Ground
+              value:
+                number: 2
+                unit: percentage
+        - level: Gold
+          buff:
+            - attribute: Attack
+              class: Ground
+              value:
+                number: 4
+                unit: percentage
+            - attribute: Defense
+              class: Ground
+              value:
+                number: 4
+                unit: percentage
+    - name: Sabotage
+      attribute:
+        - level: Green
+          buff:
+            - condition: Reduces Enemy
+              attribute: Defense
+              value:
+                number: 1
+                unit: percentage
+        - level: Blue
+          buff:
+            - condition: Reduces Enemy
+              attribute: Defense
+              value:
+                number: 1
+                unit: percentage
+        - level: Purple
+          buff:
+            - condition: Reduces Enemy
+              attribute: Defense
+              value:
+                number: 2
+                unit: percentage
+        - level: Orange
+          buff:
+            - condition: Reduces Enemy
+              attribute: Defense
+              value:
+                number: 2
+                unit: percentage
+        - level: Gold
+          buff:
+            - condition: Reduces Enemy
+              attribute: Defense
+              value:
+                number: 4
+                unit: percentage
+    - name: Ground Troop Ares
+      attribute:
+        - level: Green
+          buff:
+            - attribute: Attack
+              class: Ground
+              value:
+                number: 1
+                unit: percentage
+            - attribute: HP
+              class: Ground
+              value:
+                number: 1
+                unit: percentage
+            - attribute: Defense
+              class: Ground
+              value:
+                number: 1
+                unit: percentage
+        - level: Blue
+          buff:
+            - attribute: Attack
+              class: Ground
+              value:
+                number: 1
+                unit: percentage
+            - attribute: HP
+              class: Ground
+              value:
+                number: 1
+                unit: percentage
+            - attribute: Defense
+              class: Ground
+              value:
+                number: 1
+                unit: percentage
+        - level: Purple
+          buff:
+            - attribute: Attack
+              class: Ground
+              value:
+                number: 2
+                unit: percentage
+            - attribute: HP
+              class: Ground
+              value:
+                number: 2
+                unit: percentage
+            - attribute: Defense
+              class: Ground
+              value:
+                number: 2
+                unit: percentage
+        - level: Orange
+          buff:
+            - attribute: Attack
+              class: Ground
+              value:
+                number: 2
+                unit: percentage
+            - attribute: HP
+              class: Ground
+              value:
+                number: 2
+                unit: percentage
+            - attribute: Defense
+              class: Ground
+              value:
+                number: 2
+                unit: percentage
+        - level: Gold
+          buff:
+            - attribute: Attack
+              class: Ground
+              value:
+                number: 4
+                unit: percentage
+            - attribute: HP
+              class: Ground
+              value:
+                number: 4
+                unit: percentage
+            - attribute: Defense
+              class: Ground
+              value:
+                number: 4
+                unit: percentage
+    - name: Siege of Tyana
+      attribute:
+        - level: Green
+          buff:
+            - condition: Marching
+              attribute: Attack
+              class: Ground
+              value:
+                number: 3
+                unit: percentage
+            - condition: Marching
+              attribute: HP
+              class: Ground
+              value:
+                number: 4
+                unit: percentage
+            - condition: Marching
+              attribute: HP
+              class: Mounted
+              value:
+                number: 4
+                unit: percentage
+        - level: Blue
+          buff:
+            - condition: Marching
+              attribute: Attack
+              class: Ground
+              value:
+                number: 4
+                unit: percentage
+            - condition: Marching
+              attribute: HP
+              class: Ground
+              value:
+                number: 4
+                unit: percentage
+            - condition: Marching
+              attribute: HP
+              class: Mounted
+              value:
+                number: 4
+                unit: percentage
+        - level: Purple
+          buff:
+            - condition: Marching
+              attribute: Attack
+              class: Ground
+              value:
+                number: 6
+                unit: percentage
+            - condition: Marching
+              attribute: HP
+              class: Ground
+              value:
+                number: 8
+                unit: percentage
+            - condition: Marching
+              attribute: HP
+              class: Mounted
+              value:
+                number: 8
+                unit: percentage
+        - level: Orange
+          buff:
+            - condition: Marching
+              attribute: Attack
+              class: Ground
+              value:
+                number: 8
+                unit: percentage
+            - condition: Marching
+              attribute: HP
+              class: Ground
+              value:
+                number: 8
+                unit: percentage
+            - condition: Marching
+              attribute: HP
+              class: Mounted
+              value:
+                number: 8
+                unit: percentage
+        - level: Gold
+          buff:
+            - condition: Marching
+              attribute: Attack
+              class: Ground
+              value:
+                number: 14
+                unit: percentage
+            - condition: Marching
+              attribute: HP
+              class: Ground
+              value:
+                number: 16
+                unit: percentage
+            - condition: Marching
+              attribute: HP
+              class: Mounted
+              value:
+                number: 16
+                unit: percentage
+  ascending:
+    - level: '6'
+      buff:
+        - condition: 'Marching'
+          attribute: Defense
+          class: Ground
+          value:
+            number: 10
+            unit: percentage
+        - condition: 'Marching'
+          attribute: Defense
+          class: Mounted
+          value:
+            number: 10
+            unit: percentage
+        - condition: 'Marching'
+          attribute: HP
+          class: Ground
+          value:
+            number: 10
+            unit: percentage
+        - condition: 'Marching'
+          attribute: HP
+          class: Mounted
+          value:
+            number: 10
+            unit: percentage
+    - level: '7'
+      buff:
+        - condition: Enemy In City
+          attribute: Wounded to Death
+          value:
+            number: 10
+            unit: percentage
+    - level: '8'
+      buff:
+        - condition: Attacking
+          attribute: Defense
+          class: Ground
+          value:
+            number: 10
+            unit: percentage
+        - condition: Attacking
+          attribute: HP
+          class: Ground
+          value:
+            number: 10
+            unit: percentage
+        - condition: Attacking
+          attribute: March Size Capacity
+          value:
+            number: 8
+            unit: percentage
+    - level: '9'
+      buff:
+        - condition: Marching
+          class: Ground
+          attribute: Attack
+          value:
+            number: 15
+            unit: percentage
+        - condition: Marching
+          class: Ground
+          attribute: Defense
+          value:
+            number: 25
+            unit: percentage
+        - condition: Marching
+          class: Mounted
+          attribute: Defense
+          value:
+            number: 25
+            unit: percentage
+    - level: '10'
+      buff:
+        - condition: Marching
+          class: Ground
+          attribute: Attack
+          value:
+            number: 20
+            unit: percentage
+        - class: Ground
+          attribute: Defense
+          value:
+            number: 20
+            unit: percentage
+        - class: Ground
+          attribute: HP
+          value:
+            number: 20
+            unit: percentage
