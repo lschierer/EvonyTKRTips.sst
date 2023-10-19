@@ -24,12 +24,15 @@ import {
   type generalObject,
 } from "@schemas/evonySchemas.ts";
 
+import {attack_buff} from "@components/general/buff.ts";
+
 const generalArray = z.array(generalObjectSchema).nullish();
 type generalArrayType = z.infer<typeof generalArray>;
 
 const tableGeneral = z.object({
   name: z.string(),
   attack: z.number(),
+  attackBuff: z.number(),
 })
 type tableGeneralType = z.infer<typeof tableGeneral>;
 
@@ -88,21 +91,20 @@ export class ComparingTable extends SpectrumElement {
         console.log(`firstUpdated; found table`)
         
         this.table.renderItem = (item, index) => {
-          const general: General = (item['general'] as General);
+          const general: tableGeneralType = (item['general'] as tableGeneralType);
           console.log(`renderItem; ${general.name}`)
           return html`
-              <sp-table-cell id='name' dir='ltr' role='gridcell' >${general.name}
-              </sp-table-cell>
-              <sp-table-cell id='attack' dir='ltr' role='gridcell'>${general.attack}
-              </sp-table-cell>
+              <sp-table-cell id='name' dir='ltr' role='gridcell' >${general.name}</sp-table-cell>
+              <sp-table-cell id='attack' dir='ltr' role='gridcell'>${general.attack}</sp-table-cell>
+              <sp-table-cell id='attackBuff' dir='ltr' role='gridcell'>${general.attackBuff}</sp-table-cell>
           `;
         };
         
         this.table.addEventListener('sorted', (event) => {
           const {sortDirection, sortKey} = (event as CustomEvent).detail;
           let items = (this.table!.items as generalRecord[]).sort((a, b) => {
-            const ga: General = (a['general'] as General);
-            const gb: General = (b['general'] as General);
+            const ga: tableGeneralType = (a['general'] as tableGeneralType);
+            const gb: tableGeneralType = (b['general'] as tableGeneralType);
             switch (sortKey) {
               case 'attack':
                 if(ga.attack === gb.attack) {
@@ -182,7 +184,19 @@ export class ComparingTable extends SpectrumElement {
             const go: generalObject = valid.data;
             const name = go.general.name;
             const attack = go.general.attack;
-            this.table!.items.push({'general': {name: name, attack: attack}});
+            const attackBuff = attack_buff(go.general,[
+              'Attacking',
+              'Marching',
+              'When Rallying',
+              'leading the army to attack',
+              'Reinforcing',
+              'Defending',
+            ]);
+            this.table!.items.push({'general': {
+              name: name,
+              attack: attack,
+              attackBuff: attackBuff,
+            }});
             this.table!.requestUpdate();
           }
         })
