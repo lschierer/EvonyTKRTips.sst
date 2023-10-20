@@ -56,9 +56,20 @@ const tableGeneral = z.object({
   defenseBuff: z.number(),
   unitClass: troopClass.nullish(),
 })
+
 type tableGeneralType = z.infer<typeof tableGeneral>;
 
 type generalRecord = Record<string, tableGeneralType>;
+
+export const generalUseCase = z.enum([
+  "Monsters",
+  "Attack",
+  "Defense",
+  "Overall",
+  "Wall",
+  "Mayors"
+]);
+export type generalUseCaseType = z.infer<typeof generalUseCase>;
 
 @customElement('comparing-table')
 export class ComparingTable extends SpectrumElement {
@@ -100,6 +111,9 @@ export class ComparingTable extends SpectrumElement {
 
   @state()
   protected unitClass: troopClassType = 'all';
+  
+  @state()
+  protected useCase: generalUseCaseType | string = 'all';
 
   constructor() {
     super();
@@ -145,18 +159,16 @@ export class ComparingTable extends SpectrumElement {
           const general: tableGeneralType = (item['general'] as tableGeneralType);
           console.log(`renderItem; ${general.name}`)
           return html`
-              <sp-table-cell id='name' dir='ltr' role='gridcell' >${general.name}</sp-table-cell>
-              <sp-table-cell id='attack' dir='ltr' role='gridcell'>${general.attack}</sp-table-cell>
-              <sp-table-cell id='hp' dir='ltr' role='gridcell'>${general.hp}</sp-table-cell>
-              <sp-table-cell id='defense' dir='ltr' role='gridcell'>${general.defense}</sp-table-cell>
-              <sp-table-cell id='attackBuff' dir='ltr' role='gridcell'>${general.attackBuff}</sp-table-cell>
-              <sp-table-cell id='HPBuff' dir='ltr' role='gridcell'>${general.hpBuff}</sp-table-cell>
-              <sp-table-cell id='defenseBuff' dir='ltr' role='gridcell'>${general.defenseBuff}</sp-table-cell>
+              <sp-table-cell role='gridcell' dir='ltr' id='name'  >${general.name}</sp-table-cell>
+              <sp-table-cell role='gridcell' dir='ltr' id='attack' >${general.attack.toFixed(2)}</sp-table-cell>
+              <sp-table-cell role='gridcell' dir='ltr' id='hp' >${general.hp.toFixed(2)}</sp-table-cell>
+              <sp-table-cell role='gridcell' dir='ltr' id='defense' >${general.defense.toFixed(2)}</sp-table-cell>
+              <sp-table-cell role='gridcell' dir='ltr' id='attackBuff' >${general.attackBuff.toFixed(1)}%</sp-table-cell>
+              <sp-table-cell role='gridcell' dir='ltr' id='HPBuff' >${general.hpBuff.toFixed(1)}%</sp-table-cell>
+              <sp-table-cell role='gridcell' dir='ltr' id='defenseBuff' >${general.defenseBuff.toFixed(1)}%</sp-table-cell>
           `;
         };
-
-
-        
+      
         this.table.addEventListener('sorted', (event) => {
           const {sortDirection, sortKey} = (event as CustomEvent).detail;
           let items = (this.table!.items as generalRecord[]).sort((a, b) => {
@@ -296,9 +308,9 @@ export class ComparingTable extends SpectrumElement {
             const {attackBuff, defenseBuff, hpBuff} = buff(go.general,this.buffAdverbs, props);
             items.push({'general': {
               name: go.general.name,
-              attack: (go.general.attack + go.general.attack_increment * 45).toFixed(2),
-              defense: (go.general.defense + go.general.defense_increment * 45).toFixed(2),
-              hp: (go.general.leadership + go.general.leadership_increment * 45).toFixed(2),
+              attack: (go.general.attack + go.general.attack_increment * 45),
+              defense: (go.general.defense + go.general.defense_increment * 45),
+              hp: (go.general.leadership + go.general.leadership_increment * 45),
               attackBuff: attackBuff,
               hpBuff: hpBuff,
               defenseBuff: defenseBuff,
@@ -355,8 +367,14 @@ export class ComparingTable extends SpectrumElement {
         this.unitClass = validation.data;
       }
     } else if(!picker.id.localeCompare('generalUse')) {
-      switch (picker.value) {
-        case "Monsters":
+      const validation = generalUseCase.safeParse(picker.value);
+      if(validation.success) {
+        this.useCase = validation.data;
+      } else {
+        this.useCase = 'all';
+      }
+      switch (this.useCase) {
+        case generalUseCase.enum.Monsters:
           this.buffAdverbs = [
             BuffAdverbs.enum.Attacking,
             BuffAdverbs.enum.Marching,
@@ -366,7 +384,7 @@ export class ComparingTable extends SpectrumElement {
             BuffAdverbs.enum.Reduces_Monster,
           ]
           break;
-        case "Attack":
+        case generalUseCase.enum.Attack:
           this.buffAdverbs = [
             BuffAdverbs.enum.Attacking,
             BuffAdverbs.enum.Marching,
@@ -375,7 +393,7 @@ export class ComparingTable extends SpectrumElement {
             BuffAdverbs.enum.Enemy,
           ];
           break;
-        case "Defense":
+        case generalUseCase.enum.Defense:
           this.buffAdverbs = [
             BuffAdverbs.enum.Reinforcing,
             BuffAdverbs.enum.Defending,
@@ -383,13 +401,13 @@ export class ComparingTable extends SpectrumElement {
             BuffAdverbs.enum.Enemy,
           ];
           break;
-        case "Overall":
+        case generalUseCase.enum.Overall:
           this.buffAdverbs = [
             BuffAdverbs.enum.Reduces_Enemy,
             BuffAdverbs.enum.Enemy,
           ];
           break;
-        case "Wall":
+        case generalUseCase.enum.Wall:
           this.buffAdverbs = [
             BuffAdverbs.enum.Reduces_Enemy,
             BuffAdverbs.enum.Enemy,
@@ -398,7 +416,7 @@ export class ComparingTable extends SpectrumElement {
             BuffAdverbs.enum.In_City,
           ];
           break;
-        case "Mayors":
+        case generalUseCase.enum.Mayors:
           this.buffAdverbs = [
             BuffAdverbs.enum.Reduces_Enemy,
             BuffAdverbs.enum.Enemy,
@@ -448,6 +466,87 @@ export class ComparingTable extends SpectrumElement {
   `
   
   public render() {
+    let headerColumns = html``;
+    switch (this.useCase) {
+      case generalUseCase.enum.Wall:
+        headerColumns = html`${headerColumns}
+        <sp-table-head-cell sortable-sort-direction="desc" sort-key="AD">
+            Generic Attack Debuff
+        </sp-table-head-cell>
+        <sp-table-head-cell sortable-sort-direction="desc" sort-key="DD">
+            Generic Defense Debuff
+        </sp-table-head-cell>
+        <sp-table-head-cell sortable-sort-direction="desc" sort-key="HD">
+            Generic HP Debuff
+        </sp-table-head-cell>
+        <sp-table-head-cell sortable-sort-direction="desc" sort-key="GAD">
+            Ground Attack Debuff
+        </sp-table-head-cell>
+        <sp-table-head-cell sortable-sort-direction="desc" sort-key="GDD">
+            Ground Defense Debuff
+        </sp-table-head-cell>
+        <sp-table-head-cell sortable-sort-direction="desc" sort-key="GHD">
+            Ground HP Debuff
+        </sp-table-head-cell>
+        <sp-table-head-cell sortable-sort-direction="desc" sort-key="MAD">
+            Mounted Attack Debuff
+        </sp-table-head-cell>
+        <sp-table-head-cell sortable-sort-direction="desc" sort-key="MDD">
+            Mounted Defense Debuff
+        </sp-table-head-cell>
+        <sp-table-head-cell sortable-sort-direction="desc" sort-key="MHD">
+            Mounted HP Debuff
+        </sp-table-head-cell>
+        <sp-table-head-cell sortable-sort-direction="desc" sort-key="AAD">
+            Archer Attack Debuff
+        </sp-table-head-cell>
+        <sp-table-head-cell sortable-sort-direction="desc" sort-key="ADD">
+            Archer Defense Debuff
+        </sp-table-head-cell>
+        <sp-table-head-cell sortable-sort-direction="desc" sort-key="AHD">
+            Archer HP Debuff
+        </sp-table-head-cell>
+        <sp-table-head-cell sortable-sort-direction="desc" sort-key="SAD">
+            Siege Attack Debuff
+        </sp-table-head-cell>
+        <sp-table-head-cell sortable-sort-direction="desc" sort-key="SDD">
+            Siege Defense Debuff
+        </sp-table-head-cell>
+        <sp-table-head-cell sortable-sort-direction="desc" sort-key="SHD">
+            Siege HP Debuff
+        </sp-table-head-cell>
+        `;
+        if(this.table !== undefined && this.table !== null) {
+          this.table.requestUpdate();
+        }
+        break;
+      default:
+        headerColumns = html`${headerColumns}
+        <sp-table-head-cell sortable sort-direction="desc" sort-key="attack">
+            Attack
+        </sp-table-head-cell>
+        <sp-table-head-cell sortable sort-direction="desc" sort-key="HP">
+            HP
+        </sp-table-head-cell>
+        <sp-table-head-cell sortable sort-direction="desc" sort-key="Defense">
+            Defense
+        </sp-table-head-cell>
+        <sp-table-head-cell sortable sort-direction="desc" sort-key="attackBuff">
+            Attack Buff
+        </sp-table-head-cell>
+        <sp-table-head-cell sortable sort-direction="desc" sort-key="HPBuff">
+            HP Buff
+        </sp-table-head-cell>
+        <sp-table-head-cell sortable sort-direction="desc" sort-key="defenseBuff">
+            Defense Buff
+        </sp-table-head-cell>
+        `;
+        if(this.table !== undefined && this.table !== null) {
+          this.table.requestUpdate();
+        }
+    }
+    
+    
     return html`
         <div class="sp-table-container">
           <sp-field-group horizontal >
@@ -480,13 +579,13 @@ export class ComparingTable extends SpectrumElement {
                   </sp-field-label>
                   <sp-picker id="generalUse" size="s" label="All" value="all" @change=${this.changeHandler}>
                       <sp-menu-item value="all">All Generals</sp-menu-item>
-                      <sp-menu-item value="Monsters">Monster Hunting</sp-menu-item>
-                      <sp-menu-item value="Attack">Attacking Only</sp-menu-item>
-                      <sp-menu-item value="Defense">Reinforcing and Defending</sp-menu-item>
-                      <sp-menu-item value="Overall">All Purpose</sp-menu-item>
+                      <sp-menu-item value=${generalUseCase.enum.Monsters}>Monster Hunting</sp-menu-item>
+                      <sp-menu-item value=${generalUseCase.enum.Attack}>Attacking Only</sp-menu-item>
+                      <sp-menu-item value=${generalUseCase.enum.Defense}>Reinforcing and Defending</sp-menu-item>
+                      <sp-menu-item value=${generalUseCase.enum.Overall}>All Purpose</sp-menu-item>
                       <sp-menu-divider size="s"></sp-menu-divider>
-                      <sp-menu-item value="Wall">Wall Generals</sp-menu-item>
-                      <sp-menu-item value="Mayors">SubCity Mayors</sp-menu-item>
+                      <sp-menu-item value=${generalUseCase.enum.Wall}>Wall Generals</sp-menu-item>
+                      <sp-menu-item value=${generalUseCase.enum.Mayors}>SubCity Mayors</sp-menu-item>
                       
                   </sp-picker>
               </div>
@@ -542,24 +641,7 @@ export class ComparingTable extends SpectrumElement {
                     <sp-table-head-cell sortable sort-direction="desc" sort-key="name">
                         Name
                     </sp-table-head-cell>
-                    <sp-table-head-cell sortable sort-direction="desc" sort-key="attack">
-                        Attack
-                    </sp-table-head-cell>
-                    <sp-table-head-cell sortable sort-direction="desc" sort-key="HP">
-                        HP
-                    </sp-table-head-cell>
-                    <sp-table-head-cell sortable sort-direction="desc" sort-key="Defense">
-                        Defense
-                    </sp-table-head-cell>
-                    <sp-table-head-cell sortable sort-direction="desc" sort-key="attackBuff">
-                        Attack Buff
-                    </sp-table-head-cell>
-                    <sp-table-head-cell sortable sort-direction="desc" sort-key="HPBuff">
-                        HP Buff
-                    </sp-table-head-cell>
-                    <sp-table-head-cell sortable sort-direction="desc" sort-key="defenseBuff">
-                        Defense Buff
-                    </sp-table-head-cell>
+                    ${headerColumns}
                 </sp-table-head>
             </sp-table>
         </div>
