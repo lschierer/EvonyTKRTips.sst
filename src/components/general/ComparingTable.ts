@@ -142,6 +142,14 @@ export class ComparingTable extends SpectrumElement {
                     (ga.attack < gb.attack ? -1 : 1) :
                     (ga.attack < gb.attack ? 1 : -1);
                 }
+              case 'attackBuff':
+                if(ga.attackBuff === gb.attackBuff){
+                  return 0;
+                } else {
+                  return sortDirection === 'asc' ?
+                      (ga.attackBuff < gb.attackBuff ? -1 : 1) :
+                      (ga.attackBuff < gb.attackBuff ? 1 : -1);
+                }
               case 'name':
                 return (sortDirection === 'asc') ?
                   (ga.name.localeCompare(gb.name,undefined,{sensitivity: "base"})) :
