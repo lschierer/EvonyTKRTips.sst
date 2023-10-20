@@ -95,7 +95,7 @@ export class ComparingTable extends SpectrumElement {
     
     this.dataUrl = 'http://localhost';
     this._dataUrl = new URL(this.dataUrl)
-    this.generalRecords = new Array<Record<string,General>>();
+    this.generalRecords = new Array<Record<string,tableGeneralType>>();
     
   }
   
@@ -215,8 +215,10 @@ export class ComparingTable extends SpectrumElement {
         }
       }
     }
-    this.table.items = this.generalRecords;
-    this.table!.requestUpdate();
+    if(this.table !== undefined && this.table !== null ) {
+      this.table.items = this.generalRecords;
+      this.table.requestUpdate();
+    }
   }
   
   private processGenerals() {
@@ -272,17 +274,35 @@ export class ComparingTable extends SpectrumElement {
   protected changeHandler(e: Event) {
     const picker = e.target as Picker;
     if(!picker.id.localeCompare('ascending')) {
-      this.ascending = picker.value;
+      const validation = levelSchema.safeParse(picker.value);
+      if(validation.success) {
+        this.ascending = validation.data;
+      }
     }else if (!picker.id.localeCompare('Speciality1')) {
-      this.Speciality1 = picker.value;
+      const validation = qualitySchema.safeParse(picker.value);
+      if(validation.success) {
+        this.Speciality1 = validation.data;
+      }
     } else if (!picker.id.localeCompare('Speciality2')) {
-      this.Speciality2 = picker.value;
+      const validation = qualitySchema.safeParse(picker.value);
+      if(validation.success) {
+        this.Speciality2 = validation.data;
+      }
     } else if (!picker.id.localeCompare('Speciality3')) {
-      this.Speciality3 = picker.value;
+      const validation = qualitySchema.safeParse(picker.value);
+      if(validation.success) {
+        this.Speciality3 = validation.data;
+      }
     } else if (!picker.id.localeCompare('Speciality4')) {
-      this.Speciality4 = picker.value;
+      const validation = qualitySchema.safeParse(picker.value);
+      if(validation.success) {
+        this.Speciality4 = validation.data;
+      }
     } else if (!picker.id.localeCompare('unitClass')) {
-      this.unitClass = picker.value;
+      const validation = troopClass.safeParse(picker.value);
+      if(validation.success) {
+        this.unitClass = validation.data;
+      }
     } else {
       console.log(`picker id is ${picker.id}`)
     }
