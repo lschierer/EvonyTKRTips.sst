@@ -15,19 +15,19 @@ general:
   books:
     - name: Restorer of the World
       buff:
-        - condition: leading the army to attack
+        - condition: leading_the_army_to_attack
           class: Ground
           attribute: Attack
           value:
             number: 40
             unit: percentage
-        - condition: leading the army to attack
+        - condition: leading_the_army_to_attack
           class: Ground
           attribute: HP
           value:
             number: 35
             unit: percentage
-        - condition: leading the army to attack
+        - condition: leading_the_army_to_attack
           class: Mounted
           attribute: HP
           value:
@@ -100,35 +100,35 @@ general:
       attribute:
         - level: Green
           buff:
-            - condition: Reduces Enemy
+            - condition: Reduces_Enemy
               attribute: Defense
               value:
                 number: 1
                 unit: percentage
         - level: Blue
           buff:
-            - condition: Reduces Enemy
+            - condition: Reduces_Enemy
               attribute: Defense
               value:
                 number: 1
                 unit: percentage
         - level: Purple
           buff:
-            - condition: Reduces Enemy
+            - condition: Reduces_Enemy
               attribute: Defense
               value:
                 number: 2
                 unit: percentage
         - level: Orange
           buff:
-            - condition: Reduces Enemy
+            - condition: Reduces_Enemy
               attribute: Defense
               value:
                 number: 2
                 unit: percentage
         - level: Gold
           buff:
-            - condition: Reduces Enemy
+            - condition: Reduces_Enemy
               attribute: Defense
               value:
                 number: 4
@@ -325,25 +325,25 @@ general:
   ascending:
     - level: '6'
       buff:
-        - condition: 'Marching'
+        - condition: Marching
           attribute: Defense
           class: Ground
           value:
             number: 10
             unit: percentage
-        - condition: 'Marching'
+        - condition: Marching
           attribute: Defense
           class: Mounted
           value:
             number: 10
             unit: percentage
-        - condition: 'Marching'
+        - condition: Marching
           attribute: HP
           class: Ground
           value:
             number: 10
             unit: percentage
-        - condition: 'Marching'
+        - condition: Marching
           attribute: HP
           class: Mounted
           value:
@@ -351,8 +351,8 @@ general:
             unit: percentage
     - level: '7'
       buff:
-        - condition: Enemy In City
-          attribute: Wounded to Death
+        - condition: Enemy_In_City
+          attribute: Wounded_to_Death
           value:
             number: 10
             unit: percentage
@@ -371,7 +371,7 @@ general:
             number: 10
             unit: percentage
         - condition: Attacking
-          attribute: March Size Capacity
+          attribute: March_Size_Capacity
           value:
             number: 8
             unit: percentage

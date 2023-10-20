@@ -16,7 +16,7 @@ general:
     - name: Foresight
       buff:
         - attribute: Attack
-          condition: leading the army to attack
+          condition: leading_the_army_to_attack
           class: Mounted
           value:
             number: 40
@@ -26,13 +26,13 @@ general:
           value:
             number: 40
             unit: percentage
-        - condition: leading the army to attack
+        - condition: leading_the_army_to_attack
           attribute: Defense
           class: Mounted
           value:
             number: 25
             unit: percentage
-        - condition: leading the army to attack
+        - condition: leading_the_army_to_attack
           attribute: HP
           class: Mounted
           value:
