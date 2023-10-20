@@ -144,7 +144,7 @@ export const buffValueSchema = z.object({
 
 export const buffSchema = z.object({
   condition: z.union([BuffAdverbs, z.array(BuffAdverbs)]).optional(),
-  attribute: z.union([BuffAttributes, z.array(BuffAttributes)]).optional(),
+  attribute: BuffAttributes.optional(),
   class: troopClass.optional(),
   value: buffValueSchema,
 });
