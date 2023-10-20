@@ -1,0 +1,40 @@
+---
+general:
+  name: Poligenus
+  score_as: Mounted
+  attack: 121
+  attack_increment: 9.04
+  leadership: 111
+  leadership_increment: 8.97
+  defense: 119
+  defense_increment: 8.73
+  politics: 108
+  politics_increment: 8.66
+  level: '45'
+  stars: '10'
+  books:
+    - name: Foresight
+      buff:
+        - attribute: Attack
+          condition: leading the army to attack
+          class: Mounted
+          value:
+            number: 40
+            unit: percentage
+        - attribute: Attack
+          class: Ground
+          value:
+            number: 40
+            unit: percentage
+        - condition: leading the army to attack
+          attribute: Defense
+          class: Mounted
+          value:
+            number: 25
+            unit: percentage
+        - condition: leading the army to attack
+          attribute: HP
+          class: Mounted
+          value:
+            number: 25
+            unit: percentage

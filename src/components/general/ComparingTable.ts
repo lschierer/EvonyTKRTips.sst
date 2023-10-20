@@ -33,6 +33,8 @@ import {
     type levelSchemaType,
   qualitySchema,
     type qualitySchemaType,
+  troopClass,
+    type troopClassType,
 } from "@schemas/evonySchemas.ts";
 
 import {attack_buff} from "@components/general/buff.ts";
@@ -44,6 +46,7 @@ const tableGeneral = z.object({
   name: z.string(),
   attack: z.number(),
   attackBuff: z.number(),
+  unitClass: troopClass.nullish(),
 })
 type tableGeneralType = z.infer<typeof tableGeneral>;
 
@@ -83,6 +86,9 @@ export class ComparingTable extends SpectrumElement {
 
   @state()
   protected Speciality4: qualitySchemaType = "Gold";
+
+  @state()
+  protected unitClass: troopClassType = 'all';
 
   constructor() {
     super();
@@ -205,9 +211,12 @@ export class ComparingTable extends SpectrumElement {
         if(this.table.items !== undefined && this.table.items !== null && this.table.items.length === 0) {
           console.log(`willUpdate; I need records`);
           this.processGenerals();
+
         }
       }
     }
+    this.table.items = this.generalRecords;
+    this.table!.requestUpdate();
   }
   
   private processGenerals() {
@@ -240,12 +249,22 @@ export class ComparingTable extends SpectrumElement {
               name: name,
               attack: attack,
               attackBuff: attackBuff,
+              unitClass: go.general.score_as ? go.general.score_as : 'all',
             }});
           }
         })
-        this.table!.items = items;
-        this.table!.requestUpdate();
-        this.generalRecords = (this.table.items as generalRecord[]);
+        this.generalRecords = items.filter((g) => {
+          if(g !== null && g !== undefined ) {
+            if(this.unitClass.localeCompare('all')) {
+              if(g['general'].unitClass !== undefined && g['general'].unitClass !== null) {
+                return(!this.unitClass.localeCompare(g['general'].unitClass))
+              }
+            } else {
+              return true;
+            }
+          }
+          return false;
+        });
       }
     }
   }
@@ -262,6 +281,8 @@ export class ComparingTable extends SpectrumElement {
       this.Speciality3 = picker.value;
     } else if (!picker.id.localeCompare('Speciality4')) {
       this.Speciality4 = picker.value;
+    } else if (!picker.id.localeCompare('unitClass')) {
+      this.unitClass = picker.value;
     } else {
       console.log(`picker id is ${picker.id}`)
     }
@@ -288,6 +309,10 @@ export class ComparingTable extends SpectrumElement {
       width: 7rem;
     }
     
+    sp-picker#unitClass {
+      width: 9rem;
+    }
+    
   `
   
   public render() {
@@ -303,6 +328,16 @@ export class ComparingTable extends SpectrumElement {
                 <sp-menu-item value='8' >3</sp-menu-item>
                 <sp-menu-item value='9' >4</sp-menu-item>
                 <sp-menu-item value='10' >5</sp-menu-item>
+              </sp-picker>
+            </div>
+            <div>
+              <sp-field-label for="unitClass" size="s">Filter by Type</sp-field-label>
+              <sp-picker id="unitClass" size="s" label="All" value="all" @change=${this.changeHandler}>
+                <sp-menu-item value="all">All Generals</sp-menu-item>
+                <sp-menu-item value="Mounted">Mounted Generals</sp-menu-item>
+                <sp-menu-item value="Ground">Ground Generals</sp-menu-item>
+                <sp-menu-item value="Archers">Archer Generals</sp-menu-item>
+                <sp-menu-item value="Siege">Siege Generals</sp-menu-item>
               </sp-picker>
             </div>
           </sp-field-group>
