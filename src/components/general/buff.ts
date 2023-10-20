@@ -17,7 +17,7 @@ import {
     type specialtyAttributeType,
     type specialtyType,
     type troopClassType,
-    type qualitySchemaType
+    type qualitySchemaType, BuffAdverbs
 } from '@schemas/evonySchemas.ts';
 
 interface Props {
@@ -143,18 +143,12 @@ export function attack_buff(eg: General, situations: BuffAdverbArrayType, props:
                 const buff: buff[] = [bb.buff].flat();
                 buff.map((b) => {
                     if(b !== undefined && b !== null && general.score_as !== undefined) {
-                        const apply = buffFilter(b, general.score_as,BuffAttributes.enum.Attack,[
-                            'Attacking',
-                            'Marching',
-                            'When Rallying',
-                            'leading the army to attack',
-                            'Reinforcing',
-                            'Defending',
-                        ] );
+                        const apply = buffFilter(b, general.score_as,BuffAttributes.enum.Attack,situations );
                         if (apply && b.value !== undefined && b.value !== null) {
                             const buff_type = b.value.unit;
                             if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
                                 totalBuff = totalBuff + b.value.number
+                                console.log(`attack_buff; books; total: ${totalBuff}`)
                             }
                         }
                     }
@@ -199,18 +193,12 @@ export function attack_buff(eg: General, situations: BuffAdverbArrayType, props:
                     const buff: buff[] = [ga.buff].flat();
                     buff.map((b) => {
                         if(b !== undefined && b !== null && general.score_as) {
-                            const apply = buffFilter(b, general.score_as,BuffAttributes.enum.Attack,[
-                                'Attacking',
-                                'Marching',
-                                'When Rallying',
-                                'leading the army to attack',
-                                'Reinforcing',
-                                'Defending',
-                            ] );
+                            const apply = buffFilter(b, general.score_as,BuffAttributes.enum.Attack,situations);
                             if (apply && b.value !== undefined && b.value !== null) {
                                 const buff_type = b.value.unit;
                                 if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
                                     totalBuff = totalBuff + b.value.number
+                                    console.log(`attack_buff; ascending; total: ${totalBuff}`)
                                 }
                             }
                         }

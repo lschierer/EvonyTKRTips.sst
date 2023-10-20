@@ -20,11 +20,15 @@ import '@spectrum-web-components/field-group/sp-field-group.js';
 import '@spectrum-web-components/field-label/sp-field-label.js';
 import '@spectrum-web-components/menu/sp-menu-group.js';
 import '@spectrum-web-components/menu/sp-menu-item.js';
+import '@spectrum-web-components/menu/sp-menu-divider.js';
 import '@spectrum-web-components/picker/sp-picker.js';
 import { Picker } from '@spectrum-web-components/picker';
-
+import '@spectrum-web-components/tooltip/sp-tooltip.js';
 
 import {
+  BuffAdverbs,
+  type BuffAdverbsType,
+  type BuffAdverbArrayType,
   generalSchema,
   type General,
   generalObjectSchema,
@@ -76,6 +80,9 @@ export class ComparingTable extends SpectrumElement {
   protected ascending: levelSchemaType = '10';
 
   @state()
+  protected buffAdverbs: BuffAdverbArrayType;
+  
+  @state()
   protected Speciality1: qualitySchemaType = "Gold";
 
   @state()
@@ -93,6 +100,14 @@ export class ComparingTable extends SpectrumElement {
   constructor() {
     super();
     
+    this.buffAdverbs = [
+      BuffAdverbs.enum.Attacking,
+      BuffAdverbs.enum.Marching,
+      BuffAdverbs.enum.When_Rallying,
+      BuffAdverbs.enum.leading_the_army_to_attack,
+      BuffAdverbs.enum.Reinforcing,
+      BuffAdverbs.enum.Defending,
+    ];
     this.dataUrl = 'http://localhost';
     this._dataUrl = new URL(this.dataUrl)
     this.generalRecords = new Array<Record<string,tableGeneralType>>();
@@ -239,14 +254,8 @@ export class ComparingTable extends SpectrumElement {
             const go: generalObject = valid.data;
             const name = go.general.name;
             const attack = go.general.attack;
-            const attackBuff = attack_buff(go.general,[
-              'Attacking',
-              'Marching',
-              'When Rallying',
-              'leading the army to attack',
-              'Reinforcing',
-              'Defending',
-            ], props);
+            console.log(`processGenerals; buffAdverbs: ${JSON.stringify(this.buffAdverbs)}`)
+            const attackBuff = attack_buff(go.general,this.buffAdverbs, props);
             items.push({'general': {
               name: name,
               attack: attack,
@@ -303,7 +312,68 @@ export class ComparingTable extends SpectrumElement {
       if(validation.success) {
         this.unitClass = validation.data;
       }
-    } else {
+    } else if(!picker.id.localeCompare('generalUse')) {
+      switch (picker.value) {
+        case "Monsters":
+          this.buffAdverbs = [
+            BuffAdverbs.enum.Attacking,
+            BuffAdverbs.enum.Marching,
+            BuffAdverbs.enum.When_Rallying,
+            BuffAdverbs.enum.leading_the_army_to_attack,
+            BuffAdverbs.enum.Against_Monsters,
+            BuffAdverbs.enum.Reduces_Monster,
+          ]
+          break;
+        case "Attack":
+          this.buffAdverbs = [
+            BuffAdverbs.enum.Attacking,
+            BuffAdverbs.enum.Marching,
+            BuffAdverbs.enum.leading_the_army_to_attack,
+            BuffAdverbs.enum.Reduces_Enemy,
+            BuffAdverbs.enum.Enemy,
+          ];
+          break;
+        case "Defense":
+          this.buffAdverbs = [
+            BuffAdverbs.enum.Reinforcing,
+            BuffAdverbs.enum.Defending,
+            BuffAdverbs.enum.Reduces_Enemy,
+            BuffAdverbs.enum.Enemy,
+          ];
+          break;
+        case "Overall":
+          this.buffAdverbs = [
+            BuffAdverbs.enum.Reduces_Enemy,
+            BuffAdverbs.enum.Enemy,
+          ];
+          break;
+        case "Wall":
+          this.buffAdverbs = [
+            BuffAdverbs.enum.Reduces_Enemy,
+            BuffAdverbs.enum.Enemy,
+            BuffAdverbs.enum.Defending,
+            BuffAdverbs.enum.When_The_Main_Defense_General,
+            BuffAdverbs.enum.In_City,
+          ];
+          break;
+        case "Mayors":
+          this.buffAdverbs = [
+            BuffAdverbs.enum.Reduces_Enemy,
+            BuffAdverbs.enum.Enemy,
+            BuffAdverbs.enum.When_the_City_Mayor,
+          ];
+          break;
+        default:
+          this.buffAdverbs = [
+            BuffAdverbs.enum.Attacking,
+            BuffAdverbs.enum.Marching,
+            BuffAdverbs.enum.When_Rallying,
+            BuffAdverbs.enum.leading_the_army_to_attack,
+            BuffAdverbs.enum.Reinforcing,
+            BuffAdverbs.enum.Defending,
+          ];
+      }
+    } else   {
       console.log(`picker id is ${picker.id}`)
     }
     this.processGenerals();
@@ -340,9 +410,9 @@ export class ComparingTable extends SpectrumElement {
         <div class="sp-table-container">
           <sp-field-group horizontal >
             <div>
-              <sp-field-label for="ascending" size="s">Ascending Level</sp-field-label>
+              <sp-field-label for="ascending" size="s" >Ascending Level</sp-field-label>
               <sp-picker id="ascending" size="s" label="5" value='10' @change=${this.changeHandler}>
-                <sp-menu-item value='5' >0</sp-menu-item>
+                <sp-menu-item value='5' >0</sp-menu-item>>
                 <sp-menu-item value='6' >1</sp-menu-item>
                 <sp-menu-item value='7' >2</sp-menu-item>
                 <sp-menu-item value='8' >3</sp-menu-item>
@@ -360,6 +430,24 @@ export class ComparingTable extends SpectrumElement {
                 <sp-menu-item value="Siege">Siege Generals</sp-menu-item>
               </sp-picker>
             </div>
+              <div>
+                  <sp-field-label for="generalUse" size="s">
+                      General Use Case
+                      <sp-tooltip placement="right-end" self-managed variant="info" >Some buffs apply only in certain use cases.  This determines which buffs
+                          will be used to determine the general's attributes.</sp-tooltip>
+                  </sp-field-label>
+                  <sp-picker id="generalUse" size="s" label="All" value="all" @change=${this.changeHandler}>
+                      <sp-menu-item value="all">All Generals</sp-menu-item>
+                      <sp-menu-item value="Monsters">Monster Hunting</sp-menu-item>
+                      <sp-menu-item value="Attack">Attacking Only</sp-menu-item>
+                      <sp-menu-item value="Defense">Reinforcing and Defending</sp-menu-item>
+                      <sp-menu-item value="Overall">All Purpose</sp-menu-item>
+                      <sp-menu-divider size="s"></sp-menu-divider>
+                      <sp-menu-item value="Wall">Wall Generals</sp-menu-item>
+                      <sp-menu-item value="Mayors">SubCity Mayors</sp-menu-item>
+                      
+                  </sp-picker>
+              </div>
           </sp-field-group>
           <sp-field-group horizontal >
             <div>
