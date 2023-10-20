@@ -57,6 +57,8 @@ export const troopClass = z.enum([
     'all'
 ]);
 
+export type troopClassType = z.infer<typeof troopClass>;
+
 export const qualitySchema = z.enum([
   "Green",
   "Blue",

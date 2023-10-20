@@ -14,29 +14,55 @@ import {
     skillBook,
     type skillBookType,
     type specialtyIncrementType,
-    type specialtyType
+    type specialtyType,
+    type troopClassType
 } from '@schemas/evonySchemas.ts';
 
-function buffFilter(b: buff, general: General,score_for?: BuffAttributesType, situations?: BuffAdverbArrayType) {
+function buffFilter(b: buff, score_as: troopClassType, score_for: BuffAttributesType, situations?: BuffAdverbArrayType) {
+    console.log(`bufFilter start ----${JSON.stringify(b)}----`)
+    let toReturn = false;
+
     if (b.condition !== undefined && b.condition !== null) {
+        console.log(`buffFilter; condition ${b.condition}`)
         if(situations !== null && situations !== undefined && (!(situations.includes(b.condition)))) {
             return false;
+        } else {
+            toReturn = true;
         }
     }
-    if ((b.class !== undefined && b.class !== null) && score_for !== undefined && score_for !== null) {
-        return (!b.class.localeCompare(score_for));
+    console.log(`after first if, return value ${toReturn}`)
+
+    if (b.class !== undefined && b.class !== null){
+        console.log(`buffFilter; class ${b.class} score_as ${JSON.stringify(score_as)}`)
+        const result =  (!b.class.localeCompare(score_as));
+        if(!result) {
+            return false;
+        }
+        toReturn = result;
     }
-    return false;
+
+
+    if(b.attribute !== undefined && b.attribute !== null) {
+        console.log(`buffFilter; checking attribute ${b.attribute}`)
+        toReturn = (!score_for.localeCompare(b.attribute));
+    }
+    console.log(`after 2nd if, return value ${toReturn}`)
+
+
+
+
+    console.log(`after 3rd if, return value ${toReturn}`)
+
+    return toReturn;
 }
 
 export function attack_buff(eg: General, situations: BuffAdverbArrayType){
-    console.log(`attack_buff`)
+    console.log(`attack_buff; general is ${eg.name}`)
     let attack = 0;
     let totalBuff = 0;
     if(eg.score_as !== null && eg.score_as !== undefined) {
         //const general = eg.general;
         const general = eg;
-        attack = (general.attack + (general.attack_increment * 45 ));
         if(general.specialities !== undefined && general.specialities !== null) {
             console.log(`attack_buff; speciality buffs`)
             general.specialities.map((s: specialtyType) => {
@@ -44,13 +70,17 @@ export function attack_buff(eg: General, situations: BuffAdverbArrayType){
                     const buff: buff[] = [sa.buff].flat()
                     buff.map((b) => {
                         if(b !== undefined && b !== null) {
-                            const apply = buffFilter(b, general,BuffAttributes.enum.Attack,situations );
+                            const apply = buffFilter(b, general.score_as,BuffAttributes.enum.Attack,situations );
+                            console.log(`apply is ${apply}`);
                             if (apply && b.value !== undefined && b.value !== null) {
                                 const buff_type = b.value.unit;
                                 if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
                                     totalBuff = totalBuff + b.value.number
+                                    console.log(`attack_buff; specialities; ${totalBuff}`)
                                 }
                             }
+                        } else {
+                            console.log(`buff is undefined for speciality`)
                         }
                     })
                 })
@@ -62,7 +92,7 @@ export function attack_buff(eg: General, situations: BuffAdverbArrayType){
                 const buff: buff[] = [bb.buff].flat();
                 buff.map((b) => {
                     if(b !== undefined && b !== null) {
-                        const apply = buffFilter(b, general,BuffAttributes.enum.Attack,[
+                        const apply = buffFilter(b, general.score_as,BuffAttributes.enum.Attack,[
                             'Attacking',
                             'Marching',
                             'When Rallying',
@@ -87,7 +117,7 @@ export function attack_buff(eg: General, situations: BuffAdverbArrayType){
                 const buff: buff[] = [ga.buff].flat();
                 buff.map((b) => {
                     if(b !== undefined && b !== null) {
-                        const apply = buffFilter(b, general,BuffAttributes.enum.Attack,[
+                        const apply = buffFilter(b, general.score_as,BuffAttributes.enum.Attack,[
                             'Attacking',
                             'Marching',
                             'When Rallying',
