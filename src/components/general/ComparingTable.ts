@@ -16,12 +16,23 @@ import type {
   TableRow
 } from '@spectrum-web-components/table';
 import '@spectrum-web-components/table/elements.js';
+import '@spectrum-web-components/field-group/sp-field-group.js';
+import '@spectrum-web-components/field-label/sp-field-label.js';
+import '@spectrum-web-components/menu/sp-menu-group.js';
+import '@spectrum-web-components/menu/sp-menu-item.js';
+import '@spectrum-web-components/picker/sp-picker.js';
+import { Picker } from '@spectrum-web-components/picker';
+
 
 import {
   generalSchema,
   type General,
   generalObjectSchema,
   type generalObject,
+  levelSchema,
+    type levelSchemaType,
+  qualitySchema,
+    type qualitySchemaType,
 } from "@schemas/evonySchemas.ts";
 
 import {attack_buff} from "@components/general/buff.ts";
@@ -57,7 +68,22 @@ export class ComparingTable extends SpectrumElement {
   
   @state()
   private table: Table | undefined;
-  
+
+  @state()
+  protected ascending: levelSchemaType = '10';
+
+  @state()
+  protected Speciality1: qualitySchemaType = "Gold";
+
+  @state()
+  protected Speciality2: qualitySchemaType = "Gold";
+
+  @state()
+  protected Speciality3: qualitySchemaType = "Gold";
+
+  @state()
+  protected Speciality4: qualitySchemaType = "Gold";
+
   constructor() {
     super();
     
@@ -99,6 +125,8 @@ export class ComparingTable extends SpectrumElement {
               <sp-table-cell id='attackBuff' dir='ltr' role='gridcell'>${general.attackBuff}</sp-table-cell>
           `;
         };
+
+
         
         this.table.addEventListener('sorted', (event) => {
           const {sortDirection, sortKey} = (event as CustomEvent).detail;
@@ -175,8 +203,16 @@ export class ComparingTable extends SpectrumElement {
   }
   
   private processGenerals() {
+    const props = {
+      ascending: this.ascending,
+      Speciality1: this.Speciality1,
+      Speciality2: this.Speciality2,
+      Speciality3: this.Speciality3,
+      Speciality4: this.Speciality4,
+    };
     if(this.allGenerals !== undefined && this.allGenerals !== null && this.allGenerals.length > 0) {
       if(this.table !== undefined && this.table !== null) {
+        let items = new Array<Record<string,tableGeneralType>>()
         this.allGenerals.forEach((g) => {
           const valid = generalObjectSchema.safeParse(g);
           if(valid.success) {
@@ -191,21 +227,38 @@ export class ComparingTable extends SpectrumElement {
               'leading the army to attack',
               'Reinforcing',
               'Defending',
-            ]);
-            this.table!.items.push({'general': {
+            ], props);
+            items.push({'general': {
               name: name,
               attack: attack,
               attackBuff: attackBuff,
             }});
-            this.table!.requestUpdate();
           }
         })
+        this.table!.items = items;
+        this.table!.requestUpdate();
         this.generalRecords = (this.table.items as generalRecord[]);
       }
     }
   }
-  
-  
+
+  protected changeHandler(e: Event) {
+    const picker = e.target as Picker;
+    if(!picker.id.localeCompare('ascending')) {
+      this.ascending = picker.value;
+    }else if (!picker.id.localeCompare('Speciality1')) {
+      this.Speciality1 = picker.value;
+    } else if (!picker.id.localeCompare('Speciality2')) {
+      this.Speciality2 = picker.value;
+    } else if (!picker.id.localeCompare('Speciality3')) {
+      this.Speciality3 = picker.value;
+    } else if (!picker.id.localeCompare('Speciality4')) {
+      this.Speciality4 = picker.value;
+    } else {
+      console.log(`picker id is ${picker.id}`)
+    }
+    this.processGenerals();
+  }
   
   static styles = css`
     .sp-table-container {
@@ -218,11 +271,79 @@ export class ComparingTable extends SpectrumElement {
         }
       }
     }
+    
+    sp-picker#ascending {
+      width: 3rem;
+    }
+    
+    sp-picker[id^=Speciality]{
+      width: 7rem;
+    }
+    
   `
   
   public render() {
     return html`
         <div class="sp-table-container">
+          <sp-field-group horizontal >
+            <div>
+              <sp-field-label for="ascending" size="s">Ascending Level</sp-field-label>
+              <sp-picker id="ascending" size="s" label="5" value='10' @change=${this.changeHandler}>
+                <sp-menu-item value='5' >0</sp-menu-item>
+                <sp-menu-item value='6' >1</sp-menu-item>
+                <sp-menu-item value='7' >2</sp-menu-item>
+                <sp-menu-item value='8' >3</sp-menu-item>
+                <sp-menu-item value='9' >4</sp-menu-item>
+                <sp-menu-item value='10' >5</sp-menu-item>
+              </sp-picker>
+            </div>
+          </sp-field-group>
+          <sp-field-group horizontal >
+            <div>
+              <sp-field-label for="Speciality1" size="s">1st Speciality</sp-field-label>
+              <sp-picker id="Speciality1" size="s" label="Gold" value='Gold' @change=${this.changeHandler}>
+                <sp-menu-item value="Disable">Not Active</sp-menu-item>
+                <sp-menu-item value='Green' >Green</sp-menu-item>
+                <sp-menu-item value='Blue' >Blue</sp-menu-item>
+                <sp-menu-item value='Purple' >Purple</sp-menu-item>
+                <sp-menu-item value='Orange' >Orange</sp-menu-item>
+                <sp-menu-item value='Gold' >Gold</sp-menu-item>
+              </sp-picker>
+            </div>
+            <div>
+              <sp-field-label for="Speciality2" size="s">2nd Speciality</sp-field-label>
+              <sp-picker id="Speciality2" size="s" label="Gold" value='Gold' @change=${this.changeHandler}>
+                <sp-menu-item value="Disable">Not Active</sp-menu-item>
+                <sp-menu-item value='Green' >Green</sp-menu-item>
+                <sp-menu-item value='Blue' >Blue</sp-menu-item>
+                <sp-menu-item value='Purple' >Purple</sp-menu-item>
+                <sp-menu-item value='Orange' >Orange</sp-menu-item>
+                <sp-menu-item value='Gold' >Gold</sp-menu-item>
+              </sp-picker>
+            </div>
+            <div>
+              <sp-field-label for="Speciality3" size="s">3rd Speciality</sp-field-label>
+              <sp-picker id="Speciality3" size="s" label="Gold" value='Gold' @change=${this.changeHandler}>
+                <sp-menu-item value="Disable">Not Active</sp-menu-item>
+                <sp-menu-item value='Green' >Green</sp-menu-item>
+                <sp-menu-item value='Blue' >Blue</sp-menu-item>
+                <sp-menu-item value='Purple' >Purple</sp-menu-item>
+                <sp-menu-item value='Orange' >Orange</sp-menu-item>
+                <sp-menu-item value='Gold' >Gold</sp-menu-item>
+              </sp-picker>
+            </div>
+            <div>
+              <sp-field-label for="Speciality4" size="s">4th Speciality</sp-field-label >
+              <sp-picker id="Speciality4" size="s" label="Gold" value='Gold' @change=${this.changeHandler}>
+                <sp-menu-item value="Disable">Not Active</sp-menu-item>
+                <sp-menu-item value='Green' >Green</sp-menu-item>
+                <sp-menu-item value='Blue' >Blue</sp-menu-item>
+                <sp-menu-item value='Purple' >Purple</sp-menu-item>
+                <sp-menu-item value='Orange' >Orange</sp-menu-item>
+                <sp-menu-item value='Gold' >Gold</sp-menu-item>
+              </sp-picker>
+            </div>
+          </sp-field-group>
             <sp-table size="m" scroller="true" ${ref(this.tableRef)} >
                 <sp-table-head>
                     <sp-table-head-cell sortable sort-direction="desc" sort-key="name">
