@@ -41,7 +41,7 @@ import {
     type troopClassType,
 } from "@schemas/evonySchemas.ts";
 
-import {attack_buff} from "@components/general/buff.ts";
+import {buff} from "@components/general/buff.ts";
 
 const generalArray = z.array(generalObjectSchema).nullish();
 type generalArrayType = z.infer<typeof generalArray>;
@@ -49,7 +49,11 @@ type generalArrayType = z.infer<typeof generalArray>;
 const tableGeneral = z.object({
   name: z.string(),
   attack: z.number(),
+  defense: z.number(),
+  hp: z.number(),
   attackBuff: z.number(),
+  hpBuff: z.number(),
+  defenseBuff: z.number(),
   unitClass: troopClass.nullish(),
 })
 type tableGeneralType = z.infer<typeof tableGeneral>;
@@ -143,7 +147,11 @@ export class ComparingTable extends SpectrumElement {
           return html`
               <sp-table-cell id='name' dir='ltr' role='gridcell' >${general.name}</sp-table-cell>
               <sp-table-cell id='attack' dir='ltr' role='gridcell'>${general.attack}</sp-table-cell>
+              <sp-table-cell id='hp' dir='ltr' role='gridcell'>${general.hp}</sp-table-cell>
+              <sp-table-cell id='defense' dir='ltr' role='gridcell'>${general.defense}</sp-table-cell>
               <sp-table-cell id='attackBuff' dir='ltr' role='gridcell'>${general.attackBuff}</sp-table-cell>
+              <sp-table-cell id='HPBuff' dir='ltr' role='gridcell'>${general.hpBuff}</sp-table-cell>
+              <sp-table-cell id='defenseBuff' dir='ltr' role='gridcell'>${general.defenseBuff}</sp-table-cell>
           `;
         };
 
@@ -163,6 +171,22 @@ export class ComparingTable extends SpectrumElement {
                     (ga.attack < gb.attack ? -1 : 1) :
                     (ga.attack < gb.attack ? 1 : -1);
                 }
+              case 'hp':
+                if(ga.hp === gb.hp) {
+                  return 0;
+                } else {
+                  return sortDirection === 'asc' ?
+                    (ga.hp < gb.hp ? -1 : 1) :
+                    (ga.hp < gb.hp ? 1 : -1);
+                }
+              case 'defense':
+                if(ga.defense === gb.defense) {
+                  return 0;
+                } else {
+                  return sortDirection === 'asc' ?
+                    (ga.defense < gb.defense ? -1 : 1) :
+                    (ga.defense < gb.defense ? 1 : -1);
+                }
               case 'attackBuff':
                 if(ga.attackBuff === gb.attackBuff){
                   return 0;
@@ -170,6 +194,22 @@ export class ComparingTable extends SpectrumElement {
                   return sortDirection === 'asc' ?
                       (ga.attackBuff < gb.attackBuff ? -1 : 1) :
                       (ga.attackBuff < gb.attackBuff ? 1 : -1);
+                }
+              case 'HPBuff':
+                if(ga.hpBuff === gb.hpBuff){
+                  return 0;
+                } else {
+                  return sortDirection === 'asc' ?
+                    (ga.hpBuff < gb.hpBuff ? -1 : 1) :
+                    (ga.hpBuff < gb.hpBuff ? 1 : -1);
+                }
+              case 'defenseBuff':
+                if(ga.hpBuff === gb.defenseBuff){
+                  return 0;
+                } else {
+                  return sortDirection === 'asc' ?
+                    (ga.defenseBuff < gb.defenseBuff ? -1 : 1) :
+                    (ga.defenseBuff < gb.defenseBuff ? 1 : -1);
                 }
               case 'name':
                 return (sortDirection === 'asc') ?
@@ -252,14 +292,16 @@ export class ComparingTable extends SpectrumElement {
           if(valid.success) {
             console.log(`pushing ${JSON.stringify(valid.data.general.name)}`)
             const go: generalObject = valid.data;
-            const name = go.general.name;
-            const attack = go.general.attack;
             console.log(`processGenerals; buffAdverbs: ${JSON.stringify(this.buffAdverbs)}`)
-            const attackBuff = attack_buff(go.general,this.buffAdverbs, props);
+            const {attackBuff, defenseBuff, hpBuff} = buff(go.general,this.buffAdverbs, props);
             items.push({'general': {
-              name: name,
-              attack: attack,
+              name: go.general.name,
+              attack: (go.general.attack + go.general.attack_increment * 45).toFixed(2),
+              defense: (go.general.defense + go.general.defense_increment * 45).toFixed(2),
+              hp: (go.general.leadership + go.general.leadership_increment * 45).toFixed(2),
               attackBuff: attackBuff,
+              hpBuff: hpBuff,
+              defenseBuff: defenseBuff,
               unitClass: go.general.score_as ? go.general.score_as : 'all',
             }});
           }
@@ -503,8 +545,20 @@ export class ComparingTable extends SpectrumElement {
                     <sp-table-head-cell sortable sort-direction="desc" sort-key="attack">
                         Attack
                     </sp-table-head-cell>
+                    <sp-table-head-cell sortable sort-direction="desc" sort-key="HP">
+                        HP
+                    </sp-table-head-cell>
+                    <sp-table-head-cell sortable sort-direction="desc" sort-key="Defense">
+                        Defense
+                    </sp-table-head-cell>
                     <sp-table-head-cell sortable sort-direction="desc" sort-key="attackBuff">
                         Attack Buff
+                    </sp-table-head-cell>
+                    <sp-table-head-cell sortable sort-direction="desc" sort-key="HPBuff">
+                        HP Buff
+                    </sp-table-head-cell>
+                    <sp-table-head-cell sortable sort-direction="desc" sort-key="defenseBuff">
+                        Defense Buff
                     </sp-table-head-cell>
                 </sp-table-head>
             </sp-table>
