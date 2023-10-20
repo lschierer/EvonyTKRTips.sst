@@ -232,6 +232,7 @@ export const standardSkillBook = specialSkillBook.extend({
 
 export const skillBook = z.union([specialSkillBook,standardSkillBook])
 export type skillBookType = z.infer<typeof skillBook>;
+
 export type standardSkillBookType = z.infer<typeof standardSkillBook>;
 export type specialSkillBookType = z.infer<typeof specialSkillBook>;
 
@@ -248,7 +249,7 @@ export const generalSchema = z.object({
   politics: z.number(),
   politics_increment: z.number(),
   level: levelSchema.default('1'),
-  specialities: z.array(specialty).nullable(),
+  specialities: z.array(specialty).nullish(),
   ascending: ascendingAttributes.nullish(),
   stars: levelSchema.refine((l) => {
     if(l !== null && l !== undefined ) {
@@ -271,7 +272,6 @@ export const generalSchema = z.object({
     }
     return false;
   }).nullable(),
-  
   books: z.array(skillBook).nullish(),
   role: z.enum(['primary', 'assistant']).optional(),
   score_as: troopClass.optional(),
