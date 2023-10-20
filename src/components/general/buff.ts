@@ -27,68 +27,95 @@ interface Props {
     Speciality3: qualitySchemaType,
     Speciality4: qualitySchemaType,
 }
-function buffFilter(b: buff, score_as: troopClassType, score_for: BuffAttributesType, situations?: BuffAdverbArrayType) {
-    console.log(`bufFilter start ----${JSON.stringify(b)}----`)
+function buffFilter(b: buff, general: General, score_for: BuffAttributesType, situations?: BuffAdverbArrayType) {
+    const name = general.name;
+    console.log(`bufFilter; start ---- ${name} ----`)
     let toReturn = false;
 
     if (b.condition !== undefined && b.condition !== null) {
-        console.log(`buffFilter; condition ${b.condition}`)
+        console.log(`buffFilter; ${name} condition ${b.condition}`)
         const condition: BuffAdverbsType[] = [b.condition].flat();
-        if(situations !== null && situations !== undefined && condition !== null && condition !== undefined) {
+        if (situations !== null && situations !== undefined && condition !== null && condition !== undefined) {
             const intersection = situations.filter(x => condition.includes(x));
             if (condition.length > intersection.length) {
+                console.log(`buffFilter; ${name} condition intersection is ${intersection.length} condition is ${condition.length}`)
                 return false;
+            } else {
+                console.log(`buffFilter; ${name} condition within intersection`);
+                toReturn = true;
             }
         } else {
+            console.log(`buffFilter; ${name} condition or situation not defined`);
             toReturn = true;
         }
+        console.log(`buffFilter; ${name} after 1st if, return value ${toReturn}`)
+    } else {
+        console.log(`buffFilter; ${name} skipp 1st if`)
     }
-    console.log(`buffFilter; after first if, return value ${toReturn}`)
+    
 
-    if (b.class !== undefined && b.class !== null){
-        console.log(`buffFilter; class ${b.class} score_as ${JSON.stringify(score_as)}`)
-        const result =  (!b.class.localeCompare(score_as));
-        if(!result) {
-            return false;
+    if(general.score_as !== undefined && general.score_as !== null ) {
+        const score_as = general.score_as;
+        if (b.class !== undefined && b.class !== null){
+            console.log(`buffFilter; ${name} class ${b.class} score_as ${JSON.stringify(score_as)}`)
+            const result =  (!b.class.localeCompare(score_as));
+            if(!result) {
+                return false;
+            }
+            toReturn = result;
         }
-        toReturn = result;
     }
-
+    console.log(`buffFilter; ${name} after 2nd if, return value ${toReturn}`)
 
     if(b.attribute !== undefined && b.attribute !== null) {
-        console.log(`buffFilter; checking attribute ${b.attribute}`)
+        console.log(`buffFilter; ${name} attribute ${b.attribute} against ${score_for}`)
         toReturn = (!score_for.localeCompare(b.attribute));
     }
-    console.log(`buffFilter; after 2nd if, return value ${toReturn}`)
-
-
-
-
-    console.log(`buffFilter; after 3rd if, return value ${toReturn}`)
+    console.log(`buffFilter; ${name} after 3rd if, return value ${toReturn}`)
 
     return toReturn;
 }
 
-export function attack_buff(eg: General, situations: BuffAdverbArrayType, props: Props){
+export function buff(eg: General, situations: BuffAdverbArrayType, props: Props){
     const saLevels = [props.Speciality1, props.Speciality2, props.Speciality3, props.Speciality4]
-    console.log(`attack_buff; general is ${eg.name}`)
+    console.log(`buff; general is ${eg.name}`)
     let attack = 0;
-    let totalBuff = 0;
+    let hp = 0;
+    let defense = 0;
+    let rally = 0;
+    let march = 0;
     if(eg.score_as !== null && eg.score_as !== undefined) {
         //const general = eg.general;
         const general = eg;
         if(general.books !== undefined && general.books !== null) {
-            console.log(`attack_buff; book buffs`)
+            console.log(`buff; ${eg.name}; book buffs`)
             general.books.map((bb) => {
                 const buff: buff[] = [bb.buff].flat();
                 buff.map((b) => {
-                    if(b !== undefined && b !== null && general.score_as !== undefined) {
-                        const apply = buffFilter(b, general.score_as,BuffAttributes.enum.Attack,situations );
+                    if(b !== undefined && b !== null && general !== undefined) {
+                        let apply = buffFilter(b, general,BuffAttributes.enum.Attack,situations );
                         if (apply && b.value !== undefined && b.value !== null) {
                             const buff_type = b.value.unit;
                             if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
-                                totalBuff = totalBuff + b.value.number
-                                console.log(`attack_buff; books; total: ${totalBuff}`)
+                                attack = attack + b.value.number
+                                console.log(`buff; ${eg.name}; books; attack: ${attack}`)
+                            }
+                        }
+                        apply = buffFilter(b,general, BuffAttributes.enum.Defense,situations);
+                        console.log(`buff; ${eg.name}; book defense; apply is ${apply}`);
+                        if (apply && b.value !== undefined && b.value !== null) {
+                            const buff_type = b.value.unit;
+                            if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
+                                defense = defense + b.value.number
+                                console.log(`buff; ${eg.name}; books; defense: ${defense}`)
+                            }
+                        }
+                        apply = buffFilter(b,general, BuffAttributes.enum.HP,situations);
+                        if (apply && b.value !== undefined && b.value !== null) {
+                            const buff_type = b.value.unit;
+                            if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
+                                hp = hp + b.value.number
+                                console.log(`buff; ${eg.name}; books; hp: ${hp}`)
                             }
                         }
                     }
@@ -97,7 +124,7 @@ export function attack_buff(eg: General, situations: BuffAdverbArrayType, props:
             })
         }
         if(general.ascending !== undefined && general.ascending !== null) {
-            console.log(`attack_buff; ascending buffs`);
+            console.log(`buff; ${eg.name}; ascending buffs`);
             general.ascending.map((ga: ascendingIncrementType) => {
                 let proceed = false;
                 switch(props.ascending) {
@@ -132,13 +159,30 @@ export function attack_buff(eg: General, situations: BuffAdverbArrayType, props:
                 if(proceed) {
                     const buff: buff[] = [ga.buff].flat();
                     buff.map((b) => {
-                        if(b !== undefined && b !== null && general.score_as) {
-                            const apply = buffFilter(b, general.score_as,BuffAttributes.enum.Attack,situations);
+                        if(b !== undefined && b !== null && general) {
+                            let apply = buffFilter(b, general,BuffAttributes.enum.Attack,situations);
                             if (apply && b.value !== undefined && b.value !== null) {
                                 const buff_type = b.value.unit;
                                 if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
-                                    totalBuff = totalBuff + b.value.number
-                                    console.log(`attack_buff; ascending; total: ${totalBuff}`)
+                                    attack = attack + b.value.number
+                                    console.log(`buff; ${eg.name}; ascending; attack: ${attack}`)
+                                }
+                            }
+                            apply = buffFilter(b,general, BuffAttributes.enum.Defense,situations);
+                            if (apply && b.value !== undefined && b.value !== null) {
+                                const buff_type = b.value.unit;
+                                if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
+                                    defense = defense + b.value.number
+                                    console.log(`buff; ${eg.name}; ascending; defense: ${defense}`)
+                                }
+                            }
+                            apply = buffFilter(b,general, BuffAttributes.enum.HP,situations);
+                            console.log(`buff; ${eg.name}; ascending defense; apply is ${apply}`);
+                            if (apply && b.value !== undefined && b.value !== null) {
+                                const buff_type = b.value.unit;
+                                if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
+                                    hp = hp + b.value.number
+                                    console.log(`buff; ${eg.name}; ascending; hp: ${hp}`)
                                 }
                             }
                         }
@@ -148,7 +192,7 @@ export function attack_buff(eg: General, situations: BuffAdverbArrayType, props:
             })
         }
         if(general.specialities !== undefined && general.specialities !== null) {
-            console.log(`attack_buff; speciality buffs;`)
+            console.log(`buff; ${eg.name}; speciality buffs;`)
             general.specialities.forEach((s: specialtyType, i) => {
                 s.attribute.map((sa) => {
                     let proceed = false;
@@ -183,180 +227,51 @@ export function attack_buff(eg: General, situations: BuffAdverbArrayType, props:
                             proceed = false;
                     }
                     if(proceed) {
-                        console.log(`attack_buff; speciality buffs; i is ${i} proceed on ${sa.level}`)
+                        console.log(`buff; ${eg.name}; speciality buffs; i is ${i} proceed on ${sa.level}`)
                         const buff: buff[] = [sa.buff].flat()
                         buff.map((b) => {
-                            if(b !== undefined && b !== null && general.score_as !== undefined) {
-                                const apply = buffFilter(b, general.score_as,BuffAttributes.enum.Attack,situations);
-                                console.log(`attack_buff; speciality buffs; apply is ${apply}`);
+                            if(b !== undefined && b !== null && general !== undefined) {
+                                let apply = buffFilter(b, general,BuffAttributes.enum.Attack,situations);
+                                console.log(`buff; ${eg.name}; speciality attack; apply is ${apply}`);
                                 if (apply && b.value !== undefined && b.value !== null) {
                                     const buff_type = b.value.unit;
                                     if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
-                                        totalBuff = totalBuff + b.value.number
-                                        console.log(`attack_buff; specialities; total: ${totalBuff}`)
+                                        attack = attack + b.value.number
+                                        console.log(`buff; ${eg.name}; specialities; attack: ${attack}`)
+                                    }
+                                }
+                                apply = buffFilter(b,general, BuffAttributes.enum.Defense,situations);
+                                console.log(`buff; ${eg.name}; speciality defense; apply is ${apply}`);
+                                if (apply && b.value !== undefined && b.value !== null) {
+                                    const buff_type = b.value.unit;
+                                    if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
+                                        defense = defense + b.value.number
+                                        console.log(`buff; ${eg.name}; specialities; Defense: ${defense}`)
+                                    }
+                                }
+                                apply = buffFilter(b,general, BuffAttributes.enum.HP,situations);
+                                if (apply && b.value !== undefined && b.value !== null) {
+                                    const buff_type = b.value.unit;
+                                    if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
+                                        hp = hp + b.value.number
+                                        console.log(`buff; ${eg.name}; specialities; hp: ${hp}`)
                                     }
                                 }
                             } else {
-                                console.log(`attack_buff; speciality buffs; buff is undefined`)
+                                console.log(`buff; ${eg.name}; speciality buffs; buff is undefined`)
                             }
                         })
                     } else {
-                        console.log(`attack_buff; speciality buffs; i is ${i} ${saLevels[i]} did not match ${sa.level}`)
+                        console.log(`buff; ${eg.name}; speciality buffs; i is ${i} ${saLevels[i]} did not match ${sa.level}`)
                     }
 
                 })
             })
         }
     }
-    console.log(`attack_buff; total buff is ${totalBuff}`)
+    console.log(`buff; ${eg.name}; total attack buff is ${attack}`);
+    console.log(`buff; ${eg.name}; total defense buff is ${defense}`)
     
-    return totalBuff;
+    return {attackBuff: attack, defenseBuff: defense, hpBuff: hp};
 }
-/*
-export function defense_score(eg: General){
-    let defense = 0;
-    let totalBuff = 0;
-    if(eg.score_as !== null && eg.score_as !== undefined) {
-        //const general = eg.general;
-        const general = eg;
-        defense = (general.defense + (general.defense_increment * 45))
-        if(general.specialities !== undefined && general.specialities !== null) {
-            general.specialities.map((s: specialtyType) => {
-                s.attribute.map((sa: specialtyIncrementType) => {
-                    const buff: buff[] = [sa.buff].flat()
-                    buff.map((b) => {
-                        if (b.condition !== undefined && b.condition !== null) {
-                            const m = multiplier(b, general, BuffAttributes.enum.Defense);
-                            if (b.value !== undefined && b.value !== null) {
-                                const buff_type = b.value.unit;
-                                if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
-                                    totalBuff = totalBuff + (b.value.number * m);
-                                } else if (!buff_type.localeCompare(buffTypeEnum.enum.flat)) {
-                                    defense = defense + b.value.number;
-                                }
-                            }
-                        }
-                    })
 
-                })
-            })
-        }
-        if(general.books !== undefined && general.books !== null) {
-            console.log(`book buffs`)
-            general.books.map((bb) => {
-                const buff: buff[] = [bb.buff].flat();
-                buff.map((b) => {
-                    if(b !== undefined && b !== null) {
-                        const m = multiplier(b, general, BuffAttributes.enum.Defense);
-                        if (b.value !== undefined && b.value !== null) {
-                            const buff_type = b.value.unit;
-                            if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
-                                totalBuff = totalBuff + (b.value.number * m);
-                            } else if (!buff_type.localeCompare(buffTypeEnum.enum.flat)) {
-                                defense = defense + b.value.number;
-                            }
-                        }
-                    }
-
-                })
-            })
-        }
-        if(general.ascending !== undefined && general.ascending !== null) {
-            console.log(`ascending buffs`);
-            general.ascending.map((ga: ascendingIncrementType) => {
-                const buff: buff[] = [ga.buff].flat();
-                buff.map((b) => {
-                    if(b !== undefined && b !== null) {
-                        const m = multiplier(b, general, BuffAttributes.enum.Defense);
-                        if (b.value !== undefined && b.value !== null) {
-                            const buff_type = b.value.unit;
-                            if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
-                                totalBuff = totalBuff + (b.value.number * m);
-                            } else if (!buff_type.localeCompare(buffTypeEnum.enum.flat)) {
-                                defense = defense + b.value.number;
-                            }
-                        }
-                    }
-                })
-            })
-        }
-    }
-    console.log(`total buff is ${totalBuff}`)
-    totalBuff = totalBuff / 100; //make it a percent;
-    defense = defense + (defense * totalBuff );
-    return [totalBuff,defense];
-}
-export function hp_score(eg: General){
-    let hp = 0;
-    let totalBuff = 0;
-    if(eg.score_as !== null && eg.score_as !== undefined) {
-        //const general = eg.general;
-        const general = eg;
-        hp = (general.leadership + (general.leadership_increment * 45))
-        if(general.specialities !== undefined && general.specialities !== null) {
-            general.specialities.map((s) => {
-                s.attribute.map((sa) => {
-                    const buff = [sa.buff].flat()
-                    buff.map((b) => {
-                        if (b.condition !== undefined && b.condition !== null) {
-                            const m = multiplier(b, general, BuffAttributes.enum.Attack);
-                            if (b.value !== undefined && b.value !== null) {
-                                const buff_type = b.value.unit;
-                                if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
-                                    totalBuff = totalBuff + (b.value.number * m);
-                                } else if (!buff_type.localeCompare(buffTypeEnum.enum.flat)) {
-                                    hp = hp + b.value.number;
-                                }
-                            }
-                        }
-                    })
-
-                })
-            })
-        }
-        if(general.books !== undefined && general.books !== null) {
-            console.log(`book buffs`)
-            general.books.map((bb) => {
-                const buff: buff[] = [bb.buff].flat();
-                buff.map((b) => {
-                    if(b !== undefined && b !== null) {
-                        const m = multiplier(b, general, BuffAttributes.enum.HP);
-                        if (b.value !== undefined && b.value !== null) {
-                            const buff_type = b.value.unit;
-                            if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
-                                totalBuff = totalBuff + (b.value.number * m);
-                            } else if (!buff_type.localeCompare(buffTypeEnum.enum.flat)) {
-                                hp = hp + b.value.number;
-                            }
-                        }
-                    }
-
-                })
-            })
-        }
-        if(general.ascending !== undefined && general.ascending !== null) {
-            console.log(`ascending buffs`);
-            general.ascending.map((ga: ascendingIncrementType) => {
-                const buff: buff[] = [ga.buff].flat();
-                buff.map((b) => {
-                    if(b !== undefined && b !== null) {
-                        const m = multiplier(b, general, BuffAttributes.enum.HP);
-                        if (b.value !== undefined && b.value !== null) {
-                            const buff_type = b.value.unit;
-                            if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
-                                totalBuff = totalBuff + (b.value.number * m);
-                            } else if (!buff_type.localeCompare(buffTypeEnum.enum.flat)) {
-                                hp = hp + b.value.number;
-                            }
-                        }
-                    }
-                })
-            })
-        }
-    }
-    console.log(`total buff is ${totalBuff}`)
-    totalBuff = totalBuff / 100; //make it a percent;
-    hp = hp + (hp * totalBuff );
-    return [totalBuff,hp];
-}
-*/
