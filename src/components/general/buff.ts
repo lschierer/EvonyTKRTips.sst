@@ -11,6 +11,7 @@ import {
     buffTypeEnum,
     buffValueSchema,
     type General,
+    type levelSchemaType,
     skillBook,
     type skillBookType,
     type specialtyIncrementType,
@@ -18,6 +19,13 @@ import {
     type troopClassType
 } from '@schemas/evonySchemas.ts';
 
+interface Props {
+    ascending: levelSchemaType,
+    Speciality1: levelSchemaType,
+    Speciality2: levelSchemaType,
+    Speciality3: levelSchemaType,
+    Speciality4: levelSchemaType,
+}
 function buffFilter(b: buff, score_as: troopClassType, score_for: BuffAttributesType, situations?: BuffAdverbArrayType) {
     console.log(`bufFilter start ----${JSON.stringify(b)}----`)
     let toReturn = false;
@@ -30,7 +38,7 @@ function buffFilter(b: buff, score_as: troopClassType, score_for: BuffAttributes
             toReturn = true;
         }
     }
-    console.log(`after first if, return value ${toReturn}`)
+    console.log(`buffFilter; after first if, return value ${toReturn}`)
 
     if (b.class !== undefined && b.class !== null){
         console.log(`buffFilter; class ${b.class} score_as ${JSON.stringify(score_as)}`)
@@ -46,17 +54,18 @@ function buffFilter(b: buff, score_as: troopClassType, score_for: BuffAttributes
         console.log(`buffFilter; checking attribute ${b.attribute}`)
         toReturn = (!score_for.localeCompare(b.attribute));
     }
-    console.log(`after 2nd if, return value ${toReturn}`)
+    console.log(`buffFilter; after 2nd if, return value ${toReturn}`)
 
 
 
 
-    console.log(`after 3rd if, return value ${toReturn}`)
+    console.log(`buffFilter; after 3rd if, return value ${toReturn}`)
 
     return toReturn;
 }
 
-export function attack_buff(eg: General, situations: BuffAdverbArrayType){
+export function attack_buff(eg: General, situations: BuffAdverbArrayType, props: Props){
+    const saLevels = [props.Speciality1, props.Speciality2, props.Speciality3, props.Speciality4]
     console.log(`attack_buff; general is ${eg.name}`)
     let attack = 0;
     let totalBuff = 0;
@@ -64,25 +73,62 @@ export function attack_buff(eg: General, situations: BuffAdverbArrayType){
         //const general = eg.general;
         const general = eg;
         if(general.specialities !== undefined && general.specialities !== null) {
-            console.log(`attack_buff; speciality buffs`)
-            general.specialities.map((s: specialtyType) => {
+            console.log(`attack_buff; speciality buffs;`)
+            general.specialities.forEach((s: specialtyType, i) => {
                 s.attribute.map((sa) => {
-                    const buff: buff[] = [sa.buff].flat()
-                    buff.map((b) => {
-                        if(b !== undefined && b !== null) {
-                            const apply = buffFilter(b, general.score_as,BuffAttributes.enum.Attack,situations );
-                            console.log(`apply is ${apply}`);
-                            if (apply && b.value !== undefined && b.value !== null) {
-                                const buff_type = b.value.unit;
-                                if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
-                                    totalBuff = totalBuff + b.value.number
-                                    console.log(`attack_buff; specialities; ${totalBuff}`)
-                                }
+                    let proceed = false;
+                    switch(saLevels[i]){
+                        case 'Gold':
+                            if(!sa.level.localeCompare('Gold')) {
+                                proceed = true;
+                                break;
                             }
-                        } else {
-                            console.log(`buff is undefined for speciality`)
-                        }
-                    })
+                        case 'Orange':
+                            if(!sa.level.localeCompare('Orange')) {
+                                proceed = true;
+                                break;
+                            }
+
+                        case 'Purple':
+                            if(!sa.level.localeCompare('Purple')) {
+                                proceed = true;
+                                break;
+                            }
+                        case 'Blue':
+                            if(!sa.level.localeCompare('Blue')) {
+                                proceed = true;
+                                break;
+                            }
+                        case 'Green':
+                            if(!sa.level.localeCompare('Green')) {
+                                proceed = true;
+                                break;
+                            }
+                        default:
+                            proceed = false;
+                    }
+                    if(proceed) {
+                        console.log(`attack_buff; speciality buffs; i is ${i} proceed on ${sa.level}`)
+                        const buff: buff[] = [sa.buff].flat()
+                        buff.map((b) => {
+                            if(b !== undefined && b !== null) {
+                                const apply = buffFilter(b, general.score_as,BuffAttributes.enum.Attack,situations , props);
+                                console.log(`attack_buff; speciality buffs; apply is ${apply}`);
+                                if (apply && b.value !== undefined && b.value !== null) {
+                                    const buff_type = b.value.unit;
+                                    if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
+                                        totalBuff = totalBuff + b.value.number
+                                        console.log(`attack_buff; specialities; total: ${totalBuff}`)
+                                    }
+                                }
+                            } else {
+                                console.log(`attack_buff; speciality buffs; buff is undefined`)
+                            }
+                        })
+                    } else {
+                        console.log(`attack_buff; speciality buffs; i is ${i} ${saLevels[i]} did not match ${sa.level}`)
+                    }
+
                 })
             })
         }
@@ -114,25 +160,58 @@ export function attack_buff(eg: General, situations: BuffAdverbArrayType){
         if(general.ascending !== undefined && general.ascending !== null) {
             console.log(`attack_buff; ascending buffs`);
             general.ascending.map((ga: ascendingIncrementType) => {
-                const buff: buff[] = [ga.buff].flat();
-                buff.map((b) => {
-                    if(b !== undefined && b !== null) {
-                        const apply = buffFilter(b, general.score_as,BuffAttributes.enum.Attack,[
-                            'Attacking',
-                            'Marching',
-                            'When Rallying',
-                            'leading the army to attack',
-                            'Reinforcing',
-                            'Defending',
-                        ] );
-                        if (apply && b.value !== undefined && b.value !== null) {
-                            const buff_type = b.value.unit;
-                            if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
-                                totalBuff = totalBuff + b.value.number
+                let proceed = false;
+                switch(props.ascending) {
+                    case '10':
+                        if(!ga.level.localeCompare('10')) {
+                            proceed = true;
+                            break;
+                        }
+                    case '9':
+                        if(!ga.level.localeCompare('9')) {
+                            proceed = true;
+                            break;
+                        }
+                    case '8':
+                        if(!ga.level.localeCompare('8')) {
+                            proceed = true;
+                            break;
+                        }
+                    case '7':
+                        if(!ga.level.localeCompare('7')) {
+                            proceed = true;
+                            break;
+                        }
+                    case '6':
+                        if(!ga.level.localeCompare('6')) {
+                            proceed = true;
+                            break;
+                        }
+                    default:
+                        proceed = false;
+                }
+                if(proceed) {
+                    const buff: buff[] = [ga.buff].flat();
+                    buff.map((b) => {
+                        if(b !== undefined && b !== null) {
+                            const apply = buffFilter(b, general.score_as,BuffAttributes.enum.Attack,[
+                                'Attacking',
+                                'Marching',
+                                'When Rallying',
+                                'leading the army to attack',
+                                'Reinforcing',
+                                'Defending',
+                            ] );
+                            if (apply && b.value !== undefined && b.value !== null) {
+                                const buff_type = b.value.unit;
+                                if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
+                                    totalBuff = totalBuff + b.value.number
+                                }
                             }
                         }
-                    }
-                })
+                    })
+                }
+
             })
         }
     }

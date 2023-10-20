@@ -49,6 +49,8 @@ export const levelSchema = z.enum([
     '45',
 ]);
 
+export type levelSchemaType = z.infer<typeof levelSchema>;
+
 export const troopClass = z.enum([
     'Mounted',
     'Ground',
@@ -67,6 +69,7 @@ export const qualitySchema = z.enum([
   "Gold",
 ]);
 
+export type qualitySchemaType = z.infer<typeof qualitySchema>;
 export const blazonTypes = z.enum([
     'Earth',
     'Wind',
@@ -149,16 +152,16 @@ export const buffSchema = z.object({
 export type buff = z.infer<typeof buffSchema>;
 export const buffUnion = z.union([buffSchema,z.array(buffSchema)]);
 
-export const specialtyIncrement = z.object({
+export const specialtyAttribute = z.object({
     level: qualitySchema,
     buff: buffUnion
 });
 
-export type specialtyIncrementType = z.infer<typeof specialtyIncrement>;
+export type specialtyAttributeType = z.infer<typeof specialtyAttribute>;
 
 export const specialty = z.object({
     name: z.string(),
-    attribute: z.array(specialtyIncrement),
+    attribute: z.array(specialtyAttribute),
 })
 
 export type specialtyType = z.infer<typeof specialty>;
