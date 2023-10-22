@@ -18,6 +18,7 @@ import type {
 import '@spectrum-web-components/table/elements.js';
 import '@spectrum-web-components/field-group/sp-field-group.js';
 import '@spectrum-web-components/field-label/sp-field-label.js';
+import '@spectrum-web-components/help-text/sp-help-text.js';
 import '@spectrum-web-components/menu/sp-menu-group.js';
 import '@spectrum-web-components/menu/sp-menu-item.js';
 import '@spectrum-web-components/menu/sp-menu-divider.js';
@@ -442,13 +443,16 @@ export class ComparingTable extends SpectrumElement {
   static styles = css`
     .sp-table-container {
       & sp-table {
-        background-color: var(--spectrum-indigo-400);
+        background-color: var(--spectrum-cyan-600);
         min-height: var(--spectrum-global-dimension-size-300);
         
         & sp-table-body {
           min-height: var(--spectrum-global-dimension-size-200);
         }
       }
+    }
+    div.fieldGroup {
+      border: 1px solid var(--spectrum-cyan-600);
     }
     
     sp-picker#ascending {
@@ -466,80 +470,94 @@ export class ComparingTable extends SpectrumElement {
   `
   
   public render() {
-    let headerColumns = html``;
+    let tableHtml = html``;
     switch (this.useCase) {
       case generalUseCase.enum.Wall:
-        headerColumns = html`${headerColumns}
-        <sp-table-head-cell sortable-sort-direction="desc" sort-key="AD">
-            Generic Attack Debuff
-        </sp-table-head-cell>
-        <sp-table-head-cell sortable-sort-direction="desc" sort-key="DD">
-            Generic Defense Debuff
-        </sp-table-head-cell>
-        <sp-table-head-cell sortable-sort-direction="desc" sort-key="HD">
-            Generic HP Debuff
-        </sp-table-head-cell>
-        <sp-table-head-cell sortable-sort-direction="desc" sort-key="GAD">
-            Ground Attack Debuff
-        </sp-table-head-cell>
-        <sp-table-head-cell sortable-sort-direction="desc" sort-key="GDD">
-            Ground Defense Debuff
-        </sp-table-head-cell>
-        <sp-table-head-cell sortable-sort-direction="desc" sort-key="GHD">
-            Ground HP Debuff
-        </sp-table-head-cell>
-        <sp-table-head-cell sortable-sort-direction="desc" sort-key="MAD">
-            Mounted Attack Debuff
-        </sp-table-head-cell>
-        <sp-table-head-cell sortable-sort-direction="desc" sort-key="MDD">
-            Mounted Defense Debuff
-        </sp-table-head-cell>
-        <sp-table-head-cell sortable-sort-direction="desc" sort-key="MHD">
-            Mounted HP Debuff
-        </sp-table-head-cell>
-        <sp-table-head-cell sortable-sort-direction="desc" sort-key="AAD">
-            Archer Attack Debuff
-        </sp-table-head-cell>
-        <sp-table-head-cell sortable-sort-direction="desc" sort-key="ADD">
-            Archer Defense Debuff
-        </sp-table-head-cell>
-        <sp-table-head-cell sortable-sort-direction="desc" sort-key="AHD">
-            Archer HP Debuff
-        </sp-table-head-cell>
-        <sp-table-head-cell sortable-sort-direction="desc" sort-key="SAD">
-            Siege Attack Debuff
-        </sp-table-head-cell>
-        <sp-table-head-cell sortable-sort-direction="desc" sort-key="SDD">
-            Siege Defense Debuff
-        </sp-table-head-cell>
-        <sp-table-head-cell sortable-sort-direction="desc" sort-key="SHD">
-            Siege HP Debuff
-        </sp-table-head-cell>
+        tableHtml = html`${tableHtml}
+        <sp-table size="m" scroller="true" ${ref(this.tableRef)}>
+          <sp-table-head>
+            <sp-table-head-cell sortable sort-direction="desc" sort-key="name">
+              Name
+            </sp-table-head-cell>
+            <sp-table-head-cell sortable-sort-direction="desc" sort-key="AD">
+              Generic Attack Debuff
+            </sp-table-head-cell>
+            <sp-table-head-cell sortable-sort-direction="desc" sort-key="DD">
+              Generic Defense Debuff
+            </sp-table-head-cell>
+            <sp-table-head-cell sortable-sort-direction="desc" sort-key="HD">
+              Generic HP Debuff
+            </sp-table-head-cell>
+            <sp-table-head-cell sortable-sort-direction="desc" sort-key="GAD">
+              Ground Attack Debuff
+            </sp-table-head-cell>
+            <sp-table-head-cell sortable-sort-direction="desc" sort-key="GDD">
+              Ground Defense Debuff
+            </sp-table-head-cell>
+            <sp-table-head-cell sortable-sort-direction="desc" sort-key="GHD">
+              Ground HP Debuff
+            </sp-table-head-cell>
+            <sp-table-head-cell sortable-sort-direction="desc" sort-key="MAD">
+              Mounted Attack Debuff
+            </sp-table-head-cell>
+            <sp-table-head-cell sortable-sort-direction="desc" sort-key="MDD">
+              Mounted Defense Debuff
+            </sp-table-head-cell>
+            <sp-table-head-cell sortable-sort-direction="desc" sort-key="MHD">
+              Mounted HP Debuff
+            </sp-table-head-cell>
+            <sp-table-head-cell sortable-sort-direction="desc" sort-key="AAD">
+              Archer Attack Debuff
+            </sp-table-head-cell>
+            <sp-table-head-cell sortable-sort-direction="desc" sort-key="ADD">
+              Archer Defense Debuff
+            </sp-table-head-cell>
+            <sp-table-head-cell sortable-sort-direction="desc" sort-key="AHD">
+              Archer HP Debuff
+            </sp-table-head-cell>
+            <sp-table-head-cell sortable-sort-direction="desc" sort-key="SAD">
+              Siege Attack Debuff
+            </sp-table-head-cell>
+            <sp-table-head-cell sortable-sort-direction="desc" sort-key="SDD">
+              Siege Defense Debuff
+            </sp-table-head-cell>
+            <sp-table-head-cell sortable-sort-direction="desc" sort-key="SHD">
+              Siege HP Debuff
+            </sp-table-head-cell>
+          </sp-table-head>
+        </sp-table>
         `;
         if(this.table !== undefined && this.table !== null) {
           this.table.requestUpdate();
         }
         break;
       default:
-        headerColumns = html`${headerColumns}
-        <sp-table-head-cell sortable sort-direction="desc" sort-key="attack">
-            Attack
-        </sp-table-head-cell>
-        <sp-table-head-cell sortable sort-direction="desc" sort-key="HP">
-            HP
-        </sp-table-head-cell>
-        <sp-table-head-cell sortable sort-direction="desc" sort-key="Defense">
-            Defense
-        </sp-table-head-cell>
-        <sp-table-head-cell sortable sort-direction="desc" sort-key="attackBuff">
-            Attack Buff
-        </sp-table-head-cell>
-        <sp-table-head-cell sortable sort-direction="desc" sort-key="HPBuff">
-            HP Buff
-        </sp-table-head-cell>
-        <sp-table-head-cell sortable sort-direction="desc" sort-key="defenseBuff">
-            Defense Buff
-        </sp-table-head-cell>
+        tableHtml = html`${tableHtml}
+        <sp-table size="m" scroller="true" ${ref(this.tableRef)}>
+          <sp-table-head>
+            <sp-table-head-cell sortable sort-direction="desc" sort-key="name">
+              Name
+            </sp-table-head-cell>
+            <sp-table-head-cell sortable sort-direction="desc" sort-key="attack">
+              Attack
+            </sp-table-head-cell>
+            <sp-table-head-cell sortable sort-direction="desc" sort-key="hp">
+              HP
+            </sp-table-head-cell>
+            <sp-table-head-cell sortable sort-direction="desc" sort-key="defense">
+              Defense
+            </sp-table-head-cell>
+            <sp-table-head-cell sortable sort-direction="desc" sort-key="attackBuff">
+              Attack Buff
+            </sp-table-head-cell>
+            <sp-table-head-cell sortable sort-direction="desc" sort-key="HPBuff">
+              HP Buff
+            </sp-table-head-cell>
+            <sp-table-head-cell sortable sort-direction="desc" sort-key="defenseBuff">
+              Defense Buff
+            </sp-table-head-cell>
+          </sp-table-head>
+        </sp-table>
         `;
         if(this.table !== undefined && this.table !== null) {
           this.table.requestUpdate();
@@ -549,7 +567,44 @@ export class ComparingTable extends SpectrumElement {
     
     return html`
         <div class="sp-table-container">
+          <div class="fieldGroup">
+          <sp-field-group horizontal>
+            <sp-help-text slot="help-text">Which generals are you interested in?</sp-help-text>
+            <div>
+              <sp-field-label for="unitClass" size="s">Filter by Type</sp-field-label>
+              <sp-picker id="unitClass" size="s" label="All" value="all" @change=${this.changeHandler}>
+                <sp-menu-item value="all">All Generals</sp-menu-item>
+                <sp-menu-item value="Mounted">Mounted Generals</sp-menu-item>
+                <sp-menu-item value="Ground">Ground Generals</sp-menu-item>
+                <sp-menu-item value="Archers">Archer Generals</sp-menu-item>
+                <sp-menu-item value="Siege">Siege Generals</sp-menu-item>
+              </sp-picker>
+            </div>
+            <div>
+              <sp-field-label for="generalUse" size="s">
+                General Use Case
+                <sp-tooltip placement="right-end" self-managed variant="info">Some buffs apply only in certain
+                  use cases. This determines which buffs will be used to determine the general's attributes. Wall
+                  Generals and SubCity Mayors are sufficiently different as to require a totally different table.
+                </sp-tooltip>
+              </sp-field-label>
+              <sp-picker id="generalUse" size="s" label="All" value="all" @change=${this.changeHandler}>
+                <sp-menu-item value="all">All Generals</sp-menu-item>
+                <sp-menu-item value=${generalUseCase.enum.Monsters}>Monster Hunting</sp-menu-item>
+                <sp-menu-item value=${generalUseCase.enum.Attack}>Attacking Only</sp-menu-item>
+                <sp-menu-item value=${generalUseCase.enum.Defense}>Reinforcing and Defending</sp-menu-item>
+                <sp-menu-item value=${generalUseCase.enum.Overall}>All Purpose</sp-menu-item>
+                <sp-menu-divider size="s"></sp-menu-divider>
+                <sp-menu-item disabled>Wall Generals</sp-menu-item>
+                <sp-menu-item disabled>SubCity Mayors</sp-menu-item>
+
+              </sp-picker>
+            </div>
+          </sp-field-group>  
+          </div>
+          <div class="fieldGroup">
           <sp-field-group horizontal >
+            <sp-help-text slot="help-text">Indicate your investment level in the generals.</sp-help-text>
             <div>
               <sp-field-label for="ascending" size="s" >Ascending Level</sp-field-label>
               <sp-picker id="ascending" size="s" label="5" value='10' @change=${this.changeHandler}>
@@ -561,36 +616,6 @@ export class ComparingTable extends SpectrumElement {
                 <sp-menu-item value='10' >5</sp-menu-item>
               </sp-picker>
             </div>
-            <div>
-              <sp-field-label for="unitClass" size="s">Filter by Type</sp-field-label>
-              <sp-picker id="unitClass" size="s" label="All" value="all" @change=${this.changeHandler}>
-                <sp-menu-item value="all">All Generals</sp-menu-item>
-                <sp-menu-item value="Mounted">Mounted Generals</sp-menu-item>
-                <sp-menu-item value="Ground">Ground Generals</sp-menu-item>
-                <sp-menu-item value="Archers">Archer Generals</sp-menu-item>
-                <sp-menu-item value="Siege">Siege Generals</sp-menu-item>
-              </sp-picker>
-            </div>
-              <div>
-                  <sp-field-label for="generalUse" size="s">
-                      General Use Case
-                      <sp-tooltip placement="right-end" self-managed variant="info" >Some buffs apply only in certain use cases.  This determines which buffs
-                          will be used to determine the general's attributes.</sp-tooltip>
-                  </sp-field-label>
-                  <sp-picker id="generalUse" size="s" label="All" value="all" @change=${this.changeHandler}>
-                      <sp-menu-item value="all">All Generals</sp-menu-item>
-                      <sp-menu-item value=${generalUseCase.enum.Monsters}>Monster Hunting</sp-menu-item>
-                      <sp-menu-item value=${generalUseCase.enum.Attack}>Attacking Only</sp-menu-item>
-                      <sp-menu-item value=${generalUseCase.enum.Defense}>Reinforcing and Defending</sp-menu-item>
-                      <sp-menu-item value=${generalUseCase.enum.Overall}>All Purpose</sp-menu-item>
-                      <sp-menu-divider size="s"></sp-menu-divider>
-                      <sp-menu-item value=${generalUseCase.enum.Wall}>Wall Generals</sp-menu-item>
-                      <sp-menu-item value=${generalUseCase.enum.Mayors}>SubCity Mayors</sp-menu-item>
-                      
-                  </sp-picker>
-              </div>
-          </sp-field-group>
-          <sp-field-group horizontal >
             <div>
               <sp-field-label for="Speciality1" size="s">1st Speciality</sp-field-label>
               <sp-picker id="Speciality1" size="s" label="Gold" value='Gold' @change=${this.changeHandler}>
@@ -636,14 +661,8 @@ export class ComparingTable extends SpectrumElement {
               </sp-picker>
             </div>
           </sp-field-group>
-            <sp-table size="m" scroller="true" ${ref(this.tableRef)} >
-                <sp-table-head>
-                    <sp-table-head-cell sortable sort-direction="desc" sort-key="name">
-                        Name
-                    </sp-table-head-cell>
-                    ${headerColumns}
-                </sp-table-head>
-            </sp-table>
+            </div>
+          ${tableHtml}
         </div>
         `;
   }
