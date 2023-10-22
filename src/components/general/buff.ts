@@ -52,7 +52,6 @@ function buffFilter(b: buff, general: General, score_for: BuffAttributesType, si
     } else {
         console.log(`buffFilter; ${name} skipp 1st if`)
     }
-    
 
     if(general.score_as !== undefined && general.score_as !== null ) {
         const score_as = general.score_as;
