@@ -3,6 +3,7 @@ import {
     type ascendingIncrementType,
     type buff, BuffAttributes,
     type BuffAttributesType,
+    BuffAdverbs,
     buffSchema,
     type buffType,
     buffTypeEnum,
@@ -10,7 +11,7 @@ import {
     type General,
     skillBook,
     type skillBookType,
-    type specialtyIncrementType,
+    type specialtyAttributeType,
     type specialtyType
 } from '@schemas/evonySchemas.ts';
 
@@ -20,10 +21,10 @@ function multiplier(b: buff, general: General,score_for: BuffAttributesType) {
         multiplier = 1;
         if (b.condition !== undefined && b.condition !== null) {
             switch (b.condition){
-                case 'Attacking':
-                case 'Marching':
-                case 'When Rallying':
-                case 'leading the army to attack':
+                case BuffAdverbs.enum.Attacking:
+                case BuffAdverbs.enum.Marching:
+                case BuffAdverbs.enum.When_Rallying:
+                case BuffAdverbs.enum.leading_the_army_to_attack:
                     console.log(`Attacking buff detected`)
                     if(score_for.toString().localeCompare('Attack')) {
                         console.log(`when scoring for attack`)
@@ -44,15 +45,15 @@ function multiplier(b: buff, general: General,score_for: BuffAttributesType) {
                         multiplier = 0;
                     }
                     break;
-                case 'Reduces Enemy':
+                case BuffAdverbs.enum.Reduces_Enemy:
                     multiplier = 1.1; // see my explanation
                     break;
-                case 'Reinforcing':
-                case 'In City':
+                case BuffAdverbs.enum.Reinforcing:
+                case BuffAdverbs.enum.In_City:
                     //due to reduced utility
                     multiplier = 0.75;
                     break;
-                case 'Defending':
+                case BuffAdverbs.enum.Defending:
                     if(score_for.toString().localeCompare('Attack')) {
                         //due to reduced utility
                         multiplier = 0.75;
@@ -61,12 +62,12 @@ function multiplier(b: buff, general: General,score_for: BuffAttributesType) {
                         // because for HP and Defense, Defending actually helps.
                     }
                     break;
-                case 'When The Main Defense General':
-                case 'When the City Mayor':
-                case 'During SvS':
-                case 'When an officer':
-                case 'Against Monsters':
-                case 'Reduces Monster':
+                case BuffAdverbs.enum.When_The_Main_Defense_General:
+                case BuffAdverbs.enum.When_the_City_Mayor:
+                case BuffAdverbs.enum.During_SvS:
+                case BuffAdverbs.enum.When_an_officer:
+                case BuffAdverbs.enum.Against_Monsters:
+                case BuffAdverbs.enum.Reduces_Monster:
                     multiplier = 0;
                     break;
                 default:
@@ -178,7 +179,7 @@ export function defense_score(eg: General){
         defense = (general.defense + (general.defense_increment * 45))
         if(general.specialities !== undefined && general.specialities !== null) {
             general.specialities.map((s: specialtyType) => {
-                s.attribute.map((sa: specialtyIncrementType) => {
+                s.attribute.map((sa: specialtyAttributeType) => {
                     const buff: buff[] = [sa.buff].flat()
                     buff.map((b) => {
                         if (b.condition !== undefined && b.condition !== null) {
