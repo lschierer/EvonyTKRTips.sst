@@ -195,33 +195,33 @@ export function buff(eg: General, situations: BuffAdverbArrayType, props: Props)
             general.specialities.forEach((s: specialtyType, i) => {
                 s.attribute.map((sa) => {
                     let proceed = false;
+                    console.log(`buff; ${eg.name}; speciality buffs; saLevel: ${saLevels[i]}`)
                     switch(saLevels[i]){
                         case 'Gold':
                             if(!sa.level.localeCompare('Gold')) {
                                 proceed = true;
-                                break;
                             }
+                            break;
                         case 'Orange':
                             if(!sa.level.localeCompare('Orange')) {
                                 proceed = true;
-                                break;
                             }
-
+                            break;
                         case 'Purple':
                             if(!sa.level.localeCompare('Purple')) {
                                 proceed = true;
-                                break;
                             }
+                            break;
                         case 'Blue':
                             if(!sa.level.localeCompare('Blue')) {
                                 proceed = true;
-                                break;
                             }
+                            break;
                         case 'Green':
                             if(!sa.level.localeCompare('Green')) {
                                 proceed = true;
-                                break;
                             }
+                            break;
                         default:
                             proceed = false;
                     }
