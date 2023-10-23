@@ -1,0 +1,7 @@
+---
+import {PairingTable} from "./PairingTable";
+
+const dataUrl = new URL('/generals/all.json', Astro.url)
+---
+
+<PairingTable dataurl={dataUrl} client:only></PairingTable>
