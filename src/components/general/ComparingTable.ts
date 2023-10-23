@@ -124,6 +124,7 @@ export class ComparingTable extends SpectrumElement {
       BuffAdverbs.enum.Marching,
       BuffAdverbs.enum.When_Rallying,
       BuffAdverbs.enum.leading_the_army_to_attack,
+      BuffAdverbs.enum.dragon_to_the_attack,
       BuffAdverbs.enum.Reinforcing,
       BuffAdverbs.enum.Defending,
     ];
@@ -380,6 +381,7 @@ export class ComparingTable extends SpectrumElement {
             BuffAdverbs.enum.Attacking,
             BuffAdverbs.enum.Marching,
             BuffAdverbs.enum.When_Rallying,
+            BuffAdverbs.enum.dragon_to_the_attack,
             BuffAdverbs.enum.leading_the_army_to_attack,
             BuffAdverbs.enum.Against_Monsters,
             BuffAdverbs.enum.Reduces_Monster,
@@ -389,6 +391,7 @@ export class ComparingTable extends SpectrumElement {
           this.buffAdverbs = [
             BuffAdverbs.enum.Attacking,
             BuffAdverbs.enum.Marching,
+            BuffAdverbs.enum.dragon_to_the_attack,
             BuffAdverbs.enum.leading_the_army_to_attack,
             BuffAdverbs.enum.Reduces_Enemy,
             BuffAdverbs.enum.Enemy,
@@ -429,6 +432,7 @@ export class ComparingTable extends SpectrumElement {
             BuffAdverbs.enum.Attacking,
             BuffAdverbs.enum.Marching,
             BuffAdverbs.enum.When_Rallying,
+            BuffAdverbs.enum.dragon_to_the_attack,
             BuffAdverbs.enum.leading_the_army_to_attack,
             BuffAdverbs.enum.Reinforcing,
             BuffAdverbs.enum.Defending,
