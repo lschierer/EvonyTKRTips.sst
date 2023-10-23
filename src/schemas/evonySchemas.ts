@@ -95,6 +95,7 @@ export const BuffAdverbs =z.enum([
   'Marching',
   'When_Rallying',
   'leading_the_army_to_attack',
+  'dragon_to_the_attack',
   'Reinforcing',
   'In_City',
   'Defending',
