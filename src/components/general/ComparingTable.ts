@@ -616,7 +616,6 @@ export class ComparingTable extends SpectrumElement {
               <sp-field-label for="ascending" size="s">Ascending Level</sp-field-label>
               <sp-picker id="ascending" size="s" label="5" value='10' @change=${this.changeHandler}>
                 <sp-menu-item value='5'>0</sp-menu-item>
-                >
                 <sp-menu-item value='6'>1</sp-menu-item>
                 <sp-menu-item value='7'>2</sp-menu-item>
                 <sp-menu-item value='8'>3</sp-menu-item>
