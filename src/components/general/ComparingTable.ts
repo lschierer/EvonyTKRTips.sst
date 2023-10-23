@@ -570,11 +570,11 @@ export class ComparingTable extends SpectrumElement {
           this.table.requestUpdate();
         }
     }
-    
-    
+
+
     return html`
-        <div class="sp-table-container">
-          <div class="fieldGroup">
+      <div class="sp-table-container">
+        <div class="fieldGroup">
           <sp-field-group horizontal>
             <sp-help-text slot="help-text">Which generals are you interested in?</sp-help-text>
             <div>
@@ -607,70 +607,71 @@ export class ComparingTable extends SpectrumElement {
 
               </sp-picker>
             </div>
-          </sp-field-group>  
-          </div>
-          <div class="fieldGroup">
-          <sp-field-group horizontal >
+          </sp-field-group>
+        </div>
+        <div class="fieldGroup">
+          <sp-field-group horizontal>
             <sp-help-text slot="help-text">Indicate your investment level in the generals.</sp-help-text>
             <div>
-              <sp-field-label for="ascending" size="s" >Ascending Level</sp-field-label>
+              <sp-field-label for="ascending" size="s">Ascending Level</sp-field-label>
               <sp-picker id="ascending" size="s" label="5" value='10' @change=${this.changeHandler}>
-                <sp-menu-item value='5' >0</sp-menu-item>>
-                <sp-menu-item value='6' >1</sp-menu-item>
-                <sp-menu-item value='7' >2</sp-menu-item>
-                <sp-menu-item value='8' >3</sp-menu-item>
-                <sp-menu-item value='9' >4</sp-menu-item>
-                <sp-menu-item value='10' >5</sp-menu-item>
+                <sp-menu-item value='5'>0</sp-menu-item>
+                >
+                <sp-menu-item value='6'>1</sp-menu-item>
+                <sp-menu-item value='7'>2</sp-menu-item>
+                <sp-menu-item value='8'>3</sp-menu-item>
+                <sp-menu-item value='9'>4</sp-menu-item>
+                <sp-menu-item value='10'>5</sp-menu-item>
               </sp-picker>
             </div>
             <div>
               <sp-field-label for="Speciality1" size="s">1st Speciality</sp-field-label>
               <sp-picker id="Speciality1" size="s" label="Gold" value='Gold' @change=${this.changeHandler}>
-                <sp-menu-item value=${qualitySchema.enum.Disabled} >Not Active</sp-menu-item>
-                <sp-menu-item value=${qualitySchema.enum.Green} >Green</sp-menu-item>
-                <sp-menu-item value=${qualitySchema.enum.Blue} >Blue</sp-menu-item>
-                <sp-menu-item value=${qualitySchema.enum.Purple} >Purple</sp-menu-item>
-                <sp-menu-item value=${qualitySchema.enum.Orange} >Orange</sp-menu-item>
-                <sp-menu-item value=${qualitySchema.enum.Gold} >Gold</sp-menu-item>
+                <sp-menu-item value=${qualitySchema.enum.Disabled}>Not Active</sp-menu-item>
+                <sp-menu-item value=${qualitySchema.enum.Green}>Green</sp-menu-item>
+                <sp-menu-item value=${qualitySchema.enum.Blue}>Blue</sp-menu-item>
+                <sp-menu-item value=${qualitySchema.enum.Purple}>Purple</sp-menu-item>
+                <sp-menu-item value=${qualitySchema.enum.Orange}>Orange</sp-menu-item>
+                <sp-menu-item value=${qualitySchema.enum.Gold}>Gold</sp-menu-item>
               </sp-picker>
             </div>
             <div>
               <sp-field-label for="Speciality2" size="s">2nd Speciality</sp-field-label>
               <sp-picker id="Speciality2" size="s" label="Gold" value='Gold' @change=${this.changeHandler}>
-                <sp-menu-item value=${qualitySchema.enum.Disabled} >Not Active</sp-menu-item>
-                <sp-menu-item value=${qualitySchema.enum.Green} >Green</sp-menu-item>
-                <sp-menu-item value=${qualitySchema.enum.Blue} >Blue</sp-menu-item>
-                <sp-menu-item value=${qualitySchema.enum.Purple} >Purple</sp-menu-item>
-                <sp-menu-item value=${qualitySchema.enum.Orange} >Orange</sp-menu-item>
-                <sp-menu-item value=${qualitySchema.enum.Gold} >Gold</sp-menu-item>
+                <sp-menu-item value=${qualitySchema.enum.Disabled}>Not Active</sp-menu-item>
+                <sp-menu-item value=${qualitySchema.enum.Green}>Green</sp-menu-item>
+                <sp-menu-item value=${qualitySchema.enum.Blue}>Blue</sp-menu-item>
+                <sp-menu-item value=${qualitySchema.enum.Purple}>Purple</sp-menu-item>
+                <sp-menu-item value=${qualitySchema.enum.Orange}>Orange</sp-menu-item>
+                <sp-menu-item value=${qualitySchema.enum.Gold}>Gold</sp-menu-item>
               </sp-picker>
             </div>
             <div>
               <sp-field-label for="Speciality3" size="s">3rd Speciality</sp-field-label>
               <sp-picker id="Speciality3" size="s" label="Gold" value='Gold' @change=${this.changeHandler}>
-                <sp-menu-item value=${qualitySchema.enum.Disabled} >Not Active</sp-menu-item>
-                <sp-menu-item value=${qualitySchema.enum.Green} >Green</sp-menu-item>
-                <sp-menu-item value=${qualitySchema.enum.Blue} >Blue</sp-menu-item>
-                <sp-menu-item value=${qualitySchema.enum.Purple} >Purple</sp-menu-item>
-                <sp-menu-item value=${qualitySchema.enum.Orange} >Orange</sp-menu-item>
-                <sp-menu-item value=${qualitySchema.enum.Gold} >Gold</sp-menu-item>
+                <sp-menu-item value=${qualitySchema.enum.Disabled}>Not Active</sp-menu-item>
+                <sp-menu-item value=${qualitySchema.enum.Green}>Green</sp-menu-item>
+                <sp-menu-item value=${qualitySchema.enum.Blue}>Blue</sp-menu-item>
+                <sp-menu-item value=${qualitySchema.enum.Purple}>Purple</sp-menu-item>
+                <sp-menu-item value=${qualitySchema.enum.Orange}>Orange</sp-menu-item>
+                <sp-menu-item value=${qualitySchema.enum.Gold}>Gold</sp-menu-item>
               </sp-picker>
             </div>
             <div>
-              <sp-field-label for="Speciality4" size="s">4th Speciality</sp-field-label >
+              <sp-field-label for="Speciality4" size="s">4th Speciality</sp-field-label>
               <sp-picker id="Speciality4" size="s" label="Gold" value='Gold' @change=${this.changeHandler}>
                 <sp-menu-item value=${qualitySchema.enum.Disabled}>Not Active</sp-menu-item>
-                <sp-menu-item value=${qualitySchema.enum.Green} >Green</sp-menu-item>
-                <sp-menu-item value=${qualitySchema.enum.Blue} >Blue</sp-menu-item>
-                <sp-menu-item value=${qualitySchema.enum.Purple} >Purple</sp-menu-item>
-                <sp-menu-item value=${qualitySchema.enum.Orange} >Orange</sp-menu-item>
-                <sp-menu-item value=${qualitySchema.enum.Gold} >Gold</sp-menu-item>
+                <sp-menu-item value=${qualitySchema.enum.Green}>Green</sp-menu-item>
+                <sp-menu-item value=${qualitySchema.enum.Blue}>Blue</sp-menu-item>
+                <sp-menu-item value=${qualitySchema.enum.Purple}>Purple</sp-menu-item>
+                <sp-menu-item value=${qualitySchema.enum.Orange}>Orange</sp-menu-item>
+                <sp-menu-item value=${qualitySchema.enum.Gold}>Gold</sp-menu-item>
               </sp-picker>
             </div>
           </sp-field-group>
-            </div>
-          ${tableHtml}
         </div>
-        `;
+        ${tableHtml}
+      </div>
+    `;
   }
 }
