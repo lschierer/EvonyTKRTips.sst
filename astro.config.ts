@@ -1,5 +1,6 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import starlightLinksValidator from 'starlight-links-validator'
 import lit from "@astrojs/lit";
 
 import {sidebar} from './src/sidebar.ts';
@@ -10,6 +11,7 @@ export default defineConfig({
   compressHTML: false,
   integrations: [
     lit(),
+    starlightLinksValidator(),
     starlight({
       title: 'Evony TKR Tips',
       components: {
