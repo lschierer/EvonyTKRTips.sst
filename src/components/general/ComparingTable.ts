@@ -26,10 +26,15 @@ import '@spectrum-web-components/picker/sp-picker.js';
 import { Picker } from '@spectrum-web-components/picker';
 import '@spectrum-web-components/tooltip/sp-tooltip.js';
 
+import {InterestSelector} from './InterestSelector.ts';
+import {InvestmentSelector} from './InvestmentSelector.ts';
+
 import {
   BuffAdverbs,
   type BuffAdverbsType,
   type BuffAdverbArrayType,
+  generalUseCase,
+  type generalUseCaseType,
   generalSchema,
   type General,
   generalObjectSchema,
@@ -62,15 +67,6 @@ type tableGeneralType = z.infer<typeof tableGeneral>;
 
 type generalRecord = Record<string, tableGeneralType>;
 
-export const generalUseCase = z.enum([
-  "Monsters",
-  "Attack",
-  "Defense",
-  "Overall",
-  "Wall",
-  "Mayors"
-]);
-export type generalUseCaseType = z.infer<typeof generalUseCase>;
 
 @customElement('comparing-table')
 export class ComparingTable extends SpectrumElement {
@@ -149,6 +145,11 @@ export class ComparingTable extends SpectrumElement {
   connectedCallback() {
     super.connectedCallback();
     
+  }
+  
+  disconnectedCallback() {
+    
+    super.disconnectedCallback();
   }
   
   firstUpdated() {
@@ -336,43 +337,51 @@ export class ComparingTable extends SpectrumElement {
     }
   }
 
-  protected changeHandler(e: Event) {
-    const picker = e.target as Picker;
-    if(!picker.id.localeCompare('ascending')) {
-      const validation = levelSchema.safeParse(picker.value);
+  protected changeHandler(e: CustomEvent) {
+    console.log(`changeHandler; start`)
+    
+    if(e === undefined || e === null) {
+      console.log(`event is undefined`)
+      return;
+    }
+    console.log(`changeHandler; event ${JSON.stringify(e.detail)}`)
+    const id = e.detail.id;
+    const value = e.detail.value;
+    if(!id.localeCompare('ascending')) {
+      const validation = levelSchema.safeParse(value);
       if(validation.success) {
         this.ascending = validation.data;
       }
-    }else if (!picker.id.localeCompare('Speciality1')) {
-      const validation = qualitySchema.safeParse(picker.value);
+    }else if (!id.localeCompare('Speciality1')) {
+      const validation = qualitySchema.safeParse(value);
       if(validation.success) {
         console.log(`changeHandler; Speciality1; success: ${validation.data}`)
         this.Speciality1 = validation.data;
       } else {
         console.log(`changeHandler; Speciality1; error: ${validation.error}`)
       }
-    } else if (!picker.id.localeCompare('Speciality2')) {
-      const validation = qualitySchema.safeParse(picker.value);
+    } else if (!id.localeCompare('Speciality2')) {
+      const validation = qualitySchema.safeParse(value);
       if(validation.success) {
         this.Speciality2 = validation.data;
       }
-    } else if (!picker.id.localeCompare('Speciality3')) {
-      const validation = qualitySchema.safeParse(picker.value);
+    } else if (!id.localeCompare('Speciality3')) {
+      const validation = qualitySchema.safeParse(value);
       if(validation.success) {
         this.Speciality3 = validation.data;
       }
-    } else if (!picker.id.localeCompare('Speciality4')) {
-      const validation = qualitySchema.safeParse(picker.value);
+    } else if (!id.localeCompare('Speciality4')) {
+      const validation = qualitySchema.safeParse(value);
       if(validation.success) {
         this.Speciality4 = validation.data;
       }
-    } else if (!picker.id.localeCompare('unitClass')) {
-      const validation = troopClass.safeParse(picker.value);
+    } else if (!id.localeCompare('unitClass')) {
+      const validation = troopClass.safeParse(value);
       if(validation.success) {
         this.unitClass = validation.data;
       }
-    } else if(!picker.id.localeCompare('generalUse')) {
-      const validation = generalUseCase.safeParse(picker.value);
+    } else if(!id.localeCompare('generalUse')) {
+      const validation = generalUseCase.safeParse(value);
       if(validation.success) {
         this.useCase = validation.data;
       } else {
@@ -442,7 +451,7 @@ export class ComparingTable extends SpectrumElement {
           ];
       }
     } else   {
-      console.log(`picker id is ${picker.id}`)
+      console.log(`picker id is ${id}`)
     }
     this.processGenerals();
   }
@@ -458,21 +467,7 @@ export class ComparingTable extends SpectrumElement {
         }
       }
     }
-    div.fieldGroup {
-      border: 1px solid var(--spectrum-cyan-600);
-    }
     
-    sp-picker#ascending {
-      width: 3rem;
-    }
-    
-    sp-picker[id^=Speciality]{
-      width: 7rem;
-    }
-    
-    sp-picker#unitClass {
-      width: 9rem;
-    }
     
   `
   
@@ -573,101 +568,10 @@ export class ComparingTable extends SpectrumElement {
 
 
     return html`
-      <div class="sp-table-container">
-        <div class="fieldGroup">
-          <sp-field-group horizontal>
-            <sp-help-text slot="help-text">Which generals are you interested in?</sp-help-text>
-            <div>
-              <sp-field-label for="unitClass" size="s">Filter by Type</sp-field-label>
-              <sp-picker id="unitClass" size="s" label="All" value="all" @change=${this.changeHandler}>
-                <sp-menu-item value="all">All Generals</sp-menu-item>
-                <sp-menu-item value="Mounted">Mounted Generals</sp-menu-item>
-                <sp-menu-item value="Ground">Ground Generals</sp-menu-item>
-                <sp-menu-item value="Archers">Archer Generals</sp-menu-item>
-                <sp-menu-item value="Siege">Siege Generals</sp-menu-item>
-              </sp-picker>
-            </div>
-            <div>
-              <sp-field-label for="generalUse" size="s">
-                General Use Case
-                <sp-tooltip placement="right-end" self-managed variant="info">Some buffs apply only in certain
-                  use cases. This determines which buffs will be used to determine the general's attributes. Wall
-                  Generals and SubCity Mayors are sufficiently different as to require a totally different table.
-                </sp-tooltip>
-              </sp-field-label>
-              <sp-picker id="generalUse" size="s" label="All" value="all" @change=${this.changeHandler}>
-                <sp-menu-item value="all">All Generals</sp-menu-item>
-                <sp-menu-item value=${generalUseCase.enum.Monsters}>Monster Hunting</sp-menu-item>
-                <sp-menu-item value=${generalUseCase.enum.Attack}>Attacking Only</sp-menu-item>
-                <sp-menu-item value=${generalUseCase.enum.Defense}>Reinforcing and Defending</sp-menu-item>
-                <sp-menu-item value=${generalUseCase.enum.Overall}>All Purpose</sp-menu-item>
-                <sp-menu-divider size="s"></sp-menu-divider>
-                <sp-menu-item disabled>Wall Generals</sp-menu-item>
-                <sp-menu-item disabled>SubCity Mayors</sp-menu-item>
-
-              </sp-picker>
-            </div>
-          </sp-field-group>
-        </div>
-        <div class="fieldGroup">
-          <sp-field-group horizontal>
-            <sp-help-text slot="help-text">Indicate your investment level in the generals.</sp-help-text>
-            <div>
-              <sp-field-label for="ascending" size="s">Ascending Level</sp-field-label>
-              <sp-picker id="ascending" size="s" label="5" value='10' @change=${this.changeHandler}>
-                <sp-menu-item value='5'>0</sp-menu-item>
-                <sp-menu-item value='6'>1</sp-menu-item>
-                <sp-menu-item value='7'>2</sp-menu-item>
-                <sp-menu-item value='8'>3</sp-menu-item>
-                <sp-menu-item value='9'>4</sp-menu-item>
-                <sp-menu-item value='10'>5</sp-menu-item>
-              </sp-picker>
-            </div>
-            <div>
-              <sp-field-label for="Speciality1" size="s">1st Speciality</sp-field-label>
-              <sp-picker id="Speciality1" size="s" label="Gold" value='Gold' @change=${this.changeHandler}>
-                <sp-menu-item value=${qualitySchema.enum.Disabled}>Not Active</sp-menu-item>
-                <sp-menu-item value=${qualitySchema.enum.Green}>Green</sp-menu-item>
-                <sp-menu-item value=${qualitySchema.enum.Blue}>Blue</sp-menu-item>
-                <sp-menu-item value=${qualitySchema.enum.Purple}>Purple</sp-menu-item>
-                <sp-menu-item value=${qualitySchema.enum.Orange}>Orange</sp-menu-item>
-                <sp-menu-item value=${qualitySchema.enum.Gold}>Gold</sp-menu-item>
-              </sp-picker>
-            </div>
-            <div>
-              <sp-field-label for="Speciality2" size="s">2nd Speciality</sp-field-label>
-              <sp-picker id="Speciality2" size="s" label="Gold" value='Gold' @change=${this.changeHandler}>
-                <sp-menu-item value=${qualitySchema.enum.Disabled}>Not Active</sp-menu-item>
-                <sp-menu-item value=${qualitySchema.enum.Green}>Green</sp-menu-item>
-                <sp-menu-item value=${qualitySchema.enum.Blue}>Blue</sp-menu-item>
-                <sp-menu-item value=${qualitySchema.enum.Purple}>Purple</sp-menu-item>
-                <sp-menu-item value=${qualitySchema.enum.Orange}>Orange</sp-menu-item>
-                <sp-menu-item value=${qualitySchema.enum.Gold}>Gold</sp-menu-item>
-              </sp-picker>
-            </div>
-            <div>
-              <sp-field-label for="Speciality3" size="s">3rd Speciality</sp-field-label>
-              <sp-picker id="Speciality3" size="s" label="Gold" value='Gold' @change=${this.changeHandler}>
-                <sp-menu-item value=${qualitySchema.enum.Disabled}>Not Active</sp-menu-item>
-                <sp-menu-item value=${qualitySchema.enum.Green}>Green</sp-menu-item>
-                <sp-menu-item value=${qualitySchema.enum.Blue}>Blue</sp-menu-item>
-                <sp-menu-item value=${qualitySchema.enum.Purple}>Purple</sp-menu-item>
-                <sp-menu-item value=${qualitySchema.enum.Orange}>Orange</sp-menu-item>
-                <sp-menu-item value=${qualitySchema.enum.Gold}>Gold</sp-menu-item>
-              </sp-picker>
-            </div>
-            <div>
-              <sp-field-label for="Speciality4" size="s">4th Speciality</sp-field-label>
-              <sp-picker id="Speciality4" size="s" label="Gold" value='Gold' @change=${this.changeHandler}>
-                <sp-menu-item value=${qualitySchema.enum.Disabled}>Not Active</sp-menu-item>
-                <sp-menu-item value=${qualitySchema.enum.Green}>Green</sp-menu-item>
-                <sp-menu-item value=${qualitySchema.enum.Blue}>Blue</sp-menu-item>
-                <sp-menu-item value=${qualitySchema.enum.Purple}>Purple</sp-menu-item>
-                <sp-menu-item value=${qualitySchema.enum.Orange}>Orange</sp-menu-item>
-                <sp-menu-item value=${qualitySchema.enum.Gold}>Gold</sp-menu-item>
-              </sp-picker>
-            </div>
-          </sp-field-group>
+        <div class="sp-table-container">
+            <interest-selector @PickerChanged=${this.changeHandler}></interest-selector>
+            <investment-selector @PickerChanged=${this.changeHandler}></investment-selector>
+          ${tableHtml}
         </div>
         ${tableHtml}
       </div>

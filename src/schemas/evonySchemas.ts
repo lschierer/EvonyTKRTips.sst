@@ -51,6 +51,16 @@ export const levelSchema = z.enum([
 
 export type levelSchemaType = z.infer<typeof levelSchema>;
 
+export const generalUseCase = z.enum([
+  "Monsters",
+  "Attack",
+  "Defense",
+  "Overall",
+  "Wall",
+  "Mayors"
+]);
+export type generalUseCaseType = z.infer<typeof generalUseCase>;
+
 export const troopClass = z.enum([
     'Mounted',
     'Ground',
