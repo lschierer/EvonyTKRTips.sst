@@ -122,7 +122,7 @@ if (validation.success) {
                               {s.buff.map((b: buff) => (
                                 <>
                                     <li >
-                                        {b.condition} {b.class !== 'all' ? b.class : 'all troops '} {b.attribute} {(b.value.number < 0) ? '-' : '+'}{b.value.number}{b.value.unit ? '%' : ''}
+                                        {b.condition ? b.condition.replaceAll(/_/g, ' ') : ''} {b.class !== 'all' ? b.class : 'all troops '} {b.attribute ? b.attribute.replaceAll(/_/g, ' ') : ''} {(b.value.number < 0) ? '-' : '+'}{b.value.number}{b.value.unit ? '%' : ''}
                                     </li>
                                 </>
                               ))}
@@ -148,7 +148,7 @@ if (validation.success) {
                             <ul class="non-content">
                               {a.buff.map((b: buff) => (
                                 <li class="non-content">
-                                    {b.condition} {(b.class === undefined || b.class === null) ? '' : b.class !== 'all' ? b.class : 'all troops '} {b.attribute} {(b.value.number < 0) ? '-' : '+'}{b.value.number}{b.value.unit ? '%' : ''}
+                                    {b.condition ? b.condition.replaceAll(/_/g, ' '): ''} {(b.class === undefined || b.class === null) ? '' : b.class !== 'all' ? b.class : 'all troops '} {b.attribute? b.attribute.replaceAll(/_/g, ' ') : ''} {(b.value.number < 0) ? '-' : '+'}{b.value.number}{b.value.unit ? '%' : ''}
                                 </li>
                               ))}
                             </ul>
@@ -169,7 +169,7 @@ if (validation.success) {
                                 <ul class="non-content" id={book.name.toLocaleLowerCase().replace(/\s+/g, '_')}>
                                   {book.buff.map((b) => (
                                           <li >
-                                            {b.condition} {(b.class === undefined || b.class === null) ? '' : b.class !== 'all' ? b.class : 'all troops '} {b.attribute} {(b.value.number < 0) ? '-' : '+'}{b.value.number}{b.value.unit ? '%' : ''}
+                                            {b.condition ? b.condition.replaceAll(/_/g, ' ') : ''} {(b.class === undefined || b.class === null) ? '' : b.class !== 'all' ? b.class : 'all troops '} {b.attribute ? b.attribute.replaceAll(/_/g, ' ') : ''} {(b.value.number < 0) ? '-' : '+'}{b.value.number}{b.value.unit ? '%' : ''}
                                           </li>
                                   ))}
                                 </ul>
