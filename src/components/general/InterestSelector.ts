@@ -1,6 +1,8 @@
 import {  html, css, type PropertyValues} from "lit";
 import {customElement, property, state} from 'lit/decorators.js';
 
+import { withStores } from "@nanostores/lit";
+
 import '@spectrum-web-components/field-group/sp-field-group.js';
 import '@spectrum-web-components/field-label/sp-field-label.js';
 import '@spectrum-web-components/help-text/sp-help-text.js';
@@ -14,14 +16,13 @@ import {SpectrumElement} from "@spectrum-web-components/base";
 
 import {
   generalUseCase,
-  type generalUseCaseType
+  type generalUseCaseType, troopClass
 } from "@schemas/evonySchemas.ts";
+import {type generalInvestment, typeAndUseMap} from './generalInvestmentStore.ts';
 
 @customElement('interest-selector')
-export class InterestSelector extends SpectrumElement {
-  
-  
-  
+export class InterestSelector extends withStores(SpectrumElement,[typeAndUseMap]) {
+
   constructor() {
     super();
   }
@@ -48,10 +49,26 @@ export class InterestSelector extends SpectrumElement {
       composed: true,
     });
     this.dispatchEvent(myEvent);
+    const picker = (e.target as Picker);
+    if(!picker.id.localeCompare('unitClass')){
+      const validation = troopClass.safeParse(picker.value);
+      if(validation.success) {
+        typeAndUseMap.setKey('type', validation.data)
+      }
+    }
+    if(!picker.id.localeCompare('generalUse')){
+      const validation = generalUseCase.safeParse(picker.value);
+      if (validation.success){
+        typeAndUseMap.setKey('use',validation.data);
+      }
+    }
   }
   
   static styles = css`
     div.fieldGroup {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       padding: 0.5rem;
       border: 1px solid var(--spectrum-cyan-600);
       border-bottom: 0px;

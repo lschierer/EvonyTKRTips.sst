@@ -52,6 +52,7 @@ export const levelSchema = z.enum([
 export type levelSchemaType = z.infer<typeof levelSchema>;
 
 export const generalUseCase = z.enum([
+  "all",
   "Monsters",
   "Attack",
   "Defense",

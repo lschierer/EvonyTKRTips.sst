@@ -2,6 +2,8 @@ import {  html, css, type PropertyValues} from "lit";
 import {customElement, property, state} from 'lit/decorators.js';
 import {ref, createRef, type Ref} from 'lit/directives/ref.js';
 
+import { withStores } from "@nanostores/lit";
+
 import {z,  type ZodError} from 'zod';
 
 import { SpectrumElement } from '@spectrum-web-components/base';
@@ -30,6 +32,14 @@ import {InterestSelector} from './InterestSelector.ts';
 import {InvestmentSelector} from './InvestmentSelector.ts';
 
 import {
+  type generalInvestment,
+  type generalTypeAndUse,
+  primaryInvestmentMap,
+  secondaryInvestmentMap,
+  typeAndUseMap
+} from './generalInvestmentStore.ts';
+
+import {
   BuffAdverbs,
   type BuffAdverbsType,
   type BuffAdverbArrayType,
@@ -43,68 +53,56 @@ import {
   type levelSchemaType,
   qualitySchema,
   type qualitySchemaType,
+  type standardSkillBookType,
   troopClass,
   type troopClassType,
 } from "@schemas/evonySchemas.ts";
+
+import {buff} from "@components/general/buff.ts";
+import {tableGeneral} from "@components/general/tableGeneral.ts";
 
 const generalArray = z.array(generalObjectSchema).nullish();
 type generalArrayType = z.infer<typeof generalArray>;
 
 @customElement('pairing-table')
-export class PairingTable extends SpectrumElement {
+export class PairingTable extends withStores(SpectrumElement, [typeAndUseMap,primaryInvestmentMap, secondaryInvestmentMap]) {
+
+  @state()
+  private table: Table | undefined;
+
+  private tableRef: Ref<Table> = createRef();
 
   @state()
   private allGenerals: generalArrayType;
 
   @state()
-  protected ascending: levelSchemaType = '10';
-
-  @state()
-  protected buffAdverbs: BuffAdverbArrayType;
+  private generalRecords: [];
 
   @property({type: String})
   public dataUrl: string;
-  
+
   @state()
   private _dataUrl: URL;
 
   @state()
-  protected filteredGenerals: generalArrayType;
-
-  @state()
-  protected Speciality1: qualitySchemaType = "Gold";
-
-  @state()
-  protected Speciality2: qualitySchemaType = "Gold";
-
-  @state()
-  protected Speciality3: qualitySchemaType = "Gold";
-
-  @state()
-  protected Speciality4: qualitySchemaType = "Gold";
-
+  protected filteredGenerals: tableGeneral[];
+ 
   @state()
   protected unitClass: troopClassType = 'all';
 
   @state()
-  protected useCase: generalUseCaseType | string = 'all';
+  protected useCase: generalUseCaseType = generalUseCase.enum.all;
 
   constructor() {
     super();
-    this.buffAdverbs = [
-      BuffAdverbs.enum.Attacking,
-      BuffAdverbs.enum.Marching,
-      BuffAdverbs.enum.When_Rallying,
-      BuffAdverbs.enum.leading_the_army_to_attack,
-      BuffAdverbs.enum.dragon_to_the_attack,
-      BuffAdverbs.enum.Reinforcing,
-      BuffAdverbs.enum.Defending,
-    ];
+
     this.dataUrl = 'http://localhost';
-    this._dataUrl = new URL(this.dataUrl)
+    this._dataUrl = new URL(this.dataUrl);
+    this.filteredGenerals = new Array<tableGeneral>();
+    this.generalRecords = [];
 
   }
-  
+
   private MutationObserverCallback = (mutationList: MutationRecord[] , observer: MutationObserver) => {
     for (const mutation of mutationList) {
       if (mutation.type === "childList") {
@@ -114,20 +112,41 @@ export class PairingTable extends SpectrumElement {
       }
     }
   };
-  
+
   private observer = new MutationObserver(this.MutationObserverCallback);
-  
+
   connectedCallback() {
     super.connectedCallback();
-    
+    typeAndUseMap.subscribe((tau) => {
+      this.unitClass = tau.type;
+      this.useCase = tau.use;
+    })
   }
-  
+
+  firstUpdated() {
+    if (this.renderRoot) {
+      this.table = this.tableRef.value
+      if (this.table !== undefined && this.table !== null) {
+        console.log(`firstUpdated; found table`)
+
+        this.table.renderItem = (item, index) => {
+          const general: tableGeneral = (item['general'] as tableGeneral);
+          console.log(`renderItem; ${general.name}`)
+
+          return html`
+              <sp-table-cell role='gridcell' dir='ltr' id='primeName'>${general.name}</sp-table-cell>
+          `;
+        };
+      }
+    }
+  }
+
   async willUpdate(changedProperties: PropertyValues<this>) {
     console.log(`willUpdate; start`);
     if (changedProperties.has('dataUrl')) {
       console.log(`setting dataUrl`)
       this._dataUrl = new URL(this.dataUrl);
-      
+
       const result = await fetch(this._dataUrl).then((response) => {
         if (response.ok) {
           console.log(`response ok`)
@@ -156,160 +175,110 @@ export class PairingTable extends SpectrumElement {
     }
     if (this.allGenerals !== undefined && this.allGenerals !== null) {
       console.log(`willUpdate; I have generals`);
-      if (this.table !== undefined && this.table !== null) {
-        console.log(`willUpdate; I have a table`);
-        if (this.table.items !== undefined && this.table.items !== null && this.table.items.length === 0) {
-          console.log(`willUpdate; I need records`);
-          this.processGenerals();
-          
-        }
+      this.processGenerals();
+    }
+    if(this.table !== undefined && this.table !== null ) {
+      if (this.generalRecords) {
+        this.table.items = this.generalRecords;
+        this.table.requestUpdate();
       }
     }
   }
 
   private processGenerals() {
     console.log(`processGenerals; start unitClass ${this.unitClass}`)
-    this.filteredGenerals = this.allGenerals.filter((g: generalObject) => {
-      if(this.unitClass === troopClass.enum.all) {
-        return (g !== undefined && g !== null)
-      } else {
-        const general = g.general;
-        if(general !== null && general !== undefined) {
-          if(general.score_as !== null && general.score_as !== undefined) {
-            return (! this.unitClass.localeCompare(general.score_as))
+    if(this.allGenerals !== null && this.allGenerals !== undefined) {
+      const filteredGenerals: generalObject[] = this.allGenerals.filter((g: generalObject) => {
+        if(this.unitClass === troopClass.enum.all) {
+          return (g !== undefined && g !== null)
+        } else {
+          const general = g.general;
+          if(general !== null && general !== undefined) {
+            if(general.score_as !== null && general.score_as !== undefined) {
+              return (! this.unitClass.localeCompare(general.score_as))
+            }
           }
         }
-      }
-      return false;
-    })
-  }
-
-  public changeHandler(e: CustomEvent) {
-    console.log(`changeHandler; start`)
-
-    if (e === undefined || e === null) {
-      console.log(`event is undefined`)
-      return;
-    }
-    console.log(`changeHandler; event ${JSON.stringify(e.detail)}`)
-    const id = e.detail.id;
-    const value = e.detail.value;
-    let validation;
-    switch (id) {
-      case 'ascending':
-        validation = levelSchema.safeParse(value);
-        break;
-      case 'unitClass':
-        validation = troopClass.safeParse(value);
-        break;
-      case 'generalUse':
-        validation = generalUseCase.safeParse(value);
-        break;
-      case 'Speciality1':
-      case 'Speciality2':
-      case 'Speciality3':
-      case 'Speciality4':
-        validation = qualitySchema.safeParse(value);
-        break;
-      default:
-        console.log(`changeHandler; picker id is ${id}`)
-        validation = null;
-    }
-    if (validation !== null) {
-      console.log(`changeHandler; validation not null`)
-      if(validation.success) {
-        console.log(`changeHandler; validation success`)
-        switch (id) {
-          case 'ascending':
-            this.ascending = validation.data;
-            break;
-          case 'unitClass':
-            this.unitClass = validation.data;
-            console.log(`changeHandler; unitClass ${this.unitClass} from ${validation.data}`)
-            break;
-          case 'generalUse':
-            this.useCase = validation.data;
-            const adverbs: {[key: generalUseCaseType]: BuffAdverbArrayType} = {
-              [generalUseCase.enum.Monsters]: [
-                BuffAdverbs.enum.Attacking,
-                BuffAdverbs.enum.Marching,
-                BuffAdverbs.enum.When_Rallying,
-                BuffAdverbs.enum.dragon_to_the_attack,
-                BuffAdverbs.enum.leading_the_army_to_attack,
-                BuffAdverbs.enum.Against_Monsters,
-                BuffAdverbs.enum.Reduces_Monster,
-              ],
-              [generalUseCase.enum.Attack]: [
-                BuffAdverbs.enum.Attacking,
-                BuffAdverbs.enum.Marching,
-                BuffAdverbs.enum.dragon_to_the_attack,
-                BuffAdverbs.enum.leading_the_army_to_attack,
-                BuffAdverbs.enum.Reduces_Enemy,
-                BuffAdverbs.enum.Enemy,
-              ],
-              [generalUseCase.enum.Defense]: [
-                BuffAdverbs.enum.Reinforcing,
-                BuffAdverbs.enum.Defending,
-                BuffAdverbs.enum.Reduces_Enemy,
-                BuffAdverbs.enum.Enemy,
-              ],
-              [generalUseCase.enum.Overall]: [
-                BuffAdverbs.enum.Reduces_Enemy,
-                BuffAdverbs.enum.Enemy,
-              ],
-              [generalUseCase.enum.Wall]: [
-                BuffAdverbs.enum.Reduces_Enemy,
-                BuffAdverbs.enum.Enemy,
-                BuffAdverbs.enum.Defending,
-                BuffAdverbs.enum.When_The_Main_Defense_General,
-                BuffAdverbs.enum.In_City,
-              ],
-              [generalUseCase.enum.Mayors]: [
-                BuffAdverbs.enum.Reduces_Enemy,
-                BuffAdverbs.enum.Enemy,
-                BuffAdverbs.enum.When_the_City_Mayor,
-              ],
+        return false;
+      })
+      const props = {
+        ascending: primaryInvestmentMap.get().ascending,
+        Speciality1: primaryInvestmentMap.get().speciality1,
+        Speciality2: primaryInvestmentMap.get().speciality2,
+        Speciality3: primaryInvestmentMap.get().speciality3,
+        Speciality4: primaryInvestmentMap.get().speciality4,
+      };
+      this.filteredGenerals.splice(0,this.filteredGenerals.length);
+      filteredGenerals.forEach((fgo) => {
+        const tg  = new tableGeneral(fgo.general, this.useCase);
+        console.log(`processGenerals; ${fgo.general.name}; ${this.useCase}; ${JSON.stringify(props)}`)
+        tg.setAdverbs(this.useCase);
+        console.log(`processGenerals; ${JSON.stringify(tg.getBuffs())}`)
+        tg.computeBuffs(props);
+        this.filteredGenerals.push(tg);
+      })
+      let items= this.filteredGenerals.filter((fg) => {
+        if(this.unitClass !== null && this.unitClass !== undefined) {
+          if(this.unitClass !== troopClass.enum.all) {
+            if(fg.general !== null && fg.general !== undefined) {
+              if(fg.general.score_as !== null && fg.general.score_as !== undefined) {
+                if(fg.general.score_as === this.unitClass) {
+                  return true;
+                }
+              }
             }
-            this.buffAdverbs = adverbs[this.useCase];
-
-            break;
-          case 'Speciality1':
-            this.Speciality1 = validation.data;
-            break;
-          case 'Speciality2':
-            this.Speciality2 = validation.data;
-            break;
-          case 'Speciality3':
-            this.Speciality3 = validation.data;
-            break;
-          case 'Speciality4':
-            this.Speciality4 = validation.data;
-            break;
-          default:
-            console.log(`changeHandler; this should not happen;`)
+          } else {
+            return true;
+          }
+        } else {
+          return true;
         }
-      } else if(!id.localeCompare('generalUse') && (! validation.success)) {
-        this.useCase = 'all';
-        this.buffAdverbs = [
-          BuffAdverbs.enum.Attacking,
-          BuffAdverbs.enum.Marching,
-          BuffAdverbs.enum.When_Rallying,
-          BuffAdverbs.enum.dragon_to_the_attack,
-          BuffAdverbs.enum.leading_the_army_to_attack,
-          BuffAdverbs.enum.Reinforcing,
-          BuffAdverbs.enum.Defending,
-        ];
-      }
+        return false;
+      }).map((fg)=> {
+      
+      })
+      //this.generalRecords = items;
     }
-    this.processGenerals();
   }
-
+  
+  private changeHandler(e: CustomEvent) {
+    this.processGenerals();
+    if(this.table !== null && this.table !== undefined) {
+      this.table.requestUpdate();
+    }
+  }
+  
   public render() {
+
+    const tableHtml = html`
+        <sp-table size="m" scroller="true" ${ref(this.tableRef)}>
+            <sp-table-head>
+                <sp-table-head-cell sortable sort-direction="desc" sort-key="primeName">
+                    Primary General
+                </sp-table-head-cell>
+                <sp-table-head-cell sortable sort-direction="desc" sort-key="assistName">
+                    Secondary General
+                </sp-table-head-cell>
+                <sp-table-head-cell sortable sort-direction="desc" sort-key="attackBuff">
+                    Attack Buff
+                </sp-table-head-cell>
+                <sp-table-head-cell sortable sort-direction="desc" sort-key="HPBuff">
+                    HP Buff
+                </sp-table-head-cell>
+                <sp-table-head-cell sortable sort-direction="desc" sort-key="defenseBuff">
+                    Defense Buff
+                </sp-table-head-cell>
+            </sp-table-head>
+        </sp-table>
+    `;
+
     return html`
       test
       <div class="sp-table-container">
-        <interest-selector @PickerChanged=${this.changeHandler}></interest-selector>
-        <investment-selector @PickerChanged=${this.changeHandler}></investment-selector>
+        <interest-selector role="primary"></interest-selector>
+        <investment-selector role="primary" @PickerChanged=${this.changeHandler} ></investment-selector>
+        <investment-selector role="secondary" @PickerChanged=${this.changeHandler}></investment-selector>
+        ${tableHtml}
       </div>
     `
   }
