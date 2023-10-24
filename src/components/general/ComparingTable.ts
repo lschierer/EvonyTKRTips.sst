@@ -573,8 +573,7 @@ export class ComparingTable extends SpectrumElement {
             <investment-selector @PickerChanged=${this.changeHandler}></investment-selector>
           ${tableHtml}
         </div>
-        ${tableHtml}
-      </div>
+        
     `;
   }
 }
