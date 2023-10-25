@@ -149,22 +149,29 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
   
   
   public render() {
+
+    let ascendingHtml = html``;
+    if(!this.role.localeCompare('primary')) {
+      ascendingHtml = html`
+        <div>
+          <sp-field-label for="ascending" size="s">Ascending Level</sp-field-label>
+          <sp-picker id="ascending" size="s" label="5" value='10' @change=${this.changeHandler}>
+            <sp-menu-item value='5'>0</sp-menu-item>
+            <sp-menu-item value='6'>1</sp-menu-item>
+            <sp-menu-item value='7'>2</sp-menu-item>
+            <sp-menu-item value='8'>3</sp-menu-item>
+            <sp-menu-item value='9'>4</sp-menu-item>
+            <sp-menu-item value='10'>5</sp-menu-item>
+          </sp-picker>
+        </div>`;
+    }
+
     return html`
         <div class="fieldGroup">
             <p id="InvestmentFieldGroupHeader">${this.role.charAt(0).toUpperCase() + this.role.slice(1)} General</p>
             <sp-field-group horizontal>
                 <sp-help-text slot="help-text">Indicate your investment level in the generals.</sp-help-text>
-                <div>
-                    <sp-field-label for="ascending" size="s">Ascending Level</sp-field-label>
-                    <sp-picker id="ascending" size="s" label="5" value='10' @change=${this.changeHandler}>
-                        <sp-menu-item value='5'>0</sp-menu-item>
-                        <sp-menu-item value='6'>1</sp-menu-item>
-                        <sp-menu-item value='7'>2</sp-menu-item>
-                        <sp-menu-item value='8'>3</sp-menu-item>
-                        <sp-menu-item value='9'>4</sp-menu-item>
-                        <sp-menu-item value='10'>5</sp-menu-item>
-                    </sp-picker>
-                </div>
+                ${ascendingHtml}
                 <div>
                     <sp-field-label for="Speciality1" size="s">1st Speciality</sp-field-label>
                     <sp-picker id="Speciality1" size="s" label="Gold" value='Gold' @change=${this.changeHandler}>

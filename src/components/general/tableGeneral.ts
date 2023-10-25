@@ -78,9 +78,9 @@ export class tableGeneral {
   private attack: number;
   private defense: number;
   private hp: number;
-  private attackBuff: number;
-  private hpBuff: number;
-  private defenseBuff: number;
+  private _attackBuff: number;
+  private _hpBuff: number;
+  private _defenseBuff: number;
   private unitClass: troopClassType | string;
   readonly general: General | null;
   private adverbs: BuffAdverbArrayType = buffAdverbs[generalUseCase.enum.all];
@@ -88,11 +88,30 @@ export class tableGeneral {
   getIntrinsic() {
     return {attack: this.attack, defense: this.defense, hp: this.hp};
   }
-  
-  getBuffs() {
-    return {attackBuff: this.attackBuff, defenseBuff: this.defenseBuff, hpBuff: this.hpBuff};
+
+  set attackBuff(n) {
+    this._attackBuff = n;
   }
-  
+  get attackBuff() {
+    return this._attackBuff;
+  }
+
+  set hpBuff(n: number) {
+    this._hpBuff = n;
+  }
+
+  get hpBuff() {
+    return this._hpBuff;
+  }
+
+  set defenseBuff(n: number) {
+    this._defenseBuff = n;
+  }
+
+  get defenseBuff() {
+    return this._defenseBuff;
+  }
+
   getClass(){
     return this.unitClass;
   }
