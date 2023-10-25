@@ -55,7 +55,7 @@ import {
   type qualitySchemaType,
   type standardSkillBookType,
   troopClass,
-  type troopClassType,
+  type troopClassType, buffSchema,
 } from "@schemas/evonySchemas.ts";
 
 import {buff} from "@components/general/buff.ts";
@@ -130,11 +130,22 @@ export class PairingTable extends withStores(SpectrumElement, [typeAndUseMap,pri
         console.log(`firstUpdated; found table`)
 
         this.table.renderItem = (item, index) => {
-          const general: tableGeneral = (item['general'] as tableGeneral);
-          console.log(`renderItem; ${general.name}`)
+          const primary: tableGeneral = (item['primary'] as tableGeneral);
+          const secondary: tableGeneral = (item['secondary'] as tableGeneral);
+          console.log(`renderItem; ${primary.name}`)
+          let ab = primary.attackBuff;
+          let db = primary.defenseBuff;
+          let hb = primary.hpBuff;
 
+          ab = ab + secondary.attackBuff;
+          db = db + secondary.defenseBuff;
+          hb = hb + secondary.hpBuff;
           return html`
-              <sp-table-cell role='gridcell' dir='ltr' id='primeName'>${general.name}</sp-table-cell>
+              <sp-table-cell role='gridcell' dir='ltr' id='primeName'>${primary.name}</sp-table-cell>
+              <sp-table-cell role='gridcell' dir='ltr' id='assistName'>${secondary.name}</sp-table-cell>
+              <sp-table-cell role='gridcell' dir='ltr' id='attackBuff'>${ab}</sp-table-cell>
+              <sp-table-cell role='gridcell' dir='ltr' id='HPBuff'>${hb}</sp-table-cell>
+              <sp-table-cell role='gridcell' dir='ltr' id='defenseBuff'>${db}</sp-table-cell>
           `;
         };
       }
@@ -208,16 +219,23 @@ export class PairingTable extends withStores(SpectrumElement, [typeAndUseMap,pri
         Speciality3: primaryInvestmentMap.get().speciality3,
         Speciality4: primaryInvestmentMap.get().speciality4,
       };
+      const Assistprops = {
+        ascending: '0',
+        Speciality1: secondaryInvestmentMap.get().speciality1,
+        Speciality2: secondaryInvestmentMap.get().speciality2,
+        Speciality3: secondaryInvestmentMap.get().speciality3,
+        Speciality4: secondaryInvestmentMap.get().speciality4,
+      };
       this.filteredGenerals.splice(0,this.filteredGenerals.length);
       filteredGenerals.forEach((fgo) => {
         const tg  = new tableGeneral(fgo.general, this.useCase);
         console.log(`processGenerals; ${fgo.general.name}; ${this.useCase}; ${JSON.stringify(props)}`)
         tg.setAdverbs(this.useCase);
-        console.log(`processGenerals; ${JSON.stringify(tg.getBuffs())}`)
+        console.log(`processGenerals; ${tg.attackBuff} ${tg.hpBuff} ${tg.defenseBuff}`)
         tg.computeBuffs(props);
         this.filteredGenerals.push(tg);
       })
-      let items= this.filteredGenerals.filter((fg) => {
+      let items:Record<string,tableGeneral>[] = this.filteredGenerals.filter((fg) => {
         if(this.unitClass !== null && this.unitClass !== undefined) {
           if(this.unitClass !== troopClass.enum.all) {
             if(fg.general !== null && fg.general !== undefined) {
@@ -234,10 +252,19 @@ export class PairingTable extends withStores(SpectrumElement, [typeAndUseMap,pri
           return true;
         }
         return false;
-      }).map((fg)=> {
-      
-      })
-      //this.generalRecords = items;
+      }).map((tg) => {
+        let assistants = new Array<Record<string,tableGeneral>>();
+        this.filteredGenerals.forEach((pa) => {
+          if(tg.name.localeCompare(pa.name)){
+            pa.computeBuffs(Assistprops);
+            assistants.push({'primary':tg,'secondary':pa})
+          }
+        })
+        return assistants;
+      }).flat();
+      if(items !== null && items !== undefined && items.length > 0) {
+        this.generalRecords = items;
+      }
     }
   }
   
@@ -273,7 +300,7 @@ export class PairingTable extends withStores(SpectrumElement, [typeAndUseMap,pri
     `;
 
     return html`
-      test
+      
       <div class="sp-table-container">
         <interest-selector role="primary"></interest-selector>
         <investment-selector role="primary" @PickerChanged=${this.changeHandler} ></investment-selector>
