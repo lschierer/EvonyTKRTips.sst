@@ -340,11 +340,27 @@ export class PairingTable extends withStores(SpectrumElement, [typeAndUseMap,pri
       this.table.requestUpdate();
     }
   }
-  
+
+  static styles = css`
+    .sp-table-container {
+      display: block;
+      flex: 2 0 auto;
+      min-height: calc(var(--spectrum-global-dimension-size-6000)*2);
+      & sp-table {
+        background-color: var(--spectrum-cyan-600);
+        
+        & sp-table-body {
+          min-height: var(--spectrum-global-dimension-size-900);
+        }
+      }
+    }
+    
+  `
+
   public render() {
 
     const tableHtml = html`
-        <sp-table size="m" scroller="true" ${ref(this.tableRef)}>
+        <sp-table size="m" style="height: calc(var(--spectrum-global-dimension-size-3600)*2)"scroller="true" ${ref(this.tableRef)}>
             <sp-table-head>
                 <sp-table-head-cell sortable sort-direction="desc" sort-key="primeName">
                     Primary General
