@@ -1,6 +1,11 @@
 import {  defineCollection } from 'astro:content';
 import { docsSchema, i18nSchema } from '@astrojs/starlight/schema';
-import {artTreasureSchema, BlazonSetSechma, generalObjectSchema, generalSchema} from '../schemas/evonySchemas.js';
+import {
+  artTreasureSchema,
+  BlazonSetSechma,
+  generalObjectSchema,
+  generalConflictArraySchema,
+} from '../schemas/evonySchemas.js';
 
 export const collections = {
   docs: defineCollection({ schema: docsSchema() }),
@@ -8,4 +13,5 @@ export const collections = {
   art: defineCollection({type: 'data', schema: artTreasureSchema}),
   blazons: defineCollection({type: 'data', schema: BlazonSetSechma}),
   generals: defineCollection({type: 'data', schema: generalObjectSchema}),
+  generalConflictData: defineCollection(({type: 'data', schema: generalConflictArraySchema})),
 };
