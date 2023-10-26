@@ -142,6 +142,7 @@ export const BuffAttributes = z.enum([
  'Wounded_to_Death',
  'Death_to_Wounded',
  'Load',
+ 'Double_Items_Drop_Rate',
 ])
 
 export type BuffAttributesType = z.infer<typeof BuffAttributes>;
@@ -163,7 +164,7 @@ export const buffSchema = z.object({
 });
 
 export type buff = z.infer<typeof buffSchema>;
-export const buffUnion = z.union([buffSchema,z.array(buffSchema)]);
+export const buffUnion = z.array(buffSchema);
 
 export const specialtyAttribute = z.object({
     level: qualitySchema,
