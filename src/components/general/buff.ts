@@ -75,6 +75,20 @@ function buffFilter(b: buff, general: General, score_for: BuffAttributesType, si
     return toReturn;
 }
 
+const ascendingLevel: { [key: string]: boolean} = {
+    '0': false,
+    '1': false,
+    '2': false,
+    '3': false,
+    '4': false,
+    '5': false,
+    '6': true,
+    '7': true,
+    '8': true,
+    '9': true,
+    '10': true,
+}
+
 export function buff(eg: General, situations: BuffAdverbArrayType, props: Props){
     const saLevels = [props.Speciality1, props.Speciality2, props.Speciality3, props.Speciality4]
     console.log(`buff; general is ${eg.name}`)
@@ -122,8 +136,87 @@ export function buff(eg: General, situations: BuffAdverbArrayType, props: Props)
                 })
             })
         }
-        if(general.ascending !== undefined && general.ascending !== null) {
-            console.log(`buff; ${eg.name}; ascending buffs`);
+
+        if(general.specialities !== undefined && general.specialities !== null) {
+            console.log(`buff; ${eg.name}; speciality buffs;`)
+            general.specialities.forEach((s: specialtyType, i) => {
+                s.attribute.map((sa) => {
+                    let proceed = false;
+                    console.log(`buff; ${eg.name}; speciality buffs; saLevel: ${saLevels[i]}`)
+                    switch(saLevels[i]){
+                        case 'Gold':
+                            if(!sa.level.localeCompare('Gold')) {
+                                proceed = true;
+                                break;
+                            }
+                        case 'Orange':
+                            if(!sa.level.localeCompare('Orange')) {
+                                proceed = true;
+                                break;
+                            }
+                        case 'Purple':
+                            if(!sa.level.localeCompare('Purple')) {
+                                proceed = true;
+                                break;
+                            }
+                        case 'Blue':
+                            if(!sa.level.localeCompare('Blue')) {
+                                proceed = true;
+                                break;
+                            }
+                        case 'Green':
+                            if(!sa.level.localeCompare('Green')) {
+                                proceed = true;
+                                break;
+                            }
+                        default:
+                            proceed = false;
+                    }
+                    if(proceed) {
+                        console.log(`buff; ${eg.name}; speciality buffs; i is ${i} proceed on ${sa.level}`)
+                        const buff: buff[] = [sa.buff].flat()
+                        buff.map((b) => {
+                            if(b !== undefined && b !== null && general !== undefined) {
+                                let apply = buffFilter(b, general,BuffAttributes.enum.Attack,situations);
+                                console.log(`buff; ${eg.name}; speciality attack; apply is ${apply}`);
+                                if (apply && b.value !== undefined && b.value !== null) {
+                                    const buff_type = b.value.unit;
+                                    if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
+                                        attack = attack + b.value.number
+                                        console.log(`buff; ${eg.name}; specialities; attack: ${attack}`)
+                                    }
+                                }
+                                apply = buffFilter(b,general, BuffAttributes.enum.Defense,situations);
+                                console.log(`buff; ${eg.name}; speciality defense; apply is ${apply}`);
+                                if (apply && b.value !== undefined && b.value !== null) {
+                                    const buff_type = b.value.unit;
+                                    if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
+                                        defense = defense + b.value.number
+                                        console.log(`buff; ${eg.name}; specialities; Defense: ${defense}`)
+                                    }
+                                }
+                                apply = buffFilter(b,general, BuffAttributes.enum.HP,situations);
+                                if (apply && b.value !== undefined && b.value !== null) {
+                                    const buff_type = b.value.unit;
+                                    if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
+                                        hp = hp + b.value.number
+                                        console.log(`buff; ${eg.name}; specialities; hp: ${hp}`)
+                                    }
+                                }
+                            } else {
+                                console.log(`buff; ${eg.name}; speciality buffs; buff is undefined`)
+                            }
+                        })
+                    } else {
+                        console.log(`buff; ${eg.name}; speciality buffs; i is ${i} ${saLevels[i]} did not match ${sa.level}`)
+                    }
+
+                })
+            })
+        }
+
+        if(general.ascending !== undefined && general.ascending !== null && ascendingLevel[props.ascending]) {
+            console.log(`buff; ${eg.name}; start ascending buffs`);
             general.ascending.map((ga: ascendingIncrementType) => {
                 let proceed = false;
                 switch(props.ascending) {
@@ -186,88 +279,16 @@ export function buff(eg: General, situations: BuffAdverbArrayType, props: Props)
                             }
                         }
                     })
+                } else {
+                    console.log(`buff; ${eg.name}; did not evaluate ascending buff`)
                 }
-                
             })
-        }
-        if(general.specialities !== undefined && general.specialities !== null) {
-            console.log(`buff; ${eg.name}; speciality buffs;`)
-            general.specialities.forEach((s: specialtyType, i) => {
-                s.attribute.map((sa) => {
-                    let proceed = false;
-                    console.log(`buff; ${eg.name}; speciality buffs; saLevel: ${saLevels[i]}`)
-                    switch(saLevels[i]){
-                        case 'Gold':
-                            if(!sa.level.localeCompare('Gold')) {
-                                proceed = true;
-                            }
-                            break;
-                        case 'Orange':
-                            if(!sa.level.localeCompare('Orange')) {
-                                proceed = true;
-                            }
-                            break;
-                        case 'Purple':
-                            if(!sa.level.localeCompare('Purple')) {
-                                proceed = true;
-                            }
-                            break;
-                        case 'Blue':
-                            if(!sa.level.localeCompare('Blue')) {
-                                proceed = true;
-                            }
-                            break;
-                        case 'Green':
-                            if(!sa.level.localeCompare('Green')) {
-                                proceed = true;
-                            }
-                            break;
-                        default:
-                            proceed = false;
-                    }
-                    if(proceed) {
-                        console.log(`buff; ${eg.name}; speciality buffs; i is ${i} proceed on ${sa.level}`)
-                        const buff: buff[] = [sa.buff].flat()
-                        buff.map((b) => {
-                            if(b !== undefined && b !== null && general !== undefined) {
-                                let apply = buffFilter(b, general,BuffAttributes.enum.Attack,situations);
-                                console.log(`buff; ${eg.name}; speciality attack; apply is ${apply}`);
-                                if (apply && b.value !== undefined && b.value !== null) {
-                                    const buff_type = b.value.unit;
-                                    if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
-                                        attack = attack + b.value.number
-                                        console.log(`buff; ${eg.name}; specialities; attack: ${attack}`)
-                                    }
-                                }
-                                apply = buffFilter(b,general, BuffAttributes.enum.Defense,situations);
-                                console.log(`buff; ${eg.name}; speciality defense; apply is ${apply}`);
-                                if (apply && b.value !== undefined && b.value !== null) {
-                                    const buff_type = b.value.unit;
-                                    if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
-                                        defense = defense + b.value.number
-                                        console.log(`buff; ${eg.name}; specialities; Defense: ${defense}`)
-                                    }
-                                }
-                                apply = buffFilter(b,general, BuffAttributes.enum.HP,situations);
-                                if (apply && b.value !== undefined && b.value !== null) {
-                                    const buff_type = b.value.unit;
-                                    if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
-                                        hp = hp + b.value.number
-                                        console.log(`buff; ${eg.name}; specialities; hp: ${hp}`)
-                                    }
-                                }
-                            } else {
-                                console.log(`buff; ${eg.name}; speciality buffs; buff is undefined`)
-                            }
-                        })
-                    } else {
-                        console.log(`buff; ${eg.name}; speciality buffs; i is ${i} ${saLevels[i]} did not match ${sa.level}`)
-                    }
-
-                })
-            })
+        } else {
+            console.log(`buff; ${eg.name}; props.ascending was ${props.ascending}`)
         }
     }
+
+
     console.log(`buff; ${eg.name}; total attack buff is ${attack}`);
     console.log(`buff; ${eg.name}; total defense buff is ${defense}`)
     
