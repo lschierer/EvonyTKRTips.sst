@@ -149,12 +149,10 @@ export class CompareMayors extends LitElement {
         if(this.renderRoot){
             this.table = this.renderRoot.querySelector('#'+ this.tableName);
             if(this.table !== undefined && this.table !== null){
-                console.log(`in firstUpdated, found table ${this.tableName}`);
 
                 this.table.renderItem = (item,index) => {
                     return html
                         `${this.ids.map((id) => {
-                            console.log(`in renderItem, id is ${id}`)
                             return html`<sp-table-cell id=${id.replace(' ', '_')} dir='ltr' role='gridcell'>${item[id]}</sp-table-cell>`
                         })}
                         `;
@@ -197,28 +195,22 @@ export class CompareMayors extends LitElement {
                 const r = dsv.csvParse(t);
                 const c = r.columns;
                 this.ids = JSON.parse(JSON.stringify(c));
-                console.log(`items are ${JSON.stringify(r)}`);
-                console.log(`ids are "${this.ids}"`);
                 this.items =r;
             }).then(() => {
                 for(let i = 0; i < this.items!.length; i ++) {
                     let row:dsv.DSVRowString<string> = this.items![i];
                     let nR = { "row": row }
-                    console.log(`pushing item ${i} row is ${JSON.stringify(nR)}`);
                     this.records.push(nR.row);
                 }
                 return true;
             }).catch((error) => {
-                console.log(error);
                 return false;
             });
             if(this.renderRoot){
                 let table:Table|null = this.renderRoot.querySelector('#'+ this.tableName);
                 if(table){
-                    console.log(`found table`);
                     table.items = this.records;
                 } else {
-                    console.log(`in changedProperties with no ${this.tableName}`);
                 }
             }
         }
@@ -230,7 +222,6 @@ export class CompareMayors extends LitElement {
                 <sp-table id=${this.tableName} size="m" scroller="true">
                     <sp-table-head>
                         ${this.ids.map((id)=> {
-                            console.log(`id is ${id}`)
                             return html`<sp-table-head-cell value=${id.replace(/ /g, '_')} sortable sort-direction="desc" sort-key=${id} >${id}</sp-table-head-cell>`;
                         })}
                     </sp-table-head>

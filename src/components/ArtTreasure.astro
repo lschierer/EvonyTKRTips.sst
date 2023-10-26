@@ -10,7 +10,6 @@ import {
 
 const { artId } = Astro.props;
 if(artId === null || artId === undefined || artId.length <= 0) {
-    console.log(`bogus artId`);
     return Astro.redirect("/404");
 }
 const entry = await getEntry('art', artId);

@@ -32,11 +32,9 @@ export class SpectrumTopNav extends LitElement {
   }
   
   private loadTheme() {
-    console.log(`loadTheme`)
     const theme = typeof localStorage !== 'undefined' && localStorage.getItem(SpectrumTopNav.#key);
     const validate = themeEnum.safeParse(theme);
     if(validate.success) {
-      console.log(`valid ${validate.data}`)
       this.setTheme(validate.data);
     } else {
       this.setTheme('auto')
@@ -45,16 +43,13 @@ export class SpectrumTopNav extends LitElement {
   
   private getPreferredColorScheme(): themeSchema {
     const mm = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-    console.log(`getPreferredColorScheme chose ${mm}`)
     return mm;
   }
   
   private setTheme(newTheme: themeSchema | Event) {
-    console.log(`setTheme called ${newTheme}`)
     const validate = themeEnum.safeParse(newTheme);
     let toSet: themeSchema = 'auto';
     if(validate.success) {
-      console.log(`setTheme valid ${validate.data}`)
       toSet = validate.data;
     } else {
       const _event = (newTheme as Event);
@@ -63,16 +58,12 @@ export class SpectrumTopNav extends LitElement {
       if(valid.success) {
         toSet = valid.data;
       }
-      console.log(`getting value from Event, ${toSet}`)
     }
     toSet = toSet === 'auto' ? this.getPreferredColorScheme() : toSet;
-    console.log(`toSet final value: ${toSet}`)
     if(this._themePicker !== null && this._themePicker !== undefined) {
-      console.log(`and picker was not null, theme is ${toSet}`)
       this._themePicker.value = toSet;
       const themeElement = document.querySelector('sp-theme');
       if(themeElement !== null && themeElement !== undefined) {
-        console.log(`theme element found`)
         if(toSet === 'light') {
           (themeElement as SPTheme).color = "light";
         }
@@ -93,7 +84,6 @@ export class SpectrumTopNav extends LitElement {
   }
   
   public updatePickers(nv: themeSchema) {
-    console.log(`updatePickers; ${nv}`)
     const windowPref = this.getPreferredColorScheme();
     if(this._themePicker !== null && this._themePicker !== undefined) {
       if(nv === 'auto') {

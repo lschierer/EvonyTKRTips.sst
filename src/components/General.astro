@@ -24,7 +24,6 @@ import type {skillBookType} from "../schemas/evonySchemas";
 
 const {generalEntry} = Astro.props;
 if (generalEntry === null || generalEntry === undefined || generalEntry.length <= 0) {
-  console.log(`bogus generalEntry`);
   
 }
 const entry = await getEntry('generals', generalEntry);

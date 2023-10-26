@@ -25,14 +25,11 @@ function multiplier(b: buff, general: General,score_for: BuffAttributesType) {
                 case BuffAdverbs.enum.Marching:
                 case BuffAdverbs.enum.When_Rallying:
                 case BuffAdverbs.enum.leading_the_army_to_attack:
-                    console.log(`Attacking buff detected`)
                     if(score_for.toString().localeCompare('Attack')) {
-                        console.log(`when scoring for attack`)
                         switch (general.score_as) {
                             case 'Ground':
                             case 'Mounted':
                             case 'Archers':
-                                console.log(`score_as matched`)
                                 multiplier = 0.5;
                                 break;
                             case 'Siege':
@@ -71,7 +68,6 @@ function multiplier(b: buff, general: General,score_for: BuffAttributesType) {
                     multiplier = 0;
                     break;
                 default:
-                    console.log(`no adverb matched`)
                     multiplier = 1;
             }
         }
@@ -84,7 +80,6 @@ function multiplier(b: buff, general: General,score_for: BuffAttributesType) {
             } else if (b.class.toString().localeCompare(general.score_as!.toLocaleString())){
                 multiplier = 0;
             } else {
-                console.log(`leaving multiplier alone`);
             }
         } else if(
             (b.condition !== undefined && b.condition !== null) &&
@@ -96,7 +91,6 @@ function multiplier(b: buff, general: General,score_for: BuffAttributesType) {
 }
 
 export function attack_score(eg: General){
-    console.log(`attack_score`)
     let attack = 0;
     let totalBuff = 0;
     if(eg.score_as !== null && eg.score_as !== undefined) {
@@ -104,7 +98,6 @@ export function attack_score(eg: General){
         const general = eg;
         attack = (general.attack + (general.attack_increment * 45 ));
         if(general.specialities !== undefined && general.specialities !== null) {
-            console.log(`speciality buffs`)
             general.specialities.map((s: specialtyType) => {
                 s.attribute.map((sa) => {
                     const buff: buff[] = [sa.buff].flat()
@@ -125,7 +118,6 @@ export function attack_score(eg: General){
             })
         }
         if(general.books !== undefined && general.books !== null) {
-            console.log(`book buffs`)
             general.books.map((bb) => {
                 const buff: buff[] = [bb.buff].flat();
                 buff.map((b) => {
@@ -145,7 +137,6 @@ export function attack_score(eg: General){
             })
         }
         if(general.ascending !== undefined && general.ascending !== null) {
-            console.log(`ascending buffs`);
             general.ascending.map((ga: ascendingIncrementType) => {
                 const buff: buff[] = [ga.buff].flat();
                 buff.map((b) => {
@@ -164,7 +155,6 @@ export function attack_score(eg: General){
             })
         }
     }
-    console.log(`total buff is ${totalBuff}`)
     totalBuff = totalBuff / 100; //make it a percent;
     attack = attack + (attack * totalBuff );
     return [totalBuff,attack];
@@ -199,7 +189,6 @@ export function defense_score(eg: General){
             })
         }
         if(general.books !== undefined && general.books !== null) {
-            console.log(`book buffs`)
             general.books.map((bb) => {
                 const buff: buff[] = [bb.buff].flat();
                 buff.map((b) => {
@@ -219,7 +208,6 @@ export function defense_score(eg: General){
             })
         }
         if(general.ascending !== undefined && general.ascending !== null) {
-            console.log(`ascending buffs`);
             general.ascending.map((ga: ascendingIncrementType) => {
                 const buff: buff[] = [ga.buff].flat();
                 buff.map((b) => {
@@ -238,7 +226,6 @@ export function defense_score(eg: General){
             })
         }
     }
-    console.log(`total buff is ${totalBuff}`)
     totalBuff = totalBuff / 100; //make it a percent;
     defense = defense + (defense * totalBuff );
     return [totalBuff,defense];
@@ -272,7 +259,6 @@ export function hp_score(eg: General){
             })
         }
         if(general.books !== undefined && general.books !== null) {
-            console.log(`book buffs`)
             general.books.map((bb) => {
                 const buff: buff[] = [bb.buff].flat();
                 buff.map((b) => {
@@ -292,7 +278,6 @@ export function hp_score(eg: General){
             })
         }
         if(general.ascending !== undefined && general.ascending !== null) {
-            console.log(`ascending buffs`);
             general.ascending.map((ga: ascendingIncrementType) => {
                 const buff: buff[] = [ga.buff].flat();
                 buff.map((b) => {
@@ -311,7 +296,6 @@ export function hp_score(eg: General){
             })
         }
     }
-    console.log(`total buff is ${totalBuff}`)
     totalBuff = totalBuff / 100; //make it a percent;
     hp = hp + (hp * totalBuff );
     return [totalBuff,hp];

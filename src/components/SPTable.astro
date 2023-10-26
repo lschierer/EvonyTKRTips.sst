@@ -11,7 +11,6 @@ const re = /\.\w{3}$/;
 const tableName = csv.replace(re,'');
 const cvsName = "../../../public/CSVs/".concat(csv).replace(/public\//,'');
 const csvUrl = new URL(cvsName, Astro.url);
-console.log(`url is ${csvUrl}`);
 
 ---
 <script >
