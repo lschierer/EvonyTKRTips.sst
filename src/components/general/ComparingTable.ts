@@ -133,9 +133,7 @@ export class ComparingTable extends SpectrumElement {
   private MutationObserverCallback = (mutationList: MutationRecord[] , observer: MutationObserver) => {
     for (const mutation of mutationList) {
       if (mutation.type === "childList") {
-        console.log("A child node has been added or removed.");
       } else if (mutation.type === "attributes") {
-        console.log(`The ${mutation.attributeName} attribute was modified.`);
       }
     }
   };
@@ -156,11 +154,9 @@ export class ComparingTable extends SpectrumElement {
     if (this.renderRoot) {
       this.table = this.tableRef.value
       if (this.table !== undefined && this.table !== null) {
-        console.log(`firstUpdated; found table`)
         
         this.table.renderItem = (item, index) => {
           const general: tableGeneralType = (item['general'] as tableGeneralType);
-          console.log(`renderItem; ${general.name}`)
           return html`
               <sp-table-cell role='gridcell' dir='ltr' id='name'  >${general.name}</sp-table-cell>
               <sp-table-cell role='gridcell' dir='ltr' id='attack' >${general.attack.toFixed(2)}</sp-table-cell>
@@ -242,44 +238,33 @@ export class ComparingTable extends SpectrumElement {
   }
   
   async willUpdate(changedProperties: PropertyValues<this>) {
-    console.log(`willUpdate; start`);
     if(changedProperties.has('dataUrl')) {
-      console.log(`setting dataUrl`)
       this._dataUrl = new URL(this.dataUrl);
       
       const result = await fetch(this._dataUrl).then((response) => {
         if (response.ok) {
-          console.log(`response ok`)
           return response.text();
         }
         else throw new Error('Status code error: ' + response.status);
       }).then((text) => {
         const jsonResult = JSON.parse(text);
-        console.log(JSON.stringify(jsonResult))
         const result: { success: true; data: generalArrayType; } | { success: false; error: ZodError; } = generalArray.safeParse(jsonResult);
         if(result.success) {
-          console.log(`result success`)
           this.allGenerals = result.data;
           return true;
         }else {
-          console.log(`zod failed validation`);
           result.error;
         }
         return false;
       }).catch((error) =>{
-        console.log(error)
         return false;
       });
       if(result){
-        console.log(`successful fetch`);
       }
     }
     if(this.allGenerals !== undefined && this.allGenerals !== null) {
-      console.log(`willUpdate; I have generals`);
       if(this.table !== undefined && this.table !== null) {
-        console.log(`willUpdate; I have a table`);
         if(this.table.items !== undefined && this.table.items !== null && this.table.items.length === 0) {
-          console.log(`willUpdate; I need records`);
           this.processGenerals();
 
         }
@@ -305,9 +290,7 @@ export class ComparingTable extends SpectrumElement {
         this.allGenerals.forEach((g) => {
           const valid = generalObjectSchema.safeParse(g);
           if(valid.success) {
-            console.log(`pushing ${JSON.stringify(valid.data.general.name)}`)
             const go: generalObject = valid.data;
-            console.log(`processGenerals; buffAdverbs: ${JSON.stringify(this.buffAdverbs)}`)
             const {attackBuff, defenseBuff, hpBuff} = buff(go.general,this.buffAdverbs, props);
             items.push({'general': {
               name: go.general.name,
@@ -338,13 +321,10 @@ export class ComparingTable extends SpectrumElement {
   }
 
   protected changeHandler(e: CustomEvent) {
-    console.log(`changeHandler; start`)
     
     if(e === undefined || e === null) {
-      console.log(`event is undefined`)
       return;
     }
-    console.log(`changeHandler; event ${JSON.stringify(e.detail)}`)
     const id = e.detail.id;
     const value = e.detail.value;
     if(!id.localeCompare('ascending')) {
@@ -355,10 +335,8 @@ export class ComparingTable extends SpectrumElement {
     }else if (!id.localeCompare('Speciality1')) {
       const validation = qualitySchema.safeParse(value);
       if(validation.success) {
-        console.log(`changeHandler; Speciality1; success: ${validation.data}`)
         this.Speciality1 = validation.data;
       } else {
-        console.log(`changeHandler; Speciality1; error: ${validation.error}`)
       }
     } else if (!id.localeCompare('Speciality2')) {
       const validation = qualitySchema.safeParse(value);
@@ -451,7 +429,6 @@ export class ComparingTable extends SpectrumElement {
           ];
       }
     } else   {
-      console.log(`picker id is ${id}`)
     }
     this.processGenerals();
   }

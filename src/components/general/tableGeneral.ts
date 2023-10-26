@@ -154,7 +154,6 @@ export class tableGeneral {
       this.attackBuff = attackBuff;
       this.defenseBuff = defenseBuff;
       this.hpBuff = hpBuff;
-      console.log(`computeBuffs; ${this.name}; attackBuff now ${this.attackBuff} set from ${attackBuff}`)
     }
     
   }

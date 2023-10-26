@@ -108,9 +108,7 @@ export class PairingTable extends withStores(SpectrumElement, [typeAndUseMap,pri
   private MutationObserverCallback = (mutationList: MutationRecord[] , observer: MutationObserver) => {
     for (const mutation of mutationList) {
       if (mutation.type === "childList") {
-        console.log("A child node has been added or removed.");
       } else if (mutation.type === "attributes") {
-        console.log(`The ${mutation.attributeName} attribute was modified.`);
       }
     }
   };
@@ -129,12 +127,10 @@ export class PairingTable extends withStores(SpectrumElement, [typeAndUseMap,pri
     if (this.renderRoot) {
       this.table = this.tableRef.value
       if (this.table !== undefined && this.table !== null) {
-        console.log(`firstUpdated; found table`)
 
         this.table.renderItem = (item, index) => {
           const primary: tableGeneral = (item['primary'] as tableGeneral);
           const secondary: tableGeneral = (item['secondary'] as tableGeneral);
-          console.log(`renderItem; ${primary.name}`)
           let ab = primary.attackBuff;
           let db = primary.defenseBuff;
           let hb = primary.hpBuff;
@@ -160,7 +156,6 @@ export class PairingTable extends withStores(SpectrumElement, [typeAndUseMap,pri
               ['primeName']: (a, b) => {
                 ga = (a['primary'] as tableGeneral);
                 gb = (b['primary'] as tableGeneral);
-                console.log(`${ga.name} ${gb.name}`)
                 return (sortDirection === 'asc') ?
                     (ga.name.localeCompare(gb.name, undefined, {sensitivity: "base"})) :
                     (gb.name.localeCompare(ga.name, undefined, {sensitivity: "base"}))
@@ -168,7 +163,6 @@ export class PairingTable extends withStores(SpectrumElement, [typeAndUseMap,pri
               ['assistName']: (a,b) => {
                 ga = (a['secondary'] as tableGeneral);
                 gb = (b['secondary'] as tableGeneral);
-                console.log(`${ga.name} ${gb.name}`)
                 return (sortDirection === 'asc') ?
                     (ga.name.localeCompare(gb.name, undefined, {sensitivity: "base"})) :
                     (gb.name.localeCompare(ga.name, undefined, {sensitivity: "base"}))
@@ -209,7 +203,6 @@ export class PairingTable extends withStores(SpectrumElement, [typeAndUseMap,pri
             }
 
             const result = sortFunction[sortKey](a,b);
-            console.log(`sort returning ${result}`)
             return result
           })
           this.table!.items = [...items];
@@ -221,39 +214,30 @@ export class PairingTable extends withStores(SpectrumElement, [typeAndUseMap,pri
   }
 
   async willUpdate(changedProperties: PropertyValues<this>) {
-    console.log(`willUpdate; start`);
     if (changedProperties.has('dataUrl')) {
-      console.log(`setting dataUrl`)
       this._dataUrl = new URL(this.dataUrl);
 
       const result = await fetch(this._dataUrl).then((response) => {
         if (response.ok) {
-          console.log(`response ok`)
           return response.text();
         } else throw new Error('Status code error: ' + response.status);
       }).then((text) => {
         const jsonResult = JSON.parse(text);
-        console.log(JSON.stringify(jsonResult))
         const result: { success: true; data: generalArrayType; } | { success: false; error: ZodError; } = generalArray.safeParse(jsonResult);
         if (result.success) {
-          console.log(`result success`)
           this.allGenerals = result.data;
           return true;
         } else {
-          console.log(`zod failed validation`);
           result.error;
         }
         return false;
       }).catch((error) => {
-        console.log(error)
         return false;
       });
       if (result) {
-        console.log(`successful fetch`);
       }
     }
     if (this.allGenerals !== undefined && this.allGenerals !== null) {
-      console.log(`willUpdate; I have generals`);
       this.processGenerals();
     }
     if(this.table !== undefined && this.table !== null ) {
@@ -265,7 +249,6 @@ export class PairingTable extends withStores(SpectrumElement, [typeAndUseMap,pri
   }
 
   private processGenerals() {
-    console.log(`processGenerals; start unitClass ${this.unitClass}`)
     if(this.allGenerals !== null && this.allGenerals !== undefined) {
       const filteredGenerals: generalObject[] = this.allGenerals.filter((g: generalObject) => {
         if(this.unitClass === troopClass.enum.all) {
@@ -294,7 +277,6 @@ export class PairingTable extends withStores(SpectrumElement, [typeAndUseMap,pri
         Speciality3: secondaryInvestmentMap.get().speciality3,
         Speciality4: secondaryInvestmentMap.get().speciality4,
       };
-      console.log(`processGenerals; props is ${JSON.stringify(props)}`)
       this.filteredGenerals = filteredGenerals;
       let items:Record<string,tableGeneral>[] = this.filteredGenerals.filter((fg) => {
         if(this.unitClass !== null && this.unitClass !== undefined) {
