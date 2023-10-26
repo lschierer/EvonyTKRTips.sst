@@ -47,7 +47,20 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
   };
   
   private observer = new MutationObserver(this.MutationObserverCallback);
-  
+
+  connectedCallback() {
+    super.connectedCallback();
+    primaryInvestmentMap.setKey('ascending','10');
+    primaryInvestmentMap.setKey('speciality1',qualitySchema.enum.Gold);
+    primaryInvestmentMap.setKey('speciality2',qualitySchema.enum.Gold);
+    primaryInvestmentMap.setKey('speciality3',qualitySchema.enum.Gold);
+    primaryInvestmentMap.setKey('speciality4',qualitySchema.enum.Gold);
+    secondaryInvestmentMap.setKey('speciality1',qualitySchema.enum.Gold);
+    secondaryInvestmentMap.setKey('speciality2',qualitySchema.enum.Gold);
+    secondaryInvestmentMap.setKey('speciality3',qualitySchema.enum.Gold);
+    secondaryInvestmentMap.setKey('speciality4',qualitySchema.enum.Gold);
+  }
+
   protected changeHandler(e: Event) {
     let myEvent = new CustomEvent('PickerChanged', {
       detail: {
@@ -174,7 +187,7 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
                 ${ascendingHtml}
                 <div>
                     <sp-field-label for="Speciality1" size="s">1st Speciality</sp-field-label>
-                    <sp-picker id="Speciality1" size="s" label="Gold" value='Gold' @change=${this.changeHandler}>
+                    <sp-picker id="Speciality1" size="s" label="Gold" value=${qualitySchema.enum.Gold} @change=${this.changeHandler}>
                         <sp-menu-item value=${qualitySchema.enum.Disabled}>Not Active</sp-menu-item>
                         <sp-menu-item value=${qualitySchema.enum.Green}>Green</sp-menu-item>
                         <sp-menu-item value=${qualitySchema.enum.Blue}>Blue</sp-menu-item>
@@ -185,7 +198,7 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
                 </div>
                 <div>
                     <sp-field-label for="Speciality2" size="s">2nd Speciality</sp-field-label>
-                    <sp-picker id="Speciality2" size="s" label="Gold" value='Gold' @change=${this.changeHandler}>
+                    <sp-picker id="Speciality2" size="s" label="Gold" value=${qualitySchema.enum.Gold} @change=${this.changeHandler}>
                         <sp-menu-item value=${qualitySchema.enum.Disabled}>Not Active</sp-menu-item>
                         <sp-menu-item value=${qualitySchema.enum.Green}>Green</sp-menu-item>
                         <sp-menu-item value=${qualitySchema.enum.Blue}>Blue</sp-menu-item>
@@ -196,7 +209,7 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
                 </div>
                 <div>
                     <sp-field-label for="Speciality3" size="s">3rd Speciality</sp-field-label>
-                    <sp-picker id="Speciality3" size="s" label="Gold" value='Gold' @change=${this.changeHandler}>
+                    <sp-picker id="Speciality3" size="s" label="Gold" value=${qualitySchema.enum.Gold} @change=${this.changeHandler}>
                         <sp-menu-item value=${qualitySchema.enum.Disabled}>Not Active</sp-menu-item>
                         <sp-menu-item value=${qualitySchema.enum.Green}>Green</sp-menu-item>
                         <sp-menu-item value=${qualitySchema.enum.Blue}>Blue</sp-menu-item>
@@ -207,7 +220,7 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
                 </div>
                 <div>
                     <sp-field-label for="Speciality4" size="s">4th Speciality</sp-field-label>
-                    <sp-picker id="Speciality4" size="s" label="Gold" value='Gold' @change=${this.changeHandler}>
+                    <sp-picker id="Speciality4" size="s" label="Gold" value=${qualitySchema.enum.Gold} @change=${this.changeHandler}>
                         <sp-menu-item value=${qualitySchema.enum.Disabled}>Not Active</sp-menu-item>
                         <sp-menu-item value=${qualitySchema.enum.Green}>Green</sp-menu-item>
                         <sp-menu-item value=${qualitySchema.enum.Blue}>Blue</sp-menu-item>
