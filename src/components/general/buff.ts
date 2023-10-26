@@ -35,6 +35,33 @@ function buffFilter(b: buff, general: General, score_for: BuffAttributesType, si
     if (b.condition !== undefined && b.condition !== null) {
         console.log(`buffFilter; ${name} condition ${b.condition}`)
         const condition: BuffAdverbsType[] = [b.condition].flat();
+
+        //special case conditions
+        if(condition.includes(BuffAdverbs.enum.Reduces_Monster)) {
+            if(situations !== null && situations !== undefined && situations.includes(BuffAdverbs.enum.Reduces_Monster)) {
+                if(b.attribute === BuffAttributes.enum.Attack && score_for === BuffAttributes.enum.Defense) {
+                    return true;
+                }
+                if((b.attribute === BuffAttributes.enum.Defense || b.attribute === BuffAttributes.enum.HP) &&
+                    score_for === BuffAttributes.enum.Attack) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        if(condition.includes(BuffAdverbs.enum.Reduces_Enemy)) {
+            if(situations !== null && situations !== undefined && (! (situations.includes(BuffAdverbs.enum.Reduces_Monster) || situations.includes(BuffAdverbs.enum.When_an_officer)))) {
+                if(b.attribute === BuffAttributes.enum.Attack && score_for === BuffAttributes.enum.Defense) {
+                    return true
+                }
+                if((b.attribute === BuffAttributes.enum.Defense || b.attribute === BuffAttributes.enum.HP) &&
+                    score_for === BuffAttributes.enum.Attack) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         if (situations !== null && situations !== undefined && condition !== null && condition !== undefined) {
             const intersection = situations.filter(x => condition.includes(x));
             if (condition.length > intersection.length) {
@@ -109,7 +136,16 @@ export function buff(eg: General, situations: BuffAdverbArrayType, props: Props)
                         let apply = buffFilter(b, general,BuffAttributes.enum.Attack,situations );
                         if (apply && b.value !== undefined && b.value !== null) {
                             const buff_type = b.value.unit;
-                            if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
+                            if((b.condition !== null && b.condition !== undefined) &&
+                                (
+                                    ([b.condition].flat().includes(BuffAdverbs.enum.Reduces_Monster)) ||
+                                    ([b.condition].flat().includes(BuffAdverbs.enum.Reduces_Enemy))
+                                )
+                            ) {
+                                console.log(`buff; ${eg.name}; books; attack: debuff adjustment`);
+                                attack = attack + Math.abs(b.value.number);
+                                console.log(`buff; ${eg.name}; books; attack: ${attack}`)
+                            }else if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
                                 attack = attack + b.value.number
                                 console.log(`buff; ${eg.name}; books; attack: ${attack}`)
                             }
@@ -118,7 +154,16 @@ export function buff(eg: General, situations: BuffAdverbArrayType, props: Props)
                         console.log(`buff; ${eg.name}; book defense; apply is ${apply}`);
                         if (apply && b.value !== undefined && b.value !== null) {
                             const buff_type = b.value.unit;
-                            if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
+                            if((b.condition !== null && b.condition !== undefined) &&
+                                (
+                                    ([b.condition].flat().includes(BuffAdverbs.enum.Reduces_Monster)) ||
+                                    ([b.condition].flat().includes(BuffAdverbs.enum.Reduces_Enemy))
+                                )
+                            ) {
+                                console.log(`buff; ${eg.name}; books; defense: debuff adjustment`);
+                                defense = defense + Math.abs(b.value.number);
+                                console.log(`buff; ${eg.name}; books; defense: ${defense}`)
+                            }else if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
                                 defense = defense + b.value.number
                                 console.log(`buff; ${eg.name}; books; defense: ${defense}`)
                             }
@@ -181,7 +226,16 @@ export function buff(eg: General, situations: BuffAdverbArrayType, props: Props)
                                 console.log(`buff; ${eg.name}; speciality attack; apply is ${apply}`);
                                 if (apply && b.value !== undefined && b.value !== null) {
                                     const buff_type = b.value.unit;
-                                    if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
+                                    if((b.condition !== null && b.condition !== undefined) &&
+                                        (
+                                            ([b.condition].flat().includes(BuffAdverbs.enum.Reduces_Monster)) ||
+                                            ([b.condition].flat().includes(BuffAdverbs.enum.Reduces_Enemy))
+                                        )
+                                    ) {
+                                        console.log(`buff; ${eg.name}; books; attack: debuff adjustment`);
+                                        attack = attack + Math.abs(b.value.number);
+                                        console.log(`buff; ${eg.name}; books; attack: ${attack}`)
+                                    }else if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
                                         attack = attack + b.value.number
                                         console.log(`buff; ${eg.name}; specialities; attack: ${attack}`)
                                     }
@@ -190,7 +244,16 @@ export function buff(eg: General, situations: BuffAdverbArrayType, props: Props)
                                 console.log(`buff; ${eg.name}; speciality defense; apply is ${apply}`);
                                 if (apply && b.value !== undefined && b.value !== null) {
                                     const buff_type = b.value.unit;
-                                    if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
+                                    if((b.condition !== null && b.condition !== undefined) &&
+                                        (
+                                            ([b.condition].flat().includes(BuffAdverbs.enum.Reduces_Monster)) ||
+                                            ([b.condition].flat().includes(BuffAdverbs.enum.Reduces_Enemy))
+                                        )
+                                    ) {
+                                        console.log(`buff; ${eg.name}; books; defense: debuff adjustment`);
+                                        defense = defense + Math.abs(b.value.number);
+                                        console.log(`buff; ${eg.name}; books; defense: ${defense}`)
+                                    }else if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
                                         defense = defense + b.value.number
                                         console.log(`buff; ${eg.name}; specialities; Defense: ${defense}`)
                                     }
@@ -255,7 +318,16 @@ export function buff(eg: General, situations: BuffAdverbArrayType, props: Props)
                             let apply = buffFilter(b, general,BuffAttributes.enum.Attack,situations);
                             if (apply && b.value !== undefined && b.value !== null) {
                                 const buff_type = b.value.unit;
-                                if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
+                                if((b.condition !== null && b.condition !== undefined) &&
+                                    (
+                                        ([b.condition].flat().includes(BuffAdverbs.enum.Reduces_Monster)) ||
+                                        ([b.condition].flat().includes(BuffAdverbs.enum.Reduces_Enemy))
+                                    )
+                                ) {
+                                    console.log(`buff; ${eg.name}; books; attack: debuff adjustment`);
+                                    attack = attack + Math.abs(b.value.number);
+                                    console.log(`buff; ${eg.name}; books; attack: ${attack}`)
+                                }else if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
                                     attack = attack + b.value.number
                                     console.log(`buff; ${eg.name}; ascending; attack: ${attack}`)
                                 }
@@ -263,7 +335,16 @@ export function buff(eg: General, situations: BuffAdverbArrayType, props: Props)
                             apply = buffFilter(b,general, BuffAttributes.enum.Defense,situations);
                             if (apply && b.value !== undefined && b.value !== null) {
                                 const buff_type = b.value.unit;
-                                if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
+                                if((b.condition !== null && b.condition !== undefined) &&
+                                    (
+                                        ([b.condition].flat().includes(BuffAdverbs.enum.Reduces_Monster)) ||
+                                        ([b.condition].flat().includes(BuffAdverbs.enum.Reduces_Enemy))
+                                    )
+                                ) {
+                                    console.log(`buff; ${eg.name}; books; defense: debuff adjustment`);
+                                    defense = defense + Math.abs(b.value.number);
+                                    console.log(`buff; ${eg.name}; books; defense: ${defense}`)
+                                }else if (!buff_type.localeCompare(buffTypeEnum.enum.percentage)) {
                                     defense = defense + b.value.number
                                     console.log(`buff; ${eg.name}; ascending; defense: ${defense}`)
                                 }
