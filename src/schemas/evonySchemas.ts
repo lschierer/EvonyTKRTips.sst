@@ -1,7 +1,7 @@
 import {z} from 'zod';
 
 export const levelSchema = z.enum([
-    '0',
+  '0',
   '1',
   '2',
   '3',
@@ -18,35 +18,35 @@ export const levelSchema = z.enum([
   '14',
   '15',
   '16',
-    '17',
-    '18',
-    '19',
-    '20',
-    '21',
-    '22',
-    '23',
-    '24',
-    '25',
-    '26',
-    '27',
-    '28',
-    '29',
-    '30',
-    '31',
-    '32',
-    '33',
-    '34',
-    '35',
-    '36',
-    '37',
-    '38',
-    '39',
-    '40',
-    '41',
-    '42',
-    '43',
-    '44',
-    '45',
+  '17',
+  '18',
+  '19',
+  '20',
+  '21',
+  '22',
+  '23',
+  '24',
+  '25',
+  '26',
+  '27',
+  '28',
+  '29',
+  '30',
+  '31',
+  '32',
+  '33',
+  '34',
+  '35',
+  '36',
+  '37',
+  '38',
+  '39',
+  '40',
+  '41',
+  '42',
+  '43',
+  '44',
+  '45',
 ]);
 
 export type levelSchemaType = z.infer<typeof levelSchema>;
@@ -182,15 +182,16 @@ export type specialtyType = z.infer<typeof specialty>;
 
 export const ascendingIncrement = z.object({
     level: levelSchema.refine((l) => {
-        switch (l) {
-            case '6':
-            case '7':
-            case '8':
-            case '9':
-            case '10':
-                return true;
-            default:
-                return false;
+      switch (l) {
+        case '0':
+        case '6':
+        case '7':
+        case '8':
+        case '9':
+        case '10':
+          return true;
+        default:
+          return false;
         }
     }),
     buff: buffUnion
