@@ -64,7 +64,9 @@ import {tableGeneral} from "@components/general/tableGeneral.ts";
 const generalArray = z.array(generalObjectSchema).nullish();
 type generalArrayType = z.infer<typeof generalArray>;
 
-type SortFunctionMap = Record<string, () => number>;
+type SortFunctionMap = Record<string,(a: tableGeneral,b: tableGeneral) => number>;
+
+type SPItem = Record<string,{'primary': tableGeneral, 'secondary': tableGeneral}>;
 
 @customElement('pairing-table')
 export class PairingTable extends withStores(SpectrumElement, [typeAndUseMap,primaryInvestmentMap, secondaryInvestmentMap]) {
@@ -78,7 +80,7 @@ export class PairingTable extends withStores(SpectrumElement, [typeAndUseMap,pri
   private allGenerals: generalArrayType;
 
   @state()
-  private generalRecords: [];
+  private generalRecords: SPItem[];
 
   @property({type: String})
   public dataUrl: string;
@@ -100,8 +102,8 @@ export class PairingTable extends withStores(SpectrumElement, [typeAndUseMap,pri
 
     this.dataUrl = 'http://localhost';
     this._dataUrl = new URL(this.dataUrl);
-    this.filteredGenerals = new Array<tableGeneral>();
-    this.generalRecords = [];
+    this.filteredGenerals = new Array<generalObject>();
+    this.generalRecords = new Array<SPItem>();
 
   }
 
@@ -129,8 +131,8 @@ export class PairingTable extends withStores(SpectrumElement, [typeAndUseMap,pri
       if (this.table !== undefined && this.table !== null) {
 
         this.table.renderItem = (item, index) => {
-          const primary: tableGeneral = (item['primary'] as tableGeneral);
-          const secondary: tableGeneral = (item['secondary'] as tableGeneral);
+          const primary: tableGeneral = (((item as SPItem)['pair'])['primary'] as tableGeneral);
+          const secondary: tableGeneral = (((item as SPItem)['pair'])['secondary'] as tableGeneral);
           let ab = primary.attackBuff;
           let db = primary.defenseBuff;
           let hb = primary.hpBuff;
@@ -150,26 +152,28 @@ export class PairingTable extends withStores(SpectrumElement, [typeAndUseMap,pri
         this.table.addEventListener('sorted', (event) => {
           const {sortDirection, sortKey} = (event as CustomEvent).detail;
           let items = (this.table!.items ).sort((a, b) => {
+            const first: tableGeneral = (((a as SPItem)['pair'])['primary'] as tableGeneral);
+            const second: tableGeneral = (((b as SPItem)['pair'])['secondary'] as tableGeneral);
             let ga: tableGeneral | number = 0;
             let gb: tableGeneral | number = 0;
             const sortFunction: SortFunctionMap = {
               ['primeName']: (a, b) => {
-                ga = (a['primary'] as tableGeneral);
-                gb = (b['primary'] as tableGeneral);
+                ga = a
+                gb = b
                 return (sortDirection === 'asc') ?
                     (ga.name.localeCompare(gb.name, undefined, {sensitivity: "base"})) :
                     (gb.name.localeCompare(ga.name, undefined, {sensitivity: "base"}))
               },
               ['assistName']: (a,b) => {
-                ga = (a['secondary'] as tableGeneral);
-                gb = (b['secondary'] as tableGeneral);
+                ga = a;
+                gb = b;
                 return (sortDirection === 'asc') ?
                     (ga.name.localeCompare(gb.name, undefined, {sensitivity: "base"})) :
                     (gb.name.localeCompare(ga.name, undefined, {sensitivity: "base"}))
               },
               ['attackBuff']: (a,b) => {
-                ga = (a['primary'] as tableGeneral).attackBuff + (a['secondary'] as tableGeneral).attackBuff;
-                gb = (b['primary'] as tableGeneral).attackBuff + (b['secondary'] as tableGeneral).attackBuff;
+                ga = a.attackBuff + a.attackBuff;
+                gb = b.attackBuff + b.attackBuff;
                 if(ga === gb) {
                   return 0;
                 } else {
@@ -179,8 +183,8 @@ export class PairingTable extends withStores(SpectrumElement, [typeAndUseMap,pri
                 }
               },
               ['defenseBuff']: (a, b) => {
-                ga = (a['primary'] as tableGeneral).defenseBuff + (a['secondary'] as tableGeneral).defenseBuff;
-                gb = (b['primary'] as tableGeneral).defenseBuff + (b['secondary'] as tableGeneral).defenseBuff;
+                ga = (a).defenseBuff + (a).defenseBuff;
+                gb = (b).defenseBuff + (b).defenseBuff;
                 if(ga === gb) {
                   return 0;
                 } else {
@@ -190,8 +194,8 @@ export class PairingTable extends withStores(SpectrumElement, [typeAndUseMap,pri
                 }
               },
               ['HPBuff']: (a, b) => {
-                ga = (a['primary'] as tableGeneral).hpBuff + (a['secondary'] as tableGeneral).hpBuff;
-                gb = (b['primary'] as tableGeneral).hpBuff + (b['secondary'] as tableGeneral).hpBuff;
+                ga = (a).hpBuff + (a).hpBuff;
+                gb = (b).hpBuff + (b).hpBuff;
                 if(ga === gb) {
                   return 0;
                 } else {
@@ -202,7 +206,7 @@ export class PairingTable extends withStores(SpectrumElement, [typeAndUseMap,pri
               },
             }
 
-            const result = sortFunction[sortKey](a,b);
+            const result = sortFunction[sortKey](first,second);
             return result
           })
           this.table!.items = [...items];
@@ -271,14 +275,14 @@ export class PairingTable extends withStores(SpectrumElement, [typeAndUseMap,pri
         Speciality4: primaryInvestmentMap.get().speciality4,
       };
       const Assistprops = {
-        ascending: '0',
+        ascending: secondaryInvestmentMap.get().ascending,
         Speciality1: secondaryInvestmentMap.get().speciality1,
         Speciality2: secondaryInvestmentMap.get().speciality2,
         Speciality3: secondaryInvestmentMap.get().speciality3,
         Speciality4: secondaryInvestmentMap.get().speciality4,
       };
       this.filteredGenerals = filteredGenerals;
-      let items:Record<string,tableGeneral>[] = this.filteredGenerals.filter((fg) => {
+      let items: SPItem[] = this.filteredGenerals.filter((fg) => {
         if(this.unitClass !== null && this.unitClass !== undefined) {
           if(this.unitClass !== troopClass.enum.all) {
             if(fg.general !== null && fg.general !== undefined) {
@@ -299,15 +303,18 @@ export class PairingTable extends withStores(SpectrumElement, [typeAndUseMap,pri
         let tg1 = new tableGeneral(g.general, this.useCase)
         tg1.setAdverbs(this.useCase);
         tg1.computeBuffs(props);
-        let assistants = new Array<Record<string,tableGeneral>>();
-        this.filteredGenerals.forEach((pa) => {
-          if(tg1.name.localeCompare(pa.general.name)){
-            const ta = new tableGeneral(pa.general, this.useCase);
-            ta.setAdverbs(this.useCase);
-            ta.computeBuffs(Assistprops);
-            assistants.push({'primary':tg1,'secondary':ta})
-          }
-        })
+        let assistants = new Array<SPItem>();
+        if(this.filteredGenerals !== null && this.filteredGenerals !== undefined) {
+          this.filteredGenerals.forEach((pa) => {
+            if(tg1.name.localeCompare(pa.general.name)){
+              const ta = new tableGeneral(pa.general, this.useCase);
+              ta.setAdverbs(this.useCase);
+              ta.computeBuffs(Assistprops);
+              let item: SPItem = {'pair': {'primary': tg1, 'secondary': ta}}
+              assistants.push(item);
+            }
+          })
+        }
         return assistants;
       }).flat();
       if(items !== null && items !== undefined && items.length > 0) {
