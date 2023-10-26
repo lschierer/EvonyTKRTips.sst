@@ -55,11 +55,11 @@ import {
   type qualitySchemaType,
   type standardSkillBookType,
   troopClass,
-  type troopClassType, buffSchema,
+  type troopClassType, buffSchema, generalConflictArraySchema,
 } from "@schemas/evonySchemas.ts";
 
-import {buff} from "@components/general/buff.ts";
 import {tableGeneral} from "@components/general/tableGeneral.ts";
+import {conflictingGenerals,checkConflicts,initialLoad} from "@components/general/ConflictingSkillExcludes.ts";
 
 const generalArray = z.array(generalObjectSchema).nullish();
 type generalArrayType = z.infer<typeof generalArray>;
@@ -69,7 +69,7 @@ type SortFunctionMap = Record<string,(a: SPItem,b: SPItem) => number>;
 type SPItem = Record<string,{'primary': tableGeneral, 'secondary': tableGeneral}>;
 
 @customElement('pairing-table')
-export class PairingTable extends withStores(SpectrumElement, [typeAndUseMap,primaryInvestmentMap, secondaryInvestmentMap]) {
+export class PairingTable extends withStores(SpectrumElement, [conflictingGenerals,typeAndUseMap,primaryInvestmentMap, secondaryInvestmentMap]) {
 
   @state()
   private table: Table | undefined;
@@ -83,6 +83,12 @@ export class PairingTable extends withStores(SpectrumElement, [typeAndUseMap,pri
   private generalRecords: SPItem[];
 
   @property({type: String})
+  public conflictData: string;
+  
+  @state()
+  private _conflictData: URL;
+  
+  @property({type: String})
   public dataUrl: string;
 
   @state()
@@ -90,6 +96,9 @@ export class PairingTable extends withStores(SpectrumElement, [typeAndUseMap,pri
 
   @state()
   protected filteredGenerals: generalArrayType;
+  
+  @state()
+  protected generalConflictRecords: Record<string,string[]>[];
  
   @state()
   protected unitClass: troopClassType = 'all';
@@ -100,6 +109,9 @@ export class PairingTable extends withStores(SpectrumElement, [typeAndUseMap,pri
   constructor() {
     super();
 
+    this.generalConflictRecords = new Array<Record<string,string[]>>();
+    this.conflictData = 'http://localhost';
+    this._conflictData = new URL(this.conflictData);
     this.dataUrl = 'http://localhost';
     this._dataUrl = new URL(this.dataUrl);
     this.filteredGenerals = new Array<generalObject>();
@@ -122,6 +134,9 @@ export class PairingTable extends withStores(SpectrumElement, [typeAndUseMap,pri
     typeAndUseMap.subscribe((tau) => {
       this.unitClass = tau.type;
       this.useCase = tau.use;
+    })
+    conflictingGenerals.subscribe((cg) => {
+      initialLoad();
     })
   }
 
@@ -233,6 +248,24 @@ export class PairingTable extends withStores(SpectrumElement, [typeAndUseMap,pri
   }
 
   async willUpdate(changedProperties: PropertyValues<this>) {
+    if (changedProperties.has('conflictData')) {
+      this._conflictData = new URL(this.conflictData);
+      
+      const result = await fetch(this._conflictData).then((response) => {
+        if(response.ok) {
+          return response.text();
+        } else throw new Error('Status code error: ' + response.status);
+      }).then((text) => {
+        const jsonResult = JSON.parse(text);
+        const result = generalConflictArraySchema.safeParse(jsonResult);
+        if(result.success) {
+          this.generalConflictRecords = result.data.conflicts;
+          return true;
+        } else {
+          result.error;
+        }
+      })
+    }
     if (changedProperties.has('dataUrl')) {
       this._dataUrl = new URL(this.dataUrl);
 
@@ -322,11 +355,17 @@ export class PairingTable extends withStores(SpectrumElement, [typeAndUseMap,pri
         if(this.filteredGenerals !== null && this.filteredGenerals !== undefined) {
           this.filteredGenerals.forEach((pa) => {
             if(tg1.name.localeCompare(pa.general.name)){
-              const ta = new tableGeneral(pa.general, this.useCase);
-              ta.setAdverbs(this.useCase);
-              ta.computeBuffs(Assistprops);
-              let item: SPItem = {'pair': {'primary': tg1, 'secondary': ta}}
-              assistants.push(item);
+              //const conflict = checkConflicts(tg1.name,pa.general.name,this.unitClass);
+              const conflict = false;
+              console.log(`checkConflicts returned ${conflict} for ${tg1.name} and ${pa.general.name}`)
+              if(!conflict) {
+                const ta = new tableGeneral(pa.general, this.useCase);
+                ta.setAdverbs(this.useCase);
+                ta.computeBuffs(Assistprops);
+                let item: SPItem = {'pair': {'primary': tg1, 'secondary': ta}}
+                assistants.push(item);
+              } else {
+              }
             }
           })
         }
