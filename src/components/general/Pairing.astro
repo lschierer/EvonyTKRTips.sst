@@ -2,7 +2,7 @@
 import {PairingTable} from "./PairingTable";
 
 const dataUrl = new URL('/generals/all.json', Astro.url)
-const conflictData = new URL('/generals/conflicts.json', Astro.url)
+const conflictData = new URL('/generalConflictData/conflicts.json', Astro.url)
 ---
 
 <PairingTable dataurl={dataUrl} conflictdata={conflictData} client:only></PairingTable>

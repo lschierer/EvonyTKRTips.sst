@@ -25,7 +25,7 @@ export const GET: APIRoute = async ({ params, request }) => {
       const validation = generalConflictArraySchema.safeParse(ca.data);
       if(validation.success) {
 
-        return validation.data.conflicts
+        return validation.data
       } else{
         console.error(`bad validation`)
         console.error(validation.error)

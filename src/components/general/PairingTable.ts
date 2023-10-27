@@ -59,7 +59,12 @@ import {
 } from "@schemas/evonySchemas.ts";
 
 import {tableGeneral} from "@components/general/tableGeneral.ts";
-import {conflictingGenerals,checkConflicts,initialLoad} from "@components/general/ConflictingSkillExcludes.ts";
+import {
+  conflictingGenerals,
+  conflictRecords,
+  checkConflicts,
+  initialLoad
+} from "@components/general/ConflictingSkillExcludes.ts";
 
 const generalArray = z.array(generalObjectSchema).nullish();
 type generalArrayType = z.infer<typeof generalArray>;
@@ -69,7 +74,7 @@ type SortFunctionMap = Record<string,(a: SPItem,b: SPItem) => number>;
 type SPItem = Record<string,{'primary': tableGeneral, 'secondary': tableGeneral}>;
 
 @customElement('pairing-table')
-export class PairingTable extends withStores(SpectrumElement, [conflictingGenerals,typeAndUseMap,primaryInvestmentMap, secondaryInvestmentMap]) {
+export class PairingTable extends withStores(SpectrumElement, [conflictingGenerals,conflictRecords,typeAndUseMap,primaryInvestmentMap, secondaryInvestmentMap]) {
 
   @state()
   private table: Table | undefined;
@@ -96,10 +101,7 @@ export class PairingTable extends withStores(SpectrumElement, [conflictingGenera
 
   @state()
   protected filteredGenerals: generalArrayType;
-  
-  @state()
-  protected generalConflictRecords: Record<string,string[]>[];
- 
+
   @state()
   protected unitClass: troopClassType = 'all';
 
@@ -136,7 +138,7 @@ export class PairingTable extends withStores(SpectrumElement, [conflictingGenera
       this.useCase = tau.use;
     })
     conflictingGenerals.subscribe((cg) => {
-      initialLoad();
+      this.processGenerals();
     })
   }
 
@@ -257,12 +259,12 @@ export class PairingTable extends withStores(SpectrumElement, [conflictingGenera
         } else throw new Error('Status code error: ' + response.status);
       }).then((text) => {
         const jsonResult = JSON.parse(text);
-        const result = generalConflictArraySchema.safeParse(jsonResult);
+        const result = generalConflictArraySchema.array().safeParse(jsonResult);
         if(result.success) {
-          this.generalConflictRecords = result.data.conflicts;
+          conflictRecords.set(result.data);
           return true;
         } else {
-          result.error;
+          console.error(result.error)
         }
       })
     }
@@ -355,16 +357,19 @@ export class PairingTable extends withStores(SpectrumElement, [conflictingGenera
         if(this.filteredGenerals !== null && this.filteredGenerals !== undefined) {
           this.filteredGenerals.forEach((pa) => {
             if(tg1.name.localeCompare(pa.general.name)){
-              //const conflict = checkConflicts(tg1.name,pa.general.name,this.unitClass);
-              const conflict = false;
-              console.log(`checkConflicts returned ${conflict} for ${tg1.name} and ${pa.general.name}`)
-              if(!conflict) {
-                const ta = new tableGeneral(pa.general, this.useCase);
-                ta.setAdverbs(this.useCase);
-                ta.computeBuffs(Assistprops);
-                let item: SPItem = {'pair': {'primary': tg1, 'secondary': ta}}
-                assistants.push(item);
-              } else {
+              const conflictStore = conflictingGenerals.get();
+              if(conflictStore !== null && conflictStore !== undefined) {
+                const generalStore = conflictStore.get(tg1.name);
+                if(generalStore !== null && generalStore !== undefined) {
+                  if(!generalStore.includes(pa.general.name)) {
+                    const ta = new tableGeneral(pa.general, this.useCase);
+                    ta.setAdverbs(this.useCase);
+                    ta.computeBuffs(Assistprops);
+                    let item: SPItem = {'pair': {'primary': tg1, 'secondary': ta}}
+                    assistants.push(item);
+                  } else {
+                  }
+                }
               }
             }
           })

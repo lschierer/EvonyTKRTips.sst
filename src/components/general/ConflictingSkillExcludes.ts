@@ -4,21 +4,76 @@ import {
   generalObjectSchema,
   type generalObject,
   troopClass,
-  type troopClassType,
+  type troopClassType, generalConflictArraySchema, type generalConflictArray,
 } from '@schemas/evonySchemas.ts';
 
-import {map, action} from "nanostores";
+import {atom, map, action, computed} from "nanostores";
+import { logger } from '@nanostores/logger'
+
 import {z} from "zod";
 
+type GeneralDictionary = {
+  [key: string]: Array<string>;
+}
 
 const letters = new Set(["a","b","c"]);
 
+const generalConflictCollection = z.array(generalConflictArraySchema);
+export const conflictRecords = atom<Record<string,string[]>[]>();
 
-export const conflictingGenerals = map<Record<troopClassType,Set<string>[]>>();
+export const conflictingGenerals = computed(conflictRecords, CRs => {
+  if(CRs !== undefined && CRs !== null) {
+    const valid = generalConflictCollection.safeParse(CRs)
+    if (valid.success) {
+      let Returnable = new Map<string,Array<string>>();
+      for (let i = 0; i < valid.data.length; i++) {
+        let o1 = valid.data[i]
+        let valid2 = generalConflictArraySchema.safeParse(o1);
+        if (valid2.success) {
+          const data: Record<string, string>[] = [valid2.data.conflicts].flat();
+          for (let j = 0; j < data.length; j++) {
+            const o2 = data[j];
+            const keys = Object.keys(o2);
+            for (let k = 0; k < keys.length; k++) {
+              if (keys[k].localeCompare('other')) {
+                for (let l = 0; l < o2[keys[k]].length; l++) {
+                  const o3: string[] = o2[keys[k]];
+                  let n1: string = o3[l];
+                  let confl = new Set<string>();
+                  for (let m = 0; m < keys.length; m++) {
+                    for(let n = 0; n < o2[keys[m]].length; n++) {
+                      const o4: string = o2[keys[m]][n];
+                      if(n1.localeCompare(o4)) {
+                        confl.add(o4);
+                      }
+                    }
+                    let n2: string = o3[m]
+                    if(n1.localeCompare(n2)) {
+                      confl.add(n2);
+                    }
+                  }
+                  const stringArray: string[] = [...confl];
+                  Returnable.set(n1, stringArray);
+                }
+              }
+            }
+          }
+        } else {
+          console.error(`invalid assumption about zod data type`)
+        }
+      }
+      return Returnable;
+    }
+  }
+});
+
+let destroy = logger({
+  'ConflictRecords': conflictRecords,
+  'ConflictingGenerals': conflictingGenerals,
+})
 
 export const initialLoad = action(conflictingGenerals, 'initial Load', (store) => {
   mountLoad();
-  let tmp = (conflictingGenerals.get())[troopClass.enum.Mounted];
 })
 
 export function checkConflicts (name1: string, name2: string, generalClass?: troopClassType) {
@@ -27,46 +82,14 @@ export function checkConflicts (name1: string, name2: string, generalClass?: tro
   }
   let records = conflictingGenerals.get()
   if(records !== null && records !== undefined) {
-    if(generalClass !== undefined && generalClass !== null && generalClass !== troopClass.enum.all ) {
-      const sets = records[generalClass];
-      if(sets !== null && sets !== undefined) {
-        const setResult =  sets.map((s) => {
-          if(s.has(name1)) {
-            if(s.has(name2)) {
-              return true;
-            } else {
-              return false;
-            }
-          } else {
-          }
-        })
-        return setResult.includes(true);
-      }
+    const personal = records.get(name1)
+    if(personal !== null && personal !== undefined){
+        const searchable =Object.values(personal).flat(Infinity)
+        return searchable.includes(name2);
+    } else {
     }
-    let types = new Array<troopClassType>();
-    types.push(troopClass.enum.Mounted);
-    types.push(troopClass.enum.Ground);
-    types.push(troopClass.enum.Archers);
-    types.push(troopClass.enum.Siege);
-    
-    const typesResult =  types.map((t) => {
-      let sets:Set<string>[] = records[t];
-      if(sets !== null && sets !== undefined) {
-        const setResult = sets.map((s) => {
-          if (s.has(name1)) {
-            if (s.has(name2)) {
-              return true;
-            } else {
-              return false;
-            }
-          } else {
-          }
-        })
-        return setResult.includes(true);
-      }
-    })
-    return typesResult.includes(true);
   }
+  console.error(`no records returned at all;`)
   return false;
 }
 
