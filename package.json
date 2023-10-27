@@ -22,6 +22,7 @@
     "@lit-labs/ssr-client": "^1.1.4",
     "@lit-labs/ssr-dom-shim": "^1.1.2",
     "@nanostores/lit": "^0.2.0",
+    "@nanostores/logger": "^0.2.4",
     "@spectrum-css/button": "^11.0.13",
     "@spectrum-css/icon": "^4.0.3",
     "@spectrum-css/page": "^6.0.5",
