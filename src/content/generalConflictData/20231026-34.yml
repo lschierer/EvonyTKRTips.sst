@@ -2,3 +2,5 @@
 conflicts:
   j:
     - Pyrrhus
+  other:
+    - Trajan

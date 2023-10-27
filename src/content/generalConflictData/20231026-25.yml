@@ -3,3 +3,6 @@ conflicts:
   af:
     - Biabars
     - Cleopatra
+  other:
+    - Theodora
+

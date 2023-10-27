@@ -2,3 +2,5 @@
 conflicts:
   k:
     - Takeda Shingen
+  other:
+    - Robert the Bruce
