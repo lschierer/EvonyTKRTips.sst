@@ -8,6 +8,7 @@ import 'iconify-icon';
 import '@spectrum-web-components/top-nav/sp-top-nav.js';
 import '@spectrum-web-components/top-nav/sp-top-nav-item.js';
 import '@spectrum-web-components/icon/sp-icon.js';
+import '@spectrum-web-components/action-menu/sync/sp-action-menu.js';
 import '@spectrum-web-components/menu/sp-menu-item.js';
 import '@spectrum-web-components/picker/sp-picker.js';
 
@@ -103,6 +104,15 @@ export class SpectrumTopNav extends LitElement {
       background-color: var(--spectrum-cyan-600);
       
     }
+    sp-action-menu {
+      margin-right: 1rem;
+      margin-left: 1rem;
+    }
+    
+    sp-top-nav-item {
+      margin-right: 1rem;
+      margin-left: 1rem;
+    }
     :host {
       width: 100%;
       height: 100%
@@ -112,17 +122,18 @@ export class SpectrumTopNav extends LitElement {
     
     return html`
             <sp-top-nav size="xl" client:load >
-                <sp-top-nav-item></sp-top-nav-item>
                 <sp-top-nav-item href="/"><strong>Evony TKR Tips</strong></sp-top-nav-item>
                 <sp-top-nav-item href="/generals/" style="margin-inline-start: auto;">Generals</sp-top-nav-item>
                 <sp-top-nav-item href="/monsters/">Monsters</sp-top-nav-item>
                 <sp-top-nav-item href="/svs/">SvS</sp-top-nav-item>
                 <sp-top-nav-item href="/reference/">Reference</sp-top-nav-item>
-                <sp-picker
+                <sp-action-menu
                         id="themeSelect"
-                        size="xs"
+                        size="s"
                         label="" quiet
                         value=""
+                        placement="bottom-end"
+                        style="margin-inline-start: auto;"
                         @change="${this.setTheme}"
                 >
                     <sp-menu-item value="light">
@@ -137,9 +148,8 @@ export class SpectrumTopNav extends LitElement {
                         <iconify-icon icon="ph:laptop-duotone" slot="icon"></iconify-icon>
                         Auto
                     </sp-menu-item>
-                </sp-picker>
+                </sp-action-menu>
                 
-                <sp-top-nav-item></sp-top-nav-item>
             </sp-top-nav>
         `
   }
