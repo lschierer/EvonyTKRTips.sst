@@ -353,7 +353,7 @@ export const BlazonSetSechma = z.object({
 export type BlazonSet = z.infer<typeof BlazonSetSechma>;
 
 export const generalConflictArraySchema = z.object({
-  conflicts: z.record(z.string(),z.string().array()).array()
+    conflicts: z.union([z.record(z.string(), z.array(z.string())), z.array(z.record(z.string(), z.array(z.string())))]),
 });
 
 export type generalConflictArray = z.infer<typeof generalConflictArraySchema>;
