@@ -1,0 +1,271 @@
+---
+general:
+  name: Laudon
+  leadership: 117
+  leadership_increment: 8.82
+  attack: 118
+  attack_increment: 9.12
+  defense: 113
+  defense_increment: 8.76
+  politics: 108
+  politics_increment: 8.74
+  stars: '10'
+  level: '1'
+  score_as: Mounted
+  books:
+    - name: Silesian Wars
+      buff:
+        - attribute: Attack
+          class: Mounted
+          value:
+            number: 40
+            unit: percentage
+        - attribute: HP
+          class: Mounted
+          value:
+            number: 15
+            unit: percentage
+        - attribute: Defense
+          class: Mounted
+          value:
+            number: 15
+            unit: percentage
+  ascending:
+    - level: '6'
+      buff:
+        - attribute: Attack
+          class: Mounted
+          value:
+            number: 5
+            unit: percentage
+        - attribute: Attack
+          class: Ground
+          value:
+            number: 5
+            unit: percentage
+        - attribute: Defense
+          value:
+            number: 5
+            unit: percentage
+        - attribute: HP
+          value:
+            number: 5
+            unit: percentage
+    - level: '7'
+      buff:
+        - attribute: Death_to_Wounded
+          condition: Marching
+          value:
+            number: 10
+            unit: percentage
+    - level: '8'
+      buff:
+        - attribute: Attack
+          class: Mounted
+          value:
+            number: 10
+            unit: percentage
+        - attribute: Attack
+          class: Ground
+          value:
+            number: 10
+            unit: percentage
+        - attribute: Defense
+          value:
+            number: 20
+            unit: percentage
+    - level: '9'
+      buff:
+        - attribute: Attack
+          class: Mounted
+          value:
+            number: 25
+            unit: percentage
+        - attribute: Defense
+          class: Mounted
+          value:
+            number: 10
+            unit: percentage
+        - attribute: HP
+          class: Mounted
+          value:
+            number: 10
+            unit: percentage
+  specialities:
+    - name: Strike
+      attribute:
+        - level: Green
+          buff:
+            - attribute: Marching_Speed
+              value:
+                number: 1
+                unit: percentage
+            - attribute: Attack
+              condition: Marching
+              class: Mounted
+              value:
+                number: 2
+                unit: percentage
+        - level: Blue
+          buff:
+            - attribute: Marching_Speed
+              value:
+                number: 1
+                unit: percentage
+            - attribute: Attack
+              condition: Marching
+              class: Mounted
+              value:
+                number: 2
+                unit: percentage
+        - level: Purple
+          buff:
+            - attribute: Marching_Speed
+              value:
+                number: 2
+                unit: percentage
+            - attribute: Attack
+              condition: Marching
+              class: Mounted
+              value:
+                number: 4
+                unit: percentage
+        - level: Orange
+          buff:
+            - attribute: Marching_Speed
+              value:
+                number: 2
+                unit: percentage
+            - attribute: Attack
+              condition: Marching
+              class: Mounted
+              value:
+                number: 4
+                unit: percentage
+        - level: Gold
+          buff:
+            - attribute: Marching_Speed
+              value:
+                number: 4
+                unit: percentage
+            - attribute: Attack
+              condition: Marching
+              class: Mounted
+              value:
+                number: 8
+                unit: percentage
+    - name: Mounted Troop Ares
+      attribute:
+        - level: Green
+          buff:
+            - attribute: Attack
+              class: Mounted
+              value:
+                number: 1
+                unit: percentage
+            - attribute: HP
+              class: Mounted
+              value:
+                number: 1
+                unit: percentage
+            - attribute: Defense
+              class: Mounted
+              value:
+                number: 1
+                unit: percentage
+        - level: Blue
+          buff:
+            - attribute: Attack
+              class: Mounted
+              value:
+                number: 1
+                unit: percentage
+            - attribute: HP
+              class: Mounted
+              value:
+                number: 1
+                unit: percentage
+            - attribute: Defense
+              class: Mounted
+              value:
+                number: 1
+                unit: percentage
+        - level: Purple
+          buff:
+            - attribute: Attack
+              class: Mounted
+              value:
+                number: 2
+                unit: percentage
+            - attribute: HP
+              class: Mounted
+              value:
+                number: 2
+                unit: percentage
+            - attribute: Defense
+              class: Mounted
+              value:
+                number: 2
+                unit: percentage
+    - name: Mounted Troop Defense
+      attribute:
+        - level: Green
+          buff:
+            - attribute: HP
+              class: Mounted
+              value:
+                number: 1
+                unit: percentage
+            - attribute: Defense
+              class: Mounted
+              value:
+                number: 1
+                unit: percentage
+        - level: Blue
+          buff:
+            - attribute: HP
+              class: Mounted
+              value:
+                number: 1
+                unit: percentage
+            - attribute: Defense
+              class: Mounted
+              value:
+                number: 1
+                unit: percentage
+        - level: Purple
+          buff:
+            - attribute: HP
+              class: Mounted
+              value:
+                number: 2
+                unit: percentage
+            - attribute: Defense
+              class: Mounted
+              value:
+                number: 2
+                unit: percentage
+        - level: Orange
+          buff:
+            - attribute: HP
+              class: Mounted
+              value:
+                number: 2
+                unit: percentage
+            - attribute: Defense
+              class: Mounted
+              value:
+                number: 2
+                unit: percentage
+        - level: Gold
+          buff:
+            - attribute: HP
+              class: Mounted
+              value:
+                number: 4
+                unit: percentage
+            - attribute: Defense
+              class: Mounted
+              value:
+                number: 4
+                unit: percentage
