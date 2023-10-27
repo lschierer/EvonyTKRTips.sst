@@ -2,3 +2,7 @@
 conflicts:
   g:
     - Trajan
+  other:
+    - Robert the Bruce
+    - Pyrrhus
+

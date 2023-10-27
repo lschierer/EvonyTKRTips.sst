@@ -3,3 +3,7 @@ conflicts:
   i:
     - Peter the Great
     - Miyamoto Musashi
+  other:
+    - Trajan
+    - Robert the Bruce
+

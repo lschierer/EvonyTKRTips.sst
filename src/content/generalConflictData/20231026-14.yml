@@ -2,11 +2,13 @@
 conflicts:
   v:
     - Laudon
-    - Martinus
     - Prince Eugene
+    - Martinus
     - Li Jing
     - Washington
     - Robert Guiscard
-    - Khalid
-    - Honda Tadakatsu
     - Xiang Yu
+  other:
+    - Ii Naomasa
+    - Honda Tadakatsu
+    - Khalid
