@@ -159,7 +159,7 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
   private radioHandler(e: CustomEvent) {
     console.log(`radio event handler`)
     const radio = (e.target as RadioGroup);
-    if(radio !== null && radio !== undefined && radio.value !== null && radio.selected !== undefined) {
+    if(radio !== null && radio !== undefined && radio.selected !== null && radio.selected !== undefined) {
       const valid = BoS.safeParse(radio.selected)
       if(valid.success) {
         const value = valid.data;
