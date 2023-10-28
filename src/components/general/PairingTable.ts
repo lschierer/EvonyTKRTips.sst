@@ -138,6 +138,15 @@ export class PairingTable extends withStores(SpectrumElement, [conflictingGenera
     conflictingGenerals.subscribe((cg) => {
       this.processGenerals();
     })
+
+    primaryInvestmentMap.subscribe(() => {
+      this.processGenerals();
+    })
+
+    secondaryInvestmentMap.subscribe(() => {
+      this.processGenerals();
+    })
+
   }
 
   firstUpdated() {

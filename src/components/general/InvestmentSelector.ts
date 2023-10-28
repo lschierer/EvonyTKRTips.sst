@@ -2,6 +2,8 @@ import {html, css, nothing, type PropertyValues} from "lit";
 import {customElement, property, state} from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
+import {z} from 'zod';
+
 import {withStores} from "@nanostores/lit";
 
 import '@spectrum-web-components/field-group/sp-field-group.js';
@@ -33,13 +35,20 @@ import {
 
 import {type generalInvestment, primaryInvestmentMap, secondaryInvestmentMap} from './generalInvestmentStore.ts';
 
+const generalRole = z.enum(['primary','assistant']);
+type generalRoleType = z.infer<typeof generalRole>;
+
+const BoS = z.enum(['none', 'dragon', 'beast']);
+type BoSType = z.infer<typeof BoS>;
 
 @customElement('investment-selector')
 export class InvestmentSelector extends withStores(SpectrumElement, [primaryInvestmentMap, secondaryInvestmentMap]) {
   
   @property({type: String})
-  public role: string = 'primary';
-  
+  public role: string;
+
+  private _role: generalRoleType;
+
   @state()
   private disableSpecial4: boolean = false;
   
@@ -47,6 +56,8 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
   
   constructor() {
     super();
+    this.role = 'primary';
+    this._role = generalRole.enum.primary;
   }
   
   private MutationObserverCallback = (mutationList: MutationRecord[], observer: MutationObserver) => {
@@ -61,13 +72,13 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
   
   connectedCallback() {
     super.connectedCallback();
-    primaryInvestmentMap.setKey('dragon', true);
+    primaryInvestmentMap.setKey(BoS.enum.dragon, true);
     primaryInvestmentMap.setKey('ascending', '10');
     primaryInvestmentMap.setKey('speciality1', qualitySchema.enum.Gold);
     primaryInvestmentMap.setKey('speciality2', qualitySchema.enum.Gold);
     primaryInvestmentMap.setKey('speciality3', qualitySchema.enum.Gold);
     primaryInvestmentMap.setKey('speciality4', qualitySchema.enum.Gold);
-    secondaryInvestmentMap.setKey('dragon', false);
+    secondaryInvestmentMap.setKey(BoS.enum.dragon, false);
     secondaryInvestmentMap.setKey('ascending', '0');
     secondaryInvestmentMap.setKey('speciality1', qualitySchema.enum.Gold);
     secondaryInvestmentMap.setKey('speciality2', qualitySchema.enum.Gold);
@@ -86,7 +97,7 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
     });
     this.dispatchEvent(myEvent);
     const picker = (e.target as Picker);
-    if (!this.role.localeCompare('primary')) {
+    if (this._role === generalRole.enum.primary) {
       if (!picker.id.localeCompare('ascending')) {
         const validation = levelSchema.safeParse(picker.value)
         if (validation.success) {
@@ -145,33 +156,46 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
     this.disable4();
   }
 
-  private radioHandler(e: Event) {
-    const radio = (e.target as Radio);
-    const value = radio.value;
-    if(!value.localeCompare('dragon')) {
-      if(!this.role.localeCompare('primary')) {
-        primaryInvestmentMap.setKey('dragon',true);
-        primaryInvestmentMap.setKey('beast',false);
+  private radioHandler(e: CustomEvent) {
+    console.log(`radio event handler`)
+    const radio = (e.target as RadioGroup);
+    if(radio !== null && radio !== undefined && radio.value !== null && radio.selected !== undefined) {
+      const valid = BoS.safeParse(radio.selected)
+      if(valid.success) {
+        const value = valid.data;
+        console.log(`and value is ${value}`)
+        if(value && value === BoS.enum.dragon) {
+          if(this._role === generalRole.enum.primary) {
+            primaryInvestmentMap.setKey(BoS.enum.dragon,true);
+            primaryInvestmentMap.setKey(BoS.enum.beast,false);
+          } else {
+            secondaryInvestmentMap.setKey(BoS.enum.dragon,true);
+            secondaryInvestmentMap.setKey(BoS.enum.beast,false);
+          }
+        }
+        if(value === BoS.enum.beast) {
+          if(this._role === generalRole.enum.primary) {
+            primaryInvestmentMap.setKey(BoS.enum.dragon,false);
+            primaryInvestmentMap.setKey(BoS.enum.beast,true);
+          } else {
+            secondaryInvestmentMap.setKey(BoS.enum.dragon,false);
+            secondaryInvestmentMap.setKey(BoS.enum.beast,true);
+          }
+        }
+        if (value === BoS.enum.none) {
+          if(this._role === generalRole.enum.primary) {
+            primaryInvestmentMap.setKey(BoS.enum.dragon,false);
+            primaryInvestmentMap.setKey(BoS.enum.beast,false);
+          } else {
+            secondaryInvestmentMap.setKey(BoS.enum.dragon,false);
+            secondaryInvestmentMap.setKey(BoS.enum.beast,false);
+          }
+        }
       } else {
-        secondaryInvestmentMap.setKey('dragon',true);
-        secondaryInvestmentMap.setKey('beast',false);
-      }
-    } else if(!value.localeCompare('beast')) {
-      if(!this.role.localeCompare('primary')) {
-        primaryInvestmentMap.setKey('dragon',false);
-        primaryInvestmentMap.setKey('beast',true);
-      } else {
-        secondaryInvestmentMap.setKey('dragon',false);
-        secondaryInvestmentMap.setKey('beast',true);
+        console.error(valid.error)
       }
     } else {
-      if(!this.role.localeCompare('primary')) {
-        primaryInvestmentMap.setKey('dragon',false);
-        primaryInvestmentMap.setKey('beast',false);
-      } else {
-        secondaryInvestmentMap.setKey('dragon',false);
-        secondaryInvestmentMap.setKey('beast',false);
-      }
+      console.log(`could not handle radio event`)
     }
   }
 
@@ -193,7 +217,7 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
     const disabler: Record<string, (tf: boolean) => void> = {
       'primary' : (tf: boolean) => {
         if(tf) {
-          const value = qualitySchema.safeParse(investmentMapGet[this.role]['speciality4']());
+          const value = qualitySchema.safeParse(investmentMapGet[this._role]['speciality4']());
           if(value.success) {
             this.Special4disabledValue = value.data;
           }
@@ -206,7 +230,7 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
       },
       'secondary' : (tf) => {
         if(tf) {
-          const value = qualitySchema.safeParse(investmentMapGet[this.role]['speciality4']());
+          const value = qualitySchema.safeParse(investmentMapGet[this._role]['speciality4']());
           if(value.success) {
             this.Special4disabledValue = value.data;
           }
@@ -219,33 +243,43 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
       },
     }
     let specials = new Array<qualitySchemaType>();
-    let value = qualitySchema.safeParse(investmentMapGet[this.role]['speciality1']());
+    let value = qualitySchema.safeParse(investmentMapGet[this._role]['speciality1']());
     if(value.success){
       specials.push(value.data);
     }
-    value = qualitySchema.safeParse(investmentMapGet[this.role]['speciality2']());
+    value = qualitySchema.safeParse(investmentMapGet[this._role]['speciality2']());
     if(value.success){
       specials.push(value.data);
     }
-    value = qualitySchema.safeParse(investmentMapGet[this.role]['speciality3']());
+    value = qualitySchema.safeParse(investmentMapGet[this._role]['speciality3']());
     if(value.success){
       specials.push(value.data);
     }
     if(specials.includes(qualitySchema.enum.Disabled)) {
-      disabler[this.role](true);
+      disabler[this._role](true);
     } else if ( specials.includes(qualitySchema.enum.Green)) {
-      disabler[this.role](true);
+      disabler[this._role](true);
     } else if (specials.includes(qualitySchema.enum.Blue)) {
-      disabler[this.role](true);
+      disabler[this._role](true);
     } else if (specials.includes(qualitySchema.enum.Purple)) {
-      disabler[this.role](true);
+      disabler[this._role](true);
     } else if (specials.includes(qualitySchema.enum.Orange)){
-      disabler[this.role](true);
+      disabler[this._role](true);
     } else {
-      disabler[this.role](false);
+      disabler[this._role](false);
     }
   }
-  
+
+  willUpdate(changedProperties: PropertyValues<this>) {
+    if(changedProperties.has('role')) {
+      const valid = generalRole.safeParse(this.role);
+      if(valid.success) {
+        this._role = valid.data;
+      }
+    }
+  }
+
+
   static styles = css`
     div.fieldGroup {
       display: flex;
@@ -281,7 +315,7 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
   public render() {
     this.disable4();
     let ascendingHtml = html``;
-    if (!this.role.localeCompare('primary')) {
+    if (this._role === generalRole.enum.primary) {
       ascendingHtml = html`
           <div>
               <sp-field-label for="ascending" size="s">Ascending Level</sp-field-label>
@@ -297,7 +331,7 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
     }
     return html`
         <div class="fieldGroup">
-            <p id="InvestmentFieldGroupHeader">${this.role.charAt(0).toUpperCase() + this.role.slice(1)} General</p>
+            <p id="InvestmentFieldGroupHeader">${this._role.charAt(0).toUpperCase() + this._role.slice(1)} General</p>
             <sp-field-group horizontal>
                 <sp-help-text slot="help-text">Indicate your investment level in the generals.</sp-help-text>
                 ${ascendingHtml}
@@ -352,13 +386,11 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
                 </div>
                 <div >
                   <sp-radio-group label="Small" label="BoS" horizontal
-                  selected=${(!this.role.localeCompare('primary')) ? primaryInvestmentMap.get().dragon ? 
-                      'dragon'  :  primaryInvestmentMap.get().beast ? 
-                          'beast' : 'none' : 'none' } 
+                  selected=${ BoS.enum.none } 
                   @change=${this.radioHandler}>
-                    <sp-radio value="none" size="m">none</sp-radio>
-                    <sp-radio value="beast" size="m">Spiritual Beast Assigned</sp-radio>
-                    <sp-radio value="dragon" size="m">Dragon Assigned</sp-radio>
+                    <sp-radio value=${BoS.enum.none} size="m">none</sp-radio>
+                    <sp-radio value=${BoS.enum.beast} size="m">Spiritual Beast Assigned</sp-radio>
+                    <sp-radio value=${BoS.enum.dragon} size="m">Dragon Assigned</sp-radio>
                   </sp-radio-group>
                 </div>
             </sp-field-group>
