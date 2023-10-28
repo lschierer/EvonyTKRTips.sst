@@ -22,7 +22,12 @@ export default defineConfig({
       customCss: [
         './src/styles/styles.css',
       ],
+      lastUpdated: true,
+      pagination: true,
       sidebar: sidebar,
+      social: {
+        github: 'https://github.com/lschierer/EvonyTKRTips.sst',
+      },
     }),
     {
       name: "sidebar-watch",
