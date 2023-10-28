@@ -8,6 +8,8 @@ import {
   type troopClassType
 } from "@schemas/evonySchemas.ts";
 import {map} from "nanostores";
+import { logger } from '@nanostores/logger'
+
 import {boolean} from "zod";
 
 export interface generalInvestment {
@@ -34,3 +36,9 @@ export const typeAndUseMap = map<generalTypeAndUse>({
 export const primaryInvestmentMap = map<generalInvestment>();
 
 export const secondaryInvestmentMap = map<generalInvestment>();
+
+let destroy = logger({
+  'GeneralTypeAndUseCase': typeAndUseMap,
+  'PrimaryGeneralInvestment': primaryInvestmentMap,
+  'SecondaryGeneralInvestment': secondaryInvestmentMap,
+})
