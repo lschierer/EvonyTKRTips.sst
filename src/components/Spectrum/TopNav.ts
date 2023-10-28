@@ -7,6 +7,7 @@ import 'iconify-icon';
 
 import '@spectrum-web-components/top-nav/sp-top-nav.js';
 import '@spectrum-web-components/top-nav/sp-top-nav-item.js';
+import '@spectrum-web-components/field-group/sp-field-group.js';
 import '@spectrum-web-components/icon/sp-icon.js';
 import '@spectrum-web-components/action-menu/sync/sp-action-menu.js';
 import '@spectrum-web-components/menu/sp-menu-item.js';
@@ -100,6 +101,10 @@ export class SpectrumTopNav extends LitElement {
   }
   
   static styles = css`
+    :root {
+      --flex-end: flex-end;
+    }
+    
     sp-top-nav {
       background-color: var(--spectrum-cyan-600);
       
@@ -107,11 +112,24 @@ export class SpectrumTopNav extends LitElement {
     sp-action-menu {
       margin-right: 1rem;
       margin-left: 1rem;
+      
+      align-self: center;
     }
+    sp-field-group#left {
+      flex: 0 0; 
+      flex-direction: row; 
+      align-items: center; 
+      justify-content: flex-end;
+      min-width: fit-content;
+    }
+    
     
     sp-top-nav-item {
       margin-right: 1rem;
       margin-left: 1rem;
+    }
+    sp-top-nav-item#home {
+      flex-grow: 1;
     }
     :host {
       width: 100%;
@@ -122,34 +140,39 @@ export class SpectrumTopNav extends LitElement {
     
     return html`
             <sp-top-nav size="xl" client:load >
-                <sp-top-nav-item href="/"><strong>Evony TKR Tips</strong></sp-top-nav-item>
+              <sp-top-nav-item id="home" href="/"><strong>Evony TKR Tips</strong></sp-top-nav-item>
+              
                 <sp-top-nav-item href="/generals/" style="margin-inline-start: auto;">Generals</sp-top-nav-item>
                 <sp-top-nav-item href="/monsters/">Monsters</sp-top-nav-item>
                 <sp-top-nav-item href="/svs/">SvS</sp-top-nav-item>
                 <sp-top-nav-item href="/reference/">Reference</sp-top-nav-item>
-                <sp-action-menu
-                        id="themeSelect"
-                        size="s"
-                        label="" quiet
-                        value=""
-                        placement="bottom-end"
-                        style="margin-inline-start: auto;"
-                        @change="${this.setTheme}"
-                >
+                <sp-field-group id="left" horizontal class="non-content" >
+                  <sp-top-nav-item href="https://github.com/lschierer/EvonyTKRTips.sst"  style="align-items: center; justify-content: flex-end">
+                    <iconify-icon icon="codicon:github" style="font-size: 25px; "></iconify-icon>
+                  </sp-top-nav-item>
+                  <sp-action-menu
+                      id="themeSelect"
+                      size="s"
+                      label="" quiet
+                      value=""
+                      placement="bottom-end"
+                      style="margin-inline-start: auto;"
+                      @change="${this.setTheme}"
+                  >
                     <sp-menu-item value="light">
-                        <iconify-icon icon="ph:sun-light" slot="icon"></iconify-icon>
-                        Light
+                      <iconify-icon icon="ph:sun-light" slot="icon"></iconify-icon>
+                      Light
                     </sp-menu-item>
                     <sp-menu-item value="dark">
-                        <iconify-icon icon="ph:moon-fill" slot="icon"></iconify-icon>
-                        Dark
+                      <iconify-icon icon="ph:moon-fill" slot="icon"></iconify-icon>
+                      Dark
                     </sp-menu-item>
                     <sp-menu-item value="auto">
-                        <iconify-icon icon="ph:laptop-duotone" slot="icon"></iconify-icon>
-                        Auto
+                      <iconify-icon icon="ph:laptop-duotone" slot="icon"></iconify-icon>
+                      Auto
                     </sp-menu-item>
-                </sp-action-menu>
-                
+                  </sp-action-menu>
+                </sp-field-group>
             </sp-top-nav>
         `
   }
