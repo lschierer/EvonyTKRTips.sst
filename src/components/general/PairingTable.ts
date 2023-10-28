@@ -63,7 +63,6 @@ import {
   conflictingGenerals,
   conflictRecords,
   checkConflicts,
-  initialLoad
 } from "@components/general/ConflictingSkillExcludes.ts";
 
 const generalArray = z.array(generalObjectSchema).nullish();
@@ -111,7 +110,6 @@ export class PairingTable extends withStores(SpectrumElement, [conflictingGenera
   constructor() {
     super();
 
-    this.generalConflictRecords = new Array<Record<string,string[]>>();
     this.conflictData = 'http://localhost';
     this._conflictData = new URL(this.conflictData);
     this.dataUrl = 'http://localhost';
@@ -261,7 +259,10 @@ export class PairingTable extends withStores(SpectrumElement, [conflictingGenera
         const jsonResult = JSON.parse(text);
         const result = generalConflictArraySchema.array().safeParse(jsonResult);
         if(result.success) {
-          conflictRecords.set(result.data);
+          if(result.data !== undefined) {
+            // @ts-ignore
+            conflictRecords.set(result.data);
+          }
           return true;
         } else {
           console.error(result.error)
@@ -318,6 +319,8 @@ export class PairingTable extends withStores(SpectrumElement, [conflictingGenera
         return false;
       })
       const props = {
+        dragon: primaryInvestmentMap.get().dragon,
+        beast: primaryInvestmentMap.get().beast,
         ascending: primaryInvestmentMap.get().ascending,
         Speciality1: primaryInvestmentMap.get().speciality1,
         Speciality2: primaryInvestmentMap.get().speciality2,
@@ -325,6 +328,8 @@ export class PairingTable extends withStores(SpectrumElement, [conflictingGenera
         Speciality4: primaryInvestmentMap.get().speciality4,
       };
       const Assistprops = {
+        dragon: secondaryInvestmentMap.get().dragon,
+        beast: secondaryInvestmentMap.get().beast,
         ascending: secondaryInvestmentMap.get().ascending,
         Speciality1: secondaryInvestmentMap.get().speciality1,
         Speciality2: secondaryInvestmentMap.get().speciality2,
