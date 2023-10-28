@@ -12,10 +12,17 @@ import '@spectrum-web-components/menu/sp-menu-item.js';
 import '@spectrum-web-components/menu/sp-menu-divider.js';
 import '@spectrum-web-components/picker/sp-picker.js';
 import {Picker} from '@spectrum-web-components/picker';
+import '@spectrum-web-components/radio/sp-radio.js';
+import '@spectrum-web-components/radio/sp-radio-group.js';
+import {
+  Radio,
+  RadioGroup
+} from '@spectrum-web-components/radio';
 import '@spectrum-web-components/tooltip/sp-tooltip.js';
 import {SpectrumElement} from "@spectrum-web-components/base";
 
 import {
+  dragon,
   generalUseCase,
   type generalUseCaseType,
   levelSchema,
@@ -54,11 +61,13 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
   
   connectedCallback() {
     super.connectedCallback();
+    primaryInvestmentMap.setKey('dragon', true);
     primaryInvestmentMap.setKey('ascending', '10');
     primaryInvestmentMap.setKey('speciality1', qualitySchema.enum.Gold);
     primaryInvestmentMap.setKey('speciality2', qualitySchema.enum.Gold);
     primaryInvestmentMap.setKey('speciality3', qualitySchema.enum.Gold);
     primaryInvestmentMap.setKey('speciality4', qualitySchema.enum.Gold);
+    secondaryInvestmentMap.setKey('dragon', false);
     secondaryInvestmentMap.setKey('ascending', '0');
     secondaryInvestmentMap.setKey('speciality1', qualitySchema.enum.Gold);
     secondaryInvestmentMap.setKey('speciality2', qualitySchema.enum.Gold);
@@ -66,7 +75,7 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
     secondaryInvestmentMap.setKey('speciality4', qualitySchema.enum.Gold);
   }
   
-  protected changeHandler(e: Event) {
+  protected changeHandler(e: CustomEvent) {
     let myEvent = new CustomEvent('PickerChanged', {
       detail: {
         id: (e.target as Picker).id,
@@ -135,7 +144,37 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
     secondaryInvestmentMap.setKey('ascending', '0');
     this.disable4();
   }
-  
+
+  private radioHandler(e: Event) {
+    const radio = (e.target as Radio);
+    const value = radio.value;
+    if(!value.localeCompare('dragon')) {
+      if(!this.role.localeCompare('primary')) {
+        primaryInvestmentMap.setKey('dragon',true);
+        primaryInvestmentMap.setKey('beast',false);
+      } else {
+        secondaryInvestmentMap.setKey('dragon',true);
+        secondaryInvestmentMap.setKey('beast',false);
+      }
+    } else if(!value.localeCompare('beast')) {
+      if(!this.role.localeCompare('primary')) {
+        primaryInvestmentMap.setKey('dragon',false);
+        primaryInvestmentMap.setKey('beast',true);
+      } else {
+        secondaryInvestmentMap.setKey('dragon',false);
+        secondaryInvestmentMap.setKey('beast',true);
+      }
+    } else {
+      if(!this.role.localeCompare('primary')) {
+        primaryInvestmentMap.setKey('dragon',false);
+        primaryInvestmentMap.setKey('beast',false);
+      } else {
+        secondaryInvestmentMap.setKey('dragon',false);
+        secondaryInvestmentMap.setKey('beast',false);
+      }
+    }
+  }
+
   private disable4 (){
     const investmentMapGet: Record<string,  Record<string, () => string>> = {
       'primary':  {
@@ -310,6 +349,17 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
                         <sp-menu-item value=${qualitySchema.enum.Orange}>Orange</sp-menu-item>
                         <sp-menu-item value=${qualitySchema.enum.Gold}>Gold</sp-menu-item>
                     </sp-picker>
+                </div>
+                <div >
+                  <sp-radio-group label="Small" label="BoS" horizontal
+                  selected=${(!this.role.localeCompare('primary')) ? primaryInvestmentMap.get().dragon ? 
+                      'dragon'  :  primaryInvestmentMap.get().beast ? 
+                          'beast' : 'none' : 'none' } 
+                  @change=${this.radioHandler}>
+                    <sp-radio value="none" size="m">none</sp-radio>
+                    <sp-radio value="beast" size="m">Spiritual Beast Assigned</sp-radio>
+                    <sp-radio value="dragon" size="m">Dragon Assigned</sp-radio>
+                  </sp-radio-group>
                 </div>
             </sp-field-group>
         </div>

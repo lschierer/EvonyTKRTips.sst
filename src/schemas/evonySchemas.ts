@@ -108,6 +108,7 @@ export const BuffAdverbs =z.enum([
   'When_Rallying',
   'leading_the_army_to_attack',
   'dragon_to_the_attack',
+  'brings_dragon_or_beast_to_attack',
   'Reinforcing',
   'In_City',
   'Defending',
@@ -353,7 +354,10 @@ export const BlazonSetSechma = z.object({
 export type BlazonSet = z.infer<typeof BlazonSetSechma>;
 
 export const generalConflictArraySchema = z.object({
-    conflicts: z.union([z.record(z.string(), z.array(z.string())), z.array(z.record(z.string(), z.array(z.string())))]),
+    conflicts: z.union([
+        z.record(z.string(), z.array(z.string())),
+        z.array(z.record(z.string(), z.array(z.string())))
+        ]),
 });
 
 export type generalConflictArray = z.infer<typeof generalConflictArraySchema>;

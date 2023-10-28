@@ -75,6 +75,8 @@ type generalArrayType = z.infer<typeof generalArray>;
 
 export class tableGeneral {
   readonly name: string;
+  private dragon: boolean = false;
+  private beast: boolean = false;
   private attack: number;
   private defense: number;
   private hp: number;
@@ -125,6 +127,9 @@ export class tableGeneral {
       this.defense = (validation.data.defense + validation.data.defense_increment * 45);
       this.hp = (validation.data.leadership + validation.data.leadership_increment * 45);
       this.unitClass = validation.data.score_as ? validation.data.score_as  : 'all';
+      this._attackBuff = 0;
+      this._hpBuff = 0;
+      this._defenseBuff = 0;
       this.attackBuff = 0;
       this.hpBuff = 0;
       this.defenseBuff = 0;
@@ -137,9 +142,9 @@ export class tableGeneral {
       this.attack = 0;
       this.defense = 0;
       this.hp = 0;
-      this.attackBuff = 0;
-      this.hpBuff = 0;
-      this.defenseBuff = 0;
+      this._attackBuff = 0;
+      this._hpBuff = 0;
+      this._defenseBuff = 0;
       this.unitClass = 'all';
     }
   }
@@ -148,7 +153,7 @@ export class tableGeneral {
     this.adverbs = buffAdverbs[useCase];
   }
   
-  public computeBuffs(props: {ascending: levelSchemaType, Speciality1: qualitySchemaType, Speciality2: qualitySchemaType, Speciality3: qualitySchemaType, Speciality4: qualitySchemaType}) {
+  public computeBuffs(props: {dragon: boolean, beast: boolean, ascending: levelSchemaType, Speciality1: qualitySchemaType, Speciality2: qualitySchemaType, Speciality3: qualitySchemaType, Speciality4: qualitySchemaType}) {
     if(this.general !== null) {
       const {attackBuff, defenseBuff, hpBuff} = buff(this.general,this.adverbs, props);
       this.attackBuff = attackBuff;

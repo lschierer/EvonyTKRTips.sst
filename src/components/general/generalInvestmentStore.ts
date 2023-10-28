@@ -8,8 +8,11 @@ import {
   type troopClassType
 } from "@schemas/evonySchemas.ts";
 import {map} from "nanostores";
+import {boolean} from "zod";
 
 export interface generalInvestment {
+  dragon: boolean,
+  beast: boolean,
   ascending: levelSchemaType,
   speciality1: qualitySchemaType,
   speciality2: qualitySchemaType,
