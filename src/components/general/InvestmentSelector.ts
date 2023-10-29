@@ -35,7 +35,7 @@ import {
 
 import {type generalInvestment, primaryInvestmentMap, secondaryInvestmentMap} from './generalInvestmentStore.ts';
 
-const generalRole = z.enum(['primary','assistant']);
+const generalRole = z.enum(['primary','secondary']);
 type generalRoleType = z.infer<typeof generalRole>;
 
 const BoS = z.enum(['none', 'dragon', 'beast']);
@@ -47,6 +47,7 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
   @property({type: String})
   public role: string;
 
+  @state()
   private _role: generalRoleType;
 
   @state()
@@ -56,8 +57,8 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
   
   constructor() {
     super();
-    this.role = 'primary';
-    this._role = generalRole.enum.primary;
+    this.role = 'secondary';
+    this._role = generalRole.enum.secondary;
   }
   
   private MutationObserverCallback = (mutationList: MutationRecord[], observer: MutationObserver) => {
@@ -153,17 +154,17 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
       }
     }
     secondaryInvestmentMap.setKey('ascending', '0');
-    this.disable4();
+    if(picker.id.localeCompare('Speciality4')){
+      this.disable4();
+    }
   }
 
   private radioHandler(e: CustomEvent) {
-    console.log(`radio event handler`)
     const radio = (e.target as RadioGroup);
     if(radio !== null && radio !== undefined && radio.selected !== null && radio.selected !== undefined) {
       const valid = BoS.safeParse(radio.selected)
       if(valid.success) {
         const value = valid.data;
-        console.log(`and value is ${value}`)
         if(value && value === BoS.enum.dragon) {
           if(this._role === generalRole.enum.primary) {
             primaryInvestmentMap.setKey(BoS.enum.dragon,true);
@@ -195,7 +196,6 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
         console.error(valid.error)
       }
     } else {
-      console.log(`could not handle radio event`)
     }
   }
 
@@ -217,10 +217,6 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
     const disabler: Record<string, (tf: boolean) => void> = {
       'primary' : (tf: boolean) => {
         if(tf) {
-          const value = qualitySchema.safeParse(investmentMapGet[this._role]['speciality4']());
-          if(value.success) {
-            this.Special4disabledValue = value.data;
-          }
           primaryInvestmentMap.setKey('speciality4', qualitySchema.enum.Disabled);
           this.disableSpecial4 = true;
         } else {
@@ -230,10 +226,6 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
       },
       'secondary' : (tf) => {
         if(tf) {
-          const value = qualitySchema.safeParse(investmentMapGet[this._role]['speciality4']());
-          if(value.success) {
-            this.Special4disabledValue = value.data;
-          }
           secondaryInvestmentMap.setKey('speciality4', qualitySchema.enum.Disabled);
           this.disableSpecial4 = true;
         } else {
@@ -256,14 +248,34 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
       specials.push(value.data);
     }
     if(specials.includes(qualitySchema.enum.Disabled)) {
+      const value = qualitySchema.safeParse(investmentMapGet[this._role]['speciality4']());
+      if(value.success) {
+        this.Special4disabledValue = value.data;
+      }
       disabler[this._role](true);
     } else if ( specials.includes(qualitySchema.enum.Green)) {
+      const value = qualitySchema.safeParse(investmentMapGet[this._role]['speciality4']());
+      if(value.success) {
+        this.Special4disabledValue = value.data;
+      }
       disabler[this._role](true);
     } else if (specials.includes(qualitySchema.enum.Blue)) {
+      const value = qualitySchema.safeParse(investmentMapGet[this._role]['speciality4']());
+      if(value.success) {
+        this.Special4disabledValue = value.data;
+      }
       disabler[this._role](true);
     } else if (specials.includes(qualitySchema.enum.Purple)) {
+      const value = qualitySchema.safeParse(investmentMapGet[this._role]['speciality4']());
+      if(value.success) {
+        this.Special4disabledValue = value.data;
+      }
       disabler[this._role](true);
     } else if (specials.includes(qualitySchema.enum.Orange)){
+      const value = qualitySchema.safeParse(investmentMapGet[this._role]['speciality4']());
+      if(value.success) {
+        this.Special4disabledValue = value.data;
+      }
       disabler[this._role](true);
     } else {
       disabler[this._role](false);
@@ -313,7 +325,6 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
   
   
   public render() {
-    this.disable4();
     let ascendingHtml = html``;
     if (this._role === generalRole.enum.primary) {
       ascendingHtml = html`
