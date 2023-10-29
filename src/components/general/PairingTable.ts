@@ -91,6 +91,12 @@ export class PairingTable extends withStores(SpectrumElement, [conflictingGenera
   
   @state()
   private _conflictData: URL;
+
+  @state()
+  private _sort_key: string;
+
+  @state()
+  private _sortDirection: string;
   
   @property({type: String})
   public dataUrl: string;
@@ -116,7 +122,8 @@ export class PairingTable extends withStores(SpectrumElement, [conflictingGenera
     this._dataUrl = new URL(this.dataUrl);
     this.filteredGenerals = new Array<generalObject>();
     this.generalRecords = new Array<SPItem>();
-
+    this._sort_key = 'primeName';
+    this._sortDirection = 'asc';
   }
 
   private MutationObserverCallback = (mutationList: MutationRecord[] , observer: MutationObserver) => {
@@ -149,6 +156,7 @@ export class PairingTable extends withStores(SpectrumElement, [conflictingGenera
 
   }
 
+
   firstUpdated() {
     if (this.renderRoot) {
       this.table = this.tableRef.value
@@ -175,78 +183,11 @@ export class PairingTable extends withStores(SpectrumElement, [conflictingGenera
 
         this.table.addEventListener('sorted', (event) => {
           const {sortDirection, sortKey} = (event as CustomEvent).detail;
-          let items = (this.table!.items ).sort((a, b) => {
-            let ga: string | number = 0;
-            let gb: string | number = 0;
-            const sortFunction: SortFunctionMap = {
-              ['primeName']: (a, b) => {
-                let first: tableGeneral = (((a as SPItem)['pair'])['primary'] as tableGeneral);
-                let second: tableGeneral = (((b as SPItem)['pair'])['secondary'] as tableGeneral);
-                ga = first.name;
-                first = (((b as SPItem)['pair'])['primary'] as tableGeneral);
-                gb = first.name;
-                return (sortDirection === 'asc') ?
-                    (ga.localeCompare(gb, undefined, {sensitivity: "base"})) :
-                    (gb.localeCompare(ga, undefined, {sensitivity: "base"}))
-              },
-              ['assistName']: (a,b) => {
-                let first: tableGeneral = (((a as SPItem)['pair'])['secondary'] as tableGeneral);
-                ga = first.name;
-                first = (((b as SPItem)['pair'])['secondary'] as tableGeneral);
-                gb = first.name;
-                return (sortDirection === 'asc') ?
-                    (ga.localeCompare(gb, undefined, {sensitivity: "base"})) :
-                    (gb.localeCompare(ga, undefined, {sensitivity: "base"}))
-              },
-              ['attackBuff']: (a,b) => {
-                let first: tableGeneral = (((a as SPItem)['pair'])['primary'] as tableGeneral);
-                let second: tableGeneral = (((a as SPItem)['pair'])['secondary'] as tableGeneral);
-                ga = first.attackBuff + second.attackBuff;
-                first = (((b as SPItem)['pair'])['primary'] as tableGeneral);
-                second = (((b as SPItem)['pair'])['secondary'] as tableGeneral);
-                gb = first.attackBuff + second.attackBuff;
-                if(ga === gb) {
-                  return 0;
-                } else {
-                  return sortDirection === 'asc' ?
-                      (ga < gb ? -1 : 1) :
-                      (ga < gb ? 1 : -1);
-                }
-              },
-              ['defenseBuff']: (a, b) => {
-                let first: tableGeneral = (((a as SPItem)['pair'])['primary'] as tableGeneral);
-                let second: tableGeneral = (((a as SPItem)['pair'])['secondary'] as tableGeneral);
-                ga = first.defenseBuff + second.defenseBuff;
-                first = (((b as SPItem)['pair'])['primary'] as tableGeneral);
-                second = (((b as SPItem)['pair'])['secondary'] as tableGeneral);
-                gb = first.defenseBuff + second.defenseBuff;
-                if(ga === gb) {
-                  return 0;
-                } else {
-                  return sortDirection === 'asc' ?
-                      (ga < gb ? -1 : 1) :
-                      (ga < gb ? 1 : -1);
-                }
-              },
-              ['HPBuff']: (a, b) => {
-                let first: tableGeneral = (((a as SPItem)['pair'])['primary'] as tableGeneral);
-                let second: tableGeneral = (((a as SPItem)['pair'])['secondary'] as tableGeneral);
-                ga = first.hpBuff + second.hpBuff;
-                first = (((b as SPItem)['pair'])['primary'] as tableGeneral);
-                second = (((b as SPItem)['pair'])['secondary'] as tableGeneral);
-                gb = first.hpBuff + second.hpBuff;
-                if(ga === gb) {
-                  return 0;
-                } else {
-                  return sortDirection === 'asc' ?
-                      (ga < gb ? -1 : 1) :
-                      (ga < gb ? 1 : -1);
-                }
-              },
-            }
 
-            const result = sortFunction[sortKey]((a as SPItem),(b as SPItem));
-            return result
+          let items = (this.table!.items ).sort((a, b) => {
+
+            return this.pairSorter(sortDirection, sortKey,(a as SPItem),(b as SPItem));
+
           })
           this.table!.items = [...items];
         });
@@ -306,7 +247,13 @@ export class PairingTable extends withStores(SpectrumElement, [conflictingGenera
     }
     if(this.table !== undefined && this.table !== null ) {
       if (this.generalRecords) {
-        this.table.items = this.generalRecords;
+        const sortDirection = 'asc';
+        const sortKey = 'primeName';
+        this.table.items = this.generalRecords.sort((a, b) => {
+
+          return this.pairSorter(sortDirection, sortKey,(a as SPItem),(b as SPItem));
+
+        });
         this.table.requestUpdate();
       }
     }
@@ -401,6 +348,81 @@ export class PairingTable extends withStores(SpectrumElement, [conflictingGenera
     if(this.table !== null && this.table !== undefined) {
       this.table.requestUpdate();
     }
+  }
+
+
+  public pairSorter(direction: string, key: string, a: SPItem, b: SPItem) {
+    const sortKey = key;
+    const sortDirection = direction;
+    let ga: string | number = 0;
+    let gb: string | number = 0;
+    const sortFunction: SortFunctionMap = {
+      ['primeName']: (a, b) => {
+        let first: tableGeneral = (((a as SPItem)['pair'])['primary'] as tableGeneral);
+        let second: tableGeneral = (((b as SPItem)['pair'])['secondary'] as tableGeneral);
+        ga = first.name;
+        first = (((b as SPItem)['pair'])['primary'] as tableGeneral);
+        gb = first.name;
+        return (sortDirection === 'asc') ?
+            (ga.localeCompare(gb, undefined, {sensitivity: "base"})) :
+            (gb.localeCompare(ga, undefined, {sensitivity: "base"}))
+      },
+      ['assistName']: (a,b) => {
+        let first: tableGeneral = (((a as SPItem)['pair'])['secondary'] as tableGeneral);
+        ga = first.name;
+        first = (((b as SPItem)['pair'])['secondary'] as tableGeneral);
+        gb = first.name;
+        return (sortDirection === 'asc') ?
+            (ga.localeCompare(gb, undefined, {sensitivity: "base"})) :
+            (gb.localeCompare(ga, undefined, {sensitivity: "base"}))
+      },
+      ['attackBuff']: (a,b) => {
+        let first: tableGeneral = (((a as SPItem)['pair'])['primary'] as tableGeneral);
+        let second: tableGeneral = (((a as SPItem)['pair'])['secondary'] as tableGeneral);
+        ga = first.attackBuff + second.attackBuff;
+        first = (((b as SPItem)['pair'])['primary'] as tableGeneral);
+        second = (((b as SPItem)['pair'])['secondary'] as tableGeneral);
+        gb = first.attackBuff + second.attackBuff;
+        if(ga === gb) {
+          return 0;
+        } else {
+          return sortDirection === 'asc' ?
+              (ga < gb ? -1 : 1) :
+              (ga < gb ? 1 : -1);
+        }
+      },
+      ['defenseBuff']: (a, b) => {
+        let first: tableGeneral = (((a as SPItem)['pair'])['primary'] as tableGeneral);
+        let second: tableGeneral = (((a as SPItem)['pair'])['secondary'] as tableGeneral);
+        ga = first.defenseBuff + second.defenseBuff;
+        first = (((b as SPItem)['pair'])['primary'] as tableGeneral);
+        second = (((b as SPItem)['pair'])['secondary'] as tableGeneral);
+        gb = first.defenseBuff + second.defenseBuff;
+        if(ga === gb) {
+          return 0;
+        } else {
+          return sortDirection === 'asc' ?
+              (ga < gb ? -1 : 1) :
+              (ga < gb ? 1 : -1);
+        }
+      },
+      ['HPBuff']: (a, b) => {
+        let first: tableGeneral = (((a as SPItem)['pair'])['primary'] as tableGeneral);
+        let second: tableGeneral = (((a as SPItem)['pair'])['secondary'] as tableGeneral);
+        ga = first.hpBuff + second.hpBuff;
+        first = (((b as SPItem)['pair'])['primary'] as tableGeneral);
+        second = (((b as SPItem)['pair'])['secondary'] as tableGeneral);
+        gb = first.hpBuff + second.hpBuff;
+        if(ga === gb) {
+          return 0;
+        } else {
+          return sortDirection === 'asc' ?
+              (ga < gb ? -1 : 1) :
+              (ga < gb ? 1 : -1);
+        }
+      },
+    }
+    return sortFunction[sortKey](a ,b);
   }
 
   static styles = css`
