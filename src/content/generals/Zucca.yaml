@@ -1,0 +1,453 @@
+---
+general:
+  name: Zucca
+  leadership: 123
+  leadership_increment: 9.11
+  attack: 115
+  attack_increment: 8.87
+  defense: 113
+  defense_increment: 8.81
+  politics: 110
+  politics_increment: 8.59
+  stars: '10'
+  level: '1'
+  score_as: Siege
+  specialities:
+    - name: Siege Machine Assault
+      attribute:
+        - level: Green
+          buff:
+            - attribute: Attack
+              class: Siege
+              value:
+                number: 1
+                unit: percentage
+            - attribute: HP
+              class: Siege
+              value:
+                number: 1
+                unit: percentage
+        - level: Blue
+          buff:
+            - attribute: Attack
+              class: Siege
+              value:
+                number: 1
+                unit: percentage
+            - attribute: HP
+              class: Siege
+              value:
+                number: 1
+                unit: percentage
+        - level: Purple
+          buff:
+            - attribute: Attack
+              class: Siege
+              value:
+                number: 2
+                unit: percentage
+            - attribute: HP
+              class: Siege
+              value:
+                number: 2
+                unit: percentage
+        - level: Orange
+          buff:
+            - attribute: Attack
+              class: Siege
+              value:
+                number: 2
+                unit: percentage
+            - attribute: HP
+              class: Siege
+              value:
+                number: 2
+                unit: percentage
+        - level: Gold
+          buff:
+            - attribute: Attack
+              class: Siege
+              value:
+                number: 4
+                unit: percentage
+            - attribute: HP
+              class: Siege
+              value:
+                number: 4
+                unit: percentage
+    - name: Siege
+      attribute:
+        - level: Green
+          buff:
+            - attribute: March_Size_Capacity
+              value:
+                number: 1
+                unit: percentage
+            - attribute: Attack
+              condition: Attacking
+              class: Siege
+              value:
+                number: 1
+                unit: percentage
+            - attribute: Attack
+              condition: Attacking
+              class: Archers
+              value:
+                number: 1
+                unit: percentage
+        - level: Blue
+          buff:
+            - attribute: March_Size_Capacity
+              value:
+                number: 1
+                unit: percentage
+            - attribute: Attack
+              condition: Attacking
+              class: Siege
+              value:
+                number: 1
+                unit: percentage
+            - attribute: Attack
+              condition: Attacking
+              class: Archers
+              value:
+                number: 1
+                unit: percentage
+        - level: Purple
+          buff:
+            - attribute: March_Size_Capacity
+              value:
+                number: 1
+                unit: percentage
+            - attribute: Attack
+              condition: Attacking
+              class: Siege
+              value:
+                number: 2
+                unit: percentage
+            - attribute: Attack
+              condition: Attacking
+              class: Archers
+              value:
+                number: 2
+                unit: percentage
+        - level: Orange
+          buff:
+            - attribute: March_Size_Capacity
+              value:
+                number: 1
+                unit: percentage
+            - attribute: Attack
+              condition: Attacking
+              class: Siege
+              value:
+                number: 2
+                unit: percentage
+            - attribute: Attack
+              condition: Attacking
+              class: Archers
+              value:
+                number: 2
+                unit: percentage
+        - level: Gold
+          buff:
+            - attribute: March_Size_Capacity
+              value:
+                number: 2
+                unit: percentage
+            - attribute: Attack
+              condition: Attacking
+              class: Siege
+              value:
+                number: 4
+                unit: percentage
+            - attribute: Attack
+              condition: Attacking
+              class: Archers
+              value:
+                number: 4
+                unit: percentage
+    - name: Siege Machine Ares
+      attribute:
+        - level: Green
+          buff:
+            - attribute: Attack
+              class: Siege
+              value:
+                number: 1
+                unit: percentage
+            - attribute: HP
+              class: Siege
+              value:
+                number: 1
+                unit: percentage
+            - attribute: Defense
+              class: Siege
+              value:
+                number: 1
+                unit: percentage
+        - level: Blue
+          buff:
+            - attribute: Attack
+              class: Siege
+              value:
+                number: 1
+                unit: percentage
+            - attribute: HP
+              class: Siege
+              value:
+                number: 1
+                unit: percentage
+            - attribute: Defense
+              class: Siege
+              value:
+                number: 1
+                unit: percentage
+        - level: Purple
+          buff:
+            - attribute: Attack
+              class: Siege
+              value:
+                number: 2
+                unit: percentage
+            - attribute: HP
+              class: Siege
+              value:
+                number: 2
+                unit: percentage
+            - attribute: Defense
+              class: Siege
+              value:
+                number: 2
+                unit: percentage
+        - level: Orange
+          buff:
+            - attribute: Attack
+              class: Siege
+              value:
+                number: 2
+                unit: percentage
+            - attribute: HP
+              class: Siege
+              value:
+                number: 2
+                unit: percentage
+            - attribute: Defense
+              class: Siege
+              value:
+                number: 2
+                unit: percentage
+        - level: Gold
+          buff:
+            - attribute: Attack
+              class: Siege
+              value:
+                number: 4
+                unit: percentage
+            - attribute: HP
+              class: Siege
+              value:
+                number: 4
+                unit: percentage
+            - attribute: Defense
+              class: Siege
+              value:
+                number: 4
+                unit: percentage
+    - name: Golden Throne
+      attribute:
+        - level: Green
+          buff:
+            - attribute: Attack
+              condition: Attacking
+              class: Siege
+              value:
+                number: 3
+                unit: percentage
+            - attribute: Attack
+              condition: Attacking
+              class: Archers
+              value:
+                number: 3
+                unit: percentage
+            - attribute: Defense
+              class: Siege
+              condition: Marching
+              value:
+                number: 2
+                unit: percentage
+        - level: Blue
+          buff:
+            - attribute: Attack
+              condition: Attacking
+              class: Siege
+              value:
+                number: 3
+                unit: percentage
+            - attribute: Attack
+              condition: Attacking
+              class: Archers
+              value:
+                number: 3
+                unit: percentage
+            - attribute: Defense
+              class: Siege
+              condition: Marching
+              value:
+                number: 3
+                unit: percentage
+        - level: Purple
+          buff:
+            - attribute: Attack
+              condition: Attacking
+              class: Siege
+              value:
+                number: 6
+                unit: percentage
+            - attribute: Attack
+              condition: Attacking
+              class: Archers
+              value:
+                number: 6
+                unit: percentage
+            - attribute: Defense
+              class: Siege
+              condition: Marching
+              value:
+                number: 5
+                unit: percentage
+        - level: Orange
+          buff:
+            - attribute: Attack
+              condition: Attacking
+              class: Siege
+              value:
+                number: 6
+                unit: percentage
+            - attribute: Attack
+              condition: Attacking
+              class: Archers
+              value:
+                number: 6
+                unit: percentage
+            - attribute: Defense
+              class: Siege
+              condition: Marching
+              value:
+                number: 5
+                unit: percentage
+        - level: Gold
+          buff:
+            - attribute: Attack
+              condition: Attacking
+              class: Siege
+              value:
+                number: 12
+                unit: percentage
+            - attribute: Attack
+              condition: Attacking
+              class: Archers
+              value:
+                number: 12
+                unit: percentage
+            - attribute: Defense
+              class: Siege
+              condition: Marching
+              value:
+                number: 10
+                unit: percentage
+  books:
+    - name: Supreme Power
+      buff:
+        - attribute: Attack
+          class: Siege
+          condition: leading_the_army_to_attack
+          value:
+            number: 40
+            unit: percentage
+        - attribute: HP
+          class: Archers
+          condition: leading_the_army_to_attack
+          value:
+            number: 35
+            unit: percentage
+        - attribute: HP
+          class: Siege
+          condition: leading_the_army_to_attack
+          value:
+            number: 35
+            unit: percentage
+  ascending:
+    - level: '6'
+      buff:
+        - attribute: Defense
+          condition: Marching
+          class: Archers
+          value:
+            number: 10
+            unit: percentage
+        - attribute: Defense
+          condition: Marching
+          class: Siege
+          value:
+            number: 10
+            unit: percentage
+        - attribute: HP
+          condition: Marching
+          class: Archers
+          value:
+            number: 10
+            unit: percentage
+        - attribute: HP
+          condition: Marching
+          class: Siege
+          value:
+            number: 10
+            unit: percentage
+    - level: '7'
+      buff:
+        - attribute: Death_to_Wounded
+          condition: Marching
+          value:
+            number: 10
+            unit: percentage
+    - level: '8'
+      buff:
+        - attribute: March_Size_Capacity
+          value:
+            number: 14
+            unit: percentage
+    - level: '9'
+      buff:
+        - attribute: Attack
+          condition: Marching
+          class: Archers
+          value:
+            number: 15
+            unit: percentage
+        - attribute: Attack
+          condition: Marching
+          class: Siege
+          value:
+            number: 15
+            unit: percentage
+        - attribute: Defense
+          condition: Marching
+          class: Siege
+          value:
+            number: 15
+            unit: percentage
+    - level: '10'
+      buff:
+        - attribute: Attack
+          condition: Marching
+          class: Siege
+          value:
+            number: 20
+            unit: percentage
+        - attribute: Defense
+          condition: Marching
+          class: Siege
+          value:
+            number: 30
+            unit: percentage
