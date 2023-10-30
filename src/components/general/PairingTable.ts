@@ -2,6 +2,8 @@ import {  html, css, type PropertyValues} from "lit";
 import {customElement, property, state} from 'lit/decorators.js';
 import {ref, createRef, type Ref} from 'lit/directives/ref.js';
 
+const DEBUG = true;
+
 import { withStores } from "@nanostores/lit";
 
 import {z,  type ZodError} from 'zod';
@@ -318,6 +320,7 @@ export class PairingTable extends withStores(SpectrumElement, [conflictingGenera
         if(this.filteredGenerals !== null && this.filteredGenerals !== undefined) {
           this.filteredGenerals.forEach((pa) => {
             if(tg1.name.localeCompare(pa.general.name)){
+              if(DEBUG && !tg1.name.localeCompare('Suleiman the Magnificent')) {console.log(`found Suleiman`)}
               const conflictStore = conflictingGenerals.get();
               if(conflictStore !== null && conflictStore !== undefined) {
                 const generalStore = conflictStore.get(tg1.name);
