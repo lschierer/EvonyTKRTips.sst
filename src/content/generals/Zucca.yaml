@@ -1,6 +1,7 @@
 ---
 general:
   name: Zucca
+  display: summary
   leadership: 123
   leadership_increment: 9.11
   attack: 115

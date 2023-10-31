@@ -1,6 +1,7 @@
 ---
 general:
   name: Aurelian
+  display: summary
   score_as: Ground
   leadership: 118
   leadership_increment: 9.01
@@ -10,7 +11,7 @@ general:
   defense_increment: 8.82
   politics: 105
   politics_increment: 8.57
-  level: '45'
+  level: '1'
   stars: '10'
   books:
     - name: Restorer of the World

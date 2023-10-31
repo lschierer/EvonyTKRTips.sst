@@ -1,6 +1,7 @@
 ---
 general:
   name: Maeda Toshiie
+  display: summary
   leadership: 113
   leadership_increment: 8.89
   attack: 115

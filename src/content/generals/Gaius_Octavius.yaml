@@ -1,6 +1,7 @@
 ---
 general:
   name: Gaius Octavius
+  display: summary
   score_as: Mounted
   stars: '10'
   leadership: 116

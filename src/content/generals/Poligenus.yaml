@@ -1,6 +1,7 @@
 ---
 general:
   name: Poligenus
+  display: summary
   score_as: Mounted
   attack: 121
   attack_increment: 9.04
@@ -10,7 +11,7 @@ general:
   defense_increment: 8.73
   politics: 108
   politics_increment: 8.66
-  level: '45'
+  level: '1'
   stars: '10'
   books:
     - name: Foresight

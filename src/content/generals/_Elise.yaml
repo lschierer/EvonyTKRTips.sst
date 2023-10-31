@@ -1,6 +1,7 @@
 ---
 general:
   name: Elise
+  display: summary
   score_as: Ground
   leadership: 119
   leadership_increment: 9.13

@@ -1,6 +1,7 @@
 ---
 general:
   name: Zhao Yun
+  display: summary
   score_as: Mounted
   leadership: 113
   leadership_increment: 8.95
@@ -11,7 +12,7 @@ general:
   politics: 110
   politics_increment: 8.35
   stars: '10'
-  level: '45'
+  level: '1'
   books:
     - name: Undefeatable General
       buff:

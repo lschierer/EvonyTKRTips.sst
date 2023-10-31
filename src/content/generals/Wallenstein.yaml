@@ -1,6 +1,7 @@
 ---
 general:
   name: Wallenstein
+  display: summary
   leadership: 122
   leadership_increment: 9.02
   attack: 118
