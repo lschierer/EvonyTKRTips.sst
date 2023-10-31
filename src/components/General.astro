@@ -1,14 +1,19 @@
 ---
 import {Debug} from 'astro:components';
-import {getEntry, type CollectionEntry} from "astro:content";
+import {getEntry, getCollection, type CollectionEntry} from "astro:content";
 import 'iconify-icon';
 import {z} from 'zod';
 
+import Banner from "../components/Spectrum/Banner.astro";
 
 import {
+    type bookConflictsType,
   type buff,
   buffSchema,
   type General,
+  generalConflicts,
+  type generalConflictsType,
+  generalConflictCollection,
   type generalObject,
   generalSchema,
   generalNote,
@@ -24,7 +29,35 @@ import {
 } from '@schemas/evonySchemas.ts';
 
 import {attack_score, defense_score, hp_score} from './general/score';
-import type {skillBookType} from "../schemas/evonySchemas";
+
+
+const severity = {
+    [syslogSeverity.enum.emerg]: () => {
+        return "error"
+    },
+    [syslogSeverity.enum.alert]: () => {
+        return "error"
+    },
+    [syslogSeverity.enum.crit]: () => {
+        return "error"
+    },
+    [syslogSeverity.enum.err]: () => {
+        return "warning"
+    },
+    [syslogSeverity.enum.warning]: () => {
+        return "warning"
+    },
+    [syslogSeverity.enum.notice]: () => {
+        return "info"
+    },
+    [syslogSeverity.enum.info]: () => {
+        return "info"
+    },
+    [syslogSeverity.enum.debug]: () => {
+        return "info"
+    },
+}
+
 
 const {generalEntry} = Astro.props;
 let data;
@@ -33,12 +66,12 @@ if (generalEntry === null || generalEntry === undefined || generalEntry.length <
 }
 const entry: CollectionEntry<'generals'> | undefined = await getEntry('generals', generalEntry);
 if (entry === undefined || entry === null) {
-  return Astro.redirect("/404");
+    return Astro.redirect("/404");
 } else {
     data = entry.data;
 }
-
-let general: General = null;
+let usageNotes = '';
+let general: General ;
 let generalName = '';
 let attack = 0;
 let attackBuff = 0;
@@ -49,99 +82,138 @@ let hpBuff = 0;
 let starsNum = 0;
 let starsLimit = 0;
 let starsHtml = ' ';
-let usageNotes = '';
 let level = 1;
 const intrinsic = ["leadership", "attack", "defense", "politics"]
+let conflictData: bookConflictsType[] = new Array<bookConflictsType>();
+let collectionArray: CollectionEntry<'generalConflictData'>[] | generalConflictsType[];
 
 const validation = generalObjectSchema.safeParse(data);
 if (validation.success) {
     const generaLObject = validation.data;
     general = generaLObject.general;
-
-  starsNum = +general.stars
-  starsLimit = (starsNum <= 5) ? starsNum : 5;
-  for (let i = 0; i < starsLimit; i++) {
-    if ((starsNum >= 6) && (i < (starsNum - 5))) {
-      starsHtml = starsHtml.concat('<iconify-icon style="color: var(--spectrum-red-900)" icon="mdi:star"></iconify-icon>');
-    } else {
-      starsHtml = starsHtml.concat('<iconify-icon style="color: var(--spectrum-yellow-300)" icon="mdi:star"></iconify-icon>');
+    
+    starsNum = +(general.stars ? general.stars : 0);
+    starsLimit = (starsNum <= 5) ? starsNum : 5;
+    for (let i = 0; i < starsLimit; i++) {
+        if ((starsNum >= 6) && (i < (starsNum - 5))) {
+            starsHtml = starsHtml.concat('<iconify-icon style="color: var(--spectrum-red-900)" icon="mdi:star"></iconify-icon>');
+        } else {
+            starsHtml = starsHtml.concat('<iconify-icon style="color: var(--spectrum-yellow-300)" icon="mdi:star"></iconify-icon>');
+        }
+        
     }
-
-  }
-
-   generalName = general.name.toLocaleLowerCase().replace(/\s+/g, '_');
-
-  [attackBuff,attack] = attack_score(general);
-  [defenseBuff,defense] = defense_score(general);
-  [hpBuff,hp] = hp_score(general);
-  attack = (+attack).toFixed(2);
-  defense = (+defense).toFixed(2);
-  hp = (+hp).toFixed(2);
-  level = (general.display === 'summary') ? (general.level * 45) : +general.level;
-  const notes = z.array(generalNote).safeParse(general.note);
-  if(notes.success) {
-      const mydata: generalNoteType[] = notes.data;
-      if(notes.data !== undefined && notes.data !== null && notes.data.length >= 1) {
-          usageNotes = mydata.map((note) => {
-              const severity = {
-                  [syslogSeverity.enum.emerg]: () => {return "error"},
-                  [syslogSeverity.enum.alert]: () => {return "error"},
-                  [syslogSeverity.enum.crit]: () => {return "error"},
-                  [syslogSeverity.enum.err]: () => {return "warning"},
-                  [syslogSeverity.enum.warning]: () => {return "warning"},
-                  [syslogSeverity.enum.notice]: () => {return "info"},
-                  [syslogSeverity.enum.info]: () => {return "info"},
-                  [syslogSeverity.enum.debug]: () => {return "info"},
-              }
-              return `
-                <sp-banner class="not-content" type=${severity[note.severity]()} client:only>
-                    <div slot="header">General Usage Note</div>
-                    <div slot="content">
-                        ${note.text}
-                    </div>
-                </sp-banner><br/>`
-          })
-      }
-      
-
-      
-  }
-  
+    
+    generalName = general.name.toLocaleLowerCase().replace(/\s+/g, '_');
+    
+    [attackBuff, attack] = attack_score(general);
+    [defenseBuff, defense] = defense_score(general);
+    [hpBuff, hp] = hp_score(general);
+    attack = +((attack as number).toFixed(2));
+    defense = +((+defense).toFixed(2));
+    hp = +((+hp).toFixed(2));
+    level = (general.display === 'summary') ? (+general.level * 45) : +general.level;
+    const notes = z.array(generalNote).safeParse(general.note);
+    if (notes.success) {
+        const mydata: generalNoteType[] = notes.data;
+        if (notes.data !== undefined && notes.data !== null && notes.data.length >= 1) {
+            usageNotes = usageNotes + mydata.map((note) => {
+                return `
+           <sp-banner class="not-content" type=${severity[note.severity]()} client:only>
+             <div slot="header">General Usage Note</div>
+             <div slot="content">
+               ${note.text}
+             </div>
+           </sp-banner><br/>`
+            })
+        }
+    }
+    collectionArray = await getCollection('generalConflictData');
+    if (collectionArray !== null && collectionArray !== undefined) {
+        collectionArray = collectionArray.map((ca) => {
+            return ca.data
+        });
+        const valid = generalConflictCollection.safeParse(collectionArray)
+        if (valid.success) {
+            for (let i = 0; i < valid.data.length; i++) {
+                let o1 = valid.data[i]
+                let valid2 = generalConflicts.safeParse(o1);
+                if (valid2.success) {
+                    let data: generalConflictsType | undefined;
+                    if (valid2.data !== undefined && valid2.data.conflicts !== undefined) {
+                        let conflicts = valid2.data.conflicts;
+                        for (const key in conflicts) {
+                            if (key.localeCompare('other')) {
+                                console.log(`inside Record of conflicts`)
+                                const items = conflicts[key as keyof typeof conflicts];
+                                const gc = new Set<string>;
+                                items.forEach((g) => {
+                                    console.log(`--${JSON.stringify(g)}--`);
+                                    gc.add(g);
+                                })
+                                if ([...gc].includes(general.name)) {
+                                    conflictData = conflictData + conflicts.books;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    if (conflictData.length >= 1) {
+        conflictData = [conflictData].flat(1);
+        usageNotes = usageNotes + conflictData.map((c) => {
+            if (c !== null && c !== undefined) {
+                console.log(`${JSON.stringify(c)}`)
+                return `
+          <sp-banner class="not-content" type=${severity[syslogSeverity.enum.alert]()} client:only>
+            <div slot="header">General Conflict Notice</div>
+            <div slot="content">
+                This general has conflicts with the following skill book:
+                 <Debug {c} />
+            </div>
+          </sp-banner>
+        `
+            }
+        })
+    }
 }
+
 ---
 <script>
     import '@spectrum-web-components/banner/sp-banner.js';
 </script>
-{general && (
+{(general !== undefined && general !== null) && (
 <div class="not-content UsageNotes">
-    <Fragment set:html={usageNotes} />
+    <Debug {collectionArray} />
+    <>{usageNotes}</>
 </div>
 <div class="GeneralDetails not-content" id={generalName}>
     <span class="center spectrum-Heading spectrum-Heading--sizeS">Level: {level}</span>
     <br/>
     <div class="IntrinsicAttributes">
-      {intrinsic.map((ia) => (
-              <div class=ia>
-                  <span class="label spectrum-Body spectrum-Body--sizeM">{ia[0].toUpperCase() + ia.slice(1)}</span><br/>
-                  <span class="label spectrum-Body spectrum-Body--sizeS">Base:</span> {general[ia]}<br/>
-                  <span class="label spectrum-Body spectrum-Body--sizeS">Growth Rate:</span> {general[ia + '_increment']}<br/>
-                  <span class="label spectrum-Body spectrum-Body--sizeS">Max:</span> {(general[ia] + (general[ia + '_increment'] * 45)).toFixed(2)}<br/>
-                {(!ia.localeCompare("attack")) &&
-                        <>
-                            <span class="label spectrum-Body spectrum-Body--sizeS">Effective Buff:</span> {attackBuff}<br/>
-                            <span class="label spectrum-Body spectrum-Body--sizeS">Score:</span> {attack}<br/>
-                        </>}
-                {(!ia.localeCompare("defense")) &&
-                        <>
-                            <span class="label spectrum-Body spectrum-Body--sizeS">Effective Buff:</span> {defenseBuff}<br/>
-                            <span class="label spectrum-Body spectrum-Body--sizeS">Score:</span> {defense}<br/>
-                        </>}
-                {(!ia.localeCompare("leadership")) &&
-                        <>
-                            <span class="label spectrum-Body spectrum-Body--sizeS">Effective Buff:</span> {hpBuff}<br/>
-                            <span class="label spectrum-Body spectrum-Body--sizeS">Score:</span> {hp}<br/>
-                        </>}
-              </div>
+      {intrinsic.map((ia) => ((ia !== undefined) &&
+        <div class={ia}>
+          <span class="label spectrum-Body spectrum-Body--sizeM">{ia[0].toUpperCase() + ia.slice(1)}</span><br/>
+          <span class="label spectrum-Body spectrum-Body--sizeS">Base:</span> {general[ia as keyof typeof general]}<br/>
+          <span class="label spectrum-Body spectrum-Body--sizeS">Growth Rate:</span> {general[(ia + '_increment') as keyof typeof general]}<br/>
+          <span class="label spectrum-Body spectrum-Body--sizeS">Max:</span> {((<number>(general[ia as keyof typeof general]))+ (<number>(general[(ia + '_increment') as keyof typeof general]) * 45).toFixed(2))}<br/>
+          {(!ia.localeCompare("attack")) &&
+            <>
+              <span class="label spectrum-Body spectrum-Body--sizeS">Effective Buff:</span> {attackBuff}<br/>
+              <span class="label spectrum-Body spectrum-Body--sizeS">Score:</span> {attack}<br/>
+            </>}
+          {(!ia.localeCompare("defense")) &&
+            <>
+                <span class="label spectrum-Body spectrum-Body--sizeS">Effective Buff:</span> {defenseBuff}<br/>
+                <span class="label spectrum-Body spectrum-Body--sizeS">Score:</span> {defense}<br/>
+            </>}
+          {(!ia.localeCompare("leadership")) &&
+            <>
+                <span class="label spectrum-Body spectrum-Body--sizeS">Effective Buff:</span> {hpBuff}<br/>
+                <span class="label spectrum-Body spectrum-Body--sizeS">Score:</span> {hp}<br/>
+            </>}
+        </div>
       ))}
     </div>
     <br/>
@@ -160,7 +232,10 @@ if (validation.success) {
                               {s.buff.map((b: buff) => (
                                 <>
                                     <li >
-                                        {b.condition ? b.condition.replaceAll(/_/g, ' ') : ''} {b.class !== 'all' ? b.class : 'all troops '} {b.attribute ? b.attribute.replaceAll(/_/g, ' ') : ''} {(b.value.number < 0) ? '-' : '+'}{b.value.number}{b.value.unit ? '%' : ''}
+                                        {b.condition ? (b.condition as string).replaceAll(/_/g, ' ') : ''} 
+                                        {b.class !== 'all' ? b.class : 'all troops '} 
+                                        {b.attribute ? b.attribute.replaceAll(/_/g, ' ') : ''} 
+                                        {(b.value.number < 0) ? '-' : '+'}{b.value.number}{b.value.unit ? '%' : ''}
                                     </li>
                                 </>
                               ))}
@@ -181,12 +256,15 @@ if (validation.success) {
                     <>
                         <div class="ascendingAttribute non-content">
                             <span class="spectrum-Heading spectrum-Heading--sizeXXS center">
-                                {+a.level - 5}{a.level >= 9 ? 'th' : +a.level === 8 ? 'rd' : (+a.level) === 7 ? "nd" : 'st'} Star
+                                {+a.level - 5}{+a.level >= 9 ? 'th' : +a.level === 8 ? 'rd' : (+a.level) === 7 ? "nd" : 'st'} Star
                             </span><br/>
                             <ul class="non-content">
                               {a.buff.map((b: buff) => (
                                 <li class="non-content">
-                                    {b.condition ? b.condition.replaceAll(/_/g, ' '): ''} {(b.class === undefined || b.class === null) ? '' : b.class !== 'all' ? b.class : 'all troops '} {b.attribute? b.attribute.replaceAll(/_/g, ' ') : ''} {(b.value.number < 0) ? '-' : '+'}{b.value.number}{b.value.unit ? '%' : ''}
+                                    {b.condition ? (b.condition as string).replaceAll(/_/g, ' '): ''} 
+                                    {(b.class === undefined || b.class === null) ? '' : b.class !== 'all' ? b.class : 'all troops '} 
+                                    {b.attribute? b.attribute.replaceAll(/_/g, ' ') : ''} 
+                                    {(b.value.number < 0) ? '-' : '+'}{b.value.number}{b.value.unit ? '%' : ''}
                                 </li>
                               ))}
                             </ul>
@@ -207,7 +285,10 @@ if (validation.success) {
                   <ul class="non-content" id={book.name.toLocaleLowerCase().replace(/\s+/g, '_')}>
                       {book.buff.map((b) => (
                         <li >
-                            {b.condition ? b.condition.replaceAll(/_/g, ' ') : ''} {(b.class === undefined || b.class === null) ? '' : b.class !== 'all' ? b.class : 'all troops '} {b.attribute ? b.attribute.replaceAll(/_/g, ' ') : ''} {(b.value.number < 0) ? '-' : '+'}{b.value.number}{b.value.unit ? '%' : ''}
+                            {b.condition ? (b.condition as string).replaceAll(/_/g, ' ') : ''} 
+                            {(b.class === undefined || b.class === null) ? '' : b.class !== 'all' ? b.class : 'all troops '} 
+                            {b.attribute ? b.attribute.replaceAll(/_/g, ' ') : ''} 
+                            {(b.value.number < 0) ? '-' : '+'}{b.value.number}{b.value.unit ? '%' : ''}
                         </li>
                       ))}
                   </ul>
@@ -218,7 +299,6 @@ if (validation.success) {
     </div>
   )}
 </div>
-
 <style>
     div.GeneralDetails {
         display: flex;
@@ -234,7 +314,8 @@ if (validation.success) {
                 padding-bottom: 0px;
                 margin-top: 0px;
                 margin-bottom: 0px;
-                margin-left: 0.5rem;;                }
+                margin-left: 0.5rem;;                
+            }
         }
 
         :is(div) {
@@ -302,10 +383,13 @@ if (validation.success) {
         
 
     }
+
     sp-banner {
         margin-top: 5px;
     }
 
 </style>
-  )}
+
+  
+)}
 {(general === null) && (<span>No General Retrieved</span>)}
