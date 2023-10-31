@@ -1,6 +1,7 @@
 ---
 general:
   name: Raimondo
+  display: summary
   leadership: 115
   defense: 112
   attack: 121

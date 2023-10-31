@@ -1,6 +1,7 @@
 ---
 general:
   name: Roland
+  display: summary
   score_as: Mounted
   stars: '10'
   leadership: 105

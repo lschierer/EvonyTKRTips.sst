@@ -1,6 +1,7 @@
 ---
 general:
   name: Laudon
+  display: summary
   leadership: 117
   leadership_increment: 8.82
   attack: 118

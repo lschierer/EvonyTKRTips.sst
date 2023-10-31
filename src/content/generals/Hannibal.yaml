@@ -1,6 +1,7 @@
 ---
 general:
   name: Hannibal
+  display: summary
   score_as: Mounted
   stars: '10'
   leadership: 120

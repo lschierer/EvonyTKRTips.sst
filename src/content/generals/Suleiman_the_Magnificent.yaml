@@ -1,6 +1,7 @@
 ---
 general:
   name: Suleiman the Magnificent
+  display: summary
   leadership: 112
   leadership_increment: 8.73
   attack: 109

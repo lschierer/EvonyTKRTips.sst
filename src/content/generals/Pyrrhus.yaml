@@ -1,8 +1,9 @@
 ---
 general:
   name: Pyrrhus
+  display: summary
   score_as: Ground
-  level: '45'
+  level: '1'
   stars: '10'
   leadership: 119
   leadership_increment: 9.02
