@@ -1,6 +1,12 @@
 ---
 general:
   name: Aethelflaed
+  display: summary
+  note:
+    - severity: warning
+      text: This general is incompatible with the Mounted Troops' Attack against Monsters Skill Book
+    - severity: info
+      text: The Mounted Troops' Attack Skill Book may, however, be used.
   score_as: Mounted
   stars: '10'
   leadership: 112
