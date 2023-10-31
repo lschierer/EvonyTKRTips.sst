@@ -279,3 +279,48 @@ general:
           value:
             number: -10
             unit: percentage
+  ascending:
+    - level: '6'
+      buff:
+        - attribute: Defense
+          condition: Reduces_Enemy
+          value:
+            number: -10
+            unit: percentage
+    - level: '7'
+      buff:
+        - attribute: Death_to_Wounded
+          condition: leading_the_army_to_attack
+          value:
+            number: 8
+            unit: percentage
+    - level: '8'
+      buff:
+        - attribute: March_Size_Capacity
+          value:
+            number: 12
+            unit: percentage
+    - level: '9'
+      buff:
+        - attribute: Defense
+          class: Archers
+          value:
+            number: 10
+            unit: percentage
+        - attribute: Defense
+          class: Siege
+          value:
+            number: 10
+            unit: percentage
+    - level: '10'
+      buff:
+        - attrbiute: Attack
+          class: Archers
+          value:
+            number: 10
+            unit: percentage
+        - attrbiute: Attack
+          class: Siege
+          value:
+            number: 10
+            unit: percentage
