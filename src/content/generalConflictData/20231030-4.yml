@@ -1,13 +1,12 @@
----
 conflicts:
   a:
-    - Napoleon
+    - Kleos
   other:
     - Zucca
     - Petronas
     - John Churchill
     - Philip II
-    - Kleos
+    - Napoleon
     - Genghis Khan
     - King Arthur
 

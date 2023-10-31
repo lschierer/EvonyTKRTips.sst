@@ -1,4 +1,3 @@
----
 conflicts:
   a:
     - Zucca
@@ -8,3 +7,4 @@ conflicts:
   other:
     - Napoleon
     - Kleos
+    - Raimondo
