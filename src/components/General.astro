@@ -185,7 +185,6 @@ if (validation.success) {
 </script>
 {(general !== undefined && general !== null) && (
 <div class="not-content UsageNotes">
-    <Debug {collectionArray} />
     <>{usageNotes}</>
 </div>
 <div class="GeneralDetails not-content" id={generalName}>
@@ -197,7 +196,7 @@ if (validation.success) {
           <span class="label spectrum-Body spectrum-Body--sizeM">{ia[0].toUpperCase() + ia.slice(1)}</span><br/>
           <span class="label spectrum-Body spectrum-Body--sizeS">Base:</span> {general[ia as keyof typeof general]}<br/>
           <span class="label spectrum-Body spectrum-Body--sizeS">Growth Rate:</span> {general[(ia + '_increment') as keyof typeof general]}<br/>
-          <span class="label spectrum-Body spectrum-Body--sizeS">Max:</span> {((<number>(general[ia as keyof typeof general]))+ (<number>(general[(ia + '_increment') as keyof typeof general]) * 45).toFixed(2))}<br/>
+          <span class="label spectrum-Body spectrum-Body--sizeS">Max:</span> {((general[(ia as keyof typeof general)] as number) + ((general[((ia + '_increment') as keyof typeof general)] as number) * 45)).toFixed(2)}<br/>
           {(!ia.localeCompare("attack")) &&
             <>
               <span class="label spectrum-Body spectrum-Body--sizeS">Effective Buff:</span> {attackBuff}<br/>
