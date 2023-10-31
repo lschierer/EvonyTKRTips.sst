@@ -1,3 +1,5 @@
+const DEBUG = true;
+
 import {
   generalSchema,
   type General,
@@ -6,6 +8,9 @@ import {
   type standardSkillBookType,
   troopClass,
   type troopClassType, generalConflicts, type generalConflictsType,
+    type nameConflictsTypes,
+    type otherConflictType,
+    type bookConflictsType,
 } from '@schemas/evonySchemas.ts';
 
 import {atom, map, action, computed} from "nanostores";
@@ -31,41 +36,30 @@ export const conflictingGenerals = computed(conflictRecords, CRs => {
         let o1 = valid.data[i]
         let valid2 = generalConflicts.safeParse(o1);
         if (valid2.success) {
-          let data: Record<string, string[]> | Record<string, string[]>[] | Record<'books', standardSkillBookType[]> | undefined;
+          let data: generalConflictsType | undefined;
           if(valid2.data !== undefined && valid2.data.conflicts !== undefined) {
-            let conflicts = [valid2.data.conflicts].flat(1);
-            for (let j = 0; j < conflicts.length; j++) {
-              const o2 = conflicts[j];
-              const keys = Object.keys(o2);
-              for (let k = 0; k < keys.length; k++) {
-                if(keys[k].localeCompare('books')) {
-                  if (keys[k].localeCompare('other')) {
-                    for (let l = 0; l < o2[keys[k]].length; l++) {
-                      const o3: string[] = o2[keys[k]];
-                      let n1: string = o3[l];
-                      let confl = new Set<string>();
-                      for (let m = 0; m < keys.length; m++) {
-                        for(let n = 0; n < o2[keys[m]].length; n++) {
-                          const o4: string = o2[keys[m]][n];
-                          if(n1.localeCompare(o4)) {
-                            confl.add(o4);
-                          }
-                        }
-                        let n2: string = o3[m]
-                        if(n1.localeCompare(n2)) {
-                          confl.add(n2);
-                        }
-                      }
-                      const stringArray: string[] = [...confl];
-                      Returnable.set(n1, stringArray);
+            let conflicts = valid2.data.conflicts;
+            for(const key in conflicts) {
+              if(key.localeCompare('other')) {
+                const items = conflicts[key as keyof typeof conflicts];
+                items.forEach((g) => {
+                  const gc = new Set<string>;
+                  items.forEach((g2) => {
+                    if(g2.localeCompare(g)) {
+                      gc.add(g2);
                     }
+                  })
+                  const other = conflicts.other;
+                  if(other !== undefined && other !== null) {
+                    other.forEach((g2) => {
+                      gc.add(g2)
+                    })
                   }
-                }
+                  Returnable.set(g, [...gc])
+                })
               }
             }
           }
-        } else {
-          console.error(`invalid assumption about zod data type`)
         }
       }
       return Returnable;

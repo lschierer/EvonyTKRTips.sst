@@ -372,10 +372,18 @@ export const BlazonSetSechma = z.object({
 
 export type BlazonSet = z.infer<typeof BlazonSetSechma>;
 
-export const generalConflicts = z.record(z.literal("conflicts"),z.union([
-  z.object({conflicts: z.record(z.string(), z.array(z.string())) }),
-  z.object({conflicts: z.record(z.literal('other'),z.array(z.string()))}),
-  z.object({conflicts: z.record(z.literal('books'), z.array(standardSkillBook)) }),
-]));
+const nameConflicts = z.record(z.string(), z.array(z.string()));
+const otherConflicts = z.object({other: z.array(z.string())});
+const bookConflicts = z.object({books: z.array(standardSkillBook)})
+export const generalConflicts = z.object({"conflicts":
+    z.union([
+        nameConflicts,
+            otherConflicts,
+        ]),
+    books: z.array(standardSkillBook).nullish(),
+});
 
+export type nameConflictsTypes = z.infer<typeof nameConflicts>;
+export type otherConflictType = z.infer<typeof otherConflicts>;
+export type bookConflictsType = z.infer<typeof bookConflicts>;
 export type generalConflictsType = z.infer<typeof generalConflicts>;
