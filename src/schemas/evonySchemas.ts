@@ -116,6 +116,7 @@ export const blazonSet =z.enum([
 ]);
 
 export const BuffAdverbs =z.enum([
+  'When_Not_Mine',
   'Attacking',
   'Marching',
   'When_Rallying',
@@ -387,3 +388,5 @@ export type nameConflictsTypes = z.infer<typeof nameConflicts>;
 export type otherConflictType = z.infer<typeof otherConflicts>;
 export type bookConflictsType = z.infer<typeof bookConflicts>;
 export type generalConflictsType = z.infer<typeof generalConflicts>;
+
+export const generalConflictCollection = z.array(generalConflicts);
