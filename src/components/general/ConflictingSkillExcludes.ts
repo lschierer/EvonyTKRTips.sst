@@ -3,6 +3,7 @@ const DEBUG = true;
 import {
   generalSchema,
   type General,
+  generalConflictCollection,
   generalObjectSchema,
   type generalObject,
   type standardSkillBookType,
@@ -24,7 +25,6 @@ type GeneralDictionary = {
 
 const letters = new Set(["a","b","c"]);
 
-const generalConflictCollection = z.array(generalConflicts);
 export const conflictRecords = atom<generalConflictsType|null>(null);
 
 export const conflictingGenerals = computed(conflictRecords, CRs => {
