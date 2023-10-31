@@ -11,3 +11,36 @@ conflicts:
     - Ii Naomasa
     - Honda Tadakatsu
     - Khalid
+books:
+  - name: Mounted Attack Increase
+    level: '1'
+    buff:
+      - attribute: Attack
+        class: Mounted
+        value:
+          number: 10
+          unit: percentage
+  - name: Mounted Attack Increase
+    level: '2'
+    buff:
+      - attribute: Attack
+        class: Mounted
+        value:
+          number: 15
+          unit: percentage
+  - name: Mounted Attack Increase
+    level: '3'
+    buff:
+      - attribute: Attack
+        class: Mounted
+        value:
+          number: 20
+          unit: percentage
+  - name: Mounted Attack Increase
+    level: '4'
+    buff:
+      - attribute: Attack
+        class: Mounted
+        value:
+          number: 25
+          unit: percentage
