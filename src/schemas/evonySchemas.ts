@@ -1,5 +1,18 @@
 import {z} from 'zod';
 
+export const syslogSeverity = z.enum([
+  'emerg',
+  'alert',
+  'crit',
+  'err',
+  'warning',
+  'notice',
+  'info',
+  'debug',
+])
+
+export type syslogSeverityType = z.infer<typeof syslogSeverity>;
+
 export const levelSchema = z.enum([
   '0',
   '1',
@@ -252,10 +265,17 @@ export type skillBookType = z.infer<typeof skillBook>;
 export type standardSkillBookType = z.infer<typeof standardSkillBook>;
 export type specialSkillBookType = z.infer<typeof specialSkillBook>;
 
+export const generalNote = z.object({
+  text: z.string(),
+  severity: syslogSeverity,
+});
 
+export type generalNoteType = z.infer<typeof generalNote>;
 
 export const generalSchema = z.object({
   name: z.string(),
+  display: z.enum(['primary', 'assistant', 'summary']).optional(),
+  note: z.array(generalNote).nullish(),
   leadership: z.number(),
   leadership_increment: z.number(),
   attack: z.number(),
@@ -289,7 +309,6 @@ export const generalSchema = z.object({
     return false;
   }).nullable(),
   books: z.array(skillBook).nullish(),
-  role: z.enum(['primary', 'assistant']).optional(),
   score_as: troopClass.optional(),
 });
 
@@ -353,11 +372,18 @@ export const BlazonSetSechma = z.object({
 
 export type BlazonSet = z.infer<typeof BlazonSetSechma>;
 
-export const generalConflictArraySchema = z.object({
-    conflicts: z.union([
-        z.record(z.string(), z.array(z.string())),
-        z.array(z.record(z.string(), z.array(z.string())))
+const nameConflicts = z.record(z.string(), z.array(z.string()));
+const otherConflicts = z.object({other: z.array(z.string())});
+const bookConflicts = z.object({books: z.array(standardSkillBook)})
+export const generalConflicts = z.object({"conflicts":
+    z.union([
+        nameConflicts,
+            otherConflicts,
         ]),
+    books: z.array(standardSkillBook).nullish(),
 });
 
-export type generalConflictArray = z.infer<typeof generalConflictArraySchema>;
+export type nameConflictsTypes = z.infer<typeof nameConflicts>;
+export type otherConflictType = z.infer<typeof otherConflicts>;
+export type bookConflictsType = z.infer<typeof bookConflicts>;
+export type generalConflictsType = z.infer<typeof generalConflicts>;

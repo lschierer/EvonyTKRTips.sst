@@ -4,7 +4,7 @@ import {
   artTreasureSchema,
   BlazonSetSechma,
   generalObjectSchema,
-  generalConflictArraySchema,
+  generalConflicts,
 } from '../schemas/evonySchemas.js';
 
 export const collections = {
@@ -13,5 +13,5 @@ export const collections = {
   art: defineCollection({type: 'data', schema: artTreasureSchema}),
   blazons: defineCollection({type: 'data', schema: BlazonSetSechma}),
   generals: defineCollection({type: 'data', schema: generalObjectSchema}),
-  generalConflictData: defineCollection(({type: 'data', schema: generalConflictArraySchema})),
+  generalConflictData: defineCollection(({type: 'data', schema: generalConflicts})),
 };

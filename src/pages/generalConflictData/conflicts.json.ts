@@ -13,16 +13,16 @@ import {
   generalSchema,
   type General,
   generalObjectSchema,
-  type generalObject, generalConflictArraySchema
+  type generalObject, generalConflicts
 } from "@schemas/evonySchemas.ts";
 
 
 export const GET: APIRoute = async ({ params, request }) => {
-  const collectionArray:CollectionEntry<generalConflictData>[]  = await getCollection('generalConflictData');
+  const collectionArray:CollectionEntry<'generalConflictData'>[]  = await getCollection('generalConflictData');
   if(collectionArray !== null && collectionArray !== undefined) {
     let result = collectionArray.map((ca) => {
       console.error(JSON.stringify(ca))
-      const validation = generalConflictArraySchema.safeParse(ca.data);
+      const validation = generalConflicts.safeParse(ca.data);
       if(validation.success) {
 
         return validation.data
