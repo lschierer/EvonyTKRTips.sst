@@ -1,5 +1,5 @@
----
 conflicts:
   a:
-    - Zucca
     - Raimondo
+  other:
+    - Zucca

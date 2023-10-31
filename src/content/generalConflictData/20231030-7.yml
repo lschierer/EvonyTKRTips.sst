@@ -1,4 +1,3 @@
----
 conflicts:
   a:
     - Septimus Serverus
@@ -7,3 +6,20 @@ conflicts:
     - Emperor Qin Shihuang
     - William Wallace
     - Khalid
+books:
+  - name: Siege Attack
+    level: '1'
+    buff:
+      - attribute: Attack
+        class: Siege
+        value:
+          number: 10
+          unit: percentage
+  - name: Siege HP
+    level: '1'
+    buff:
+      - attribute: HP
+        class: Siege
+        value:
+          number: 10
+          unit: percentage
