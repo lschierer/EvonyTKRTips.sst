@@ -1,8 +1,10 @@
 ---
 general:
   name: George A. Custer
+  display: summary
   score_as: Mounted
   stars: '10'
+  level: '1'
   leadership: 118
   leadership_increment: 9.01
   attack: 120

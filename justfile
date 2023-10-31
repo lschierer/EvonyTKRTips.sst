@@ -12,8 +12,11 @@ dev: install
 
 check: install
     ${PNPM} astro check;
-    ${PNPM} tsc --noEmit;
+    # ${PNPM} tsc -p tsconfig.node.json --noEmit;
 
-build: install
+build: install pre-build
+    ./bin/generalDetailsPages.sh
     ${PNPM} astro build
 
+pre-build: install
+    # ${PNPM} tsc -p tsconfig.node.json

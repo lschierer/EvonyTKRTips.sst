@@ -57,7 +57,7 @@ import {
   type qualitySchemaType,
   type standardSkillBookType,
   troopClass,
-  type troopClassType, buffSchema, generalConflictArraySchema,
+  type troopClassType, buffSchema, generalConflicts,
 } from "@schemas/evonySchemas.ts";
 
 import {tableGeneral} from "@components/general/tableGeneral.ts";
@@ -209,7 +209,7 @@ export class PairingTable extends withStores(SpectrumElement, [conflictingGenera
         } else throw new Error('Status code error: ' + response.status);
       }).then((text) => {
         const jsonResult = JSON.parse(text);
-        const result = generalConflictArraySchema.array().safeParse(jsonResult);
+        const result = generalConflicts.array().safeParse(jsonResult);
         if(result.success) {
           if(result.data !== undefined) {
             // @ts-ignore

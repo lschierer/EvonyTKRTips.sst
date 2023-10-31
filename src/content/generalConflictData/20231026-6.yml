@@ -1,4 +1,3 @@
----
 conflicts:
   o:
     - George A. Custer
@@ -13,3 +12,32 @@ conflicts:
     - King Arthur
     - Genghis Khan
     - Mordred
+books:
+  - name: March Size
+    level: '1'
+    buff:
+      - attribute: March_Size_Capacity
+        value:
+          number: 3
+          unit: percentage
+  - name: March Size
+    level: '2'
+    buff:
+      - attribute: March_Size_Capacity
+        value:
+          number: 6
+          unit: percentage
+  - name: March Size
+    level: '3'
+    buff:
+      - attribute: March_Size_Capacity
+        value:
+          number: 9
+          unit: percentage
+  - name: March Size
+    level: '4'
+    buff:
+      - attribute: March_Size_Capacity
+        value:
+          number: 12
+          unit: percentage

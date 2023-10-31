@@ -1,9 +1,9 @@
 ---
 import {Debug} from 'astro:components';
-import {getEntry} from "astro:content";
+import {getEntry, type CollectionEntry} from "astro:content";
 import 'iconify-icon';
-import toNumber from 'strnum';
 import {z} from 'zod';
+
 
 import {
   type buff,
@@ -11,24 +11,31 @@ import {
   type General,
   type generalObject,
   generalSchema,
+  generalNote,
+  type generalNoteType,
     generalObjectSchema,
   type skillBookType,
   standardSkillBook,
   specialSkillBook,
   type specialSkillBookType,
   skillBook, buffUnion,
+    syslogSeverity,
+    type syslogSeverityType,
 } from '@schemas/evonySchemas.ts';
 
 import {attack_score, defense_score, hp_score} from './general/score';
 import type {skillBookType} from "../schemas/evonySchemas";
 
 const {generalEntry} = Astro.props;
+let data;
 if (generalEntry === null || generalEntry === undefined || generalEntry.length <= 0) {
-  
+    return Astro.redirect("/404");
 }
-const entry = await getEntry('generals', generalEntry);
-if (entry === undefined) {
+const entry: CollectionEntry<'generals'> | undefined = await getEntry('generals', generalEntry);
+if (entry === undefined || entry === null) {
   return Astro.redirect("/404");
+} else {
+    data = entry.data;
 }
 
 let general: General = null;
@@ -42,15 +49,16 @@ let hpBuff = 0;
 let starsNum = 0;
 let starsLimit = 0;
 let starsHtml = ' ';
+let usageNotes = '';
+let level = 1;
 const intrinsic = ["leadership", "attack", "defense", "politics"]
 
-const data = entry.data;
 const validation = generalObjectSchema.safeParse(data);
 if (validation.success) {
     const generaLObject = validation.data;
     general = generaLObject.general;
-  
-  starsNum = toNumber(general.stars)
+
+  starsNum = +general.stars
   starsLimit = (starsNum <= 5) ? starsNum : 5;
   for (let i = 0; i < starsLimit; i++) {
     if ((starsNum >= 6) && (i < (starsNum - 5))) {
@@ -58,27 +66,58 @@ if (validation.success) {
     } else {
       starsHtml = starsHtml.concat('<iconify-icon style="color: var(--spectrum-yellow-300)" icon="mdi:star"></iconify-icon>');
     }
-    
+
   }
-  
+
    generalName = general.name.toLocaleLowerCase().replace(/\s+/g, '_');
-  
+
   [attackBuff,attack] = attack_score(general);
   [defenseBuff,defense] = defense_score(general);
   [hpBuff,hp] = hp_score(general);
-  attack = attack.toFixed(2);
-  defense = defense.toFixed(2);
-  hp = hp.toFixed(2);
+  attack = (+attack).toFixed(2);
+  defense = (+defense).toFixed(2);
+  hp = (+hp).toFixed(2);
+  level = (general.display === 'summary') ? (general.level * 45) : +general.level;
+  const notes = z.array(generalNote).safeParse(general.note);
+  if(notes.success) {
+      const mydata: generalNoteType[] = notes.data;
+      if(notes.data !== undefined && notes.data !== null && notes.data.length >= 1) {
+          usageNotes = mydata.map((note) => {
+              const severity = {
+                  [syslogSeverity.enum.emerg]: () => {return "error"},
+                  [syslogSeverity.enum.alert]: () => {return "error"},
+                  [syslogSeverity.enum.crit]: () => {return "error"},
+                  [syslogSeverity.enum.err]: () => {return "warning"},
+                  [syslogSeverity.enum.warning]: () => {return "warning"},
+                  [syslogSeverity.enum.notice]: () => {return "info"},
+                  [syslogSeverity.enum.info]: () => {return "info"},
+                  [syslogSeverity.enum.debug]: () => {return "info"},
+              }
+              return `
+                <sp-banner class="not-content" type=${severity[note.severity]()} client:only>
+                    <div slot="header">General Usage Note</div>
+                    <div slot="content">
+                        ${note.text}
+                    </div>
+                </sp-banner><br/>`
+          })
+      }
+      
+
+      
+  }
+  
 }
 ---
-
+<script>
+    import '@spectrum-web-components/banner/sp-banner.js';
+</script>
 {general && (
+<div class="not-content UsageNotes">
+    <Fragment set:html={usageNotes} />
+</div>
 <div class="GeneralDetails not-content" id={generalName}>
-    <span class="center spectrum-Heading spectrum-Heading--sizeS">{general.name}: (Level: {general.level})</span>
-  {general.stars && (
-          <div class="Stars">
-              <Fragment set:html={starsHtml}/>
-          </div>)}
+    <span class="center spectrum-Heading spectrum-Heading--sizeS">Level: {level}</span>
     <br/>
     <div class="IntrinsicAttributes">
       {intrinsic.map((ia) => (
@@ -142,7 +181,7 @@ if (validation.success) {
                     <>
                         <div class="ascendingAttribute non-content">
                             <span class="spectrum-Heading spectrum-Heading--sizeXXS center">
-                                {(toNumber(a.level) - 5)}{a.level >= 9 ? 'th' : toNumber(a.level) === 8 ? 'rd' : toNumber(a.level) === 7 ? "nd" : 'st'} Star
+                                {+a.level - 5}{a.level >= 9 ? 'th' : +a.level === 8 ? 'rd' : (+a.level) === 7 ? "nd" : 'st'} Star
                             </span><br/>
                             <ul class="non-content">
                               {a.buff.map((b: buff) => (
@@ -157,38 +196,39 @@ if (validation.success) {
           </div>
   )}
     <br/>
-  {general.books &&
-          <div class="SkillBooks non-content" style="margin: 1px;">
-              <span class="spectrum-Heading spectrum-Heading--sizeXS">Special Skill:</span>
-            {general.books.map((book: skillBookType) => (
-              (specialSkillBook.safeParse(book)).success && (
-                      <>
-                          <span class="spectrum-Heading spectrum-Heading--sizeXXS">{book.name}</span>
-                        {Array.isArray((book as specialSkillBookType).buff) && (
-                                <ul class="non-content" id={book.name.toLocaleLowerCase().replace(/\s+/g, '_')}>
-                                  {book.buff.map((b) => (
-                                          <li >
-                                            {b.condition ? b.condition.replaceAll(/_/g, ' ') : ''} {(b.class === undefined || b.class === null) ? '' : b.class !== 'all' ? b.class : 'all troops '} {b.attribute ? b.attribute.replaceAll(/_/g, ' ') : ''} {(b.value.number < 0) ? '-' : '+'}{b.value.number}{b.value.unit ? '%' : ''}
-                                          </li>
-                                  ))}
-                                </ul>
-                        )}
-                      </>
-              )
-            ))}
-          </div>}
+  {general.books && (
+    <div class="SkillBooks non-content" style="margin: 1px;">
+        <span class="spectrum-Heading spectrum-Heading--sizeXS">Special Skill:</span>
+        {general.books.map((book: skillBookType) => (
+          (specialSkillBook.safeParse(book)).success && (
+            <>
+                <span class="spectrum-Heading spectrum-Heading--sizeXXS">{book.name}</span>
+                {Array.isArray((book as specialSkillBookType).buff) && (
+                  <ul class="non-content" id={book.name.toLocaleLowerCase().replace(/\s+/g, '_')}>
+                      {book.buff.map((b) => (
+                        <li >
+                            {b.condition ? b.condition.replaceAll(/_/g, ' ') : ''} {(b.class === undefined || b.class === null) ? '' : b.class !== 'all' ? b.class : 'all troops '} {b.attribute ? b.attribute.replaceAll(/_/g, ' ') : ''} {(b.value.number < 0) ? '-' : '+'}{b.value.number}{b.value.unit ? '%' : ''}
+                        </li>
+                      ))}
+                  </ul>
+                )}
+            </>
+          )
+        ))}
+    </div>
+  )}
 </div>
 
 <style>
     div.GeneralDetails {
         display: flex;
         flex-direction: column;
-        
+
         & ul {
             margin: 0px;
             padding-top: 0px;
             padding-left: 1rem;
-            
+
             & li {
                 padding-top: 0px;
                 padding-bottom: 0px;
@@ -196,63 +236,63 @@ if (validation.success) {
                 margin-bottom: 0px;
                 margin-left: 0.5rem;;                }
         }
-        
+
         :is(div) {
             align-content: center;
             justify-content: center;
             margin: 0.1px;
         }
-        
+
         & .spectrum-Heading {
             color: var(--sl-color-text-accent);
         }
-        
+
         & .center {
             align-self: center;
         }
-        
+
         & .label {
             color: var(--sl-color-text-accent);
         }
-        
+
         & .IntrinsicAttributes {
             columns: 4;
         }
-        
-        
+
+
         & .Stars {
             display: flex;
             flex-direction: row;
             justify-content: center;
         }
-        
+
         & .Specialities {
             margin: 1px;
             display: flex;
             flex-direction: row;
             justify-content: space-between;
-            
+
             & .Green {
                 background-color: var(--spectrum-celery-400);
             }
-            
+
             & .Blue {
                 background-color: var(--spectrum-blue-400);
             }
-            
+
             & .Purple {
                 background-color: var(--spectrum-purple-400);
             }
-            
+
             & .Orange {
                 background-color: var(--spectrum-orange-400);
             }
-            
+
             & .Gold {
                 background-color: var(--spectrum-yellow-400);
             }
         }
-        
+
         & .Ascending {
             margin: 1px;
             display: flex;
@@ -260,8 +300,12 @@ if (validation.success) {
             justify-content: space-between;
         }
         
-        
+
     }
-    
+    sp-banner {
+        margin-top: 5px;
+    }
+
 </style>
   )}
+{(general === null) && (<span>No General Retrieved</span>)}
