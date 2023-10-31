@@ -7,8 +7,9 @@ import {z} from 'zod';
 import Banner from "../components/Spectrum/Banner.astro";
 
 import {
-    type bookConflictsType,
+  type bookConflictsType,
   type buff,
+  BuffAdverbs,
   buffSchema,
   type General,
   generalConflicts,
@@ -23,12 +24,14 @@ import {
   standardSkillBook,
   specialSkillBook,
   type specialSkillBookType,
+  type standardSkillBookType,
   skillBook, buffUnion,
     syslogSeverity,
     type syslogSeverityType,
 } from '@schemas/evonySchemas.ts';
 
 import {attack_score, defense_score, hp_score} from './general/score';
+import { BookIcon } from '@spectrum-web-components/icons-workflow';
 
 
 const severity = {
@@ -151,7 +154,10 @@ if (validation.success) {
                                     gc.add(g);
                                 })
                                 if ([...gc].includes(general.name)) {
-                                    conflictData = conflictData + conflicts.books;
+                                    if(valid2.data.books !== null && valid2.data.books !== undefined)  {
+                                        const books = {'books': valid2.data.books };
+                                        conflictData.push(books)
+                                    }
                                 }
                             }
                         }
@@ -162,20 +168,38 @@ if (validation.success) {
     }
     if (conflictData.length >= 1) {
         conflictData = [conflictData].flat(1);
-        usageNotes = usageNotes + conflictData.map((c) => {
-            if (c !== null && c !== undefined) {
+        const result = conflictData.map((c) => {
+            if (c !== null && c !== undefined && c.books !== null && c.books !== undefined) {
                 console.log(`${JSON.stringify(c)}`)
-                return `
-          <sp-banner class="not-content" type=${severity[syslogSeverity.enum.alert]()} client:only>
-            <div slot="header">General Conflict Notice</div>
-            <div slot="content">
-                This general has conflicts with the following skill book:
-                 <Debug {c} />
-            </div>
-          </sp-banner>
-        `
+                return c.books.map((book: standardSkillBookType) => {
+                  let condition = 'all the time.';
+                  for (let i = 0; i < book.buff.length; i++) {
+                    const keys = Object.keys(book.buff[i]);
+                    console.log(`found keys ${keys}`)
+                    condition = (book.buff[i].condition !== null && book.buff[i].condition !== undefined) ? 
+                        book.buff[i].condition === BuffAdverbs.enum.When_Not_Mine ? 
+                            'when the book is on my paired general.' : (book.buff[i].condition as string) : 'all the time.' ;
+                  }
+                  return `
+                    <sp-banner class="not-content" type=${severity[syslogSeverity.enum.alert]()} client:only>
+                        <div slot="header">General Conflict Notice</div>
+                        <div slot="content">
+                            This general has conflicts with the ${book.name} level ${book.level} skill book.
+                            This conflict is in effect ${condition}
+                        </div>
+                    </sp-banner>
+                    `;
+                
+                })
             }
         })
+        if(result !== undefined) {
+            result.forEach((r) => {
+                if(r !== undefined) {
+                    r.forEach(r2 => usageNotes = usageNotes.concat(r2))
+                }
+            })
+        }
     }
 }
 
@@ -185,7 +209,7 @@ if (validation.success) {
 </script>
 {(general !== undefined && general !== null) && (
 <div class="not-content UsageNotes">
-    <>{usageNotes}</>
+    <Fragment set:html={usageNotes} />
 </div>
 <div class="GeneralDetails not-content" id={generalName}>
     <span class="center spectrum-Heading spectrum-Heading--sizeS">Level: {level}</span>
