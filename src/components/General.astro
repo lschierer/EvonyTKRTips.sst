@@ -217,7 +217,13 @@ if (validation.success) {
 </div>
 <div class="GeneralDetails not-content" id={generalName}>
     <span class="center spectrum-Heading spectrum-Heading--sizeS">Level: {level}</span>
-    <br/>
+    
+    {(starsHtml !== undefined && starsHtml !== null) && (
+        <div class=" not-content Stars">
+            <Fragment set:html={starsHtml} />
+        </div>
+        <br/>
+    )}
     <div class="IntrinsicAttributes">
       {intrinsic.map((ia) => ((ia !== undefined) &&
         <div class={ia}>
