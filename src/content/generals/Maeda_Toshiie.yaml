@@ -109,3 +109,332 @@ general:
           value:
             number: 20
             unit: percentage
+  specialities:
+    - name: Ground Troop Formation
+      attribute:
+        - level: Green
+          buff:
+            - attribute: Attack
+              class: Ground
+              value:
+                number: 1
+                unit: percentage
+            - attribute: Defense
+              class: Ground
+              value:
+                number: 1
+                unit: percentage
+        - level: Blue
+          buff:
+            - attribute: Attack
+              class: Ground
+              value:
+                number: 1
+                unit: percentage
+            - attribute: Defense
+              class: Ground
+              value:
+                number: 1
+                unit: percentage
+        - level: Purple
+          buff:
+            - attribute: Attack
+              class: Ground
+              value:
+                number: 2
+                unit: percentage
+            - attribute: Defense
+              class: Ground
+              value:
+                number: 2
+                unit: percentage
+        - level: Orange
+          buff:
+            - attribute: Attack
+              class: Ground
+              value:
+                number: 2
+                unit: percentage
+            - attribute: Defense
+              class: Ground
+              value:
+                number: 2
+                unit: percentage
+        - level: Gold
+          buff:
+            - attribute: Attack
+              class: Ground
+              value:
+                number: 4
+                unit: percentage
+            - attribute: Defense
+              class: Ground
+              value:
+                number: 4
+                unit: percentage
+    - name: Annihilation
+      attribute:
+      - level: Green
+        buff:
+          - attribute: March_Size_Capacity
+            value:
+              number: 1
+              unit: percentage
+          - attribute: Attack
+            condition: Attacking
+            class: Mounted
+            value:
+              number: 1
+              unit: percentage
+          - attribute: Attack
+            condition: Attacking
+            class: Ground
+            value:
+              number: 1
+              unit: percentage
+      - level: Blue
+        buff:
+          - attribute: March_Size_Capacity
+            value:
+              number: 1
+              unit: percentage
+          - attribute: Attack
+            condition: Attacking
+            class: Mounted
+            value:
+              number: 1
+              unit: percentage
+          - attribute: Attack
+            condition: Attacking
+            class: Ground
+            value:
+              number: 1
+              unit: percentage
+      - level: Purple
+        buff:
+          - attribute: March_Size_Capacity
+            value:
+              number: 1
+              unit: percentage
+          - attribute: Attack
+            condition: Attacking
+            class: Mounted
+            value:
+              number: 2
+              unit: percentage
+          - attribute: Attack
+            condition: Attacking
+            class: Ground
+            value:
+              number: 2
+              unit: percentage
+      - level: Orange
+        buff:
+          - attribute: March_Size_Capacity
+            value:
+              number: 1
+              unit: percentage
+          - attribute: Attack
+            condition: Attacking
+            class: Mounted
+            value:
+              number: 2
+              unit: percentage
+          - attribute: Attack
+            condition: Attacking
+            class: Ground
+            value:
+              number: 2
+              unit: percentage
+      - level: Gold
+        buff:
+          - attribute: March_Size_Capacity
+            value:
+              number: 2
+              unit: percentage
+          - attribute: Attack
+            condition: Attacking
+            class: Mounted
+            value:
+              number: 4
+              unit: percentage
+          - attribute: Attack
+            condition: Attacking
+            class: Ground
+            value:
+              number: 4
+              unit: percentage
+    - name: Ground Troop Ares
+      attribute:
+        - level: Green
+          buff:
+            - attribute: Attack
+              class: Ground
+              value:
+                number: 1
+                unit: percentage
+            - attribute: HP
+              class: Ground
+              value:
+                number: 1
+                unit: percentage
+            - attribute: Defense
+              class: Ground
+              value:
+                number: 1
+                unit: percentage
+        - level: Blue
+          buff:
+            - attribute: Attack
+              class: Ground
+              value:
+                number: 1
+                unit: percentage
+            - attribute: HP
+              class: Ground
+              value:
+                number: 1
+                unit: percentage
+            - attribute: Defense
+              class: Ground
+              value:
+                number: 1
+                unit: percentage
+        - level: Purple
+          buff:
+            - attribute: Attack
+              class: Ground
+              value:
+                number: 2
+                unit: percentage
+            - attribute: HP
+              class: Ground
+              value:
+                number: 2
+                unit: percentage
+            - attribute: Defense
+              class: Ground
+              value:
+                number: 2
+                unit: percentage
+        - level: Orange
+          buff:
+            - attribute: Attack
+              class: Ground
+              value:
+                number: 2
+                unit: percentage
+            - attribute: HP
+              class: Ground
+              value:
+                number: 2
+                unit: percentage
+            - attribute: Defense
+              class: Ground
+              value:
+                number: 2
+                unit: percentage
+        - level: Gold
+          buff:
+            - attribute: Attack
+              class: Ground
+              value:
+                number: 4
+                unit: percentage
+            - attribute: HP
+              class: Ground
+              value:
+                number: 4
+                unit: percentage
+            - attribute: Defense
+              class: Ground
+              value:
+                number: 4
+                unit: percentage
+    - name: Battle of Nagashino
+      attribute:
+        - level: Green
+          buff:
+            - attribute: Attack
+              class: Ground
+              value: 
+                number: 3
+                unit: percentage
+            - attribute: HP
+              class: Ground
+              value: 
+                number: 2
+                unit: percentage
+            - attribute: HP
+              class: Mounted
+              value: 
+                number: 2
+                unit: percentage
+        - level: Blue
+          buff:
+            - attribute: Attack
+              class: Ground
+              value: 
+                number: 3
+                unit: percentage
+            - attribute: HP
+              class: Ground
+              value: 
+                number: 2
+                unit: percentage
+            - attribute: HP
+              class: Mounted
+              value: 
+                number: 2
+                unit: percentage
+        - level: Purple
+          buff:
+            - attribute: Attack
+              class: Ground
+              value: 
+                number: 6
+                unit: percentage
+            - attribute: HP
+              class: Ground
+              value: 
+                number: 4
+                unit: percentage
+            - attribute: HP
+              class: Mounted
+              value: 
+                number: 4
+                unit: percentage
+        - level: Orange
+          buff:
+            - attribute: Attack
+              class: Ground
+              value: 
+                number: 6
+                unit: percentage
+            - attribute: HP
+              class: Ground
+              value: 
+                number: 4
+                unit: percentage
+            - attribute: HP
+              class: Mounted
+              value: 
+                number: 4
+                unit: percentage
+        - level: Gold
+          buff:
+            - attribute: Attack
+              class: Ground
+              value: 
+                number: 12
+                unit: percentage
+            - attribute: HP
+              class: Ground
+              value: 
+                number: 8
+                unit: percentage
+            - attribute: HP
+              class: Mounted
+              value: 
+                number: 8
+                unit: percentage
