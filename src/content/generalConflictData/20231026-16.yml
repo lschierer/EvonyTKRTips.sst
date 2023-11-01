@@ -11,4 +11,40 @@ conflicts:
     - Washington
     - Xiang Yu
     - Ii Naomasa
-
+books:
+  - name: Mounted Attack Increase
+    level: '1'
+    buff:
+      - attribute: Attack
+        condition: When_Not_Mine
+        class: Mounted
+        value:
+          number: 10
+          unit: percentage
+  - name: Mounted Attack Increase
+    level: '2'
+    buff:
+      - attribute: Attack
+        condition: When_Not_Mine
+        class: Mounted
+        value:
+          number: 15
+          unit: percentage
+  - name: Mounted Attack Increase
+    level: '3'
+    buff:
+      - attribute: Attack
+        condition: When_Not_Mine
+        class: Mounted
+        value:
+          number: 20
+          unit: percentage
+  - name: Mounted Attack Increase
+    level: '4'
+    buff:
+      - attribute: Attack
+        condition: When_Not_Mine
+        class: Mounted
+        value:
+          number: 25
+          unit: percentage

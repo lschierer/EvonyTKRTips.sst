@@ -1,0 +1,15 @@
+---
+general:
+  name: Honda Tadakatsu
+  display: summary
+  score_as: Mayors
+  level: '1'
+  stars: '10'
+  leadership: 105 
+  leadership_increment: 8.45
+  attack: 109 
+  attack_increment: 8.33
+  defense: 112 
+  defense_increment: 8.81
+  politics: 96 
+  politics_increment: 8.28
