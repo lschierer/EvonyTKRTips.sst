@@ -34,6 +34,7 @@ import {
 } from "@schemas/evonySchemas.ts";
 
 import {BoS, type BoSType, type generalInvestment, primaryInvestmentMap, secondaryInvestmentMap} from './generalInvestmentStore.ts';
+import { ascending } from "d3";
 
 const generalRole = z.enum(['primary','secondary']);
 type generalRoleType = z.infer<typeof generalRole>;
@@ -70,20 +71,63 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
   
   connectedCallback() {
     super.connectedCallback();
-    primaryInvestmentMap.setKey(BoS.enum.dragon, true);
-    primaryInvestmentMap.setKey('ascending', '10');
-    primaryInvestmentMap.setKey('speciality1', qualitySchema.enum.Gold);
-    primaryInvestmentMap.setKey('speciality2', qualitySchema.enum.Gold);
-    primaryInvestmentMap.setKey('speciality3', qualitySchema.enum.Gold);
-    primaryInvestmentMap.setKey('speciality4', qualitySchema.enum.Gold);
-    secondaryInvestmentMap.setKey(BoS.enum.dragon, false);
-    secondaryInvestmentMap.setKey('ascending', '0');
-    secondaryInvestmentMap.setKey('speciality1', qualitySchema.enum.Gold);
-    secondaryInvestmentMap.setKey('speciality2', qualitySchema.enum.Gold);
-    secondaryInvestmentMap.setKey('speciality3', qualitySchema.enum.Gold);
-    secondaryInvestmentMap.setKey('speciality4', qualitySchema.enum.Gold);
+    
   }
   
+  willUpdate(changedProperties: PropertyValues<this>) {
+    if(changedProperties.has('generalRole')) {
+      const valid = generalRole.safeParse(this.generalRole);
+      if(valid.success) {
+        this._role = valid.data;
+        let initialsetcounter = 0;
+        if (!this.investmentMapGet[this._role]['speciality1']()) { 
+          initialsetcounter++;
+          if(this._role === generalRole.enum.primary) {
+            primaryInvestmentMap.setKey('speciality1',qualitySchema.enum.Gold)
+          } else {
+            secondaryInvestmentMap.setKey('speciality1',qualitySchema.enum.Gold)
+          }
+        }
+        if (!this.investmentMapGet[this._role]['speciality2']() ) { 
+          initialsetcounter++;
+          if(this._role === generalRole.enum.primary) {
+            primaryInvestmentMap.setKey('speciality2',qualitySchema.enum.Gold)
+          } else {
+            secondaryInvestmentMap.setKey('speciality2',qualitySchema.enum.Gold)
+          }
+        }
+        if (!this.investmentMapGet[this._role]['speciality3']() ) { 
+          initialsetcounter++;
+          if(this._role === generalRole.enum.primary) {
+            primaryInvestmentMap.setKey('speciality3',qualitySchema.enum.Gold)
+          } else {
+            secondaryInvestmentMap.setKey('speciality3',qualitySchema.enum.Gold)
+          }
+        }
+        if (!this.investmentMapGet[this._role]['speciality4']() ) { 
+          initialsetcounter++;
+          if(this._role === generalRole.enum.primary) {
+            primaryInvestmentMap.setKey('speciality4',qualitySchema.enum.Gold)
+          } else {
+            secondaryInvestmentMap.setKey('speciality4',qualitySchema.enum.Gold)
+          }
+        }
+        if(initialsetcounter === 4) {
+          if(this._role === generalRole.enum.primary) {
+            primaryInvestmentMap.setKey('ascending', '10')
+            primaryInvestmentMap.setKey(BoS.enum.dragon, true);
+            primaryInvestmentMap.setKey(BoS.enum.beast, false);
+          } else {
+            secondaryInvestmentMap.setKey('ascending', '0')
+            secondaryInvestmentMap.setKey(BoS.enum.dragon,false);
+            secondaryInvestmentMap.setKey(BoS.enum.beast,false);
+          }
+        }
+      }
+    }
+  }
+
+
   protected changeHandler(e: CustomEvent) {
     let myEvent = new CustomEvent('PickerChanged', {
       detail: {
@@ -196,9 +240,9 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
     }
   }
 
-  private getBoS_Setting() {
+  private getBoS_Setting(): BoSType {
     let returnValue: BoSType = BoS.enum.none;
-    const dragon = (this.role === generalRole.enum.primary) ? 
+    const dragon = (this._role === generalRole.enum.primary) ? 
       primaryInvestmentMap.subscribe(pm => {
         if(pm.dragon === true) {
           returnValue = BoS.enum.dragon;
@@ -210,7 +254,7 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
         }
       })
 
-    const beast = (this.role === generalRole.enum.primary) ? 
+    const beast = (this._role === generalRole.enum.primary) ? 
     primaryInvestmentMap.subscribe(pm => {
       if(pm.beast === true) {
         returnValue = BoS.enum.beast;
@@ -228,10 +272,10 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
 
   private investmentMapGet: Record<string,  Record<string, () => string>> = {
     'primary':  {
-      'speciality1': () => {return primaryInvestmentMap.get().speciality1},
-      'speciality2': () => {return primaryInvestmentMap.get().speciality2},
-      'speciality3': () => {return primaryInvestmentMap.get().speciality3},
-      'speciality4': () => {return primaryInvestmentMap.get().speciality4},
+      'speciality1': () => {return primaryInvestmentMap.get().speciality1 },
+      'speciality2': () => {return primaryInvestmentMap.get().speciality2 },
+      'speciality3': () => {return primaryInvestmentMap.get().speciality3 },
+      'speciality4': () => {return primaryInvestmentMap.get().speciality4 },
     },
     'secondary':  {
       'speciality1': () => {return secondaryInvestmentMap.get().speciality1},
@@ -240,29 +284,30 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
       'speciality4': () => {return secondaryInvestmentMap.get().speciality4},
     }
   }
+  
+  private disabler: Record<string, (tf: boolean) => void> = {
+    'primary' : (tf: boolean) => {
+      if(tf) {
+        primaryInvestmentMap.setKey('speciality4', qualitySchema.enum.Disabled);
+        this.disableSpecial4 = true;
+      } else {
+        primaryInvestmentMap.setKey('speciality4',this.Special4disabledValue)
+        this.disableSpecial4 = false;
+      }
+    },
+    'secondary' : (tf) => {
+      if(tf) {
+        secondaryInvestmentMap.setKey('speciality4', qualitySchema.enum.Disabled);
+        this.disableSpecial4 = true;
+      } else {
+        secondaryInvestmentMap.setKey('speciality4',this.Special4disabledValue)
+        this.disableSpecial4 = false;
+      }
+    },
+  }
 
   private disable4 (){
-    
-    const disabler: Record<string, (tf: boolean) => void> = {
-      'primary' : (tf: boolean) => {
-        if(tf) {
-          primaryInvestmentMap.setKey('speciality4', qualitySchema.enum.Disabled);
-          this.disableSpecial4 = true;
-        } else {
-          primaryInvestmentMap.setKey('speciality4',this.Special4disabledValue)
-          this.disableSpecial4 = false;
-        }
-      },
-      'secondary' : (tf) => {
-        if(tf) {
-          secondaryInvestmentMap.setKey('speciality4', qualitySchema.enum.Disabled);
-          this.disableSpecial4 = true;
-        } else {
-          secondaryInvestmentMap.setKey('speciality4',this.Special4disabledValue)
-          this.disableSpecial4 = false;
-        }
-      },
-    }
+        
     let specials = new Array<qualitySchemaType>();
     let value = qualitySchema.safeParse(this.investmentMapGet[this._role]['speciality1']());
     if(value.success){
@@ -281,45 +326,35 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
       if(value.success) {
         this.Special4disabledValue = value.data;
       }
-      disabler[this._role](true);
+      this.disabler[this._role](true);
     } else if ( specials.includes(qualitySchema.enum.Green)) {
       const value = qualitySchema.safeParse(this.investmentMapGet[this._role]['speciality4']());
       if(value.success) {
         this.Special4disabledValue = value.data;
       }
-      disabler[this._role](true);
+      this.disabler[this._role](true);
     } else if (specials.includes(qualitySchema.enum.Blue)) {
       const value = qualitySchema.safeParse(this.investmentMapGet[this._role]['speciality4']());
       if(value.success) {
         this.Special4disabledValue = value.data;
       }
-      disabler[this._role](true);
+      this.disabler[this._role](true);
     } else if (specials.includes(qualitySchema.enum.Purple)) {
       const value = qualitySchema.safeParse(this.investmentMapGet[this._role]['speciality4']());
       if(value.success) {
         this.Special4disabledValue = value.data;
       }
-      disabler[this._role](true);
+      this.disabler[this._role](true);
     } else if (specials.includes(qualitySchema.enum.Orange)){
       const value = qualitySchema.safeParse(this.investmentMapGet[this._role]['speciality4']());
       if(value.success) {
         this.Special4disabledValue = value.data;
       }
-      disabler[this._role](true);
+      this.disabler[this._role](true);
     } else {
-      disabler[this._role](false);
+      this.disabler[this._role](false);
     }
   }
-
-  willUpdate(changedProperties: PropertyValues<this>) {
-    if(changedProperties.has('generalRole')) {
-      const valid = generalRole.safeParse(this.generalRole);
-      if(valid.success) {
-        this._role = valid.data;
-      }
-    }
-  }
-
 
   static styles = css`
     div.fieldGroup {
@@ -377,7 +412,7 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
                 ${ascendingHtml}
                 <div>
                     <sp-field-label for="Speciality1" size="s">1st Speciality</sp-field-label>
-                    <sp-picker id="Speciality1" size="s" label="Gold" value=${this.investmentMapGet[this._role]['speciality1']()}
+                    <sp-picker id="Speciality1" size="s" label=${this.investmentMapGet[this._role]['speciality1']()} value=${this.investmentMapGet[this._role]['speciality1']()}
                                @change=${this.changeHandler}>
                         <sp-menu-item value=${qualitySchema.enum.Disabled}>Not Active</sp-menu-item>
                         <sp-menu-item value=${qualitySchema.enum.Green}>Green</sp-menu-item>
@@ -389,7 +424,7 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
                 </div>
                 <div>
                     <sp-field-label for="Speciality2" size="s">2nd Speciality</sp-field-label>
-                    <sp-picker id="Speciality2" size="s" label="Gold" value=${this.investmentMapGet[this._role]['speciality2']()}
+                    <sp-picker id="Speciality2" size="s" label=${this.investmentMapGet[this._role]['speciality2']()} value=${this.investmentMapGet[this._role]['speciality2']()}
                                @change=${this.changeHandler}>
                         <sp-menu-item value=${qualitySchema.enum.Disabled}>Not Active</sp-menu-item>
                         <sp-menu-item value=${qualitySchema.enum.Green}>Green</sp-menu-item>
@@ -401,7 +436,7 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
                 </div>
                 <div>
                     <sp-field-label for="Speciality3" size="s">3rd Speciality</sp-field-label>
-                    <sp-picker id="Speciality3" size="s" label="Gold" value=${this.investmentMapGet[this._role]['speciality3']()}
+                    <sp-picker id="Speciality3" size="s" label=${this.investmentMapGet[this._role]['speciality3']()} value=${this.investmentMapGet[this._role]['speciality3']()}
                                @change=${this.changeHandler}>
                         <sp-menu-item value=${qualitySchema.enum.Disabled}>Not Active</sp-menu-item>
                         <sp-menu-item value=${qualitySchema.enum.Green}>Green</sp-menu-item>
@@ -413,7 +448,7 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
                 </div>
                 <div>
                     <sp-field-label for="Speciality4" size="s">4th Speciality</sp-field-label>
-                    <sp-picker id="Speciality4" size="s" label="Gold" value=${this.investmentMapGet[this._role]['speciality4']()}
+                    <sp-picker id="Speciality4" size="s" label=${this.investmentMapGet[this._role]['speciality4']()} value=${this.investmentMapGet[this._role]['speciality4']()}
                                ?disabled=${this.disableSpecial4}
                                @change=${this.changeHandler}>
                         <sp-menu-item value=${qualitySchema.enum.Disabled}>Not Active</sp-menu-item>
@@ -424,7 +459,9 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
                         <sp-menu-item value=${qualitySchema.enum.Gold}>Gold</sp-menu-item>
                     </sp-picker>
                 </div>
-                <div >
+            </sp-field-group>
+            <sp-field-group>
+              <div >
                   <sp-radio-group label="Small" label="BoS" horizontal
                   selected=${ this.getBoS_Setting() } 
                   @change=${this.radioHandler}>
@@ -433,7 +470,7 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
                     <sp-radio value=${BoS.enum.dragon} size="m">Dragon Assigned</sp-radio>
                   </sp-radio-group>
                 </div>
-            </sp-field-group>
+            </sp-field-group
         </div>
     `
     
