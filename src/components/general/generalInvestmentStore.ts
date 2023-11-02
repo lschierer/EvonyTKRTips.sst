@@ -1,3 +1,5 @@
+import {z} from "zod";
+
 import {
   generalUseCase,
   type generalUseCaseType,
@@ -11,6 +13,9 @@ import {map} from "nanostores";
 import { logger } from '@nanostores/logger'
 
 import {boolean} from "zod";
+
+export const BoS = z.enum(['none', 'dragon', 'beast']);
+export type BoSType = z.infer<typeof BoS>;
 
 export interface generalInvestment {
   dragon: boolean,

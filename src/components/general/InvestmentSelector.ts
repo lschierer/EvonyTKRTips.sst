@@ -33,13 +33,10 @@ import {
   type qualitySchemaType, specialty
 } from "@schemas/evonySchemas.ts";
 
-import {type generalInvestment, primaryInvestmentMap, secondaryInvestmentMap} from './generalInvestmentStore.ts';
+import {BoS, type BoSType, type generalInvestment, primaryInvestmentMap, secondaryInvestmentMap} from './generalInvestmentStore.ts';
 
 const generalRole = z.enum(['primary','secondary']);
 type generalRoleType = z.infer<typeof generalRole>;
-
-const BoS = z.enum(['none', 'dragon', 'beast']);
-type BoSType = z.infer<typeof BoS>;
 
 @customElement('investment-selector')
 export class InvestmentSelector extends withStores(SpectrumElement, [primaryInvestmentMap, secondaryInvestmentMap]) {
