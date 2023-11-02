@@ -6,7 +6,6 @@ import {
     type BuffAdverbsType,
     type BuffAdverbArrayType,
     type BuffAttributesType,
-    buffSchema,
     type buffType,
     buffTypeEnum,
     buffValueSchema,

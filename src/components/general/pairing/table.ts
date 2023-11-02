@@ -44,8 +44,54 @@ import {
 @customElement('pairing-table')
 export class PairingTable extends withStores(SpectrumElement, [typeAndUseMap,primaryInvestmentMap, secondaryInvestmentMap]) {
 
+  @state()
+  private table: Table | undefined;
+
+  private tableRef: Ref<Table> = createRef();
+
+  
+  static styles = css`
+     sp-table {
+        background-color: var(--spectrum-cyan-600);
+                        
+        & #primeName {
+          flex-grow: 3;
+        }
+        
+        & #assistName {
+          flex-grow: 3;
+        }
+
+        & sp-table-body {
+          min-height: var(--spectrum-global-dimension-size-900);
+        }
+      }
+    
+    
+  `
+
   render(){
-    return html`hi`
+    return html`
+    <sp-table size="m" style="height: calc(var(--spectrum-global-dimension-size-3600)*2)"scroller="true" ${ref(this.tableRef)}>
+            <sp-table-head>
+                <sp-table-head-cell id='primeName' sortable sort-direction="desc" sort-key="primeName">
+                    Primary General
+                </sp-table-head-cell>
+                <sp-table-head-cell id='assistName' sortable sort-direction="desc" sort-key="assistName">
+                    Secondary General
+                </sp-table-head-cell>
+                <sp-table-head-cell sortable sort-direction="desc" sort-key="attackBuff">
+                    Attack Buff
+                </sp-table-head-cell>
+                <sp-table-head-cell sortable sort-direction="desc" sort-key="HPBuff">
+                    HP Buff
+                </sp-table-head-cell>
+                <sp-table-head-cell sortable sort-direction="desc" sort-key="defenseBuff">
+                    Defense Buff
+                </sp-table-head-cell>
+            </sp-table-head>
+        </sp-table>
+    `
   }
 
 }

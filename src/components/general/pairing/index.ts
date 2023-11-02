@@ -41,24 +41,82 @@ import {
 } from "@components/general/ConflictingSkillExcludes.ts";
 
 import {
-  generalSchema,
-  type General,
-  generalObjectSchema,
-  generalUseCase,
-  type generalUseCaseType,
-  type generalObject,
-  levelSchema,
-  type levelSchemaType,
-  troopClass,
-  type troopClassType,
-} from "@schemas/evonySchemas.ts";
+  allGenerals,
+} from './generals.ts';
 
+import {
+  AllGeneralSchema,
+  type AllGeneral,
+} from "@schemas/generalsSchema.ts"
 
-const generalArray = z.array(generalObjectSchema).nullish();
-type generalArrayType = z.infer<typeof generalArray>;
+import {BookSchema, type Book} from '@schemas/bookSchemas.ts'
+
+import {type AllConflict, AllConflictSchema} from "@schemas/conflictSchemas.ts";
+
 
 @customElement('pairing-page')
-export class PairingPage extends withStores(SpectrumElement, [conflictingGenerals,conflictRecords,typeAndUseMap,primaryInvestmentMap, secondaryInvestmentMap]) {
+export class PairingPage extends withStores(SpectrumElement, [allGenerals,conflictingGenerals,conflictRecords,typeAndUseMap,primaryInvestmentMap, secondaryInvestmentMap]) {
+
+  @property({type: String})
+  public dataUrl: string = 'http://localhost';
+
+  @state()
+  private _dataUrl: URL = new URL(this.dataUrl);
+
+  @property({type: String})
+  public conflictData: string = 'http://localhost';
+
+  @state()
+  private _conflictData: URL = new URL(this.conflictData);
+
+  async willUpdate(changedProperties: PropertyValues<this>) {
+    if (changedProperties.has('conflictData')) {
+      this._conflictData = new URL(this.conflictData);
+      
+      const result = await fetch(this._conflictData).then((response) => {
+        if(response.ok) {
+          return response.text();
+        } else throw new Error('Status code error: ' + response.status);
+      }).then((text) => {
+        const jsonResult = JSON.parse(text);
+        const result = AllConflictSchema.safeParse(jsonResult);
+        if(result.success) {
+          if(result.data !== undefined) {
+            conflictRecords.set(result.data);
+          }
+          return true;
+        } else {
+          console.error(result.error)
+        }
+      })
+    }
+    if (changedProperties.has('dataUrl')) {
+      this._dataUrl = new URL(this.dataUrl);
+
+      const result = await fetch(this._dataUrl).then((response) => {
+        if (response.ok) {
+          return response.text();
+        } else throw new Error('Status code error: ' + response.status);
+      }).then((text) => {
+        const jsonResult = JSON.parse(text);
+        const result: { success: true; data: AllGeneral } | { success: false; error: ZodError; } = AllGeneralSchema.safeParse(jsonResult);
+        if (result.success) {
+          if(result.data !== undefined && result.data !== null) {
+            allGenerals.set(result.data);
+            return true;
+          }
+        } else {
+          result.error;
+        }
+        return false;
+      }).catch((error) => {
+        return false;
+      });
+      if (result) {
+      }
+    }
+
+  }
 
   private changeHandler(e: CustomEvent) {
     console.log(`${JSON.stringify(e)}`)
@@ -69,26 +127,7 @@ export class PairingPage extends withStores(SpectrumElement, [conflictingGeneral
       display: block;
       flex: 2 0 auto;
       min-height: calc(var(--spectrum-global-dimension-size-6000)*2);
-      & sp-table {
-        background-color: var(--spectrum-cyan-600);
-        
-        
-        & #Status {
-          flex-grow 1;
-        }
-        
-        & #primeName {
-          flex-grow: 3;
-        }
-        
-        & #assistName {
-          flex-grow: 3;
-        }
-
-        & sp-table-body {
-          min-height: var(--spectrum-global-dimension-size-900);
-        }
-      }
+      
     }
     
   `
