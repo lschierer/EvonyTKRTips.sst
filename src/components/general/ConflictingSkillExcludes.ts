@@ -1,11 +1,14 @@
 const DEBUG = true;
 
 import {
+  buffUnion,
+  type buff,
   generalSchema,
   type General,
   generalConflictCollection,
   generalObjectSchema,
   type generalObject,
+  standardSkillBook,
   type standardSkillBookType,
   troopClass,
   type troopClassType, generalConflicts, type generalConflictsType,
@@ -67,11 +70,43 @@ export const conflictingGenerals = computed(conflictRecords, CRs => {
   }
 });
 
-let destroy = logger({
-  'ConflictRecords': conflictRecords,
-  'ConflictingGenerals': conflictingGenerals,
-})
+export const conflictingBooks = computed(conflictRecords, CBs => {
+  if (CBs !== null && CBs !== undefined) {
+    const valid = generalConflictCollection.safeParse(CBs);
+    if (valid.success) {
+      let Returnable = new Map<string, Array<standardSkillBookType>>();
+      for (let i = 0; i < valid.data.length; i++) {
+        let o1 = valid.data[i]
+        let valid2 = generalConflicts.safeParse(o1);
+        if (valid2.success) {
+          let data: generalConflictsType | undefined;
+          if (valid2.data !== undefined && valid2.data.conflicts !== undefined && valid2.data.books !== undefined) {
+            let conflicts = valid2.data.conflicts;
+            let valid3 = standardSkillBook.array().safeParse(valid2.data.books);
+            if (valid3.success) {
+              let books = valid3.data;
+              if (books !== null && conflicts !== null) {
+                for (const key in conflicts) {
+                  if (key.localeCompare('other')) {
+                    const items = conflicts[key as keyof typeof conflicts];
+                    items.forEach((g) => {
+                      Returnable.set(g, books);
+                    })
+                  }
+                }
+              }
+            } else {
+              console.log(`wrong type`)
+            }
 
+          }
+        }
+      }
+      return Returnable;
+    }
+  }
+  return null;
+})
 
 export function checkConflicts (name1: string, name2: string, generalClass?: troopClassType) {
   if(name1 === name2 || !name1.localeCompare(name2, undefined, {sensitivity: 'base'})) {
@@ -90,4 +125,8 @@ export function checkConflicts (name1: string, name2: string, generalClass?: tro
   return false;
 }
 
-
+let destroy = logger({
+  'ConflictRecords': conflictRecords,
+  'ConflictingGenerals': conflictingGenerals,
+  'ConflictingBooks': conflictingBooks,
+})

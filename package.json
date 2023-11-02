@@ -56,6 +56,7 @@
     "@spectrum-web-components/shared": "^0.39.3",
     "@spectrum-web-components/sidenav": "^0.39.3",
     "@spectrum-web-components/split-view": "^0.39.3",
+    "@spectrum-web-components/status-light": "^0.39.3",
     "@spectrum-web-components/styles": "^0.39.3",
     "@spectrum-web-components/table": "^0.39.3",
     "@spectrum-web-components/tags": "^0.39.3",
