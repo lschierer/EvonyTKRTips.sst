@@ -28,6 +28,7 @@ import '@spectrum-web-components/menu/sp-menu-item.js';
 import '@spectrum-web-components/menu/sp-menu-divider.js';
 import '@spectrum-web-components/picker/sp-picker.js';
 import { Picker } from '@spectrum-web-components/picker';
+import '@spectrum-web-components/status-light/sp-status-light.js';
 import '@spectrum-web-components/tooltip/sp-tooltip.js';
 
 import {InterestSelector} from './InterestSelector.ts';
@@ -175,6 +176,7 @@ export class PairingTable extends withStores(SpectrumElement, [conflictingGenera
           db = db + secondary.defenseBuff;
           hb = hb + secondary.hpBuff;
           return html`
+              <sp-table-cell role='gridcell' id='status'></sp-table-cell>
               <sp-table-cell role='gridcell' dir='ltr' id='primeName'>${primary.name}</sp-table-cell>
               <sp-table-cell role='gridcell' dir='ltr' id='assistName'>${secondary.name}</sp-table-cell>
               <sp-table-cell role='gridcell' dir='ltr' id='attackBuff'>${ab}</sp-table-cell>
@@ -436,6 +438,19 @@ export class PairingTable extends withStores(SpectrumElement, [conflictingGenera
       & sp-table {
         background-color: var(--spectrum-cyan-600);
         
+        
+        & #Status {
+          flex-grow 1;
+        }
+        
+        & #primeName {
+          flex-grow: 3;
+        }
+        
+        & #assistName {
+          flex-grow: 3;
+        }
+
         & sp-table-body {
           min-height: var(--spectrum-global-dimension-size-900);
         }
@@ -449,10 +464,11 @@ export class PairingTable extends withStores(SpectrumElement, [conflictingGenera
     const tableHtml = html`
         <sp-table size="m" style="height: calc(var(--spectrum-global-dimension-size-3600)*2)"scroller="true" ${ref(this.tableRef)}>
             <sp-table-head>
-                <sp-table-head-cell sortable sort-direction="desc" sort-key="primeName">
+                <sp-table-head-cell id='Status'>Status</sp-table-head-cell>
+                <sp-table-head-cell id='primeName' sortable sort-direction="desc" sort-key="primeName">
                     Primary General
                 </sp-table-head-cell>
-                <sp-table-head-cell sortable sort-direction="desc" sort-key="assistName">
+                <sp-table-head-cell id='assistName' sortable sort-direction="desc" sort-key="assistName">
                     Secondary General
                 </sp-table-head-cell>
                 <sp-table-head-cell sortable sort-direction="desc" sort-key="attackBuff">
