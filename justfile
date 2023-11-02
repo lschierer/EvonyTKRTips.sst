@@ -5,7 +5,7 @@ set dotenv-load
 export PNPM := `which pnpm`
 
 install:
-    ${PNPM} install
+    #${PNPM} install
 
 dev: install
     ${PNPM} astro dev
