@@ -36,7 +36,7 @@ export const AscendingSchema = z.object({
 });
 export type Ascending = z.infer<typeof AscendingSchema>;
 
-export const GeneralSchema = z.object({
+export const GeneralClassSchema = z.object({
     "name": z.string(),
     "display": DisplaySchema,
     "note": z.union([z.array(NoteSchema), z.null()]).optional(),
@@ -55,9 +55,12 @@ export const GeneralSchema = z.object({
     "books": z.array(BookSchema),
     "score_as": b.ClassEnumSchema,
 });
-export type General = z.infer<typeof GeneralSchema>;
+export type GeneralClass = z.infer<typeof GeneralClassSchema>;
 
-export const AllGeneralSchema = z.object({
-    "general": GeneralSchema,
+export const GeneralElementSchema = z.object({
+    "general": GeneralClassSchema,
 });
-export type AllGeneral = z.infer<typeof AllGeneralSchema>;
+export type GeneralElement = z.infer<typeof GeneralElementSchema>;
+
+export const GeneralArray = z.array(GeneralElementSchema);
+export type GeneralArrayType = z.infer<typeof GeneralArray>;
