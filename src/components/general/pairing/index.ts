@@ -38,20 +38,22 @@ import {
   conflictingGenerals,
   conflictRecords,
   checkConflicts,
-} from "@components/general/ConflictingSkillExcludes.ts";
+} from "./ConflictingSkillExcludes.ts";
 
 import {
   allGenerals,
 } from './generals.ts';
 
 import {
-  AllGeneralSchema,
-  type AllGeneral,
+  GeneralArray,
+  type GeneralArrayType,
+  GeneralElementSchema,
+  type GeneralElement,
 } from "@schemas/generalsSchema.ts"
 
 import {BookSchema, type Book} from '@schemas/bookSchemas.ts'
 
-import {type AllConflict, AllConflictSchema} from "@schemas/conflictSchemas.ts";
+import {ConflictArray, type ConflictArrayType} from "@schemas/conflictSchemas.ts";
 
 
 @customElement('pairing-page')
@@ -79,7 +81,7 @@ export class PairingPage extends withStores(SpectrumElement, [allGenerals,confli
         } else throw new Error('Status code error: ' + response.status);
       }).then((text) => {
         const jsonResult = JSON.parse(text);
-        const result = AllConflictSchema.safeParse(jsonResult);
+        const result = ConflictArray.safeParse(jsonResult);
         if(result.success) {
           if(result.data !== undefined) {
             conflictRecords.set(result.data);
@@ -99,7 +101,7 @@ export class PairingPage extends withStores(SpectrumElement, [allGenerals,confli
         } else throw new Error('Status code error: ' + response.status);
       }).then((text) => {
         const jsonResult = JSON.parse(text);
-        const result: { success: true; data: AllGeneral } | { success: false; error: ZodError; } = AllGeneralSchema.safeParse(jsonResult);
+        const result: { success: true; data: GeneralArrayType } | { success: false; error: ZodError; } = GeneralArray.safeParse(jsonResult);
         if (result.success) {
           if(result.data !== undefined && result.data !== null) {
             allGenerals.set(result.data);
