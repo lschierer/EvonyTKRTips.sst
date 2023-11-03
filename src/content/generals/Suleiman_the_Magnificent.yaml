@@ -315,12 +315,12 @@ general:
             unit: percentage
     - level: '10'
       buff:
-        - attrbiute: Attack
+        - attribute: Attack
           class: Archers
           value:
             number: 10
             unit: percentage
-        - attrbiute: Attack
+        - attribute: Attack
           class: Siege
           value:
             number: 10
