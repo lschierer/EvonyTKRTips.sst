@@ -1,4 +1,4 @@
-import {  html, css, type PropertyValues} from "lit";
+import {  html, css, type PropertyValues, type PropertyValueMap} from "lit";
 import {customElement, property, state} from 'lit/decorators.js';
 import {ref, createRef, type Ref} from 'lit/directives/ref.js';
 
@@ -33,6 +33,8 @@ import '@spectrum-web-components/tooltip/sp-tooltip.js';
 import {InterestSelector} from '../InterestSelector.ts';
 import {InvestmentSelector} from '../InvestmentSelector.ts';
 
+import { PairingRow } from "./row.ts";
+
 import {
   type generalInvestment,
   type generalTypeAndUse,
@@ -41,24 +43,74 @@ import {
   typeAndUseMap
 } from '../generalInvestmentStore.ts';
 
+import { type GeneralPairType } from '@schemas/generalsSchema.ts';
+
 import { generalPairs} from './generals.ts'
 
 @customElement('pairing-table')
 export class PairingTable extends withStores(SpectrumElement, [generalPairs, typeAndUseMap,primaryInvestmentMap, secondaryInvestmentMap]) {
 
   @state()
+  private items: Record<string,GeneralPairType>[] = new Array<Record<string,GeneralPairType>>();
+
+  @state()
   private table: Table | undefined;
 
   private tableRef: Ref<Table> = createRef();
+
+  private rowMapper(pair: GeneralPairType, index: string) {
+        
+    const newRecord: Record<string,GeneralPairType> = {index: pair}
+    this.items.push(newRecord);
+  }
 
   constructor() {
     super();
 
     generalPairs.subscribe(gp => {
-      console.log(`table subscribed to generalPairs`)
+      gp.forEach((primary,index) => {
+        console.log(`general pairs subscribe`)
+        primary.forEach((pair,index2) => {
+          const label=`${index}.${index2}`
+          console.log(` label is ${label}\n`)
+          this.rowMapper(pair, label)
+        })
+      })
     })
   }
   
+  protected firstUpdated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+    super.firstUpdated(_changedProperties);
+    if(this.renderRoot) {
+      this.table = this.tableRef.value;
+      if(this.table !== undefined && this.table !== null) {
+        this.table.renderItem = (item, index) => {
+          const one = item['primary' as keyof typeof item]; 
+          const two = item['secondary' as keyof typeof item];
+          const row = new PairingRow;
+          console.log(`one is ${ JSON.stringify(one)}`)
+          row.setAttribute('one', JSON.stringify(one));
+          return html`
+            ${row.render1()}
+          `
+        }
+      }
+    }
+  }
+
+  protected willUpdate(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+    super.willUpdate(_changedProperties);
+
+    if(this.renderRoot){
+      if(this.table !== null && this.table !== undefined) {
+        if(this.items !== null && this.items.length >= 1) {
+          this.table.items = this.items;
+          this.table.requestUpdate();
+        }
+      }
+    }
+  }
+
   static styles = css`
      sp-table {
         background-color: var(--spectrum-cyan-600);
@@ -81,6 +133,7 @@ export class PairingTable extends withStores(SpectrumElement, [generalPairs, typ
 
   render(){
     return html`
+    
     <sp-table size="m" style="height: calc(var(--spectrum-global-dimension-size-3600)*2)"scroller="true" ${ref(this.tableRef)}>
             <sp-table-head>
                 <sp-table-head-cell id='primeName' sortable sort-direction="desc" sort-key="primeName">
