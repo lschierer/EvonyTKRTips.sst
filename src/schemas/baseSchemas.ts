@@ -1,29 +1,44 @@
 import * as z from "zod";
 
-export const ConditionSchema = z.enum([
-  "Against_Monsters",
-  "Attacking",
-  "brings_dragon_or_beast_to_attack",
-  "dragon_to_the_attack",
-  "Enemy_In_City",
-  "leading_the_army_to_attack",
-  "Marching",
-  "Reduces_Enemy",
-  "Reduces_Monster",
-  "When_Rallying",
+export const Condition = z.enum([
+  'When_Not_Mine',
+  'Attacking',
+  'Marching',
+  'When_Rallying',
+  'leading_the_army_to_attack',
+  'dragon_to_the_attack',
+  'brings_dragon_or_beast_to_attack',
+  'Reinforcing',
+  'In_City',
+  'Defending',
+  'When_The_Main_Defense_General',
+  'When_the_City_Mayor',
+  'During_SvS',
+  'When_an_officer',
+  'Against_Monsters',
+  'Reduces_Enemy',
+  'Enemy',
+  'Enemy_In_City',
+  'Reduces_Monster',
 ]);
-export type Condition = z.infer<typeof ConditionSchema>;
+export type ConditionType = z.infer<typeof Condition>;
 
 export const AttributeSchema = z.enum([
-  "Attack",
-  "Death_to_Wounded",
-  "Defense",
-  "Double_Items_Drop_Rate",
-  "HP",
-  "March_Size_Capacity",
-  "Marching_Speed",
-  "Rally_Capacity",
-  "Wounded_to_Death",
+ 'Attack',
+ 'Defense',
+ 'HP',
+ 'Leadership',
+ 'Politics',
+ 'Range',
+ 'Training_Speed',
+ 'Marching_Speed',
+ 'March_Size_Capacity',
+ 'Rally_Capacity',
+ 'Attack_Speed',
+ 'Wounded_to_Death',
+ 'Death_to_Wounded',
+ 'Load',
+ 'Double_Items_Drop_Rate',
 ]);
 export type Attribute = z.infer<typeof AttributeSchema>;
 
@@ -37,6 +52,7 @@ export const ClassEnumSchema = z.enum([
   "Ground",
   "Mounted",
   "Siege",
+  "all",
 ]);
 export type ClassEnum = z.infer<typeof ClassEnumSchema>;
 
@@ -48,9 +64,9 @@ export type Value = z.infer<typeof ValueSchema>;
 
 export const BuffSchema = z.object({
   "attribute": AttributeSchema,
-  "class": z.union([ClassEnumSchema, z.null()]).optional(),
-  "value": ValueSchema,
-  "condition": z.union([z.null(), z.string()]).optional(),
+  "class": ClassEnumSchema.nullish(),
+  "value": ValueSchema.nullish(),
+  "condition": Condition.nullish(),
 });
 export type Buff = z.infer<typeof BuffSchema>;
 

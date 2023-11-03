@@ -37,7 +37,6 @@ import {
 import {
   conflictingGenerals,
   conflictRecords,
-  checkConflicts,
 } from "./ConflictingSkillExcludes.ts";
 
 import {
@@ -93,6 +92,7 @@ export class PairingPage extends withStores(SpectrumElement, [allGenerals,confli
       })
     }
     if (changedProperties.has('dataUrl')) {
+      console.log(`dataUrl changed`)
       this._dataUrl = new URL(this.dataUrl);
 
       const result = await fetch(this._dataUrl).then((response) => {
@@ -108,7 +108,7 @@ export class PairingPage extends withStores(SpectrumElement, [allGenerals,confli
             return true;
           }
         } else {
-          result.error;
+          console.error(result.error);
         }
         return false;
       }).catch((error) => {
