@@ -4,42 +4,28 @@ import * as b from './baseSchemas';
 
 import * as s from './specialitySchema'
 
-export const DisplaySchema = z.enum([
+import {BookSchema, type Book} from './bookSchemas';
+
+export const Display = z.enum([
   "summary",
 ]);
-export type Display = z.infer<typeof DisplaySchema>;
+export type DisplayType = z.infer<typeof Display>;
 
-
-
-export const NoteSchema = z.object({
+export const Note = z.object({
     "text": z.string(),
     "severity": z.string(),
 });
-export type Note = z.infer<typeof NoteSchema>;
+export type NoteType = z.infer<typeof Note>;
 
-export const BookSchema = z.object({
-    "name": z.string(),
-    "buff": z.array(b.BuffSchema),
-});
-export type Book = z.infer<typeof BookSchema>;
-
-export const ValueSchema = z.object({
-    "number": z.number(),
-    "unit": b.UnitSchema,
-});
-export type Value = z.infer<typeof ValueSchema>;
-
-
-export const AscendingSchema = z.object({
+export const Ascending = z.object({
     "level": z.string(),
     "buff": z.array(b.BuffSchema),
 });
-export type Ascending = z.infer<typeof AscendingSchema>;
+export type AscendingType = z.infer<typeof Ascending>;
 
-export const GeneralClassSchema = z.object({
+export const GeneralClass = z.object({
     "name": z.string(),
-    "display": DisplaySchema,
-    "note": z.union([z.array(NoteSchema), z.null()]).optional(),
+    "display": Display,
     "leadership": z.number(),
     "leadership_increment": z.number(),
     "attack": z.number(),
@@ -49,18 +35,26 @@ export const GeneralClassSchema = z.object({
     "politics": z.number(),
     "politics_increment": z.number(),
     "level": z.string(),
-    "specialities": z.array(s.SpecialitySchema),
-    "ascending": z.array(AscendingSchema),
     "stars": z.string(),
-    "books": z.array(BookSchema),
     "score_as": b.ClassEnumSchema,
+    "specialities": z.array(s.SpecialitySchema).nullish(),
+    "books": z.array(BookSchema).nullish(),
+    "ascending": z.array(Ascending).nullish(),
+    "note": z.array(Note).nullish(),
 });
-export type GeneralClass = z.infer<typeof GeneralClassSchema>;
+export type GeneralClassType = z.infer<typeof GeneralClass>;
 
 export const GeneralElementSchema = z.object({
-    "general": GeneralClassSchema,
+    "general": GeneralClass,
 });
 export type GeneralElement = z.infer<typeof GeneralElementSchema>;
 
 export const GeneralArray = z.array(GeneralElementSchema);
 export type GeneralArrayType = z.infer<typeof GeneralArray>;
+
+export const GeneralPair = z.object({
+    primary: GeneralClass,
+    secondary: GeneralClass,
+});
+
+export type GeneralPairType = z.infer<typeof GeneralPair>;

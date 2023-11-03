@@ -41,14 +41,23 @@ import {
   typeAndUseMap
 } from '../generalInvestmentStore.ts';
 
+import { generalPairs} from './generals.ts'
+
 @customElement('pairing-table')
-export class PairingTable extends withStores(SpectrumElement, [typeAndUseMap,primaryInvestmentMap, secondaryInvestmentMap]) {
+export class PairingTable extends withStores(SpectrumElement, [generalPairs, typeAndUseMap,primaryInvestmentMap, secondaryInvestmentMap]) {
 
   @state()
   private table: Table | undefined;
 
   private tableRef: Ref<Table> = createRef();
 
+  constructor() {
+    super();
+
+    generalPairs.subscribe(gp => {
+      console.log(`table subscribed to generalPairs`)
+    })
+  }
   
   static styles = css`
      sp-table {

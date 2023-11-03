@@ -1,10 +1,16 @@
+import { atom, map, action, computed } from "nanostores";
+import { logger } from '@nanostores/logger'
+
+import { z } from "zod";
+
+
 const DEBUG = true;
 
 import * as b from "@schemas/baseSchemas.ts"
 
 import {
-  GeneralClassSchema,
-  type GeneralClass,
+  GeneralClass,
+  type GeneralClassType,
   GeneralArray,
   type GeneralArrayType,
   GeneralElementSchema,
@@ -23,10 +29,6 @@ import {
   type standardSkillBookType
 } from "@schemas/bookSchemas.ts"
 
-import { atom, map, action, computed } from "nanostores";
-import { logger } from '@nanostores/logger'
-
-import { z } from "zod";
 
 type GeneralDictionary = {
   [key: string]: Array<string>;
@@ -104,7 +106,7 @@ export const conflictingBooks = computed(conflictRecords, CBs => {
   return null;
 })
 
-export function checkConflicts(name1: string, name2: string, generalClass: b.ClassEnum) {
+export function checkConflicts(name1: string, name2: string, generalType: b.ClassEnum) {
   if (name1 === name2 || !name1.localeCompare(name2, undefined, { sensitivity: 'base' })) {
     return true;
   }
