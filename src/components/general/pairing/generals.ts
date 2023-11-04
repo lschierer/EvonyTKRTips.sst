@@ -22,8 +22,8 @@ import { conflictingGenerals } from "./ConflictingSkillExcludes.ts"
 export const allGenerals = atom<GeneralArrayType | null>(null);
 
 export const generalPairs = computed([allGenerals, conflictingGenerals], (g, c) => {
-  const returnable = new Map<String, GeneralPairType[]>();
-
+  const returnable = new Map<string, GeneralPairType[]>();
+  if(DEBUG) {console.log(`generals.ts generalPairs start`)}
   if (g !== null && g !== undefined) {
     if (c !== null && c !== undefined) {
       const valid = GeneralArray.safeParse(g);
@@ -50,7 +50,9 @@ export const generalPairs = computed([allGenerals, conflictingGenerals], (g, c) 
         console.error(`wrong type in generalPairs compute`)
       }
     }
-  }
+  } else {
+    console.log(`generalPairs computed before generals present`)
+  } 
   return returnable;
 })
 

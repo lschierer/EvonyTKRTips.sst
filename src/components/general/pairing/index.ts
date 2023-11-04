@@ -2,7 +2,7 @@ import {  html, css, type PropertyValues} from "lit";
 import {customElement, property, state} from 'lit/decorators.js';
 import {ref, createRef, type Ref} from 'lit/directives/ref.js';
 
-const DEBUG = false;
+const DEBUG = true;
 
 import { withStores } from "@nanostores/lit";
 
@@ -22,8 +22,8 @@ import { Picker } from '@spectrum-web-components/picker';
 import '@spectrum-web-components/status-light/sp-status-light.js';
 import '@spectrum-web-components/tooltip/sp-tooltip.js';
 
-import {InterestSelector} from '../InterestSelector.ts';
-import {InvestmentSelector} from '../InvestmentSelector.ts';
+import {TypeSelector} from './TypeSelector.ts';
+import {InvestmentSelector} from './InvestmentSelector.ts';
 import {PairingTable} from './table.ts';
 
 import {
@@ -32,7 +32,7 @@ import {
   primaryInvestmentMap,
   secondaryInvestmentMap,
   typeAndUseMap
-} from '../generalInvestmentStore.ts';
+} from './selectionStore.ts';
 
 import {
   conflictingGenerals,
@@ -50,7 +50,7 @@ import {
   type GeneralElement,
 } from "@schemas/generalsSchema.ts"
 
-import {BookSchema, type Book} from '@schemas/bookSchemas.ts'
+import {Book, type BookType} from '@schemas/bookSchemas.ts'
 
 import {ConflictArray, type ConflictArrayType} from "@schemas/conflictSchemas.ts";
 
@@ -84,9 +84,12 @@ export class PairingPage extends withStores(SpectrumElement, [allGenerals,confli
         if(result.success) {
           if(result.data !== undefined) {
             conflictRecords.set(result.data);
+          } else {
+            console.error(`result had no data`)
           }
           return true;
         } else {
+          console.error(`validation failed`)
           console.error(result.error)
         }
       })
@@ -101,9 +104,11 @@ export class PairingPage extends withStores(SpectrumElement, [allGenerals,confli
         } else throw new Error('Status code error: ' + response.status);
       }).then((text) => {
         const jsonResult = JSON.parse(text);
+        if(DEBUG) {console.log(jsonResult)}
         const result: { success: true; data: GeneralArrayType } | { success: false; error: ZodError; } = GeneralArray.safeParse(jsonResult);
         if (result.success) {
           if(result.data !== undefined && result.data !== null) {
+            if(DEBUG) {console.log(`setting generals to ${result.data}`)}
             allGenerals.set(result.data);
             return true;
           }
@@ -112,6 +117,7 @@ export class PairingPage extends withStores(SpectrumElement, [allGenerals,confli
         }
         return false;
       }).catch((error) => {
+        console.error(`in the catch with ${error}`)
         return false;
       });
       if (result) {
@@ -141,7 +147,7 @@ export class PairingPage extends withStores(SpectrumElement, [allGenerals,confli
         <interest-selector role="primary"></interest-selector>
         <investment-selector generalRole="primary" @PickerChanged=${this.changeHandler} ></investment-selector>
         <investment-selector generalRole="secondary" @PickerChanged=${this.changeHandler}></investment-selector>
-        <pairing-table></pairing-table>
+        <!--<pairing-table></pairing-table>-->
       </div>
     `
 

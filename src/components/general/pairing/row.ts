@@ -1,11 +1,11 @@
-import {  html, css, type PropertyValues, type PropertyValueMap} from "lit";
-import {customElement, property, state} from 'lit/decorators.js';
-import {ref, createRef, type Ref} from 'lit/directives/ref.js';
+import { html, css, type PropertyValues, type PropertyValueMap, LitElement } from "lit";
+import { customElement, property, state } from 'lit/decorators.js';
+import { ref, createRef, type Ref } from 'lit/directives/ref.js';
 
 const DEBUG = true;
 import { withStores } from "@nanostores/lit";
 
-import {z,  type ZodError} from 'zod';
+import { z, type ZodError } from 'zod';
 
 import { SpectrumElement } from '@spectrum-web-components/base';
 
@@ -31,8 +31,8 @@ import '@spectrum-web-components/status-light/sp-status-light.js';
 import '@spectrum-web-components/tooltip/sp-tooltip.js';
 
 
-import {InterestSelector} from '../InterestSelector.ts';
-import {InvestmentSelector} from '../InvestmentSelector.ts';
+import { TypeSelector } from './TypeSelector.ts';
+import { InvestmentSelector } from './InvestmentSelector.ts';
 
 import {
   type generalInvestment,
@@ -40,7 +40,7 @@ import {
   primaryInvestmentMap,
   secondaryInvestmentMap,
   typeAndUseMap
-} from '../generalInvestmentStore.ts';
+} from './selectionStore.ts';
 
 import {
   generalPairs,
@@ -48,49 +48,119 @@ import {
 
 import * as b from '@schemas/baseSchemas.ts';
 
-import {statusLights, type statusLightsType } from "@schemas/statusLightsSchema.ts";
+import { statusLights, type statusLightsType } from "@schemas/statusLightsSchema.ts";
 
 import {
+  generalUseCase,
+  type generalUseCaseType,
   type GeneralClassType
 } from "@schemas/generalsSchema.ts"
 
 import {
   conflictingBooks,
+  checkConflicts
 } from "./ConflictingSkillExcludes.ts";
 
-import {buff} from './buff.ts';
+import { buff } from './buff.ts';
+
+
+const buffAdverbs: { [key in generalUseCaseType]: b.BuffAdverbArrayType } = {
+  [generalUseCase.enum.all]: [
+    b.Condition.enum.Attacking,
+    b.Condition.enum.Marching,
+    b.Condition.enum.When_Rallying,
+    b.Condition.enum.dragon_to_the_attack,
+    b.Condition.enum.leading_the_army_to_attack,
+    b.Condition.enum.Reinforcing,
+    b.Condition.enum.Defending,
+  ],
+  [generalUseCase.enum.Monsters]: [
+    b.Condition.enum.Attacking,
+    b.Condition.enum.Marching,
+    b.Condition.enum.When_Rallying,
+    b.Condition.enum.dragon_to_the_attack,
+    b.Condition.enum.leading_the_army_to_attack,
+    b.Condition.enum.Against_Monsters,
+    b.Condition.enum.Reduces_Monster,
+  ],
+  [generalUseCase.enum.Attack]: [
+    b.Condition.enum.Attacking,
+    b.Condition.enum.Marching,
+    b.Condition.enum.dragon_to_the_attack,
+    b.Condition.enum.leading_the_army_to_attack,
+    b.Condition.enum.Reduces_Enemy,
+    b.Condition.enum.Enemy,
+  ],
+  [generalUseCase.enum.Defense]: [
+    b.Condition.enum.Reinforcing,
+    b.Condition.enum.Defending,
+    b.Condition.enum.Reduces_Enemy,
+    b.Condition.enum.Enemy,
+  ],
+  [generalUseCase.enum.Overall]: [
+    b.Condition.enum.Reduces_Enemy,
+    b.Condition.enum.Enemy,
+  ],
+  [generalUseCase.enum.Wall]: [
+    b.Condition.enum.Reduces_Enemy,
+    b.Condition.enum.Enemy,
+    b.Condition.enum.Defending,
+    b.Condition.enum.When_The_Main_Defense_General,
+    b.Condition.enum.In_City,
+  ],
+  [generalUseCase.enum.Mayors]: [
+    b.Condition.enum.Reduces_Enemy,
+    b.Condition.enum.Enemy,
+    b.Condition.enum.When_the_City_Mayor,
+  ],
+}
 
 @customElement('pairing-row')
-export class PairingRow extends withStores(TableRow, [generalPairs,conflictingBooks,typeAndUseMap,primaryInvestmentMap, secondaryInvestmentMap]) {
+export class PairingRow extends withStores(LitElement, [generalPairs, conflictingBooks, typeAndUseMap, primaryInvestmentMap, secondaryInvestmentMap]) {
 
-  @property({type: String})
+  @property({ type: String })
   public one: GeneralClassType | null = null;
 
-  @property({type: String})
+  @property({ type: String })
   public two: GeneralClassType | null = null;
 
-  constructor() {
-    super()
+  accessor adverbs = buffAdverbs[generalUseCase.enum.all];
+
+  @state()
+  private attack_buff: number = 0;
+
+  public getAttackBuff() {
+    return this.attack_buff;
   }
 
   @state()
-  private attack_buff: Number = 0;
+  private defense_buff: number = 0;
+
+  public getDefenseBuff() {
+    return this.defense_buff;
+  }
 
   @state()
-  private defense_buff: Number = 0;
+  private hp_buff: number = 0;
+
+  public getHPBuff() {
+    return this.hp_buff;
+  }
 
   @state()
-  private hp_buff: Number = 0;
+  private march_buff: number = 0;
+
+  public getMarchBuff() {
+    return this.march_buff;
+  }
 
   @state()
-  private march_buff: Number = 0;
+  private unitClass: b.ClassEnumType = b.ClassEnum.enum.all;
 
   @state()
-  private unitClass: b.ClassEnum = b.ClassEnumSchema.enum.all;
+  private statusLight: statusLightsType = statusLights.enum.neutral;
 
   @state()
-private statusLight: statusLightsType = statusLights.enum.neutral;
-
   private props = {
     dragon: primaryInvestmentMap.get().dragon,
     beast: primaryInvestmentMap.get().beast,
@@ -101,6 +171,7 @@ private statusLight: statusLightsType = statusLights.enum.neutral;
     Speciality4: primaryInvestmentMap.get().speciality4,
   };
 
+  @state()
   private Assistprops = {
     dragon: secondaryInvestmentMap.get().dragon,
     beast: secondaryInvestmentMap.get().beast,
@@ -111,8 +182,11 @@ private statusLight: statusLightsType = statusLights.enum.neutral;
     Speciality4: secondaryInvestmentMap.get().speciality4,
   };
 
-  connectedCallback(): void {
+  constructor() {
+    super()
+
     generalPairs.subscribe(gp => {
+      if (DEBUG) { console.log(`rows constructor generalPairs subscribe`) }
       return;
     })
 
@@ -121,17 +195,22 @@ private statusLight: statusLightsType = statusLights.enum.neutral;
     })
 
     typeAndUseMap.subscribe(tum => {
-      this.unitClass = tum.type;
-      if(this.one !== null) {
-        if(this.one.score_as !== null && this.one.score_as !== undefined) {
-          if(this.one.score_as !== this.unitClass) {
-            this.statusLight = statusLights.enum.fuchsia;
+      if (this.unitClass !== tum.type) {
+        this.requestUpdate('unitClass', this.unitClass);
+        this.unitClass = tum.type;
+        if (this.one !== null) {
+          if (this.one.score_as !== null && this.one.score_as !== undefined) {
+            if (this.one.score_as !== this.unitClass) {
+              this.statusLight = statusLights.enum.fuchsia;
+            }
           }
         }
+        this.computeBuffs();
       }
     })
-    
+
     primaryInvestmentMap.subscribe(pim => {
+      this.requestUpdate('props', this.props);
       this.props = {
         dragon: pim.dragon,
         beast: pim.beast,
@@ -141,9 +220,11 @@ private statusLight: statusLightsType = statusLights.enum.neutral;
         Speciality3: pim.speciality3,
         Speciality4: pim.speciality4,
       };
+
     })
 
     secondaryInvestmentMap.subscribe(sim => {
+      this.requestUpdate('Assistprops', this.Assistprops);
       this.Assistprops = {
         dragon: sim.dragon,
         beast: sim.beast,
@@ -157,16 +238,71 @@ private statusLight: statusLightsType = statusLights.enum.neutral;
 
   }
 
-  protected willUpdate(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
-    super.willUpdate(_changedProperties);
+  connectedCallback(): void {
+    super.connectedCallback();
+    console.log(`rows connectedCallback`)
 
-    if(_changedProperties.has('one') || _changedProperties.has('two')) {
-      
-    
-      
-    }
-    
+
   }
+
+  public triggerUpdate() {
+
+    this.shouldUpdate();
+  }
+
+  protected override shouldUpdate(_changedProperties?: PropertyValueMap<any> | Map<PropertyKey, unknown>): boolean {
+    console.log(`rows shouldupdate start`)
+
+    if ((this.one !== null && this.one !== undefined) || (this.two !== null && this.two !== undefined)) {
+      if (this.attack_buff === 0 && this.defense_buff === 0 && this.hp_buff === 0) {
+        return true;
+      }
+    }
+    if (_changedProperties !== null && _changedProperties !== undefined) {
+      const returnable = super.shouldUpdate(_changedProperties);
+      return returnable;
+    }
+    return false;
+  }
+
+  protected willUpdate(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+    console.log(`rows willUpdate start`)
+    super.willUpdate(_changedProperties);
+    if (_changedProperties.has('one') || _changedProperties.has('two')) {
+      console.log(`rows willupdate has one or two`)
+
+    }
+  }
+
+
+
+  computeBuffs() {
+    if (DEBUG) { console.log(`rows computeBuffs start`) }
+    if (this.one !== null) {
+      const { attackBuff, defenseBuff, hpBuff } = buff(this.one, this.adverbs, this.props);
+      this.requestUpdate('attack_buff', this.attack_buff);
+      this.attack_buff = attackBuff;
+      this.requestUpdate('defense_buff', this.defense_buff);
+      this.defense_buff = defenseBuff;
+      this.requestUpdate('hp_buff', this.hp_buff);
+      this.hp_buff = hpBuff;
+      if (DEBUG) { console.log(`after one, attack now ${this.attack_buff}`) }
+      if (this.two !== null) {
+        const { attackBuff, defenseBuff, hpBuff } = buff(this.two, this.adverbs, this.Assistprops);
+        if (!checkConflicts(this.one.name, this.two.name, this.unitClass)) {
+          this.attack_buff = this.attack_buff + attackBuff;
+          this.defense_buff = this.defense_buff + defenseBuff;
+          this.hp_buff = this.hp_buff + hpBuff;
+        } else {
+          console.error(`conflict detected, this pair should have been filtered`)
+        }
+      }
+      this.dispatchEvent(new CustomEvent('GeneralPairUpdate', { bubbles: true, composed: true }));
+    } else {
+      console.error(`first general is null`)
+    }
+  }
+
 
   public render1() {
     return html`
@@ -174,14 +310,42 @@ private statusLight: statusLightsType = statusLights.enum.neutral;
     `
   }
 
-  render() {
-  
+  public render2() {
     return html`
-    <sp-table-cell role='gridcell' dir='ltr' id='primeName'>${this.one ? this.one.name : "No Primary General"}</sp-table-cell>
     <sp-table-cell role='gridcell' dir='ltr' id='assistName'>${this.two ? this.two.name : "No Primary General"}</sp-table-cell>
+    `
+  }
+
+  public render3() {
+    return html`
     <sp-table-cell role='gridcell' dir='ltr' id='attackBuff'>${this.attack_buff.toFixed(2)}</sp-table-cell>
+    `
+  }
+
+  public render4() {
+    return html`
     <sp-table-cell role='gridcell' dir='ltr' id='HPBuff'>${this.hp_buff.toFixed(2)}</sp-table-cell>
+    `
+  }
+
+  public render5() {
+    return html`
     <sp-table-cell role='gridcell' dir='ltr' id='defenseBuff'>${this.defense_buff.toFixed(2)}</sp-table-cell>
+    `
+  }
+
+  protected createRenderRoot() {
+    return this;
+  }
+
+  render() {
+
+    return html`
+    ${this.render1()}
+    ${this.render2()}
+    ${this.render3()}
+    ${this.render4()}
+    ${this.render5()}
     `
   }
 

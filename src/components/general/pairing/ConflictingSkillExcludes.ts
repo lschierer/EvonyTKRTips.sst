@@ -96,7 +96,7 @@ export const conflictingBooks = computed(conflictRecords, CBs => {
             }
           }
         } else {
-          console.log(`wrong type`)
+          if (DEBUG) {console.log(`skillbook detected wrong type`)}
         }
 
       }
@@ -106,7 +106,8 @@ export const conflictingBooks = computed(conflictRecords, CBs => {
   return null;
 })
 
-export function checkConflicts(name1: string, name2: string, generalType: b.ClassEnum) {
+export function checkConflicts(name1: string, name2: string, generalType: b.ClassEnumType) {
+  if(DEBUG) {console.log(`checkConflicts called for ${name1} and ${name2}`)}
   if (name1 === name2 || !name1.localeCompare(name2, undefined, { sensitivity: 'base' })) {
     return true;
   }
