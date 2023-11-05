@@ -47,6 +47,7 @@
     "@spectrum-web-components/iconset": "^0.39.4",
     "@spectrum-web-components/link": "^0.39.4",
     "@spectrum-web-components/menu": "^0.39.4",
+    "@spectrum-web-components/number-field": "^0.39.4",
     "@spectrum-web-components/overlay": "^0.39.4",
     "@spectrum-web-components/picker": "^0.39.4",
     "@spectrum-web-components/picker-button": "^0.39.4",
