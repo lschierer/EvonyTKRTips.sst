@@ -1,5 +1,69 @@
 import * as z from "zod";
 
+export const levels = z.enum([
+  '0',
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
+  '10',
+  '11',
+  '12',
+  '13',
+  '14',
+  '15',
+  '16',
+  '17',
+  '18',
+  '19',
+  '20',
+  '21',
+  '22',
+  '23',
+  '24',
+  '25',
+  '26',
+  '27',
+  '28',
+  '29',
+  '30',
+  '31',
+  '32',
+  '33',
+  '34',
+  '35',
+  '36',
+  '37',
+  '38',
+  '39',
+  '40',
+  '41',
+  '42',
+  '43',
+  '44',
+  '45',
+]);
+
+export type levelsType = z.infer<typeof levels>;
+
+export const syslogSeverity = z.enum([
+  'emerg',
+  'alert',
+  'crit',
+  'err',
+  'warning',
+  'notice',
+  'info',
+  'debug',
+])
+
+export type syslogSeverityType = z.infer<typeof syslogSeverity>;
+
 export const Condition = z.enum([
   'When_Not_Mine',
   'Attacking',
@@ -42,19 +106,32 @@ export const AttributeSchema = z.enum([
 ]);
 export type Attribute = z.infer<typeof AttributeSchema>;
 
+
+export const qualityColor = z.enum([
+"Disabled",
+"Green",
+"Blue",
+"Purple",
+"Orange",
+"Gold",
+]);
+
+export type qualityColorType = z.infer<typeof qualityColor>;
+
 export const UnitSchema = z.enum([
   "percentage",
+  'flat,'
 ]);
 export type Unit = z.infer<typeof UnitSchema>;
 
-export const ClassEnumSchema = z.enum([
+export const ClassEnum = z.enum([
   "Archers",
   "Ground",
   "Mounted",
   "Siege",
   "all",
 ]);
-export type ClassEnum = z.infer<typeof ClassEnumSchema>;
+export type ClassEnumType = z.infer<typeof ClassEnum>;
 
 export const ValueSchema = z.object({
   "number": z.number(),
@@ -62,9 +139,12 @@ export const ValueSchema = z.object({
 });
 export type Value = z.infer<typeof ValueSchema>;
 
+export const BuffAdverbArray = z.array(Condition);
+export type BuffAdverbArrayType = z.infer<typeof BuffAdverbArray>;
+
 export const BuffSchema = z.object({
   "attribute": AttributeSchema,
-  "class": ClassEnumSchema.nullish(),
+  "class": ClassEnum.nullish(),
   "value": ValueSchema.nullish(),
   "condition": Condition.nullish(),
 });

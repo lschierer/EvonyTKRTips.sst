@@ -1,5 +1,5 @@
 import {z} from "zod";
-import {map} from "nanostores";
+import {map, action} from "nanostores";
 import { logger } from '@nanostores/logger'
 
 import * as b from "@schemas/baseSchemas.ts";
@@ -38,3 +38,14 @@ let destroy = logger({
   'PrimaryGeneralInvestment': primaryInvestmentMap,
   'SecondaryGeneralInvestment': secondaryInvestmentMap,
 })
+
+export const pickType = action(typeAndUseMap, 'Pick Type', 
+(store, newType: b.ClassEnumType) => {
+  store.setKey('type',newType)
+})
+
+export const pickUseCase = action(typeAndUseMap, 'Pick Use Case', 
+(store, newCase: generalUseCaseType) => {
+  store.setKey('use', newCase);
+})
+

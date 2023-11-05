@@ -18,7 +18,7 @@ import * as b from "@schemas/baseSchemas.ts";
 
 import {generalUseCase, type generalUseCaseType} from "@schemas/generalsSchema.ts";
 
-import {type generalInvestment, typeAndUseMap} from './selectionStore.ts';
+import {type generalInvestment, typeAndUseMap, pickType, pickUseCase} from './selectionStore.ts';
 
 @customElement('type-selector')
 export class TypeSelector extends withStores(SpectrumElement,[typeAndUseMap]) {
@@ -52,13 +52,13 @@ export class TypeSelector extends withStores(SpectrumElement,[typeAndUseMap]) {
     if(this.type === null) {
       const type = typeAndUseMap.get().type;
       if(type === null || type === undefined) {
-        typeAndUseMap.setKey('type',b.ClassEnum.enum.all);
+        pickType(b.ClassEnum.enum.all);
       }
     }
     if(this.use === null) {
       const use = typeAndUseMap.get().use;
       if(use === null || use === undefined) {
-        typeAndUseMap.setKey('use', generalUseCase.enum.all);
+        pickUseCase(generalUseCase.enum.all);
       }
     }
   }
@@ -87,13 +87,13 @@ export class TypeSelector extends withStores(SpectrumElement,[typeAndUseMap]) {
     if(!picker.id.localeCompare('unitClass')){
       const validation = b.ClassEnum.safeParse(picker.value);
       if(validation.success) {
-        typeAndUseMap.setKey('type', validation.data)
+         pickType(validation.data)
       }
     }
     if(!picker.id.localeCompare('generalUse')){
       const validation = generalUseCase.safeParse(picker.value);
       if (validation.success){
-        typeAndUseMap.setKey('use',validation.data);
+        pickUseCase(validation.data);
       }
     }
   }

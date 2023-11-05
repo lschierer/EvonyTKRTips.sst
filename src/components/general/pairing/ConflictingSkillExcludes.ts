@@ -4,7 +4,7 @@ import { logger } from '@nanostores/logger'
 import { z } from "zod";
 
 
-const DEBUG = true;
+const DEBUG = false;
 
 import * as b from "@schemas/baseSchemas.ts"
 
@@ -122,6 +122,12 @@ export function checkConflicts(name1: string, name2: string, generalType: b.Clas
   }
   console.error(`no records returned at all;`)
   return false;
+}
+
+export function checkBoSConflicts(name: string) {
+  if(DEBUG) {console.log(`checking for Dragon/Beast conflicts for ${name}`)}
+  let records = conflictingBooks.get();
+  
 }
 
 let destroy = logger({

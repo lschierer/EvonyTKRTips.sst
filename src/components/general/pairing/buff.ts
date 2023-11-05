@@ -21,6 +21,59 @@ interface Props {
     Speciality3: b.qualityColorType,
     Speciality4: b.qualityColorType,
 }
+
+export const buffAdverbs: { [key in generalUseCaseType]: b.BuffAdverbArrayType } = {
+    [generalUseCase.enum.all]: [
+      b.Condition.enum.Attacking,
+      b.Condition.enum.Marching,
+      b.Condition.enum.When_Rallying,
+      b.Condition.enum.dragon_to_the_attack,
+      b.Condition.enum.leading_the_army_to_attack,
+      b.Condition.enum.Reinforcing,
+      b.Condition.enum.Defending,
+    ],
+    [generalUseCase.enum.Monsters]: [
+      b.Condition.enum.Attacking,
+      b.Condition.enum.Marching,
+      b.Condition.enum.When_Rallying,
+      b.Condition.enum.dragon_to_the_attack,
+      b.Condition.enum.leading_the_army_to_attack,
+      b.Condition.enum.Against_Monsters,
+      b.Condition.enum.Reduces_Monster,
+    ],
+    [generalUseCase.enum.Attack]: [
+      b.Condition.enum.Attacking,
+      b.Condition.enum.Marching,
+      b.Condition.enum.dragon_to_the_attack,
+      b.Condition.enum.leading_the_army_to_attack,
+      b.Condition.enum.Reduces_Enemy,
+      b.Condition.enum.Enemy,
+    ],
+    [generalUseCase.enum.Defense]: [
+      b.Condition.enum.Reinforcing,
+      b.Condition.enum.Defending,
+      b.Condition.enum.Reduces_Enemy,
+      b.Condition.enum.Enemy,
+    ],
+    [generalUseCase.enum.Overall]: [
+      b.Condition.enum.Reduces_Enemy,
+      b.Condition.enum.Enemy,
+    ],
+    [generalUseCase.enum.Wall]: [
+      b.Condition.enum.Reduces_Enemy,
+      b.Condition.enum.Enemy,
+      b.Condition.enum.Defending,
+      b.Condition.enum.When_The_Main_Defense_General,
+      b.Condition.enum.In_City,
+    ],
+    [generalUseCase.enum.Mayors]: [
+      b.Condition.enum.Reduces_Enemy,
+      b.Condition.enum.Enemy,
+      b.Condition.enum.When_the_City_Mayor,
+    ],
+  }
+  
+
 function buffFilter(current: b.Buff, general: GeneralClassType, score_for: b.Attribute,  props: Props, situations?: b.BuffAdverbArrayType,) {
     const name = general.name;
     let toReturn = false;
