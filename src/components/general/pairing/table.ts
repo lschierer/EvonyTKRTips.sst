@@ -2,7 +2,7 @@ import { html, css, type PropertyValues, type PropertyValueMap, type TemplateRes
 import { customElement, property, state } from 'lit/decorators.js';
 import { ref, createRef, type Ref } from 'lit/directives/ref.js';
 
-const DEBUG = false;
+const DEBUG = true;
 import { withStores } from "@nanostores/lit";
 
 import { z, type ZodError } from 'zod';
@@ -37,7 +37,13 @@ import { PairingRow } from "./row.ts";
 
 import * as b from '@schemas/baseSchemas.ts';
 
-import {generalUseCase, type generalUseCaseType, type GeneralPairType} from '@schemas/generalsSchema.ts'
+import {
+  type GeneralClassType,
+  type GeneralPairType,
+  generalUseCase,
+  GeneralPair,
+  type generalUseCaseType
+} from '@schemas/generalsSchema.ts';
 
 import {
   type generalInvestment,
@@ -49,7 +55,9 @@ import {
 
 import { generalPairs } from './generals.ts'
 
-type tableRecord = Record<string, PairingRow|HTMLElement>;
+import { buffAdverbs } from './buff.ts';
+
+type tableRecord = Record<string, PairingRow | HTMLElement>;
 
 @customElement('pairing-table')
 export class PairingTable extends withStores(SpectrumElement, [generalPairs, primaryInvestmentMap, secondaryInvestmentMap]) {
@@ -64,71 +72,79 @@ export class PairingTable extends withStores(SpectrumElement, [generalPairs, pri
   private type: b.ClassEnumType | null = null;
 
   @state()
-  private use: generalTypeAndUse | null = null;
+  private use: generalUseCaseType | null = null;
 
   private tableRef: Ref<Table> = createRef();
 
-  
+
   constructor() {
     super();
-   
-    primaryInvestmentMap.subscribe(pim => {
-      if(this.table !== null && this.table !== undefined) {
-        this.table.requestUpdate()
-        this.requestUpdate();
-      }
-    })
 
-    secondaryInvestmentMap.subscribe(sim => {
-      if(this.table !== null && this.table !== undefined) {
-        this.table.requestUpdate()
-        this.requestUpdate();
-      }
-    })
+    typeAndUseMap.subscribe(tam => {
+      if (DEBUG) { console.log(`table tam subscribe start`) }
+      if (this.table !== null && this.table !== undefined) {
 
-    typeAndUseMap.subscribe(tam=> {
-      if(this.table !== null && this.table !== undefined) {
-        
-        if(this.records.length >= 1) {
+        if (this.records.length >= 1) {
           const type = tam.type;
           const use = tam.use;
 
-          if(tam.type !== undefined && tam.type !== null) {
+          if (tam.type !== undefined && tam.type !== null) {
             this.requestUpdate('type', this.type);
             this.type = tam.type;
           }
-          if(tam.use !== undefined && tam.type !== null) {
-            this.requestUpdate('use',this.use);
+          if (tam.use !== undefined && tam.type !== null) {
+            this.requestUpdate('use', this.use);
             this.use = tam.use;
           }
-        
+
 
           const old = this.table.items
-          this.table.requestUpdate('items',old)
+          this.table.requestUpdate('items', old)
           this.requestUpdate();
+        } else {
+          this.type = tam.type;
+          this.use = tam.use;
+          const gp = generalPairs.get();
+          if (gp != undefined && gp != null) {
+            this.rowCreator(gp, b.ClassEnum.enum.all, generalUseCase.enum.all)
+          }
         }
       }
     })
-    
-    generalPairs.subscribe(gp => {
-      if(DEBUG) {console.log(`table generalPairs subscribe start`)}
 
-    }) 
+    generalPairs.subscribe(gp => {
+      if (DEBUG) { console.log(`table generalPairs subscribe start`) }
+      if (gp !== undefined && gp !== null) {
+        this.records = new Array<tableRecord>();
+        if (this.type !== null && this.use !== null) {
+          this.rowCreator(gp, this.type, this.use);
+        } else {
+          this.rowCreator(gp, b.ClassEnum.enum.all, generalUseCase.enum.all)
+        }
+      }
+    })
   }
 
   private rowCreator(gp: Map<string, GeneralPairType[]>, type: b.ClassEnumType, use: generalUseCaseType) {
-    if(gp !== undefined && gp !== null) {
+    if (DEBUG) { console.log(`rowCreator start`) }
+    if (gp !== undefined && gp !== null) {
       gp.forEach((primary, index) => {
-        if(DEBUG) {console.log(`general pairs subscribe foreach`) }
+        if (DEBUG) { console.log(`general pairs subscribe foreach`) }
         primary.forEach((pair, index2) => {
           const label = `${index}.${index2}`
-          if (DEBUG) {console.log(` label is ${label}\n`)}
-          const newRowItem = new PairingRow();
-          newRowItem.addEventListener('GeneralPairUpdate', this.PairUpdateListener);
-          (newRowItem as PairingRow).one = pair['primary' as keyof typeof pair];
-          (newRowItem as PairingRow).two = pair['secondary' as keyof typeof pair];
-          newRowItem.computeBuffs();
-          this.rowMapper(newRowItem, label)
+          if (DEBUG) { console.log(` label is ${label}\n`) }
+          const one = pair['primary' as keyof typeof pair];
+          const two = pair['secondary' as keyof typeof pair];
+          if (DEBUG) { console.log(`rowCreator: ${one.name}:${two.name} types: ${one.score_as}:${two.score_as}`) }
+          if (one !== null && one !== undefined && two !== null && two !== undefined) {
+            const newRowItem = new PairingRow();
+            (newRowItem as PairingRow).one = one;
+            (newRowItem as PairingRow).two = two;
+            newRowItem.adverbs = buffAdverbs[use];
+            newRowItem.addEventListener('GeneralPairUpdate', this.PairUpdateListener);
+            newRowItem.computeBuffs();
+            this.rowMapper(newRowItem, label)
+          }
         })
       })
     }
@@ -141,8 +157,8 @@ export class PairingTable extends withStores(SpectrumElement, [generalPairs, pri
   }
 
   private PairUpdateListener(event: Event) {
-    console.log(`PairUpdateListener called`)
-    if(this.table !== null && this.table !== undefined) {
+    //if (DEBUG) {console.log(`PairUpdateListener called`)}
+    if (this.table !== null && this.table !== undefined) {
       this.table.requestUpdate();
     }
     this.requestUpdate();
@@ -151,90 +167,90 @@ export class PairingTable extends withStores(SpectrumElement, [generalPairs, pri
   public pairSorter(direction: string, key: string, a: PairingRow, b: PairingRow) {
     let ga: string | number = 0;
     let gb: string | number = 0;
-    const sortFunction: Record<string,(a: PairingRow, b: PairingRow) => number> = {
+    const sortFunction: Record<string, (a: PairingRow, b: PairingRow) => number> = {
       ['primeName']: (a, b) => {
         let ga = a.one!.name
         let gb = b.one!.name
         return (direction === 'asc') ?
-          (ga.localeCompare(gb, undefined, {sensitivity: "base"})) :
-          (gb.localeCompare(ga, undefined, {sensitivity: "base"}))
+          (ga.localeCompare(gb, undefined, { sensitivity: "base" })) :
+          (gb.localeCompare(ga, undefined, { sensitivity: "base" }))
       },
-      ['assistName']:(a, b) => {
+      ['assistName']: (a, b) => {
         let ga = a.two!.name;
         let gb = b.two!.name;
         return (direction === 'asc') ?
-            (ga.localeCompare(gb, undefined, {sensitivity: "base"})) :
-            (gb.localeCompare(ga, undefined, {sensitivity: "base"}))
+          (ga.localeCompare(gb, undefined, { sensitivity: "base" })) :
+          (gb.localeCompare(ga, undefined, { sensitivity: "base" }))
       },
-      ['attackBuff']: (a,b) => {
+      ['attackBuff']: (a, b) => {
         let ga = a.getAttackBuff();
         let gb = b.getAttackBuff();
-        if(ga === gb) {
+        if (ga === gb) {
           return 0;
         } else {
           return direction === 'asc' ?
-              (ga < gb ? -1 : 1) :
-              (ga < gb ? 1 : -1);
+            (ga < gb ? -1 : 1) :
+            (ga < gb ? 1 : -1);
         }
       },
       ['defenseBuff']: (a, b) => {
         let ga = a.getDefenseBuff();
         let gb = b.getDefenseBuff();
-        if(ga === gb) {
+        if (ga === gb) {
           return 0;
         } else {
           return direction === 'asc' ?
-              (ga < gb ? -1 : 1) :
-              (ga < gb ? 1 : -1);
+            (ga < gb ? -1 : 1) :
+            (ga < gb ? 1 : -1);
         }
       },
       ['HPBuff']: (a, b) => {
         let ga = a.getHPBuff();
         let gb = b.getHPBuff();
-        if(ga === gb) {
+        if (ga === gb) {
           return 0;
         } else {
           return direction === 'asc' ?
-              (ga < gb ? -1 : 1) :
-              (ga < gb ? 1 : -1);
+            (ga < gb ? -1 : 1) :
+            (ga < gb ? 1 : -1);
         }
       },
     }
 
-    if(a !== null && a !== undefined) {
-      if(b !== null && b !== undefined) {
-        return sortFunction[key](a,b);
+    if (a !== null && a !== undefined) {
+      if (b !== null && b !== undefined) {
+        return sortFunction[key](a, b);
       } else {
         return 1;
       }
     } else {
-      if( b !== null && b !== undefined) {
+      if (b !== null && b !== undefined) {
         return -1;
       } else {
         return 0;
       }
     }
   }
-  
+
   protected firstUpdated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
     super.firstUpdated(_changedProperties);
     if (this.renderRoot) {
       this.table = this.tableRef.value;
       if (this.table !== undefined && this.table !== null) {
         this.table.renderItem = (item, index) => {
-            const myItem = (Object.values(item as tableRecord)[0] as PairingRow);
-          
-            myItem.triggerUpdate();
-            return html`${myItem.render()}`
+          const myItem = (Object.values(item as tableRecord)[0] as PairingRow);
+
+          myItem.triggerUpdate();
+          return html`${myItem.render()}`
         };
 
         this.table.addEventListener('sorted', (event) => {
-          const {sortDirection, sortKey} = (event as CustomEvent).detail;
+          const { sortDirection, sortKey } = (event as CustomEvent).detail;
 
-          let items = (this.table!.items ).sort((a, b) => {
+          let items = (this.table!.items).sort((a, b) => {
             const itemA = Object.values(a)[0];
             const itemB = Object.values(b)[0]
-            return this.pairSorter(sortDirection, sortKey,(itemA as PairingRow),(itemB as PairingRow));
+            return this.pairSorter(sortDirection, sortKey, (itemA as PairingRow), (itemB as PairingRow));
 
           })
           this.table!.items = [...items];
@@ -245,11 +261,11 @@ export class PairingTable extends withStores(SpectrumElement, [generalPairs, pri
 
   protected willUpdate(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
     super.willUpdate(_changedProperties);
-    if(DEBUG) { console.log(`table willUpdate start`)}
+    if (DEBUG) { console.log(`table willUpdate start`) }
     if (this.renderRoot) {
       if (this.table !== null && this.table !== undefined) {
         if (this.records !== null && this.records.length >= 1) {
-          if(DEBUG) { console.log(`table willUpdate sending items to table`)}
+          if (DEBUG) { console.log(`table willUpdate sending items to table`) }
           this.table.items = this.records;
           this.table.requestUpdate();
         }
@@ -257,13 +273,33 @@ export class PairingTable extends withStores(SpectrumElement, [generalPairs, pri
     }
   }
 
-  
+
 
   public static override get styles(): CSSResultArray {
     const localstyle = css`
       sp-table {
         background-color: var(--spectrum-cyan-600);
-                          
+        
+        .cellDiv {
+          display: flex;
+          flex-flow: row wrap;
+          justify-content: space-evenly;
+          width: 100%;
+
+          & .name {
+            flex: 3;
+          }
+
+          & .status {
+            flex: 1;
+          }
+
+          & sp-status-light {
+            align-self: center;
+            padding: 1px;
+          }
+        }
+        
         & #primeName {
           flex-grow: 3;
         }

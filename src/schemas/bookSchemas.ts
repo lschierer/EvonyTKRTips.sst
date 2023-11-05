@@ -3,13 +3,13 @@ import * as z from "zod";
 import * as b from './baseSchemas';
 
 
-export const BookSchema = z.object({
+export const Book = z.object({
   "name": z.string(),
   "buff": z.array(b.BuffSchema),
   "level": z.string().nullish(),
 });
-export type Book = z.infer<typeof BookSchema>;
+export type BookType = z.infer<typeof Book>;
 
-export const standardSkillBook = BookSchema.required();
+export const standardSkillBook = Book.required();
 export type standardSkillBookType = z.infer<typeof standardSkillBook>;
 

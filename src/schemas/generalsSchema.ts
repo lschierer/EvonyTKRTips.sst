@@ -4,7 +4,19 @@ import * as b from './baseSchemas';
 
 import * as s from './specialitySchema'
 
-import {BookSchema, type Book} from './bookSchemas';
+import {Book, type BookType} from './bookSchemas';
+
+export const generalUseCase = z.enum([
+    "all",
+    "Monsters",
+    "Attack",
+    "Defense",
+    "Overall",
+    "Wall",
+    "Mayors"
+  ]);
+
+export type generalUseCaseType = z.infer<typeof generalUseCase>;
 
 export const Display = z.enum([
   "summary",
@@ -13,7 +25,7 @@ export type DisplayType = z.infer<typeof Display>;
 
 export const Note = z.object({
     "text": z.string(),
-    "severity": z.string(),
+    "severity": b.syslogSeverity,
 });
 export type NoteType = z.infer<typeof Note>;
 
@@ -34,11 +46,11 @@ export const GeneralClass = z.object({
     "defense_increment": z.number(),
     "politics": z.number(),
     "politics_increment": z.number(),
-    "level": z.string(),
-    "stars": z.string(),
-    "score_as": b.ClassEnumSchema,
-    "specialities": z.array(s.SpecialitySchema).nullish(),
-    "books": z.array(BookSchema).nullish(),
+    "level": b.levels,
+    "stars": b.levels,
+    "score_as": b.ClassEnum,
+    "specialities": z.array(s.Speciality).nullish(),
+    "books": z.array(Book).nullish(),
     "ascending": z.array(Ascending).nullish(),
     "note": z.array(Note).nullish(),
 });

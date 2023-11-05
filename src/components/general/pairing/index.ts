@@ -2,7 +2,7 @@ import {  html, css, type PropertyValues} from "lit";
 import {customElement, property, state} from 'lit/decorators.js';
 import {ref, createRef, type Ref} from 'lit/directives/ref.js';
 
-const DEBUG = true;
+const DEBUG = false;
 
 import { withStores } from "@nanostores/lit";
 
@@ -41,6 +41,7 @@ import {
 
 import {
   allGenerals,
+  generalPairs,
 } from './generals.ts';
 
 import {
@@ -56,7 +57,7 @@ import {ConflictArray, type ConflictArrayType} from "@schemas/conflictSchemas.ts
 
 
 @customElement('pairing-page')
-export class PairingPage extends withStores(SpectrumElement, [allGenerals,conflictingGenerals,conflictRecords,typeAndUseMap,primaryInvestmentMap, secondaryInvestmentMap]) {
+export class PairingPage extends withStores(SpectrumElement, [allGenerals,generalPairs,conflictingGenerals,conflictRecords,typeAndUseMap,primaryInvestmentMap, secondaryInvestmentMap]) {
 
   @property({type: String})
   public dataUrl: string = 'http://localhost';
@@ -69,6 +70,27 @@ export class PairingPage extends withStores(SpectrumElement, [allGenerals,confli
 
   @state()
   private _conflictData: URL = new URL(this.conflictData);
+
+  constructor() {
+    super()
+
+    const stores = [
+      allGenerals,
+      generalPairs,
+      conflictingGenerals,
+      conflictRecords,
+      typeAndUseMap,
+      primaryInvestmentMap,
+      secondaryInvestmentMap,
+    ]
+    for(let ns in stores) {
+      stores[ns].subscribe((ms) => {
+        if(DEBUG) {console.log(`store ${ns}`)}
+      })
+    }
+
+
+  }
 
   async willUpdate(changedProperties: PropertyValues<this>) {
     if (changedProperties.has('conflictData')) {
@@ -144,10 +166,10 @@ export class PairingPage extends withStores(SpectrumElement, [allGenerals,confli
 
     return html`
       <div class="sp-table-container">
-        <interest-selector role="primary"></interest-selector>
+        <type-selector role="primary"></type-selector>
         <investment-selector generalRole="primary" @PickerChanged=${this.changeHandler} ></investment-selector>
         <investment-selector generalRole="secondary" @PickerChanged=${this.changeHandler}></investment-selector>
-        <!--<pairing-table></pairing-table>-->
+        <pairing-table></pairing-table>
       </div>
     `
 

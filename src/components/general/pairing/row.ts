@@ -1,8 +1,8 @@
-import { html, css, type PropertyValues, type PropertyValueMap, LitElement } from "lit";
+import { html, css, type PropertyValues, type PropertyValueMap, LitElement, type CSSResultArray } from "lit";
 import { customElement, property, state } from 'lit/decorators.js';
 import { ref, createRef, type Ref } from 'lit/directives/ref.js';
 
-const DEBUG = true;
+const DEBUG = false;
 import { withStores } from "@nanostores/lit";
 
 import { z, type ZodError } from 'zod';
@@ -18,6 +18,7 @@ import {
   type TableHeadCell,
   TableRow
 } from '@spectrum-web-components/table';
+import '@spectrum-web-components/dialog/sp-dialog.js';
 import '@spectrum-web-components/table/elements.js';
 import '@spectrum-web-components/field-group/sp-field-group.js';
 import '@spectrum-web-components/field-label/sp-field-label.js';
@@ -25,8 +26,10 @@ import '@spectrum-web-components/help-text/sp-help-text.js';
 import '@spectrum-web-components/menu/sp-menu-group.js';
 import '@spectrum-web-components/menu/sp-menu-item.js';
 import '@spectrum-web-components/menu/sp-menu-divider.js';
+import '@spectrum-web-components/overlay/sp-overlay.js';
 import '@spectrum-web-components/picker/sp-picker.js';
 import { Picker } from '@spectrum-web-components/picker';
+import '@spectrum-web-components/popover/sp-popover.js';
 import '@spectrum-web-components/status-light/sp-status-light.js';
 import '@spectrum-web-components/tooltip/sp-tooltip.js';
 
@@ -61,59 +64,9 @@ import {
   checkConflicts
 } from "./ConflictingSkillExcludes.ts";
 
-import { buff } from './buff.ts';
+import { buffAdverbs, buff } from './buff.ts';
+import { bookConflicts } from "@schemas/evonySchemas.ts";
 
-
-const buffAdverbs: { [key in generalUseCaseType]: b.BuffAdverbArrayType } = {
-  [generalUseCase.enum.all]: [
-    b.Condition.enum.Attacking,
-    b.Condition.enum.Marching,
-    b.Condition.enum.When_Rallying,
-    b.Condition.enum.dragon_to_the_attack,
-    b.Condition.enum.leading_the_army_to_attack,
-    b.Condition.enum.Reinforcing,
-    b.Condition.enum.Defending,
-  ],
-  [generalUseCase.enum.Monsters]: [
-    b.Condition.enum.Attacking,
-    b.Condition.enum.Marching,
-    b.Condition.enum.When_Rallying,
-    b.Condition.enum.dragon_to_the_attack,
-    b.Condition.enum.leading_the_army_to_attack,
-    b.Condition.enum.Against_Monsters,
-    b.Condition.enum.Reduces_Monster,
-  ],
-  [generalUseCase.enum.Attack]: [
-    b.Condition.enum.Attacking,
-    b.Condition.enum.Marching,
-    b.Condition.enum.dragon_to_the_attack,
-    b.Condition.enum.leading_the_army_to_attack,
-    b.Condition.enum.Reduces_Enemy,
-    b.Condition.enum.Enemy,
-  ],
-  [generalUseCase.enum.Defense]: [
-    b.Condition.enum.Reinforcing,
-    b.Condition.enum.Defending,
-    b.Condition.enum.Reduces_Enemy,
-    b.Condition.enum.Enemy,
-  ],
-  [generalUseCase.enum.Overall]: [
-    b.Condition.enum.Reduces_Enemy,
-    b.Condition.enum.Enemy,
-  ],
-  [generalUseCase.enum.Wall]: [
-    b.Condition.enum.Reduces_Enemy,
-    b.Condition.enum.Enemy,
-    b.Condition.enum.Defending,
-    b.Condition.enum.When_The_Main_Defense_General,
-    b.Condition.enum.In_City,
-  ],
-  [generalUseCase.enum.Mayors]: [
-    b.Condition.enum.Reduces_Enemy,
-    b.Condition.enum.Enemy,
-    b.Condition.enum.When_the_City_Mayor,
-  ],
-}
 
 @customElement('pairing-row')
 export class PairingRow extends withStores(LitElement, [generalPairs, conflictingBooks, typeAndUseMap, primaryInvestmentMap, secondaryInvestmentMap]) {
@@ -158,7 +111,11 @@ export class PairingRow extends withStores(LitElement, [generalPairs, conflictin
   private unitClass: b.ClassEnumType = b.ClassEnum.enum.all;
 
   @state()
-  private statusLight: statusLightsType = statusLights.enum.neutral;
+  private statusLight1: statusLightsType = statusLights.enum.neutral;
+
+  @state()
+  private statusLight2: statusLightsType = statusLights.enum.neutral;
+
 
   @state()
   private props = {
@@ -201,11 +158,13 @@ export class PairingRow extends withStores(LitElement, [generalPairs, conflictin
         if (this.one !== null) {
           if (this.one.score_as !== null && this.one.score_as !== undefined) {
             if (this.one.score_as !== this.unitClass) {
-              this.statusLight = statusLights.enum.fuchsia;
+              this.statusLight1 = statusLights.enum.fuchsia;
             }
           }
         }
-        this.computeBuffs();
+        if (this.one !== null && this.one !== undefined) {
+          this.computeBuffs();
+        }
       }
     })
 
@@ -303,16 +262,74 @@ export class PairingRow extends withStores(LitElement, [generalPairs, conflictin
     }
   }
 
+  public static override get styles(): CSSResultArray {
+    const localstyle = css`
+      
+      
+      
+    
+    `
+    if (super.styles !== null && super.styles !== undefined) {
+      return [super.styles, localstyle];
+    } else return [localstyle];
+
+  }
 
   public render1() {
-    return html`
-    <sp-table-cell role='gridcell' dir='ltr' id='primeName'>${this.one ? this.one.name : "No Primary General"}</sp-table-cell>
+    let statusOverlay = html``;
+    if (this.one !== null && this.one !== undefined) {
+      let mySkillConflicts = (conflictingBooks.get()!).get(this.one.name);
+      if (mySkillConflicts !== null && mySkillConflicts !== undefined) {
+        if (mySkillConflicts.length >= 1) {
+          this.statusLight1 = statusLights.enum.notice;
+          
+        }
+      }
+      return html`
+    <sp-table-cell role='gridcell' dir='ltr' id='primeName'>
+      <div class="cellDiv not-content">
+        <div class="name not-content">
+          ${this.one ? this.one.name : "No Primary General"}
+        </div>
+        <div class="status">
+          <sp-status-light size='m' variant=${this.statusLight1} >
+            
+          </sp-status-light>
+          ${statusOverlay}
+        </div>
+      </div>
+    </sp-table-cell>
     `
+    }
+    return html``;
   }
 
   public render2() {
+    if (this.two !== null && this.two !== undefined) {
+      let mySkillConflicts = (conflictingBooks.get()!).get(this.two.name);
+      if (mySkillConflicts !== null && mySkillConflicts !== undefined) {
+        if (mySkillConflicts.length >= 1) {
+          this.statusLight2 = statusLights.enum.notice;
+
+        }
+      }
+    }
     return html`
-    <sp-table-cell role='gridcell' dir='ltr' id='assistName'>${this.two ? this.two.name : "No Primary General"}</sp-table-cell>
+      <sp-table-cell role='gridcell' dir='ltr' id='assistName'>
+        <div class="cellDiv not-content">
+          <div class="name not-content">
+            ${this.two ? this.two.name : "No Primary General"}
+          </div>
+          <div class="status">
+            <sp-status-light size='m' variant=${this.statusLight2} >
+            <sp-overlay trigger@hover>
+              <sp-tooltip placement="right-end" >Skill Book Conflict</sp-tooltip>
+            </sp-overlay>
+            </sp-status-light>
+          </div>
+        </div>
+      </sp-table-cell>
+    
     `
   }
 
