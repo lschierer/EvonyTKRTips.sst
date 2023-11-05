@@ -59,13 +59,14 @@ import {
   type GeneralClassType
 } from "@schemas/generalsSchema.ts"
 
+import {Book, type BookType} from "@schemas/bookSchemas.ts"
+
 import {
   conflictingBooks,
   checkConflicts
 } from "./ConflictingSkillExcludes.ts";
 
 import { buffAdverbs, buff } from './buff.ts';
-import { bookConflicts } from "@schemas/evonySchemas.ts";
 
 
 @customElement('pairing-row')
@@ -282,6 +283,42 @@ export class PairingRow extends withStores(LitElement, [generalPairs, conflictin
       if (mySkillConflicts !== null && mySkillConflicts !== undefined) {
         if (mySkillConflicts.length >= 1) {
           this.statusLight1 = statusLights.enum.notice;
+          mySkillConflicts.forEach((book) => {
+            for (let i = 0; i < book.buff.length; i++) {
+              const keys = Object.keys(book.buff[i]);
+              if(book.buff[i].condition !== null && book.buff[i].condition !== undefined) {
+                if (book.buff[i].condition === b.Condition.enum.When_Not_Mine) {
+                  if(this.statusLight1 === statusLights.enum.notice) {
+                    this.statusLight1 = statusLights.enum.indigo;
+                  }
+                }
+                if((book.buff[i].condition === b.Condition.enum.dragon_to_the_attack) ||
+                (book.buff[i].condition === b.Condition.enum.brings_dragon_or_beast_to_attack)){
+                  if((this.statusLight1 === statusLights.enum.notice) ||
+                    (this.statusLight1 === statusLights.enum.indigo)){
+                    this.statusLight1 = statusLights.enum.magenta;
+                  }
+                }
+              }
+            }
+          })
+      
+        }
+      }
+      if((this.statusLight1 === statusLights.enum.neutral) ||
+      (this.statusLight1 === statusLights.enum.indigo)) {
+        if(this.one.books !== null && this.one.books !== undefined) {
+          const book1: BookType = this.one.books[0];
+          const buffArray: b.Buff[] = book1['buff'];
+          for(let be in buffArray) {
+            const condition = buffArray[be].condition;
+            if(condition !== null && condition !== undefined) {
+              if ((condition === b.Condition.enum.dragon_to_the_attack) ||
+              (condition === b.Condition.enum.brings_dragon_or_beast_to_attack)) {
+                this.statusLight1 = statusLights.enum.magenta;
+              }
+            }
+          }
           
         }
       }
@@ -310,10 +347,45 @@ export class PairingRow extends withStores(LitElement, [generalPairs, conflictin
       if (mySkillConflicts !== null && mySkillConflicts !== undefined) {
         if (mySkillConflicts.length >= 1) {
           this.statusLight2 = statusLights.enum.notice;
-
+          mySkillConflicts.forEach((book) => {
+            for (let i = 0; i < book.buff.length; i++) {
+              const keys = Object.keys(book.buff[i]);
+              if(book.buff[i].condition !== null && book.buff[i].condition !== undefined) {
+                if (book.buff[i].condition === b.Condition.enum.When_Not_Mine) {
+                  if(this.statusLight2 === statusLights.enum.notice) {
+                    this.statusLight2 = statusLights.enum.indigo;
+                  }
+                }
+                if((book.buff[i].condition === b.Condition.enum.dragon_to_the_attack) ||
+                (book.buff[i].condition === b.Condition.enum.brings_dragon_or_beast_to_attack)){
+                  if((this.statusLight2 === statusLights.enum.notice) ||
+                    (this.statusLight2 === statusLights.enum.indigo)){
+                    this.statusLight2 = statusLights.enum.magenta;
+                  }
+                }
+              }
+            }
+          })
         }
       }
     }
+    if((this.statusLight2 === statusLights.enum.neutral) ||
+      (this.statusLight2 === statusLights.enum.indigo)) {
+        if(this.two!.books !== null && this.two!.books !== undefined) {
+          const book1: BookType = this.two!.books[0];
+          const buffArray: b.Buff[] = book1['buff'];
+          for(let be in buffArray) {
+            const condition = buffArray[be].condition;
+            if(condition !== null && condition !== undefined) {
+              if ((condition === b.Condition.enum.dragon_to_the_attack) ||
+              (condition === b.Condition.enum.brings_dragon_or_beast_to_attack)) {
+                this.statusLight2 = statusLights.enum.magenta;
+              }
+            }
+          }
+          
+        }
+      }
     return html`
       <sp-table-cell role='gridcell' dir='ltr' id='assistName'>
         <div class="cellDiv not-content">
