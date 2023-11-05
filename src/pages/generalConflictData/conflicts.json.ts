@@ -21,14 +21,12 @@ export const GET: APIRoute = async ({ params, request }) => {
   const collectionArray:CollectionEntry<'generalConflictData'>[]  = await getCollection('generalConflictData');
   if(collectionArray !== null && collectionArray !== undefined) {
     let result = collectionArray.map((ca) => {
-      console.error(JSON.stringify(ca))
       const validation = generalConflicts.safeParse(ca.data);
       if(validation.success) {
 
         return validation.data
       } else{
-        console.error(`bad validation`)
-        console.error(validation.error)
+        
         return new Response(
             JSON.stringify('bad validation')
         )

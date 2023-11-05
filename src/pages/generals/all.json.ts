@@ -20,13 +20,7 @@ import {
 export const GET: APIRoute = async ({ params, request }) => {
   const generalObjects: CollectionEntry<'generals'>[]  = await getCollection('generals');
   if(generalObjects !== null && generalObjects !== undefined) {
-    /*let allGenerals = generalObjects.map((go) => {
-            const validation = generalObjectSchema.safeParse(go.data);
-                    if(validation.success) {
-                              return validation.data;
-                                      }
-                                              return;
-                                                    })*/
+    
     let generalIterator = generalObjects.values();
     let allGenerals = new Array<generalObject>();
     for (const v of generalIterator) {
