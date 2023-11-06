@@ -1,14 +1,19 @@
-import {  html, css, type PropertyValues, type CSSResultArray} from "lit";
+import {  html, css, type TemplateResult, type PropertyValues, type CSSResultArray, type PropertyValueMap} from "lit";
 import {customElement, property, state} from 'lit/decorators.js';
-import {ref, createRef, type Ref} from 'lit/directives/ref.js';
+import {ref, createRef,  type Ref} from 'lit/directives/ref.js';
+import {guard} from 'lit/directives/guard.js';
+import { withStores } from "@nanostores/lit";
+
 
 const DEBUG = false;
 
 
 import { SpectrumElement } from '@spectrum-web-components/base';
+
 import '@spectrum-web-components/button/sp-button.js';
 import '@spectrum-web-components/card/sp-card.js';
 import '@spectrum-web-components/table/elements.js';
+import { FieldGroup } from '@spectrum-web-components/field-group';
 import '@spectrum-web-components/field-group/sp-field-group.js';
 import '@spectrum-web-components/field-label/sp-field-label.js';
 import '@spectrum-web-components/help-text/sp-help-text.js';
@@ -25,11 +30,27 @@ import { Textfield } from '@spectrum-web-components/textfield';
 import '@spectrum-web-components/textfield/sp-textfield.js';
 import '@spectrum-web-components/tooltip/sp-tooltip.js';
 
-@customElement('general-yaml')
-export class GeneralYaml extends SpectrumElement {
+import {GeneralBuffController} from "./Buff.ts"
+
+import {addValue, formValues } from './dataStore.ts';
+
+import * as b from "@schemas/baseSchemas.ts";
+
+export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
+
+  private findMe: Ref<HTMLElement> = createRef();
 
   @state()
-  private formValues: Map<string,string|number> = new Map();
+  private specialities: boolean = false; 
+  
+  @state()
+  private buffEventPending: boolean = false;
+
+  private buffs = new GeneralBuffController(this);
+
+  constructor() {
+    super();
+  }
 
   public static override get styles(): CSSResultArray {
     const localstyle = css`
@@ -69,19 +90,59 @@ export class GeneralYaml extends SpectrumElement {
 
   }
 
+  public connectedCallback(){
+    super.connectedCallback()
+  }
+  
+  public willUpdate(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+    super.willUpdate(_changedProperties);
+    console.log(`index willUpdate`)
+
+    if(_changedProperties.has('buffEventPending')) {
+      console.log(`buffUpdatePending detected`)
+    }
+  }
+
+  
+
   protected formHandler(e: CustomEvent) {
-    console.log(`formhandler`)
+    console.log(`index; formhandler`)
     const target = e.target;
     if(target !== null && target !== undefined) {
-      console.log(`${target.id} has ${target.value}`)
-      this.formValues.set(target.id, target.value)
-      this.requestUpdate();
+      console.log(`${(target as Element).id} has ${target.value}`)
+      addValue((target as Element).id, target.value);
+      this.requestUpdate()
+    }
+  }
+
+  public sformHandler(e: CustomEvent) {
+    console.log(`index; sformhandler`)
+    const target = e.target;
+    if(target !== null && target !== undefined) {
+      console.log(`${(target as Element).id} has ${target.value}`)
+      addValue((target as Element).id, target.value);
+      this.buffEventPending = true;
+      this.requestUpdate()
     }
   }
 
   renderLeft() {
+    const s1gT = new Array<TemplateResult>();
+    const s1bT = new Array<TemplateResult>();
+    const s1pT = new Array<TemplateResult>();
+    const s1oT = new Array<TemplateResult>();
+    const s1GT = new Array<TemplateResult>();
+    for(let i = 0; i < (formValues.value?.get('s1numattrs') as number); i++) {
+      s1gT.push(this.buffs.render(b.qualityColor.enum.Green, 1, 'left'))
+      s1bT.push(this.buffs.render(b.qualityColor.enum.Green, 1, 'left'))
+      s1pT.push(this.buffs.render(b.qualityColor.enum.Green, 1, 'left'))
+      s1oT.push(this.buffs.render(b.qualityColor.enum.Green, 1, 'left'))
+      s1GT.push(this.buffs.render(b.qualityColor.enum.Green, 1, 'left'))
+    }
+  
+  
     return html`
-    <div class="GeneralsDetailsForm">
+    <div class="GeneralsDetailsForm" ${ref(this.findMe)}>
       <div class="not-content Name">
         <sp-field-label for="name" required>General's Name</sp-field-label>
         <sp-textfield id="name" placeholder="Enter General's Name" @change=${this.formHandler}></sp-textfield>
@@ -211,28 +272,90 @@ export class GeneralYaml extends SpectrumElement {
           </sp-picker>
         </div>
       </div>
+      <hr>
+      <div class="not-content specialities">
+        <sp-field-group id="specialities" >
+          <div class="not-content speciality one">
+            <sp-field-label for="s1name" required>Speciality Name</sp-field-label>
+            <sp-textfield id="s1name" placeholder="Enter Speciality Name" @change=${this.sformHandler}></sp-textfield>
+            <br/>
+            <sp-field-label for="s1numattrs" required>Number of Attributes per Level</sp-field-label>
+            <sp-number-field
+                id='s1numattrs'
+                value="0"
+                size="m"
+                style="--spectrum-stepper-width: 110px"
+                @change=${this.formHandler}
+                ></sp-number-field>
+            <div class="not-content green">
+                <span class="not-content h5">Green</span>
+                ${s1gT}
+            </div>
+            <div class="not-content blue">
+              <span class="not-content h5">Blue</span>
+              ${s1bT}
+            </div>
+            <div class="not-content purple">
+              <span class="not-content h5">Purple</span>
+              ${s1pT}
+            </div>
+            <div class="not-content orange">
+              <span class="not-content h5">Orange</span>
+              ${s1oT}
+            </div>
+            <div class="not-content gold">
+              <span class="not-content h5">Gold</span>
+              ${s1GT}
+            </div>
+          </div>
+          <div class="not-content speciality two">
+          </div>
+          <div class="not-content speciality three">
+          </div>
+          <div class="not-content speciality four">
+          </div>
+        </sp-field-group>
+      </div>
     </div>
     `
   }
 
   renderRight(){
+    
+    console.log(`renderRight`)
     let exportable='---';
-    exportable = `${exportable}\ngeneral:`;
-    exportable = `${exportable}\n  name: ${this.formValues.get('name')}`;
-    exportable = `${exportable}\n  display: summary`;
-    exportable = `${exportable}\n  leadership: ${this.formValues.get('leadership')}`;
-    exportable = `${exportable}\n  leadership_increment: ${this.formValues.get('lgi')}`;
-    exportable = `${exportable}\n  attack: ${this.formValues.get('attack')}`;
-    exportable = `${exportable}\n  attack_increment: ${this.formValues.get('agi')}`;
-    exportable = `${exportable}\n  defense: ${this.formValues.get('defense')}`;
-    exportable = `${exportable}\n  defense_increment: ${this.formValues.get('dgi')}`;
-    exportable = `${exportable}\n  politics: ${this.formValues.get('politics')}`;
-    exportable = `${exportable}\n  politics_increment: ${this.formValues.get('pgi')}`;
-    exportable = `${exportable}\n  stars: '10'`
-    exportable = `${exportable}\n  level: '1'`
-    exportable = `${exportable}\n  score_as: ${this.formValues.get('score_as')}`
-
-
+    if(formValues.value !== null && formValues.value !== undefined) {
+      exportable = `${exportable}\ngeneral:`;
+      exportable = `${exportable}\n  name: ${formValues.value.get('name')}`;
+      exportable = `${exportable}\n  display: summary`;
+      exportable = `${exportable}\n  leadership: ${formValues.value.get('leadership')}`;
+      exportable = `${exportable}\n  leadership_increment: ${formValues.value.get('lgi')}`;
+      exportable = `${exportable}\n  attack: ${formValues.value.get('attack')}`;
+      exportable = `${exportable}\n  attack_increment: ${formValues.value.get('agi')}`;
+      exportable = `${exportable}\n  defense: ${formValues.value.get('defense')}`;
+      exportable = `${exportable}\n  defense_increment: ${formValues.value.get('dgi')}`;
+      exportable = `${exportable}\n  politics: ${formValues.value.get('politics')}`;
+      exportable = `${exportable}\n  politics_increment: ${formValues.value.get('pgi')}`;
+      exportable = `${exportable}\n  stars: '10'`
+      exportable = `${exportable}\n  level: '1'`
+      exportable = `${exportable}\n  score_as: ${formValues.value.get('score_as')}`
+      exportable = `${exportable}\n  specialities:`
+      
+      console.log(`attempting to get Special buff info with ${this.buffEventPending}`)
+      if(this.buffEventPending) {
+        console.log(`detected something to get`)
+        exportable = `${exportable}\n    - name: ${formValues.value.get('s1name')}`;
+        exportable = `${exportable}\n      attribute:`;
+        let s1 = this.buffs.render(b.qualityColor.enum.Green, 1, 'right');
+        console.log(`s1 is ${s1}`)
+        exportable = `${exportable}\n${s1.values}`
+        let s2 = this.buffs.render(b.qualityColor.enum.Blue,1,'right')
+        exportable = `${exportable}\n${s2.values}`
+        this.buffEventPending = false;
+      }  
+    } else {
+      console.log(`formValue is ${formValues.get()}`)
+    }
     const lines = exportable.split('\n').length;
     return html`
     <div id="CardDiv" style="width: 100%;">
@@ -242,6 +365,7 @@ export class GeneralYaml extends SpectrumElement {
   }
 
   render() {
+    console.log(`index render`)
     return html`
     <sp-split-view>
       <div>
@@ -256,4 +380,7 @@ export class GeneralYaml extends SpectrumElement {
 
   }
 
+}
+if(!customElements.get('general-yaml')) {
+  customElements.define('general-yaml', GeneralYaml)
 }
