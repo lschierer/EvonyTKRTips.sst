@@ -339,10 +339,11 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
       exportable = `${exportable}\n  stars: '10'`
       exportable = `${exportable}\n  level: '1'`
       exportable = `${exportable}\n  score_as: ${formValues.value.get('score_as')}`
-      exportable = `${exportable}\n  specialities:`
+      
       
       console.log(`attempting to get Special buff info with ${this.buffEventPending}`)
       if(this.buffEventPending) {
+        exportable = `${exportable}\n  specialities:`
         console.log(`detected something to get`)
         exportable = `${exportable}\n    - name: ${formValues.value.get('s1name')}`;
         exportable = `${exportable}\n      attribute:`;
