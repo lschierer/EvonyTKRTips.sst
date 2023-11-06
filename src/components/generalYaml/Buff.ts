@@ -82,28 +82,59 @@ export class GeneralBuffController implements ReactiveController {
           <sp-menu-item value='Reduces_Monster'>a debuff against monsters</sp-menu-item>
         </sp-picker>
 
-        
+        <sp-field-label for=${fieldLabel.concat('_attribute')} required>Attribute</sp-field-label>
+        <sp-picker id=${fieldLabel.concat('_attribute')} size="s" value="always" label="When does this take effect" @change=${(this.host as GeneralYaml).sformHandler}>
+          <sp-menu-item value='Attack'>Attack</sp-menu-item>
+          <sp-menu-item value='Defense'>Defense</sp-menu-item>
+          <sp-menu-item value='HP'>HP</sp-menu-item>
+          <sp-menu-item value='Range'>Range</sp-menu-item>
+          <sp-menu-item value='Training_Speed'>Training Speed</sp-menu-item>
+          <sp-menu-item value='Marching_Speed'>Marching Speed</sp-menu-item>
+          <sp-menu-item value='March_Size_Capacity'>March Size Capacity</sp-menu-item>
+          <sp-menu-item value='Rally_Capacity'>Rally Capacity</sp-menu-item>
+          <sp-menu-item value='Attack_Speed'>Attack Speed</sp-menu-item>
+          <sp-menu-item value='Wounded_to_Death'>Wounded to Death</sp-menu-item>
+          <sp-menu-item value='Death_to_Wounded'>Death to Wounded</sp-menu-item>
+          <sp-menu-item value='Load'>Load</sp-menu-item>
+          <sp-menu-item value='Double_Items_Drop_Rate'>Double Items Drop Rate</sp-menu-item>
+        </sp-picker>
+
+        <sp-field-label for=${fieldLabel.concat('_class')} >Troop Class</sp-field-label>
+        <sp-picker id=${fieldLabel.concat('_class')} size="s" value="all" label="When does this take effect" @change=${(this.host as GeneralYaml).sformHandler}>
+          <sp-menu-item value="Archers">Archers</sp-menu-item>
+          <sp-menu-item value="Ground">Ground Troops</sp-menu-item>
+          <sp-menu-item value="Mounted">Mounted Troops</sp-menu-item>
+          <sp-menu-item value="Siege">Siege Machines</sp-menu-item>
+          <sp-menu-item value="all">All Types</sp-menu-item>
+          <sp-menu-item value="none">Not Applicable</sp-menu-item>
+        </sp-picker>
         `  
     } else {  
       console.log(`render right`)
       let exportable = `    - ${level}:`
       exportable = `${exportable}\n      buff:`
-      exportable = `${exportable}\n        - attribute:`
+      let attribute: number | string | undefined = this.formValuesController.value.get(fieldLabel.concat('_attribute')) 
+      if(attribute === undefined || attribute === null) {
+        exportable = `${exportable}\n        - attribute: value pending`
+      } else {
+        exportable = `${exportable}\n          condition: ${attribute}`
+      }
+      
       const condition_label = fieldLabel.concat('_condition');
       let condition: number | string | undefined = this.formValuesController.value.get(condition_label) 
-      if(condition === undefined) {
-        condition = 'value pending'
-      }
-      console.log(`buff; condition from ${condition_label} is ${condition}`)
-      if( condition !== undefined && condition !== null ) {
-        console.log(`buff; condition if for ${condition}`)
-        exportable = `${exportable}\n          condition: ${condition}`
-        console.log(`exportable is \n${exportable}`)
+      if(condition === undefined || condition === null) {
+        exportable = `${exportable}\n          condition: value pending`
       } else {
-        console.log(`condition ${condition} was undefined`)
+        exportable = `${exportable}\n          condition: ${condition}`
       }
 
-      exportable = `${exportable}\n          class:`
+      let tclass: number | string | undefined = this.formValuesController.value.get(fieldLabel.concat('_class')) 
+      if(tclass === undefined || tclass === null) {
+        exportable = `${exportable}\n          class: value pending`
+      } else if((tclass !== 'all') && (tclass !== 'none')) {
+        exportable = `${exportable}\n          class: ${tclass}`
+      }
+
       exportable = `${exportable}\n          value:`
       exportable = `${exportable}\n            number:`
       exportable = `${exportable}\n            unit:`
