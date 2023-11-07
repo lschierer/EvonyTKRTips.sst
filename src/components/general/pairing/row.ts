@@ -180,6 +180,9 @@ export class PairingRow extends withStores(LitElement, [generalPairs, conflictin
         Speciality3: pim.speciality3,
         Speciality4: pim.speciality4,
       };
+      if (this.one !== null && this.one !== undefined) {
+        this.computeBuffs();
+      }
 
     })
 
@@ -194,6 +197,9 @@ export class PairingRow extends withStores(LitElement, [generalPairs, conflictin
         Speciality3: sim.speciality3,
         Speciality4: sim.speciality4,
       };
+      if (this.one !== null && this.one !== undefined) {
+        this.computeBuffs();
+      }
     })
 
   }
