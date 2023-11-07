@@ -125,7 +125,11 @@ export class GeneralBuffController implements ReactiveController {
                 }'
                 @change=${(this.host as GeneralYaml).sformHandler}
               ></sp-number-field>
-          <sp-switch size="m" id=${fieldLabel.concat('_valueU')} value="on" checked onclick="${(this.host as GeneralYaml).sformHandler}" >Value is a percentage</sp-switch>
+          <sp-checkbox size="m" 
+            id=${fieldLabel.concat('_valueU')} 
+            checked 
+            @change=${(this.host as GeneralYaml).sformHandler}
+            >Value is a percentage</sp-checkbox>
         </sp-field-group>
         `  
     } else {  
@@ -155,13 +159,16 @@ export class GeneralBuffController implements ReactiveController {
       }
 
       let tvalue: number | string | undefined = this.formValuesController.value.get(fieldLabel.concat('_valueN')) 
-      if(tclass === undefined || tclass === null) {
+      if(tvalue === undefined || tvalue === null) {
         exportable = `${exportable}\n            value: value pending`
-      } else if((tclass !== 'all') && (tclass !== 'none')) {
+      } else  {
         exportable = `${exportable}\n            value:`
         exportable = `${exportable}\n              number: ${tvalue}`
         let tcheck: number | string | undefined = this.formValuesController.value.get(fieldLabel.concat('_valueU'))
-        exportable = `${exportable}\n              unit: `
+        if(tcheck === undefined || tcheck === 'percentage') {
+          tcheck = 'percentage';
+        }
+        exportable = `${exportable}\n              unit: ${tcheck}`
       }
       return html`${exportable}`;
     }
