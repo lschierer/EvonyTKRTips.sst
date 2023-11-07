@@ -169,18 +169,18 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
     const s2oT = new Array<TemplateResult>();
     const s2GT = new Array<TemplateResult>();
     for(let i = 0; i < (formValues.value?.get('s1numattrs') as number); i++) {
-      s1gT.push(this.buffs.render(b.qualityColor.enum.Green, 1, 'left'))
-      s1bT.push(this.buffs.render(b.qualityColor.enum.Green, 1, 'left'))
-      s1pT.push(this.buffs.render(b.qualityColor.enum.Green, 1, 'left'))
-      s1oT.push(this.buffs.render(b.qualityColor.enum.Green, 1, 'left'))
-      s1GT.push(this.buffs.render(b.qualityColor.enum.Green, 1, 'left'))
+      s1gT.push(this.buffs.render(b.qualityColor.enum.Green, `1.${i}`, 'left'))
+      s1bT.push(this.buffs.render(b.qualityColor.enum.Green, `1.${i}`, 'left'))
+      s1pT.push(this.buffs.render(b.qualityColor.enum.Green, `1.${i}`, 'left'))
+      s1oT.push(this.buffs.render(b.qualityColor.enum.Green, `1.${i}`, 'left'))
+      s1GT.push(this.buffs.render(b.qualityColor.enum.Green, `1.${i}`, 'left'))
     }
     for(let i = 0; i < (formValues.value?.get('s2numattrs') as number); i++) {
-      s2gT.push(this.buffs.render(b.qualityColor.enum.Green, 2, 'left'))
-      s2bT.push(this.buffs.render(b.qualityColor.enum.Green, 2, 'left'))
-      s2pT.push(this.buffs.render(b.qualityColor.enum.Green, 2, 'left'))
-      s2oT.push(this.buffs.render(b.qualityColor.enum.Green, 2, 'left'))
-      s2GT.push(this.buffs.render(b.qualityColor.enum.Green, 2, 'left'))
+      s2gT.push(this.buffs.render(b.qualityColor.enum.Green, `2.${i}`, 'left'))
+      s2bT.push(this.buffs.render(b.qualityColor.enum.Green, `2.${i}`, 'left'))
+      s2pT.push(this.buffs.render(b.qualityColor.enum.Green, `2.${i}`, 'left'))
+      s2oT.push(this.buffs.render(b.qualityColor.enum.Green, `2.${i}`, 'left'))
+      s2GT.push(this.buffs.render(b.qualityColor.enum.Green, `2.${i}`, 'left'))
     }
   
   
@@ -426,10 +426,11 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
             console.log(`detected something to get`)
             exportable = `${exportable}\n    - name: ${formValues.value.get('s1name')}`;
             exportable = `${exportable}\n      attribute:`;
-            let s1 = this.buffs.render(b.qualityColor.enum.Green, 1, 'right');
+
+            let s1 = this.buffs.render(b.qualityColor.enum.Green, `1.`, 'right');
             console.log(`s1 is ${s1}`)
             exportable = `${exportable}\n${s1.values}`
-            let s2 = this.buffs.render(b.qualityColor.enum.Blue,1,'right')
+            let s2 = this.buffs.render(b.qualityColor.enum.Blue,'1.','right')
             exportable = `${exportable}\n${s2.values}`
           }  
           
@@ -437,9 +438,9 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
             console.log(`detected something to get`)
             exportable = `${exportable}\n    - name: ${formValues.value.get('s2name')}`;
             exportable = `${exportable}\n      attribute:`;
-            let s1 = this.buffs.render(b.qualityColor.enum.Green, 2, 'right');
+            let s1 = this.buffs.render(b.qualityColor.enum.Green, '2.', 'right');
             exportable = `${exportable}\n${s1.values}`
-            let s2 = this.buffs.render(b.qualityColor.enum.Blue,2,'right')
+            let s2 = this.buffs.render(b.qualityColor.enum.Blue,'2.','right')
             exportable = `${exportable}\n${s2.values}`
           }  
 
@@ -447,9 +448,9 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
             console.log(`detected something to get`)
             exportable = `${exportable}\n    - name: ${formValues.value.get('s1name')}`;
             exportable = `${exportable}\n      attribute:`;
-            let s1 = this.buffs.render(b.qualityColor.enum.Green, 3, 'right');
+            let s1 = this.buffs.render(b.qualityColor.enum.Green, '3.', 'right');
             exportable = `${exportable}\n${s1.values}`
-            let s2 = this.buffs.render(b.qualityColor.enum.Blue,3,'right')
+            let s2 = this.buffs.render(b.qualityColor.enum.Blue,'3.','right')
             exportable = `${exportable}\n${s2.values}`
           }  
 
@@ -457,10 +458,10 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
             console.log(`detected something to get`)
             exportable = `${exportable}\n    - name: ${formValues.value.get('s1name')}`;
             exportable = `${exportable}\n      attribute:`;
-            let s1 = this.buffs.render(b.qualityColor.enum.Green, 4, 'right');
+            let s1 = this.buffs.render(b.qualityColor.enum.Green, '4.', 'right');
             console.log(`s1 is ${s1}`)
             exportable = `${exportable}\n${s1.values}`
-            let s2 = this.buffs.render(b.qualityColor.enum.Blue,4,'right')
+            let s2 = this.buffs.render(b.qualityColor.enum.Blue,'4.','right')
             exportable = `${exportable}\n${s2.values}`
             
           }  
