@@ -10,6 +10,7 @@ import { SpectrumElement } from '@spectrum-web-components/base';
 
 import '@spectrum-web-components/button/sp-button.js';
 import '@spectrum-web-components/card/sp-card.js';
+import '@spectrum-web-components/checkbox/sp-checkbox.js';
 import '@spectrum-web-components/table/elements.js';
 import { FieldGroup } from '@spectrum-web-components/field-group';
 import '@spectrum-web-components/field-group/sp-field-group.js';
@@ -27,6 +28,8 @@ import '@spectrum-web-components/status-light/sp-status-light.js';
 import { Textfield } from '@spectrum-web-components/textfield';
 import '@spectrum-web-components/textfield/sp-textfield.js';
 import '@spectrum-web-components/tooltip/sp-tooltip.js';
+import '@spectrum-web-components/switch/sp-switch.js';
+
 
 import { parse, stringify } from 'yaml'
 
@@ -57,6 +60,7 @@ export class GeneralBuffController implements ReactiveController {
   
   render(level: string, sindex: number, side: 'left' | 'right') {
     const fieldLabel = sindex.toString() + '_' + level;
+    console.log(`fieldLable is ${fieldLabel}`)
     if (side === 'left') {
       return html`
         <sp-field-label for=${fieldLabel.concat('_condition')} required>Adjective</sp-field-label>
@@ -108,36 +112,57 @@ export class GeneralBuffController implements ReactiveController {
           <sp-menu-item value="all">All Types</sp-menu-item>
           <sp-menu-item value="none">Not Applicable</sp-menu-item>
         </sp-picker>
+
+        <sp-field-label  for=${fieldLabel.concat('_value')} >Buff Value/Amount</sp-field-label>
+        <sp-field-group class="not-content valueFieldGroup" horizontal id="${fieldLabel.concat('_value')}">
+          <sp-number-field
+                id=${fieldLabel.concat('_valueN')}
+                value="0"
+                format-options='{
+                  "signDisplay": "exceptZero",
+                  "minimumFractionDigits": 1,
+                  "maximumFractionDigits": 2
+                }'
+                @change=${(this.host as GeneralYaml).sformHandler}
+              ></sp-number-field>
+          <sp-switch size="m" id=${fieldLabel.concat('_valueU')} value="on" checked onclick="${(this.host as GeneralYaml).sformHandler}" >Value is a percentage</sp-switch>
+        </sp-field-group>
         `  
     } else {  
       console.log(`render right`)
-      let exportable = `    - ${level}:`
-      exportable = `${exportable}\n      buff:`
+      let exportable = `      - ${level}:`
+      exportable = `${exportable}\n        buff:`
       let attribute: number | string | undefined = this.formValuesController.value.get(fieldLabel.concat('_attribute')) 
       if(attribute === undefined || attribute === null) {
-        exportable = `${exportable}\n        - attribute: value pending`
+        exportable = `${exportable}\n          - attribute: value pending`
       } else {
-        exportable = `${exportable}\n          condition: ${attribute}`
+        exportable = `${exportable}\n            attribute: ${attribute}`
       }
       
       const condition_label = fieldLabel.concat('_condition');
       let condition: number | string | undefined = this.formValuesController.value.get(condition_label) 
       if(condition === undefined || condition === null) {
-        exportable = `${exportable}\n          condition: value pending`
+        exportable = `${exportable}\n            condition: value pending`
       } else {
-        exportable = `${exportable}\n          condition: ${condition}`
+        exportable = `${exportable}\n            condition: ${condition}`
       }
 
       let tclass: number | string | undefined = this.formValuesController.value.get(fieldLabel.concat('_class')) 
       if(tclass === undefined || tclass === null) {
-        exportable = `${exportable}\n          class: value pending`
+        exportable = `${exportable}\n            class: value pending`
       } else if((tclass !== 'all') && (tclass !== 'none')) {
-        exportable = `${exportable}\n          class: ${tclass}`
+        exportable = `${exportable}\n            class: ${tclass}`
       }
 
-      exportable = `${exportable}\n          value:`
-      exportable = `${exportable}\n            number:`
-      exportable = `${exportable}\n            unit:`
+      let tvalue: number | string | undefined = this.formValuesController.value.get(fieldLabel.concat('_valueN')) 
+      if(tclass === undefined || tclass === null) {
+        exportable = `${exportable}\n            value: value pending`
+      } else if((tclass !== 'all') && (tclass !== 'none')) {
+        exportable = `${exportable}\n            value:`
+        exportable = `${exportable}\n              number: ${tvalue}`
+        let tcheck: number | string | undefined = this.formValuesController.value.get(fieldLabel.concat('_valueU'))
+        exportable = `${exportable}\n              unit: `
+      }
       return html`${exportable}`;
     }
   }
