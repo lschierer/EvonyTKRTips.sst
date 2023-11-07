@@ -117,7 +117,7 @@ export class PairingPage extends withStores(SpectrumElement, [allGenerals,genera
       })
     }
     if (changedProperties.has('dataUrl')) {
-      console.log(`dataUrl changed`)
+      if (DEBUG) {console.log(`dataUrl changed`) }
       this._dataUrl = new URL(this.dataUrl);
 
       const result = await fetch(this._dataUrl).then((response) => {
@@ -149,7 +149,7 @@ export class PairingPage extends withStores(SpectrumElement, [allGenerals,genera
   }
 
   private changeHandler(e: CustomEvent) {
-    console.log(`${JSON.stringify(e)}`)
+    if(DEBUG) {console.log(`${JSON.stringify(e)}`)}
   }
 
   static styles = css`
