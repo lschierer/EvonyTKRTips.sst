@@ -44,7 +44,7 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
   private specialities: boolean = false; 
   
   @state()
-  private buffEventPending: boolean = false;
+  private buffEventPending: Record<string,boolean> = {};
 
   private buffs = new GeneralBuffController(this);
 
@@ -70,7 +70,21 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
           }
         }
       }
+      div.specialities {
+        & div.green, div.blue, div.purple, div.orange, div.gold {
+          span.h5 {
+            font-weight: bold;
+          }         
+        }
+        .valueFieldGroup {
+          background-color: var(--spectrum-celery-600);
+          width: 100%;
 
+          & sp-number-field {
+            width: 7rem;
+          }
+        }
+      }
       #CardDiv {
         display: flex-wrap;
         flex-direciton: column;
@@ -121,7 +135,11 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
     if(target !== null && target !== undefined) {
       console.log(`${(target as Element).id} has ${target.value}`)
       addValue((target as Element).id, target.value);
-      this.buffEventPending = true;
+      if((target.value !== '') && (target.value !== false)) {
+        this.buffEventPending[(target as Element).id] = true;
+      } else {
+        this.buffEventPending[(target as Element).id] = false;
+      }
       this.requestUpdate()
     }
   }
@@ -132,12 +150,24 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
     const s1pT = new Array<TemplateResult>();
     const s1oT = new Array<TemplateResult>();
     const s1GT = new Array<TemplateResult>();
+    const s2gT = new Array<TemplateResult>();
+    const s2bT = new Array<TemplateResult>();
+    const s2pT = new Array<TemplateResult>();
+    const s2oT = new Array<TemplateResult>();
+    const s2GT = new Array<TemplateResult>();
     for(let i = 0; i < (formValues.value?.get('s1numattrs') as number); i++) {
       s1gT.push(this.buffs.render(b.qualityColor.enum.Green, 1, 'left'))
       s1bT.push(this.buffs.render(b.qualityColor.enum.Green, 1, 'left'))
       s1pT.push(this.buffs.render(b.qualityColor.enum.Green, 1, 'left'))
       s1oT.push(this.buffs.render(b.qualityColor.enum.Green, 1, 'left'))
       s1GT.push(this.buffs.render(b.qualityColor.enum.Green, 1, 'left'))
+    }
+    for(let i = 0; i < (formValues.value?.get('s2numattrs') as number); i++) {
+      s2gT.push(this.buffs.render(b.qualityColor.enum.Green, 2, 'left'))
+      s2bT.push(this.buffs.render(b.qualityColor.enum.Green, 2, 'left'))
+      s2pT.push(this.buffs.render(b.qualityColor.enum.Green, 2, 'left'))
+      s2oT.push(this.buffs.render(b.qualityColor.enum.Green, 2, 'left'))
+      s2GT.push(this.buffs.render(b.qualityColor.enum.Green, 2, 'left'))
     }
   
   
@@ -309,6 +339,37 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
             </div>
           </div>
           <div class="not-content speciality two">
+            <sp-field-label for="s2name" required>Speciality Name</sp-field-label>
+            <sp-textfield id="s2name" placeholder="Enter Speciality Name" @change=${this.sformHandler}></sp-textfield>
+            <br/>
+            <sp-field-label for="s1numattrs" required>Number of Attributes per Level</sp-field-label>
+            <sp-number-field
+                id='s2numattrs'
+                value="0"
+                size="m"
+                style="--spectrum-stepper-width: 110px"
+                @change=${this.formHandler}
+                ></sp-number-field>
+            <div class="not-content green">
+                <span class="not-content h5">Green</span>
+                ${s2gT}
+            </div>
+            <div class="not-content blue">
+              <span class="not-content h5">Blue</span>
+              ${s2bT}
+            </div>
+            <div class="not-content purple">
+              <span class="not-content h5">Purple</span>
+              ${s2pT}
+            </div>
+            <div class="not-content orange">
+              <span class="not-content h5">Orange</span>
+              ${s2oT}
+            </div>
+            <div class="not-content gold">
+              <span class="not-content h5">Gold</span>
+              ${s2GT}
+            </div>
           </div>
           <div class="not-content speciality three">
           </div>
@@ -339,21 +400,61 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
       exportable = `${exportable}\n  stars: '10'`
       exportable = `${exportable}\n  level: '1'`
       exportable = `${exportable}\n  score_as: ${formValues.value.get('score_as')}`
+
+      if(
+        (this.buffEventPending['s1name']) ||
+        (this.buffEventPending['s2name']) ||
+        (this.buffEventPending['s3name']) ||
+        (this.buffEventPending['s4name'])
+        ) {
+          exportable = `${exportable}\n  specialities:`
+      
+          if(this.buffEventPending['s1name']) {
+            console.log(`detected something to get`)
+            exportable = `${exportable}\n    - name: ${formValues.value.get('s1name')}`;
+            exportable = `${exportable}\n      attribute:`;
+            let s1 = this.buffs.render(b.qualityColor.enum.Green, 1, 'right');
+            console.log(`s1 is ${s1}`)
+            exportable = `${exportable}\n${s1.values}`
+            let s2 = this.buffs.render(b.qualityColor.enum.Blue,1,'right')
+            exportable = `${exportable}\n${s2.values}`
+          }  
+          
+          if(this.buffEventPending['s2name']) {
+            console.log(`detected something to get`)
+            exportable = `${exportable}\n    - name: ${formValues.value.get('s2name')}`;
+            exportable = `${exportable}\n      attribute:`;
+            let s1 = this.buffs.render(b.qualityColor.enum.Green, 2, 'right');
+            exportable = `${exportable}\n${s1.values}`
+            let s2 = this.buffs.render(b.qualityColor.enum.Blue,2,'right')
+            exportable = `${exportable}\n${s2.values}`
+          }  
+
+          if(this.buffEventPending['s3name']) {
+            console.log(`detected something to get`)
+            exportable = `${exportable}\n    - name: ${formValues.value.get('s1name')}`;
+            exportable = `${exportable}\n      attribute:`;
+            let s1 = this.buffs.render(b.qualityColor.enum.Green, 3, 'right');
+            exportable = `${exportable}\n${s1.values}`
+            let s2 = this.buffs.render(b.qualityColor.enum.Blue,3,'right')
+            exportable = `${exportable}\n${s2.values}`
+          }  
+
+          if(this.buffEventPending['s4name']) {
+            console.log(`detected something to get`)
+            exportable = `${exportable}\n    - name: ${formValues.value.get('s1name')}`;
+            exportable = `${exportable}\n      attribute:`;
+            let s1 = this.buffs.render(b.qualityColor.enum.Green, 4, 'right');
+            console.log(`s1 is ${s1}`)
+            exportable = `${exportable}\n${s1.values}`
+            let s2 = this.buffs.render(b.qualityColor.enum.Blue,4,'right')
+            exportable = `${exportable}\n${s2.values}`
+            
+          }  
+      
+        }
       
       
-      console.log(`attempting to get Special buff info with ${this.buffEventPending}`)
-      if(this.buffEventPending) {
-        exportable = `${exportable}\n  specialities:`
-        console.log(`detected something to get`)
-        exportable = `${exportable}\n    - name: ${formValues.value.get('s1name')}`;
-        exportable = `${exportable}\n      attribute:`;
-        let s1 = this.buffs.render(b.qualityColor.enum.Green, 1, 'right');
-        console.log(`s1 is ${s1}`)
-        exportable = `${exportable}\n${s1.values}`
-        let s2 = this.buffs.render(b.qualityColor.enum.Blue,1,'right')
-        exportable = `${exportable}\n${s2.values}`
-        this.buffEventPending = false;
-      }  
     } else {
       console.log(`formValue is ${formValues.get()}`)
     }
