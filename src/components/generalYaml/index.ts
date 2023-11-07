@@ -1,8 +1,10 @@
-import {  html, css, type TemplateResult, type PropertyValues, type CSSResultArray, type PropertyValueMap} from "lit";
-import {customElement, property, state} from 'lit/decorators.js';
-import {ref, createRef,  type Ref} from 'lit/directives/ref.js';
-import {guard} from 'lit/directives/guard.js';
+import { css, html, type CSSResultArray, type PropertyValueMap, type TemplateResult } from "lit";
+import { state } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
+import { createRef, ref, type Ref } from 'lit/directives/ref.js';
+
 import { withStores } from "@nanostores/lit";
+
 
 
 const DEBUG = false;
@@ -12,33 +14,41 @@ import { SpectrumElement } from '@spectrum-web-components/base';
 
 import '@spectrum-web-components/button/sp-button.js';
 import '@spectrum-web-components/card/sp-card.js';
-import '@spectrum-web-components/table/elements.js';
-import { FieldGroup } from '@spectrum-web-components/field-group';
 import '@spectrum-web-components/field-group/sp-field-group.js';
 import '@spectrum-web-components/field-label/sp-field-label.js';
 import '@spectrum-web-components/help-text/sp-help-text.js';
+import '@spectrum-web-components/menu/sp-menu-divider.js';
 import '@spectrum-web-components/menu/sp-menu-group.js';
 import '@spectrum-web-components/menu/sp-menu-item.js';
-import '@spectrum-web-components/menu/sp-menu-divider.js';
-import { NumberField } from '@spectrum-web-components/number-field';
 import '@spectrum-web-components/number-field/sp-number-field.js';
 import '@spectrum-web-components/picker/sp-picker.js';
-import { Picker } from '@spectrum-web-components/picker';
 import '@spectrum-web-components/split-view/sp-split-view.js';
 import '@spectrum-web-components/status-light/sp-status-light.js';
-import { Textfield } from '@spectrum-web-components/textfield';
+import '@spectrum-web-components/table/elements.js';
 import '@spectrum-web-components/textfield/sp-textfield.js';
 import '@spectrum-web-components/tooltip/sp-tooltip.js';
 
-import {GeneralBuffController} from "./Buff.ts"
+import { parse, stringify } from 'yaml'
 
-import {addValue, formValues } from './dataStore.ts';
+import { GeneralBuffController } from "./Buff.ts";
+
+import { addValue, formValues } from './dataStore.ts';
 
 import * as b from "@schemas/baseSchemas.ts";
+
+import { GeneralElementSchema } from '@schemas/generalsSchema.ts';
+import type { ZodError } from "zod";
 
 export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
 
   private findMe: Ref<HTMLElement> = createRef();
+
+  private resultDiv: Ref<HTMLElement> = createRef();
+
+  private validationError: ZodError | null = null;
+
+  @state()
+  private resultClassList = {'not-content': true, valid: false, invalid: false}
 
   @state()
   private specialities: boolean = false; 
@@ -85,16 +95,20 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
           }
         }
       }
-      #CardDiv {
-        display: flex-wrap;
-        flex-direciton: column;
-        flex: 1 1 auto;
-        height: 60vh;
+      #ResultsDiv {
+        display: block;
+        white-space: pre;
+        min-height: 60vh;
+        height: fit-content;
+        width: 75%;
+        padding-left: 3rem;
+      }
+      .valid {
+        border: 1.5px solid var(--spectrum-celery-500);
+      }
 
-        & #result {
-          width: 100%;
-          height: 59vh;
-        }
+      .invalid {
+        border: 1.5px solid var(--spectrum-red-800);
       }
 
       `
@@ -117,7 +131,25 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
     }
   }
 
-  
+  public finalValidator (toValidate: string) {
+    console.log(`index finalValidator start;`)
+    if(this.resultDiv !== null && this.resultDiv !== undefined) {
+      if (this.resultDiv.value !== null && this.resultDiv.value !== undefined) {
+        const JsonValue = parse(toValidate);
+        const valid = GeneralElementSchema.safeParse(JsonValue);
+        if(valid.success) {
+          this.resultClassList.valid = true;
+          this.resultClassList.invalid = false;
+          this.validationError = null;
+        } else {
+          this.resultClassList.valid = false;
+          this.resultClassList.invalid = true;
+          this.validationError = valid.error; 
+        }
+        this.requestUpdate();
+      }
+    }
+  }
 
   protected formHandler(e: CustomEvent) {
     console.log(`index; formhandler`)
@@ -764,10 +796,10 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
       console.log(`formValue is ${formValues.get()}`)
     }
     const lines = exportable.split('\n').length;
+    this.finalValidator(exportable);
     return html`
-    <div id="CardDiv" style="width: 100%;">
-      <sp-textfield id="result" multiline rows=${lines} readonly value=${exportable}></sp-text-field>
-    </div>
+    <div class=${classMap(this.resultClassList)} id="ResultsDiv"  ${ref(this.resultDiv)}>${exportable}</div>
+    ${this.validationError}
     `
   }
 
