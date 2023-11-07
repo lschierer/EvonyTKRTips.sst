@@ -28,7 +28,7 @@ import '@spectrum-web-components/table/elements.js';
 import '@spectrum-web-components/textfield/sp-textfield.js';
 import '@spectrum-web-components/tooltip/sp-tooltip.js';
 
-import { parse, stringify } from 'yaml'
+import { parse, isDocument } from 'yaml'
 
 import { GeneralBuffController } from "./Buff.ts";
 
@@ -48,13 +48,13 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
   private validationError: ZodError | null = null;
 
   @state()
-  private resultClassList = {'not-content': true, valid: false, invalid: false}
+  private resultClassList = { 'not-content': true, valid: false, invalid: false }
 
   @state()
-  private specialities: boolean = false; 
-  
+  private specialities: boolean = false;
+
   @state()
-  private buffEventPending: Record<string,boolean> = {};
+  private buffEventPending: Record<string, boolean> = {};
 
   private buffs = new GeneralBuffController(this);
 
@@ -118,77 +118,79 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
 
   }
 
-  public connectedCallback(){
+  public connectedCallback() {
     super.connectedCallback()
   }
-  
+
   public willUpdate(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
     super.willUpdate(_changedProperties);
     console.log(`index willUpdate`)
 
-    if(_changedProperties.has('buffEventPending')) {
+    if (_changedProperties.has('buffEventPending')) {
       console.log(`buffUpdatePending detected`)
     }
   }
 
-  public finalValidator (toValidate: string) {
+  public finalValidator(toValidate: string) {
     console.log(`index finalValidator start;`)
-    if(this.resultDiv !== null && this.resultDiv !== undefined) {
+    if (this.resultDiv !== null && this.resultDiv !== undefined) {
       if (this.resultDiv.value !== null && this.resultDiv.value !== undefined) {
-        const JsonValue = parse(toValidate);
-        const valid = GeneralElementSchema.safeParse(JsonValue);
-        if(valid.success) {
-          this.resultClassList.valid = true;
-          this.resultClassList.invalid = false;
-          this.validationError = null;
-        } else {
-          this.resultClassList.valid = false;
-          this.resultClassList.invalid = true;
-          this.validationError = valid.error; 
-        }
-        this.requestUpdate();
+        
+          const JsonValue = parse(toValidate, { prettyErrors: true });
+          const valid = GeneralElementSchema.safeParse(JsonValue);
+          if (valid.success) {
+            this.resultClassList.valid = true;
+            this.resultClassList.invalid = false;
+            this.validationError = null;
+          } else {
+            this.resultClassList.valid = false;
+            this.resultClassList.invalid = true;
+            this.validationError = valid.error;
+          }
+          this.requestUpdate();
+        
       }
-    }
+    } 
   }
 
   protected formHandler(e: CustomEvent) {
     console.log(`index; formhandler`)
     const target = e.target;
-    if(target !== null && target !== undefined) {
-      if(!(target as Element).id.localeCompare('al1numattrs')) {
-        if(target.value > 0) {
+    if (target !== null && target !== undefined) {
+      if (!(target as Element).id.localeCompare('al1numattrs')) {
+        if (target.value > 0) {
           this.buffEventPending['al1name'] = true;
         } else {
           this.buffEventPending['al1name'] = false;
         }
         addValue('al1name', 'isSet');
       }
-      if(!(target as Element).id.localeCompare('al2numattrs')) {
-        if(target.value > 0) {
+      if (!(target as Element).id.localeCompare('al2numattrs')) {
+        if (target.value > 0) {
           this.buffEventPending['al2name'] = true;
         } else {
           this.buffEventPending['al2name'] = false;
         }
         addValue('al2name', 'isSet');
       }
-      if(!(target as Element).id.localeCompare('al3numattrs')) {
-        if(target.value > 0) {
+      if (!(target as Element).id.localeCompare('al3numattrs')) {
+        if (target.value > 0) {
           this.buffEventPending['al3name'] = true;
         } else {
           this.buffEventPending['al3name'] = false;
         }
         addValue('al3name', 'isSet');
       }
-      if(!(target as Element).id.localeCompare('al4numattrs')) {
-        if(target.value > 0) {
+      if (!(target as Element).id.localeCompare('al4numattrs')) {
+        if (target.value > 0) {
           this.buffEventPending['al4name'] = true;
         } else {
           this.buffEventPending['al4name'] = false;
         }
         addValue('al4name', 'isSet');
       }
-      if(!(target as Element).id.localeCompare('al5numattrs')) {
-        if(target.value > 0) {
+      if (!(target as Element).id.localeCompare('al5numattrs')) {
+        if (target.value > 0) {
           this.buffEventPending['al5name'] = true;
         } else {
           this.buffEventPending['al5name'] = false;
@@ -204,22 +206,22 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
   public sformHandler(e: CustomEvent) {
     console.log(`index; sformhandler`)
     const target = e.target;
-    if(target !== null && target !== undefined) {
-      console.log(`${(target as Element).id} has ${target.value}`)
-      if((target as Element).id.includes('_valueU')) {
-        if(target.checked === false) {
+    if (target !== null && target !== undefined) {
+      console.log(`sformHander; ${(target as Element).id} has ${target.value}`)
+      if ((target as Element).id.includes('_valueU')) {
+        if (target.checked === false) {
           addValue((target as Element).id, 'flat');
         } else {
           addValue((target as Element).id, 'percentage');
         }
-        if(target.checked !== undefined && target.checked !== null) {
+        if (target.checked !== undefined && target.checked !== null) {
           this.buffEventPending[(target as Element).id] = true;
         } else {
           this.buffEventPending[(target as Element).id] = false;
         }
       } else {
         addValue((target as Element).id, target.value);
-        if((target.value !== '') && (target.value !== false)) {
+        if ((target.value !== '') && (target.value !== false)) {
           this.buffEventPending[(target as Element).id] = true;
         } else {
           this.buffEventPending[(target as Element).id] = false;
@@ -230,6 +232,7 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
   }
 
   renderLeft() {
+    const b1T = new Array<TemplateResult>();
     const s1gT = new Array<TemplateResult>();
     const s1bT = new Array<TemplateResult>();
     const s1pT = new Array<TemplateResult>();
@@ -255,47 +258,50 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
     const al3T = new Array<TemplateResult>();
     const al4T = new Array<TemplateResult>();
     const al5T = new Array<TemplateResult>();
-    for(let i = 0; i < (formValues.value?.get('s1numattrs') as number); i++) {
+    for (let i = 0; i < (formValues.value?.get('b1numattrs') as number); i++) {
+      b1T.push(this.buffs.render('special', `b1.${i}`, 'left'))
+    }
+    for (let i = 0; i < (formValues.value?.get('s1numattrs') as number); i++) {
       s1gT.push(this.buffs.render(b.qualityColor.enum.Green, `1.${i}`, 'left'))
       s1bT.push(this.buffs.render(b.qualityColor.enum.Blue, `1.${i}`, 'left'))
       s1pT.push(this.buffs.render(b.qualityColor.enum.Purple, `1.${i}`, 'left'))
       s1oT.push(this.buffs.render(b.qualityColor.enum.Orange, `1.${i}`, 'left'))
       s1GT.push(this.buffs.render(b.qualityColor.enum.Gold, `1.${i}`, 'left'))
     }
-    for(let i = 0; i < (formValues.value?.get('s2numattrs') as number); i++) {
+    for (let i = 0; i < (formValues.value?.get('s2numattrs') as number); i++) {
       s2gT.push(this.buffs.render(b.qualityColor.enum.Green, `2.${i}`, 'left'))
       s2bT.push(this.buffs.render(b.qualityColor.enum.Blue, `2.${i}`, 'left'))
       s2pT.push(this.buffs.render(b.qualityColor.enum.Purple, `2.${i}`, 'left'))
       s2oT.push(this.buffs.render(b.qualityColor.enum.Orange, `2.${i}`, 'left'))
       s2GT.push(this.buffs.render(b.qualityColor.enum.Gold, `2.${i}`, 'left'))
     }
-    for(let i = 0; i < (formValues.value?.get('s3numattrs') as number); i++) {
+    for (let i = 0; i < (formValues.value?.get('s3numattrs') as number); i++) {
       s3gT.push(this.buffs.render(b.qualityColor.enum.Green, `3.${i}`, 'left'))
       s3bT.push(this.buffs.render(b.qualityColor.enum.Blue, `3.${i}`, 'left'))
       s3pT.push(this.buffs.render(b.qualityColor.enum.Purple, `3.${i}`, 'left'))
       s3oT.push(this.buffs.render(b.qualityColor.enum.Orange, `3.${i}`, 'left'))
       s3GT.push(this.buffs.render(b.qualityColor.enum.Gold, `3.${i}`, 'left'))
     }
-    for(let i = 0; i < (formValues.value?.get('s4numattrs') as number); i++) {
+    for (let i = 0; i < (formValues.value?.get('s4numattrs') as number); i++) {
       s4gT.push(this.buffs.render(b.qualityColor.enum.Green, `4.${i}`, 'left'))
       s4bT.push(this.buffs.render(b.qualityColor.enum.Blue, `4.${i}`, 'left'))
       s4pT.push(this.buffs.render(b.qualityColor.enum.Purple, `4.${i}`, 'left'))
       s4oT.push(this.buffs.render(b.qualityColor.enum.Orange, `4.${i}`, 'left'))
       s4GT.push(this.buffs.render(b.qualityColor.enum.Gold, `4.${i}`, 'left'))
     }
-    for(let i = 0; i < (formValues.value?.get('al1numattrs') as number); i++) {
+    for (let i = 0; i < (formValues.value?.get('al1numattrs') as number); i++) {
       al1T.push(this.buffs.render((6).toString(), `.${i}`, 'left'))
     }
-    for(let i = 0; i < (formValues.value?.get('al2numattrs') as number); i++) {
+    for (let i = 0; i < (formValues.value?.get('al2numattrs') as number); i++) {
       al2T.push(this.buffs.render((7).toString(), `.${i}`, 'left'))
     }
-    for(let i = 0; i < (formValues.value?.get('al3numattrs') as number); i++) {
+    for (let i = 0; i < (formValues.value?.get('al3numattrs') as number); i++) {
       al3T.push(this.buffs.render((8).toString(), `.${i}`, 'left'))
     }
-    for(let i = 0; i < (formValues.value?.get('al4numattrs') as number); i++) {
+    for (let i = 0; i < (formValues.value?.get('al4numattrs') as number); i++) {
       al4T.push(this.buffs.render((9).toString(), `.${i}`, 'left'))
     }
-    for(let i = 0; i < (formValues.value?.get('al5numattrs') as number); i++) {
+    for (let i = 0; i < (formValues.value?.get('al5numattrs') as number); i++) {
       al5T.push(this.buffs.render((10).toString(), `.${i}`, 'left'))
     }
 
@@ -428,6 +434,26 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
             <sp-menu-item value="Wall">Wall General</sp-menu-item>
             <sp-menu-item value="Mayor">SubCity Mayor</sp-menu-item>
           </sp-picker>
+        </div>
+      </div>
+      <hr>
+      <div class="not-content books">
+        <div class="not-content BuiltIn">
+          <sp-field-label for"b1name" required>Built In Book Name</sp-field-label>
+          <sp-textfield id="b1name" placeholder="Enter BuiltIn Book Name" @change=${this.sformHandler}></sp-textfield>
+          <br/>
+          <sp-field-label for="b1numattrs" required>Number of Attributes in this Book</sp-field-label>
+            <sp-number-field
+                id='b1numattrs'
+                value="0"
+                size="m"
+                style="--spectrum-stepper-width: 110px"
+                @change=${this.formHandler}
+                ></sp-number-field>
+            <div class="not-content green">
+                <span class="not-content h5">Green</span>
+                ${b1T}
+            </div>
         </div>
       </div>
       <hr>
@@ -647,11 +673,11 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
     `
   }
 
-  renderRight(){
-    
+  renderRight() {
+
     console.log(`renderRight`)
-    let exportable='---';
-    if(formValues.value !== null && formValues.value !== undefined) {
+    let exportable = '---';
+    if (formValues.value !== null && formValues.value !== undefined) {
       exportable = `${exportable}\ngeneral:`;
       exportable = `${exportable}\n  name: ${formValues.value.get('name')}`;
       exportable = `${exportable}\n  display: summary`;
@@ -667,131 +693,142 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
       exportable = `${exportable}\n  level: '1'`
       exportable = `${exportable}\n  score_as: ${formValues.value.get('score_as')}`
 
-      if(
+      if (this.buffEventPending['b1name']) {
+        console.log(`b1name is set`)
+        exportable = `${exportable}\n  books:`;
+        exportable = `${exportable}\n    - name: ${formValues.value.get('b1name')}`;
+        let s1 = this.buffs.render('special', 'b1.', 'right', 'b1numattrs');
+        const toAdd = s1.values;
+        if (toAdd.length >= 1) {
+          console.log(`books s1 is '${toAdd}'`)
+          exportable = `${exportable}\n${toAdd}`
+        }
+      }
+      if (
         (this.buffEventPending['s1name']) ||
         (this.buffEventPending['s2name']) ||
         (this.buffEventPending['s3name']) ||
         (this.buffEventPending['s4name'])
-        ) {
-          exportable = `${exportable}\n  specialities:`
-      
-          if(this.buffEventPending['s1name']) {
-            console.log(`detected something to get`)
-            exportable = `${exportable}\n    - name: ${formValues.value.get('s1name')}`;
-            exportable = `${exportable}\n      attribute:`;
+      ) {
+        exportable = `${exportable}\n  specialities:`
 
-            let s1 = this.buffs.render(b.qualityColor.enum.Green, `1.`, 'right', 's1numattrs');
-            console.log(`s1 is ${s1}`)
-            exportable = `${exportable}\n${s1.values}`
-            let s2 = this.buffs.render(b.qualityColor.enum.Blue,'1.','right','s1numattrs')
-            exportable = `${exportable}\n${s2.values}`
-            let s3 = this.buffs.render(b.qualityColor.enum.Purple,'1.','right', 's1numattrs')
-            exportable = `${exportable}\n${s3.values}`
-            let s4 = this.buffs.render(b.qualityColor.enum.Orange,'1.','right','s1numattrs')
-            exportable = `${exportable}\n${s4.values}`
-            let s5 = this.buffs.render(b.qualityColor.enum.Gold,'1.','right','s1numattrs')
-            exportable = `${exportable}\n${s5.values}`
-          }  
-          
-          if(this.buffEventPending['s2name']) {
-            console.log(`detected something to get`)
-            exportable = `${exportable}\n    - name: ${formValues.value.get('s2name')}`;
-            exportable = `${exportable}\n      attribute:`;
-            let s1 = this.buffs.render(b.qualityColor.enum.Green, '2.', 'right','s2numattrs');
-            exportable = `${exportable}\n${s1.values}`
-            let s2 = this.buffs.render(b.qualityColor.enum.Blue,'2.','right','s2numattrs')
-            exportable = `${exportable}\n${s2.values}`
-            let s3 = this.buffs.render(b.qualityColor.enum.Purple,'2.','right','s2numattrs')
-            exportable = `${exportable}\n${s3.values}`
-            let s4 = this.buffs.render(b.qualityColor.enum.Orange,'2.','right','s2numattrs')
-            exportable = `${exportable}\n${s4.values}`
-            let s5 = this.buffs.render(b.qualityColor.enum.Gold,'2.','right','s2numattrs')
-            exportable = `${exportable}\n${s5.values}`
-          }  
+        if (this.buffEventPending['s1name']) {
+          console.log(`detected something to get`)
+          exportable = `${exportable}\n    - name: ${formValues.value.get('s1name')}`;
+          exportable = `${exportable}\n      attribute:`;
 
-          if(this.buffEventPending['s3name']) {
-            console.log(`detected something to get`)
-            exportable = `${exportable}\n    - name: ${formValues.value.get('s1name')}`;
-            exportable = `${exportable}\n      attribute:`;
-            let s1 = this.buffs.render(b.qualityColor.enum.Green, '3.', 'right','s3numattrs');
-            exportable = `${exportable}\n${s1.values}`
-            let s2 = this.buffs.render(b.qualityColor.enum.Blue,'3.','right','s3numattrs')
-            exportable = `${exportable}\n${s2.values}`
-            let s3 = this.buffs.render(b.qualityColor.enum.Purple,'3.','right','s3numattrs')
-            exportable = `${exportable}\n${s3.values}`
-            let s4 = this.buffs.render(b.qualityColor.enum.Orange,'3.','right','s3numattrs')
-            exportable = `${exportable}\n${s4.values}`
-            let s5 = this.buffs.render(b.qualityColor.enum.Gold,'3.','right','s3numattrs')
-            exportable = `${exportable}\n${s5.values}`
-          }  
-
-          if(this.buffEventPending['s4name']) {
-            console.log(`detected something to get`)
-            exportable = `${exportable}\n    - name: ${formValues.value.get('s1name')}`;
-            exportable = `${exportable}\n      attribute:`;
-            let s1 = this.buffs.render(b.qualityColor.enum.Green, '4.', 'right','s4numattrs');
-            console.log(`s1 is ${s1}`)
-            exportable = `${exportable}\n${s1.values}`
-            let s2 = this.buffs.render(b.qualityColor.enum.Blue,'4.','right','s4numattrs')
-            exportable = `${exportable}\n${s2.values}`
-            let s3 = this.buffs.render(b.qualityColor.enum.Purple,'4.','right','s4numattrs')
-            exportable = `${exportable}\n${s3.values}`
-            let s4 = this.buffs.render(b.qualityColor.enum.Orange,'4.','right','s4numattrs')
-            exportable = `${exportable}\n${s4.values}`
-            let s5 = this.buffs.render(b.qualityColor.enum.Gold,'4.','right','s4numattrs')
-            exportable = `${exportable}\n${s5.values}`
-          }  
-      
+          let s1 = this.buffs.render(b.qualityColor.enum.Green, `1.`, 'right', 's1numattrs');
+          console.log(`s1 is ${s1}`)
+          exportable = `${exportable}\n${s1.values}`
+          let s2 = this.buffs.render(b.qualityColor.enum.Blue, '1.', 'right', 's1numattrs')
+          exportable = `${exportable}\n${s2.values}`
+          let s3 = this.buffs.render(b.qualityColor.enum.Purple, '1.', 'right', 's1numattrs')
+          exportable = `${exportable}\n${s3.values}`
+          let s4 = this.buffs.render(b.qualityColor.enum.Orange, '1.', 'right', 's1numattrs')
+          exportable = `${exportable}\n${s4.values}`
+          let s5 = this.buffs.render(b.qualityColor.enum.Gold, '1.', 'right', 's1numattrs')
+          exportable = `${exportable}\n${s5.values}`
         }
-      if(
-          (this.buffEventPending['al1name']) ||
-          (this.buffEventPending['al2name']) ||
-          (this.buffEventPending['al3name']) ||
-          (this.buffEventPending['al4name']) ||
-          (this.buffEventPending['al5name'])
-        ) {
-          exportable = `${exportable}\n  ascending:`
 
-          if(this.buffEventPending['al1name']) {
-            console.log(`detected something to get`)
-            let s1 = this.buffs.render((6).toString(), '.', 'right','al1numattrs');
-            console.log(`s1 is ${s1}`)
-            exportable = `${exportable}\n${s1.values}`
-          }
-
-          if(this.buffEventPending['al2name']) {
-            console.log(`detected something to get`)
-            let s1 = this.buffs.render((7).toString(), '.', 'right','al2numattrs');
-            console.log(`s1 is ${s1}`)
-            exportable = `${exportable}\n${s1.values}`
-          }
-
-          if(this.buffEventPending['al3name']) {
-            console.log(`detected something to get`)
-            let s1 = this.buffs.render((8).toString(), '.', 'right','al3numattrs');
-            console.log(`s1 is ${s1}`)
-            exportable = `${exportable}\n${s1.values}`
-          }
-
-          if(this.buffEventPending['al4name']) {
-            console.log(`detected something to get`)
-            let s1 = this.buffs.render((9).toString(), '.', 'right','al4numattrs');
-            console.log(`s1 is ${s1}`)
-            exportable = `${exportable}\n${s1.values}`
-          }
-
-          if(this.buffEventPending['al5name']) {
-            console.log(`detected something to get`)
-            let s1 = this.buffs.render((10).toString(), '.', 'right','al5numattrs');
-            console.log(`s1 is ${s1}`)
-            exportable = `${exportable}\n${s1.values}`
-          }
-
-        } else {
-          console.log(`ascending Pending check: ${this.buffEventPending['al1name']}`)
+        if (this.buffEventPending['s2name']) {
+          console.log(`detected something to get`)
+          exportable = `${exportable}\n    - name: ${formValues.value.get('s2name')}`;
+          exportable = `${exportable}\n      attribute:`;
+          let s1 = this.buffs.render(b.qualityColor.enum.Green, '2.', 'right', 's2numattrs');
+          exportable = `${exportable}\n${s1.values}`
+          let s2 = this.buffs.render(b.qualityColor.enum.Blue, '2.', 'right', 's2numattrs')
+          exportable = `${exportable}\n${s2.values}`
+          let s3 = this.buffs.render(b.qualityColor.enum.Purple, '2.', 'right', 's2numattrs')
+          exportable = `${exportable}\n${s3.values}`
+          let s4 = this.buffs.render(b.qualityColor.enum.Orange, '2.', 'right', 's2numattrs')
+          exportable = `${exportable}\n${s4.values}`
+          let s5 = this.buffs.render(b.qualityColor.enum.Gold, '2.', 'right', 's2numattrs')
+          exportable = `${exportable}\n${s5.values}`
         }
-      
-      
+
+        if (this.buffEventPending['s3name']) {
+          console.log(`detected something to get`)
+          exportable = `${exportable}\n    - name: ${formValues.value.get('s1name')}`;
+          exportable = `${exportable}\n      attribute:`;
+          let s1 = this.buffs.render(b.qualityColor.enum.Green, '3.', 'right', 's3numattrs');
+          exportable = `${exportable}\n${s1.values}`
+          let s2 = this.buffs.render(b.qualityColor.enum.Blue, '3.', 'right', 's3numattrs')
+          exportable = `${exportable}\n${s2.values}`
+          let s3 = this.buffs.render(b.qualityColor.enum.Purple, '3.', 'right', 's3numattrs')
+          exportable = `${exportable}\n${s3.values}`
+          let s4 = this.buffs.render(b.qualityColor.enum.Orange, '3.', 'right', 's3numattrs')
+          exportable = `${exportable}\n${s4.values}`
+          let s5 = this.buffs.render(b.qualityColor.enum.Gold, '3.', 'right', 's3numattrs')
+          exportable = `${exportable}\n${s5.values}`
+        }
+
+        if (this.buffEventPending['s4name']) {
+          console.log(`detected something to get`)
+          exportable = `${exportable}\n    - name: ${formValues.value.get('s1name')}`;
+          exportable = `${exportable}\n      attribute:`;
+          let s1 = this.buffs.render(b.qualityColor.enum.Green, '4.', 'right', 's4numattrs');
+          console.log(`s1 is ${s1}`)
+          exportable = `${exportable}\n${s1.values}`
+          let s2 = this.buffs.render(b.qualityColor.enum.Blue, '4.', 'right', 's4numattrs')
+          exportable = `${exportable}\n${s2.values}`
+          let s3 = this.buffs.render(b.qualityColor.enum.Purple, '4.', 'right', 's4numattrs')
+          exportable = `${exportable}\n${s3.values}`
+          let s4 = this.buffs.render(b.qualityColor.enum.Orange, '4.', 'right', 's4numattrs')
+          exportable = `${exportable}\n${s4.values}`
+          let s5 = this.buffs.render(b.qualityColor.enum.Gold, '4.', 'right', 's4numattrs')
+          exportable = `${exportable}\n${s5.values}`
+        }
+
+      }
+      if (
+        (this.buffEventPending['al1name']) ||
+        (this.buffEventPending['al2name']) ||
+        (this.buffEventPending['al3name']) ||
+        (this.buffEventPending['al4name']) ||
+        (this.buffEventPending['al5name'])
+      ) {
+        exportable = `${exportable}\n  ascending:`
+
+        if (this.buffEventPending['al1name']) {
+          console.log(`detected something to get`)
+          let s1 = this.buffs.render((6).toString(), '.', 'right', 'al1numattrs');
+          console.log(`s1 is ${s1}`)
+          exportable = `${exportable}\n${s1.values}`
+        }
+
+        if (this.buffEventPending['al2name']) {
+          console.log(`detected something to get`)
+          let s1 = this.buffs.render((7).toString(), '.', 'right', 'al2numattrs');
+          console.log(`s1 is ${s1}`)
+          exportable = `${exportable}\n${s1.values}`
+        }
+
+        if (this.buffEventPending['al3name']) {
+          console.log(`detected something to get`)
+          let s1 = this.buffs.render((8).toString(), '.', 'right', 'al3numattrs');
+          console.log(`s1 is ${s1}`)
+          exportable = `${exportable}\n${s1.values}`
+        }
+
+        if (this.buffEventPending['al4name']) {
+          console.log(`detected something to get`)
+          let s1 = this.buffs.render((9).toString(), '.', 'right', 'al4numattrs');
+          console.log(`s1 is ${s1}`)
+          exportable = `${exportable}\n${s1.values}`
+        }
+
+        if (this.buffEventPending['al5name']) {
+          console.log(`detected something to get`)
+          let s1 = this.buffs.render((10).toString(), '.', 'right', 'al5numattrs');
+          console.log(`s1 is ${s1}`)
+          exportable = `${exportable}\n${s1.values}`
+        }
+
+      } else {
+        console.log(`ascending Pending check: ${this.buffEventPending['al1name']}`)
+      }
+
+
     } else {
       console.log(`formValue is ${formValues.get()}`)
     }
@@ -820,6 +857,6 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
   }
 
 }
-if(!customElements.get('general-yaml')) {
+if (!customElements.get('general-yaml')) {
   customElements.define('general-yaml', GeneralYaml)
 }

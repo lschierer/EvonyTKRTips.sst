@@ -133,48 +133,66 @@ export class GeneralBuffController implements ReactiveController {
         </sp-field-group>
         `  
     } else {  
-      console.log(`render right`)
-      let exportable = `      - level: '${level}:'`
-      exportable = `${exportable}\n        buff:`
+      console.log(`buff render right`)
+      let exportable = '';
+      console.log(`buff render right; exportable is \n${exportable}`)
       if(rkey !== undefined && rkey !== null) {
+        let initialBlanks = '    ';
+        if(!rkey.localeCompare('b1numattrs')){
+          initialBlanks = `${initialBlanks}  `
+        } else {
+          initialBlanks = `${initialBlanks}    `
+        }
+        console.log(`rkey is ${rkey}`)
+        if(formValues.value?.get(rkey)) {
+          if(level.localeCompare('special')) {
+            exportable = `${initialBlanks}- level: '${level}'`
+            exportable = `${exportable}\n${initialBlanks}  buff:`
+          } else {
+            exportable = `${initialBlanks}buff:`
+          }
+          
+        }
         for(let i = 0; i < (formValues.value?.get(rkey) as number); i++) {
           fieldLabel = sindex + i.toString() + '_' + level;
           console.log(`new label is ${fieldLabel}`)
           let attribute: number | string | undefined = this.formValuesController.value.get(fieldLabel.concat('_attribute')) 
           if(attribute === undefined || attribute === null) {
-            console.log(`${exportable}\n          - attribute: value pending`)
+            console.log(`${exportable}\n${initialBlanks}- attribute: value pending`)
           } else {
-            exportable = `${exportable}\n          - attribute: ${attribute}`
+            exportable = `${exportable}\n${initialBlanks}- attribute: ${attribute}`
           }
           
           const condition_label = fieldLabel.concat('_condition');
           let condition: number | string | undefined = this.formValuesController.value.get(condition_label) 
           if(condition === undefined || condition === null) {
-            console.log(`${exportable}\n            condition: value pending`)
+            console.log(`${exportable}\n${initialBlanks}  condition: value pending`)
           } else {
-            exportable = `${exportable}\n            condition: ${condition}`
+            exportable = `${exportable}\n${initialBlanks}  condition: ${condition}`
           }
   
           let tclass: number | string | undefined = this.formValuesController.value.get(fieldLabel.concat('_class')) 
           if(tclass === undefined || tclass === null) {
-            console.log(`${exportable}\n            class: value pending`);
+            console.log(`${exportable}\n${initialBlanks}  class: value pending`);
           } else if((tclass !== 'all') && (tclass !== 'none')) {
-            exportable = `${exportable}\n            class: ${tclass}`
+            exportable = `${exportable}\n${initialBlanks}  class: ${tclass}`
           }
   
           let tvalue: number | string | undefined = this.formValuesController.value.get(fieldLabel.concat('_valueN')) 
           if(tvalue === undefined || tvalue === null) {
-            console.log(`${exportable}\n            value: value pending`)
+            console.log(`${exportable}\n${initialBlanks}  value: value pending`)
           } else  {
-            exportable = `${exportable}\n            value:`
-            exportable = `${exportable}\n              number: ${tvalue}`
+            exportable = `${exportable}\n${initialBlanks}  value:`
+            exportable = `${exportable}\n${initialBlanks}    number: ${tvalue}`
             let tcheck: number | string | undefined = this.formValuesController.value.get(fieldLabel.concat('_valueU'))
             if(tcheck === undefined || tcheck === 'percentage') {
               tcheck = 'percentage';
             }
-            exportable = `${exportable}\n              unit: ${tcheck}`
+            exportable = `${exportable}\n${initialBlanks}    unit: ${tcheck}`
           }
         }
+      } else {
+        console.error(`no rkey for render right`)
       }
       
       return html`${exportable}`;
