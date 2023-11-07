@@ -134,11 +134,24 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
     const target = e.target;
     if(target !== null && target !== undefined) {
       console.log(`${(target as Element).id} has ${target.value}`)
-      addValue((target as Element).id, target.value);
-      if((target.value !== '') && (target.value !== false)) {
-        this.buffEventPending[(target as Element).id] = true;
+      if((target as Element).id.includes('_valueU')) {
+        if(target.checked === false) {
+          addValue((target as Element).id, 'flat');
+        } else {
+          addValue((target as Element).id, 'percentage');
+        }
+        if(target.checked !== undefined && target.checked !== null) {
+          this.buffEventPending[(target as Element).id] = true;
+        } else {
+          this.buffEventPending[(target as Element).id] = false;
+        }
       } else {
-        this.buffEventPending[(target as Element).id] = false;
+        addValue((target as Element).id, target.value);
+        if((target.value !== '') && (target.value !== false)) {
+          this.buffEventPending[(target as Element).id] = true;
+        } else {
+          this.buffEventPending[(target as Element).id] = false;
+        }
       }
       this.requestUpdate()
     }
