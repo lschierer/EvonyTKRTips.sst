@@ -134,7 +134,7 @@ export class GeneralBuffController implements ReactiveController {
         `  
     } else {  
       console.log(`render right`)
-      let exportable = `      - ${level}:`
+      let exportable = `      - level: '${level}:'`
       exportable = `${exportable}\n        buff:`
       if(rkey !== undefined && rkey !== null) {
         for(let i = 0; i < (formValues.value?.get(rkey) as number); i++) {
@@ -142,7 +142,7 @@ export class GeneralBuffController implements ReactiveController {
           console.log(`new label is ${fieldLabel}`)
           let attribute: number | string | undefined = this.formValuesController.value.get(fieldLabel.concat('_attribute')) 
           if(attribute === undefined || attribute === null) {
-            exportable = `${exportable}\n          - attribute: value pending`
+            console.log(`${exportable}\n          - attribute: value pending`)
           } else {
             exportable = `${exportable}\n          - attribute: ${attribute}`
           }
@@ -150,21 +150,21 @@ export class GeneralBuffController implements ReactiveController {
           const condition_label = fieldLabel.concat('_condition');
           let condition: number | string | undefined = this.formValuesController.value.get(condition_label) 
           if(condition === undefined || condition === null) {
-            exportable = `${exportable}\n            condition: value pending`
+            console.log(`${exportable}\n            condition: value pending`)
           } else {
             exportable = `${exportable}\n            condition: ${condition}`
           }
   
           let tclass: number | string | undefined = this.formValuesController.value.get(fieldLabel.concat('_class')) 
           if(tclass === undefined || tclass === null) {
-            exportable = `${exportable}\n            class: value pending`
+            console.log(`${exportable}\n            class: value pending`);
           } else if((tclass !== 'all') && (tclass !== 'none')) {
             exportable = `${exportable}\n            class: ${tclass}`
           }
   
           let tvalue: number | string | undefined = this.formValuesController.value.get(fieldLabel.concat('_valueN')) 
           if(tvalue === undefined || tvalue === null) {
-            exportable = `${exportable}\n            value: value pending`
+            console.log(`${exportable}\n            value: value pending`)
           } else  {
             exportable = `${exportable}\n            value:`
             exportable = `${exportable}\n              number: ${tvalue}`
