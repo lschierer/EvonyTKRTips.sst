@@ -451,7 +451,6 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
                 @change=${this.formHandler}
                 ></sp-number-field>
             <div class="not-content green">
-                <span class="not-content h5">Green</span>
                 ${b1T}
             </div>
         </div>
