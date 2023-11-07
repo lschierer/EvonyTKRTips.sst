@@ -206,7 +206,7 @@ export class PairingRow extends withStores(LitElement, [generalPairs, conflictin
 
   connectedCallback(): void {
     super.connectedCallback();
-    console.log(`rows connectedCallback`)
+    if(DEBUG) {console.log(`rows connectedCallback`)}
 
 
   }
@@ -217,7 +217,7 @@ export class PairingRow extends withStores(LitElement, [generalPairs, conflictin
   }
 
   protected override shouldUpdate(_changedProperties?: PropertyValueMap<any> | Map<PropertyKey, unknown>): boolean {
-    console.log(`rows shouldupdate start`)
+    if(DEBUG) {console.log(`rows shouldupdate start`) }
 
     if ((this.one !== null && this.one !== undefined) || (this.two !== null && this.two !== undefined)) {
       if (this.attack_buff === 0 && this.defense_buff === 0 && this.hp_buff === 0) {
@@ -232,10 +232,10 @@ export class PairingRow extends withStores(LitElement, [generalPairs, conflictin
   }
 
   protected willUpdate(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
-    console.log(`rows willUpdate start`)
+    if(DEBUG) {console.log(`rows willUpdate start`) }
     super.willUpdate(_changedProperties);
     if (_changedProperties.has('one') || _changedProperties.has('two')) {
-      console.log(`rows willupdate has one or two`)
+      if(DEBUG) {console.log(`rows willupdate has one or two`) }
 
     }
   }

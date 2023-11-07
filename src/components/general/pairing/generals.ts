@@ -3,7 +3,7 @@ import { logger } from '@nanostores/logger'
 
 import { z } from "zod";
 
-const DEBUG = true;
+const DEBUG = false;
 
 import * as b from "@schemas/baseSchemas.ts";
 
@@ -64,7 +64,7 @@ export const generalPairs = computed([allGenerals, typeAndUseMap, conflictingGen
                     pairs.add({ primary: one.general, secondary: two.general })
                   }
                 } else {
-                  console.log(`general ${one.general.name} has no conflicts`)
+                  if (DEBUG) {console.log(`general ${one.general.name} has no conflicts`)}
                   if (type !== null && type !== undefined && type !== b.ClassEnum.enum.all) {
                     if (two.general.score_as !== null && two.general.score_as !== undefined) {
                       if (two.general.score_as !== type) {
@@ -88,7 +88,7 @@ export const generalPairs = computed([allGenerals, typeAndUseMap, conflictingGen
         }
       }
     } else {
-      console.log(`generalPairs computed before generals present`)
+      if (DEBUG) {console.log(`generalPairs computed before generals present`)}
     }
     if (returnable.size >= 1) {
       return returnable;
