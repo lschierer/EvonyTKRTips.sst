@@ -56,7 +56,7 @@ export const generalPairs = computed([allGenerals, typeAndUseMap, conflictingGen
                     if (type !== null && type !== undefined && type !== b.ClassEnum.enum.all) {
                       if (two.general.score_as !== null && two.general.score_as !== undefined) {
                         if (two.general.score_as !== type) {
-                          if (DEBUG) { console.log(`found a conflict between ${two.general.name} and ${type}`) }
+                          if (DEBUG) { console.log(`found a conflict between assistant ${two.general.name} and ${type}`) }
                           continue;
                         }
                       }
@@ -64,6 +64,15 @@ export const generalPairs = computed([allGenerals, typeAndUseMap, conflictingGen
                     pairs.add({ primary: one.general, secondary: two.general })
                   }
                 } else {
+                  console.log(`general ${one.general.name} has no conflicts`)
+                  if (type !== null && type !== undefined && type !== b.ClassEnum.enum.all) {
+                    if (two.general.score_as !== null && two.general.score_as !== undefined) {
+                      if (two.general.score_as !== type) {
+                        if (DEBUG) { console.log(`found a conflict between assistant ${two.general.name} and ${type}`) }
+                        continue;
+                      }
+                    }
+                  }
                   pairs.add({ primary: one.general, secondary: two.general })
                 }
               }
