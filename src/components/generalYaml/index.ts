@@ -168,22 +168,65 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
     const s2pT = new Array<TemplateResult>();
     const s2oT = new Array<TemplateResult>();
     const s2GT = new Array<TemplateResult>();
+    const s3gT = new Array<TemplateResult>();
+    const s3bT = new Array<TemplateResult>();
+    const s3pT = new Array<TemplateResult>();
+    const s3oT = new Array<TemplateResult>();
+    const s3GT = new Array<TemplateResult>();
+    const s4gT = new Array<TemplateResult>();
+    const s4bT = new Array<TemplateResult>();
+    const s4pT = new Array<TemplateResult>();
+    const s4oT = new Array<TemplateResult>();
+    const s4GT = new Array<TemplateResult>();
+    const al1T = new Array<TemplateResult>();
+    const al2T = new Array<TemplateResult>();
+    const al3T = new Array<TemplateResult>();
+    const al4T = new Array<TemplateResult>();
+    const al5T = new Array<TemplateResult>();
     for(let i = 0; i < (formValues.value?.get('s1numattrs') as number); i++) {
       s1gT.push(this.buffs.render(b.qualityColor.enum.Green, `1.${i}`, 'left'))
-      s1bT.push(this.buffs.render(b.qualityColor.enum.Green, `1.${i}`, 'left'))
-      s1pT.push(this.buffs.render(b.qualityColor.enum.Green, `1.${i}`, 'left'))
-      s1oT.push(this.buffs.render(b.qualityColor.enum.Green, `1.${i}`, 'left'))
-      s1GT.push(this.buffs.render(b.qualityColor.enum.Green, `1.${i}`, 'left'))
+      s1bT.push(this.buffs.render(b.qualityColor.enum.Blue, `1.${i}`, 'left'))
+      s1pT.push(this.buffs.render(b.qualityColor.enum.Purple, `1.${i}`, 'left'))
+      s1oT.push(this.buffs.render(b.qualityColor.enum.Orange, `1.${i}`, 'left'))
+      s1GT.push(this.buffs.render(b.qualityColor.enum.Gold, `1.${i}`, 'left'))
     }
     for(let i = 0; i < (formValues.value?.get('s2numattrs') as number); i++) {
       s2gT.push(this.buffs.render(b.qualityColor.enum.Green, `2.${i}`, 'left'))
-      s2bT.push(this.buffs.render(b.qualityColor.enum.Green, `2.${i}`, 'left'))
-      s2pT.push(this.buffs.render(b.qualityColor.enum.Green, `2.${i}`, 'left'))
-      s2oT.push(this.buffs.render(b.qualityColor.enum.Green, `2.${i}`, 'left'))
-      s2GT.push(this.buffs.render(b.qualityColor.enum.Green, `2.${i}`, 'left'))
+      s2bT.push(this.buffs.render(b.qualityColor.enum.Blue, `2.${i}`, 'left'))
+      s2pT.push(this.buffs.render(b.qualityColor.enum.Purple, `2.${i}`, 'left'))
+      s2oT.push(this.buffs.render(b.qualityColor.enum.Orange, `2.${i}`, 'left'))
+      s2GT.push(this.buffs.render(b.qualityColor.enum.Gold, `2.${i}`, 'left'))
     }
-  
-  
+    for(let i = 0; i < (formValues.value?.get('s3numattrs') as number); i++) {
+      s3gT.push(this.buffs.render(b.qualityColor.enum.Green, `3.${i}`, 'left'))
+      s3bT.push(this.buffs.render(b.qualityColor.enum.Blue, `3.${i}`, 'left'))
+      s3pT.push(this.buffs.render(b.qualityColor.enum.Purple, `3.${i}`, 'left'))
+      s3oT.push(this.buffs.render(b.qualityColor.enum.Orange, `3.${i}`, 'left'))
+      s3GT.push(this.buffs.render(b.qualityColor.enum.Gold, `3.${i}`, 'left'))
+    }
+    for(let i = 0; i < (formValues.value?.get('s4numattrs') as number); i++) {
+      s4gT.push(this.buffs.render(b.qualityColor.enum.Green, `4.${i}`, 'left'))
+      s4bT.push(this.buffs.render(b.qualityColor.enum.Blue, `4.${i}`, 'left'))
+      s4pT.push(this.buffs.render(b.qualityColor.enum.Purple, `4.${i}`, 'left'))
+      s4oT.push(this.buffs.render(b.qualityColor.enum.Orange, `4.${i}`, 'left'))
+      s4GT.push(this.buffs.render(b.qualityColor.enum.Gold, `4.${i}`, 'left'))
+    }
+    for(let i = 0; i < (formValues.value?.get('al1numattrs') as number); i++) {
+      al1T.push(this.buffs.render((6).toString(), `.${i}`, 'left'))
+    }
+    for(let i = 0; i < (formValues.value?.get('al2numattrs') as number); i++) {
+      al2T.push(this.buffs.render((7).toString(), `.${i}`, 'left'))
+    }
+    for(let i = 0; i < (formValues.value?.get('al3numattrs') as number); i++) {
+      al3T.push(this.buffs.render((8).toString(), `.${i}`, 'left'))
+    }
+    for(let i = 0; i < (formValues.value?.get('al4numattrs') as number); i++) {
+      al4T.push(this.buffs.render((9).toString(), `.${i}`, 'left'))
+    }
+    for(let i = 0; i < (formValues.value?.get('al5numattrs') as number); i++) {
+      al5T.push(this.buffs.render((10).toString(), `.${i}`, 'left'))
+    }
+
     return html`
     <div class="GeneralsDetailsForm" ${ref(this.findMe)}>
       <div class="not-content Name">
@@ -351,11 +394,12 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
               ${s1GT}
             </div>
           </div>
+          <br/>
           <div class="not-content speciality two">
             <sp-field-label for="s2name" required>Speciality Name</sp-field-label>
             <sp-textfield id="s2name" placeholder="Enter Speciality Name" @change=${this.sformHandler}></sp-textfield>
             <br/>
-            <sp-field-label for="s1numattrs" required>Number of Attributes per Level</sp-field-label>
+            <sp-field-label for="s2numattrs" required>Number of Attributes per Level</sp-field-label>
             <sp-number-field
                 id='s2numattrs'
                 value="0"
@@ -384,11 +428,148 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
               ${s2GT}
             </div>
           </div>
+          <br/>
           <div class="not-content speciality three">
+            <sp-field-label for="s3name" required>Speciality Name</sp-field-label>
+            <sp-textfield id="s3name" placeholder="Enter Speciality Name" @change=${this.sformHandler}></sp-textfield>
+            <br/>
+            <sp-field-label for="s3numattrs" required>Number of Attributes per Level</sp-field-label>
+            <sp-number-field
+                id='s3numattrs'
+                value="0"
+                size="m"
+                style="--spectrum-stepper-width: 110px"
+                @change=${this.formHandler}
+                ></sp-number-field>
+            <div class="not-content green">
+                <span class="not-content h5">Green</span>
+                ${s3gT}
+            </div>
+            <div class="not-content blue">
+              <span class="not-content h5">Blue</span>
+              ${s3bT}
+            </div>
+            <div class="not-content purple">
+              <span class="not-content h5">Purple</span>
+              ${s3pT}
+            </div>
+            <div class="not-content orange">
+              <span class="not-content h5">Orange</span>
+              ${s3oT}
+            </div>
+            <div class="not-content gold">
+              <span class="not-content h5">Gold</span>
+              ${s3GT}
+            </div>
           </div>
+          <br/>
           <div class="not-content speciality four">
+            <sp-field-label for="s4name" required>Speciality Name</sp-field-label>
+            <sp-textfield id="s4name" placeholder="Enter Speciality Name" @change=${this.sformHandler}></sp-textfield>
+            <br/>
+            <sp-field-label for="s4numattrs" required>Number of Attributes per Level</sp-field-label>
+            <sp-number-field
+                id='s4numattrs'
+                value="0"
+                size="m"
+                style="--spectrum-stepper-width: 110px"
+                @change=${this.formHandler}
+                ></sp-number-field>
+            <div class="not-content green">
+                <span class="not-content h5">Green</span>
+                ${s4gT}
+            </div>
+            <div class="not-content blue">
+              <span class="not-content h5">Blue</span>
+              ${s4bT}
+            </div>
+            <div class="not-content purple">
+              <span class="not-content h5">Purple</span>
+              ${s4pT}
+            </div>
+            <div class="not-content orange">
+              <span class="not-content h5">Orange</span>
+              ${s4oT}
+            </div>
+            <div class="not-content gold">
+              <span class="not-content h5">Gold</span>
+              ${s4GT}
+            </div>
           </div>
         </sp-field-group>
+      </div>
+      <hr>
+      <div class="not-content ascending">
+        <div class="not-content al1">
+          <span class="not-content h5">Ascending Level 1</span>
+          <sp-field-label for="al1numattrs" required>Number of Attributes per Level</sp-field-label>
+          <sp-number-field
+              id='al1numattrs'
+              value="0"
+              size="m"
+              style="--spectrum-stepper-width: 110px"
+              @change=${this.formHandler}
+              ></sp-number-field>
+          <div class="not-content al1attr">
+              ${al1T}
+          </div>
+        </div>
+        <div class="not-content al2">
+          <span class="not-content h5">Ascending Level 2</span>
+          <sp-field-label for="al2numattrs" required>Number of Attributes per Level</sp-field-label>
+          <sp-number-field
+              id='al2numattrs'
+              value="0"
+              size="m"
+              style="--spectrum-stepper-width: 110px"
+              @change=${this.formHandler}
+              ></sp-number-field>
+          <div class="not-content al2attr">
+              ${al2T}
+          </div>
+        </div>
+        <div class="not-content al3">
+          <span class="not-content h5">Ascending Level 3</span>
+          <sp-field-label for="al3numattrs" required>Number of Attributes per Level</sp-field-label>
+          <sp-number-field
+              id='al3numattrs'
+              value="0"
+              size="m"
+              style="--spectrum-stepper-width: 110px"
+              @change=${this.formHandler}
+              ></sp-number-field>
+          <div class="not-content al3attr">
+              ${al3T}
+          </div>
+        </div>
+        <div class="not-content al4">
+          <span class="not-content h5">Ascending Level 4</span>
+          <sp-field-label for="al4numattrs" required>Number of Attributes per Level</sp-field-label>
+          <sp-number-field
+              id='al4numattrs'
+              value="0"
+              size="m"
+              style="--spectrum-stepper-width: 110px"
+              @change=${this.formHandler}
+              ></sp-number-field>
+          <div class="not-content al4attr">
+              ${al4T}
+          </div>
+        </div>
+        <div class="not-content al5">
+          <span class="not-content h5">Ascending Level 5</span>
+          <sp-field-label for="al5numattrs" required>Number of Attributes per Level</sp-field-label>
+          <sp-number-field
+              id='al5numattrs'
+              value="0"
+              size="m"
+              style="--spectrum-stepper-width: 110px"
+              @change=${this.formHandler}
+              ></sp-number-field>
+          <div class="not-content al5attr">
+              ${al5T}
+          </div>
+        </div>
       </div>
     </div>
     `
@@ -432,6 +613,12 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
             exportable = `${exportable}\n${s1.values}`
             let s2 = this.buffs.render(b.qualityColor.enum.Blue,'1.','right')
             exportable = `${exportable}\n${s2.values}`
+            let s3 = this.buffs.render(b.qualityColor.enum.Purple,'1.','right')
+            exportable = `${exportable}\n${s3.values}`
+            let s4 = this.buffs.render(b.qualityColor.enum.Orange,'1.','right')
+            exportable = `${exportable}\n${s4.values}`
+            let s5 = this.buffs.render(b.qualityColor.enum.Gold,'1.','right')
+            exportable = `${exportable}\n${s5.values}`
           }  
           
           if(this.buffEventPending['s2name']) {
@@ -442,6 +629,12 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
             exportable = `${exportable}\n${s1.values}`
             let s2 = this.buffs.render(b.qualityColor.enum.Blue,'2.','right')
             exportable = `${exportable}\n${s2.values}`
+            let s3 = this.buffs.render(b.qualityColor.enum.Purple,'2.','right')
+            exportable = `${exportable}\n${s3.values}`
+            let s4 = this.buffs.render(b.qualityColor.enum.Orange,'2.','right')
+            exportable = `${exportable}\n${s4.values}`
+            let s5 = this.buffs.render(b.qualityColor.enum.Gold,'2.','right')
+            exportable = `${exportable}\n${s5.values}`
           }  
 
           if(this.buffEventPending['s3name']) {
@@ -452,6 +645,12 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
             exportable = `${exportable}\n${s1.values}`
             let s2 = this.buffs.render(b.qualityColor.enum.Blue,'3.','right')
             exportable = `${exportable}\n${s2.values}`
+            let s3 = this.buffs.render(b.qualityColor.enum.Purple,'3.','right')
+            exportable = `${exportable}\n${s3.values}`
+            let s4 = this.buffs.render(b.qualityColor.enum.Orange,'3.','right')
+            exportable = `${exportable}\n${s4.values}`
+            let s5 = this.buffs.render(b.qualityColor.enum.Gold,'3.','right')
+            exportable = `${exportable}\n${s5.values}`
           }  
 
           if(this.buffEventPending['s4name']) {
@@ -463,7 +662,12 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
             exportable = `${exportable}\n${s1.values}`
             let s2 = this.buffs.render(b.qualityColor.enum.Blue,'4.','right')
             exportable = `${exportable}\n${s2.values}`
-            
+            let s3 = this.buffs.render(b.qualityColor.enum.Purple,'4.','right')
+            exportable = `${exportable}\n${s3.values}`
+            let s4 = this.buffs.render(b.qualityColor.enum.Orange,'4.','right')
+            exportable = `${exportable}\n${s4.values}`
+            let s5 = this.buffs.render(b.qualityColor.enum.Gold,'4.','right')
+            exportable = `${exportable}\n${s5.values}`
           }  
       
         }

@@ -65,7 +65,7 @@ export class GeneralBuffController implements ReactiveController {
       return html`
         <sp-field-label for=${fieldLabel.concat('_condition')} required>Adjective</sp-field-label>
         <sp-picker id=${fieldLabel.concat('_condition')} size="s" value="always" label="When does this take effect" @change=${(this.host as GeneralYaml).sformHandler}>
-          <sp-menu-item value="always">All The Time, On All Troops</sp-menu-item>
+          <sp-menu-item value="always">All The Time, On Selected Troops</sp-menu-item>
           <sp-menu-item value="Marching">Marching</sp-menu-item>
           <sp-menu-item value="Attacking">Attacking</sp-menu-item>
           <sp-menu-item value="When_Rallying">When Launcing A Rally</sp-menu-item>
