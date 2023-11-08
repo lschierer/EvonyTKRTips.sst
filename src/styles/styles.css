@@ -21,6 +21,7 @@ governing permissions and limitations under the License.
   --sl-nav-pad-x: 0px;
   --sl-nav-pad-y: 0px;
   --sl-content-width: 65rem;
+  --sl-sidebar-width: 15rem;
 }
 
 sp-theme {
