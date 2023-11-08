@@ -4,7 +4,9 @@
   "license": "MIT",
   "scripts": {},
   "private": true,
-  "dependencies": {},
+  "dependencies": {
+    "@berenddeboer/nx-sst": "^0.13.5"
+  },
   "devDependencies": {
     "@nx/js": "17.0.3",
     "@nx/workspace": "17.0.3",
