@@ -160,7 +160,7 @@ export class GeneralBuffController implements ReactiveController {
           if(attribute === undefined || attribute === null) {
             console.log(`${exportable}\n${initialBlanks}- attribute: value pending`)
           } else {
-            exportable = `${exportable}\n${initialBlanks}- attribute: ${attribute}`
+            exportable = `${exportable}\n${initialBlanks}  - attribute: ${attribute}`
           }
           
           const condition_label = fieldLabel.concat('_condition');
@@ -168,27 +168,27 @@ export class GeneralBuffController implements ReactiveController {
           if(condition === undefined || condition === null) {
             console.log(`${exportable}\n${initialBlanks}  condition: value pending`)
           } else {
-            exportable = `${exportable}\n${initialBlanks}  condition: ${condition}`
+            exportable = `${exportable}\n${initialBlanks}    condition: ${condition}`
           }
   
           let tclass: number | string | undefined = this.formValuesController.value.get(fieldLabel.concat('_class')) 
           if(tclass === undefined || tclass === null) {
             console.log(`${exportable}\n${initialBlanks}  class: value pending`);
           } else if((tclass !== 'all') && (tclass !== 'none')) {
-            exportable = `${exportable}\n${initialBlanks}  class: ${tclass}`
+            exportable = `${exportable}\n${initialBlanks}    class: ${tclass}`
           }
   
           let tvalue: number | string | undefined = this.formValuesController.value.get(fieldLabel.concat('_valueN')) 
           if(tvalue === undefined || tvalue === null) {
             console.log(`${exportable}\n${initialBlanks}  value: value pending`)
           } else  {
-            exportable = `${exportable}\n${initialBlanks}  value:`
-            exportable = `${exportable}\n${initialBlanks}    number: ${tvalue}`
+            exportable = `${exportable}\n${initialBlanks}    value:`
+            exportable = `${exportable}\n${initialBlanks}      number: ${tvalue}`
             let tcheck: number | string | undefined = this.formValuesController.value.get(fieldLabel.concat('_valueU'))
             if(tcheck === undefined || tcheck === 'percentage') {
               tcheck = 'percentage';
             }
-            exportable = `${exportable}\n${initialBlanks}    unit: ${tcheck}`
+            exportable = `${exportable}\n${initialBlanks}      unit: ${tcheck}`
           }
         }
       } else {
