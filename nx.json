@@ -1,0 +1,17 @@
+{
+  "targetDefaults": {
+    "build": {
+      "cache": true
+    },
+    "astro": {
+      "cache": true
+    },
+    "sst:deploy": {
+      "cache": true
+    }
+  },
+  "affected": {
+    "defaultBase": "main"
+  },
+  "nxCloudAccessToken": "ZjljY2RiZWMtZTg3My00YmM3LWIyODctZWRjNDY0MDc0NDVkfHJlYWQtd3JpdGU="
+}
