@@ -7,13 +7,7 @@
       "inputs": ["production", "^production"]
     },
     "lint": {
-      "cache": true,
-      "inputs": [
-        "default",
-        "{workspaceRoot}/.eslintrc.json",
-        "{workspaceRoot}/.eslintignore",
-        "{workspaceRoot}/eslint.config.js"
-      ]
+      "cache": true
     },
     "test": {
       "cache": true
@@ -24,11 +18,7 @@
   },
   "namedInputs": {
     "default": ["{projectRoot}/**/*", "sharedGlobals"],
-    "production": [
-      "default",
-      "!{projectRoot}/.eslintrc.json",
-      "!{projectRoot}/eslint.config.js"
-    ],
+    "production": ["default"],
     "sharedGlobals": []
   },
   "nxCloudAccessToken": "YzI3ZGMzMzYtYjZjNC00ZmJhLWEyNDItOTlhNGE4ODAwMGM4fHJlYWQtd3JpdGU="
