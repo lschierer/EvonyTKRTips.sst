@@ -168,7 +168,10 @@ export class GeneralBuffController implements ReactiveController {
           if(condition === undefined || condition === null) {
             console.log(`${exportable}\n${initialBlanks}  condition: value pending`)
           } else {
-            exportable = `${exportable}\n${initialBlanks}    condition: ${condition}`
+            if(condition.toLocaleString().localeCompare('always')){
+              exportable = `${exportable}\n${initialBlanks}    condition: ${condition}`
+            }
+            
           }
   
           let tclass: number | string | undefined = this.formValuesController.value.get(fieldLabel.concat('_class')) 
