@@ -80,7 +80,7 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
           }
         }
       }
-      div.specialities {
+      div.specialities, div.books, div.ascending {
         & div.green, div.blue, div.purple, div.orange, div.gold {
           span.h5 {
             font-weight: bold;
