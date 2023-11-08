@@ -30,3 +30,6 @@ pnpm-debug.log*
 .DS_Store
 src/lib/*.js
 src/schemas/*.js
+
+
+.nx/cache
