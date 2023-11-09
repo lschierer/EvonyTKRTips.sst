@@ -1,0 +1,44 @@
+conflicts:
+  01HES9RYB0QPCVF1ZGNB43KNFT:
+    - Eleanor
+  other:
+    - Li Shimin
+    - King Arthur
+    - Genghis Khan
+  books:
+    - name: March SIze Increase
+      level: '1'
+      buff:
+      - attribute: Attack
+        condition: When_Not_Mine
+        class: Ranged
+        value:
+          number: 3
+          unit: percentage
+    - name: March SIze Increase
+      level: '2'
+      buff:
+      - attribute: Attack
+        condition: When_Not_Mine
+        class: Ranged
+        value:
+          number: 6
+          unit: percentage
+    - name: March SIze Increase
+      level: '3'
+      buff:
+      - attribute: Attack
+        condition: When_Not_Mine
+        class: Ranged
+        value:
+          number: 9
+          unit: percentage
+    - name: March SIze Increase
+      level: '4'
+      buff:
+      - attribute: Attack
+        condition: When_Not_Mine
+        class: Ranged
+        value:
+          number: 12
+          unit: percentage
