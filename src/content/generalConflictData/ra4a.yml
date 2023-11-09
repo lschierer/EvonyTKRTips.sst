@@ -1,0 +1,46 @@
+conflicts:
+  01HES9NAW7F7H96HXANGG0SNAX:
+    - Edward III
+  others:
+    - Mason Weaver
+    - Toyotomi Hideyori
+    - Elizabeth I
+    - Gwanggaeto the Great
+    - Gustavus Adolphus
+  books:
+    - name: Ranged Defense Increase
+      level: '1'
+      buff:
+      - attribute: Defense
+        condition: When_Not_Mine
+        class: Ranged
+        value:
+          number: 10
+          unit: percentage
+    - name: Ranged Defense Increase
+      level: '2'
+      buff:
+      - attribute: Defense
+        condition: When_Not_Mine
+        class: Ranged
+        value:
+          number: 15
+          unit: percentage
+    - name: Ranged Defense Increase
+      level: '3'
+      buff:
+      - attribute: Defense
+        condition: When_Not_Mine
+        class: Ranged
+        value:
+          number: 20
+          unit: percentage
+    - name: Ranged Defense Increase
+      level: '4'
+      buff:
+      - attribute: Defense
+        condition: When_Not_Mine
+        class: Ranged
+        value:
+          number: 25
+          unit: percentage
