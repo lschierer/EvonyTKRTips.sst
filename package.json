@@ -3,13 +3,13 @@
   "type": "module",
   "version": "0.4.2",
   "scripts": {
-    "dev": "sst bind astro dev",
-    "start": "astro dev",
-    "build": "echo RootDir=${PWD} > .env && astro build",
+    "dev": "nx exec -- sst bind astro dev",
+    "start": "nx exec -- astro dev",
+    "build": "echo RootDir=${PWD} > .env && nx exec -- astro build",
     "preview": "astro preview",
-    "astro": "astro",
-    "sst:deploy": "sst deploy",
-    "sst:dev": "sst dev"
+    "astro": "nx exec -- astro",
+    "sst:deploy": "nx exec -- sst deploy",
+    "sst:dev": "nx exec -- sst dev"
   },
   "dependencies": {
     "@astrojs/lit": "^3.0.2",
