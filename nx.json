@@ -1,13 +1,13 @@
 {
   "targetDefaults": {
     "build": {
-      "cache": true
+      "cache": false
     },
     "astro": {
-      "cache": true
+      "cache": false
     },
     "sst:deploy": {
-      "cache": true
+      "cache": false
     }
   },
   "affected": {
