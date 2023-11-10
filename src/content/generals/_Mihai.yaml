@@ -1,0 +1,322 @@
+---
+general:
+  name: Mihai
+  display: summary
+  leadership: 118
+  leadership_increment: 8.82
+  attack: 120
+  attack_increment: 9.05
+  defense: 117
+  defense_increment: 8.87
+  politics: 106
+  politics_increment: 8.69
+  stars: '10'
+  level: '1'
+  score_as: Archers
+  books:
+    - name: Battle of Selimbar
+      buff:
+        - attribute: Attack
+          condition: leading_the_army_to_attack
+          class: Archers
+          value:
+            number: 45
+            unit: percentage
+        - attribute: Defense
+          condition: leading_the_army_to_attack
+          class: Archers
+          value:
+            number: 45
+            unit: percentage
+        - attribute: Defense
+          condition: leading_the_army_to_attack
+          class: Siege
+          value:
+            number: 45
+            unit: percentage
+  ascending:
+        - level: '6'
+          buff:
+          - attribute: Attack
+            condition: Marching
+            class: Archers
+            value:
+              number: 10
+              unit: percentage
+          - attribute: Defense
+            condition: Marching
+            class: Archers
+            value:
+              number: 15
+              unit: percentage
+          - attribute: Defense
+            condition: Marching
+            class: Siege
+            value:
+              number: 15
+              unit: percentage
+        - level: '7'
+          buff:
+          - attribute: Death_to_Wounded
+            condition: Marching
+            value:
+              number: 8
+              unit: percentage
+        - level: '8'
+          buff:
+          - attribute: March_Size_Capacity
+            value:
+              number: 10
+              unit: percentage
+          - attribute: HP
+            condition: Attacking
+            class: Archers
+            value:
+              number: 20
+              unit: percentage
+        - level: '9'
+          buff:
+          - attribute: Attack
+            condition: Attacking
+            class: Archers
+            value:
+              number: 15
+              unit: percentage
+          - attribute: Attack
+            condition: Attacking
+            class: Siege
+            value:
+              number: 15
+              unit: percentage
+          - attribute: HP
+            condition: Attacking
+            class: Archers
+            value:
+              number: 25
+              unit: percentage
+        - level: '10'
+          buff:
+          - attribute: Attack
+            condition: Marching
+            class: Archers
+            value:
+              number: 25
+              unit: percentage
+          - attribute: Defense
+            condition: Marching
+            class: Archers
+            value:
+              number: 35
+              unit: percentage
+  specialities:
+    - name: Ranged Troop Assault
+      attribute:
+        - level: 'Green'
+          buff:
+          - attribute: Attack
+            class: Archers
+            value:
+              number: 1
+              unit: percentage
+          - attribute: HP
+            class: Archers
+            value:
+              number: 1
+              unit: percentage
+        - level: 'Blue'
+          buff:
+          - attribute: HP
+            class: Archers
+            value:
+              number: 1
+              unit: percentage
+          - attribute: Attack
+            class: Archers
+            value:
+              number: 1
+              unit: percentage
+        - level: 'Purple'
+          buff:
+          - attribute: HP
+            class: Archers
+            value:
+              number: 2
+              unit: percentage
+          - attribute: Attack
+            class: Archers
+            value:
+              number: 2
+              unit: percentage
+        - level: 'Orange'
+          buff:
+          - attribute: HP
+            class: Archers
+            value:
+              number: 2
+              unit: percentage
+          - attribute: Attack
+            class: Archers
+            value:
+              number: 2
+              unit: percentage
+        - level: 'Gold'
+          buff:
+          - attribute: HP
+            class: Archers
+            value:
+              number: 4
+              unit: percentage
+          - attribute: Attack
+            class: Archers
+            value:
+              number: 4
+              unit: percentage
+    - name: Bash
+      attribute:
+        - level: Green
+          buff:
+            - attribute: Attack
+              class: Archers
+              value:
+                number: 1
+                unit: percentage
+            - attribute: Attack
+              class: Siege
+              value:
+                number: 1
+                unit: percentage
+        - level: Blue
+          buff:
+            - attribute: Attack
+              class: Archers
+              value:
+                number: 1
+                unit: percentage
+            - attribute: Attack
+              class: Siege
+              value:
+                number: 1
+                unit: percentage
+        - level: Purple
+          buff:
+            - attribute: Attack
+              class: Archers
+              value:
+                number: 2
+                unit: percentage
+            - attribute: Attack
+              class: Siege
+              value:
+                number: 2
+                unit: percentage
+        - level: Orange
+          buff:
+            - attribute: Attack
+              class: Archers
+              value:
+                number: 2
+                unit: percentage
+            - attribute: Attack
+              class: Siege
+              value:
+                number: 2
+                unit: percentage
+        - level: Gold
+          buff:
+            - attribute: Attack
+              class: Archers
+              value:
+                number: 4
+                unit: percentage
+            - attribute: Attack
+              class: Siege
+              value:
+                number: 4
+                unit: percentage
+    - name: Ranged Troop Ares
+      attribute:
+        - level: 'Green'
+          buff:
+          - attribute: Attack
+            class: Archers
+            value:
+              number: 1
+              unit: percentage
+          - attribute: Defense
+            class: Archers
+            value:
+              number: 1
+              unit: percentage
+          - attribute: HP
+            class: Archers
+            value:
+              number: 1
+              unit: percentage
+        - level: 'Blue'
+          buff:
+          - attribute: Attack
+            class: Archers
+            value:
+              number: 1
+              unit: percentage
+          - attribute: Defense
+            class: Archers
+            value:
+              number: 1
+              unit: percentage
+          - attribute: HP
+            class: Archers
+            value:
+              number: 1
+              unit: percentage
+        - level: 'Purple'
+          buff:
+          - attribute: Attack
+            class: Archers
+            value:
+              number: 2
+              unit: percentage
+          - attribute: Defense
+            class: Archers
+            value:
+              number: 2
+              unit: percentage
+          - attribute: HP
+            class: Archers
+            value:
+              number: 2
+              unit: percentage
+        - level: 'Orange'
+          buff:
+          - attribute: Attack
+            class: Archers
+            value:
+              number: 2
+              unit: percentage
+          - attribute: Defense
+            class: Archers
+            value:
+              number: 2
+              unit: percentage
+          - attribute: HP
+            class: Archers
+            value:
+              number: 2
+              unit: percentage
+        - level: 'Gold'
+          buff:
+          - attribute: Attack
+            class: Archers
+            value:
+              number: 4
+              unit: percentage
+          - attribute: Defense
+            class: Archers
+            value:
+              number: 4
+              unit: percentage
+          - attribute: HP
+            class: Archers
+            value:
+              number: 4
+              unit: percentage
