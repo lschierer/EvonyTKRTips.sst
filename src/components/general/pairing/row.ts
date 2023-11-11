@@ -2,7 +2,7 @@ import { html, css, type PropertyValues, type PropertyValueMap, LitElement, type
 import { customElement, property, state } from 'lit/decorators.js';
 import { ref, createRef, type Ref } from 'lit/directives/ref.js';
 
-const DEBUG = false;
+const DEBUG = true;
 import { withStores } from "@nanostores/lit";
 
 import { z, type ZodError } from 'zod';
@@ -108,6 +108,8 @@ export class PairingRow extends withStores(LitElement, [generalPairs, conflictin
     return this.march_buff;
   }
 
+  
+
   @state()
   private unitClass: b.ClassEnumType = b.ClassEnum.enum.all;
 
@@ -119,27 +121,29 @@ export class PairingRow extends withStores(LitElement, [generalPairs, conflictin
 
 
   @state()
-  private props = {
+  private props: generalInvestment = {
     dragon: primaryInvestmentMap.get().dragon,
     beast: primaryInvestmentMap.get().beast,
     ascending: primaryInvestmentMap.get().ascending,
-    Speciality1: primaryInvestmentMap.get().speciality1,
-    Speciality2: primaryInvestmentMap.get().speciality2,
-    Speciality3: primaryInvestmentMap.get().speciality3,
-    Speciality4: primaryInvestmentMap.get().speciality4,
+    speciality1: primaryInvestmentMap.get().speciality1,
+    speciality2: primaryInvestmentMap.get().speciality2,
+    speciality3: primaryInvestmentMap.get().speciality3,
+    speciality4: primaryInvestmentMap.get().speciality4,
+    extraBooks: [],
   };
 
   @state()
-  private Assistprops = {
-    dragon: secondaryInvestmentMap.get().dragon,
-    beast: secondaryInvestmentMap.get().beast,
-    ascending: secondaryInvestmentMap.get().ascending,
-    Speciality1: secondaryInvestmentMap.get().speciality1,
-    Speciality2: secondaryInvestmentMap.get().speciality2,
-    Speciality3: secondaryInvestmentMap.get().speciality3,
-    Speciality4: secondaryInvestmentMap.get().speciality4,
+  private Assistprops: generalInvestment = {
+    dragon: secondaryInvestmentMap.get().dragon ? secondaryInvestmentMap.get().dragon : false,
+    beast: secondaryInvestmentMap.get().beast ? secondaryInvestmentMap.get().beast : false,
+    ascending: '0' as b.levelsType,
+    speciality1: secondaryInvestmentMap.get().speciality1 ? secondaryInvestmentMap.get().speciality1 : b.qualityColor.enum.Disabled,
+    speciality2: secondaryInvestmentMap.get().speciality2 ? secondaryInvestmentMap.get().speciality2 : b.qualityColor.enum.Disabled,
+    speciality3: secondaryInvestmentMap.get().speciality3 ? secondaryInvestmentMap.get().speciality3 : b.qualityColor.enum.Disabled,
+    speciality4: secondaryInvestmentMap.get().speciality4 ? secondaryInvestmentMap.get().speciality4 : b.qualityColor.enum.Disabled,
+    extraBooks: [],
   };
-
+  
   constructor() {
     super()
 
@@ -175,10 +179,11 @@ export class PairingRow extends withStores(LitElement, [generalPairs, conflictin
         dragon: pim.dragon,
         beast: pim.beast,
         ascending: pim.ascending,
-        Speciality1: pim.speciality1,
-        Speciality2: pim.speciality2,
-        Speciality3: pim.speciality3,
-        Speciality4: pim.speciality4,
+        speciality1: pim.speciality1,
+        speciality2: pim.speciality2,
+        speciality3: pim.speciality3,
+        speciality4: pim.speciality4,
+        extraBooks: [],
       };
       if (this.one !== null && this.one !== undefined) {
         this.computeBuffs();
@@ -191,11 +196,12 @@ export class PairingRow extends withStores(LitElement, [generalPairs, conflictin
       this.Assistprops = {
         dragon: sim.dragon,
         beast: sim.beast,
-        ascending: sim.ascending,
-        Speciality1: sim.speciality1,
-        Speciality2: sim.speciality2,
-        Speciality3: sim.speciality3,
-        Speciality4: sim.speciality4,
+        ascending: '0' as b.levelsType,
+        speciality1: sim.speciality1,
+        speciality2: sim.speciality2,
+        speciality3: sim.speciality3,
+        speciality4: sim.speciality4,
+        extraBooks: [],
       };
       if (this.one !== null && this.one !== undefined) {
         this.computeBuffs();
@@ -248,6 +254,17 @@ export class PairingRow extends withStores(LitElement, [generalPairs, conflictin
 
   computeBuffs() {
     if (DEBUG) { console.log(`rows computeBuffs start`) }
+    if(this.one !== null && this.one !== undefined) {
+      let { attackBuff, defenseBuff, hpBuff } = buff(this.one, this.adverbs, this.props);
+      if(DEBUG) {console.log(`${this.one.name} a ${attackBuff} d ${defenseBuff} h ${hpBuff}`)}
+      this.one.totalBuffs = {
+        attack: attackBuff,
+        defense: defenseBuff,
+        hp: hpBuff,
+        march: 0,
+      }
+    }
+    
     if (this.one !== null && this.one.totalBuffs !== null && this.one.totalBuffs !== undefined) {
       
       this.yieldToMain();
@@ -257,15 +274,24 @@ export class PairingRow extends withStores(LitElement, [generalPairs, conflictin
       this.defense_buff = this.one.totalBuffs.defense;
       this.requestUpdate('hp_buff', this.hp_buff);
       this.hp_buff = this.one.totalBuffs.hp;
-      if (DEBUG) { console.log(`after one, attack now ${this.attack_buff}`) }
+      if (DEBUG) { console.log(`o ${this.one.name}, attack now ${this.attack_buff}`) }
       if (this.two !== null) {
         
         if (!checkConflicts(this.one.name, this.two.name, this.unitClass)) {
+          let { attackBuff, defenseBuff, hpBuff } = buff(this.two, this.adverbs, this.Assistprops);
+          if(DEBUG) {console.log(`${this.two.name} a ${attackBuff} d ${defenseBuff} h ${hpBuff}`)}
+          this.two.totalBuffs = {
+            attack: attackBuff,
+            defense: defenseBuff,
+            hp: hpBuff,
+            march: 0,
+          }
           if(this.two.totalBuffs !== null && this.two.totalBuffs !== undefined) {
             this.attack_buff = this.attack_buff + this.two.totalBuffs.attack;
             this.defense_buff = this.defense_buff + this.two.totalBuffs.defense;
             this.hp_buff = this.hp_buff + this.two.totalBuffs.hp;
-          }
+          } 
+          if (DEBUG) { console.log(`o ${this.one.name} t ${this.two.name}, attack now ${this.attack_buff}`) }
         } else {
           console.error(`conflict detected, this pair should have been filtered`)
         }
