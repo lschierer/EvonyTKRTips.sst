@@ -3,6 +3,10 @@ conflicts:
     - Raimondo
   other:
     - Zucca
+    - Petronas
+    - John Churchill
+    - Philip II
+    - Septimus Severus
 books:
   - name: Siege Attack Increase
     level: '1'
