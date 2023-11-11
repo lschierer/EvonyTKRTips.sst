@@ -37,7 +37,7 @@ import {
     type qualitySchemaType,
     type standardSkillBookType,
     troopClass,
-    type troopClassType, buffSchema, generalConflictArraySchema,
+    type troopClassType, buffSchema, 
 } from "@schemas/evonySchemas.ts";
 
 import {tableGeneral} from "@components/general/tableGeneral.ts";
