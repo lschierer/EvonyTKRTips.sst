@@ -1,3 +1,6 @@
+
+const DEBUG = false;
+
 import * as b from '@schemas/baseSchemas.ts';
 
 import {
@@ -12,15 +15,9 @@ import {
     type SpecialityType
 } from '@schemas/specialitySchema.ts'
 
-interface Props {
-    dragon: boolean,
-    beast: boolean,
-    ascending: b.levelsType,
-    Speciality1: b.qualityColorType,
-    Speciality2: b.qualityColorType,
-    Speciality3: b.qualityColorType,
-    Speciality4: b.qualityColorType,
-}
+
+import {type generalInvestment, } from './selectionStore'
+
 
 export const buffAdverbs: { [key in generalUseCaseType]: b.BuffAdverbArrayType } = {
     [generalUseCase.enum.all]: [
@@ -28,6 +25,7 @@ export const buffAdverbs: { [key in generalUseCaseType]: b.BuffAdverbArrayType }
       b.Condition.enum.Marching,
       b.Condition.enum.When_Rallying,
       b.Condition.enum.dragon_to_the_attack,
+      b.Condition.enum.brings_dragon_or_beast_to_attack,
       b.Condition.enum.leading_the_army_to_attack,
       b.Condition.enum.Reinforcing,
       b.Condition.enum.Defending,
@@ -45,6 +43,7 @@ export const buffAdverbs: { [key in generalUseCaseType]: b.BuffAdverbArrayType }
       b.Condition.enum.Attacking,
       b.Condition.enum.Marching,
       b.Condition.enum.dragon_to_the_attack,
+      b.Condition.enum.brings_dragon_or_beast_to_attack,
       b.Condition.enum.leading_the_army_to_attack,
       b.Condition.enum.Reduces_Enemy,
       b.Condition.enum.Enemy,
@@ -73,26 +72,40 @@ export const buffAdverbs: { [key in generalUseCaseType]: b.BuffAdverbArrayType }
     ],
   }
   
+function yieldToMain () {
+return new Promise(resolve => {
+    setTimeout(resolve, 0);
+});
+}
 
-function buffFilter(current: b.Buff, general: GeneralClassType, score_for: b.Attribute,  props: Props, situations?: b.BuffAdverbArrayType,) {
+function buffFilter(current: b.Buff, general: GeneralClassType, score_for: b.Attribute,  props: generalInvestment, situations?: b.BuffAdverbArrayType,) {
     const name = general.name;
     let toReturn = false;
     const dragon = props.dragon;
     const beast = props.beast;
-
+    //if(DEBUG) {console.log(`g is ${name}, current is ${JSON.stringify(current)}`)};
     if (current.condition !== undefined && current.condition !== null) {
         const condition: b.BuffAdverbArrayType = [current.condition].flat();
         if(!dragon) {
+            if(DEBUG) {console.log(`${name} doesn't have a dragon`) }
             if(condition.includes(b.Condition.enum.dragon_to_the_attack)) {
+                if (DEBUG) { console.log(`${name} returning false on buff requiring a dragon`)}
                 return false;
             }
             if(!beast) {
+                if (DEBUG) { console.log(`${name} has neither dragon or beast`) }
                 if(condition.includes(b.Condition.enum.brings_dragon_or_beast_to_attack)) {
+                    if (DEBUG) { console.log(`${name} returning false on buff that requires b or dragon`) }
                     return false;
                 }
+            } else {
+                if (DEBUG) { console.log(`${name} has a beast, I care about buffs that have dragons but not those that accept beasts`) }
             }
+        } else {
+            if (DEBUG) {console.log(`${name} has a dragon, I no longer care if the buff requires one`) }
         }
 
+         yieldToMain();
 
         //special case conditions
         if(condition.includes(b.Condition.enum.Reduces_Monster)) {
@@ -119,6 +132,8 @@ function buffFilter(current: b.Buff, general: GeneralClassType, score_for: b.Att
             }
             return false;
         }
+         yieldToMain();
+
 
         if (situations !== null && situations !== undefined && condition !== null && condition !== undefined) {
             const intersection = situations.filter(x => condition.includes(x));
@@ -165,8 +180,8 @@ const ascendingLevel: { [key: string]: boolean} = {
     '10': true,
 }
 
-export function buff(eg: GeneralClassType, situations: b.BuffAdverbArrayType, props: Props){
-    const saLevels = [props.Speciality1, props.Speciality2, props.Speciality3, props.Speciality4]
+export function buff(eg: GeneralClassType, situations: b.BuffAdverbArrayType, props: generalInvestment){
+    const saLevels = [props.speciality1, props.speciality2, props.speciality3, props.speciality4]
     let attack = 0;
     let hp = 0;
     let defense = 0;
@@ -178,10 +193,11 @@ export function buff(eg: GeneralClassType, situations: b.BuffAdverbArrayType, pr
         if(general.books !== undefined && general.books !== null) {
             general.books.map((bb) => {
                 const buff: b.Buff[] = [bb.buff].flat();
-                buff.map((current) => {
+                buff.map( (current) => {
                     if(current !== undefined && current !== null && general !== undefined) {
                         let apply = buffFilter(current, general,generalUseCase.enum.Attack,props, situations );
                         if (apply && current.value !== undefined && current.value !== null) {
+                            if(DEBUG) {console.log(`applying ${JSON.stringify(current)} to ${general.name}`)}
                             const buff_type = current.value.unit;
                             if((current.condition !== null && current.condition !== undefined) &&
                                 (
@@ -190,9 +206,12 @@ export function buff(eg: GeneralClassType, situations: b.BuffAdverbArrayType, pr
                                 )
                             ) {
                                 attack = attack + Math.abs(current.value.number);
+                                if(DEBUG) {console.log(`${general.name} a ${attack}`)}
                             }else if (!buff_type.localeCompare(b.UnitSchema.enum.percentage)) {
                                 attack = attack + current.value.number
                             }
+                        } else if(current.condition !== null && current.condition !== undefined && current.condition === b.Condition.enum.brings_dragon_or_beast_to_attack) {
+                            if(DEBUG) {console.log(`not applying ${JSON.stringify(current)} to ${general.name}`)}
                         }
                         apply = buffFilter(current,general, b.AttributeSchema.enum.Defense,props, situations);
                         if (apply && current.value !== undefined && current.value !== null) {
@@ -256,9 +275,9 @@ export function buff(eg: GeneralClassType, situations: b.BuffAdverbArrayType, pr
                     }
                     if(proceed) {
                         const buff: b.Buff[] = [sa.buff].flat()
-                        buff.map((current) => {
+                        buff.map( (current) => {
                             if(current !== undefined && current !== null && general !== undefined) {
-                                let apply = buffFilter(current, general,generalUseCase.enum.Attack,props, situations);
+                                let apply =  buffFilter(current, general,generalUseCase.enum.Attack,props, situations);
                                 if (apply && current.value !== undefined && current.value !== null) {
                                     const buff_type = current.value.unit;
                                     if((current.condition !== null && current.condition !== undefined) &&
@@ -272,7 +291,7 @@ export function buff(eg: GeneralClassType, situations: b.BuffAdverbArrayType, pr
                                         attack = attack + current.value.number
                                     }
                                 }
-                                apply = buffFilter(current,general, b.AttributeSchema.enum.Defense,props, situations);
+                                apply =  buffFilter(current,general, b.AttributeSchema.enum.Defense,props, situations);
                                 if (apply && current.value !== undefined && current.value !== null) {
                                     const buff_type = current.value.unit;
                                     if((current.condition !== null && current.condition !== undefined) &&
@@ -286,7 +305,7 @@ export function buff(eg: GeneralClassType, situations: b.BuffAdverbArrayType, pr
                                         defense = defense + current.value.number
                                     }
                                 }
-                                apply = buffFilter(current,general, b.AttributeSchema.enum.HP, props,situations);
+                                apply =  buffFilter(current,general, b.AttributeSchema.enum.HP, props,situations);
                                 if (apply && current.value !== undefined && current.value !== null) {
                                     const buff_type = current.value.unit;
                                     if (!buff_type.localeCompare(b.UnitSchema.enum.percentage)) {
@@ -337,9 +356,9 @@ export function buff(eg: GeneralClassType, situations: b.BuffAdverbArrayType, pr
                 }
                 if(proceed) {
                     const buff: b.Buff[] = [ga.buff].flat();
-                    buff.map((current) => {
+                    buff.map(  (current) => {
                         if(current !== undefined && current !== null && general) {
-                            let apply = buffFilter(current, general,generalUseCase.enum.Attack, props,situations);
+                            let apply =  buffFilter(current, general,generalUseCase.enum.Attack, props,situations);
                             if (apply && current.value !== undefined && current.value !== null) {
                                 const buff_type = current.value.unit;
                                 if((current.condition !== null && current.condition !== undefined) &&
@@ -353,7 +372,7 @@ export function buff(eg: GeneralClassType, situations: b.BuffAdverbArrayType, pr
                                     attack = attack + current.value.number
                                 }
                             }
-                            apply = buffFilter(current,general, b.AttributeSchema.enum.Defense, props,situations);
+                            apply =  buffFilter(current,general, b.AttributeSchema.enum.Defense, props,situations);
                             if (apply && current.value !== undefined && current.value !== null) {
                                 const buff_type = current.value.unit;
                                 if((current.condition !== null && current.condition !== undefined) &&
@@ -367,7 +386,7 @@ export function buff(eg: GeneralClassType, situations: b.BuffAdverbArrayType, pr
                                     defense = defense + current.value.number
                                 }
                             }
-                            apply = buffFilter(current,general, b.AttributeSchema.enum.HP, props,situations);
+                            apply =  buffFilter(current,general, b.AttributeSchema.enum.HP, props,situations);
                             if (apply && current.value !== undefined && current.value !== null) {
                                 const buff_type = current.value.unit;
                                 if (!buff_type.localeCompare(b.UnitSchema.enum.percentage)) {
