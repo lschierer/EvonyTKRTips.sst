@@ -120,7 +120,7 @@ export type qualityColorType = z.infer<typeof qualityColor>;
 
 export const UnitSchema = z.enum([
   "percentage",
-  'flat,'
+  "flat",
 ]);
 export type Unit = z.infer<typeof UnitSchema>;
 

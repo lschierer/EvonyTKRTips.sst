@@ -19,6 +19,8 @@ export const generalUseCase = z.enum([
 export type generalUseCaseType = z.infer<typeof generalUseCase>;
 
 export const Display = z.enum([
+  "primary",
+  "assistant",
   "summary",
 ]);
 export type DisplayType = z.infer<typeof Display>;
