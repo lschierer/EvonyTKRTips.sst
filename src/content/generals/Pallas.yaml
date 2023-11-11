@@ -52,13 +52,6 @@ general:
           value:
             number: 10
             unit: percentage
-    - name: Siege attack
-      buff:
-        - attribute: Attack
-          class: Siege
-          value: 
-            number: 25
-            unit: percentage
   specialities:
     - name: Siege Machine Formation
       attribute:
