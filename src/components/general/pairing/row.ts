@@ -255,13 +255,13 @@ export class PairingRow extends withStores(LitElement, [generalPairs, conflictin
   computeBuffs() {
     if (DEBUG) { console.log(`rows computeBuffs start`) }
     if(this.one !== null && this.one !== undefined) {
-      let { attackBuff, defenseBuff, hpBuff } = buff(this.one, this.adverbs, this.props);
+      let { attackBuff, defenseBuff, hpBuff, marchBuff } = buff(this.one, this.adverbs, this.props);
       if(DEBUG) {console.log(`${this.one.name} a ${attackBuff} d ${defenseBuff} h ${hpBuff}`)}
       this.one.totalBuffs = {
         attack: attackBuff,
         defense: defenseBuff,
         hp: hpBuff,
-        march: 0,
+        march: marchBuff,
       }
     }
     
@@ -274,22 +274,24 @@ export class PairingRow extends withStores(LitElement, [generalPairs, conflictin
       this.defense_buff = this.one.totalBuffs.defense;
       this.requestUpdate('hp_buff', this.hp_buff);
       this.hp_buff = this.one.totalBuffs.hp;
+      this.march_buff = this.one.totalBuffs.march;
       if (DEBUG) { console.log(`o ${this.one.name}, attack now ${this.attack_buff}`) }
       if (this.two !== null) {
         
         if (!checkConflicts(this.one.name, this.two.name, this.unitClass)) {
-          let { attackBuff, defenseBuff, hpBuff } = buff(this.two, this.adverbs, this.Assistprops);
+          let { attackBuff, defenseBuff, hpBuff, marchBuff } = buff(this.two, this.adverbs, this.Assistprops);
           if(DEBUG) {console.log(`${this.two.name} a ${attackBuff} d ${defenseBuff} h ${hpBuff}`)}
           this.two.totalBuffs = {
             attack: attackBuff,
             defense: defenseBuff,
             hp: hpBuff,
-            march: 0,
+            march: marchBuff,
           }
           if(this.two.totalBuffs !== null && this.two.totalBuffs !== undefined) {
             this.attack_buff = this.attack_buff + this.two.totalBuffs.attack;
             this.defense_buff = this.defense_buff + this.two.totalBuffs.defense;
             this.hp_buff = this.hp_buff + this.two.totalBuffs.hp;
+            this.march_buff = this.march_buff + this.two.totalBuffs.march;
           } 
           if (DEBUG) { console.log(`o ${this.one.name} t ${this.two.name}, attack now ${this.attack_buff}`) }
         } else {
@@ -462,6 +464,12 @@ export class PairingRow extends withStores(LitElement, [generalPairs, conflictin
     `
   }
 
+  public render6() {
+    return html`
+    <sp-table-cell role='gridcell' dir='ltr' id='marchBuff'>${this.march_buff.toFixed(2)}</sp-table-cell>
+    `
+  }
+
   protected createRenderRoot() {
     return this;
   }
@@ -474,6 +482,7 @@ export class PairingRow extends withStores(LitElement, [generalPairs, conflictin
     ${this.render3()}
     ${this.render4()}
     ${this.render5()}
+    ${this.render6()}
     `
   }
 

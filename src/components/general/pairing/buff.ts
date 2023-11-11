@@ -199,6 +199,7 @@ export function buff(eg: GeneralClassType, situations: b.BuffAdverbArrayType, pr
                         if (apply && current.value !== undefined && current.value !== null) {
                             if (DEBUG) { console.log(`applying ${JSON.stringify(current)} to ${general.name}`) }
                             const buff_type = current.value.unit;
+                            //we apply the anti-defense and anti-hp to the attack
                             if ((current.condition !== null && current.condition !== undefined) &&
                                 (
                                     ([current.condition].flat().includes(b.Condition.enum.Reduces_Monster)) ||
@@ -216,6 +217,7 @@ export function buff(eg: GeneralClassType, situations: b.BuffAdverbArrayType, pr
                         apply = buffFilter(current, general, b.AttributeSchema.enum.Defense, props, situations);
                         if (apply && current.value !== undefined && current.value !== null) {
                             const buff_type = current.value.unit;
+                            //we apply the anti-attack here to the defense
                             if ((current.condition !== null && current.condition !== undefined) &&
                                 (
                                     ([current.condition].flat().includes(b.Condition.enum.Reduces_Monster)) ||
@@ -227,11 +229,19 @@ export function buff(eg: GeneralClassType, situations: b.BuffAdverbArrayType, pr
                                 defense = defense + current.value.number
                             }
                         }
+                        //which leaves the HP calcultion much simplier by default
                         apply = buffFilter(current, general, b.AttributeSchema.enum.HP, props, situations);
                         if (apply && current.value !== undefined && current.value !== null) {
                             const buff_type = current.value.unit;
                             if (!buff_type.localeCompare(b.UnitSchema.enum.percentage)) {
                                 hp = hp + current.value.number
+                            }
+                        }
+                        apply = buffFilter(current,general, b.AttributeSchema.enum.March_Size_Capacity, props, situations);
+                        if(apply && current.value !== undefined && current.value !== null ) {
+                            const buff_type = current.value.unit;
+                            if(!buff_type.localeCompare(b.UnitSchema.enum.percentage)) {
+                                march = march + current.value.number;
                             }
                         }
                     }
@@ -310,6 +320,13 @@ export function buff(eg: GeneralClassType, situations: b.BuffAdverbArrayType, pr
                                     const buff_type = current.value.unit;
                                     if (!buff_type.localeCompare(b.UnitSchema.enum.percentage)) {
                                         hp = hp + current.value.number
+                                    }
+                                }
+                                apply = buffFilter(current,general, b.AttributeSchema.enum.March_Size_Capacity, props, situations);
+                                if(apply && current.value !== undefined && current.value !== null ) {
+                                    const buff_type = current.value.unit;
+                                    if(!buff_type.localeCompare(b.UnitSchema.enum.percentage)) {
+                                        march = march + current.value.number;
                                     }
                                 }
                             } else {
@@ -393,6 +410,13 @@ export function buff(eg: GeneralClassType, situations: b.BuffAdverbArrayType, pr
                                     hp = hp + current.value.number
                                 }
                             }
+                            apply = buffFilter(current,general, b.AttributeSchema.enum.March_Size_Capacity, props, situations);
+                            if(apply && current.value !== undefined && current.value !== null ) {
+                                const buff_type = current.value.unit;
+                                if(!buff_type.localeCompare(b.UnitSchema.enum.percentage)) {
+                                    march = march + current.value.number;
+                                }
+                            }
                         }
                     })
                 } else {
@@ -404,6 +428,6 @@ export function buff(eg: GeneralClassType, situations: b.BuffAdverbArrayType, pr
 
 
 
-    return { attackBuff: attack, defenseBuff: defense, hpBuff: hp };
+    return { attackBuff: attack, defenseBuff: defense, hpBuff: hp, marchBuff: march };
 }
 
