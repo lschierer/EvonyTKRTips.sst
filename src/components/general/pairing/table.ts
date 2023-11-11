@@ -215,6 +215,17 @@ export class PairingTable extends withStores(SpectrumElement, [generalPairs, pri
             (ga < gb ? 1 : -1);
         }
       },
+      ['marchBuff']: (a, b) => {
+        let ga = a.getMarchBuff();
+        let gb = b.getMarchBuff();
+        if (ga === gb) {
+          return 0;
+        } else {
+          return direction === 'asc' ?
+            (ga < gb ? -1 : 1) :
+            (ga < gb ? 1 : -1);
+        }
+      },
     }
 
     if (a !== null && a !== undefined) {
@@ -339,6 +350,9 @@ export class PairingTable extends withStores(SpectrumElement, [generalPairs, pri
                 </sp-table-head-cell>
                 <sp-table-head-cell sortable sort-direction="desc" sort-key="defenseBuff">
                     Defense Buff
+                </sp-table-head-cell>
+                <sp-table-head-cell sortable sort-direction="desc" sort-key="marchBuff">
+                    March Size Buff
                 </sp-table-head-cell>
             </sp-table-head>
         </sp-table>
