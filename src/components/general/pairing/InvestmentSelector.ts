@@ -23,6 +23,8 @@ import {
 import '@spectrum-web-components/tooltip/sp-tooltip.js';
 import {SpectrumElement} from "@spectrum-web-components/base";
 
+const DEBUG = false;
+
 import * as b from '@schemas/baseSchemas.ts'
 
 import {BoS, type BoSType, type generalInvestment, primaryInvestmentMap, secondaryInvestmentMap} from './selectionStore.ts';
@@ -61,11 +63,17 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
   private observer = new MutationObserver(this.MutationObserverCallback);
   
   connectedCallback() {
-    super.connectedCallback();
-    
+    super.connectedCallback();    
   }
   
-  willUpdate(changedProperties: PropertyValues<this>) {
+  private yieldToMain () {
+    return new Promise(resolve => {
+      setTimeout(resolve, 0);
+    });
+  }
+
+  async willUpdate(changedProperties: PropertyValues<this>) {
+    if(DEBUG) {console.log(`investmentselector willupdate`)}
     if(changedProperties.has('generalRole')) {
       const valid = generalRole.safeParse(this.generalRole);
       if(valid.success) {
@@ -79,6 +87,7 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
             secondaryInvestmentMap.setKey('speciality1',b.qualityColor.enum.Gold)
           }
         }
+        this.yieldToMain()
         if (!this.investmentMapGet[this._role]['speciality2']() ) { 
           initialsetcounter++;
           if(this._role === generalRole.enum.primary) {
@@ -87,6 +96,7 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
             secondaryInvestmentMap.setKey('speciality2',b.qualityColor.enum.Gold)
           }
         }
+        this.yieldToMain()
         if (!this.investmentMapGet[this._role]['speciality3']() ) { 
           initialsetcounter++;
           if(this._role === generalRole.enum.primary) {
@@ -95,6 +105,7 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
             secondaryInvestmentMap.setKey('speciality3',b.qualityColor.enum.Gold)
           }
         }
+        this.yieldToMain()
         if (!this.investmentMapGet[this._role]['speciality4']() ) { 
           initialsetcounter++;
           if(this._role === generalRole.enum.primary) {
@@ -103,6 +114,7 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
             secondaryInvestmentMap.setKey('speciality4',b.qualityColor.enum.Gold)
           }
         }
+        this.yieldToMain()
         if(initialsetcounter === 4) {
           if(this._role === generalRole.enum.primary) {
             primaryInvestmentMap.setKey('ascending', '10')
@@ -120,6 +132,7 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
 
 
   protected changeHandler(e: CustomEvent) {
+    console.log(`test`)
     let myEvent = new CustomEvent('PickerChanged', {
       detail: {
         id: (e.target as Picker).id,
