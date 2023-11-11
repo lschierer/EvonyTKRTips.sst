@@ -3,7 +3,7 @@ import { logger } from '@nanostores/logger'
 
 import { z } from "zod";
 
-const DEBUG = true;
+const DEBUG = false;
 
 import * as b from "@schemas/baseSchemas.ts";
 
