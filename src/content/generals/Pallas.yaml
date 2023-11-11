@@ -36,9 +36,28 @@ general:
             unit: percentage
         - attribute: HP
           condition: brings_dragon_or_beast_to_attack
+          class: Archers
+          value:
+            number: 10
+            unit: percentage
+        - attribute: Attack
+          condition: brings_dragon_or_beast_to_attack
           class: Siege
           value:
-            number: 0.01
+            number: 10
+            unit: percentage
+        - attribute: HP
+          condition: brings_dragon_or_beast_to_attack
+          class: Siege
+          value:
+            number: 10
+            unit: percentage
+    - name: Siege attack
+      buff:
+        - attribute: Attack
+          class: Siege
+          value: 
+            number: 25
             unit: percentage
   specialities:
     - name: Siege Machine Formation
