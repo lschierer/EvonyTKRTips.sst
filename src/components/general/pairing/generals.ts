@@ -7,6 +7,8 @@ const DEBUG = false;
 
 import * as b from "@schemas/baseSchemas.ts";
 
+import {type generalInvestment, } from './selectionStore'
+
 import {
   GeneralClass,
   type GeneralClassType,
@@ -16,19 +18,53 @@ import {
   type GeneralArrayType,
   GeneralElementSchema,
   type GeneralElement,
+  generalUseCase,
+  type generalUseCaseType,
 } from "@schemas/generalsSchema.ts"
 
 import { conflictingGenerals } from "./ConflictingSkillExcludes.ts"
 
-import { typeAndUseMap } from "./selectionStore.ts";
+import { typeAndUseMap, primaryInvestmentMap, secondaryInvestmentMap } from "./selectionStore.ts";
+
+import { buffAdverbs, buff} from './buff'
 
 
 export const allGenerals = atom<GeneralArrayType | null>(null);
 
-export const generalPairs = computed([allGenerals, typeAndUseMap, conflictingGenerals],
-  (g, tam, c) => {
+export const generalPairs = computed([allGenerals, primaryInvestmentMap, secondaryInvestmentMap, typeAndUseMap, conflictingGenerals],
+   (g, pim, sim, tam, c) => {
     const returnable = new Map<string, GeneralPairType[]>();
     const type = tam.type;
+
+    const props: generalInvestment = {
+      dragon: pim.dragon ? pim.dragon : false,
+      beast: pim.beast ? pim.beast : false,
+      ascending: pim.ascending ? pim.ascending : '0' as b.levelsType,
+      speciality1: pim.speciality1 ? pim.speciality1 : b.qualityColor.enum.Disabled,
+      speciality2: pim.speciality2 ? pim.speciality2 : b.qualityColor.enum.Disabled,
+      speciality3: pim.speciality3 ? pim.speciality3 : b.qualityColor.enum.Disabled,
+      speciality4: pim.speciality4 ? pim.speciality4 : b.qualityColor.enum.Disabled,
+      extraBooks: [],
+    };
+  
+    const Assistprops: generalInvestment = {
+      dragon: sim.dragon ? sim.dragon : false,
+      beast: sim.beast ? sim.beast : false,
+      ascending: '0' as b.levelsType,
+      speciality1: sim.speciality1 ? sim.speciality1 : b.qualityColor.enum.Disabled,
+      speciality2: sim.speciality2 ? sim.speciality2 : b.qualityColor.enum.Disabled,
+      speciality3: sim.speciality3 ? sim.speciality3 : b.qualityColor.enum.Disabled,
+      speciality4: sim.speciality4 ? sim.speciality4 : b.qualityColor.enum.Disabled,
+      extraBooks: [],
+    };
+    
+    let adverbs;
+    if(tam.use !== null && tam.use !==undefined) {
+      adverbs = buffAdverbs[tam.use];
+    } else {
+      adverbs = buffAdverbs[generalUseCase.enum.all];
+    }
+
     if (DEBUG) { console.log(`generals.ts generalPairs start`) }
     if (g !== null && g !== undefined) {
       if (c !== null && c !== undefined) {
@@ -45,6 +81,14 @@ export const generalPairs = computed([allGenerals, typeAndUseMap, conflictingGen
                   }
                 }
               }
+            }
+            let { attackBuff, defenseBuff, hpBuff } = buff(one.general, adverbs, props);
+            if(DEBUG) {console.log(`${one.general.name} a ${attackBuff} d ${defenseBuff} h ${hpBuff}`)}
+            one.general.totalBuffs = {
+              attack: attackBuff,
+              defense: defenseBuff,
+              hp: hpBuff,
+              march: 0,
             }
             const conflicts = c.get(one.general.name);
             const pairs = new Set<GeneralPairType>
@@ -73,6 +117,7 @@ export const generalPairs = computed([allGenerals, typeAndUseMap, conflictingGen
                       }
                     }
                   }
+                  let { attackBuff, defenseBuff, hpBuff } = buff(two.general, adverbs, Assistprops);
                   pairs.add({ primary: one.general, secondary: two.general })
                 }
               }
@@ -96,6 +141,7 @@ export const generalPairs = computed([allGenerals, typeAndUseMap, conflictingGen
       return null;
     }
   })
+
 
 let destroy = logger({
   'AllGenerals': allGenerals,

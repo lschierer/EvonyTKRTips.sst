@@ -35,6 +35,14 @@ export const Ascending = z.object({
 });
 export type AscendingType = z.infer<typeof Ascending>;
 
+export const totalBuffs = z.object({
+    attack: z.number(),
+    defense: z.number(),
+    hp: z.number(),
+    march: z.number(),
+});
+export type totalBuffsType = z.infer<typeof totalBuffs>;
+
 export const GeneralClass = z.object({
     "name": z.string(),
     "display": Display,
@@ -53,6 +61,7 @@ export const GeneralClass = z.object({
     "books": z.array(Book).nullish(),
     "ascending": z.array(Ascending).nullish(),
     "note": z.array(Note).nullish(),
+    "totalBuffs": totalBuffs.nullish(),
 });
 export type GeneralClassType = z.infer<typeof GeneralClass>;
 

@@ -240,25 +240,32 @@ export class PairingRow extends withStores(LitElement, [generalPairs, conflictin
     }
   }
 
-
+  private yieldToMain () {
+    return new Promise(resolve => {
+      setTimeout(resolve, 0);
+    });
+  }
 
   computeBuffs() {
     if (DEBUG) { console.log(`rows computeBuffs start`) }
-    if (this.one !== null) {
-      const { attackBuff, defenseBuff, hpBuff } = buff(this.one, this.adverbs, this.props);
+    if (this.one !== null && this.one.totalBuffs !== null && this.one.totalBuffs !== undefined) {
+      
+      this.yieldToMain();
       this.requestUpdate('attack_buff', this.attack_buff);
-      this.attack_buff = attackBuff;
+      this.attack_buff = this.one.totalBuffs.attack;
       this.requestUpdate('defense_buff', this.defense_buff);
-      this.defense_buff = defenseBuff;
+      this.defense_buff = this.one.totalBuffs.defense;
       this.requestUpdate('hp_buff', this.hp_buff);
-      this.hp_buff = hpBuff;
+      this.hp_buff = this.one.totalBuffs.hp;
       if (DEBUG) { console.log(`after one, attack now ${this.attack_buff}`) }
       if (this.two !== null) {
-        const { attackBuff, defenseBuff, hpBuff } = buff(this.two, this.adverbs, this.Assistprops);
+        
         if (!checkConflicts(this.one.name, this.two.name, this.unitClass)) {
-          this.attack_buff = this.attack_buff + attackBuff;
-          this.defense_buff = this.defense_buff + defenseBuff;
-          this.hp_buff = this.hp_buff + hpBuff;
+          if(this.two.totalBuffs !== null && this.two.totalBuffs !== undefined) {
+            this.attack_buff = this.attack_buff + this.two.totalBuffs.attack;
+            this.defense_buff = this.defense_buff + this.two.totalBuffs.defense;
+            this.hp_buff = this.hp_buff + this.two.totalBuffs.hp;
+          }
         } else {
           console.error(`conflict detected, this pair should have been filtered`)
         }
