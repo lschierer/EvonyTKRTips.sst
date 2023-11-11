@@ -6,7 +6,7 @@ conflicts:
     - King Arthur
     - Genghis Khan
   books:
-    - name: March SIze Increase
+    - name: March Size Increase
       level: '1'
       buff:
       - attribute: Attack
@@ -15,7 +15,7 @@ conflicts:
         value:
           number: 3
           unit: percentage
-    - name: March SIze Increase
+    - name: March Size Increase
       level: '2'
       buff:
       - attribute: Attack
@@ -24,7 +24,7 @@ conflicts:
         value:
           number: 6
           unit: percentage
-    - name: March SIze Increase
+    - name: March Size Increase
       level: '3'
       buff:
       - attribute: Attack
@@ -33,7 +33,7 @@ conflicts:
         value:
           number: 9
           unit: percentage
-    - name: March SIze Increase
+    - name: March Size Increase
       level: '4'
       buff:
       - attribute: Attack
