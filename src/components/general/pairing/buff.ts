@@ -24,6 +24,7 @@ export const buffAdverbs: { [key in generalUseCaseType]: b.BuffAdverbArrayType }
         b.Condition.enum.Attacking,
         b.Condition.enum.Marching,
         b.Condition.enum.When_Rallying,
+        b.Condition.enum.brings_a_dragon,
         b.Condition.enum.dragon_to_the_attack,
         b.Condition.enum.brings_dragon_or_beast_to_attack,
         b.Condition.enum.leading_the_army_to_attack,
@@ -34,6 +35,7 @@ export const buffAdverbs: { [key in generalUseCaseType]: b.BuffAdverbArrayType }
         b.Condition.enum.Attacking,
         b.Condition.enum.Marching,
         b.Condition.enum.When_Rallying,
+        b.Condition.enum.brings_a_dragon,
         b.Condition.enum.dragon_to_the_attack,
         b.Condition.enum.leading_the_army_to_attack,
         b.Condition.enum.Against_Monsters,
@@ -42,6 +44,7 @@ export const buffAdverbs: { [key in generalUseCaseType]: b.BuffAdverbArrayType }
     [generalUseCase.enum.Attack]: [
         b.Condition.enum.Attacking,
         b.Condition.enum.Marching,
+        b.Condition.enum.brings_a_dragon,
         b.Condition.enum.dragon_to_the_attack,
         b.Condition.enum.brings_dragon_or_beast_to_attack,
         b.Condition.enum.leading_the_army_to_attack,
@@ -51,6 +54,7 @@ export const buffAdverbs: { [key in generalUseCaseType]: b.BuffAdverbArrayType }
     [generalUseCase.enum.Defense]: [
         b.Condition.enum.Reinforcing,
         b.Condition.enum.Defending,
+        b.Condition.enum.brings_a_dragon,
         b.Condition.enum.Reduces_Enemy,
         b.Condition.enum.Enemy,
     ],
@@ -89,6 +93,10 @@ function buffFilter(current: b.Buff, general: GeneralClassType, score_for: b.Att
         if (!dragon) {
             if (DEBUG) { console.log(`${name} doesn't have a dragon`) }
             if (condition.includes(b.Condition.enum.dragon_to_the_attack)) {
+                if (DEBUG) { console.log(`${name} returning false on buff requiring a dragon`) }
+                return false;
+            }
+            if (condition.includes(b.Condition.enum.brings_a_dragon)) {
                 if (DEBUG) { console.log(`${name} returning false on buff requiring a dragon`) }
                 return false;
             }
