@@ -1,103 +1,35 @@
 ---
 general:
-  name: Elise
+  name: Epaminondas
   display: summary
-  score_as: Ground
-  leadership: 119
+  leadership: 111
   leadership_increment: 9.13
-  defense: 112
-  defense_increment: 8.88
-  attack: 114
-  attack_increment: 9.11
-  politics: 113
-  politics_increment: 8.26
+  attack: 116
+  attack_increment: 8.89
+  defense: 114
+  defense_increment: 9.11
+  politics: 103
+  politics_increment: 8.25
   stars: '10'
+  level: '1'
+  score_as: Ground
   books:
-    - name: Dragon's Song
+    - name: Military Legend
       buff:
-        - attribute: HP
-          class: Ground
-          condition: leading_the_army_to_attack
-          value:
-            number: 30
-            unit: percentage
-        - attribute: HP
-          class: Mounted
-          condition: leading_the_army_to_attack
-          value:
-            number: 30
-            unit: percentage
         - attribute: Attack
-          condition: dragon_to_the_attack
           class: Ground
           value:
             number: 30
             unit: percentage
-  ascending:
-    - level: '6'
-      buff:
         - attribute: HP
-          condition: Marching
-          class: Ground
-          value:
-            number: 10
-            unit: percentage
-        - attribute: HP
-          condition: Marching
-          class: Mounted
-          value:
-            number: 10
-            unit: percentage
-        - attribute: Attack
-          condition: dragon_to_the_attack
           class: Ground
           value:
             number: 15
             unit: percentage
-    - level: '7'
-      buff:
-        - attribute: Wounded_to_Death
-          condition: Enemy_In_City
-          value:
-            number: 10
-            unit: percentage
-        - attribute: March_Size_Capacity
-          value:
-            number: 14
-            unit: percentage
-    - level: '8'
-      buff:
-        - attribute: Defense
-          class: Ground
-          condition: Marching
-          value:
-            number: 60
-            unit: percentage
-    - level: '9'
-      buff:
         - attribute: HP
           class: Mounted
-          condition: leading_the_army_to_attack
           value:
-            number: 10
-            unit: percentage
-        - attribute: HP
-          class: Ground
-          condition: leading_the_army_to_attack
-          value:
-            number: 10
-            unit: percentage
-        - attribute: Defense
-          class: Ground
-          condition: leading_the_army_to_attack
-          value:
-            number: 10
-            unit: percentage
-        - attribute: Attack
-          condition: dragon_to_the_attack
-          class: Ground
-          value:
-            number: 20
+            number: 15
             unit: percentage
   specialities:
     - name: Ground Troop Assault
@@ -311,74 +243,140 @@ general:
               value:
                 number: 4
                 unit: percentage
-    - name: Dragontamer
+    - name: Battle of Mantinea
       attribute:
-        - level: Green
+        - level: 'Green'
           buff:
-            - attribute: Attack
-              condition: brings_a_dragon
-              class: Ground
-              value:
-                number: 3
-                unit: percentage
-            - attribute: HP
-              condition: brings_a_dragon
-              class: Ground
-              value:
-                number: 3
-                unit: percentage      
-        - level: Blue
+          - attribute: HP
+            class: Ground
+            value:
+              number: 3
+              unit: percentage
+          - attribute: HP
+            class: Mounted
+            value:
+              number: 2
+              unit: percentage
+        - level: 'Blue'
           buff:
-            - attribute: Attack
-              condition: brings_a_dragon
-              class: Ground
-              value:
-                number: 3
-                unit: percentage
-            - attribute: HP
-              condition: brings_a_dragon
-              class: Ground
-              value:
-                number: 3
-                unit: percentage      
-        - level: Purple
+          - attribute: HP
+            class: Ground
+            value:
+              number: 3
+              unit: percentage
+          - attribute: HP
+            class: Mounted
+            value:
+              number: 2
+              unit: percentage
+        - level: 'Purple'
           buff:
-            - attribute: Attack
-              condition: brings_a_dragon
-              class: Ground
-              value:
-                number: 6
-                unit: percentage
-            - attribute: HP
-              class: Ground
-              value:
-                number: 6
-                unit: percentage      
-        - level: Orange
+          - attribute: HP
+            class: Ground
+            value:
+              number: 6
+              unit: percentage
+          - attribute: HP
+            class: Mounted
+            value:
+              number: 4
+              unit: percentage
+        - level: 'Orange'
           buff:
-            - attribute: Attack
-              condition: brings_a_dragon
-              class: Ground
-              value:
-                number: 6
-                unit: percentage
-            - attribute: HP
-              condition: brings_a_dragon
-              class: Ground
-              value:
-                number: 6
-                unit: percentage      
-        - level: Gold
+          - attribute: HP
+            class: Ground
+            value:
+              number: 6
+              unit: percentage
+          - attribute: HP
+            class: Mounted
+            value:
+              number: 4
+              unit: percentage
+        - level: 'Gold'
           buff:
-            - attribute: Attack
-              condition: brings_a_dragon
-              class: Ground
-              value:
-                number: 12
-                unit: percentage
-            - attribute: HP
-              condition: brings_a_dragon
-              class: Ground
-              value:
-                number: 12
-                unit: percentage
+          - attribute: HP
+            class: Ground
+            value:
+              number: 12
+              unit: percentage
+          - attribute: HP
+            class: Mounted
+            value:
+              number: 8
+              unit: percentage
+  ascending:
+        - level: '6'
+          buff:
+          - attribute: Attack
+            class: Mounted
+            value:
+              number: 5
+              unit: percentage
+          - attribute: Attack
+            class: Ground
+            value:
+              number: 5
+              unit: percentage
+          - attribute: Defense
+            class: Mounted
+            value:
+              number: 10
+              unit: percentage
+          - attribute: Defense
+            class: Ground
+            value:
+              number: 10
+              unit: percentage
+        - level: '7'
+          buff:
+          - attribute: Wounded_to_Death
+            condition: Enemy_In_City
+            value:
+              number: 10
+              unit: percentage
+        - level: '8'
+          buff:
+          - attribute: March_Size_Capacity
+            value:
+              number: 14
+              unit: percentage
+        - level: '9'
+          buff:
+          - attribute: Attack
+            class: Mounted
+            value:
+              number: 5
+              unit: percentage
+          - attribute: Attack
+            class: Ground
+            value:
+              number: 5
+              unit: percentage
+          - attribute: HP
+            class: Mounted
+            value:
+              number: 10
+              unit: percentage
+          - attribute: HP
+            class: Ground
+            value:
+              number: 10
+              unit: percentage
+        - level: '10'
+          buff:
+          - attribute: Attack
+            class: Mounted
+            value:
+              number: 10
+              unit: percentage
+          - attribute: Attack
+            class: Ground
+            value:
+              number: 10
+              unit: percentage
+          - attribute: Defense
+            class: Ground
+            value:
+              number: 20
+              unit: percentage
