@@ -168,94 +168,77 @@ general:
             value:
               number: 4
               unit: percentage
-    - name: Siege Machine Formation
+    - name: Siege Machine Ares
       attribute:
-      - level: Green
-        buff:
-          - attribute: Attack
-            class: Siege
-            value:
-              number: 1
-              unit: percentage
-          - attribute: Defense
-            class: Siege
-            value:
-              number: 1
-              unit: percentage
-          - attribute: HP
-            class: Siege
-            value:
-              number: 1
-              unit: percentage
-      - level: Blue
-        buff:
-          - attribute: Attack
-            class: Siege
-            value:
-              number: 1
-              unit: percentage
-          - attribute: Defense
-            class: Siege
-            value:
-              number: 1
-              unit: percentage
-          - attribute: HP
-            class: Siege
-            value:
-              number: 1
-              unit: percentage
-      - level: Purple
-        buff:
-          - attribute: HP
-            class: Siege
-            value:
-              number: 2
-              unit: percentage
-          - attribute: Attack
-            class: Siege
-            value:
-              number: 2
-              unit: percentage
-          - attribute: Defense
-            class: Siege
-            value:
-              number: 2
-              unit: percentage
-      - level: Orange
-        buff:
-          - attribute: Attack
-            class: Siege
-            value:
-              number: 2
-              unit: percentage
-          - attribute: Defense
-            class: Siege
-            value:
-              number: 2
-              unit: percentage
-          - attribute: HP
-            class: Siege
-            value:
-              number: 2
-              unit: percentage
-      - level: Gold
-        buff:
-          - attribute: Attack
-            class: Siege
-            value:
-              number: 4
-              unit: percentage
-          - attribute: Defense
-            class: Siege
-            value:
-              number: 4
-              unit: percentage
-          - attribute: HP
-            class: Siege
-            value:
-              number: 4
-              unit: percentage
-    - name: Siege Machine Formation
+        - level: Green
+          buff:
+            - attribute: Attack
+              class: Siege
+              value:
+                number: 1
+                unit: percentage
+            - attribute: HP
+              class: Siege
+              value:
+                number: 1
+                unit: percentage
+            - attribute: Defense
+              class: Siege
+              value:
+                number: 1
+                unit: percentage
+        - level: Blue
+          buff:
+            - attribute: Attack
+              class: Siege
+              value:
+                number: 1
+                unit: percentage
+            - attribute: HP
+              class: Siege
+              value:
+                number: 1
+                unit: percentage
+            - attribute: Defense
+              class: Siege
+              value:
+                number: 1
+                unit: percentage
+        - level: Purple
+          buff:
+            - attribute: Attack
+              class: Siege
+              value:
+                number: 2
+                unit: percentage
+            - attribute: HP
+              class: Siege
+              value:
+                number: 2
+                unit: percentage
+            - attribute: Defense
+              class: Siege
+              value:
+                number: 2
+                unit: percentage
+        - level: Gold
+          buff:
+            - attribute: Attack
+              class: Siege
+              value:
+                number: 4
+                unit: percentage
+            - attribute: Defense
+              class: Siege
+              value:
+                number: 4
+                unit: percentage
+            - attribute: HP
+              class: Siege
+              value:
+                number: 4
+                unit: percentage
+    - name: Battle of Lugdunum
       attribute:
       - level: Green
         buff:
