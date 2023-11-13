@@ -195,15 +195,27 @@ if (validation.success) {
                 console.log(`${JSON.stringify(c)}`)
                 return c.books.map((book: standardSkillBookType) => {
                   let condition = 'all the time.';
+                  let warning = false;
                   for (let i = 0; i < book.buff.length; i++) {
                     const keys = Object.keys(book.buff[i]);
                     console.log(`found keys ${keys}`)
-                    condition = (book.buff[i].condition !== null && book.buff[i].condition !== undefined) ? 
-                        book.buff[i].condition === BuffAdverbs.enum.When_Not_Mine ? 
-                            'when the book is on my paired general.' : (book.buff[i].condition as string) : 'all the time.' ;
+                    if(book.buff[i].condition !== null && book.buff[i].condition !== undefined ) {
+                        if (book.buff[i].condition === BuffAdverbs.enum.When_Not_Mine) {
+                            condition = 'when the book is on my paired general.'
+                            warning = true;
+                        } else {
+                            condition = book.buff[i].condition as string
+                        }
+                    } else {
+                        condition = 'all the time.' ;
+                    }
                   }
                   return `
-                    <sp-banner class="not-content" type=${severity[syslogSeverity.enum.alert]()} client:only>
+                    <sp-banner class="not-content" 
+                    type=${warning ? 
+                        severity[syslogSeverity.enum.warning]()
+                        : severity[syslogSeverity.enum.alert]()} 
+                    client:only>
                         <div slot="header">General Conflict Notice</div>
                         <div slot="content">
                             This general has conflicts with the ${book.name} level ${book.level} skill book.
