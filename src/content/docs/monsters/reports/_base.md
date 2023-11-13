@@ -39,35 +39,61 @@ author: 'Luke Schierer'
   * L7 Thunder Glory Medal
 * Monarch Talent:
   * Mortality 4/4
+  * Attacking Survival 1/1 (unsure this applies)
+  * Monster Hunting 1/1
 * Blazons:
   * full soul set
     * Mounted Attack on Monsters +30%
     * Mounted HP on Monsters +30%
     * Mounted Defense on Monsters +30%
-  * Shadow L15 
-    * +14.5% Mounted Attack on Monsters
-    * +14.5% Mounted Attack on Monsters
-    * +13.4% Defending Mounted Attack
-    * +8.9 Mounted Troop Load
-  * Light L15
-    * Mounted Attack on Monsters +14.5%
-    * Mounted Attack on Monsters +14.5%
-    * Marching Mounted Attack +12.2%
-  * Ocean L15
-    * Mounted Defense on Monsters +14.5%
-    * Mounted Defense on Monsters +14.5%
-    * Defending Mounted Troop Defense +14.9%
-    * Marching Mounted Troop Defense +12.9%
-  * Earth L5
-    * Mounted Troop Defense on Monsters +12.4%
-    * Mounted Troop Defense on Monsters +12.4%
-    * In-Rally Mounted Troop Defense +10.4%
-  * Fire L7
-    * Mounted Troop HP on Monsters +6.2%
-    * Mounted Troop HP on Monsters +6.2%
-  * Wind L7
-    * Mounted Troop HP on Monsters +6.2%
-    * Mounted Troop HP +3.4%
+    * Shadow L15 
+      * +14.5% Mounted Attack on Monsters
+      * +14.5% Mounted Attack on Monsters
+      * +13.4% Defending Mounted Attack
+      * +8.9 Mounted Troop Load
+    * Light L16
+     * Mounted Attack on Monsters +15.6%
+     * Mounted Attack on Monsters +15.6%
+     * Mounted Attack +10.3%
+     * In-Rally Mounted Troop Attack +15.4%
+    * Ocean L15
+      * Mounted Defense on Monsters +14.5%
+      * Mounted Defense on Monsters +14.5%
+      * Defending Mounted Troop Defense +14.9%
+      * Marching Mounted Troop Defense +12.9%
+    * Earth L15
+      * Mounted Troop Defense on Monsters +14.5%
+      * Mounted Troop Defense on Monsters +14.5%
+      * Mounted Troop Defense on Monsters +21.4%
+      * Marching Mounted Troop Defense +15.5%
+    * Fire L7
+      * Mounted Troop HP on Monsters +6.2%
+      * Mounted Troop HP on Monsters +6.2%
+    * Wind L7
+      * Mounted Troop HP on Monsters +6.2%
+      * Mounted Troop HP +3.4%
+  * Full Valor Set
+    * I don't think any of the set buffs apply
+    * Shadow L13
+      * Defending Ranged Troop Attack +10.3%
+      * Ranged Troop Attack +6.9%
+      * Ranged Troop Capacity +7.7%
+    * Ocean L5
+      * Marching Ranged Troop Defense +3.1%
+      * In-Rally Ranged Troop Defense +3.3%
+    * Earth L5
+      * Defending Ranged Troop Defense +3.6%
+      * Marching Ranged Troop Defense +3.1%
+    * Fire L5
+      * Marching Ranged Troop HP +3.1%
+      * Reinforcing Ranged Troop HP +3.8%
+    * Wind L6
+      * Ranged Troop HP +2.9%
+      * Marching Ranged Troop HP +3.8%
+    * Light L10
+      * Ranged Troop Attack +5.1%
+      * Ranged Troop Attack +5.1%
+      * Ranged Troop Attack on Monsters +9%
 * Civilization Treasure
   * Imperial Seal L3
     * Attacking Mounted Troop Defense +30%
@@ -111,8 +137,24 @@ author: 'Luke Schierer'
     * All Troops Attack +16%
     * Enemy Troops Attack -16% (unsure if this affects monsters)
 * Senate
-  * Mounted Governor with 1 red star (L0)
+  * Mounted Governor with 1 red star (L5)
     * Marching Mounted Defense +4%
+  * Archer Governor w/o red stars (L5)
+    * Marching Ranged Troop Defense +4%
+* Ideal Land
+  * Heavenly Fire Altar L1
+    * March Size +250
+  * Drinking Fountain L1
+    * March Size +250
+  * Rose Spring L1
+    * March SIze +250
+  * Gondola L2
+    * March Size +500
+    * Enemy Ground HP -2% (only applies to some Pan?)
+  * Red Demon Statue L1
+    * March Size +250
+  * Crane Pavilion L1
+    * March Size +250
 * Research
   * All attack buff relevant research up through academy level 36
     * Military tree
@@ -136,4 +178,4 @@ author: 'Luke Schierer'
       * Spanish Squadron 3/3
       * Flag Signal I 20/20
       * Ambush I 20/20
-      * 
+    
