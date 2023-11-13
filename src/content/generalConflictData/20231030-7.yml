@@ -54,23 +54,24 @@ books:
     buff:
       - attribute: HP
         class: Siege
+        condition: When_Not_Mine
         value:
           number: 15
           unit: percentage
   - name: Siege HP
-    condition: When_Not_Mine
     level: '3'
     buff:
       - attribute: HP
+        condition: When_Not_Mine
         class: Siege
         value:
           number: 20
           unit: percentage
   - name: Siege HP
-    condition: When_Not_Mine
     level: '4'
     buff:
       - attribute: HP
+        condition: When_Not_Mine
         class: Siege
         value:
           number: 25
