@@ -210,7 +210,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
             },
             'AdvancedCordination' : {
                 0:  0,
-                1:  0.05,
+                1:  0.01,
                 2:  0.10,
                 3:  0.15,
                 4:  0.20,
@@ -345,6 +345,141 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
         }
     }))
 
+    static idealLand = new Map(Object.entries({
+        'RoseSpring': {
+            1:   250,
+            2:   500,
+            3:   750,
+            4:  1000,
+            5:  1500,
+            6:  2000,
+            7:  2500,
+            8:  3000,
+            9:  4000,
+            10: 5000,
+        },
+        'DrinkingFountain': {
+            1:   250,
+            2:   500,
+            3:   750,
+            4:  1000,
+            5:  1500,
+            6:  2000,
+            7:  2500,
+            8:  3000,
+            9:  4000,
+            10: 5000,
+        },
+        'Crane': {
+            1:   250,
+            2:   500,
+            3:   750,
+            4:  1000,
+            5:  1500,
+            6:  2000,
+            7:  2500,
+            8:  3000,
+            9:  4000,
+            10: 5000,
+        },
+        'RedDemon': {
+            1:   250,
+            2:   500,
+            3:   750,
+            4:  1000,
+            5:  1500,
+            6:  2000,
+            7:  2500,
+            8:  3000,
+            9:  4000,
+            10: 5000,
+        },
+        'Gondola': {
+            1:   250,
+            2:   500,
+            3:   750,
+            4:  1000,
+            5:  1500,
+            6:  2000,
+            7:  2500,
+            8:  3000,
+            9:  4000,
+            10: 5000,
+        },
+        'HeavenlyFire': {
+            1:   250,
+            2:   500,
+            3:   750,
+            4:  1000,
+            5:  1500,
+            6:  2000,
+            7:  2500,
+            8:  3000,
+            9:  4000,
+            10: 5000,
+        },
+        'Fountain': {
+            1:   250,
+            2:   500,
+            3:   750,
+            4:  1000,
+            5:  1500,
+            6:  2000,
+            7:  2500,
+            8:  3000,
+            9:  4000,
+            10: 5000,
+        },
+        'Windmill': {
+            1:   250,
+            2:   500,
+            3:   750,
+            4:  1000,
+            5:  1500,
+            6:  2000,
+            7:  2500,
+            8:  3000,
+            9:  4000,
+            10: 5000,
+        },
+        'Banquet': {
+            1:   250,
+            2:   500,
+            3:   750,
+            4:  1000,
+            5:  1500,
+            6:  2000,
+            7:  2500,
+            8:  3000,
+            9:  4000,
+            10: 5000,
+        },
+        'StMartin': {
+            1:   250,
+            2:   500,
+            3:   750,
+            4:  1000,
+            5:  1500,
+            6:  2000,
+            7:  2500,
+            8:  3000,
+            9:  4000,
+            10: 5000,
+        },
+        'Dracula': {
+            1:   250,
+            2:   500,
+            3:   750,
+            4:  1000,
+            5:  1500,
+            6:  2000,
+            7:  2500,
+            8:  3000,
+            9:  4000,
+            10: 5000,
+        },
+    }));
+
     protected willUpdate(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
         if(DEBUG) {console.log(`index willupdate`)}
         super.willUpdate(_changedProperties);
@@ -458,6 +593,28 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                         this.baseMarch = this.baseMarch + 70000 + mathBase * 0.3;
                     }
                 }
+                if(this.rallySpotSize >= 11) {
+                    r = formValues.value.get('Banquet');
+                    if(r !== undefined) {
+                        if(!(r as string).localeCompare('true')){
+                            let r2 = formValues.value.get('BNF');
+                            if(r2 !== undefined){
+                                if(DEBUG) {console.log(`i il bnf r2 defined ${r2 as number}`)}
+                                this.baseMarch = this.baseMarch + Object.values(MarchCalc.idealLand.get('Banquet')!)[(r2 as number)-1]
+                            } else {
+                                if(DEBUG) {console.log(`i il bnf r2 else`)}
+                                addValue('BNF', 1)
+                            }
+                        } else {
+                            addValue('BNF', '1');    
+                        }
+                    } else {
+                        addValue('BNF', '1');
+                    }
+                } else {
+                    addValue('Banquet', 'false')
+                    addValue('BNF', '1');
+                }
                 if(this.rallySpotSize >= 35) {
                     r = formValues.value.get('Hideyoshi')
                     if(r !== undefined) {
@@ -531,7 +688,10 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
             span.ClassResult {
                 font-weight: bold;
             }
-    
+            div.vertical {
+                display: flex;
+                flex-direction: column;
+            }
           `
         if (super.styles !== null && super.styles !== undefined) {
           return [super.styles, localstyle];
@@ -659,6 +819,242 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                             <sp-menu-item value="Gold"   >Gold</sp-menu-item>
                         </sp-picker>
                     </div>
+                    </sp-field-group>
+                </div>
+                <div>
+                    <sp-field-label for="land">Ideal Land Buffs</sp-field-label>
+                    <sp-field-group horizontal id="land">
+                        <div class="not-content vertical">
+                            <sp-switch 
+                                emphasized 
+                                id="Banquet" 
+                                checked="${((formValues.value!.get('Banquet') !== undefined) && (!(formValues.value!.get('Banquet') as string).localeCompare('true'))) ? formValues.value!.get('Banquet') : nothing}"
+                                @change=${(e: CustomEvent) => {addValue("Banquet", (e.target as Switch).checked? 'true': 'false'); this.requestUpdate();}}
+                                disabled="${(this.rallySpotSize >= 11) ? nothing : true}"
+                            >Banquet of Dionysus</sp-switch>
+                            <sp-number-field
+                                id="BNF"
+                                value="${(formValues.value!.get('BNF') !== undefined) ? formValues.value!.get('BNF') : 1}"
+                                min="1"
+                                max="10"
+                                format-options='{
+                                    "signDisplay": "never",
+                                    "maximumFractionDigits": 0
+                                }'
+                                disabled="${(formValues.value?.get('Banquet') !== undefined && (!(formValues.value?.get('Banquet') as string).localeCompare('true'))) ? nothing : true}"
+                                @change=${(e: CustomEvent) => {addValue("BNF", (e.target as NumberField).value); this.requestUpdate();}}
+                            ></sp-number-field>
+                        </div>
+                        <div class="not-content vertical">
+                            <sp-switch 
+                                emphasized 
+                                id="Crane" 
+                                checked="${((formValues.value!.get('Crane') !== undefined) && (!(formValues.value!.get('Crane') as string).localeCompare('true'))) ? formValues.value!.get('Crane') : nothing}"
+                                @change=${(e: CustomEvent) => {addValue("Crane", (e.target as Switch).checked? 'checked': 'unchecked'); this.requestUpdate();}}
+                                disabled="${(this.rallySpotSize >= 11) ? nothing : true}"
+                            >Crane Pavilion</sp-switch>
+                            <sp-number-field
+                                id="CNF"
+                                value="${(formValues.value!.get('CNF') !== undefined) ? formValues.value!.get('CNF') : 1}"
+                                min="1"
+                                max="10"
+                                format-options='{
+                                    "signDisplay": "never",
+                                    "maximumFractionDigits": 0
+                                }'
+                                disabled="${(formValues.value?.get('Crane') !== undefined && (!(formValues.value?.get('Crane') as string).localeCompare('checked'))) ? nothing : true}"
+                                @change=${(e: CustomEvent) => {addValue("CNF", (e.target as NumberField).value); this.requestUpdate();}}
+                            ></sp-number-field>
+                        </div>
+                        <div class="not-content vertical">
+                            <sp-switch 
+                                emphasized 
+                                id="Dracula" 
+                                value="off" 
+                                @change=${(e: CustomEvent) => {addValue("Dracula", (e.target as Switch).checked? 'checked': 'unchecked'); this.requestUpdate();}}
+                                disabled="${(this.rallySpotSize >= 11) ? nothing : true}"
+                            >Dracula Haunting Night</sp-switch>
+                            <sp-number-field
+                                id="DNF"
+                                value="${(formValues.value!.get('DNF') !== undefined) ? formValues.value!.get('DNF') : 1}"
+                                min="1"
+                                max="10"
+                                format-options='{
+                                    "signDisplay": "never",
+                                    "maximumFractionDigits": 0
+                                }'
+                                disabled="${(formValues.value?.get('Dracula') !== undefined && (!(formValues.value?.get('Dracula') as string).localeCompare('checked'))) ? nothing : true}"
+                                @change=${(e: CustomEvent) => {addValue("DNF", (e.target as NumberField).value); this.requestUpdate();}}
+                            ></sp-number-field>
+                        </div>
+                        <div class="not-content vertical">
+                            <sp-switch 
+                                emphasized 
+                                id="DrinkingFountain" 
+                                value="off" 
+                                @change=${(e: CustomEvent) => {addValue("DrinkingFountain", (e.target as Switch).checked? 'checked': 'unchecked'); this.requestUpdate();}}
+                                disabled="${(this.rallySpotSize >= 11) ? nothing : true}"
+                            >Drinking Fountain</sp-switch>
+                            <sp-number-field
+                                id="DFNF"
+                                value="${(formValues.value!.get('DFNF') !== undefined) ? formValues.value!.get('DFNF') : 1}"
+                                min="1"
+                                max="10"
+                                format-options='{
+                                    "signDisplay": "never",
+                                    "maximumFractionDigits": 0
+                                }'
+                                disabled="${(formValues.value?.get('DrinkingFountain') !== undefined && (!(formValues.value?.get('DrinkingFountain') as string).localeCompare('checked'))) ? nothing : true}"
+                                @change=${(e: CustomEvent) => {addValue("DFNF", (e.target as NumberField).value); this.requestUpdate();}}
+                            ></sp-number-field>
+                        </div>
+                        <div class="not-content vertical">
+                            <sp-switch 
+                                emphasized 
+                                id="Fountain" 
+                                value="off" 
+                                @change=${(e: CustomEvent) => {addValue("Fountain", (e.target as Switch).checked? 'checked': 'unchecked'); this.requestUpdate();}}
+                                disabled="${(this.rallySpotSize >= 11) ? nothing : true}"
+                            >Fountain</sp-switch>
+                            <sp-number-field
+                                id="FNF"
+                                value="${(formValues.value!.get('FNF') !== undefined) ? formValues.value!.get('FNF') : 1}"
+                                min="1"
+                                max="10"
+                                format-options='{
+                                    "signDisplay": "never",
+                                    "maximumFractionDigits": 0
+                                }'
+                                disabled="${(formValues.value?.get('Fountain') !== undefined && (!(formValues.value?.get('Fountain') as string).localeCompare('checked'))) ? nothing : true}"
+                                @change=${(e: CustomEvent) => {addValue("FNF", (e.target as NumberField).value); this.requestUpdate();}}
+                            ></sp-number-field>
+                        </div>
+                        <div class="not-content vertical">
+                            <sp-switch 
+                                emphasized 
+                                id="Gondola" 
+                                value="off" 
+                                @change=${(e: CustomEvent) => {addValue("Gondola", (e.target as Switch).checked? 'checked': 'unchecked'); this.requestUpdate();}}
+                                disabled="${(this.rallySpotSize >= 11) ? nothing : true}"
+                            >Gondola</sp-switch>
+                            <sp-number-field
+                                id="GNF"
+                                value="${(formValues.value!.get('GNF') !== undefined) ? formValues.value!.get('GNF') : 0}"
+                                min="0"
+                                max="10"
+                                format-options='{
+                                    "signDisplay": "never",
+                                    "maximumFractionDigits": 0
+                                }'
+                                disabled="${(formValues.value?.get('Gondola') !== undefined && (!(formValues.value?.get('Gondola') as string).localeCompare('checked'))) ? nothing : true}"
+                                @change=${(e: CustomEvent) => {addValue("GNF", (e.target as NumberField).value); this.requestUpdate();}}
+                            ></sp-number-field>
+                        </div>
+                        <div class="not-content vertical">
+                            <sp-switch 
+                                emphasized 
+                                id="HeavenlyFire" 
+                                value="off" 
+                                @change=${(e: CustomEvent) => {addValue("HeavenlyFire", (e.target as Switch).checked? 'checked': 'unchecked'); this.requestUpdate();}}
+                                disabled="${(this.rallySpotSize >= 11) ? nothing : true}"
+                            >Heavenly Fire Altar</sp-switch>
+                            <sp-number-field
+                                id="HFANF"
+                                value="${(formValues.value!.get('HFANF') !== undefined) ? formValues.value!.get('HFANF') : 0}"
+                                min="0"
+                                max="10"
+                                format-options='{
+                                    "signDisplay": "never",
+                                    "maximumFractionDigits": 0
+                                }'
+                                disabled="${(formValues.value?.get('HeavenlyFire') !== undefined && (!(formValues.value?.get('HeavenlyFire') as string).localeCompare('checked'))) ? nothing : true}"
+                                @change=${(e: CustomEvent) => {addValue("HFANF", (e.target as NumberField).value); this.requestUpdate();}}
+                            ></sp-number-field>
+                        </div>
+                        <div class="not-content vertical">
+                            <sp-switch 
+                                emphasized 
+                                id="RedDemon" 
+                                value="off" 
+                                @change=${(e: CustomEvent) => {addValue("RedDemon", (e.target as Switch).checked? 'checked': 'unchecked'); this.requestUpdate();}}
+                                disabled="${(this.rallySpotSize >= 11) ? nothing : true}"
+                            >Red Demon Statue</sp-switch>
+                            <sp-number-field
+                                id="RDSNF"
+                                value="${(formValues.value!.get('RDSNF') !== undefined) ? formValues.value!.get('RDSNF') : 0}"
+                                min="0"
+                                max="10"
+                                format-options='{
+                                    "signDisplay": "never",
+                                    "maximumFractionDigits": 0
+                                }'
+                                disabled="${(formValues.value?.get('RedDemon') !== undefined && (!(formValues.value?.get('RedDemon') as string).localeCompare('checked'))) ? nothing : true}"
+                                @change=${(e: CustomEvent) => {addValue("RDSNF", (e.target as NumberField).value); this.requestUpdate();}}
+                            ></sp-number-field>
+                        </div>
+                        <div class="not-content vertical">
+                            <sp-switch 
+                                emphasized 
+                                id="RoseSpring" 
+                                value="off" 
+                                @change=${(e: CustomEvent) => {addValue("RoseSpring", (e.target as Switch).checked? 'checked': 'unchecked'); this.requestUpdate();}}
+                                disabled="${(this.rallySpotSize >= 11) ? nothing : true}"
+                            >Rose Spring</sp-switch>
+                            <sp-number-field
+                                id="RSNF"
+                                value="${(formValues.value!.get('RSNF') !== undefined) ? formValues.value!.get('RSNF') : 0}"
+                                min="0"
+                                max="10"
+                                format-options='{
+                                    "signDisplay": "never",
+                                    "maximumFractionDigits": 0
+                                }'
+                                disabled="${(formValues.value?.get('RoseSpring') !== undefined && (!(formValues.value?.get('RoseSpring') as string).localeCompare('checked'))) ? nothing : true}"
+                                @change=${(e: CustomEvent) => {addValue("RSNF", (e.target as NumberField).value); this.requestUpdate();}}
+                            ></sp-number-field>
+                        </div>
+                        <div class="not-content vertical">
+                            <sp-switch 
+                                emphasized 
+                                id="StMartin" 
+                                value="off" 
+                                @change=${(e: CustomEvent) => {addValue("StMartin", (e.target as Switch).checked? 'checked': 'unchecked'); this.requestUpdate();}}
+                                disabled="${(this.rallySpotSize >= 11) ? nothing : true}"
+                            >St. Martin the White Knight</sp-switch>
+                            <sp-number-field
+                                id="SMNF"
+                                value="${(formValues.value!.get('SMNF') !== undefined) ? formValues.value!.get('SMNF') : 0}"
+                                min="0"
+                                max="10"
+                                format-options='{
+                                    "signDisplay": "never",
+                                    "maximumFractionDigits": 0
+                                }'
+                                disabled="${(formValues.value?.get('StMartin') !== undefined && (!(formValues.value?.get('StMartin') as string).localeCompare('checked'))) ? nothing : true}"
+                                @change=${(e: CustomEvent) => {addValue("SMNF", (e.target as NumberField).value); this.requestUpdate();}}
+                            ></sp-number-field>
+                        </div>
+                        <div class="not-content vertical">
+                            <sp-switch 
+                                emphasized 
+                                id="Windmill" 
+                                value="off" 
+                                @change=${(e: CustomEvent) => {addValue("Windmill", (e.target as Switch).checked? 'checked': 'unchecked'); this.requestUpdate();}}
+                                disabled="${(this.rallySpotSize >= 11) ? nothing : true}"
+                            >Windmill</sp-switch>
+                            <sp-number-field
+                                id="WNF"
+                                value="${(formValues.value!.get('WNF') !== undefined) ? formValues.value!.get('WNF') : 0}"
+                                min="0"
+                                max="10"
+                                format-options='{
+                                    "signDisplay": "never",
+                                    "maximumFractionDigits": 0
+                                }'
+                                disabled="${(formValues.value?.get('Windmill') !== undefined && (!(formValues.value?.get('Windmill') as string).localeCompare('checked'))) ? nothing : true}"
+                                @change=${(e: CustomEvent) => {addValue("WNF", (e.target as NumberField).value); this.requestUpdate();}}
+                            ></sp-number-field>
+                        </div>
                     </sp-field-group>
                 </div>
                 <div>
