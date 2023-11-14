@@ -32,7 +32,7 @@ import { parse, isDocument } from 'yaml'
 
 import { GeneralBuffController } from "./Buff.ts";
 
-import { addValue, formValues } from './dataStore.ts';
+import { addValue, formValues } from '../formValueStore.ts';
 
 import * as b from "@schemas/baseSchemas.ts";
 
