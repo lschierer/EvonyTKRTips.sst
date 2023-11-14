@@ -102,8 +102,10 @@ export const AttributeSchema = z.enum([
  'Attack_Speed',
  'Wounded_to_Death',
  'Death_to_Wounded',
+ 'Death_to_Soul',
  'Load',
  'Double_Items_Drop_Rate',
+ 'Healing_Speed',
 ]);
 export type Attribute = z.infer<typeof AttributeSchema>;
 

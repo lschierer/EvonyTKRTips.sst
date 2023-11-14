@@ -5,10 +5,7 @@ import { createRef, ref, type Ref } from 'lit/directives/ref.js';
 
 import { withStores } from "@nanostores/lit";
 
-
-
 const DEBUG = true;
-
 
 import { SpectrumElement } from '@spectrum-web-components/base';
 
@@ -30,9 +27,6 @@ import '@spectrum-web-components/tooltip/sp-tooltip.js';
 import { NumberField } from '@spectrum-web-components/number-field';
 import { Picker } from '@spectrum-web-components/picker';
 import { Switch } from '@spectrum-web-components/switch';
-
-
-
 
 import {addValue, formValues } from '../formValueStore';
 
