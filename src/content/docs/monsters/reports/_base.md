@@ -24,8 +24,8 @@ author: 'Luke Schierer'
       * Marching Mounted Attack +15%
       * March Speed to Monsters +11%
   * Siren:
-    * Marching Mounted HP +19.2%
-    * March Speed to Monsters +12%
+    * Marching Mounted HP +22.4%
+    * March Speed to Monsters +14%
 * Stable's Officer: Oleg of Novgorod
   * Mounted Attack and Defense +5%
 * Rally Spot Officer: Toyotomi Hideyoshi
