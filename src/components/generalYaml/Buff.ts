@@ -33,7 +33,7 @@ import '@spectrum-web-components/switch/sp-switch.js';
 
 import { parse, stringify } from 'yaml'
 
-import {addValue, formValues } from './dataStore.ts';
+import {addValue, formValues } from '../formValueStore';
 
 
 import * as b from '@schemas/baseSchemas.ts'
