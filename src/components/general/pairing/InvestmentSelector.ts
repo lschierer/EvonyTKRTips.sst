@@ -32,7 +32,6 @@ import {BoS, type BoSType, type generalInvestment, primaryInvestmentMap, seconda
 const generalRole = z.enum(['primary','secondary']);
 type generalRoleType = z.infer<typeof generalRole>;
 
-@customElement('investment-selector')
 export class InvestmentSelector extends withStores(SpectrumElement, [primaryInvestmentMap, secondaryInvestmentMap]) {
   
   @property({type: String})
@@ -479,4 +478,7 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
     `
     
   }
+}
+if (!customElements.get('investment-selector')) {
+  customElements.define('investment-selector', InvestmentSelector)
 }
