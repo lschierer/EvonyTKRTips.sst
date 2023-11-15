@@ -1,44 +1,30 @@
 ---
 title: Evaluating Generals
 author: Luke Schierer
+sidebar:
+  order: 100
 ---
 
 I've been watching John Wick's videos and while a general with a specialized buff will theoretically be stronger, they
-are *more specialized* and will be weaker for corresponding use cases. I'm thus *penalizing* a general for having an
+are *more specialized* and will be weaker for corresponding use cases. I'm thus increasingly inclined to *penalize* a general for having an
 adverb on his/her buff unless being evaluated for a specialty role.
 
-I am unsure how much to count death into wounded. It definitely helps your survivability, but both in battlefield and
-SvS "death" is modified drastically anyway. If you are on a BoB server where actual troop death is a serious concern,
-then you probably ought to just bubble up and not worry about your generals anyway, or cut your losses and find a new
-server.
+* I am unsure how much to count death into wounded. It definitely helps your survivability, but both in battlefield and
+  SvS "death" is modified drastically anyway.  I have heard rumors that this is a misleading name for the actual buff, and that it, and the "Mortality" Monarch Talent actually affect your HP directly.  I cannot find any solid documentation on this. 
 
-* Assume a Marching or Attacking buff has a 50% debuff 
-  applied
-* Assume "When Rallying" gets a 50% debuff - see attacking
-* Assume a reinforcing buff is useful only to big players 
-  and discount it unless evaluating for that.
-* Count 25% of reinforcing and "when defending" for 
-  siege generals because you will probably actually do 
-  that.
-* conversely, for siege generals, I am going to debuf
-  marching/attacking by 75% simply because it makes
-  them less useful.
-* In City means Wall General only (since we discount 
-  reinforcing).
-* Discount officer buffs unless looking for an officer.
-* Discount against monster buffs unless looking for a 
-  PvM general.
-* Discount a "when defending" buff unless looking for a 
-  Wall General - see reinforcing.
-* Look at both "when defending" and "when main defense 
-  general" buffs for wall generals.
-* Debuffs are important.
-* Rally Capacity and March size are worth considering, 
-  but are NOT the same. March size is MUCH more valuable.
-* There is at least one general with a "during Svs" buff. I am inclined to discount this as well. This site is targeted
+  For now I am not using that buff.  If you are on a BoB server where actual troop death is a serious concern,
+  then you probably ought to just bubble up and not worry about your generals anyway, or cut your losses and find a new
+  server.
+* I am unsure how to count wounded to death. This follows from death into wounded.  How much does it actually hurt the other person in either SvS or Battlefield?  Does it affect Monster hunting *at all*?  It is currently
+  ignored as well. 
+* There is at least one general with a "during SvS" buff. I am inclined to discount this as well. This site is targeted
   at people who need to be able to use their generals 
   in all PvP use cases. Having separate PvP and PvM 
   generals will be difficult enough.
+* Rally capacity is an interesting buff for members of well organized alliances.  It can help with World Boss, very large monsters you are (as an alliance) willing to accept wounded on, and of course both SvS and  
+  Battlefield.  However, while it might be nice to know, I do not think it can or should truly do more than tip the balance between two otherwise very close pairs.  I am not currently displaying it, though I may
+  do so in the future.  I certainly *won't* use it to compute scores as I look at that aspect of ranking pairs. 
+* I am counting an attack debuff towards a general's defense buffs on the understanding that if the opposing general can attack less, my defense is that much stronger.
+* I am counting *either* an HP or Defense debuff towards a general's *attack* debuff. The working theory is that either an HP or Defense debuff makes my attack more effective, thus effectively stronger. 
+* I am counting neither of the above two debuff line items when considering Monsters unless the debuff is labeled "against monsters".  I do not think standard debuffs apply to monsters. 
 
-This list of criteria goes against the grain, and even where my source sites attempt to help those who are not heavy
-spenders, they do not go as far as this. If you disagree, well, there are other lists and other sites out there. 
