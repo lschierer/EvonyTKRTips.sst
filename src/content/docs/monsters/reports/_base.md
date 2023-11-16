@@ -137,10 +137,24 @@ author: 'Luke Schierer'
     * All Troops Attack +16%
     * Enemy Troops Attack -16% (unsure if this affects monsters)
 * Senate
-  * Mounted Governor with 1 red star (L5)
-    * Marching Mounted Defense +4%
-  * Archer Governor w/o red stars (L5)
-    * Marching Ranged Troop Defense +4%
+  * Ground Governor L5
+    * Marching Ground HP +15%
+    * Ground and Mounted Attack +4%
+    * w/2 Red Stars
+      * Marching Ground Defense +4%
+      * Some In-City buffs (no effect)
+  * Mounted Governor L11
+    * Marching Mounted Defense +33%
+    * Ground and Mounted HP +4%
+    * Ground and Mounted Defense +4%
+    * Enemy Ground HP -4% (May affect Pans)
+    * with 1 red star (L5)
+      * Marching Mounted Defense +4%
+  * Archer Governor L5
+    * In-City Ranged Attack +15% (no effect on anything)
+    * Ranged Attack +4%
+    * 5 Gold stars (L5)
+      * Marching Ranged Troop Defense +4%
 * Ideal Land
   * Heavenly Fire Altar L1
     * March Size +250
