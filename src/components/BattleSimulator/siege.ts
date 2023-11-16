@@ -111,14 +111,15 @@ export class EvonySiege extends withStores(SpectrumElement, [formValues]) {
   @property({type: String})
   public tier: TierType = Tier.enum.t1;
 
-  @state()
   accessor range: number = 0;
 
   public override willUpdate(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
     super.willUpdate(_changedProperties) ;
-
-    if(this.count > 0) {
+    if(DEBUG) {console.log(`siege willupdate`)}
+    
+    if(this.count > 0 && _changedProperties.has('count')) {
       this.range = EvonySiege.ranges[this.tier as keyof typeof EvonySiege.ranges]
+      if(DEBUG){window.console.log(`${this.tier} siege range is ${this.range}`)}
     }
   }
 
@@ -126,13 +127,40 @@ export class EvonySiege extends withStores(SpectrumElement, [formValues]) {
     super()
     formValues.subscribe((fv) => {
       if(fv !== null && fv !== undefined) {
+        this.requestUpdate();
         return true;
       } else {
         return false;
       }
     })
+    
   }
 
+  public static override get styles(): CSSResultArray {
+    const localstyle = css`
+
+ 
+
+      .BBox {
+        min-width: 1rem;
+        border: 0.05px solid;
+        padding-left: 0.1px;
+        margin-left: 0.1px;
+      }
+    `
+    if (super.styles !== null && super.styles !== undefined) {
+      return [super.styles, localstyle];
+    } else return [localstyle];
+
+  }
+
+  render() {
+    return html`
+      <div id=${this.tier} class="not-content BBox">
+        ${this.count}
+      </div>
+    `
+  }
 }
 if (!customElements.get('evony-siege')) {
   customElements.define('evony-siege', EvonySiege)

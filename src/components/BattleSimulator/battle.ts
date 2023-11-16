@@ -40,13 +40,19 @@ import * as b from "@schemas/baseSchemas";
 
 import { EvonySiege } from "./siege";
 
+interface TroopTier {
+  tier: TierType, 
+  count: number,
+  range: number,
+};
+
 export class EvonyBattle extends withStores(SpectrumElement, [formValues]) {
 
   @state()
-  private _attackerSiegeTiers: EvonySiege[] = new Array<EvonySiege>();
+  private _attackerSiegeTiers: TroopTier[] = new Array<TroopTier>();
 
   @state()
-  private _defenderSiegeTiers: EvonySiege[] = new Array<EvonySiege>();
+  private _defenderSiegeTiers: TroopTier[] = new Array<TroopTier>();
 
   @state()
   private _battlefieldSize: number = 0;
@@ -72,40 +78,46 @@ export class EvonyBattle extends withStores(SpectrumElement, [formValues]) {
       for (let i = 15; i > 0; i--) {
         let v = fv.get(`Attacker.t${i}.siege`);
         if (v !== null && v !== undefined) {
-          if (this._attackerSiegeTiers[i] === null || this._attackerSiegeTiers[i] === undefined) {
-            this._attackerSiegeTiers[i] = new EvonySiege();
-          }
+          if(DEBUG) {console.log(`Attacker.t${i}.siege is ${v}`)}
           const _tier = Tier.safeParse(`t${i}`);
           if (_tier.success) {
-            this._attackerSiegeTiers[i].tier = _tier.data;
-            this._attackerSiegeTiers[i].count = v as number;
+            if(DEBUG) {console.log(`tier is ${_tier.data}`)}
+            this._attackerSiegeTiers[i] = {
+              tier: _tier.data,
+              count: v as number,
+              range: EvonySiege.ranges[_tier.data as keyof typeof EvonySiege.ranges],
+            }
             if ((v as number) > 0) {
-              ar = (this._defenderSiegeTiers[i].range > ar) ? this._defenderSiegeTiers[i].range : ar ;
+              ar = (this._attackerSiegeTiers[i].range > ar) ? this._attackerSiegeTiers[i].range : ar ;
             }
           }
         }
         v = fv.get(`Defender.t${i}.siege`);
         if (v !== null && v !== undefined) {
-          if (this._defenderSiegeTiers[i] === null || this._defenderSiegeTiers[i] === undefined) {
-            this._defenderSiegeTiers[i] = new EvonySiege();
-          }
+          if(DEBUG) {console.log(`Defender.t${i}.siege is ${v}`)}
           const _tier = Tier.safeParse(`t${i}`);
           if (_tier.success) {
             this._defenderSiegeTiers[i].tier = _tier.data;
             this._defenderSiegeTiers[i].count = v as number;
+            this._defenderSiegeTiers[i].range = EvonySiege.ranges[_tier.data as keyof typeof EvonySiege.ranges];
             if ((v as number) > 0) {
               dr = (this._defenderSiegeTiers[i].range > dr) ? this._defenderSiegeTiers[i].range : dr ;
             }
           }
         }
       }
+      if(DEBUG) { console.log(`ar is ${ar}`)}
+      if(DEBUG) { console.log(`dr is ${dr}`)}
+
       const arp = fv.get('arp');
       const drp = fv.get('drp');
       const arf = fv.get('arf');
       const drf = fv.get('drf');
       ar = (arf !== undefined) ? ((arf as number) > 0) ? ar + (arf as number) : ar : ar;
-      dr = (drf !== undefined) ? ((drf as number) > 0) ? dr + (drf as number) : dr : dr;
-      
+      dr = (drf !== undefined) ? ((drf as number) > 0) ? dr + (drf as number) : 
+      dr : dr;
+      if(DEBUG) { window.console.log(`arf is ${arf}; arp is ${arp} ar is ${ar}`)}
+      if(DEBUG) { console.log(`drf is ${drf}; drp is ${drp} dr is ${dr}`)}
       this._battlefieldSize = ar + dr;
     }
   }
@@ -113,16 +125,37 @@ export class EvonyBattle extends withStores(SpectrumElement, [formValues]) {
   public static override get styles(): CSSResultArray {
     const localstyle = css`
             span.H3 {
-              font-size: 1.3rem;
+              color: var(--sl-color-text-accent);
+              font-size: var(--sl-text-h3);
               font-weight: bold;
               margin-left: 1rem;
             }
             span.H4 {
-              font-size: 1.2rem;
+              color: var(--sl-color-text-accent);
+              font-size: var(--sl-text-h4);
               font-weight: bold;
               margin-left: 2rem;
             }
             
+            span.bold {
+              color: var(--sl-color-text-accent);
+              font-weight: bold;
+            }
+
+            .divTable{ display: table; }
+            .divTableRow { display: table-row; }
+            .divTableHeading { 
+              display: table-header-group; 
+              
+            }
+            .divTableCell, .divTableHead { 
+              display: table-cell; 
+              width: 2%; 
+            }
+            .divTableHeadTop {display: table-cell; width: 6%}
+            .divTableFoot { display: table-footer-group;}
+            .divTableBody { display: table-row-group;}
+
             div.Buffs {
                 width=100%;
 
@@ -145,17 +178,24 @@ export class EvonyBattle extends withStores(SpectrumElement, [formValues]) {
                   flex: 1 1 auto;
               }
           }
+          div.Results {
+            width=100%;
+            margin-top: 2rem;
+            border-top: solid 1px var(--sl-color-accent-low);
+           
+            
 
             div.CalcResult {
-                border-top: solid 1px var(--sl-color-accent-low); 
+              
             }
-            span.ClassResult {
-                font-weight: bold;
-            }
-            div.vertical {
-                display: flex;
-                flex-direction: column;
-            }
+          }
+                
+          div.AttackersTroops {
+            border: 0.6px solid;
+            border-color: var(--spectrum-green-600);
+            background-color: var(--spectrum-green-400);
+          }
+          
           `
     if (super.styles !== null && super.styles !== undefined) {
       return [super.styles, localstyle];
@@ -438,7 +478,6 @@ export class EvonyBattle extends withStores(SpectrumElement, [formValues]) {
             disabled
             value="0"
             min="0"
-            max="100"
             format-options='{
                 "signDisplay": "never",
                 "maximumFractionDigits": 0
@@ -453,7 +492,6 @@ export class EvonyBattle extends withStores(SpectrumElement, [formValues]) {
             disabled
             value="0"
             min="0"
-            max="100"
             format-options='{
                 "signDisplay": "never",
                 "maximumFractionDigits": 0
@@ -468,7 +506,6 @@ export class EvonyBattle extends withStores(SpectrumElement, [formValues]) {
             disabled
             value="0"
             min="0"
-            max="100"
             format-options='{
                 "signDisplay": "never",
                 "maximumFractionDigits": 0
@@ -482,7 +519,6 @@ export class EvonyBattle extends withStores(SpectrumElement, [formValues]) {
             id="siege"
             value="0"
             min="0"
-            max="100"
             format-options='{
                 "signDisplay": "never",
                 "maximumFractionDigits": 0
@@ -513,11 +549,74 @@ export class EvonyBattle extends withStores(SpectrumElement, [formValues]) {
   }
 
   render() {
+    let ttr = html``;
+    for (let i = 15; i > 0; i--) {
+      ttr = html`
+        ${ttr}
+        <div id="t${i}" class="not-content divTableHeadTop ">T${i}</div>
+      `
+    }
+    ttr=html`
+      <div class="not-content divTableHeading">
+        ${ttr}
+      </div>
+    `
+    let row2 = html``
+    for (let i = 15; i > 0; i--) {
+      row2 = html`
+        ${row2}
+        <div id="T${i}Siege"   class="not-content divTableHead">Siege</div>
+        <div id="T${i}Archers" class="not-content divTableHead">Archers</div>
+        <div id="T${i}Ground"  class="not-content divTableHead">Ground</div>
+        <div id="T${i}Mounted" class="not-content divTableHead">Mounted</div>  
+      `
+    }
+    ttr=html`
+      ${ttr}
+      <div class="not-content divTableHeading">
+        ${row2}
+      </div>
+    `
+    let ast = html``;
+    for (let i = 15; i > 0; i--) {
+      if(this._attackerSiegeTiers[i] !== null && this._attackerSiegeTiers[i] !== undefined) {
+        const cst = this._attackerSiegeTiers[i];
+        ast = html`${ast}
+          <evony-siege tier=${cst.tier} count=${cst.count}></evony-siege>
+        `
+      } else {
+        ast = html`${ast}
+          <evony-siege id=t${i}Siege tier="t${i}" count=0 class="divTableCell"></evony-siege>
+        `
+      }
+      ast = html`${ast}
+        <div id=t${i}Archers class="not-content divTableCell">0</div>
+      `
+      ast = html`${ast}
+        <div id=t${i}Ground class="not-content divTableCell">0</div>
+      `
+      ast = html`${ast}
+        <div id=t${i}Mounted class="not-content divTableCell">0</div>
+      `
+    }
     return html`
       <div class="not-content BattleProperties">
         ${this.renderBuffSelector()}
         ${this.renderLayersSelector('Attacker')}
         ${this.renderLayersSelector('Defender')}
+      </div>
+      <div class="not-content Results">
+        <div class="not-content metadata">
+          <span class="not-content bold">Battlefield Size:</span> ${this._battlefieldSize}
+        </div>
+        <div class="not-content divTable troops">
+            ${ttr}
+            <div class="not-content divTableBody AttackersTroops">
+              <div class="not-content divTableRow">
+                ${ast}
+              </div>
+            </div>
+        </div>
       </div>
     `
   }
