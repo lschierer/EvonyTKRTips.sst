@@ -17,9 +17,9 @@ governing permissions and limitations under the License.
 @import "@spectrum-css/vars/dist/spectrum-medium.css";
 @import "@spectrum-css/page/dist/index-vars.css";
 
-/* Color Theme Swatches in Hex */
-.Cyan-600-Theme-1-1-hex { color: #0486B4; }
-.Cyan-600-Theme-1-2-hex { color: #466973; }
+/* Color Theme Swatches in Hex */ 
+.Cyan-600-Theme-1-1-hex { color: #0486B4; } /*oklch(58.23% 0.118 231.71)*/
+.Cyan-600-Theme-1-2-hex { color: #466973; } /*oklch(49.81% 0.043 217.6)*/
 .Cyan-600-Theme-1-3-hex { color: #88C0D9; }
 .Cyan-600-Theme-1-4-hex { color: #343D40; }
 .Cyan-600-Theme-1-5-hex { color: #12B0DA; }
@@ -38,43 +38,39 @@ governing permissions and limitations under the License.
 .Cyan-600-Theme-1-4-hsla { color: hsla(195, 10, 22, 1); }
 .Cyan-600-Theme-1-5-hsla { color: hsla(192, 84, 46, 1); }
 
-
-
-/* Dark mode colors. */
 :root {
   --sl-nav-pad-x: 0.1px;
   --sl-nav-pad-y: 0.1px;
   --sl-content-width: 90%;
-  --sl-sidebar-width: 15rem;
-	--sl-color-accent-low: #00273d;
-	--sl-color-accent: #12B0DA;
-	--sl-color-accent-high: #88C0D9;
+}
+
+/* Dark mode colors. */
+:root {
+	--sl-color-accent-low: #0d2734;
+	--sl-color-accent: #00739c;
+	--sl-color-accent-high: #b0cede;
 	--sl-color-white: #ffffff;
-	--sl-color-gray-1: #e7eff2;
-	--sl-color-gray-2: #bac4c8;
-	--sl-color-gray-3: #7b8f96;
-	--sl-color-gray-4: #495c62;
-	--sl-color-gray-5: #2a3b41;
-	--sl-color-gray-6: #182a2f;
-	--sl-color-black: #121a1c;
+	--sl-color-gray-1: #e3f0f7;
+	--sl-color-gray-2: #b5c5ce;
+	--sl-color-gray-3: #7291a1;
+	--sl-color-gray-4: #3f5d6c;
+	--sl-color-gray-5: #1f3c4b;
+	--sl-color-gray-6: #0d2a38;
+	--sl-color-black: #0e1a20;
 }
 /* Light mode colors. */
 :root[data-theme='light'] {
-  --sl-nav-pad-x: 0.1px;
-  --sl-nav-pad-y: 0.1px;
-  --sl-content-width: 90%;
-  --sl-sidebar-width: 15rem;
-	--sl-color-accent-low: #b0deff;
-	--sl-color-accent: #0486B4;
-	--sl-color-accent-high: #003653;
-	--sl-color-white: #121a1c;
-	--sl-color-gray-1: #182a2f;
-	--sl-color-gray-2: #2a3b41;
-	--sl-color-gray-3: #495c62;
-	--sl-color-gray-4: #7b8f96;
-	--sl-color-gray-5: #bac4c8;
-	--sl-color-gray-6: #e7eff2;
-	--sl-color-gray-7: #f3f7f9;
+	--sl-color-accent-low: #c4dbe7;
+	--sl-color-accent: #00759f;
+	--sl-color-accent-high: #08374b;
+	--sl-color-white: #0e1a20;
+	--sl-color-gray-1: #0d2a38;
+	--sl-color-gray-2: #1f3c4b;
+	--sl-color-gray-3: #3f5d6c;
+	--sl-color-gray-4: #7291a1;
+	--sl-color-gray-5: #b5c5ce;
+	--sl-color-gray-6: #e3f0f7;
+	--sl-color-gray-7: #f1f7fb;
 	--sl-color-black: #ffffff;
 }
 
