@@ -38,7 +38,29 @@ governing permissions and limitations under the License.
 .Cyan-600-Theme-1-4-hsla { color: hsla(195, 10, 22, 1); }
 .Cyan-600-Theme-1-5-hsla { color: hsla(192, 84, 46, 1); }
 
+
+/* Color Theme Swatches in Hex */
+.Theme2-1-hex { color: #8EE03D; }
+.Theme2-2-hex { color: #E0623D; }
+.Theme2-3-hex { color: #3D5DE0; }
+.Theme2-4-hex { color: #545F8B; }
+.Theme2-5-hex { color: #56614B; }
+
+/* Color Theme Swatches in RGBA */
+.Theme2-1-rgba { color: rgba(142, 224, 61, 1); }
+.Theme2-2-rgba { color: rgba(224, 98, 61, 1); }
+.Theme2-3-rgba { color: rgba(61, 93, 224, 1); }
+
+
+/* Color Theme Swatches in HSLA */
+.Theme2-1-hsla { color: hsla(90, 72, 55, 1); }
+.Theme2-2-hsla { color: hsla(13, 72, 55, 1); }
+.Theme2-3-hsla { color: hsla(228, 72, 55, 1); }
+
+
 :root {
+  --theme2-green: #8EE03D;
+  --theme2-red: #E0623D;
   --sl-nav-pad-x: 0.1px;
   --sl-nav-pad-y: 0.1px;
   --sl-content-width: 90%;

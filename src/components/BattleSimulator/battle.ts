@@ -97,9 +97,12 @@ export class EvonyBattle extends withStores(SpectrumElement, [formValues]) {
           if(DEBUG) {console.log(`Defender.t${i}.siege is ${v}`)}
           const _tier = Tier.safeParse(`t${i}`);
           if (_tier.success) {
-            this._defenderSiegeTiers[i].tier = _tier.data;
-            this._defenderSiegeTiers[i].count = v as number;
-            this._defenderSiegeTiers[i].range = EvonySiege.ranges[_tier.data as keyof typeof EvonySiege.ranges];
+            if(DEBUG) {console.log(`tier is ${_tier.data}`)}
+            this._defenderSiegeTiers[i] = {
+              tier: _tier.data,
+              count: v as number,
+              range: EvonySiege.ranges[_tier.data as keyof typeof EvonySiege.ranges],
+            }
             if ((v as number) > 0) {
               dr = (this._defenderSiegeTiers[i].range > dr) ? this._defenderSiegeTiers[i].range : dr ;
             }
@@ -142,28 +145,17 @@ export class EvonyBattle extends withStores(SpectrumElement, [formValues]) {
               font-weight: bold;
             }
 
-            .divTable{ display: table; }
-            .divTableRow { display: table-row; }
-            .divTableHeading { 
-              display: table-header-group; 
-              
-            }
-            .divTableCell, .divTableHead { 
-              display: table-cell; 
-              width: 2%; 
-            }
-            .divTableHeadTop {display: table-cell; width: 6%}
-            .divTableFoot { display: table-footer-group;}
-            .divTableBody { display: table-row-group;}
+            .grid{ display: grid; }
+            
 
             div.Buffs {
                 width=100%;
-
-                
             }
+
             div.Attacker div.Defender {
               padding-top: 1.5rem;
             }
+
             div.Values {
               width=100%;
               display: flex;
@@ -178,24 +170,75 @@ export class EvonyBattle extends withStores(SpectrumElement, [formValues]) {
                   flex: 1 1 auto;
               }
           }
+
           div.Results {
             width=100%;
             margin-top: 2rem;
             border-top: solid 1px var(--sl-color-accent-low);
-           
-            
-
-            div.CalcResult {
-              
-            }
           }
-                
-          div.AttackersTroops {
+          div.troops {
+            grid-template-columns: repeat(60, 1fr);
+            grid-auto-rows: minmax(1rem, auto);
+            column-gap: 0.5px;
+            row-gap: 0.1px;
+            justify-items: center;
+            justify-content: space-around;
+            align-items: center;
+          }                
+
+          div.troopTableHeading {
+            grid-column-end: span 60;
+            grid-row-end: span 2;
+          }
+
+          div.tierTableHeading {
+            display: inline-grid;
+            grid-template-columns: subgrid;
+            grid-template-rows: subgrid;
+            grid-column-end: span 4;
+            grid-row: 1;
+            grid-row-end: span 2;
+            justify-items: end;
+            justify-content: end;
+            align-self: start;
+          }
+
+          div.tierLabel {
+            grid-column-end: span 4;
+            grid-row-end: span 1;
+            align-self: start;
+          }
+
+          div.classTableHeading {
+            grid-column-end: span 1;
+            grid-row-end: span 1;
+            align-self: end;
+          }
+
+          div.ResultRow {
+            display: inline-grid;
+            grid-template-columns: subgrid;
+            grid-template-rows: subgrid;
+            grid-column-start: 1;
+            grid-column-end: span 60;
+            grid-row-end: span 1;
             border: 0.6px solid;
-            border-color: var(--spectrum-green-600);
-            background-color: var(--spectrum-green-400);
+            justify-items: end;
+            justify-content: end;
+          }
+
+          div.AttackersTroops {
+            background-color: var(--theme2-green);
+          }
+
+          div.DefendersTroops {
+            background-color: var(--theme2-red);
           }
           
+          evony-siege {
+            border: 0.1px solid black;
+          }
+
           `
     if (super.styles !== null && super.styles !== undefined) {
       return [super.styles, localstyle];
@@ -550,35 +593,19 @@ export class EvonyBattle extends withStores(SpectrumElement, [formValues]) {
 
   render() {
     let ttr = html``;
+    let ast = html``;
+    let dst = html``;
     for (let i = 15; i > 0; i--) {
       ttr = html`
         ${ttr}
-        <div id="t${i}" class="not-content divTableHeadTop ">T${i}</div>
+        <div id="t${i}" class="not-content tierTableHeading ">
+          <div class="not-content tierLabel"><span>T${i}</span></div>
+          <div class="not-content classTableHeading">S</div>
+          <div class="not-content classTableHeading">A</div>
+          <div class="not-content classTableHeading">G</div>
+          <div class="not-content classTableHeading">M</div>
+        </div>
       `
-    }
-    ttr=html`
-      <div class="not-content divTableHeading">
-        ${ttr}
-      </div>
-    `
-    let row2 = html``
-    for (let i = 15; i > 0; i--) {
-      row2 = html`
-        ${row2}
-        <div id="T${i}Siege"   class="not-content divTableHead">Siege</div>
-        <div id="T${i}Archers" class="not-content divTableHead">Archers</div>
-        <div id="T${i}Ground"  class="not-content divTableHead">Ground</div>
-        <div id="T${i}Mounted" class="not-content divTableHead">Mounted</div>  
-      `
-    }
-    ttr=html`
-      ${ttr}
-      <div class="not-content divTableHeading">
-        ${row2}
-      </div>
-    `
-    let ast = html``;
-    for (let i = 15; i > 0; i--) {
       if(this._attackerSiegeTiers[i] !== null && this._attackerSiegeTiers[i] !== undefined) {
         const cst = this._attackerSiegeTiers[i];
         ast = html`${ast}
@@ -586,19 +613,41 @@ export class EvonyBattle extends withStores(SpectrumElement, [formValues]) {
         `
       } else {
         ast = html`${ast}
-          <evony-siege id=t${i}Siege tier="t${i}" count=0 class="divTableCell"></evony-siege>
+          <evony-siege id=t${i}Siege tier="t${i}" count=0 class="not-content"></evony-siege>
         `
       }
       ast = html`${ast}
-        <div id=t${i}Archers class="not-content divTableCell">0</div>
+        <div id=t${i}Archers class="not-content ">0</div>
       `
       ast = html`${ast}
-        <div id=t${i}Ground class="not-content divTableCell">0</div>
+        <div id=t${i}Ground class="not-content ">0</div>
       `
       ast = html`${ast}
-        <div id=t${i}Mounted class="not-content divTableCell">0</div>
+        <div id=t${i}Mounted class="not-content ">0</div>
+      `
+      if(this._defenderSiegeTiers[i] !== null && this._defenderSiegeTiers[i] !== undefined) {
+        const cst = this._defenderSiegeTiers[i];
+        dst = html`${dst}
+          <evony-siege tier=${cst.tier} count=${cst.count}></evony-siege>
+        `
+      } else {
+        dst = html`${dst}
+          <evony-siege id=t${i}Siege tier="t${i}" count="0" class="not-content"></evony-siege>
+        `
+      }
+      dst = html`${dst}
+        <div id=t${i}Archers class="not-content ">0</div>
+      `
+      dst = html`${dst}
+        <div id=t${i}Ground class="not-content ">0</div>
+      `
+      dst = html`${dst}
+        <div id=t${i}Mounted class="not-content ">0</div>
       `
     }
+    ttr=html`
+        ${ttr}
+    `
     return html`
       <div class="not-content BattleProperties">
         ${this.renderBuffSelector()}
@@ -609,12 +658,13 @@ export class EvonyBattle extends withStores(SpectrumElement, [formValues]) {
         <div class="not-content metadata">
           <span class="not-content bold">Battlefield Size:</span> ${this._battlefieldSize}
         </div>
-        <div class="not-content divTable troops">
+        <div class="not-content grid troops">
             ${ttr}
-            <div class="not-content divTableBody AttackersTroops">
-              <div class="not-content divTableRow">
-                ${ast}
-              </div>
+            <div class="not-content ResultRow AttackersTroops">
+              ${ast}
+            </div>
+            <div class="not-content ResultRow DefendersTroops">
+              ${dst}
             </div>
         </div>
       </div>

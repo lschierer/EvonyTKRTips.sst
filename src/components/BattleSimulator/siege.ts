@@ -139,14 +139,6 @@ export class EvonySiege extends withStores(SpectrumElement, [formValues]) {
   public static override get styles(): CSSResultArray {
     const localstyle = css`
 
- 
-
-      .BBox {
-        min-width: 1rem;
-        border: 0.05px solid;
-        padding-left: 0.1px;
-        margin-left: 0.1px;
-      }
     `
     if (super.styles !== null && super.styles !== undefined) {
       return [super.styles, localstyle];
@@ -156,9 +148,9 @@ export class EvonySiege extends withStores(SpectrumElement, [formValues]) {
 
   render() {
     return html`
-      <div id=${this.tier} class="not-content BBox">
-        ${this.count}
-      </div>
+      
+        <span>${this.count}</span>
+  
     `
   }
 }
