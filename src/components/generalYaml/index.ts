@@ -456,6 +456,79 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
         </div>
       </div>
       <hr>
+      <div class="not-content ascending">
+        <div class="not-content al1">
+          <span class="not-content h5">Ascending Level 1</span>
+          <sp-field-label for="al1numattrs" required>Number of Attributes per Level</sp-field-label>
+          <sp-number-field
+              id='al1numattrs'
+              value="0"
+              size="m"
+              style="--spectrum-stepper-width: 110px"
+              @change=${this.formHandler}
+              ></sp-number-field>
+          <div class="not-content al1attr">
+              ${al1T}
+          </div>
+        </div>
+        <div class="not-content al2">
+          <span class="not-content h5">Ascending Level 2</span>
+          <sp-field-label for="al2numattrs" required>Number of Attributes per Level</sp-field-label>
+          <sp-number-field
+              id='al2numattrs'
+              value="0"
+              size="m"
+              style="--spectrum-stepper-width: 110px"
+              @change=${this.formHandler}
+              ></sp-number-field>
+          <div class="not-content al2attr">
+              ${al2T}
+          </div>
+        </div>
+        <div class="not-content al3">
+          <span class="not-content h5">Ascending Level 3</span>
+          <sp-field-label for="al3numattrs" required>Number of Attributes per Level</sp-field-label>
+          <sp-number-field
+              id='al3numattrs'
+              value="0"
+              size="m"
+              style="--spectrum-stepper-width: 110px"
+              @change=${this.formHandler}
+              ></sp-number-field>
+          <div class="not-content al3attr">
+              ${al3T}
+          </div>
+        </div>
+        <div class="not-content al4">
+          <span class="not-content h5">Ascending Level 4</span>
+          <sp-field-label for="al4numattrs" required>Number of Attributes per Level</sp-field-label>
+          <sp-number-field
+              id='al4numattrs'
+              value="0"
+              size="m"
+              style="--spectrum-stepper-width: 110px"
+              @change=${this.formHandler}
+              ></sp-number-field>
+          <div class="not-content al4attr">
+              ${al4T}
+          </div>
+        </div>
+        <div class="not-content al5">
+          <span class="not-content h5">Ascending Level 5</span>
+          <sp-field-label for="al5numattrs" required>Number of Attributes per Level</sp-field-label>
+          <sp-number-field
+              id='al5numattrs'
+              value="0"
+              size="m"
+              style="--spectrum-stepper-width: 110px"
+              @change=${this.formHandler}
+              ></sp-number-field>
+          <div class="not-content al5attr">
+              ${al5T}
+          </div>
+        </div>
+      </div>
+      <hr>
       <div class="not-content specialities">
         <sp-field-group id="specialities" >
           <div class="not-content speciality one">
@@ -594,79 +667,6 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
             </div>
           </div>
         </sp-field-group>
-      </div>
-      <hr>
-      <div class="not-content ascending">
-        <div class="not-content al1">
-          <span class="not-content h5">Ascending Level 1</span>
-          <sp-field-label for="al1numattrs" required>Number of Attributes per Level</sp-field-label>
-          <sp-number-field
-              id='al1numattrs'
-              value="0"
-              size="m"
-              style="--spectrum-stepper-width: 110px"
-              @change=${this.formHandler}
-              ></sp-number-field>
-          <div class="not-content al1attr">
-              ${al1T}
-          </div>
-        </div>
-        <div class="not-content al2">
-          <span class="not-content h5">Ascending Level 2</span>
-          <sp-field-label for="al2numattrs" required>Number of Attributes per Level</sp-field-label>
-          <sp-number-field
-              id='al2numattrs'
-              value="0"
-              size="m"
-              style="--spectrum-stepper-width: 110px"
-              @change=${this.formHandler}
-              ></sp-number-field>
-          <div class="not-content al2attr">
-              ${al2T}
-          </div>
-        </div>
-        <div class="not-content al3">
-          <span class="not-content h5">Ascending Level 3</span>
-          <sp-field-label for="al3numattrs" required>Number of Attributes per Level</sp-field-label>
-          <sp-number-field
-              id='al3numattrs'
-              value="0"
-              size="m"
-              style="--spectrum-stepper-width: 110px"
-              @change=${this.formHandler}
-              ></sp-number-field>
-          <div class="not-content al3attr">
-              ${al3T}
-          </div>
-        </div>
-        <div class="not-content al4">
-          <span class="not-content h5">Ascending Level 4</span>
-          <sp-field-label for="al4numattrs" required>Number of Attributes per Level</sp-field-label>
-          <sp-number-field
-              id='al4numattrs'
-              value="0"
-              size="m"
-              style="--spectrum-stepper-width: 110px"
-              @change=${this.formHandler}
-              ></sp-number-field>
-          <div class="not-content al4attr">
-              ${al4T}
-          </div>
-        </div>
-        <div class="not-content al5">
-          <span class="not-content h5">Ascending Level 5</span>
-          <sp-field-label for="al5numattrs" required>Number of Attributes per Level</sp-field-label>
-          <sp-number-field
-              id='al5numattrs'
-              value="0"
-              size="m"
-              style="--spectrum-stepper-width: 110px"
-              @change=${this.formHandler}
-              ></sp-number-field>
-          <div class="not-content al5attr">
-              ${al5T}
-          </div>
-        </div>
       </div>
     </div>
     `
