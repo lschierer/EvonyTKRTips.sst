@@ -49,6 +49,7 @@ export const buffAdverbs: { [key in generalUseCaseType]: b.BuffAdverbArrayType }
         b.Condition.enum.brings_dragon_or_beast_to_attack,
         b.Condition.enum.leading_the_army_to_attack,
         b.Condition.enum.Reduces_Enemy,
+        b.Condition.enum.Reduces_Enemy_in_Attack,
         b.Condition.enum.Enemy,
     ],
     [generalUseCase.enum.Defense]: [
@@ -128,7 +129,10 @@ function buffFilter(current: b.Buff, general: GeneralClassType, score_for: b.Att
             }
             return false;
         }
-        if (condition.includes(b.Condition.enum.Reduces_Enemy)) {
+        if (
+            (condition.includes(b.Condition.enum.Reduces_Enemy)) ||
+            (condition.includes(b.Condition.enum.Reduces_Enemy_in_Attack)) 
+            ) {
             if (situations !== null && situations !== undefined && (!(situations.includes(b.Condition.enum.Reduces_Monster) || situations.includes(b.Condition.enum.When_an_officer)))) {
                 if (current.attribute === b.AttributeSchema.enum.Attack && score_for === b.AttributeSchema.enum.Defense) {
                     return true
@@ -229,7 +233,8 @@ export function buff(eg: GeneralClassType, situations: b.BuffAdverbArrayType, pr
                             if ((current.condition !== null && current.condition !== undefined) &&
                                 (
                                     ([current.condition].flat().includes(b.Condition.enum.Reduces_Monster)) ||
-                                    ([current.condition].flat().includes(b.Condition.enum.Reduces_Enemy))
+                                    ([current.condition].flat().includes(b.Condition.enum.Reduces_Enemy)) ||
+                                    ([current.condition].flat().includes(b.Condition.enum.Reduces_Enemy_in_Attack))
                                 )
                             ) {
                                 defense = defense + Math.abs(current.value.number);
@@ -315,7 +320,8 @@ export function buff(eg: GeneralClassType, situations: b.BuffAdverbArrayType, pr
                                     if ((current.condition !== null && current.condition !== undefined) &&
                                         (
                                             ([current.condition].flat().includes(b.Condition.enum.Reduces_Monster)) ||
-                                            ([current.condition].flat().includes(b.Condition.enum.Reduces_Enemy))
+                                            ([current.condition].flat().includes(b.Condition.enum.Reduces_Enemy)) ||
+                                            ([current.condition].flat().includes(b.Condition.enum.Reduces_Enemy_in_Attack))
                                         )
                                     ) {
                                         defense = defense + Math.abs(current.value.number);
