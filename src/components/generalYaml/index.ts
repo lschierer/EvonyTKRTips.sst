@@ -32,7 +32,7 @@ import { parse, isDocument } from 'yaml'
 
 import { GeneralBuffController } from "./Buff.ts";
 
-import { addValue, formValues } from '../formValueStore.ts';
+import { addValue, formInit, getValue, formValues } from '../formValueStore.ts';
 
 import * as b from "@schemas/baseSchemas.ts";
 
@@ -120,6 +120,7 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
 
   public connectedCallback() {
     super.connectedCallback()
+    formInit();
   }
 
   public willUpdate(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
@@ -258,50 +259,50 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
     const al3T = new Array<TemplateResult>();
     const al4T = new Array<TemplateResult>();
     const al5T = new Array<TemplateResult>();
-    for (let i = 0; i < (formValues.value?.get('b1numattrs') as number); i++) {
+    for (let i = 0; i < (getValue('b1numattrs') as number); i++) {
       b1T.push(this.buffs.render('special', `b1.${i}`, 'left'))
     }
-    for (let i = 0; i < (formValues.value?.get('s1numattrs') as number); i++) {
+    for (let i = 0; i < (getValue('s1numattrs') as number); i++) {
       s1gT.push(this.buffs.render(b.qualityColor.enum.Green, `1.${i}`, 'left'))
       s1bT.push(this.buffs.render(b.qualityColor.enum.Blue, `1.${i}`, 'left'))
       s1pT.push(this.buffs.render(b.qualityColor.enum.Purple, `1.${i}`, 'left'))
       s1oT.push(this.buffs.render(b.qualityColor.enum.Orange, `1.${i}`, 'left'))
       s1GT.push(this.buffs.render(b.qualityColor.enum.Gold, `1.${i}`, 'left'))
     }
-    for (let i = 0; i < (formValues.value?.get('s2numattrs') as number); i++) {
+    for (let i = 0; i < (getValue('s2numattrs') as number); i++) {
       s2gT.push(this.buffs.render(b.qualityColor.enum.Green, `2.${i}`, 'left'))
       s2bT.push(this.buffs.render(b.qualityColor.enum.Blue, `2.${i}`, 'left'))
       s2pT.push(this.buffs.render(b.qualityColor.enum.Purple, `2.${i}`, 'left'))
       s2oT.push(this.buffs.render(b.qualityColor.enum.Orange, `2.${i}`, 'left'))
       s2GT.push(this.buffs.render(b.qualityColor.enum.Gold, `2.${i}`, 'left'))
     }
-    for (let i = 0; i < (formValues.value?.get('s3numattrs') as number); i++) {
+    for (let i = 0; i < (getValue('s3numattrs') as number); i++) {
       s3gT.push(this.buffs.render(b.qualityColor.enum.Green, `3.${i}`, 'left'))
       s3bT.push(this.buffs.render(b.qualityColor.enum.Blue, `3.${i}`, 'left'))
       s3pT.push(this.buffs.render(b.qualityColor.enum.Purple, `3.${i}`, 'left'))
       s3oT.push(this.buffs.render(b.qualityColor.enum.Orange, `3.${i}`, 'left'))
       s3GT.push(this.buffs.render(b.qualityColor.enum.Gold, `3.${i}`, 'left'))
     }
-    for (let i = 0; i < (formValues.value?.get('s4numattrs') as number); i++) {
+    for (let i = 0; i < (getValue('s4numattrs') as number); i++) {
       s4gT.push(this.buffs.render(b.qualityColor.enum.Green, `4.${i}`, 'left'))
       s4bT.push(this.buffs.render(b.qualityColor.enum.Blue, `4.${i}`, 'left'))
       s4pT.push(this.buffs.render(b.qualityColor.enum.Purple, `4.${i}`, 'left'))
       s4oT.push(this.buffs.render(b.qualityColor.enum.Orange, `4.${i}`, 'left'))
       s4GT.push(this.buffs.render(b.qualityColor.enum.Gold, `4.${i}`, 'left'))
     }
-    for (let i = 0; i < (formValues.value?.get('al1numattrs') as number); i++) {
+    for (let i = 0; i < (getValue('al1numattrs') as number); i++) {
       al1T.push(this.buffs.render((6).toString(), `.${i}`, 'left'))
     }
-    for (let i = 0; i < (formValues.value?.get('al2numattrs') as number); i++) {
+    for (let i = 0; i < (getValue('al2numattrs') as number); i++) {
       al2T.push(this.buffs.render((7).toString(), `.${i}`, 'left'))
     }
-    for (let i = 0; i < (formValues.value?.get('al3numattrs') as number); i++) {
+    for (let i = 0; i < (getValue('al3numattrs') as number); i++) {
       al3T.push(this.buffs.render((8).toString(), `.${i}`, 'left'))
     }
-    for (let i = 0; i < (formValues.value?.get('al4numattrs') as number); i++) {
+    for (let i = 0; i < (getValue('al4numattrs') as number); i++) {
       al4T.push(this.buffs.render((9).toString(), `.${i}`, 'left'))
     }
-    for (let i = 0; i < (formValues.value?.get('al5numattrs') as number); i++) {
+    for (let i = 0; i < (getValue('al5numattrs') as number); i++) {
       al5T.push(this.buffs.render((10).toString(), `.${i}`, 'left'))
     }
 
@@ -676,26 +677,27 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
 
     console.log(`renderRight`)
     let exportable = '---';
-    if (formValues.value !== null && formValues.value !== undefined) {
+    if (formValues.get() !== null && formValues.get() !== undefined) {
+      console.log(`form values are ${JSON.stringify(formValues.get())}`)
       exportable = `${exportable}\ngeneral:`;
-      exportable = `${exportable}\n  name: ${formValues.value.get('name')}`;
+      exportable = `${exportable}\n  name: ${getValue('name')}`;
       exportable = `${exportable}\n  display: summary`;
-      exportable = `${exportable}\n  leadership: ${formValues.value.get('leadership')}`;
-      exportable = `${exportable}\n  leadership_increment: ${formValues.value.get('lgi')}`;
-      exportable = `${exportable}\n  attack: ${formValues.value.get('attack')}`;
-      exportable = `${exportable}\n  attack_increment: ${formValues.value.get('agi')}`;
-      exportable = `${exportable}\n  defense: ${formValues.value.get('defense')}`;
-      exportable = `${exportable}\n  defense_increment: ${formValues.value.get('dgi')}`;
-      exportable = `${exportable}\n  politics: ${formValues.value.get('politics')}`;
-      exportable = `${exportable}\n  politics_increment: ${formValues.value.get('pgi')}`;
+      exportable = `${exportable}\n  leadership: ${getValue('leadership')}`;
+      exportable = `${exportable}\n  leadership_increment: ${getValue('lgi')}`;
+      exportable = `${exportable}\n  attack: ${getValue('attack')}`;
+      exportable = `${exportable}\n  attack_increment: ${getValue('agi')}`;
+      exportable = `${exportable}\n  defense: ${getValue('defense')}`;
+      exportable = `${exportable}\n  defense_increment: ${getValue('dgi')}`;
+      exportable = `${exportable}\n  politics: ${getValue('politics')}`;
+      exportable = `${exportable}\n  politics_increment: ${getValue('pgi')}`;
       exportable = `${exportable}\n  stars: '10'`
       exportable = `${exportable}\n  level: '1'`
-      exportable = `${exportable}\n  score_as: ${formValues.value.get('score_as')}`
+      exportable = `${exportable}\n  score_as: ${getValue('score_as')}`
 
       if (this.buffEventPending['b1name']) {
         console.log(`b1name is set`)
         exportable = `${exportable}\n  books:`;
-        exportable = `${exportable}\n    - name: ${formValues.value.get('b1name')}`;
+        exportable = `${exportable}\n    - name: ${getValue('b1name')}`;
         let s1 = this.buffs.render('special', 'b1.', 'right', 'b1numattrs');
         const toAdd = s1.values;
         if (toAdd.length >= 1) {
@@ -713,7 +715,7 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
 
         if (this.buffEventPending['s1name']) {
           console.log(`detected something to get`)
-          exportable = `${exportable}\n    - name: ${formValues.value.get('s1name')}`;
+          exportable = `${exportable}\n    - name: ${getValue('s1name')}`;
           exportable = `${exportable}\n      attribute:`;
 
           let s1 = this.buffs.render(b.qualityColor.enum.Green, `1.`, 'right', 's1numattrs');
@@ -731,7 +733,7 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
 
         if (this.buffEventPending['s2name']) {
           console.log(`detected something to get`)
-          exportable = `${exportable}\n    - name: ${formValues.value.get('s2name')}`;
+          exportable = `${exportable}\n    - name: ${getValue('s2name')}`;
           exportable = `${exportable}\n      attribute:`;
           let s1 = this.buffs.render(b.qualityColor.enum.Green, '2.', 'right', 's2numattrs');
           exportable = `${exportable}\n${s1.values}`
@@ -747,7 +749,7 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
 
         if (this.buffEventPending['s3name']) {
           console.log(`detected something to get`)
-          exportable = `${exportable}\n    - name: ${formValues.value.get('s1name')}`;
+          exportable = `${exportable}\n    - name: ${getValue('s1name')}`;
           exportable = `${exportable}\n      attribute:`;
           let s1 = this.buffs.render(b.qualityColor.enum.Green, '3.', 'right', 's3numattrs');
           exportable = `${exportable}\n${s1.values}`
@@ -763,7 +765,7 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
 
         if (this.buffEventPending['s4name']) {
           console.log(`detected something to get`)
-          exportable = `${exportable}\n    - name: ${formValues.value.get('s1name')}`;
+          exportable = `${exportable}\n    - name: ${getValue('s1name')}`;
           exportable = `${exportable}\n      attribute:`;
           let s1 = this.buffs.render(b.qualityColor.enum.Green, '4.', 'right', 's4numattrs');
           console.log(`s1 is ${s1}`)
