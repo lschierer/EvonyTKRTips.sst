@@ -191,7 +191,8 @@ export class GeneralFilter extends withStores(SpectrumElement, [selectedPrimarie
         if(primaries[i] !== null && primaries[i] !== undefined) {
           const v = primaries[i];
           const k = Object.keys(v)[0];
-          const e = v.k; 
+          const e = v[k]; 
+          console.log(`${k} set to ${e}`)
           if(k !== null && k !== undefined) {
             spt = html`${spt}
               <sp-menu-item value=${k} selected=${(e === true)? true : nothing}>${k}</sp-menu-item>
