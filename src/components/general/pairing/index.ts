@@ -24,6 +24,7 @@ import '@spectrum-web-components/tooltip/sp-tooltip.js';
 
 import {TypeSelector} from './TypeSelector.ts';
 import {InvestmentSelector} from './InvestmentSelector.ts';
+import {GeneralFilter}  from './generalFilter';
 import {PairingTable} from './table.ts';
 
 import {
@@ -159,14 +160,26 @@ export class PairingPage extends withStores(SpectrumElement, [allGenerals,genera
       min-height: calc(var(--spectrum-global-dimension-size-6000)*2);
       
     }
-    
+    .topRow {
+      display: flex;
+      flex-direction: row;
+    }
+    .type {
+      width: 50%;
+    }
+    .filter {
+      width: 50%;
+    }
   `
 
   public render() {
 
     return html`
       <div class="sp-table-container">
-        <type-selector role="primary"></type-selector>
+        <div class="topRow">
+          <div class="type"><type-selector role="primary"></type-selector></div>
+          <div class="filter"><general-filter></general-filter></div>
+        </div>
         <investment-selector generalRole="primary" @PickerChanged=${this.changeHandler} ></investment-selector>
         <investment-selector generalRole="secondary" @PickerChanged=${this.changeHandler}></investment-selector>
         <pairing-table></pairing-table>
