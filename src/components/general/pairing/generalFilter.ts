@@ -46,7 +46,7 @@ export interface GeneralToggle {
   [key: string]: boolean;
 }
 
-export const selectedPrimaries = persistentAtom<GeneralToggle[]>('primaries', [], {
+export const selectedPrimaries = persistentAtom<GeneralToggle[]>('evonyTKRTipsPrimaries', [], {
   listen: false,
   encode: JSON.stringify,
   decode: JSON.parse,
@@ -62,49 +62,20 @@ let destroy = logger({
   'selectedSecondaries': selectedSecondaries,
 })
 
-onMount(selectedPrimaries, () => {
-  console.log(`selectedPrimaries mount called`)
+export const togglePrimary = action(selectedPrimaries, 'toggle', (store, general: string, enabled: boolean) => {
+  const data = store.get();
+  const keys = new Set(data.map((so) => Object.keys(so)[0]));
   
-  const rp = task(async () => {
-    allGenerals.subscribe(ag => {
-      console.log(`selectedPrimaries subscription to allGenerals`)
-      const returnable = new Set(selectedPrimaries.get());
-      if(ag !== null && ag !== undefined) {
-        const valid = GeneralArray.safeParse(ag);
-        if(valid.success) {
-          if(DEBUG) {console.log(`valid AG to update SP`)}
-          for (let i in valid.data) {
-            const one = valid.data[i];
-            const newName = one.general.name;
-            const toAdd = {[newName]: true};
-            const falseVersion = {[newName]: false};
-            if(!(returnable.has(falseVersion))) {
-              returnable.add(toAdd);
-            }
-          }
-        } else {
-          console.error(`safeparse not successful with ${valid.error}`);
-        }
-      } else {
-        console.log(`selectedPrimaries not updated because AG was null`)
-      }
-      selectedPrimaries.set([...returnable]);
-    })
-  })
-})
-
-export const togglePrimary = action(selectedSecondaries, 'toggle', (store, general: string, enabled: boolean) => {
-  const returnable = new Set(store.get());
+  if(DEBUG) {console.log(`set of ${keys.size}`)}
   const trueVersion = {[general]: true};
   const falseVersion = {[general]: false};
-  returnable.delete(trueVersion);
-  returnable.delete(falseVersion);
-  returnable.add({[general]: enabled});
-  selectedPrimaries.set([...returnable].sort((a,b) => {
-    const ak = Object.keys(a)[0];
-    const bk = Object.keys(b)[0];
-    return ak.localeCompare(bk);
-  }));
+  if(DEBUG) {console.log(`true is ${JSON.stringify(trueVersion)} and false is ${JSON.stringify(falseVersion)}`)}
+  const index = data.findIndex((element) => {
+    const k = Object.keys(element)[0];
+    return (!(k as string).localeCompare(general))
+  })
+  data[index] = {[general]: enabled}
+  store.set(data);
 })
 
 const primaryEnabled = (mykey: string) => {
@@ -121,7 +92,7 @@ const primaryEnabled = (mykey: string) => {
 }
 
 @customElement('general-filter')
-export class GeneralFilter extends withStores(SpectrumElement, [selectedPrimaries, selectedSecondaries]) { 
+export class GeneralFilter extends withStores(SpectrumElement, [allGenerals, selectedPrimaries, selectedSecondaries]) { 
 
   constructor() {
     super();
@@ -130,6 +101,43 @@ export class GeneralFilter extends withStores(SpectrumElement, [selectedPrimarie
     });
     selectedSecondaries.subscribe(ss => {
       this.requestUpdate();
+    })
+
+    allGenerals.subscribe(ag => {
+      if(DEBUG) {console.log(`ag subscribe in general-filter`) }
+      if(ag !== null && ag !== undefined) {
+        const valid = GeneralArray.safeParse(ag);
+        if(valid.success) {
+          const spv = selectedPrimaries.get();
+          const ssv = selectedSecondaries.get();
+          const spKeys = new Set(spv.map((spe) => {
+            if(spe !== null && spe !== undefined) {
+              const k = Object.keys(spe)[0];
+              return k;
+            }
+          }))
+          const ssKeys = new Set(ssv.map((sse) => {
+            if(sse !== null && sse !== undefined) {
+              const k = Object.keys(sse)[0];
+              return k;
+            }
+          }))
+          for (let i in valid.data) {
+            const one = valid.data[i];
+            const name = one.general.name;
+            if(!spKeys.has(name)) {
+              const toAdd = {[name]: true};
+              spv.push(toAdd);
+              selectedPrimaries.set(spv);
+            }
+            if(!ssKeys.has(name)) {
+              const toAdd = {[name]: true};
+              ssv.push(toAdd);
+              selectedSecondaries.set(ssv);
+            }
+          }
+        }
+      }
     })
 
   }
@@ -176,15 +184,28 @@ export class GeneralFilter extends withStores(SpectrumElement, [selectedPrimarie
 
   public togglePrimarySelection(e: CustomEvent) {
 
-    const values = (e.target as Menu).value.split(',');
-    values.forEach((v) => {
-      console.log(v)
+    const values = new Set((e.target as Menu).value.split(','));
+    const existing = new Set(selectedPrimaries.get());
+    const eKeys = new Set();
+    existing.forEach((ev) => {
+      if(ev !== null && ev !== undefined) {
+        const k = Object.keys(ev)[0];
+        if(DEBUG){console.log(`found existing key ${k}`)};
+        const trueVersion = {[k]: true};
+        const falseVersion = {[k]: false};
+        if(values.has(k)){
+          togglePrimary(k,true);
+        } else {
+          togglePrimary(k,false);
+        }
+      }
     })
   }
 
   render() {
     let spt = html``;
     const primaries = selectedPrimaries.get();
+    if(DEBUG) {console.log(`render SP has ${primaries.length} entries`)}
     const secondaries = selectedSecondaries.get();
     if(primaries !== null && primaries !== undefined) {
       for(let i = 0; i < primaries.length; i++) {
@@ -192,7 +213,7 @@ export class GeneralFilter extends withStores(SpectrumElement, [selectedPrimarie
           const v = primaries[i];
           const k = Object.keys(v)[0];
           const e = v[k]; 
-          console.log(`${k} set to ${e}`)
+          if (DEBUG) {console.log(`${k} set to ${e}`) }
           if(k !== null && k !== undefined) {
             spt = html`${spt}
               <sp-menu-item value=${k} selected=${(e === true)? true : nothing}>${k}</sp-menu-item>
