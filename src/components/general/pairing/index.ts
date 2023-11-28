@@ -165,10 +165,10 @@ export class PairingPage extends withStores(SpectrumElement, [allGenerals,genera
       flex-direction: row;
     }
     .type {
-      width: 50%;
+      width: 60%;
     }
     .filter {
-      width: 50%;
+      width: 40%;
     }
   `
 
