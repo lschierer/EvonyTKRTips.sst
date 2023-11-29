@@ -2,11 +2,15 @@ import { atom, map, action, computed } from "nanostores";
 import { persistentAtom, persistentMap } from '@nanostores/persistent'
 import { logger } from '@nanostores/logger'
 
-import { z, type ZodError } from "zod";
+import * as z from "zod";
+
+import {  type ZodError } from "zod";
 
 const DEBUG = true;
 
 import * as b from "@schemas/baseSchemas.ts";
+
+import * as util from '../../../lib/util';
 
 import { type generalInvestment, } from './selectionStore'
 
@@ -29,59 +33,76 @@ import { typeAndUseMap, primaryInvestmentMap, secondaryInvestmentMap } from "./s
 
 import { buffAdverbs, buff } from './buff';
 
-export interface GeneralToggle {
-  [key: string]: boolean;
-}
+export const GeneralToggle = z.record(
+  z.string().min(1),
+  z.boolean(),
+);
+export type GeneralToggleType = z.infer<typeof GeneralToggle>;
+
+const SelectionObject = z.object({
+  'primaries': z.array(GeneralToggle).nullish(),
+  'secondaries': z.array(GeneralToggle).nullish(),
+})
+export type SelectionObjectType = z.infer<typeof SelectionObject>;
 
 export const allGenerals = atom<GeneralArrayType | null>(null);
 
-
-export const selectedPrimaries = persistentAtom<WeakMap<GeneralElement,boolean>>('evonyTKRTipsPrimaries', new WeakMap(), {
-  listen: false,
-  encode: JSON.stringify,
-  decode: JSON.parse,
+export const selections = map<SelectionObjectType>({
+  'primaries': null,
+  'secondaries': null,
 })
 
-export const selectedSecondaries = persistentAtom<Record<string,boolean>[]>('secondaries', [], {
-    encode: JSON.stringify,
-    decode: JSON.parse,
+export const filteredPrimaries = computed([allGenerals,selections], (ag, sp) => {
+  const returnable = new Set<GeneralElement>();
+  const agv = GeneralArray.safeParse(ag);
+
+  if(agv.success && (sp !== undefined && sp !== null )) {
+    const primaries = sp.primaries;  
+    if(primaries !== null && primaries !== undefined && !util.isEmpty(primaries)) {
+      for(let i in agv.data) {
+        const one = agv.data[i];
+        const os = primaries.filter((pv) => {
+          const k = Object.keys(pv)[0];
+          return (k.localeCompare(one.general.name));
+        })[0];
+        const osv = Object.values(os)[0];
+        if(osv === true) {
+          returnable.add(one);
+        }
+      }
+      return [...returnable];
+    }
+  } else {
+    if(agv.success) {
+      if(DEBUG) {console.log(`returning unfiltered agv.data`)}
+      return agv.data;
+    } else {
+      console.error(`I have no parsable avg`)
+    }
+  }
 })
 
-export const filteredPrimaries = computed([allGenerals,selectedPrimaries], (ag, sp) => {
+export const filteredSecondaries = computed([allGenerals, selections], (ag, ss) => {
   const returnable = new Set<GeneralElement>();
   const agv = GeneralArray.safeParse(ag);
   
-  if(agv.success && (sp !== undefined && sp !== null)) {
-    
-    for(let i in agv.data) {
-      const one = agv.data[i];
-      if(sp.has(one) && (sp.get(one) === true)) {
-        returnable.add(one);
+  if(agv.success && (ss !== undefined && ss !== null )) {
+    const secondaries = ss.secondaries;
+    if(secondaries !== null && secondaries !== undefined && util.isEmpty(secondaries)) {
+      for(let i in agv.data) {
+        const one = agv.data[i];
+        //do something
       }
+      return [...returnable];
+    }
+  } else {
+    if(agv.success) {
+      if(DEBUG) {console.log(`returning unfiltered agv.data`)}
+      return agv.data;
+    } else {
+      console.error(`I have no parsable avg`)
     }
   }
-  return [...returnable];
-})
-
-export const filteredSecondaries = computed([allGenerals, selectedSecondaries], (ag, ss) => {
-  const returnable = new Set<GeneralElement>();
-  const agv = GeneralArray.safeParse(ag);
-  if(agv.success && ss.length > 0) {
-    const ssS = new Set(ss.map((sse) => {
-      const k = Object.keys(sse)[0]
-      if(sse[k] === true) {
-        return k;
-      }
-    }));
-    
-    for(let i in agv.data) {
-      const one = agv.data[i];
-      if(ssS.has(one.general.name)) {
-        returnable.add(one);
-      }
-    }
-  }
-  return [...returnable];
 })
 
 export const generalPairs = computed([allGenerals, filteredPrimaries, filteredSecondaries, primaryInvestmentMap, secondaryInvestmentMap, typeAndUseMap, conflictingGenerals],
@@ -173,51 +194,88 @@ export const generalPairs = computed([allGenerals, filteredPrimaries, filteredSe
 )
 
 
-export const togglePrimary = action(selectedPrimaries, 'toggle', (store, general: GeneralElement, enabled: boolean) => {
-  const data = store.get();
-  data.set(general,enabled);
-  store.set(data);
+export const togglePrimary = action(selections, 'toggleP', (store, general: GeneralElement, enabled: boolean) => {
+  const data = store.get().primaries;
+  const nd = new Array<GeneralToggleType>();
+  if(data !== null && data !== undefined ) {
+    for(let i =0; i < data.length; i++) {
+      const k = Object.keys(data[i])[0];
+      const v = Object.values(data[i])[0];
+      if(!k.localeCompare(general.general.name)){
+        if(DEBUG) {console.log(`found ${k} to toggleP`)}
+        nd.push({[general.general.name]: enabled});
+      } else {
+        nd.push(data[i]);
+      }
+    }
+  } else {
+    nd.push({[general.general.name]: enabled});
+    
+  }
+  store.setKey('primaries',nd)
 })
 
-export const toggleSecondary = action(selectedSecondaries, 'toggle', (store, general: string, enabled: boolean) => {
-  const data = store.get();
-  const keys = new Set(data.map((so) => Object.keys(so)[0]));
+export const toggleSecondary = action(selections, 'toggleS', (store, general: GeneralElement, enabled: boolean) => {
+  const data = store.get().secondaries;
   
-  if(DEBUG) {console.log(`set of ${keys.size}`)}
-  const trueVersion = {[general]: true};
-  const falseVersion = {[general]: false};
-  if(DEBUG) {console.log(`true is ${JSON.stringify(trueVersion)} and false is ${JSON.stringify(falseVersion)}`)}
-  const index = data.findIndex((element) => {
-    const k = Object.keys(element)[0];
-    return (!(k as string).localeCompare(general))
-  })
-  data[index] = {[general]: enabled}
-  store.set(data);
 })
 
-export const resetPrimary = action(selectedPrimaries, 'reset', (store) => {
-  let data = store.get();
-  const generals = allGenerals.get();
-  if(generals !== null && generals !== undefined) {
-    generals.forEach((value,key) => {
-      data.set(value,true);
-    })
-    store.set(data);
+export const resetPrimary = action(selections, 'resetP', (store) => {
+  if(store !== null && store !== undefined) {
+    let nd = new Array<GeneralToggleType>();
+    const generals = allGenerals.get();
+    if(generals !== null && generals !== undefined) {
+      for(let i = 0; i < generals.length; i++){
+        const value = generals[i];
+        if(value !== null && value !== undefined ){
+          if(nd !== null && nd !== undefined) {
+            nd.push({[value.general.name]:true});
+          }
+        }
+      }
+      store.setKey('primaries',nd);
+    }
+    else { 
+      store.setKey('primaries', null);
+    }
   }
 })
 
-export const resetSecondary = action(selectedSecondaries, 'reset', (store) => {
-  let data = store.get();
-  const keys = data.map((so) => Object.keys(so)[0]);
-  data = data.map((value, index) => {
-    return {[keys[index] as string]: true};
-  })
-  store.set(data);
+export const resetSecondary = action(selections, 'reset', (store) => {
+  if(store !== null && store !== undefined) {
+    let nd = new Array<GeneralToggleType>();
+    const generals = allGenerals.get();
+    if(generals !== null && generals !== undefined) {
+      for(let i = 0; i < generals.length; i++){
+        const value = generals[i];
+        if(value !== null && value !== undefined ){
+          if(nd !== null && nd !== undefined) {
+            nd.push({[value.general.name]:true});
+          }
+        }
+      }
+      store.setKey('secondaries',nd);
+    }
+    else { 
+      store.setKey('secondaries', null);
+    }
+  }
 })
 
-let destroy = logger({
+let d1 = logger({
   'AllGenerals': allGenerals,
+});
+/*
+let d2 = logger({
+  'selections': selections,
+});
+*/
+let d3 = logger({
+  'filteredPrimaries': filteredPrimaries,
+  'filteredSecondaries': filteredSecondaries,
+  
+});
+
+let d4 = logger({
   'GeneralPairs': generalPairs,
-  'selectedPrimaries': selectedPrimaries,
-  'selectedSecondaries': selectedSecondaries,
-})
+});
