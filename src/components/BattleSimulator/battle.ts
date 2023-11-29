@@ -30,7 +30,7 @@ import { Switch } from '@spectrum-web-components/switch';
 
 
 
-import { addValue, formValues } from '../formValueStore';
+import { addValue, getValue, formValues } from '../formValueStore';
 
 import { Tier, type TierType } from "@schemas/troopsSchemas.ts"
 import { statusLights, type statusLightsType } from "@schemas/statusLightsSchema.ts";
@@ -76,7 +76,7 @@ export class EvonyBattle extends withStores(SpectrumElement, [formValues]) {
       let ar = 0;
       let dr = 0;
       for (let i = 15; i > 0; i--) {
-        let v = fv.get(`Attacker.t${i}.siege`);
+        let v = getValue(`Attacker.t${i}.siege`);
         if (v !== null && v !== undefined) {
           if(DEBUG) {console.log(`Attacker.t${i}.siege is ${v}`)}
           const _tier = Tier.safeParse(`t${i}`);
@@ -92,7 +92,7 @@ export class EvonyBattle extends withStores(SpectrumElement, [formValues]) {
             }
           }
         }
-        v = fv.get(`Defender.t${i}.siege`);
+        v = getValue(`Defender.t${i}.siege`);
         if (v !== null && v !== undefined) {
           if(DEBUG) {console.log(`Defender.t${i}.siege is ${v}`)}
           const _tier = Tier.safeParse(`t${i}`);
@@ -112,10 +112,10 @@ export class EvonyBattle extends withStores(SpectrumElement, [formValues]) {
       if(DEBUG) { console.log(`ar is ${ar}`)}
       if(DEBUG) { console.log(`dr is ${dr}`)}
 
-      const arp = fv.get('arp');
-      const drp = fv.get('drp');
-      const arf = fv.get('arf');
-      const drf = fv.get('drf');
+      const arp = getValue('arp');
+      const drp = getValue('drp');
+      const arf = getValue('arf');
+      const drf = getValue('drf');
       ar = (arf !== undefined) ? ((arf as number) > 0) ? ar + (arf as number) : ar : ar;
       dr = (drf !== undefined) ? ((drf as number) > 0) ? dr + (drf as number) : 
       dr : dr;
