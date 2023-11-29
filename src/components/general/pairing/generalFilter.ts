@@ -2,7 +2,7 @@ import {html, css, nothing, type CSSResultArray, type PropertyValues, type Prope
 import {customElement, property, state} from 'lit/decorators.js';
 import {ref} from 'lit/directives/ref.js';
 
-import {boolean, z} from 'zod';
+import {z} from 'zod';
 
 import { action, onMount, task} from "nanostores";
 import { logger } from '@nanostores/logger'
@@ -31,9 +31,11 @@ import {
 } from '@spectrum-web-components/menu';
 import { Button, ClearButton, CloseButton } from '@spectrum-web-components/button';
 
-const DEBUG = false;
+const DEBUG = true;
 
 import * as b from '@schemas/baseSchemas.ts'
+
+import * as util from '../../../lib/util';
 
 import {
   GeneralArray,
@@ -41,50 +43,60 @@ import {
     GeneralElementSchema,
 } from "@schemas/generalsSchema";
 
-import { type GeneralToggle, allGenerals, filteredPrimaries, selectedPrimaries, selectedSecondaries, togglePrimary, toggleSecondary, resetPrimary, resetSecondary } from "./generals";
+import { 
+  GeneralToggle,
+  type GeneralToggleType,
+  allGenerals, 
+  filteredPrimaries, 
+  selections, 
+  togglePrimary, 
+  toggleSecondary, 
+  resetPrimary, 
+  resetSecondary 
+} from "./generals";
 
 
 @customElement('general-filter')
-export class GeneralFilter extends withStores(SpectrumElement, [allGenerals, filteredPrimaries, selectedPrimaries, selectedSecondaries]) { 
+export class GeneralFilter extends withStores(SpectrumElement, [allGenerals, filteredPrimaries, selections]) { 
 
   constructor() {
     super();
-    selectedPrimaries.subscribe(sp => {
+    selections.subscribe(sp => {
+      if(DEBUG){console.log(`requesting update for selections subscribe`)}
       this.requestUpdate();
     });
-    selectedSecondaries.subscribe(ss => {
-      this.requestUpdate();
-    })
 
     allGenerals.subscribe(ag => {
       if(DEBUG) {console.log(`ag subscribe in general-filter`) }
-      /*if(ag !== null && ag !== undefined) {
+      if(ag !== null && ag !== undefined) {
         const valid = GeneralArray.safeParse(ag);
-        const spv = selectedPrimaries.get();
-        if(valid.success && (spv !== null && spv !== undefined)) {
-          const ssv = selectedSecondaries.get();
-          const ssKeys = new Set(ssv.map((sse) => {
-            if(sse !== null && sse !== undefined) {
-              const k = Object.keys(sse)[0];
-              return k;
-            }
-          }))
-          for (let i in valid.data) {
-            const one = valid.data[i];
-            const name = one.general.name;
-            if(!spv.has(one)){
-              spv.set(one,true);
-              selectedPrimaries.set(spv);
-              this.requestUpdate();
-            }
-            if(!ssKeys.has(name)) {
-              const toAdd = {[name]: true};
-              ssv.push(toAdd);
-              selectedSecondaries.set(ssv);
-            }
+        let spv = selections.get().primaries;
+        let ssv = selections.get().secondaries;
+        if(valid.success) {
+          /*if(spv === null || spv === undefined) {
+            resetPrimary();
+          } else if(spv.length === 0) {
+            console.error(`ag subscribe shows spv with size 0`)
+          } else {
+            if(DEBUG) {console.log(`until I am persistent, spv is fine`)}
           }
+
+          if(ssv === null || ssv === undefined) {
+            resetSecondary();
+          } else if(ssv.length === 0) {
+            console.error(`ag subscribe shows ssv with size 0`)
+          } else {
+            if(DEBUG) {console.log(`until I am persistent, ssv is fine`)}
+          }*/
+        } else {
+          console.error(`ag subscribe cannot parse generals`)
+          selections.setKey('primaries', null);
+          selections.setKey('secondaries', null);
         }
-      }*/
+      } else {
+        selections.setKey('primaries', null);
+        selections.setKey('secondaries', null);
+      }
     })
 
   }
@@ -148,36 +160,18 @@ export class GeneralFilter extends withStores(SpectrumElement, [allGenerals, fil
   }
 
   public togglePrimarySelection(e: CustomEvent) {
-
     const values = (e.target as Menu).value.split(',');
     if(values.includes("all")){
       console.log(`I should reset`)
       return;
     }
-    const existing = selectedPrimaries.get();
-    const eKeys = new Set();
-    values.forEach((v) => {
-      const g = allGenerals.get()?.filter((value) => {
-        return (!value.general.name.localeCompare(v))
-      }).pop();
-      if(g !== undefined) {
-        if(existing.has(g)){
-          if(existing.get(g) !== true) {
-            togglePrimary(g,true);
-            this.requestUpdate();
-          }
-        } else {
-          togglePrimary(g,true);
-          this.requestUpdate();
-        }
-      } else {
-        console.error(`I cannot find a general with ${v}`)
-      }
-    })
     allGenerals.get()?.forEach((gen) => {
       if(gen !== null && gen !== undefined) {
         if(!values.includes(gen.general.name)){
           togglePrimary(gen,false);
+          this.requestUpdate();
+        } else {
+          togglePrimary(gen, true);
           this.requestUpdate();
         }
       }
@@ -185,20 +179,19 @@ export class GeneralFilter extends withStores(SpectrumElement, [allGenerals, fil
   }
 
   public toggleSecondarySelection(e: CustomEvent) {
-
-    const values = new Set((e.target as Menu).value.split(','));
-    const existing = new Set(selectedSecondaries.get());
-    const eKeys = new Set();
-    existing.forEach((ev) => {
-      if(ev !== null && ev !== undefined) {
-        const k = Object.keys(ev)[0];
-        if(DEBUG){console.log(`found existing key ${k}`)};
-        const trueVersion = {[k]: true};
-        const falseVersion = {[k]: false};
-        if(values.has(k)){
-          toggleSecondary(k,true);
+    const values = (e.target as Menu).value.split(',');
+    if(values.includes("all")){
+      console.log(`I should reset`)
+      return;
+    }
+    allGenerals.get()?.forEach((gen) => {
+      if(gen !== null && gen !== undefined) {
+        if(!values.includes(gen.general.name)){
+          toggleSecondary(gen,false);
+          this.requestUpdate();
         } else {
-          toggleSecondary(k,false);
+          toggleSecondary(gen, true);
+          this.requestUpdate();
         }
       }
     })
@@ -218,84 +211,85 @@ export class GeneralFilter extends withStores(SpectrumElement, [allGenerals, fil
 
   render() {
     let spt = html``;
-    const primaries = selectedPrimaries.get();
+    let sst = html``;
+    let primaries = selections.get().primaries;
+    if(primaries === null || primaries === undefined) {
+      resetPrimary();
+    }
+    let secondaries = selections.get().secondaries;
+    if(secondaries === null || secondaries === undefined) {
+      resetSecondary();
+    }
     const generals = allGenerals.get();
 
-    const secondaries = selectedSecondaries.get();
-    if(primaries !== null && primaries !== undefined && generals !== undefined && generals !== null) {
-      for(let i = 0; i < generals?.length; i++) {
-        if(generals[i] !== null && generals[i] !== undefined) {
-          const v = generals[i];
-          const k = v.general.name;
-          let e: boolean = true;
-          if(primaries.has(v)) {
-            const tResult = primaries.get(v);
-            e = (tResult !== undefined) ? tResult : true;
-          }
-          if (DEBUG) {console.log(`${k} set to ${e}`) }
-          if(k !== null && k !== undefined) {
-            spt = html`${spt}
-              <sp-menu-item value=${k} selected=${(e === true)? true : nothing}>${k}</sp-menu-item>
-            `
-          }
-        }
-        
-      }
-      spt = html`
-      <sp-popover slot="click-content" open style="position: relative">
-        <sp-menu label="Primary Generals" selects="multiple" @change=${this.togglePrimarySelection}>
-          <sp-menu-item value="all">All</sp-menu-item>
-          <sp-menu-divider></sp-menu-divider>
-          ${spt}
-        </sp-menu>
-      </sp-popover>
-      `
+    if(primaries !== null && primaries !== undefined) {
+      if( secondaries !== null && secondaries !== undefined) {
+        if( generals !== undefined && generals !== null) {
+          for(let i = 0; i < generals.length; i++) {
+            if(generals[i] !== null && generals[i] !== undefined) {
+              const v = generals[i];
+              const k = v.general.name;
+              let p: boolean = false;
+              
+              if(primaries.length > 0) {
+                for(let i  = 0; i < primaries.length; i++) {
+                  const r = primaries[i];
+                  const tk = Object.keys(r)[0];
+                  if(!tk.localeCompare(k)) {
+                    p = Object.values(r)[0];
+                  }
+                }
+              }
+              if (DEBUG) {console.log(`${k} set p to ${p}`) }
+              if(k !== null && k !== undefined) {
+                spt = html`${spt}
+                  <sp-menu-item value=${k} selected=${(p === true)? true : nothing}>${k}</sp-menu-item>
+                `
+              }
 
-      let sst = html``;
-      if(secondaries !== null && secondaries !== undefined) {
-        for(let i = 0; i < secondaries.length; i++) {
-          if(secondaries[i] !== null && secondaries[i] !== undefined) {
-            const v = secondaries[i];
-            const k = Object.keys(v)[0];
-            const e = v[k]; 
-            if (DEBUG) {console.log(`${k} set to ${e}`) }
-            if(k !== null && k !== undefined) {
-              sst = html`${sst}
-                <sp-menu-item value=${k} selected=${(e === true)? true : nothing}>${k}</sp-menu-item>
-              `
             }
+            
           }
-          
         }
       }
-      sst = html`
-      <sp-popover slot="click-content" open style="position: relative">
-        <sp-menu label="Secondary Generals" selects="multiple" @change=${this.togglePrimarySelection}>
-          
-          ${sst}
-        </sp-menu>
-      </sp-popover>
-      `
-
-      return html`
-      <div class="not-content outside">
-        <div class="not-content primary">
-          <overlay-trigger id="trigger" placement="bottom" offset="6">
-            <sp-picker-button size="m" slot="trigger" type='button' ><span slot="label">Primary Generals</span></sp-picker-button>
-            ${spt}
-          </overlay-trigger>
-          <sp-button treatment="outline" ${ref(this.primaryCickListener)}variant="primary" >Reset</sp-button>
-        </div>
-        <div class="not-content secondary">
-          <overlay-trigger id="trigger" placement="bottom" offset="6">
-            <sp-picker-button size="m" slot="trigger" type='button' ><span slot="label">Secondary Generals</span></sp-picker-button>
-            ${spt}
-          </overlay-trigger>
-          <sp-button treatment="outline" ${ref(this.secondaryCickListener)}variant="primary" >Reset</sp-button>
-        </div>
-      </div>
-      `
     }
+    spt = html`
+    <sp-popover slot="click-content" open style="position: relative">
+      <sp-menu label="Primary Generals" selects="multiple" @change=${this.togglePrimarySelection}>
+        <sp-menu-item value="all">All</sp-menu-item>
+        <sp-menu-divider></sp-menu-divider>
+        ${spt}
+      </sp-menu>
+    </sp-popover>
+    `
+
+    sst = html`
+    <sp-popover slot="click-content" open style="position: relative">
+      <sp-menu label="Secondary Generals" selects="multiple" @change=${this.toggleSecondarySelection}>
+        
+        ${sst}
+      </sp-menu>
+    </sp-popover>
+    `
+
+    return html`
+    <div class="not-content outside">
+      <div class="not-content primary">
+        <overlay-trigger id="trigger" placement="bottom" offset="6">
+          <sp-picker-button size="m" slot="trigger" type='button' ><span slot="label">Primary Generals</span></sp-picker-button>
+          ${spt}
+        </overlay-trigger>
+        <sp-button treatment="outline" ${ref(this.primaryCickListener)}variant="primary" >Reset</sp-button>
+      </div>
+      <div class="not-content secondary">
+        <overlay-trigger id="trigger" placement="bottom" offset="6">
+          <sp-picker-button size="m" slot="trigger" type='button' ><span slot="label">Secondary Generals</span></sp-picker-button>
+          ${sst}
+        </overlay-trigger>
+        <sp-button treatment="outline" ${ref(this.secondaryCickListener)}variant="primary" >Reset</sp-button>
+      </div>
+    </div>
+    `
   }
 
 }
