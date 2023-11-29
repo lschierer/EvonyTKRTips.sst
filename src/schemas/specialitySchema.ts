@@ -4,7 +4,7 @@ import * as b from './baseSchemas';
 
 
 export const SpecialityLevel = z.object({
-  "level": z.string(),
+  "level": b.qualityColor,
   "buff": z.array(b.BuffSchema),
 });
 export type SpecialityLevelType = z.infer<typeof SpecialityLevel>;

@@ -1,4 +1,4 @@
-import * as z from "zod";
+import * as z from 'zod';
 
 export const levels = z.enum([
   '0',
@@ -51,19 +51,6 @@ export const levels = z.enum([
 
 export type levelsType = z.infer<typeof levels>;
 
-export const syslogSeverity = z.enum([
-  'emerg',
-  'alert',
-  'crit',
-  'err',
-  'warning',
-  'notice',
-  'info',
-  'debug',
-])
-
-export type syslogSeverityType = z.infer<typeof syslogSeverity>;
-
 export const Condition = z.enum([
   'When_Not_Mine',
   'Attacking',
@@ -89,6 +76,19 @@ export const Condition = z.enum([
 ]);
 export type ConditionType = z.infer<typeof Condition>;
 
+export const syslogSeverity = z.enum([
+  'emerg',
+  'alert',
+  'crit',
+  'err',
+  'warning',
+  'notice',
+  'info',
+  'debug',
+])
+
+export type syslogSeverityType = z.infer<typeof syslogSeverity>;
+
 export const AttributeSchema = z.enum([
  'Attack',
  'Defense',
@@ -112,34 +112,34 @@ export type Attribute = z.infer<typeof AttributeSchema>;
 
 
 export const qualityColor = z.enum([
-"Disabled",
-"Green",
-"Blue",
-"Purple",
-"Orange",
-"Gold",
+'Disabled',
+'Green',
+'Blue',
+'Purple',
+'Orange',
+'Gold',
 ]);
 
 export type qualityColorType = z.infer<typeof qualityColor>;
 
 export const UnitSchema = z.enum([
-  "percentage",
-  "flat",
+  'percentage',
+  'flat',
 ]);
 export type Unit = z.infer<typeof UnitSchema>;
 
 export const ClassEnum = z.enum([
-  "Archers",
-  "Ground",
-  "Mounted",
-  "Siege",
-  "all",
+  'Archers',
+  'Ground',
+  'Mounted',
+  'Siege',
+  'all',
 ]);
 export type ClassEnumType = z.infer<typeof ClassEnum>;
 
 export const ValueSchema = z.object({
-  "number": z.number(),
-  "unit": UnitSchema,
+  'number': z.number(),
+  'unit': UnitSchema,
 });
 export type Value = z.infer<typeof ValueSchema>;
 
@@ -147,10 +147,10 @@ export const BuffAdverbArray = z.array(Condition);
 export type BuffAdverbArrayType = z.infer<typeof BuffAdverbArray>;
 
 export const BuffSchema = z.object({
-  "attribute": AttributeSchema,
-  "class": ClassEnum.nullish(),
-  "value": ValueSchema.nullish(),
-  "condition": Condition.nullish(),
+  'attribute': AttributeSchema.optional(),
+  'condition': z.union([Condition,BuffAdverbArray]).optional(),
+  'class': ClassEnum.nullish(),
+  'value': ValueSchema.nullish(),
 });
 export type Buff = z.infer<typeof BuffSchema>;
 
