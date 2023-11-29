@@ -27,6 +27,13 @@ import '@spectrum-web-components/status-light/sp-status-light.js';
 import '@spectrum-web-components/table/elements.js';
 import '@spectrum-web-components/textfield/sp-textfield.js';
 import '@spectrum-web-components/tooltip/sp-tooltip.js';
+import { Checkbox } from '@spectrum-web-components/checkbox';
+import { NumberField } from '@spectrum-web-components/number-field';
+import {
+  Radio,
+} from '@spectrum-web-components/radio';
+
+import { Textfield } from '@spectrum-web-components/textfield';
 
 import { parse, isDocument } from 'yaml'
 
@@ -159,7 +166,7 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
     const target = e.target;
     if (target !== null && target !== undefined) {
       if (!(target as Element).id.localeCompare('al1numattrs')) {
-        if (target.value > 0) {
+        if ((target as NumberField).value > 0) {
           this.buffEventPending['al1name'] = true;
         } else {
           this.buffEventPending['al1name'] = false;
@@ -167,7 +174,7 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
         addValue('al1name', 'isSet');
       }
       if (!(target as Element).id.localeCompare('al2numattrs')) {
-        if (target.value > 0) {
+        if ((target as NumberField).value > 0) {
           this.buffEventPending['al2name'] = true;
         } else {
           this.buffEventPending['al2name'] = false;
@@ -175,7 +182,7 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
         addValue('al2name', 'isSet');
       }
       if (!(target as Element).id.localeCompare('al3numattrs')) {
-        if (target.value > 0) {
+        if ((target as NumberField).value > 0) {
           this.buffEventPending['al3name'] = true;
         } else {
           this.buffEventPending['al3name'] = false;
@@ -183,7 +190,7 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
         addValue('al3name', 'isSet');
       }
       if (!(target as Element).id.localeCompare('al4numattrs')) {
-        if (target.value > 0) {
+        if ((target as NumberField).value > 0) {
           this.buffEventPending['al4name'] = true;
         } else {
           this.buffEventPending['al4name'] = false;
@@ -191,15 +198,15 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
         addValue('al4name', 'isSet');
       }
       if (!(target as Element).id.localeCompare('al5numattrs')) {
-        if (target.value > 0) {
+        if ((target as NumberField).value > 0) {
           this.buffEventPending['al5name'] = true;
         } else {
           this.buffEventPending['al5name'] = false;
         }
         addValue('al5name', 'isSet');
       }
-      console.log(`${(target as Element).id} has ${target.value}`)
-      addValue((target as Element).id, target.value);
+      console.log(`${(target as Element).id} has ${(target as Textfield).value}`)
+      addValue((target as Element).id, (target as Textfield).value);
       this.requestUpdate()
     }
   }
@@ -208,21 +215,21 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
     console.log(`index; sformhandler`)
     const target = e.target;
     if (target !== null && target !== undefined) {
-      console.log(`sformHander; ${(target as Element).id} has ${target.value}`)
+      console.log(`sformHander; ${(target as Element).id} has ${(target as Textfield).value}`)
       if ((target as Element).id.includes('_valueU')) {
-        if (target.checked === false) {
+        if ((target as Checkbox).checked === false) {
           addValue((target as Element).id, 'flat');
         } else {
           addValue((target as Element).id, 'percentage');
         }
-        if (target.checked !== undefined && target.checked !== null) {
+        if ((target as Checkbox).checked !== undefined && (target as Checkbox).checked !== null) {
           this.buffEventPending[(target as Element).id] = true;
         } else {
           this.buffEventPending[(target as Element).id] = false;
         }
       } else {
-        addValue((target as Element).id, target.value);
-        if ((target.value !== '') && (target.value !== false)) {
+        addValue((target as Element).id, (target as Textfield).value);
+        if (((target as Textfield).value !== '') && (target.value !== false)) {
           this.buffEventPending[(target as Element).id] = true;
         } else {
           this.buffEventPending[(target as Element).id] = false;
@@ -859,5 +866,11 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
 
 }
 if (!customElements.get('general-yaml')) {
+  
   customElements.define('general-yaml', GeneralYaml)
+}
+declare global {
+  interface HTMLElementTagNameMap {
+    "general-yaml": GeneralYaml;
+  }
 }
