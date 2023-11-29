@@ -14,6 +14,7 @@ import {
   type qualitySchemaType,
   troopClass,
   type troopClassType,
+  type standardSkillBookType,
 } from "@schemas/evonySchemas.ts";
 
 import {buff} from "@components/general/buff.ts";
@@ -153,8 +154,8 @@ export class tableGeneral {
     this.adverbs = buffAdverbs[useCase];
   }
   
-  public computeBuffs(props: {dragon: boolean, beast: boolean, ascending: levelSchemaType, Speciality1: qualitySchemaType, Speciality2: qualitySchemaType, Speciality3: qualitySchemaType, Speciality4: qualitySchemaType}) {
-    if(this.general !== null) {
+  public computeBuffs(props: {dragon: boolean, beast: boolean, ascending: levelSchemaType, speciality1: qualitySchemaType, speciality2: qualitySchemaType, speciality3: qualitySchemaType, speciality4: qualitySchemaType, extraBooks: standardSkillBookType[] }) {
+    if(this.general !== null && this.general !== undefined) {
       const {attackBuff, defenseBuff, hpBuff} = buff(this.general,this.adverbs, props);
       this.attackBuff = attackBuff;
       this.defenseBuff = defenseBuff;
