@@ -52,12 +52,20 @@ import {
   togglePrimary, 
   toggleSecondary, 
   resetPrimary, 
-  resetSecondary 
+  resetSecondary,
+  getValue,
 } from "./generals";
 
 
 @customElement('general-filter')
 export class GeneralFilter extends withStores(SpectrumElement, [allGenerals, filteredPrimaries, selections]) { 
+
+  @state()
+  private primaryValues: string[] = new Array<string>();
+
+
+  @state()
+  private secondaryValues: string[] = new Array<string>();
 
   constructor() {
     super();
@@ -73,7 +81,7 @@ export class GeneralFilter extends withStores(SpectrumElement, [allGenerals, fil
         let spv = selections.get().primaries;
         let ssv = selections.get().secondaries;
         if(valid.success) {
-          /*if(spv === null || spv === undefined) {
+          if(spv === null || spv === undefined) {
             resetPrimary();
           } else if(spv.length === 0) {
             console.error(`ag subscribe shows spv with size 0`)
@@ -87,7 +95,7 @@ export class GeneralFilter extends withStores(SpectrumElement, [allGenerals, fil
             console.error(`ag subscribe shows ssv with size 0`)
           } else {
             if(DEBUG) {console.log(`until I am persistent, ssv is fine`)}
-          }*/
+          }
         } else {
           console.error(`ag subscribe cannot parse generals`)
           selections.setKey('primaries', null);
@@ -98,7 +106,22 @@ export class GeneralFilter extends withStores(SpectrumElement, [allGenerals, fil
         selections.setKey('secondaries', null);
       }
     })
-
+    const allgens = allGenerals.get();
+    if(allgens !== null && allgens !== undefined) {
+      const mixed = allgens.map((ag) => {
+        if(ag !== null && ag !== undefined) {
+          return ag.general.name
+        }
+      })
+      
+      for(let i = 0; i < mixed.length; i++) {
+        const v = mixed[i];
+        if(v !== null && v !== undefined) {
+          this.primaryValues.push(v);
+          this.secondaryValues.push(v);
+        }
+      }
+    }
   }
 
   private MutationObserverCallback = (mutationList: MutationRecord[], observer: MutationObserver) => {
@@ -159,34 +182,72 @@ export class GeneralFilter extends withStores(SpectrumElement, [allGenerals, fil
     } else return [localstyle];
   }
 
+  
+
   public togglePrimarySelection(e: CustomEvent) {
-    const values = (e.target as Menu).value.split(',');
-    if(values.includes("all")){
+    const values = (e.target as Menu).value.split(',').sort();
+    const oldValues = this.primaryValues.sort();
+    const vdiff:string[] = new Array<string>();
+    const vUnion = new Set<string>();
+    for(let i = 0; i < oldValues.length; i++) {
+      const v1 = oldValues[i];
+      if(v1 !== null && v1 !== undefined) {
+        const k1 = Object.keys(v1)[0];
+        for(let j = 0 ; j < values.length; j++) {
+          if(vUnion.has(k1)){
+            continue;
+          }
+          const v2 = values[j]
+          if(v2 !== null && v2 !== undefined) {
+            const k2 = Object.keys(v2)[0];
+            if(!k1.localeCompare(k2)){
+              vUnion.add(k1);
+            }
+          }
+        }
+        if(!vUnion.has(k1)) {
+          vdiff.push(k1);
+        }
+      }
+    }
+    if(DEBUG) {console.log(`I have ${vdiff.length} differences: old: ${JSON.stringify(oldValues)}, new: ${JSON.stringify(values)}, diff: ${JSON.stringify(vdiff)}`)}
+    this.primaryValues = [...values];
+    if(vdiff.includes("all")){
       console.log(`I should reset`)
       return;
     }
     allGenerals.get()?.forEach((gen) => {
       if(gen !== null && gen !== undefined) {
-        if(!values.includes(gen.general.name)){
-          togglePrimary(gen,false);
-          this.requestUpdate();
-        } else {
-          togglePrimary(gen, true);
-          this.requestUpdate();
+        if(!vdiff.includes(gen.general.name) && oldValues.includes(gen.general.name)){
+          if(DEBUG){console.log(`tPS used !vdiff for ${gen.general.name}`)}
+          const ov = getValue('primary', gen);
+          if(ov !== true) {
+            togglePrimary(gen,true);
+          }
+        } else if (!values.includes(gen.general.name)) {
+          if(DEBUG){console.log(`tPS used !values for ${gen.general.name}`)}
+          const ov = getValue('primary', gen);
+          if(ov !== false) {
+            togglePrimary(gen, false);
+          }
         }
       }
     })
+    this.requestUpdate();
   }
 
   public toggleSecondarySelection(e: CustomEvent) {
-    const values = (e.target as Menu).value.split(',');
-    if(values.includes("all")){
+    const values = new Set((e.target as Menu).value.split(','));
+    const oldValues = new Set(this.secondaryValues);
+    const vdiff:string[] = [...util.setDifference(values, oldValues)];
+    this.secondaryValues = [...values];
+    if(vdiff.includes("all")){
       console.log(`I should reset`)
       return;
     }
     allGenerals.get()?.forEach((gen) => {
       if(gen !== null && gen !== undefined) {
-        if(!values.includes(gen.general.name)){
+        if(!vdiff.includes(gen.general.name)){
           toggleSecondary(gen,false);
           this.requestUpdate();
         } else {
@@ -212,6 +273,8 @@ export class GeneralFilter extends withStores(SpectrumElement, [allGenerals, fil
   render() {
     let spt = html``;
     let sst = html``;
+    let npv = new Array<string>();
+    let nsv = new Array<string>();
     let primaries = selections.get().primaries;
     if(primaries === null || primaries === undefined) {
       resetPrimary();
@@ -221,7 +284,7 @@ export class GeneralFilter extends withStores(SpectrumElement, [allGenerals, fil
       resetSecondary();
     }
     const generals = allGenerals.get();
-
+    
     if(primaries !== null && primaries !== undefined) {
       if( secondaries !== null && secondaries !== undefined) {
         if( generals !== undefined && generals !== null) {
@@ -242,6 +305,7 @@ export class GeneralFilter extends withStores(SpectrumElement, [allGenerals, fil
               }
               if (DEBUG) {console.log(`${k} set p to ${p}`) }
               if(k !== null && k !== undefined) {
+                npv.push(k);
                 spt = html`${spt}
                   <sp-menu-item value=${k} selected=${(p === true)? true : nothing}>${k}</sp-menu-item>
                 `
@@ -252,6 +316,7 @@ export class GeneralFilter extends withStores(SpectrumElement, [allGenerals, fil
         }
       }
     }
+   
     spt = html`
     <sp-popover slot="click-content" open style="position: relative">
       <sp-menu label="Primary Generals" selects="multiple" @change=${this.togglePrimarySelection}>
@@ -264,7 +329,7 @@ export class GeneralFilter extends withStores(SpectrumElement, [allGenerals, fil
 
     sst = html`
     <sp-popover slot="click-content" open style="position: relative">
-      <sp-menu label="Secondary Generals" selects="multiple" @change=${this.toggleSecondarySelection}>
+      <sp-menu value=${this.secondaryValues.join(',')} label="Secondary Generals" selects="multiple" @change=${this.toggleSecondarySelection}>
         
         ${sst}
       </sp-menu>
