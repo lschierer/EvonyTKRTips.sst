@@ -55,7 +55,7 @@ export const filteredPrimaries = computed([allGenerals,selectedPrimaries], (ag, 
     
     for(let i in agv.data) {
       const one = agv.data[i];
-      if(sp.has(one) && (sp.get(one) === true)) {
+      if(sp.size > 0 && sp.has(one) && (sp.get(one) === true)) {
         returnable.add(one);
       }
     }

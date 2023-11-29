@@ -228,7 +228,7 @@ export class GeneralFilter extends withStores(SpectrumElement, [allGenerals, fil
           const v = generals[i];
           const k = v.general.name;
           let e: boolean = true;
-          if(primaries.has(v)) {
+          if(primaries.size > 0 && primaries.has(v)) {
             const tResult = primaries.get(v);
             e = (tResult !== undefined) ? tResult : true;
           }
