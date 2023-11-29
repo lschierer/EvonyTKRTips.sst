@@ -87,12 +87,18 @@ export const filteredSecondaries = computed([allGenerals, selections], (ag, ss) 
   const agv = GeneralArray.safeParse(ag);
 
   if(agv.success && (ss !== undefined && ss !== null )) {
-    const secondaries = ss.secondaries;
-    if(secondaries !== null && secondaries !== undefined && util.isEmpty(secondaries)) {
+    const secondaries = ss.secondaries;  
+    if(secondaries !== null && secondaries !== undefined && !util.isEmpty(secondaries)) {
       for(let i in agv.data) {
         const one = agv.data[i];
-        //do something
-
+        const os = secondaries.filter((sv) => {
+          const k = Object.keys(sv)[0];
+          return (k.localeCompare(one.general.name));
+        })[0];
+        const osv = Object.values(os)[0];
+        if(osv === true) {
+          returnable.add(one);
+        }
       }
       return [...returnable];
     }
@@ -210,6 +216,19 @@ export const togglePrimary = action(selections, 'toggleP', (store, general: Gene
       }
     }
   } else {
+    const ag = allGenerals.get();
+    if(ag !== null && ag !== undefined) { 
+      for(let i = 0; i < ag.length; i++) {
+        if(ag[i].general.name.localeCompare(general.general.name)){
+          nd.push({[ag[i].general.name]: true});
+        }else {
+          nd.push({[general.general.name]: enabled});      
+        }
+      }
+    } else {
+      nd.push({[general.general.name]: enabled});  
+    }
+    
     nd.push({[general.general.name]: enabled});
     
   }
@@ -280,3 +299,27 @@ let d3 = logger({
 let d4 = logger({
   'GeneralPairs': generalPairs,
 });
+
+export const getValue = (key:'primary' | 'secondary', general: GeneralElement) =>  {
+  let store: null | undefined | GeneralToggleType[] = null;
+  if(key === 'primary') {
+    store = selections.get().primaries;
+  } else if (key === 'secondary') {
+    store = selections.get().secondaries;
+  } else {
+    console.error(`this should not happen in getValue`)
+  }
+  if(store !== null && store !== undefined) {
+    const fv = store.filter((tv) => {
+      if(tv !== null && tv !== undefined) {
+        const k = Object.keys(tv)[0];
+        return(!k.localeCompare(general.general.name));
+      }
+    }).pop();
+    if(fv === undefined) {
+      return false;
+    }
+    return Object.values(fv)[0];
+  }
+  return false;
+}
