@@ -25,9 +25,9 @@ import {SpectrumElement} from "@spectrum-web-components/base";
 
 const DEBUG = false;
 
-import * as b from '@schemas/baseSchemas.ts'
+import * as b from '@schemas/baseSchemas'
 
-import {BoS, type BoSType, type generalInvestment, primaryInvestmentMap, secondaryInvestmentMap} from './selectionStore.ts';
+import {BoS, type BoSType, type generalInvestment, primaryInvestmentMap, secondaryInvestmentMap} from './selectionStore';
 
 const generalRole = z.enum(['primary','secondary']);
 type generalRoleType = z.infer<typeof generalRole>;
