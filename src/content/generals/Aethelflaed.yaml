@@ -1,6 +1,7 @@
 ---
 general:
   name: Aethelflaed
+  level: '1'
   display: summary
   note:
     - severity: warning

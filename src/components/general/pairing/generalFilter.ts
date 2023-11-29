@@ -39,8 +39,8 @@ import * as util from '../../../lib/util';
 
 import {
   GeneralArray,
-    type GeneralElement,
-    GeneralElementSchema,
+    type GeneralElementType,
+    GeneralElement,
 } from "@schemas/generalsSchema";
 
 import { 

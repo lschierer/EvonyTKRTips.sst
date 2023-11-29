@@ -3,15 +3,15 @@ import { docsSchema, i18nSchema } from '@astrojs/starlight/schema';
 import {
   artTreasureSchema,
   BlazonSetSechma,
-  generalObjectSchema,
+  GeneralElement,
   generalConflicts,
-} from '../schemas/evonySchemas.js';
+} from '../schemas/index.js';
 
 export const collections = {
   docs: defineCollection({ schema: docsSchema() }),
   i18n: defineCollection({ type: 'data', schema: i18nSchema() }),
   art: defineCollection({type: 'data', schema: artTreasureSchema}),
   blazons: defineCollection({type: 'data', schema: BlazonSetSechma}),
-  generals: defineCollection({type: 'data', schema: generalObjectSchema}),
+  generals: defineCollection({type: 'data', schema: GeneralElement}),
   generalConflictData: defineCollection(({type: 'data', schema: generalConflicts})),
 };

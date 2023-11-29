@@ -8,26 +8,27 @@ import Banner from "../components/Spectrum/Banner.astro";
 
 import {
   type bookConflictsType,
-  type buff,
-  BuffAdverbs,
-  type General,
+  type Buff,
+  Condition,
+  type GeneralClassType,
   generalConflicts,
   type generalConflictsType,
   generalConflictCollection,
-  type generalObject,
-  generalSchema,
-  generalNote,
-  type generalNoteType,
-    generalObjectSchema,
-  type skillBookType,
+  type GeneralElementType,
+  GeneralClass,
+  Note,
+  type NoteType,
+  GeneralElement,
+  type BookType,
   standardSkillBook,
   specialSkillBook,
   type specialSkillBookType,
   type standardSkillBookType,
-  skillBook, buffUnion,
-    syslogSeverity,
-    type syslogSeverityType,
-} from '@schemas/evonySchemas.ts';
+  Book, buffUnion,
+  syslogSeverity,
+  type syslogSeverityType,
+type BuffType,
+} from '@schemas/index';
 
 import { generalUseCase,
     type generalUseCaseType
@@ -91,7 +92,7 @@ if (entry === undefined || entry === null) {
     data = entry.data;
 }
 let usageNotes = '';
-let general: General ;
+let general: GeneralClassType ;
 let generalName = '';
 let attack = 0;
 let attackBuff = 0;
@@ -107,7 +108,7 @@ const intrinsic = ["leadership", "attack", "defense", "politics"]
 let conflictData: bookConflictsType[] = new Array<bookConflictsType>();
 let collectionArray: CollectionEntry<'generalConflictData'>[] | generalConflictsType[];
 
-const validation = generalObjectSchema.safeParse(data);
+const validation = GeneralElement.safeParse(data);
 if (validation.success) {
     const generaLObject = validation.data;
     general = generaLObject.general;
@@ -133,9 +134,9 @@ if (validation.success) {
     defense = (general.defense + (general.defense_increment as number) * 45) + (general.defense + (general.defense_increment as number) * 45 * defenseBuff)
     hp = (general.leadership + (general.leadership_increment as number) * 45) + (general.leadership + (general.leadership_increment as number) * 45 * hpBuff)
     level = (general.display === 'summary') ? (+general.level * 45) : +general.level;
-    const notes = z.array(generalNote).safeParse(general.note);
+    const notes = z.array(Note).safeParse(general.note);
     if (notes.success) {
-        const mydata: generalNoteType[] = notes.data;
+        const mydata: NoteType[] = notes.data;
         if (notes.data !== undefined && notes.data !== null && notes.data.length >= 1) {
             const result = mydata.map((note) => {
                 return `
@@ -200,7 +201,7 @@ if (validation.success) {
                     const keys = Object.keys(book.buff[i]);
                     console.log(`found keys ${keys}`)
                     if(book.buff[i].condition !== null && book.buff[i].condition !== undefined ) {
-                        if (book.buff[i].condition === BuffAdverbs.enum.When_Not_Mine) {
+                        if (book.buff[i].condition === Condition.enum.When_Not_Mine) {
                             condition = 'when the book is on my paired general.'
                             warning = true;
                         } else {
@@ -292,13 +293,13 @@ if (validation.success) {
                       <div class={"non-content " + s.level}  >
                           <span class="label spectrum-Body spectrum-Body--sizeM">{s.level} Level:</span>
                           <ul >
-                              {s.buff.map((b: buff) => (
+                              {s.buff.map((b: BuffType) => (
                                 <>
                                     <li >
                                         {b.condition ? (b.condition as string).replaceAll(/_/g, ' ') : ''} 
                                         {b.class !== 'all' ? b.class : 'all troops '} 
                                         {b.attribute ? b.attribute.replaceAll(/_/g, ' ') : ''} 
-                                        {(b.value.number < 0) ? '-' : '+'}{b.value.number}{b.value.unit ? '%' : ''}
+                                        {(b.value && b.value.number < 0) ? '-' : '+'}{b.value!.number}{b.value!.unit ? '%' : ''}
                                     </li>
                                 </>
                               ))}
@@ -322,12 +323,12 @@ if (validation.success) {
                                 {+a.level - 5}{+a.level >= 9 ? 'th' : +a.level === 8 ? 'rd' : (+a.level) === 7 ? "nd" : 'st'} Star
                             </span><br/>
                             <ul class="non-content">
-                              {a.buff.map((b: buff) => (
+                              {a.buff.map((b: BuffType) => (
                                 <li class="non-content">
                                     {b.condition ? (b.condition as string).replaceAll(/_/g, ' '): ''} 
                                     {(b.class === undefined || b.class === null) ? '' : b.class !== 'all' ? b.class : 'all troops '} 
                                     {b.attribute? b.attribute.replaceAll(/_/g, ' ') : ''} 
-                                    {(b.value.number < 0) ? '-' : '+'}{b.value.number}{b.value.unit ? '%' : ''}
+                                    {(b.value && b.value.number < 0) ? '-' : '+'}{b.value!.number}{b.value!.unit ? '%' : ''}
                                 </li>
                               ))}
                             </ul>
@@ -340,7 +341,7 @@ if (validation.success) {
   {general.books && (
     <div class="SkillBooks non-content" style="margin: 1px;">
         <span class="spectrum-Heading spectrum-Heading--sizeXS">Special Skill:</span>
-        {general.books.map((book: skillBookType) => (
+        {general.books.map((book: BookType) => (
           (specialSkillBook.safeParse(book)).success && (
             <>
                 <span class="spectrum-Heading spectrum-Heading--sizeXXS">{book.name}</span>
@@ -351,7 +352,7 @@ if (validation.success) {
                             {b.condition ? (b.condition as string).replaceAll(/_/g, ' ') : ''} 
                             {(b.class === undefined || b.class === null) ? '' : b.class !== 'all' ? b.class : 'all troops '} 
                             {b.attribute ? b.attribute.replaceAll(/_/g, ' ') : ''} 
-                            {(b.value.number < 0) ? '-' : '+'}{b.value.number}{b.value.unit ? '%' : ''}
+                            {(b.value && b.value.number < 0) ? '-' : '+'}{b.value!.number}{b.value!.unit ? '%' : ''}
                         </li>
                       ))}
                   </ul>
@@ -455,4 +456,3 @@ if (validation.success) {
 
   
 )}
-{(general === undefined) && (<span>No General Retrieved</span>)}

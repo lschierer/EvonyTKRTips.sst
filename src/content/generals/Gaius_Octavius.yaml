@@ -12,6 +12,7 @@ general:
   defense_increment: 9.02
   politics: 115
   politics_increment: 8.45
+  level: '1'
   books:
     - name: Augustus
       buff:

@@ -48,8 +48,8 @@ import {
 import {
   GeneralArray,
   type GeneralArrayType,
-  GeneralElementSchema,
-  type GeneralElement,
+  GeneralElement,
+  type GeneralElementType,
 } from "@schemas/generalsSchema.ts"
 
 import {Book, type BookType} from '@schemas/bookSchemas.ts'

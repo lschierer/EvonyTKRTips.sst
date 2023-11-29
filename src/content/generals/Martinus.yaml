@@ -12,6 +12,7 @@ general:
   defense_increment: 8.65
   politics: 100
   politics_increment: 8.05
+  level: '1'
   books:
     - name: The Dragon Wakes
       buff:

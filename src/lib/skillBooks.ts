@@ -4,9 +4,9 @@ import { ulid } from 'ulid'
 import {
     bookConflicts,
     type bookConflictsType,
-    troopClass,
-    type troopClassType,
-} from "../schemas/evonySchemas.js";
+    ClassEnum,
+    type ClassEnumType,
+} from "../schemas/index.js";
 
 const bookAttributes = z.enum([
     "HP",
@@ -38,21 +38,21 @@ type bookAttributesType = z.infer<typeof bookAttributes>;
 const book = z.object({
     book: bookAttributes,
     level: z.number(),
-    class: troopClass.nullish(),
+    class: ClassEnum.nullish(),
 });
 
 type bookType = z.infer<typeof book>;
 
-const troopClasses = [
-    troopClass.enum.Archers, 
-    troopClass.enum.Ground, 
-    troopClass.enum.Mounted, 
-    troopClass.enum.Siege,
-    troopClass.enum.all,
+const ClassEnumes = [
+    ClassEnum.enum.Archers, 
+    ClassEnum.enum.Ground, 
+    ClassEnum.enum.Mounted, 
+    ClassEnum.enum.Siege,
+    ClassEnum.enum.all,
 ];
 
 const bookValues:Map<bookType,string> = new Map();
-const t = {book: bookAttributes.enum.HP, level: 1, class: troopClass.enum.Ground};
+const t = {book: bookAttributes.enum.HP, level: 1, class: ClassEnum.enum.Ground};
 let value = '---\n';
     value = value.concat('books:\n')
     value = value.concat('  ', ulid(),':\n')

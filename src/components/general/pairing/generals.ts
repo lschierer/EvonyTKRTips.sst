@@ -21,8 +21,8 @@ import {
   type GeneralPairType,
   GeneralArray,
   type GeneralArrayType,
-  GeneralElementSchema,
-  type GeneralElement,
+  GeneralElement,
+  type GeneralElementType,
   generalUseCase,
   type generalUseCaseType,
 } from "@schemas/generalsSchema.ts"
@@ -53,7 +53,7 @@ export const selections = map<SelectionObjectType>({
 })
 
 export const filteredPrimaries = computed([allGenerals,selections], (ag, sp) => {
-  const returnable = new Set<GeneralElement>();
+  const returnable = new Set<GeneralElementType>();
   const agv = GeneralArray.safeParse(ag);
 
   if(agv.success && (sp !== undefined && sp !== null )) {
@@ -83,7 +83,7 @@ export const filteredPrimaries = computed([allGenerals,selections], (ag, sp) => 
 })
 
 export const filteredSecondaries = computed([allGenerals, selections], (ag, ss) => {
-  const returnable = new Set<GeneralElement>();
+  const returnable = new Set<GeneralElementType>();
   const agv = GeneralArray.safeParse(ag);
 
   if(agv.success && (ss !== undefined && ss !== null )) {
@@ -201,7 +201,7 @@ export const generalPairs = computed([allGenerals, filteredPrimaries, filteredSe
 )
 
 
-export const togglePrimary = action(selections, 'toggleP', (store, general: GeneralElement, enabled: boolean) => {
+export const togglePrimary = action(selections, 'toggleP', (store, general: GeneralElementType, enabled: boolean) => {
   const data = store.get().primaries;
   const nd = new Array<GeneralToggleType>();
   if(data !== null && data !== undefined ) {
@@ -235,7 +235,7 @@ export const togglePrimary = action(selections, 'toggleP', (store, general: Gene
   store.setKey('primaries',nd)
 })
 
-export const toggleSecondary = action(selections, 'toggleS', (store, general: GeneralElement, enabled: boolean) => {
+export const toggleSecondary = action(selections, 'toggleS', (store, general: GeneralElementType, enabled: boolean) => {
   const data = store.get().secondaries;
   
 })
@@ -300,7 +300,7 @@ let d4 = logger({
   'GeneralPairs': generalPairs,
 });
 
-export const getValue = (key:'primary' | 'secondary', general: GeneralElement) =>  {
+export const getValue = (key:'primary' | 'secondary', general: GeneralElementType) =>  {
   let store: null | undefined | GeneralToggleType[] = null;
   if(key === 'primary') {
     store = selections.get().primaries;

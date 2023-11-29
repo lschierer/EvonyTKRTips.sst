@@ -10,11 +10,11 @@ import type { HTMLAttributes } from 'astro/types'
 import {z, ZodError} from 'zod'
 
 import {
-  generalSchema,
-  type General,
-  generalObjectSchema,
-  type generalObject
-} from "@schemas/evonySchemas.ts";
+  GeneralClass,
+  type GeneralClassType,
+  GeneralElement,
+  type GeneralElementType
+} from "@schemas/index";
 
 
 export const GET: APIRoute = async ({ params, request }) => {

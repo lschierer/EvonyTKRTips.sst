@@ -70,7 +70,7 @@ export const buffAdverbs: { [key in generalUseCaseType]: b.BuffAdverbArrayType }
     ],
 }
 
-function buffFilter(current: b.Buff, general: GeneralClassType, score_for: b.Attribute, props: generalInvestment, situations?: b.BuffAdverbArrayType,) {
+function buffFilter(current: b.BuffType, general: GeneralClassType, score_for: b.Attribute, props: generalInvestment, situations?: b.BuffAdverbArrayType,) {
     const name = general.name;
     let toReturn = false;
     const dragon = props.dragon;
@@ -181,7 +181,7 @@ export function buff(eg: GeneralClassType, situations: b.BuffAdverbArrayType, pr
         const general = eg;
         if (general.books !== undefined && general.books !== null) {
             general.books.map((bb) => {
-                const buff: b.Buff[] = [bb.buff].flat();
+                const buff: b.BuffType[] = [bb.buff].flat();
                 buff.map((current) => {
                     if (current !== undefined && current !== null && general !== undefined) {
                         let apply = buffFilter(current, general, b.AttributeSchema.enum.Attack, props, situations);
@@ -259,7 +259,7 @@ export function buff(eg: GeneralClassType, situations: b.BuffAdverbArrayType, pr
                             proceed = false;
                     }
                     if (proceed) {
-                        const buff: b.Buff[] = [sa.buff].flat()
+                        const buff: b.BuffType[] = [sa.buff].flat()
                         buff.map((current) => {
                             if (current !== undefined && current !== null && general !== undefined) {
                                 let apply = buffFilter(current, general, b.AttributeSchema.enum.Attack, props, situations);
@@ -340,7 +340,7 @@ export function buff(eg: GeneralClassType, situations: b.BuffAdverbArrayType, pr
                         proceed = false;
                 }
                 if (proceed) {
-                    const buff: b.Buff[] = [ga.buff].flat();
+                    const buff: b.BuffType[] = [ga.buff].flat();
                     buff.map((current) => {
                         if (current !== undefined && current !== null && general) {
                             let apply = buffFilter(current, general, b.AttributeSchema.enum.Attack, props, situations);

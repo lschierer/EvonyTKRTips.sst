@@ -3,12 +3,12 @@ import {z} from "zod";
 import {
   generalUseCase,
   type generalUseCaseType,
-  type levelSchemaType,
-  type qualitySchemaType,
+  type levelsType,
+  type qualityColorType,
   type standardSkillBookType,
-  troopClass,
-  type troopClassType
-} from "@schemas/evonySchemas.ts";
+  ClassEnum,
+  type ClassEnumType,
+} from "@schemas/index";
 import {map} from "nanostores";
 import { logger } from '@nanostores/logger'
 
@@ -20,21 +20,21 @@ export type BoSType = z.infer<typeof BoS>;
 export interface generalInvestment {
   dragon: boolean,
   beast: boolean,
-  ascending: levelSchemaType,
-  speciality1: qualitySchemaType,
-  speciality2: qualitySchemaType,
-  speciality3: qualitySchemaType,
-  speciality4: qualitySchemaType,
+  ascending: levelsType,
+  speciality1: qualityColorType,
+  speciality2: qualityColorType,
+  speciality3: qualityColorType,
+  speciality4: qualityColorType,
   extraBooks: standardSkillBookType[],
 }
 
 export interface generalTypeAndUse {
-  type: troopClassType,
+  type: ClassEnumType,
   use: generalUseCaseType,
 }
 
 export const typeAndUseMap = map<generalTypeAndUse>({
-  type: troopClass.enum.all,
+  type: ClassEnum.enum.all,
   use: generalUseCase.enum.all,
 })
 
