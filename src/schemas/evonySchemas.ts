@@ -1,18 +1,5 @@
 import {z} from 'zod';
 
-export const syslogSeverity = z.enum([
-  'emerg',
-  'alert',
-  'crit',
-  'err',
-  'warning',
-  'notice',
-  'info',
-  'debug',
-])
-
-export type syslogSeverityType = z.infer<typeof syslogSeverity>;
-
 export const levelSchema = z.enum([
   '0',
   '1',
@@ -64,6 +51,65 @@ export const levelSchema = z.enum([
 
 export type levelSchemaType = z.infer<typeof levelSchema>;
 
+export const BuffAdverbs =z.enum([
+    'When_Not_Mine',
+    'Attacking',
+    'Marching',
+    'When_Rallying',
+    'leading_the_army_to_attack',
+    'brings_a_dragon',
+    'dragon_to_the_attack',
+    'brings_dragon_or_beast_to_attack',
+    'Reinforcing',
+    'In_City',
+    'Defending',
+    'When_The_Main_Defense_General',
+    'When_the_City_Mayor',
+    'During_SvS',
+    'When_an_officer',
+    'Against_Monsters',
+    'Reduces_Enemy',
+    'Reduces_Enemy_in_Attack',
+    'Enemy',
+    'Enemy_In_City',
+    'Reduces_Monster',
+  ]);
+  export type BuffAdverbsType = z.infer<typeof BuffAdverbs>;
+  
+  export const syslogSeverity = z.enum([
+    'emerg',
+    'alert',
+    'crit',
+    'err',
+    'warning',
+    'notice',
+    'info',
+    'debug',
+  ])
+  
+  export type syslogSeverityType = z.infer<typeof syslogSeverity>;
+
+  export const BuffAttributes = z.enum([
+    'Attack',
+    'Defense',
+    'HP',
+    'Leadership',
+    'Politics',
+    'Range',
+    'Training_Speed',
+    'Marching_Speed',
+    'March_Size_Capacity',
+    'Rally_Capacity',
+    'Attack_Speed',
+    'Wounded_to_Death',
+    'Death_to_Wounded',
+    'Death_to_Soul',
+    'Load',
+    'Double_Items_Drop_Rate',
+    'Healing_Speed',
+   ])
+   export type BuffAttributesType = z.infer<typeof BuffAttributes>;
+
 export const generalUseCase = z.enum([
   "all",
   "Monsters",
@@ -76,9 +122,9 @@ export const generalUseCase = z.enum([
 export type generalUseCaseType = z.infer<typeof generalUseCase>;
 
 export const troopClass = z.enum([
-    'Mounted',
-    'Ground',
     'Archers',
+    'Ground',
+    'Mounted',
     'Siege',
     'all'
 ]);
@@ -115,54 +161,11 @@ export const blazonSet =z.enum([
     'Humility',
 ]);
 
-export const BuffAdverbs =z.enum([
-  'When_Not_Mine',
-  'Attacking',
-  'Marching',
-  'When_Rallying',
-  'leading_the_army_to_attack',
-  'brings_a_dragon',
-  'dragon_to_the_attack',
-  'brings_dragon_or_beast_to_attack',
-  'Reinforcing',
-  'In_City',
-  'Defending',
-  'When_The_Main_Defense_General',
-  'When_the_City_Mayor',
-  'During_SvS',
-  'When_an_officer',
-  'Against_Monsters',
-  'Reduces_Enemy',
-  'Reduces_Enemy_in_Attack',
-  'Enemy',
-  'Enemy_In_City',
-  'Reduces_Monster',
-]);
-
-export type BuffAdverbsType = z.infer<typeof BuffAdverbs>;
 
 export const BuffAdverbArray = z.array(BuffAdverbs);
 export type BuffAdverbArrayType = z.infer<typeof BuffAdverbArray>;
 
-export const BuffAttributes = z.enum([
- 'Attack',
- 'Defense',
- 'HP',
- 'Leadership',
- 'Politics',
- 'Range',
- 'Training_Speed',
- 'Marching_Speed',
- 'March_Size_Capacity',
- 'Rally_Capacity',
- 'Attack_Speed',
- 'Wounded_to_Death',
- 'Death_to_Wounded',
- 'Load',
- 'Double_Items_Drop_Rate',
-])
 
-export type BuffAttributesType = z.infer<typeof BuffAttributes>;
 
 export const buffTypeEnum = z.enum(['percentage','flat']);
 
@@ -174,8 +177,8 @@ export const buffValueSchema = z.object({
 })
 
 export const buffSchema = z.object({
-  condition: z.union([BuffAdverbs, z.array(BuffAdverbs)]).optional(),
   attribute: BuffAttributes.optional(),
+  condition: z.union([BuffAdverbs, z.array(BuffAdverbs)]).optional(),
   class: troopClass.optional(),
   value: buffValueSchema,
 });
@@ -275,6 +278,14 @@ export const generalNote = z.object({
 
 export type generalNoteType = z.infer<typeof generalNote>;
 
+export const totalBuffs = z.object({
+    attack: z.number(),
+    defense: z.number(),
+    hp: z.number(),
+    march: z.number(),
+});
+export type totalBuffsType = z.infer<typeof totalBuffs>;
+
 export const generalSchema = z.object({
   name: z.string(),
   display: z.enum(['primary', 'assistant', 'summary']).optional(),
@@ -313,6 +324,7 @@ export const generalSchema = z.object({
   }).nullable(),
   books: z.array(skillBook).nullish(),
   score_as: troopClass.optional(),
+  "totalBuffs": totalBuffs.nullish(),
 });
 
 export type General = z.infer<typeof generalSchema>;

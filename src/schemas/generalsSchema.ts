@@ -32,7 +32,7 @@ export const Note = z.object({
 export type NoteType = z.infer<typeof Note>;
 
 export const Ascending = z.object({
-    "level": z.string(),
+    "level": b.levels,
     "buff": z.array(b.BuffSchema),
 });
 export type AscendingType = z.infer<typeof Ascending>;
@@ -47,7 +47,7 @@ export type totalBuffsType = z.infer<typeof totalBuffs>;
 
 export const GeneralClass = z.object({
     "name": z.string(),
-    "display": Display,
+    "display": Display.optional(),
     "leadership": z.number(),
     "leadership_increment": z.number(),
     "attack": z.number(),
@@ -57,8 +57,8 @@ export const GeneralClass = z.object({
     "politics": z.number(),
     "politics_increment": z.number(),
     "level": b.levels,
-    "stars": b.levels,
-    "score_as": b.ClassEnum,
+    "stars": b.levels.nullish(),
+    "score_as": b.ClassEnum.optional(),
     "specialities": z.array(s.Speciality).nullish(),
     "books": z.array(Book).nullish(),
     "ascending": z.array(Ascending).nullish(),
