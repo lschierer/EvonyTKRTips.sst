@@ -33,10 +33,12 @@ import '@spectrum-web-components/switch/sp-switch.js';
 
 import { parse, stringify } from 'yaml'
 
-import {addValue, formValues } from '../formValueStore';
+import {addValue, getValue, formValues } from '../formValueStore';
 
 
 import * as b from '@schemas/baseSchemas.ts'
+
+type GeneralYaml = /*unresolved*/ any;
 
 export class GeneralBuffController implements ReactiveController {
   private host: ReactiveControllerHost;
@@ -144,7 +146,7 @@ export class GeneralBuffController implements ReactiveController {
           initialBlanks = `${initialBlanks}    `
         }
         console.log(`rkey is ${rkey}`)
-        if(formValues.value?.get(rkey)) {
+        if(getValue(rkey)) {
           if(level.localeCompare('special')) {
             exportable = `${initialBlanks}- level: '${level}'`
             exportable = `${exportable}\n${initialBlanks}  buff:`
@@ -153,10 +155,10 @@ export class GeneralBuffController implements ReactiveController {
           }
           
         }
-        for(let i = 0; i < (formValues.value?.get(rkey) as number); i++) {
+        for(let i = 0; i < (getValue(rkey) as number); i++) {
           fieldLabel = sindex + i.toString() + '_' + level;
           console.log(`new label is ${fieldLabel}`)
-          let attribute: number | string | undefined = this.formValuesController.value.get(fieldLabel.concat('_attribute')) 
+          let attribute: number | string |boolean |null| undefined = getValue(fieldLabel.concat('_attribute')) 
           if(attribute === undefined || attribute === null) {
             console.log(`${exportable}\n${initialBlanks}- attribute: value pending`)
           } else {
@@ -164,7 +166,7 @@ export class GeneralBuffController implements ReactiveController {
           }
           
           const condition_label = fieldLabel.concat('_condition');
-          let condition: number | string | undefined = this.formValuesController.value.get(condition_label) 
+          let condition: number | string |boolean |null| undefined = getValue(condition_label) 
           if(condition === undefined || condition === null) {
             console.log(`${exportable}\n${initialBlanks}  condition: value pending`)
           } else {
@@ -174,20 +176,20 @@ export class GeneralBuffController implements ReactiveController {
             
           }
   
-          let tclass: number | string | undefined = this.formValuesController.value.get(fieldLabel.concat('_class')) 
+          let tclass: number | string |boolean |null| undefined = getValue(fieldLabel.concat('_class')) 
           if(tclass === undefined || tclass === null) {
             console.log(`${exportable}\n${initialBlanks}  class: value pending`);
           } else if((tclass !== 'all') && (tclass !== 'none')) {
             exportable = `${exportable}\n${initialBlanks}    class: ${tclass}`
           }
   
-          let tvalue: number | string | undefined = this.formValuesController.value.get(fieldLabel.concat('_valueN')) 
+          let tvalue: number | string |boolean |null| undefined = getValue(fieldLabel.concat('_valueN')) 
           if(tvalue === undefined || tvalue === null) {
             console.log(`${exportable}\n${initialBlanks}  value: value pending`)
           } else  {
             exportable = `${exportable}\n${initialBlanks}    value:`
             exportable = `${exportable}\n${initialBlanks}      number: ${tvalue}`
-            let tcheck: number | string | undefined = this.formValuesController.value.get(fieldLabel.concat('_valueU'))
+            let tcheck: number | string |boolean |null| undefined = getValue(fieldLabel.concat('_valueU'))
             if(tcheck === undefined || tcheck === 'percentage') {
               tcheck = 'percentage';
             }

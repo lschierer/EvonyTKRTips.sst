@@ -278,11 +278,14 @@ export class ComparingTable extends SpectrumElement {
   
   private processGenerals() {
     const props = {
+      dragon: false,
+      beast: false,
       ascending: this.ascending,
-      Speciality1: this.Speciality1,
-      Speciality2: this.Speciality2,
-      Speciality3: this.Speciality3,
-      Speciality4: this.Speciality4,
+      speciality1: this.Speciality1,
+      speciality2: this.Speciality2,
+      speciality3: this.Speciality3,
+      speciality4: this.Speciality4,
+      extraBooks: [],
     };
     if(this.allGenerals !== undefined && this.allGenerals !== null && this.allGenerals.length > 0) {
       if(this.table !== undefined && this.table !== null) {
