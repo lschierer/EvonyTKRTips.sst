@@ -28,7 +28,7 @@ import { NumberField } from '@spectrum-web-components/number-field';
 import { Picker } from '@spectrum-web-components/picker';
 import { Switch } from '@spectrum-web-components/switch';
 
-import {addValue, formValues } from '../formValueStore';
+import {addValue, getValue, formValues } from '../formValueStore';
 
 export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
 
@@ -478,8 +478,8 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
         if(DEBUG) {console.log(`index willupdate`)}
         super.willUpdate(_changedProperties);
         if(formValues.value !== null && formValues.value !== undefined) {
-            const base = formValues.value.get('keepSize')
-            if(base !== undefined) {
+            const base = getValue('keepSize')
+            if(base !== undefined && base !== null) {
                 this.rallySpotSize = base as number;
                 if(DEBUG) {console.log(`rs size is ${this.rallySpotSize}`)}
                 if(this.rallySpotSize < 35) {
@@ -488,19 +488,19 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                 } 
                 this.baseMarch = (MarchCalc.RallySpotSize.get(base.toString()) !== undefined) ? (MarchCalc.RallySpotSize.get(base.toString()) as number) : 800;
                 const mathBase = this.baseMarch;
-                const imperialSeat = formValues.value.get('ImperialSeat');
-                if(imperialSeat !== undefined) {
+                const imperialSeat = getValue('ImperialSeat');
+                if(imperialSeat !== undefined && imperialSeat !== null) {
                     this.baseMarch = this.baseMarch + mathBase * ((MarchCalc.ImperialSeat.get(imperialSeat.toString()) !== undefined) ? (MarchCalc.ImperialSeat.get(imperialSeat.toString()) as number): 0)
                 }
-                const horn = formValues.value.get('WarHorn');
-                if(horn !== undefined) {
+                const horn = getValue('WarHorn');
+                if(horn !== undefined && horn !== null) {
                     this.baseMarch = this.baseMarch + ((MarchCalc.WarHorn.get(horn.toString()) !== undefined) ? (MarchCalc.WarHorn.get(horn.toString()) as number) : 0)
                 }
-                const VIP = formValues.value.get('VIP');
-                if(VIP !== undefined) {
+                const VIP = getValue('VIP');
+                if(VIP !== undefined && VIP !== null) {
                     this.baseMarch = this.baseMarch + ((MarchCalc.VIP.get(VIP.toString()) !== undefined) ? (MarchCalc.VIP.get(VIP.toString())as number) : 0)
                 }
-                const rank = formValues.value.get('rank');
+                const rank = getValue('rank');
                 if(rank !== undefined) {
                     if(!(rank as string).localeCompare('knight')){
                         if(DEBUG) {console.log(`${(MarchCalc.Rank.get(rank as string)! as number)}`)}
@@ -519,7 +519,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                         this.baseMarch = this.baseMarch + (MarchCalc.Rank.get(rank as string))! 
                     }
                 }
-                let r = formValues.value.get('Coordination');
+                let r = getValue('Coordination');
                 if(r !== undefined && (r as number) > 0) {
                     if(DEBUG) {console.log(`Coordination r is ${r}`)}
                     let v = Object.values(MarchCalc.Research.get('Military')!.Coordination!)[(r as number )] as number
@@ -528,7 +528,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                         this.baseMarch = this.baseMarch + v;
                     }
                 }
-                r = formValues.value.get('AdvCoordination');
+                r = getValue('AdvCoordination');
                 if(r !== undefined && (r as number) > 0) {
                     if(DEBUG) {console.log(`AdvCoordination r is ${r}`)}
                     let v = Object.values(MarchCalc.Research.get('Military')!.AdvancedCordination!)[(r as number )] as number
@@ -537,7 +537,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                         this.baseMarch = this.baseMarch + mathBase * v;
                     }
                 }
-                r = formValues.value.get('SuperCoordination');
+                r = getValue('SuperCoordination');
                 if(r !== undefined && (r as number) > 0) {
                     if(DEBUG) {console.log(`SuperCoordination r is ${r}`)}
                     let v = Object.values(MarchCalc.Research.get('Military')!.SuperCoordination!)[(r as number )] as number
@@ -546,7 +546,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                         this.baseMarch = this.baseMarch + v;
                     }
                 }
-                r = formValues.value.get('SuprCoordination');
+                r = getValue('SuprCoordination');
                 if(r !== undefined && (r as number) > 0) {
                     if(DEBUG) {console.log(`SuprCoordination r is ${r}`)}
                     let v = Object.values(MarchCalc.Research.get('Military')!.SupremeCoordination!)[(r as number )] as number
@@ -555,7 +555,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                         this.baseMarch = this.baseMarch + mathBase * v;
                     }
                 }
-                r = formValues.value.get('Prestige');
+                r = getValue('Prestige');
                 if(r !== undefined && (r as number) > 0) {
                     if(DEBUG) {console.log(`Prestige r is ${r}`)}
                     let v = Object.values(MarchCalc.Research.get('MilitaryAdvance')!.Prestige!)[(r as number )] as number
@@ -564,7 +564,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                         this.baseMarch = this.baseMarch + v;
                     }
                 }
-                r = formValues.value.get('AdvPrestige');
+                r = getValue('AdvPrestige');
                 if(r !== undefined && (r as number) > 0) {
                     if(DEBUG) {console.log(`AdvPrestige r is ${r}`)}
                     let v = Object.values(MarchCalc.Research.get('MilitaryAdvance')!.AdvancedPrestige!)[(r as number )] as number
@@ -573,7 +573,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                         this.baseMarch = this.baseMarch + v;
                     }
                 }
-                r = formValues.value.get('Olevel');
+                r = getValue('Olevel');
                 if(r !== undefined) {
                     if(!(r as string).localeCompare('Junior')) {
                         this.baseMarch = this.baseMarch + mathBase * 0.05;
@@ -588,10 +588,10 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                     }
                 }
                 if(this.rallySpotSize >= 11) {
-                    r = formValues.value.get('Banquet');
+                    r = getValue('Banquet');
                     if(r !== undefined) {
                         if(!(r as string).localeCompare('true')){
-                            let r2 = formValues.value.get('BNF');
+                            let r2 = getValue('BNF');
                             if(r2 !== undefined){
                                 if(DEBUG) {console.log(`i il bnf r2 defined ${r2 as number}`)}
                                 this.baseMarch = this.baseMarch + Object.values(MarchCalc.idealLand.get('Banquet')!)[(r2 as number)-1]
@@ -610,11 +610,11 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                     addValue('BNF', '1');
                 }
                 if(this.rallySpotSize >= 35) {
-                    r = formValues.value.get('Hideyoshi')
+                    r = getValue('Hideyoshi')
                     if(r !== undefined) {
                         if(!(r as string).localeCompare('checked')) {
                             this.baseMarch = this.baseMarch + mathBase * 0.05;
-                            let r2 = formValues.value.get('TH_S3');
+                            let r2 = getValue('TH_S3');
                             this.TH_S3 = true;
                             if(r2 !== undefined) {
                                 if(!(r2 as string).localeCompare('Green')) {
@@ -632,7 +632,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                                 } else if(!(r2 as string).localeCompare('Gold')) {
                                     this.baseMarch = this.baseMarch + mathBase * 0.06;
                                     this.TH_S4 = true;
-                                    let r3 = formValues.value.get('TH_S4');
+                                    let r3 = getValue('TH_S4');
                                     if(r3 !== undefined) {
                                         if(!(r3 as string).localeCompare('Green')) {
                                             this.baseMarch = this.baseMarch + mathBase * 0.01;
@@ -822,20 +822,20 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                             <sp-switch 
                                 emphasized 
                                 id="Banquet" 
-                                checked="${((formValues.value!.get('Banquet') !== undefined) && (!(formValues.value!.get('Banquet') as string).localeCompare('true'))) ? formValues.value!.get('Banquet') : nothing}"
+                                checked="${((getValue('Banquet') !== undefined) && (!(getValue('Banquet') as string).localeCompare('true'))) ? getValue('Banquet') : nothing}"
                                 @change=${(e: CustomEvent) => {addValue("Banquet", (e.target as Switch).checked? 'true': 'false'); this.requestUpdate();}}
                                 disabled="${(this.rallySpotSize >= 11) ? nothing : true}"
                             >Banquet of Dionysus</sp-switch>
                             <sp-number-field
                                 id="BNF"
-                                value="${(formValues.value!.get('BNF') !== undefined) ? formValues.value!.get('BNF') : 1}"
+                                value="${(getValue('BNF') !== undefined) ? getValue('BNF') : 1}"
                                 min="1"
                                 max="10"
                                 format-options='{
                                     "signDisplay": "never",
                                     "maximumFractionDigits": 0
                                 }'
-                                disabled="${(formValues.value?.get('Banquet') !== undefined && (!(formValues.value?.get('Banquet') as string).localeCompare('true'))) ? nothing : true}"
+                                disabled="${(getValue('Banquet') !== undefined && (!(getValue('Banquet') as string).localeCompare('true'))) ? nothing : true}"
                                 @change=${(e: CustomEvent) => {addValue("BNF", (e.target as NumberField).value); this.requestUpdate();}}
                             ></sp-number-field>
                         </div>
@@ -843,20 +843,20 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                             <sp-switch 
                                 emphasized 
                                 id="Crane" 
-                                checked="${((formValues.value!.get('Crane') !== undefined) && (!(formValues.value!.get('Crane') as string).localeCompare('true'))) ? formValues.value!.get('Crane') : nothing}"
+                                checked="${((getValue('Crane') !== undefined) && (!(getValue('Crane') as string).localeCompare('true'))) ? getValue('Crane') : nothing}"
                                 @change=${(e: CustomEvent) => {addValue("Crane", (e.target as Switch).checked? 'checked': 'unchecked'); this.requestUpdate();}}
                                 disabled="${(this.rallySpotSize >= 11) ? nothing : true}"
                             >Crane Pavilion</sp-switch>
                             <sp-number-field
                                 id="CNF"
-                                value="${(formValues.value!.get('CNF') !== undefined) ? formValues.value!.get('CNF') : 1}"
+                                value="${(getValue('CNF') !== undefined) ? getValue('CNF') : 1}"
                                 min="1"
                                 max="10"
                                 format-options='{
                                     "signDisplay": "never",
                                     "maximumFractionDigits": 0
                                 }'
-                                disabled="${(formValues.value?.get('Crane') !== undefined && (!(formValues.value?.get('Crane') as string).localeCompare('checked'))) ? nothing : true}"
+                                disabled="${(getValue('Crane') !== undefined && (!(getValue('Crane') as string).localeCompare('checked'))) ? nothing : true}"
                                 @change=${(e: CustomEvent) => {addValue("CNF", (e.target as NumberField).value); this.requestUpdate();}}
                             ></sp-number-field>
                         </div>
@@ -870,14 +870,14 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                             >Dracula Haunting Night</sp-switch>
                             <sp-number-field
                                 id="DNF"
-                                value="${(formValues.value!.get('DNF') !== undefined) ? formValues.value!.get('DNF') : 1}"
+                                value="${(getValue('DNF') !== undefined) ? getValue('DNF') : 1}"
                                 min="1"
                                 max="10"
                                 format-options='{
                                     "signDisplay": "never",
                                     "maximumFractionDigits": 0
                                 }'
-                                disabled="${(formValues.value?.get('Dracula') !== undefined && (!(formValues.value?.get('Dracula') as string).localeCompare('checked'))) ? nothing : true}"
+                                disabled="${(getValue('Dracula') !== undefined && (!(getValue('Dracula') as string).localeCompare('checked'))) ? nothing : true}"
                                 @change=${(e: CustomEvent) => {addValue("DNF", (e.target as NumberField).value); this.requestUpdate();}}
                             ></sp-number-field>
                         </div>
@@ -891,14 +891,14 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                             >Drinking Fountain</sp-switch>
                             <sp-number-field
                                 id="DFNF"
-                                value="${(formValues.value!.get('DFNF') !== undefined) ? formValues.value!.get('DFNF') : 1}"
+                                value="${(getValue('DFNF') !== undefined) ? getValue('DFNF') : 1}"
                                 min="1"
                                 max="10"
                                 format-options='{
                                     "signDisplay": "never",
                                     "maximumFractionDigits": 0
                                 }'
-                                disabled="${(formValues.value?.get('DrinkingFountain') !== undefined && (!(formValues.value?.get('DrinkingFountain') as string).localeCompare('checked'))) ? nothing : true}"
+                                disabled="${(getValue('DrinkingFountain') !== undefined && (!(getValue('DrinkingFountain') as string).localeCompare('checked'))) ? nothing : true}"
                                 @change=${(e: CustomEvent) => {addValue("DFNF", (e.target as NumberField).value); this.requestUpdate();}}
                             ></sp-number-field>
                         </div>
@@ -912,14 +912,14 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                             >Fountain</sp-switch>
                             <sp-number-field
                                 id="FNF"
-                                value="${(formValues.value!.get('FNF') !== undefined) ? formValues.value!.get('FNF') : 1}"
+                                value="${(getValue('FNF') !== undefined) ? getValue('FNF') : 1}"
                                 min="1"
                                 max="10"
                                 format-options='{
                                     "signDisplay": "never",
                                     "maximumFractionDigits": 0
                                 }'
-                                disabled="${(formValues.value?.get('Fountain') !== undefined && (!(formValues.value?.get('Fountain') as string).localeCompare('checked'))) ? nothing : true}"
+                                disabled="${(getValue('Fountain') !== undefined && (!(getValue('Fountain') as string).localeCompare('checked'))) ? nothing : true}"
                                 @change=${(e: CustomEvent) => {addValue("FNF", (e.target as NumberField).value); this.requestUpdate();}}
                             ></sp-number-field>
                         </div>
@@ -933,14 +933,14 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                             >Gondola</sp-switch>
                             <sp-number-field
                                 id="GNF"
-                                value="${(formValues.value!.get('GNF') !== undefined) ? formValues.value!.get('GNF') : 0}"
+                                value="${(getValue('GNF') !== undefined) ? getValue('GNF') : 0}"
                                 min="0"
                                 max="10"
                                 format-options='{
                                     "signDisplay": "never",
                                     "maximumFractionDigits": 0
                                 }'
-                                disabled="${(formValues.value?.get('Gondola') !== undefined && (!(formValues.value?.get('Gondola') as string).localeCompare('checked'))) ? nothing : true}"
+                                disabled="${(getValue('Gondola') !== undefined && (!(getValue('Gondola') as string).localeCompare('checked'))) ? nothing : true}"
                                 @change=${(e: CustomEvent) => {addValue("GNF", (e.target as NumberField).value); this.requestUpdate();}}
                             ></sp-number-field>
                         </div>
@@ -954,14 +954,14 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                             >Heavenly Fire Altar</sp-switch>
                             <sp-number-field
                                 id="HFANF"
-                                value="${(formValues.value!.get('HFANF') !== undefined) ? formValues.value!.get('HFANF') : 0}"
+                                value="${(getValue('HFANF') !== undefined) ? getValue('HFANF') : 0}"
                                 min="0"
                                 max="10"
                                 format-options='{
                                     "signDisplay": "never",
                                     "maximumFractionDigits": 0
                                 }'
-                                disabled="${(formValues.value?.get('HeavenlyFire') !== undefined && (!(formValues.value?.get('HeavenlyFire') as string).localeCompare('checked'))) ? nothing : true}"
+                                disabled="${(getValue('HeavenlyFire') !== undefined && (!(getValue('HeavenlyFire') as string).localeCompare('checked'))) ? nothing : true}"
                                 @change=${(e: CustomEvent) => {addValue("HFANF", (e.target as NumberField).value); this.requestUpdate();}}
                             ></sp-number-field>
                         </div>
@@ -975,14 +975,14 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                             >Red Demon Statue</sp-switch>
                             <sp-number-field
                                 id="RDSNF"
-                                value="${(formValues.value!.get('RDSNF') !== undefined) ? formValues.value!.get('RDSNF') : 0}"
+                                value="${(getValue('RDSNF') !== undefined) ? getValue('RDSNF') : 0}"
                                 min="0"
                                 max="10"
                                 format-options='{
                                     "signDisplay": "never",
                                     "maximumFractionDigits": 0
                                 }'
-                                disabled="${(formValues.value?.get('RedDemon') !== undefined && (!(formValues.value?.get('RedDemon') as string).localeCompare('checked'))) ? nothing : true}"
+                                disabled="${(getValue('RedDemon') !== undefined && (!(getValue('RedDemon') as string).localeCompare('checked'))) ? nothing : true}"
                                 @change=${(e: CustomEvent) => {addValue("RDSNF", (e.target as NumberField).value); this.requestUpdate();}}
                             ></sp-number-field>
                         </div>
@@ -996,14 +996,14 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                             >Rose Spring</sp-switch>
                             <sp-number-field
                                 id="RSNF"
-                                value="${(formValues.value!.get('RSNF') !== undefined) ? formValues.value!.get('RSNF') : 0}"
+                                value="${(getValue('RSNF') !== undefined) ? getValue('RSNF') : 0}"
                                 min="0"
                                 max="10"
                                 format-options='{
                                     "signDisplay": "never",
                                     "maximumFractionDigits": 0
                                 }'
-                                disabled="${(formValues.value?.get('RoseSpring') !== undefined && (!(formValues.value?.get('RoseSpring') as string).localeCompare('checked'))) ? nothing : true}"
+                                disabled="${(getValue('RoseSpring') !== undefined && (!(getValue('RoseSpring') as string).localeCompare('checked'))) ? nothing : true}"
                                 @change=${(e: CustomEvent) => {addValue("RSNF", (e.target as NumberField).value); this.requestUpdate();}}
                             ></sp-number-field>
                         </div>
@@ -1017,14 +1017,14 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                             >St. Martin the White Knight</sp-switch>
                             <sp-number-field
                                 id="SMNF"
-                                value="${(formValues.value!.get('SMNF') !== undefined) ? formValues.value!.get('SMNF') : 0}"
+                                value="${(getValue('SMNF') !== undefined) ? getValue('SMNF') : 0}"
                                 min="0"
                                 max="10"
                                 format-options='{
                                     "signDisplay": "never",
                                     "maximumFractionDigits": 0
                                 }'
-                                disabled="${(formValues.value?.get('StMartin') !== undefined && (!(formValues.value?.get('StMartin') as string).localeCompare('checked'))) ? nothing : true}"
+                                disabled="${(getValue('StMartin') !== undefined && (!(getValue('StMartin') as string).localeCompare('checked'))) ? nothing : true}"
                                 @change=${(e: CustomEvent) => {addValue("SMNF", (e.target as NumberField).value); this.requestUpdate();}}
                             ></sp-number-field>
                         </div>
@@ -1038,14 +1038,14 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                             >Windmill</sp-switch>
                             <sp-number-field
                                 id="WNF"
-                                value="${(formValues.value!.get('WNF') !== undefined) ? formValues.value!.get('WNF') : 0}"
+                                value="${(getValue('WNF') !== undefined) ? getValue('WNF') : 0}"
                                 min="0"
                                 max="10"
                                 format-options='{
                                     "signDisplay": "never",
                                     "maximumFractionDigits": 0
                                 }'
-                                disabled="${(formValues.value?.get('Windmill') !== undefined && (!(formValues.value?.get('Windmill') as string).localeCompare('checked'))) ? nothing : true}"
+                                disabled="${(getValue('Windmill') !== undefined && (!(getValue('Windmill') as string).localeCompare('checked'))) ? nothing : true}"
                                 @change=${(e: CustomEvent) => {addValue("WNF", (e.target as NumberField).value); this.requestUpdate();}}
                             ></sp-number-field>
                         </div>
