@@ -10,11 +10,11 @@ import type { HTMLAttributes } from 'astro/types'
 import {z, ZodError} from 'zod'
 
 import {
-  generalSchema,
-  type General,
-  generalObjectSchema,
-  type generalObject
-} from "@schemas/evonySchemas.ts";
+  GeneralClass,
+  type GeneralClassType,
+  GeneralElement,
+  type GeneralElementType,
+} from "@schemas/index";
 
 
 export const GET: APIRoute = async ({ params, request }) => {
@@ -22,9 +22,9 @@ export const GET: APIRoute = async ({ params, request }) => {
   if(generalObjects !== null && generalObjects !== undefined) {
     
     let generalIterator = generalObjects.values();
-    let allGenerals = new Array<generalObject>();
+    let allGenerals = new Array<GeneralElementType>();
     for (const v of generalIterator) {
-      const validation = generalObjectSchema.safeParse(v.data);
+      const validation = GeneralElement.safeParse(v.data);
       if(validation.success) {
         allGenerals.push(validation.data);
       }

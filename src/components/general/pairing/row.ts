@@ -350,7 +350,7 @@ export class PairingRow extends withStores(LitElement, [generalPairs, conflictin
       (this.statusLight1 === statusLights.enum.indigo)) {
         if(this.one.books !== null && this.one.books !== undefined) {
           const book1: BookType = this.one.books[0];
-          const buffArray: b.Buff[] = book1['buff'];
+          const buffArray: b.BuffType[] = book1['buff'];
           for(let be in buffArray) {
             const condition = buffArray[be].condition;
             if(condition !== null && condition !== undefined) {
@@ -414,7 +414,7 @@ export class PairingRow extends withStores(LitElement, [generalPairs, conflictin
       (this.statusLight2 === statusLights.enum.indigo)) {
         if(this.two!.books !== null && this.two!.books !== undefined) {
           const book1: BookType = this.two!.books[0];
-          const buffArray: b.Buff[] = book1['buff'];
+          const buffArray: b.BuffType[] = book1['buff'];
           for(let be in buffArray) {
             const condition = buffArray[be].condition;
             if(condition !== null && condition !== undefined) {

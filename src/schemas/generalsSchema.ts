@@ -32,8 +32,20 @@ export const Note = z.object({
 export type NoteType = z.infer<typeof Note>;
 
 export const Ascending = z.object({
-    "level": b.levels,
-    "buff": z.array(b.BuffSchema),
+    "level": b.levels.refine((l) => {
+        switch (l) {
+          case '0':
+          case '6':
+          case '7':
+          case '8':
+          case '9':
+          case '10':
+            return true;
+          default:
+            return false;
+          }
+      }),
+    "buff": z.array(b.Buff),
 });
 export type AscendingType = z.infer<typeof Ascending>;
 
@@ -57,7 +69,27 @@ export const GeneralClass = z.object({
     "politics": z.number(),
     "politics_increment": z.number(),
     "level": b.levels,
-    "stars": b.levels.nullish(),
+    "stars": b.levels.refine((l) => {
+        if(l !== null && l !== undefined ) {
+          switch (l) {
+            case '0':
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+            case '10':
+              return true;
+            default:
+              return false;
+          }
+        }
+        return false;
+      }).nullish(),
     "score_as": b.ClassEnum.optional(),
     "specialities": z.array(s.Speciality).nullish(),
     "books": z.array(Book).nullish(),
@@ -67,12 +99,12 @@ export const GeneralClass = z.object({
 });
 export type GeneralClassType = z.infer<typeof GeneralClass>;
 
-export const GeneralElementSchema = z.object({
+export const GeneralElement = z.object({
     "general": GeneralClass,
 });
-export type GeneralElement = z.infer<typeof GeneralElementSchema>;
+export type GeneralElementType = z.infer<typeof GeneralElement>;
 
-export const GeneralArray = z.array(GeneralElementSchema);
+export const GeneralArray = z.array(GeneralElement);
 export type GeneralArrayType = z.infer<typeof GeneralArray>;
 
 export const GeneralPair = z.object({

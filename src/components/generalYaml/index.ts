@@ -43,7 +43,7 @@ import { addValue, formInit, getValue, formValues } from '../formValueStore.ts';
 
 import * as b from "@schemas/baseSchemas.ts";
 
-import { GeneralElementSchema } from '@schemas/generalsSchema.ts';
+import { GeneralElement } from '@schemas/generalsSchema.ts';
 import type { ZodError } from "zod";
 
 export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
@@ -145,7 +145,7 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
       if (this.resultDiv.value !== null && this.resultDiv.value !== undefined) {
         
           const JsonValue = parse(toValidate, { prettyErrors: true });
-          const valid = GeneralElementSchema.safeParse(JsonValue);
+          const valid = GeneralElement.safeParse(JsonValue);
           if (valid.success) {
             this.resultClassList.valid = true;
             this.resultClassList.invalid = false;

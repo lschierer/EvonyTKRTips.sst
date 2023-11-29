@@ -13,8 +13,8 @@ import {
   type GeneralClassType,
   GeneralArray,
   type GeneralArrayType,
-  GeneralElementSchema,
-  type GeneralElement,
+  GeneralElement,
+  type GeneralElementType,
 } from "@schemas/generalsSchema.ts"
 
 import {

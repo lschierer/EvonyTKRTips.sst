@@ -146,13 +146,14 @@ export type Value = z.infer<typeof ValueSchema>;
 export const BuffAdverbArray = z.array(Condition);
 export type BuffAdverbArrayType = z.infer<typeof BuffAdverbArray>;
 
-export const BuffSchema = z.object({
+export const Buff = z.object({
   'attribute': AttributeSchema.optional(),
   'condition': z.union([Condition,BuffAdverbArray]).optional(),
   'class': ClassEnum.nullish(),
   'value': ValueSchema.nullish(),
 });
-export type Buff = z.infer<typeof BuffSchema>;
+export type BuffType = z.infer<typeof Buff>;
 
+export const buffUnion = z.array(Buff);
 
 

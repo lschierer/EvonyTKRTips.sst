@@ -12,6 +12,7 @@ general:
   defense_increment: 9.05
   politics: 100
   politics_increment: 8.35
+  level: '1'
   books:
     - name: Glory Knight
       buff:

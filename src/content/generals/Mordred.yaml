@@ -12,6 +12,7 @@ general:
   defense_increment: 9.08
   politics: 108
   politics_increment: 8.53
+  level: '1'
   books:
     - name: Knight of Treachery
       buff:

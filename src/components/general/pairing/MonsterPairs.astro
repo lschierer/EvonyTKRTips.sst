@@ -26,18 +26,10 @@ import {
 import {
   GeneralArray,
   type GeneralArrayType,
-  GeneralElementSchema,
-  type GeneralElement,
-} from "@schemas/generalsSchema.ts"
-
-//I need to import from one to the other schema sets. I use evonySchemas.ts for the collection because its generated 
-//from my understanding of what the data should be. 
-//the smaller schema files represent quicktype.io's analysis of what I've actually produced with minimal modifications.
-import {
   generalConflicts,
-  generalObjectSchema,
-  type generalObject
-} from "@schemas/evonySchemas.ts";
+  GeneralElement,
+  type GeneralElementType,
+} from "@schemas/index";
 
 import {Book, type BookType} from '@schemas/bookSchemas.ts'
 
@@ -52,9 +44,9 @@ let allGeneralsJson: string = '';
 const generalObjects: CollectionEntry<'generals'>[]  = await getCollection('generals');
 if(generalObjects !== null && generalObjects !== undefined) {
     let generalIterator = generalObjects.values();
-    let allGenerals = new Array<generalObject>();
+    let allGenerals = new Array<GeneralElementType>();
     for (const v of generalIterator) {
-        const validation = generalObjectSchema.safeParse(v.data);
+        const validation = GeneralElement.safeParse(v.data);
         if(validation.success) {
             allGenerals.push(validation.data);
         } else{

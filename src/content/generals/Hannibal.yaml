@@ -12,6 +12,7 @@ general:
   defense_increment: 8.59
   politics: 95
   politics_increment: 8.29
+  level: '1'
   books:
     - name: Master of Strategy
       buff:
