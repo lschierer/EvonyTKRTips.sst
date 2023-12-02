@@ -31,7 +31,7 @@ import {
 } from '@spectrum-web-components/menu';
 import { Button, ClearButton, CloseButton } from '@spectrum-web-components/button';
 
-const DEBUG = true;
+const DEBUG = false;
 
 import * as b from '@schemas/baseSchemas.ts'
 
@@ -81,6 +81,7 @@ export class GeneralFilter extends withStores(SpectrumElement, [allGenerals, fil
         let spv = selections.get().primaries;
         let ssv = selections.get().secondaries;
         if(valid.success) {
+          if(DEBUG) {console.log(`ag subscribe I have a valid ag`)}
           if(spv === null || spv === undefined) {
             resetPrimary();
           } else if(spv.length === 0) {
@@ -102,25 +103,21 @@ export class GeneralFilter extends withStores(SpectrumElement, [allGenerals, fil
           selections.setKey('secondaries', null);
         }
       } else {
+        if(DEBUG) {console.log(`ag subscribe setting selections to null`)}
         selections.setKey('primaries', null);
         selections.setKey('secondaries', null);
       }
+
     })
+  
     const allgens = allGenerals.get();
     if(allgens !== null && allgens !== undefined) {
-      const mixed = allgens.map((ag) => {
+      allgens.map((ag) => {
         if(ag !== null && ag !== undefined) {
-          return ag.general.name
+          this.primaryValues.push(ag.general.name);
+          this.secondaryValues.push(ag.general.name);
         }
       })
-      
-      for(let i = 0; i < mixed.length; i++) {
-        const v = mixed[i];
-        if(v !== null && v !== undefined) {
-          this.primaryValues.push(v);
-          this.secondaryValues.push(v);
-        }
-      }
     }
   }
 
@@ -222,13 +219,20 @@ export class GeneralFilter extends withStores(SpectrumElement, [allGenerals, fil
           if(DEBUG){console.log(`tPS used !vdiff for ${gen.general.name}`)}
           const ov = getValue('primary', gen);
           if(ov !== true) {
+            if(DEBUG){console.log(`and marking true`)}
             togglePrimary(gen,true);
+          }else {
+            if(DEBUG){console.log(`and marking false`)}
+            togglePrimary(gen,false)
           }
         } else if (!values.includes(gen.general.name)) {
           if(DEBUG){console.log(`tPS used !values for ${gen.general.name}`)}
           const ov = getValue('primary', gen);
           if(ov !== false) {
+            if(DEBUG){console.log(`and setting false`)}
             togglePrimary(gen, false);
+          } else {
+            if(DEBUG){console.log(`gen ${gen.general.name} has ov ${ov}`)}
           }
         }
       }
