@@ -1,5 +1,5 @@
 conflicts:
-  a:
+  01HGKXXRT5ARNCK525NRWQXQNR:
     - Kleos
   other:
     - Zucca
@@ -9,42 +9,42 @@ conflicts:
     - Napoleon
     - Genghis Khan
     - King Arthur
-  books:
-    - name: March Size Increase
-      level: '1'
-      buff:
-      - attribute: Attack
-        condition: When_Not_Mine
-        class: Ranged
-        value:
-          number: 3
-          unit: percentage
-    - name: March Size Increase
-      level: '2'
-      buff:
-      - attribute: Attack
-        condition: When_Not_Mine
-        class: Ranged
-        value:
-          number: 6
-          unit: percentage
-    - name: March Size Increase
-      level: '3'
-      buff:
-      - attribute: Attack
-        condition: When_Not_Mine
-        class: Ranged
-        value:
-          number: 9
-          unit: percentage
-    - name: March Size Increase
-      level: '4'
-      buff:
-      - attribute: Attack
-        condition: When_Not_Mine
-        class: Ranged
-        value:
-          number: 12
-          unit: percentage
+books:
+  - name: March Size Increase
+    level: '1'
+    buff:
+    - attribute: Attack
+      condition: When_Not_Mine
+      class: Archers
+      value:
+        number: 3
+        unit: percentage
+  - name: March Size Increase
+    level: '2'
+    buff:
+    - attribute: Attack
+      condition: When_Not_Mine
+      class: Archers
+      value:
+        number: 6
+        unit: percentage
+  - name: March Size Increase
+    level: '3'
+    buff:
+    - attribute: Attack
+      condition: When_Not_Mine
+      class: Archers
+      value:
+        number: 9
+        unit: percentage
+  - name: March Size Increase
+    level: '4'
+    buff:
+    - attribute: Attack
+      condition: When_Not_Mine
+      class: Archers
+      value:
+        number: 12
+        unit: percentage
 
 

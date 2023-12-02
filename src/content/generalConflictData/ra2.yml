@@ -3,6 +3,7 @@ conflicts:
     - Elektra
     - Vladimir the Great
   other:
+    - Louis IX
     - Winfield Scott
     - Li Shimin
     - Subutai
@@ -12,40 +13,40 @@ conflicts:
     - Edward the Black Prince
     - Jumong
     - Antara
-  books:
-    - name: Ranged Attack Increase
-      level: '1'
-      buff:
-      - attribute: Attack
-        condition: When_Not_Mine
-        class: Ranged
-        value:
-          number: 10
-          unit: percentage
-    - name: Ranged Attack Increase
-      level: '2'
-      buff:
-      - attribute: Attack
-        condition: When_Not_Mine
-        class: Ranged
-        value:
-          number: 15
-          unit: percentage
-    - name: Ranged Attack Increase
-      level: '3'
-      buff:
-      - attribute: Attack
-        condition: When_Not_Mine
-        class: Ranged
-        value:
-          number: 20
-          unit: percentage
-    - name: Ranged Attack Increase
-      level: '4'
-      buff:
-      - attribute: Attack
-        condition: When_Not_Mine
-        class: Ranged
-        value:
-          number: 25
-          unit: percentage
+books:
+  - name: Ranged Attack Increase
+    level: '1'
+    buff:
+    - attribute: Attack
+      condition: When_Not_Mine
+      class: Archers
+      value:
+        number: 10
+        unit: percentage
+  - name: Ranged Attack Increase
+    level: '2'
+    buff:
+    - attribute: Attack
+      condition: When_Not_Mine
+      class: Archers
+      value:
+        number: 15
+        unit: percentage
+  - name: Ranged Attack Increase
+    level: '3'
+    buff:
+    - attribute: Attack
+      condition: When_Not_Mine
+      class: Archers
+      value:
+        number: 20
+        unit: percentage
+  - name: Ranged Attack Increase
+    level: '4'
+    buff:
+    - attribute: Attack
+      condition: When_Not_Mine
+      class: Archers
+      value:
+        number: 25
+        unit: percentage
