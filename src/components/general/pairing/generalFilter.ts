@@ -297,7 +297,7 @@ export class GeneralFilter extends withStores(SpectrumElement, [allGenerals, fil
               const v = generals[i];
               const k = v.general.name;
               let p: boolean = false;
-              
+              let s: boolean = false;
               if(primaries.length > 0) {
                 for(let i  = 0; i < primaries.length; i++) {
                   const r = primaries[i];
@@ -311,7 +311,23 @@ export class GeneralFilter extends withStores(SpectrumElement, [allGenerals, fil
               if(k !== null && k !== undefined) {
                 npv.push(k);
                 spt = html`${spt}
-                  <sp-menu-item value=${k} selected=${(p === true)? true : nothing}>${k}</sp-menu-item>
+                  <sp-menu-item disabled value=${k} selected=${(p === true)? true : nothing}>${k}</sp-menu-item>
+                `
+              }
+              if(secondaries.length > 0) {
+                for(let i  = 0; i < secondaries.length; i++) {
+                  const r = secondaries[i];
+                  const tk = Object.keys(r)[0];
+                  if(!tk.localeCompare(k)) {
+                    s = Object.values(r)[0];
+                  }
+                }
+              }
+              if (DEBUG) {console.log(`${k} set s to ${s}`) }
+              if(k !== null && k !== undefined) {
+                nsv.push(k);
+                sst = html`${sst}
+                  <sp-menu-item disabled value=${k} selected=${(s === true)? true : nothing}>${k}</sp-menu-item>
                 `
               }
             }
@@ -324,7 +340,7 @@ export class GeneralFilter extends withStores(SpectrumElement, [allGenerals, fil
     spt = html`
     <sp-popover slot="click-content" open style="position: relative">
       <sp-menu label="Primary Generals" selects="multiple" @change=${this.togglePrimarySelection}>
-        <sp-menu-item value="all">All</sp-menu-item>
+        <sp-menu-item disabled value="all">All</sp-menu-item>
         <sp-menu-divider></sp-menu-divider>
         ${spt}
       </sp-menu>
@@ -334,7 +350,6 @@ export class GeneralFilter extends withStores(SpectrumElement, [allGenerals, fil
     sst = html`
     <sp-popover slot="click-content" open style="position: relative">
       <sp-menu value=${this.secondaryValues.join(',')} label="Secondary Generals" selects="multiple" @change=${this.toggleSecondarySelection}>
-        
         ${sst}
       </sp-menu>
     </sp-popover>
@@ -347,14 +362,14 @@ export class GeneralFilter extends withStores(SpectrumElement, [allGenerals, fil
           <sp-picker-button size="m" slot="trigger" type='button' ><span slot="label">Primary Generals</span></sp-picker-button>
           ${spt}
         </overlay-trigger>
-        <sp-button treatment="outline" ${ref(this.primaryCickListener)}variant="primary" >Reset</sp-button>
+        <sp-button disabled treatment="outline" ${ref(this.primaryCickListener)}variant="primary" >Reset</sp-button>
       </div>
       <div class="not-content secondary">
         <overlay-trigger id="trigger" placement="bottom" offset="6">
           <sp-picker-button size="m" slot="trigger" type='button' ><span slot="label">Secondary Generals</span></sp-picker-button>
           ${sst}
         </overlay-trigger>
-        <sp-button treatment="outline" ${ref(this.secondaryCickListener)}variant="primary" >Reset</sp-button>
+        <sp-button disabled treatment="outline" ${ref(this.secondaryCickListener)}variant="primary" >Reset</sp-button>
       </div>
     </div>
     `
