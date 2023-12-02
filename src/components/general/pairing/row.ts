@@ -277,7 +277,6 @@ export class PairingRow extends withStores(LitElement, [generalPairs, conflictin
       this.march_buff = this.one.totalBuffs.march;
       if (DEBUG) { console.log(`o ${this.one.name}, attack now ${this.attack_buff}`) }
       if (this.two !== null) {
-        
         if (!checkConflicts(this.one.name, this.two.name, this.unitClass)) {
           let { attackBuff, defenseBuff, hpBuff, marchBuff } = buff(this.two, this.adverbs, this.Assistprops);
           if(DEBUG) {console.log(`${this.two.name} a ${attackBuff} d ${defenseBuff} h ${hpBuff}`)}

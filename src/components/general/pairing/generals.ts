@@ -6,7 +6,7 @@ import * as z from "zod";
 
 import {  type ZodError } from "zod";
 
-const DEBUG = true;
+const DEBUG = false;
 
 import * as b from "@schemas/baseSchemas.ts";
 
@@ -59,17 +59,20 @@ export const filteredPrimaries = computed([allGenerals,selections], (ag, sp) => 
   if(agv.success && (sp !== undefined && sp !== null )) {
     const primaries = sp.primaries;  
     if(primaries !== null && primaries !== undefined && !util.isEmpty(primaries)) {
-      for(let i in agv.data) {
-        const one = agv.data[i];
-        const os = primaries.filter((pv) => {
-          const k = Object.keys(pv)[0];
-          return (k.localeCompare(one.general.name));
-        })[0];
-        const osv = Object.values(os)[0];
-        if(osv === true) {
-          returnable.add(one);
+      agv.data.map((one) => {
+        if(one !== null && one !== undefined) {
+          const os = primaries.filter((pv) => {
+            const k = Object.keys(pv)[0];
+            return (!k.localeCompare(one.general.name));
+          })[0];
+          if(os !== null && os !== undefined) {
+            const osv = Object.values(os)[0];
+            if(osv === true) {
+              returnable.add(one);
+            }
+          }
         }
-      }
+      })
       return [...returnable];
     }
   } else {
@@ -112,8 +115,8 @@ export const filteredSecondaries = computed([allGenerals, selections], (ag, ss) 
   }
 })
 
-export const generalPairs = computed([allGenerals, filteredPrimaries, filteredSecondaries, primaryInvestmentMap, secondaryInvestmentMap, typeAndUseMap, conflictingGenerals],
-  (g,fp, fs,  pim, sim, tam, c) => {
+export const generalPairs = computed([allGenerals, primaryInvestmentMap, secondaryInvestmentMap, typeAndUseMap, conflictingGenerals],
+  (g,  pim, sim, tam, c) => {
     const returnable = new Map<string, GeneralPairType[]>();
     const type = tam.type;
 
@@ -121,8 +124,8 @@ export const generalPairs = computed([allGenerals, filteredPrimaries, filteredSe
     if (DEBUG) { console.log(`generals.ts generalPairs start`) }
     if (g !== null && g !== undefined) {
       if (c !== null && c !== undefined) {
-        const fpv:{ success: true; data: GeneralArrayType } | { success: false; error: ZodError; } = GeneralArray.safeParse(fp);
-        const fsv = GeneralArray.safeParse(fs);
+        const fpv:{ success: true; data: GeneralArrayType } | { success: false; error: ZodError; } = GeneralArray.safeParse(g);
+        const fsv = GeneralArray.safeParse(g);
         if(!fpv.success){
           console.error(`filtered Generals invalid`)
         } else {
@@ -206,10 +209,11 @@ export const togglePrimary = action(selections, 'toggleP', (store, general: Gene
   const nd = new Array<GeneralToggleType>();
   if(data !== null && data !== undefined ) {
     for(let i =0; i < data.length; i++) {
+      if(DEBUG){console.log(`nd has length ${nd.length}`)}
       const k = Object.keys(data[i])[0];
       const v = Object.values(data[i])[0];
       if(!k.localeCompare(general.general.name)){
-        if(DEBUG) {console.log(`found ${k} to toggleP`)}
+        if(DEBUG) {console.log(`found ${k} to toggleP ${enabled}`)}
         nd.push({[general.general.name]: enabled});
       } else {
         nd.push(data[i]);
@@ -226,12 +230,14 @@ export const togglePrimary = action(selections, 'toggleP', (store, general: Gene
         }
       }
     } else {
+      if(DEBUG) {console.log(`ag was null or undefined in toggleP`)}
       nd.push({[general.general.name]: enabled});  
     }
     
     nd.push({[general.general.name]: enabled});
     
   }
+  if(DEBUG){console.log(`nd has final length ${nd.length}`)}
   store.setKey('primaries',nd)
 })
 

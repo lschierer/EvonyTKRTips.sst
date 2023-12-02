@@ -29,6 +29,8 @@ import {
   type standardSkillBookType
 } from "@schemas/bookSchemas.ts"
 
+import { typeAndUseMap, primaryInvestmentMap, secondaryInvestmentMap } from "./selectionStore.ts";
+
 
 type GeneralDictionary = {
   [key: string]: Array<string>;
@@ -38,7 +40,8 @@ const letters = new Set(["a", "b", "c"]);
 
 export const conflictRecords = atom<ConflictArrayType | null>(null);
 
-export const conflictingGenerals = computed(conflictRecords, CRs => {
+export const conflictingGenerals = computed([conflictRecords], (CRs) => {
+
   if (CRs !== undefined && CRs !== null) {
     const valid = ConflictArray.safeParse(CRs)
     if (valid.success) {
@@ -48,6 +51,7 @@ export const conflictingGenerals = computed(conflictRecords, CRs => {
         let data: ConflictDatumType | undefined;
         let conflicts = o1.conflicts;
         for (const key in conflicts) {
+          if(DEBUG){console.log(`evaluating key ${key} for o1.conflicts`)}
           if (key.localeCompare('other')) {
             const items = conflicts[key as keyof typeof conflicts];
             items.forEach((g: string) => {
@@ -70,6 +74,8 @@ export const conflictingGenerals = computed(conflictRecords, CRs => {
         }
       }
       return Returnable;
+    } else {
+      console.error(`file with errors: ${valid.error}`)
     }
   }
 });
@@ -107,7 +113,6 @@ export const conflictingBooks = computed(conflictRecords, CBs => {
 })
 
 export function checkConflicts(name1: string, name2: string, generalType: b.ClassEnumType) {
-  if(DEBUG) {console.log(`checkConflicts called for ${name1} and ${name2}`)}
   if (name1 === name2 || !name1.localeCompare(name2, undefined, { sensitivity: 'base' })) {
     return true;
   }
