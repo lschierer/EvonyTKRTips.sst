@@ -50,6 +50,7 @@ export const buffAdverbs: { [key in generalUseCaseType]: b.BuffAdverbArrayType }
         b.Condition.enum.leading_the_army_to_attack,
         b.Condition.enum.Reduces_Enemy,
         b.Condition.enum.Reduces_Enemy_in_Attack,
+        b.Condition.enum.Reduces_Enemy_with_a_Dragon,
         b.Condition.enum.Enemy,
     ],
     [generalUseCase.enum.Defense]: [
@@ -57,11 +58,13 @@ export const buffAdverbs: { [key in generalUseCaseType]: b.BuffAdverbArrayType }
         b.Condition.enum.Defending,
         b.Condition.enum.brings_a_dragon,
         b.Condition.enum.Reduces_Enemy,
+        b.Condition.enum.Reduces_Enemy_with_a_Dragon,
         b.Condition.enum.Enemy,
     ],
     [generalUseCase.enum.Overall]: [
         b.Condition.enum.Reduces_Enemy,
         b.Condition.enum.Enemy,
+        b.Condition.enum.Reduces_Enemy_with_a_Dragon,
     ],
     [generalUseCase.enum.Wall]: [
         b.Condition.enum.Reduces_Enemy,
@@ -215,7 +218,8 @@ export function buff(eg: GeneralClassType, situations: b.BuffAdverbArrayType, pr
                             if ((current.condition !== null && current.condition !== undefined) &&
                                 (
                                     ([current.condition].flat().includes(b.Condition.enum.Reduces_Monster)) ||
-                                    ([current.condition].flat().includes(b.Condition.enum.Reduces_Enemy))
+                                    ([current.condition].flat().includes(b.Condition.enum.Reduces_Enemy)) ||
+                                    (([current.condition].flat().includes(b.Condition.enum.Reduces_Enemy_with_a_Dragon)) && (props.dragon === true))
                                 )
                             ) {
                                 attack = attack + Math.abs(current.value.number);
@@ -234,7 +238,8 @@ export function buff(eg: GeneralClassType, situations: b.BuffAdverbArrayType, pr
                                 (
                                     ([current.condition].flat().includes(b.Condition.enum.Reduces_Monster)) ||
                                     ([current.condition].flat().includes(b.Condition.enum.Reduces_Enemy)) ||
-                                    ([current.condition].flat().includes(b.Condition.enum.Reduces_Enemy_in_Attack))
+                                    ([current.condition].flat().includes(b.Condition.enum.Reduces_Enemy_in_Attack)) ||
+                                    (([current.condition].flat().includes(b.Condition.enum.Reduces_Enemy_with_a_Dragon)) && (props.dragon === true))
                                 )
                             ) {
                                 defense = defense + Math.abs(current.value.number);
@@ -306,7 +311,8 @@ export function buff(eg: GeneralClassType, situations: b.BuffAdverbArrayType, pr
                                     if ((current.condition !== null && current.condition !== undefined) &&
                                         (
                                             ([current.condition].flat().includes(b.Condition.enum.Reduces_Monster)) ||
-                                            ([current.condition].flat().includes(b.Condition.enum.Reduces_Enemy))
+                                            ([current.condition].flat().includes(b.Condition.enum.Reduces_Enemy)) ||
+                                            (([current.condition].flat().includes(b.Condition.enum.Reduces_Enemy_with_a_Dragon)) && (props.dragon === true))
                                         )
                                     ) {
                                         attack = attack + Math.abs(current.value.number);
@@ -321,7 +327,8 @@ export function buff(eg: GeneralClassType, situations: b.BuffAdverbArrayType, pr
                                         (
                                             ([current.condition].flat().includes(b.Condition.enum.Reduces_Monster)) ||
                                             ([current.condition].flat().includes(b.Condition.enum.Reduces_Enemy)) ||
-                                            ([current.condition].flat().includes(b.Condition.enum.Reduces_Enemy_in_Attack))
+                                            ([current.condition].flat().includes(b.Condition.enum.Reduces_Enemy_in_Attack)) ||
+                                            (([current.condition].flat().includes(b.Condition.enum.Reduces_Enemy_with_a_Dragon)) && (props.dragon === true))
                                         )
                                     ) {
                                         defense = defense + Math.abs(current.value.number);
@@ -395,7 +402,8 @@ export function buff(eg: GeneralClassType, situations: b.BuffAdverbArrayType, pr
                                 if ((current.condition !== null && current.condition !== undefined) &&
                                     (
                                         ([current.condition].flat().includes(b.Condition.enum.Reduces_Monster)) ||
-                                        ([current.condition].flat().includes(b.Condition.enum.Reduces_Enemy))
+                                        ([current.condition].flat().includes(b.Condition.enum.Reduces_Enemy)) ||
+                                        (([current.condition].flat().includes(b.Condition.enum.Reduces_Enemy_with_a_Dragon)) && (props.dragon === true))
                                     )
                                 ) {
                                     attack = attack + Math.abs(current.value.number);
@@ -409,7 +417,8 @@ export function buff(eg: GeneralClassType, situations: b.BuffAdverbArrayType, pr
                                 if ((current.condition !== null && current.condition !== undefined) &&
                                     (
                                         ([current.condition].flat().includes(b.Condition.enum.Reduces_Monster)) ||
-                                        ([current.condition].flat().includes(b.Condition.enum.Reduces_Enemy))
+                                        ([current.condition].flat().includes(b.Condition.enum.Reduces_Enemy)) ||
+                                        (([current.condition].flat().includes(b.Condition.enum.Reduces_Enemy_with_a_Dragon)) && (props.dragon === true))
                                     )
                                 ) {
                                     defense = defense + Math.abs(current.value.number);
