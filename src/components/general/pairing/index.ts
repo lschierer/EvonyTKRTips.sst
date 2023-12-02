@@ -2,7 +2,7 @@ import {  html, css, type PropertyValues} from "lit";
 import {customElement, property, state} from 'lit/decorators.js';
 import {ref, createRef, type Ref} from 'lit/directives/ref.js';
 
-const DEBUG = false;
+const DEBUG = true;
 
 import { withStores } from "@nanostores/lit";
 
