@@ -8,17 +8,14 @@ import {Book, type BookType} from './bookSchemas';
 export const bookConflicts = z.object({books: z.array(standardSkillBook)})
 export type bookConflictsType = z.infer<typeof bookConflicts>;
 
-const nameConflicts = z.record(z.string(), z.array(z.string()));
+const nameConflicts = z.record(z.string().ulid(), z.array(z.string()));
 export type nameConflictsTypes = z.infer<typeof nameConflicts>;
 
 const otherConflicts = z.object({other: z.array(z.string())});
 export type otherConflictType = z.infer<typeof otherConflicts>;
 
 export const generalConflicts = z.object({"conflicts":
-    z.union([
-        nameConflicts,
-            otherConflicts,
-        ]),
+    z.record(z.union([z.string().ulid(),z.literal('other')]), z.array(z.string())),
     books: z.array(standardSkillBook).nullish(),
 });
 export type generalConflictsType = z.infer<typeof generalConflicts>;
