@@ -70,6 +70,7 @@ export const Condition = z.enum([
   'Against_Monsters',
   'Reduces_Enemy',
   'Reduces_Enemy_in_Attack',
+  'Reduces_Enemy_with_a_Dragon',
   'Enemy',
   'Enemy_In_City',
   'Reduces_Monster',
