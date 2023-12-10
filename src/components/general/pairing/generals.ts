@@ -8,7 +8,7 @@ import {  type ZodError } from "zod";
 
 const DEBUG = false;
 
-import * as b from "@schemas/baseSchemas.ts";
+import * as b from "@schemas/baseSchemas";
 
 import * as util from '../../../lib/util';
 
@@ -25,11 +25,11 @@ import {
   type GeneralElementType,
   generalUseCase,
   type generalUseCaseType,
-} from "@schemas/generalsSchema.ts"
+} from "@schemas/generalsSchema"
 
-import { conflictingGenerals } from "./ConflictingSkillExcludes.ts"
+import { conflictingGenerals } from "./ConflictingSkillExcludes"
 
-import { typeAndUseMap, primaryInvestmentMap, secondaryInvestmentMap } from "./selectionStore.ts";
+import { typeAndUseMap, primaryInvestmentMap, secondaryInvestmentMap } from "./selectionStore";
 
 import { buffAdverbs, buff } from './buff';
 
