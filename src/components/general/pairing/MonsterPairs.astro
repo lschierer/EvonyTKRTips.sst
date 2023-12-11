@@ -26,6 +26,7 @@ import {
   generalConflicts,
   GeneralElement,
   type GeneralElementType,
+ClassEnum,
 } from "@schemas/index";
 
 import { Book, type BookType } from "@schemas/bookSchemas.ts";
@@ -49,7 +50,9 @@ if (generalObjects !== null && generalObjects !== undefined) {
   for (const v of generalIterator) {
     const validation = GeneralElement.safeParse(v.data);
     if (validation.success) {
-      allGenerals.push(validation.data);
+      if (validation.data.general.score_as === ClassEnum.enum.Mounted) {
+        allGenerals.push(validation.data);
+      }
     } else {
       console.error(`bad validation ${validation.error}`);
     }
