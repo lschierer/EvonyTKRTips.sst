@@ -107,6 +107,7 @@ if (result.success) {
     pickType,
     pickUseCase,
   } from "./selectionStore";
+  import {ClassEnum, generalUseCase} from "../../../schemas"
   import { allGenerals, generalPairs } from "./generals";
   import {
     conflictingGenerals,
@@ -132,6 +133,8 @@ if (result.success) {
           console.log(`subscribe for ${ns}`);
         });
       }
+      pickType(ClassEnum.enum.Mounted);
+      pickUseCase(generalUseCase.enum.Monsters);
       const allGeneralsData = this.dataset.agd;
       const allConflictData = this.dataset.acd;
 
@@ -146,19 +149,16 @@ if (result.success) {
       } else {
         console.log(`dataset acd was null or undefined`);
       }
-
-      pickType("Mounted");
-      pickUseCase("Monsters");
     }
   }
   customElements.define("astro-stores", Stores);
 </script>
-
 {
   allGeneralsData && allConflictData && (
     <astro-stores data-acd={allConflictData} data-agd={allGeneralsData} />
   )
 }
+
 <style>
   .sp-table-container {
     display: block;

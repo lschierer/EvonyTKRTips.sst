@@ -109,6 +109,9 @@ export class PairingTable extends withStores(SpectrumElement, [generalPairs, pri
             this.rowCreator(gp, b.ClassEnum.enum.all, generalUseCase.enum.all)
           }
         }
+      } else {
+        this.type = tam.type;
+        this.use = tam.use;
       }
     })
 
