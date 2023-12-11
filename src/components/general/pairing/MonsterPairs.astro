@@ -1,27 +1,24 @@
 ---
-import { getCollection,  type CollectionEntry  } from 'astro:content';
+import { getCollection, type CollectionEntry } from "astro:content";
 
-import {z,  type ZodError} from 'zod';
-import {TypeSelector} from './TypeSelector.ts';
-import {InvestmentSelector} from './InvestmentSelector.ts';
-import {PairingTable} from './table.ts';
+import { z, type ZodError } from "zod";
+import { TypeSelector } from "./TypeSelector.ts";
+import { InvestmentSelector } from "./InvestmentSelector.ts";
+import { PairingTable } from "./table.ts";
 import {
   type generalInvestment,
   type generalTypeAndUse,
   primaryInvestmentMap,
   secondaryInvestmentMap,
-  typeAndUseMap
-} from './selectionStore.ts';
+  typeAndUseMap,
+} from "./selectionStore.ts";
 
 import {
   conflictingGenerals,
   conflictRecords,
 } from "./ConflictingSkillExcludes.ts";
 
-import {
-  allGenerals,
-  generalPairs,
-} from './generals.ts';
+import { allGenerals, generalPairs } from "./generals.ts";
 
 import {
   GeneralArray,
@@ -31,129 +28,147 @@ import {
   type GeneralElementType,
 } from "@schemas/index";
 
-import {Book, type BookType} from '@schemas/bookSchemas.ts'
+import { Book, type BookType } from "@schemas/bookSchemas.ts";
 
-import {ConflictArray, type ConflictArrayType} from "@schemas/conflictSchemas.ts";
+import {
+  ConflictArray,
+  type ConflictArrayType,
+} from "@schemas/conflictSchemas.ts";
 
-import {PairingPage} from "./index";
+import { PairingPage } from "./index";
 
-const dataUrl = new URL('/generals/all.json', Astro.url)
-const conflictData = new URL('/generalConflictData/conflicts.json', Astro.url)
+const dataUrl = new URL("/generals/all.json", Astro.url);
+const conflictData = new URL("/generalConflictData/conflicts.json", Astro.url);
 
-let allGeneralsJson: string = '';
-const generalObjects: CollectionEntry<'generals'>[]  = await getCollection('generals');
-if(generalObjects !== null && generalObjects !== undefined) {
-    let generalIterator = generalObjects.values();
-    let allGenerals = new Array<GeneralElementType>();
-    for (const v of generalIterator) {
-        const validation = GeneralElement.safeParse(v.data);
-        if(validation.success) {
-            allGenerals.push(validation.data);
-        } else{
-            console.error(`bad validation ${validation.error}`)
-        }
+let allGeneralsJson: string = "";
+const generalObjects: CollectionEntry<"generals">[] =
+  await getCollection("generals");
+if (generalObjects !== null && generalObjects !== undefined) {
+  let generalIterator = generalObjects.values();
+  let allGenerals = new Array<GeneralElementType>();
+  for (const v of generalIterator) {
+    const validation = GeneralElement.safeParse(v.data);
+    if (validation.success) {
+      allGenerals.push(validation.data);
+    } else {
+      console.error(`bad validation ${validation.error}`);
     }
-    allGeneralsJson = JSON.stringify(allGenerals)
+  }
+  allGeneralsJson = JSON.stringify(allGenerals);
 }
 
-let result: { success: true; data: GeneralArrayType | ConflictArrayType } | { success: false; error: ZodError; } = GeneralArray.safeParse(JSON.parse(allGeneralsJson));
-let allGeneralsData: string | null = null
-if(result.success) {
-    console.log(`validation passed`)
-    if(result.data !== undefined && result.data !== null) {
-        console.log(`and has data`)
-        allGeneralsData = JSON.stringify(result.data);
-    }
+let result:
+  | { success: true; data: GeneralArrayType | ConflictArrayType }
+  | { success: false; error: ZodError } = GeneralArray.safeParse(
+  JSON.parse(allGeneralsJson)
+);
+let allGeneralsData: string | null = null;
+if (result.success) {
+  console.log(`validation passed`);
+  if (result.data !== undefined && result.data !== null) {
+    console.log(`and has data`);
+    allGeneralsData = JSON.stringify(result.data);
+  }
 } else {
-    console.error(result.error)
+  console.error(result.error);
 }
 
-
-let allConflictJson: string = '';
-const collectionArray:CollectionEntry<'generalConflictData'>[]  = await getCollection('generalConflictData');
-if(collectionArray !== null && collectionArray !== undefined) {
-    let result = collectionArray.map((ca) => {
-        const validation = generalConflicts.safeParse(ca.data);
-        if(validation.success) {
-            return validation.data;
-        } else{
-            console.error(`bad validation ${validation.error}`)
-        }
-    })
-    allConflictJson = JSON.stringify(result);
+let allConflictJson: string = "";
+const collectionArray: CollectionEntry<"generalConflictData">[] =
+  await getCollection("generalConflictData");
+if (collectionArray !== null && collectionArray !== undefined) {
+  let result = collectionArray.map((ca) => {
+    const validation = generalConflicts.safeParse(ca.data);
+    if (validation.success) {
+      return validation.data;
+    } else {
+      console.error(`bad validation ${validation.error}`);
+    }
+  });
+  allConflictJson = JSON.stringify(result);
 }
 
 result = ConflictArray.safeParse(JSON.parse(allConflictJson));
 let allConflictData: string | null = null;
-if(result.success) {
-    if(result.data !== undefined && result.data !== null) {
-        allConflictData = JSON.stringify(result.data);
-    }
+if (result.success) {
+  if (result.data !== undefined && result.data !== null) {
+    allConflictData = JSON.stringify(result.data);
+  }
 } else {
-    console.error(result.error)
+  console.error(result.error);
 }
-
 ---
 
 <script>
-    import { primaryInvestmentMap, secondaryInvestmentMap, typeAndUseMap, pickType, pickUseCase } from "./selectionStore";
-    import { allGenerals, generalPairs } from "./generals";
-    import { conflictingGenerals,conflictRecords } from "./ConflictingSkillExcludes";
-    import {map, atom} from 'nanostores'
+  import {
+    primaryInvestmentMap,
+    secondaryInvestmentMap,
+    typeAndUseMap,
+    pickType,
+    pickUseCase,
+  } from "./selectionStore";
+  import { allGenerals, generalPairs } from "./generals";
+  import {
+    conflictingGenerals,
+    conflictRecords,
+  } from "./ConflictingSkillExcludes";
+  import { map, atom } from "nanostores";
 
-    class Stores extends HTMLElement {
-        private stores = [
-            allGenerals,
-            generalPairs,
-            conflictingGenerals,
-            conflictRecords,
-            typeAndUseMap,
-            primaryInvestmentMap,
-            secondaryInvestmentMap,
-        ]
+  class Stores extends HTMLElement {
+    private stores = [
+      allGenerals,
+      generalPairs,
+      conflictingGenerals,
+      conflictRecords,
+      typeAndUseMap,
+      primaryInvestmentMap,
+      secondaryInvestmentMap,
+    ];
 
-        constructor() {
-            super()
-            for(let ns in this.stores) {
-                this.stores[ns].subscribe((ms) => {
-                    console.log(`subscribe for ${ns}`)
-                })
-            }
-            const allGeneralsData = this.dataset.agd;
-            const allConflictData = this.dataset.acd;
+    constructor() {
+      super();
+      for (let ns in this.stores) {
+        this.stores[ns].subscribe((ms) => {
+          console.log(`subscribe for ${ns}`);
+        });
+      }
+      const allGeneralsData = this.dataset.agd;
+      const allConflictData = this.dataset.acd;
 
-            if(allGeneralsData !== null && allGeneralsData !== undefined) {
-                allGenerals.set(JSON.parse(allGeneralsData))
-            } else {
-                console.log(`dataset agd was null or undefined`)
-            }
+      if (allGeneralsData !== null && allGeneralsData !== undefined) {
+        allGenerals.set(JSON.parse(allGeneralsData));
+      } else {
+        console.log(`dataset agd was null or undefined`);
+      }
 
-            if(allConflictData !== null && allConflictData !== undefined) {
-                conflictRecords.set(JSON.parse(allConflictData));
-            } else {
-                console.log(`dataset acd was null or undefined`)
-            }
+      if (allConflictData !== null && allConflictData !== undefined) {
+        conflictRecords.set(JSON.parse(allConflictData));
+      } else {
+        console.log(`dataset acd was null or undefined`);
+      }
 
-            pickType('Mounted');
-            pickUseCase('Monsters');
-        }
+      pickType("Mounted");
+      pickUseCase("Monsters");
     }
-    customElements.define('astro-stores', Stores);
-    
+  }
+  customElements.define("astro-stores", Stores);
 </script>
 
-{(allGeneralsData && allConflictData) && <astro-stores data-acd={allConflictData} data-agd={allGeneralsData}></astro-stores> }
+{
+  allGeneralsData && allConflictData && (
+    <astro-stores data-acd={allConflictData} data-agd={allGeneralsData} />
+  )
+}
 <style>
-    .sp-table-container {
-      display: block;
-      flex: 2 0 auto;
-      min-height: calc(var(--spectrum-global-dimension-size-6000)*2);
-      
-    }
+  .sp-table-container {
+    display: block;
+    flex: 2 0 auto;
+    min-height: calc(var(--spectrum-global-dimension-size-6000) * 2);
+  }
 </style>
 
 <div class="sp-table-container">
-    <InvestmentSelector generalRole="primary"  client:only></InvestmentSelector>
-    <InvestmentSelector generalRole="secondary"  client:only></InvestmentSelector>
-    <PairingTable client:only></PairingTable>
+  <InvestmentSelector generalRole="primary" client:only />
+  <InvestmentSelector generalRole="secondary" client:only />
+  <PairingTable client:only />
 </div>
