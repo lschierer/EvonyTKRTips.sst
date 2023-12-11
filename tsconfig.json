@@ -6,7 +6,6 @@
     "moduleResolution": "bundler",
     "jsx": "preserve",
     "resolveJsonModule": true,
-    "allowImportingTsExtensions": true,
     "experimentalDecorators": true,
     "strictNullChecks": true,
     "noUnusedLocals": false,
