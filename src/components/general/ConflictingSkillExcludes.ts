@@ -45,16 +45,16 @@ export const conflictingGenerals = computed(conflictRecords, CRs => {
             for(const key in conflicts) {
               if(key.localeCompare('other')) {
                 const items = conflicts[key as keyof typeof conflicts];
-                items.forEach((g) => {
+                items.forEach((g: string) => {
                   const gc = new Set<string>;
-                  items.forEach((g2) => {
+                  items.forEach((g2: string) => {
                     if(g2.localeCompare(g)) {
                       gc.add(g2);
                     }
                   })
                   const other = conflicts.other;
                   if(other !== undefined && other !== null) {
-                    other.forEach((g2) => {
+                    other.forEach((g2: string) => {
                       gc.add(g2)
                     })
                   }
