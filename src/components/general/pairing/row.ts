@@ -70,7 +70,7 @@ import { buffAdverbs, buff } from './buff.ts';
 
 
 @customElement('pairing-row')
-export class PairingRow extends withStores(LitElement, [generalPairs, conflictingBooks, typeAndUseMap, primaryInvestmentMap, secondaryInvestmentMap]) {
+export class PairingRow extends withStores(LitElement, [generalPairs, conflictingBooks, primaryInvestmentMap, secondaryInvestmentMap]) {
 
   @property({ type: String })
   public one: GeneralClassType | null = null;
@@ -80,6 +80,7 @@ export class PairingRow extends withStores(LitElement, [generalPairs, conflictin
 
   accessor adverbs = buffAdverbs[generalUseCase.enum.all];
 
+  
   @state()
   private attack_buff: number = 0;
 
@@ -108,10 +109,8 @@ export class PairingRow extends withStores(LitElement, [generalPairs, conflictin
     return this.march_buff;
   }
 
-  
-
-  @state()
-  private unitClass: b.ClassEnumType = b.ClassEnum.enum.all;
+  @property({type: String, reflect: true})
+  public unitClass: b.ClassEnumType = b.ClassEnum.enum.all;
 
   @state()
   private statusLight1: statusLightsType = statusLights.enum.neutral;
@@ -154,23 +153,6 @@ export class PairingRow extends withStores(LitElement, [generalPairs, conflictin
 
     conflictingBooks.subscribe(cb => {
       return;
-    })
-
-    typeAndUseMap.subscribe(tum => {
-      if (this.unitClass !== tum.type) {
-        this.requestUpdate('unitClass', this.unitClass);
-        this.unitClass = tum.type;
-        if (this.one !== null) {
-          if (this.one.score_as !== null && this.one.score_as !== undefined) {
-            if (this.one.score_as !== this.unitClass) {
-              this.statusLight1 = statusLights.enum.fuchsia;
-            }
-          }
-        }
-        if (this.one !== null && this.one !== undefined) {
-          this.computeBuffs();
-        }
-      }
     })
 
     primaryInvestmentMap.subscribe(pim => {
@@ -242,7 +224,18 @@ export class PairingRow extends withStores(LitElement, [generalPairs, conflictin
     super.willUpdate(_changedProperties);
     if (_changedProperties.has('one') || _changedProperties.has('two')) {
       if(DEBUG) {console.log(`rows willupdate has one or two`) }
-
+    }
+    if(_changedProperties.has('unitClass') || _changedProperties.has('adverbs')) {
+      if (this.one !== null) {
+        if (this.one.score_as !== null && this.one.score_as !== undefined) {
+          if (this.one.score_as !== this.unitClass) {
+            this.statusLight1 = statusLights.enum.fuchsia;
+          }
+        }
+      }
+      if (this.one !== null && this.one !== undefined) {
+        this.computeBuffs();
+      }
     }
   }
 
