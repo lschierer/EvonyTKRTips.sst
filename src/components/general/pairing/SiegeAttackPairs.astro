@@ -26,7 +26,8 @@ import {
   generalConflicts,
   GeneralElement,
   type GeneralElementType,
-ClassEnum,
+  ClassEnum,
+  generalUseCase
 } from "@schemas/index";
 
 import { Book, type BookType } from "@schemas/bookSchemas.ts";
@@ -50,7 +51,7 @@ if (generalObjects !== null && generalObjects !== undefined) {
   for (const v of generalIterator) {
     const validation = GeneralElement.safeParse(v.data);
     if (validation.success) {
-      if (validation.data.general.score_as === ClassEnum.enum.Mounted) {
+      if (validation.data.general.score_as === ClassEnum.enum.Siege) {
         allGenerals.push(validation.data);
       }
     } else {
@@ -136,8 +137,7 @@ if (result.success) {
           console.log(`subscribe for ${ns}`);
         });
       }
-      pickType(ClassEnum.enum.Mounted);
-      pickUseCase(generalUseCase.enum.Monsters);
+      
       const allGeneralsData = this.dataset.agd;
       const allConflictData = this.dataset.acd;
 
@@ -173,5 +173,5 @@ if (result.success) {
 <div class="sp-table-container">
   <InvestmentSelector generalRole="primary" client:only />
   <InvestmentSelector generalRole="secondary" client:only />
-  <PairingTable client:only />
+  <PairingTable type={ClassEnum.enum.Siege} use={generalUseCase.enum.Attack} client:only />
 </div>

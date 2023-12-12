@@ -26,15 +26,12 @@ import {
   generalConflicts,
   GeneralElement,
   type GeneralElementType,
-ClassEnum,
-} from "@schemas/index";
-
-import { Book, type BookType } from "@schemas/bookSchemas.ts";
-
-import {
+  ClassEnum,
   ConflictArray,
   type ConflictArrayType,
-} from "@schemas/conflictSchemas.ts";
+  Book, type BookType,
+  generalUseCase
+} from "@schemas/index";
 
 import { PairingPage } from "./index";
 
@@ -50,7 +47,7 @@ if (generalObjects !== null && generalObjects !== undefined) {
   for (const v of generalIterator) {
     const validation = GeneralElement.safeParse(v.data);
     if (validation.success) {
-      if (validation.data.general.score_as === ClassEnum.enum.Mounted) {
+      if (validation.data.general.score_as === ClassEnum.enum.Siege) {
         allGenerals.push(validation.data);
       }
     } else {
@@ -117,8 +114,9 @@ if (result.success) {
     conflictRecords,
   } from "./ConflictingSkillExcludes";
   import { map, atom } from "nanostores";
+  import { logger } from '@nanostores/logger'
 
-  class Stores extends HTMLElement {
+  class ReinStores extends HTMLElement {
     private stores = [
       allGenerals,
       generalPairs,
@@ -133,11 +131,10 @@ if (result.success) {
       super();
       for (let ns in this.stores) {
         this.stores[ns].subscribe((ms) => {
-          console.log(`subscribe for ${ns}`);
+          console.log(`rein for ${ns}`);
         });
       }
-      pickType(ClassEnum.enum.Mounted);
-      pickUseCase(generalUseCase.enum.Monsters);
+      
       const allGeneralsData = this.dataset.agd;
       const allConflictData = this.dataset.acd;
 
@@ -154,11 +151,11 @@ if (result.success) {
       }
     }
   }
-  customElements.define("astro-stores", Stores);
+  customElements.define("rein-stores", ReinStores);
 </script>
 {
   allGeneralsData && allConflictData && (
-    <astro-stores data-acd={allConflictData} data-agd={allGeneralsData} />
+    <rein-stores data-acd={allConflictData} data-agd={allGeneralsData} />
   )
 }
 
@@ -173,5 +170,5 @@ if (result.success) {
 <div class="sp-table-container">
   <InvestmentSelector generalRole="primary" client:only />
   <InvestmentSelector generalRole="secondary" client:only />
-  <PairingTable client:only />
+  <PairingTable type={ClassEnum.enum.Siege} use={generalUseCase.enum.Defense} client:only />
 </div>

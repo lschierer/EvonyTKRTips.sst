@@ -56,8 +56,9 @@ import {
 import { generalPairs } from './generals.ts'
 
 import { buffAdverbs } from './buff.ts';
+import type { Pair } from "yaml";
 
-type tableRecord = Record<string, PairingRow | HTMLElement>;
+type tableRecord = Record<string, PairingRow>;
 
 @customElement('pairing-table')
 export class PairingTable extends withStores(SpectrumElement, [generalPairs, primaryInvestmentMap, secondaryInvestmentMap]) {
@@ -68,11 +69,11 @@ export class PairingTable extends withStores(SpectrumElement, [generalPairs, pri
   @state()
   private table: Table | undefined;
 
-  @state()
-  private type: b.ClassEnumType | null = null;
+  @property({type: String, reflect: true})
+  public type: b.ClassEnumType | null = null;
 
-  @state()
-  private use: generalUseCaseType | null = null;
+  @property({type: String, reflect: true})
+  public use: generalUseCaseType | null = null;
 
   private tableRef: Ref<Table> = createRef();
 
@@ -85,30 +86,46 @@ export class PairingTable extends withStores(SpectrumElement, [generalPairs, pri
       if (this.table !== null && this.table !== undefined) {
 
         if (this.records.length >= 1) {
-          const type = tam.type;
-          const use = tam.use;
-
+          const old = this.table.items
           if (tam.type !== undefined && tam.type !== null) {
+            const type = tam.type;
             this.requestUpdate('type', this.type);
             this.type = tam.type;
           }
           if (tam.use !== undefined && tam.type !== null) {
+            const use = tam.use;
             this.requestUpdate('use', this.use);
             this.use = tam.use;
           }
 
-
-          const old = this.table.items
           this.table.requestUpdate('items', old)
-          this.requestUpdate();
         } else {
+          if(DEBUG) {console.log(`tam subscribe table but no records`)}
           this.type = tam.type;
           this.use = tam.use;
           const gp = generalPairs.get();
           if (gp != undefined && gp != null) {
-            this.rowCreator(gp, b.ClassEnum.enum.all, generalUseCase.enum.all)
+            if(this.type !== undefined && this.use !== undefined && this.type !== null && this.use !== null) {
+              this.rowCreator(gp, this.type, this.use)
+            } else {
+              this.rowCreator(gp, b.ClassEnum.enum.all, generalUseCase.enum.all)
+            }
           }
         }
+      } else {
+        if(DEBUG) {console.log(`tam subscribe table is null`)}
+        if(tam.type !== undefined && tam.type !== null) {
+          this.type = tam.type;
+        } else {
+          this.type = b.ClassEnum.enum.all;
+        }
+        if(tam.use !== undefined && tam.use !== null) {
+          this.use = tam.use;
+        } else {
+          this.use = generalUseCase.enum.all;
+        }
+        if(DEBUG) {console.log(`tam subscribe type set to ${this.type}`)}
+        if(DEBUG) {console.log(`tam subscribe use set to ${this.use}`)}
       }
     })
 
@@ -126,7 +143,7 @@ export class PairingTable extends withStores(SpectrumElement, [generalPairs, pri
   }
 
   private rowCreator(gp: Map<string, GeneralPairType[]>, type: b.ClassEnumType, use: generalUseCaseType) {
-    if (DEBUG) { console.log(`rowCreator start`) }
+    if (DEBUG) { console.log(`rowCreator start t ${type} u ${use}`) }
     if (gp !== undefined && gp !== null) {
       gp.forEach((primary, index) => {
         if (DEBUG) { console.log(`general pairs subscribe foreach`) }
@@ -141,8 +158,6 @@ export class PairingTable extends withStores(SpectrumElement, [generalPairs, pri
             (newRowItem as PairingRow).one = one;
             (newRowItem as PairingRow).two = two;
             newRowItem.adverbs = buffAdverbs[use];
-            newRowItem.addEventListener('GeneralPairUpdate', this.PairUpdateListener);
-            newRowItem.computeBuffs();
             this.rowMapper(newRowItem, label)
           }
         })
@@ -150,20 +165,18 @@ export class PairingTable extends withStores(SpectrumElement, [generalPairs, pri
     }
   }
 
-  private rowMapper(pair: PairingRow | HTMLElement, index: string) {
-
+  private rowMapper(pair: PairingRow, index: string) {
+    pair.unitClass =  this.type !== null ? this.type : b.ClassEnum.enum.all;
+    const localUse = this.use !== null ? this.use : generalUseCase.enum.all;
+    if(pair.one !== null && pair.two !== null) {
+      if(DEBUG) {console.log(`t ${this.type} u ${this.use} for p ${pair.one.name}/${pair.two.name}`)}
+    }
+    pair.adverbs = buffAdverbs[localUse];
+    pair.computeBuffs();
     const newRecord: tableRecord = { index: pair }
     this.records.push(newRecord);
   }
-
-  private PairUpdateListener(event: Event) {
-    //if (DEBUG) {console.log(`PairUpdateListener called`)}
-    if (this.table !== null && this.table !== undefined) {
-      this.table.requestUpdate();
-    }
-    this.requestUpdate();
-  }
-
+  
   public pairSorter(direction: string, key: string, a: PairingRow, b: PairingRow) {
     let ga: string | number = 0;
     let gb: string | number = 0;
@@ -244,15 +257,35 @@ export class PairingTable extends withStores(SpectrumElement, [generalPairs, pri
   }
 
   protected firstUpdated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+    if(DEBUG) {console.log(`table firstUpdated type is ${this.type}`)}
+    if(DEBUG) {console.log(`table firstUpdated use is ${this.use}`)}
     super.firstUpdated(_changedProperties);
+
+    if(_changedProperties.has('type') || _changedProperties.has('use')) {
+      const TempRecords = [...this.records];
+        this.records = new Array<tableRecord>();
+        TempRecords.map((r) => {
+          let myItem = (Object.values(r as tableRecord)[0] as PairingRow);
+          let myLabel = (Object.keys(r as tableRecord))[0];
+          this.rowMapper(myItem,myLabel);
+        });
+        if(this.table !== null && this.table !== undefined) {
+          this.table.items = this.records;
+          this.table.requestUpdate();
+        }
+    }
+
     if (this.renderRoot) {
       this.table = this.tableRef.value;
       if (this.table !== undefined && this.table !== null) {
         this.table.renderItem = (item, index) => {
-          const myItem = (Object.values(item as tableRecord)[0] as PairingRow);
-
-          myItem.triggerUpdate();
-          return html`${myItem.render()}`
+          let myItem = (Object.values(item as tableRecord)[0] as PairingRow);
+          let myKey = Object.keys(item)[0];
+          if(myItem !== undefined && myItem !== null) {
+            return html`${myItem.render()}`
+          }
+          console.error(`renderItem my item null`)
+          return html``;
         };
 
         this.table.addEventListener('sorted', (event) => {
@@ -273,8 +306,33 @@ export class PairingTable extends withStores(SpectrumElement, [generalPairs, pri
   protected willUpdate(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
     super.willUpdate(_changedProperties);
     if (DEBUG) { console.log(`table willUpdate start`) }
+    if(_changedProperties.has('type')) {
+      if(this.type === undefined) {
+        this.type = b.ClassEnum.enum.all;
+      }
+      if(DEBUG) {console.log(`type set to ${this.type} by willUpdate`)}
+    }
+    if(_changedProperties.has('use')) {
+      if(this.use === undefined) {
+        this.use = generalUseCase.enum.all;
+      }
+      if(DEBUG) {console.log(`use set to ${this.use} by willUpdate`)}
+    }
     if (this.renderRoot) {
       if (this.table !== null && this.table !== undefined) {
+        if(_changedProperties.has('type') || _changedProperties.has('use')) {
+          const TempRecords = [...this.records];
+            this.records = new Array<tableRecord>();
+            TempRecords.map((r) => {
+              let myItem = (Object.values(r as tableRecord)[0] as PairingRow);
+              let myLabel = (Object.keys(r as tableRecord))[0];
+              this.rowMapper(myItem,myLabel);
+            });
+            if(this.table !== null && this.table !== undefined) {
+              this.table.items = this.records;
+              this.table.requestUpdate();
+            }
+        }
         if (this.records !== null && this.records.length >= 1) {
           if (DEBUG) { console.log(`table willUpdate sending items to table`) }
           this.table.items = this.records;
@@ -282,6 +340,7 @@ export class PairingTable extends withStores(SpectrumElement, [generalPairs, pri
         }
       }
     }
+    
   }
 
 
