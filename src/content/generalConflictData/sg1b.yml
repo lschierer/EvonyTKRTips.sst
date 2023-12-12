@@ -1,10 +1,11 @@
 conflicts:
-  01HGKZ0YE9F6TNV9X1YCNT3Q51:
+  01HHE548WJ1PFH2B0W9SBN6QYR:
+    - Kleos
+  other:
     - Zucca
     - Petronas
     - John Churchill
     - Philip II
-  other:
     - Napoleon
-    - Kleos
-    - Raimondo
+    - Genghis Khan
+    - King Arthur

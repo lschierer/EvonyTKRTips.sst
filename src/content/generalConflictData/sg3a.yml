@@ -1,0 +1,79 @@
+conflicts:
+  01HGKZ108TB88BJG9YKKGJDJWF:
+    - Septimius Severus
+  other:
+    - Surena
+    - Raimondo
+    - Emperor Qin Shihuang
+    - William Wallace
+    - Khalid
+books:
+  - name: Siege Attack
+    level: '1'
+    buff:
+      - attribute: Attack
+        class: Siege
+        value:
+          number: 10
+          unit: percentage
+  - name: Siege Attack
+    level: '2'
+    buff:
+      - attribute: Attack
+        class: Siege
+        value:
+          number: 15
+          unit: percentage
+  - name: Siege Attack
+    level: '3'
+    buff:
+      - attribute: Attack
+        class: Siege
+        value:
+          number: 20
+          unit: percentage
+  - name: Siege Attack
+    level: '4'
+    buff:
+      - attribute: Attack
+        class: Siege
+        value:
+          number: 25
+          unit: percentage
+  - name: Siege HP
+    level: '1'
+    buff:
+      - attribute: HP
+        condition: When_Not_Mine
+        class: Siege
+        value:
+          number: 10
+          unit: percentage
+  - name: Siege HP
+    condition: When_Not_Mine
+    level: '2'
+    buff:
+      - attribute: HP
+        class: Siege
+        condition: When_Not_Mine
+        value:
+          number: 15
+          unit: percentage
+  - name: Siege HP
+    level: '3'
+    buff:
+      - attribute: HP
+        condition: When_Not_Mine
+        class: Siege
+        value:
+          number: 20
+          unit: percentage
+  - name: Siege HP
+    level: '4'
+    buff:
+      - attribute: HP
+        condition: When_Not_Mine
+        class: Siege
+        value:
+          number: 25
+          unit: percentage
