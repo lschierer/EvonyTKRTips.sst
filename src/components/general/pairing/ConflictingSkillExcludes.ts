@@ -6,7 +6,7 @@ import { z } from "zod";
 
 const DEBUG = false;
 
-import * as b from "@schemas/baseSchemas.ts"
+import * as b from "@schemas/baseSchemas"
 
 import {
   GeneralClass,
@@ -15,21 +15,21 @@ import {
   type GeneralArrayType,
   GeneralElement,
   type GeneralElementType,
-} from "@schemas/generalsSchema.ts"
+} from "@schemas/generalsSchema"
 
 import {
   ConflictArray,
   type ConflictArrayType,
   ConflictDatum,
   type ConflictDatumType,
-} from '@schemas/conflictSchemas.ts'
+} from '@schemas/conflictSchemas'
 
 import {
   standardSkillBook,
   type standardSkillBookType
-} from "@schemas/bookSchemas.ts"
+} from "@schemas/bookSchemas"
 
-import { typeAndUseMap, primaryInvestmentMap, secondaryInvestmentMap } from "./selectionStore.ts";
+import { typeAndUseMap, primaryInvestmentMap, secondaryInvestmentMap } from "./selectionStore";
 
 
 type GeneralDictionary = {
@@ -135,8 +135,13 @@ export function checkBoSConflicts(name: string) {
   
 }
 
-let destroy = logger({
+let destroy;
+
+if(DEBUG) {
+  destroy = logger({
   'ConflictRecords': conflictRecords,
   'ConflictingGenerals': conflictingGenerals,
   'ConflictingBooks': conflictingBooks,
 })
+}
+
