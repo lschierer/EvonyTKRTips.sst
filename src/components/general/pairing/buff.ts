@@ -269,7 +269,14 @@ export function buff(eg: GeneralClassType, situations: b.BuffAdverbArrayType, pr
         }
 
         if (general.specialities !== undefined && general.specialities !== null) {
-            general.specialities.forEach((s: SpecialityType, i) => {
+            let fourth = true;
+            fourth = fourth && (!saLevels.includes(b.qualityColor.enum.Disabled))
+            fourth = fourth && (!saLevels.includes(b.qualityColor.enum.Green))
+            fourth = fourth && (!saLevels.includes(b.qualityColor.enum.Blue))
+            fourth = fourth && (!saLevels.includes(b.qualityColor.enum.Purple))
+            fourth = fourth && (!saLevels.includes(b.qualityColor.enum.Orange))
+            for(let i = 0; i < (fourth ? 4 : 3); i++) {
+                const s = general.specialities[i];
                 s.attribute.map((sa) => {
                     let proceed = false;
                     switch (saLevels[i]) {
@@ -357,7 +364,7 @@ export function buff(eg: GeneralClassType, situations: b.BuffAdverbArrayType, pr
                     }
 
                 })
-            })
+            }
         }
 
         if (general.ascending !== undefined && general.ascending !== null && ascendingLevel[props.ascending]) {
