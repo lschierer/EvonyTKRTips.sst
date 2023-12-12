@@ -6,6 +6,9 @@ import * as s from './specialitySchema'
 
 import {Book, type BookType} from './bookSchemas';
 
+export const generalRole = z.enum(['primary','secondary']);
+export type generalRoleType = z.infer<typeof generalRole>;
+
 export const generalUseCase = z.enum([
     "all",
     "Monsters",

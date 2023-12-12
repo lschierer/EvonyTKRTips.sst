@@ -4,6 +4,8 @@ import { logger } from '@nanostores/logger'
 
 import * as b from "@schemas/baseSchemas.ts";
 
+import {generalRole, type generalRoleType} from '@schemas/generalsSchema';
+
 import {Book, type BookType, type standardSkillBookType} from "@schemas/bookSchemas.ts";
 
 import {generalUseCase, type generalUseCaseType} from "@schemas/generalsSchema.ts";
@@ -55,3 +57,48 @@ export const pickUseCase = action(typeAndUseMap, 'Pick Use Case',
   store.setKey('use', newCase);
 })
 
+export const PrimaryInvestmentInitialize = action(primaryInvestmentMap, 'Initialize PIM', (store) => {
+  if(store.value !== undefined && store.value !== null) {
+    const value = store.value;
+    if(
+      (value.speciality1 === undefined || value.speciality1 === null) &&
+      (value.speciality2 === undefined || value.speciality2 === null) &&
+      (value.speciality3 === undefined || value.speciality3 === null) &&
+      (value.speciality4 === undefined || value.speciality4 === null) &&
+      (value.dragon === undefined || value.dragon === null) &&
+      (value.beast === undefined || value.beast === null) &&
+      (value.ascending === undefined || value.ascending === null)
+    ) {
+      store.setKey('speciality1', b.qualityColor.enum.Gold)
+      store.setKey('speciality2', b.qualityColor.enum.Gold)
+      store.setKey('speciality3', b.qualityColor.enum.Gold)
+      store.setKey('speciality4', b.qualityColor.enum.Gold)
+      store.setKey('ascending',b.levels.enum[10])
+      store.setKey('dragon', true)
+      store.setKey('beast', false)
+    }
+  }
+});
+
+export const SecondaryInvestmentInitialize = action(secondaryInvestmentMap, 'Initialize SIM', (store) => {
+  if(store.value !== undefined && store.value !== null) {
+    const value = store.value;
+    if(
+      (value.speciality1 === undefined || value.speciality1 === null) &&
+      (value.speciality2 === undefined || value.speciality2 === null) &&
+      (value.speciality3 === undefined || value.speciality3 === null) &&
+      (value.speciality4 === undefined || value.speciality4 === null) &&
+      (value.dragon === undefined || value.dragon === null) &&
+      (value.beast === undefined || value.beast === null) &&
+      (value.ascending === undefined || value.ascending === null)
+    ) {
+      store.setKey('speciality1', b.qualityColor.enum.Gold)
+      store.setKey('speciality2', b.qualityColor.enum.Gold)
+      store.setKey('speciality3', b.qualityColor.enum.Gold)
+      store.setKey('speciality4', b.qualityColor.enum.Gold)
+      store.setKey('ascending',b.levels.enum[0])
+      store.setKey('dragon', false)
+      store.setKey('beast', false)
+    }
+  }
+});

@@ -1,4 +1,4 @@
-import {html, css, nothing, type PropertyValues} from "lit";
+import {html, css, nothing, type PropertyValues, type PropertyValueMap} from "lit";
 import {customElement, property, state} from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
@@ -27,10 +27,18 @@ const DEBUG = false;
 
 import * as b from '@schemas/baseSchemas'
 
-import {BoS, type BoSType, type generalInvestment, primaryInvestmentMap, secondaryInvestmentMap} from './selectionStore';
+import {generalRole, type generalRoleType} from '@schemas/generalsSchema';
 
-const generalRole = z.enum(['primary','secondary']);
-type generalRoleType = z.infer<typeof generalRole>;
+import {
+  BoS, 
+  type BoSType, 
+  type generalInvestment, 
+  primaryInvestmentMap, 
+  secondaryInvestmentMap, 
+  PrimaryInvestmentInitialize, 
+  SecondaryInvestmentInitialize
+} from './selectionStore';
+
 
 export class InvestmentSelector extends withStores(SpectrumElement, [primaryInvestmentMap, secondaryInvestmentMap]) {
   
@@ -41,14 +49,33 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
   private _role: generalRoleType;
 
   @state()
-  private disableSpecial4: boolean = false;
-  
-  private Special4disabledValue: b.qualityColorType = b.qualityColor.enum.Gold;
-  
+  private _speciality1: b.qualityColorType = b.qualityColor.enum.Gold;
+
+  @state()
+  private _speciality2: b.qualityColorType = b.qualityColor.enum.Gold;
+
+  @state()
+  private _speciality3: b.qualityColorType = b.qualityColor.enum.Gold;
+
+  @state()
+  private _speciality4: b.qualityColorType = b.qualityColor.enum.Gold;
+
+  @state()
+  private _dragon: boolean = true;
+
+  @state()
+  private _beast: boolean = false;
+
+  @state()
+  private _ascending: b.levelsType = b.levels.enum[10];
+
+  private Special4disabledValue: boolean = false;
+
   constructor() {
     super();
     this.generalRole = 'secondary';
     this._role = generalRole.enum.secondary;
+
   }
   
   private MutationObserverCallback = (mutationList: MutationRecord[], observer: MutationObserver) => {
@@ -71,60 +98,32 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
     });
   }
 
+  protected firstUpdated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+      if(DEBUG) {console.log(`InvestmentSelector firstUpdated`)}
+      if(_changedProperties.has('generalRole')) {
+        if(DEBUG) {console.log(`and I have a generalRole`)}
+        const valid = generalRole.safeParse(this.generalRole);
+        if(valid.success) {
+          if(DEBUG) {console.log(`with valid data`)}
+          if(valid.data === generalRole.enum.primary) {
+            PrimaryInvestmentInitialize();
+            this.investmentMap[this._role]()
+          } else {
+            SecondaryInvestmentInitialize();
+            this.investmentMap[this._role]()
+          }
+          this.requestUpdate();
+        }
+      }
+  }
+
   async willUpdate(changedProperties: PropertyValues<this>) {
     if(DEBUG) {console.log(`investmentselector willupdate`)}
     if(changedProperties.has('generalRole')) {
       const valid = generalRole.safeParse(this.generalRole);
       if(valid.success) {
         this._role = valid.data;
-        let initialsetcounter = 0;
-        if (!this.investmentMapGet[this._role]['speciality1']()) { 
-          initialsetcounter++;
-          if(this._role === generalRole.enum.primary) {
-            primaryInvestmentMap.setKey('speciality1',b.qualityColor.enum.Gold)
-          } else {
-            secondaryInvestmentMap.setKey('speciality1',b.qualityColor.enum.Gold)
-          }
-        }
-        this.yieldToMain()
-        if (!this.investmentMapGet[this._role]['speciality2']() ) { 
-          initialsetcounter++;
-          if(this._role === generalRole.enum.primary) {
-            primaryInvestmentMap.setKey('speciality2',b.qualityColor.enum.Gold)
-          } else {
-            secondaryInvestmentMap.setKey('speciality2',b.qualityColor.enum.Gold)
-          }
-        }
-        this.yieldToMain()
-        if (!this.investmentMapGet[this._role]['speciality3']() ) { 
-          initialsetcounter++;
-          if(this._role === generalRole.enum.primary) {
-            primaryInvestmentMap.setKey('speciality3',b.qualityColor.enum.Gold)
-          } else {
-            secondaryInvestmentMap.setKey('speciality3',b.qualityColor.enum.Gold)
-          }
-        }
-        this.yieldToMain()
-        if (!this.investmentMapGet[this._role]['speciality4']() ) { 
-          initialsetcounter++;
-          if(this._role === generalRole.enum.primary) {
-            primaryInvestmentMap.setKey('speciality4',b.qualityColor.enum.Gold)
-          } else {
-            secondaryInvestmentMap.setKey('speciality4',b.qualityColor.enum.Gold)
-          }
-        }
-        this.yieldToMain()
-        if(initialsetcounter === 4) {
-          if(this._role === generalRole.enum.primary) {
-            primaryInvestmentMap.setKey('ascending', '10')
-            primaryInvestmentMap.setKey(BoS.enum.dragon, true);
-            primaryInvestmentMap.setKey(BoS.enum.beast, false);
-          } else {
-            secondaryInvestmentMap.setKey('ascending', '0')
-            secondaryInvestmentMap.setKey(BoS.enum.dragon,false);
-            secondaryInvestmentMap.setKey(BoS.enum.beast,false);
-          }
-        }
+        this.investmentMap[this._role]()
       }
     }
   }
@@ -198,9 +197,6 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
       }
     }
     secondaryInvestmentMap.setKey('ascending', '0');
-    if(picker.id.localeCompare('Speciality4')){
-      this.disable4();
-    }
   }
 
   private radioHandler(e: CustomEvent) {
@@ -245,120 +241,132 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
 
   private getBoS_Setting(): BoSType {
     let returnValue: BoSType = BoS.enum.none;
-    const dragon = (this._role === generalRole.enum.primary) ? 
+    
+    if(this._dragon === true) {
+      returnValue = BoS.enum.dragon;
+    }else if(this._beast === true) {
+      returnValue = BoS.enum.beast;
+    }
+    return returnValue;
+  }
+
+  private investmentMap: Record<string,  () => void> = {
+    'primary': () => {
+      let returnable: b.qualityColorType = b.qualityColor.enum.Gold;
       primaryInvestmentMap.subscribe(pm => {
-        if(pm.dragon === true) {
-          returnValue = BoS.enum.dragon;
-        }
-      }) :
-      secondaryInvestmentMap.subscribe(sm => {
-        if(sm.dragon === true) {
-          returnValue = BoS.enum.dragon;
+        returnable = pm.speciality1 !== undefined ? pm.speciality1 : b.qualityColor.enum.Gold;
+      })
+      this._speciality1 = returnable;
+
+      returnable = b.qualityColor.enum.Gold;
+      primaryInvestmentMap.subscribe(pm => {
+        returnable = pm.speciality2 !== undefined ? pm.speciality2 : b.qualityColor.enum.Gold;
+      })
+      this._speciality2 = returnable;
+
+      returnable = b.qualityColor.enum.Gold;
+      primaryInvestmentMap.subscribe(pm => {
+        returnable = pm.speciality3 !== undefined ? pm.speciality3 : b.qualityColor.enum.Gold;
+      })
+      this._speciality3 = returnable;
+
+      returnable = b.qualityColor.enum.Gold;
+      primaryInvestmentMap.subscribe(pm => {
+        if(
+          pm.speciality4 !== undefined && 
+          pm.speciality1 === b.qualityColor.enum.Gold && 
+          pm.speciality2 === b.qualityColor.enum.Gold && 
+          pm.speciality3 === b.qualityColor.enum.Gold
+        ) {
+          this.Special4disabledValue = false;
+          returnable = pm.speciality4;
+        } else if (
+          pm.speciality1 !== b.qualityColor.enum.Gold ||
+          pm.speciality2 !== b.qualityColor.enum.Gold ||
+          pm.speciality3 !== b.qualityColor.enum.Gold 
+        ) {
+          this.Special4disabledValue = true
+          returnable = b.qualityColor.enum.Disabled
+        } else {
+          this.Special4disabledValue = false;
+          returnable = b.qualityColor.enum.Gold
         }
       })
-
-    const beast = (this._role === generalRole.enum.primary) ? 
-    primaryInvestmentMap.subscribe(pm => {
-      if(pm.beast === true) {
-        returnValue = BoS.enum.beast;
-      }
-    }) :
-    secondaryInvestmentMap.subscribe(sm => {
-      if(sm.beast === true) {
-        returnValue = BoS.enum.beast;
-      }
-    })
-
-    return returnValue;
-
-  }
-
-  private investmentMapGet: Record<string,  Record<string, () => string>> = {
-    'primary':  {
-      'speciality1': () => {return primaryInvestmentMap.get().speciality1 },
-      'speciality2': () => {return primaryInvestmentMap.get().speciality2 },
-      'speciality3': () => {return primaryInvestmentMap.get().speciality3 },
-      'speciality4': () => {return primaryInvestmentMap.get().speciality4 },
+      this._speciality4 = returnable;
+      primaryInvestmentMap.subscribe(pm => {
+        if(pm.dragon !== undefined) {
+          this._dragon = pm.dragon;
+        }
+        if(pm.beast !== undefined) {
+          this._beast = pm.beast;
+        }
+        if(pm.ascending !== undefined) {
+          this._ascending = pm.ascending;
+        }
+      })
     },
-    'secondary':  {
-      'speciality1': () => {return secondaryInvestmentMap.get().speciality1},
-      'speciality2': () => {return secondaryInvestmentMap.get().speciality2},
-      'speciality3': () => {return secondaryInvestmentMap.get().speciality3},
-      'speciality4': () => {return secondaryInvestmentMap.get().speciality4},
-    }
+    'secondary':  () => {
+      let returnable: b.qualityColorType = b.qualityColor.enum.Gold;
+      secondaryInvestmentMap.subscribe(pm => {
+        returnable = pm.speciality1 !== undefined ? pm.speciality1 : b.qualityColor.enum.Gold;
+      })
+      this._speciality1 = returnable;
+
+      returnable = b.qualityColor.enum.Gold;
+      secondaryInvestmentMap.subscribe(pm => {
+        returnable = pm.speciality2 !== undefined ? pm.speciality2 : b.qualityColor.enum.Gold;
+      })
+      this._speciality2 = returnable;
+
+      returnable = b.qualityColor.enum.Gold;
+      secondaryInvestmentMap.subscribe(pm => {
+        returnable = pm.speciality3 !== undefined ? pm.speciality3 : b.qualityColor.enum.Gold;
+      })
+      this._speciality3 = returnable;
+
+      returnable = b.qualityColor.enum.Gold;
+      secondaryInvestmentMap.subscribe(pm => {
+        if(
+          pm.speciality4 !== undefined && 
+          pm.speciality1 === b.qualityColor.enum.Gold && 
+          pm.speciality2 === b.qualityColor.enum.Gold && 
+          pm.speciality3 === b.qualityColor.enum.Gold
+        ) {
+          this.Special4disabledValue = false;
+          returnable = pm.speciality4;
+        } else if (
+          pm.speciality1 !== b.qualityColor.enum.Gold ||
+          pm.speciality2 !== b.qualityColor.enum.Gold ||
+          pm.speciality3 !== b.qualityColor.enum.Gold 
+        ) {
+          this.Special4disabledValue = true
+          returnable = b.qualityColor.enum.Disabled
+        } else {
+          this.Special4disabledValue = false;
+          returnable = b.qualityColor.enum.Gold
+        }
+      })
+      this._speciality4 = returnable;
+      secondaryInvestmentMap.subscribe(pm => {
+        if(pm.dragon !== undefined) {
+          this._dragon = pm.dragon;
+        } else {
+          this._dragon = false;
+        }
+        if(pm.beast !== undefined) {
+          this._beast = pm.beast;
+        } else {
+          this._beast = false;
+        }
+        if(pm.ascending !== undefined) {
+          this._ascending = pm.ascending;
+        } else {
+          this._ascending = b.levels.enum[0];
+        }
+      })
+    },
   }
   
-  private disabler: Record<string, (tf: boolean) => void> = {
-    'primary' : (tf: boolean) => {
-      if(tf) {
-        primaryInvestmentMap.setKey('speciality4', b.qualityColor.enum.Disabled);
-        this.disableSpecial4 = true;
-      } else {
-        primaryInvestmentMap.setKey('speciality4',this.Special4disabledValue)
-        this.disableSpecial4 = false;
-      }
-    },
-    'secondary' : (tf) => {
-      if(tf) {
-        secondaryInvestmentMap.setKey('speciality4', b.qualityColor.enum.Disabled);
-        this.disableSpecial4 = true;
-      } else {
-        secondaryInvestmentMap.setKey('speciality4',this.Special4disabledValue)
-        this.disableSpecial4 = false;
-      }
-    },
-  }
-
-  private disable4 (){
-        
-    let specials = new Array<b.qualityColorType>();
-    let value = b.qualityColor.safeParse(this.investmentMapGet[this._role]['speciality1']());
-    if(value.success){
-      specials.push(value.data);
-    }
-    value = b.qualityColor.safeParse(this.investmentMapGet[this._role]['speciality2']());
-    if(value.success){
-      specials.push(value.data);
-    }
-    value = b.qualityColor.safeParse(this.investmentMapGet[this._role]['speciality3']());
-    if(value.success){
-      specials.push(value.data);
-    }
-    if(specials.includes(b.qualityColor.enum.Disabled)) {
-      const value = b.qualityColor.safeParse(this.investmentMapGet[this._role]['speciality4']());
-      if(value.success) {
-        this.Special4disabledValue = value.data;
-      }
-      this.disabler[this._role](true);
-    } else if ( specials.includes(b.qualityColor.enum.Green)) {
-      const value = b.qualityColor.safeParse(this.investmentMapGet[this._role]['speciality4']());
-      if(value.success) {
-        this.Special4disabledValue = value.data;
-      }
-      this.disabler[this._role](true);
-    } else if (specials.includes(b.qualityColor.enum.Blue)) {
-      const value = b.qualityColor.safeParse(this.investmentMapGet[this._role]['speciality4']());
-      if(value.success) {
-        this.Special4disabledValue = value.data;
-      }
-      this.disabler[this._role](true);
-    } else if (specials.includes(b.qualityColor.enum.Purple)) {
-      const value = b.qualityColor.safeParse(this.investmentMapGet[this._role]['speciality4']());
-      if(value.success) {
-        this.Special4disabledValue = value.data;
-      }
-      this.disabler[this._role](true);
-    } else if (specials.includes(b.qualityColor.enum.Orange)){
-      const value = b.qualityColor.safeParse(this.investmentMapGet[this._role]['speciality4']());
-      if(value.success) {
-        this.Special4disabledValue = value.data;
-      }
-      this.disabler[this._role](true);
-    } else {
-      this.disabler[this._role](false);
-    }
-  }
-
   static styles = css`
     div.fieldGroup {
       display: flex;
@@ -415,8 +423,12 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
                 ${ascendingHtml}
                 <div>
                     <sp-field-label for="Speciality1" size="s">1st Speciality</sp-field-label>
-                    <sp-picker id="Speciality1" size="s" label=${this.investmentMapGet[this._role]['speciality1']()} value=${this.investmentMapGet[this._role]['speciality1']()}
-                               @change=${this.changeHandler}>
+                    <sp-picker 
+                      id="Speciality1" size="s" 
+                      label=${this._speciality1} 
+                      value=${this._speciality1}
+                      @change=${this.changeHandler}
+                      >
                         <sp-menu-item value=${b.qualityColor.enum.Disabled}>Not Active</sp-menu-item>
                         <sp-menu-item value=${b.qualityColor.enum.Green}>Green</sp-menu-item>
                         <sp-menu-item value=${b.qualityColor.enum.Blue}>Blue</sp-menu-item>
@@ -427,8 +439,12 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
                 </div>
                 <div>
                     <sp-field-label for="Speciality2" size="s">2nd Speciality</sp-field-label>
-                    <sp-picker id="Speciality2" size="s" label=${this.investmentMapGet[this._role]['speciality2']()} value=${this.investmentMapGet[this._role]['speciality2']()}
-                               @change=${this.changeHandler}>
+                    <sp-picker 
+                      id="Speciality2" size="s" 
+                      label=${this._speciality2} 
+                      value=${this._speciality2}
+                      @change=${this.changeHandler}
+                      >
                         <sp-menu-item value=${b.qualityColor.enum.Disabled}>Not Active</sp-menu-item>
                         <sp-menu-item value=${b.qualityColor.enum.Green}>Green</sp-menu-item>
                         <sp-menu-item value=${b.qualityColor.enum.Blue}>Blue</sp-menu-item>
@@ -439,8 +455,12 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
                 </div>
                 <div>
                     <sp-field-label for="Speciality3" size="s">3rd Speciality</sp-field-label>
-                    <sp-picker id="Speciality3" size="s" label=${this.investmentMapGet[this._role]['speciality3']()} value=${this.investmentMapGet[this._role]['speciality3']()}
-                               @change=${this.changeHandler}>
+                    <sp-picker 
+                      id="Speciality3" size="s" 
+                      label=${this._speciality3} 
+                      value=${this._speciality3}
+                      @change=${this.changeHandler}
+                      >
                         <sp-menu-item value=${b.qualityColor.enum.Disabled}>Not Active</sp-menu-item>
                         <sp-menu-item value=${b.qualityColor.enum.Green}>Green</sp-menu-item>
                         <sp-menu-item value=${b.qualityColor.enum.Blue}>Blue</sp-menu-item>
@@ -451,9 +471,13 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
                 </div>
                 <div>
                     <sp-field-label for="Speciality4" size="s">4th Speciality</sp-field-label>
-                    <sp-picker id="Speciality4" size="s" label=${this.investmentMapGet[this._role]['speciality4']()} value=${this.investmentMapGet[this._role]['speciality4']()}
-                               ?disabled=${this.disableSpecial4}
-                               @change=${this.changeHandler}>
+                    <sp-picker 
+                      id="Speciality4" size="s" 
+                      label=${this._speciality4} 
+                      value=${this._speciality4}
+                      disabled=${this.Special4disabledValue ? true : nothing}
+                      @change=${this.changeHandler}
+                      >
                         <sp-menu-item value=${b.qualityColor.enum.Disabled}>Not Active</sp-menu-item>
                         <sp-menu-item value=${b.qualityColor.enum.Green}>Green</sp-menu-item>
                         <sp-menu-item value=${b.qualityColor.enum.Blue}>Blue</sp-menu-item>
