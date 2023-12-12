@@ -123,9 +123,10 @@ export function checkConflicts(name1: string, name2: string, generalType: b.Clas
       const searchable = Object.values(personal).flat(Infinity)
       return searchable.includes(name2);
     } else {
+      return false
     }
   }
-  console.error(`no records returned at all;`)
+  console.log(`no Conflict Records returned at all for ${name1};`)
   return false;
 }
 
