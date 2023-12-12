@@ -8,6 +8,8 @@ import {Book, type BookType, type standardSkillBookType} from "@schemas/bookSche
 
 import {generalUseCase, type generalUseCaseType} from "@schemas/generalsSchema.ts";
 
+const DEBUG = false;
+
 export const BoS = z.enum(['none', 'dragon', 'beast']);
 export type BoSType = z.infer<typeof BoS>;
 
@@ -33,11 +35,15 @@ export const primaryInvestmentMap = map<generalInvestment>();
 
 export const secondaryInvestmentMap = map<generalInvestment>();
 
-let destroy = logger({
+let destroy = null;
+
+if(DEBUG) {
+  destroy = logger({
   'GeneralTypeAndUseCase': typeAndUseMap,
   'PrimaryGeneralInvestment': primaryInvestmentMap,
   'SecondaryGeneralInvestment': secondaryInvestmentMap,
 })
+}
 
 export const pickType = action(typeAndUseMap, 'Pick Type', 
 (store, newType: b.ClassEnumType) => {

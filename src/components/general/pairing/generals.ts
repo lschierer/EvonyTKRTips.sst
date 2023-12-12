@@ -288,19 +288,27 @@ export const resetSecondary = action(selections, 'reset', (store) => {
   }
 })
 
-let d1 = logger({
-  'AllGenerals': allGenerals,
-});
+let d1 = null;
+
+if(DEBUG) {
+  d1 = logger({
+    'AllGenerals': allGenerals,
+  });
+}
+
 /*
 let d2 = logger({
   'selections': selections,
 });
 */
-let d3 = logger({
-  'filteredPrimaries': filteredPrimaries,
-  'filteredSecondaries': filteredSecondaries,
-  
-});
+let d3 = null;
+if(DEBUG) {
+  logger({
+    'filteredPrimaries': filteredPrimaries,
+    'filteredSecondaries': filteredSecondaries,
+    
+  });
+}
 
 let d4 = logger({
   'GeneralPairs': generalPairs,

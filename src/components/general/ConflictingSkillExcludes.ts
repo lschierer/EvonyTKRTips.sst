@@ -15,7 +15,7 @@ import {
     type nameConflictsTypes,
     type otherConflictType,
     type bookConflictsType,
-} from '@schemas/evonySchemas.ts';
+} from '@schemas/evonySchemas';
 
 import {atom, map, action, computed} from "nanostores";
 import { logger } from '@nanostores/logger'

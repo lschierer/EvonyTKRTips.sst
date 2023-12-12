@@ -13,7 +13,7 @@ import {
     type skillBookType,
     type specialtyAttributeType,
     type specialtyType
-} from '@schemas/evonySchemas.ts';
+} from '@schemas/evonySchemas';
 
 function multiplier(b: buff, general: General,score_for: BuffAttributesType) {
     let multiplier = 0;

@@ -1,91 +1,117 @@
 ---
+const { title } = Astro.props;
 
-
+const labelId = `${title}-label`;
+const inputId = `${title}-collapsible`;
 ---
-<div class=" not-content wrap-collabsible">
-    <input id="collapsible" class=" not-content toggle" type="checkbox" tabindex="0" checked>
-    <label for="collapsible" class=" not-content lbl-toggle">Collapse Explanation</label>
-    <div class="not-content collapsible-content">
-        <div class="content content-inner">
-            <slot/>
-        </div>
+
+<collapsible-toggle></collapsible-toggle>
+<div class="not-content wrap-collabsible" data-message={labelId}>
+  <input
+    id={inputId}
+    class="not-content toggle"
+    type="checkbox"
+    tabindex="0"
+    checked
+  />
+  <label id={labelId} for={inputId} class="not-content lbl-toggle"
+    >Collapse {title}</label
+  >
+  <div class="not-content collapsible-content">
+    <div class="content content-inner">
+      <slot />
     </div>
+  </div>
 </div>
 
 <style>
-    input[type='checkbox'] {
-        display: none;
-    }
-    
-    .lbl-toggle {
-        display: block;
-        
-        font-weight: bold;
-        font-family: monospace;
-        font-size: 1.2rem;
-        text-transform: uppercase;
-        text-align: center;
-        
-        padding: 0px;
-        margin: 0.5px;
-        cursor: pointer;
-        
-        border-radius: 7px;
-        transition: all 0.25s ease-out;
-        
-    }
-    .lbl-toggle::before {
-        content: ' ';
-        display: inline-block;
-        
-        border-top: 5px solid transparent;
-        border-bottom: 5px solid transparent;
-        border-left: 5px solid currentColor;
-        
-        vertical-align: middle;
-        margin-right: .7rem;
-        transform: translateY(-2px);
-        
-        transition: transform .2s ease-out;
-    }
-    
-    .collapsible-content .content-inner {
-        padding: .5rem 1rem;
-    }
-    
-    .collapsible-content {
-        max-height: 0px;
-        overflow: hidden;
-        
-        transition: max-height .25s ease-in-out;
-    }
-    
-    .toggle:checked + .lbl-toggle + .collapsible-content {
-        max-height: 100vh;
-    }
-    
-    .toggle:checked + .lbl-toggle::before {
-        transform: rotate(90deg) translateX(-3px);
-    }
-    
-    .toggle:checked + .lbl-toggle {
-        border-bottom-right-radius: 0;
-        border-bottom-left-radius: 0;
-    }
-    
+
+  li {
+    padding-left: 2rem;
+    padding-inline-start: 2rem;
+  }
+
+  input[type="checkbox"] {
+    display: none;
+  }
+
+  .lbl-toggle {
+    display: block;
+
+    font-weight: bold;
+    font-family: monospace;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    text-align: center;
+
+    padding: 0px;
+    margin: 0.5px;
+    cursor: pointer;
+
+    border-radius: 7px;
+    transition: all 0.25s ease-out;
+  }
+  .lbl-toggle::before {
+    content: " ";
+    display: inline-block;
+
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-left: 5px solid currentColor;
+
+    vertical-align: middle;
+    margin-right: 0.7rem;
+    transform: translateY(-2px);
+
+    transition: transform 0.2s ease-out;
+  }
+
+  .collapsible-content .content-inner {
+    padding: 0.5rem 1rem;
+  }
+
+  .collapsible-content {
+    max-height: 0px;
+    overflow: hidden;
+
+    transition: max-height 0.25s ease-in-out;
+  }
+
+  .toggle:checked + .lbl-toggle + .collapsible-content {
+    max-height: 100vh;
+  }
+
+  .toggle:checked + .lbl-toggle::before {
+    transform: rotate(90deg) translateX(-3px);
+  }
+
+  .toggle:checked + .lbl-toggle {
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
 </style>
 
 <script>
-    let myLabels = document.querySelectorAll('.lbl-toggle');
-    
-    Array.from(myLabels).forEach(label => {
-        label.addEventListener('keydown', e => {
-            // 32 === spacebar
-            // 13 === enter
-            if (e.which === 32 || e.which === 13) {
+  class CollapsibleToggle extends HTMLElement {
+    constructor() {
+      super();
+      if (this.dataset.labelId !== null && this.dataset.labelId !== undefined) {
+        const localId: string = this.dataset.labelId;
+        let myLabels = document.getElementById(localId);
+        if (myLabels !== null) {
+          Array.from([myLabels as HTMLElement].flat()).forEach((label) => {
+            label.addEventListener("keydown", (e) => {
+              // 32 === spacebar
+              // 13 === enter
+              if (e.which === 32 || e.which === 13) {
                 e.preventDefault();
                 label.click();
-            };
-        });
-    });
+              }
+            });
+          });
+        }
+      }
+    }
+  }
+  customElements.define("collapsible-toggle", CollapsibleToggle);
 </script>
