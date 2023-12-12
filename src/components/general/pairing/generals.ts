@@ -115,8 +115,7 @@ export const filteredSecondaries = computed([allGenerals, selections], (ag, ss) 
   }
 })
 
-export const generalPairs = computed([allGenerals, primaryInvestmentMap, secondaryInvestmentMap, typeAndUseMap, conflictingGenerals],
-  (g,  pim, sim, tam, c) => {
+export const generalPairs = computed([allGenerals, typeAndUseMap,conflictingGenerals], (g, tam, c) => {
     const returnable = new Map<string, GeneralPairType[]>();
     const type = tam.type;
 
@@ -140,12 +139,14 @@ export const generalPairs = computed([allGenerals, primaryInvestmentMap, seconda
         if (valid.success && fpv.success && fsv.success) {
           for (let i in fpv.data) {
             const one = fpv.data[i];
-            if (one.general.score_as !== null && one.general.score_as !== undefined) {
+            if(type !== b.ClassEnum.enum.all) {
               if (one.general.score_as !== null && one.general.score_as !== undefined) {
-                if (type !== null && type !== undefined && type !== b.ClassEnum.enum.all) {
-                  if (one.general.score_as !== type) {
-                    if (DEBUG) { console.log(`found a conflict between ${one.general.name} and ${type}`) }
-                    continue;
+                if (one.general.score_as !== null && one.general.score_as !== undefined) {
+                  if (type !== null && type !== undefined && type !== b.ClassEnum.enum.all) {
+                    if (one.general.score_as !== type) {
+                      if (DEBUG) { console.log(`found a conflict between ${one.general.name} and ${type}`) }
+                      continue;
+                    }
                   }
                 }
               }
