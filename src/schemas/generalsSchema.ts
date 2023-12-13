@@ -8,6 +8,12 @@ import {Book, type BookType} from './bookSchemas';
 
 export const generalRole = z.enum(['primary','secondary']);
 export type generalRoleType = z.infer<typeof generalRole>;
+export  const generalSpecialists = z.enum([
+  ...b.ClassEnum.options,
+  "Wall",
+  "Mayor"
+]);
+export type generalSpecialistsType = z.infer<typeof generalSpecialists>;
 
 export const generalUseCase = z.enum([
     "all",
@@ -16,7 +22,7 @@ export const generalUseCase = z.enum([
     "Defense",
     "Overall",
     "Wall",
-    "Mayors"
+    "Mayor"
   ]);
 
 export type generalUseCaseType = z.infer<typeof generalUseCase>;
@@ -93,7 +99,7 @@ export const GeneralClass = z.object({
         }
         return false;
       }).nullish(),
-    "score_as": b.ClassEnum.optional(),
+    "score_as": generalSpecialists.optional(),
     "specialities": z.array(s.Speciality).nullish(),
     "books": z.array(Book).nullish(),
     "ascending": z.array(Ascending).nullish(),
