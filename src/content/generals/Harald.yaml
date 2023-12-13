@@ -1,0 +1,287 @@
+---
+general:
+  name: Harald
+  display: summary
+  leadership: 110
+  leadership_increment: 8.85
+  attack: 113
+  attack_increment: 8.77
+  defense: 112
+  defense_increment: 8.88
+  politics: 103
+  politics_increment: 8.64
+  stars: '10'
+  level: '1'
+  score_as: Mayor
+  books:
+    - name: King of the Vikings
+      buff:
+        - attribute: Attack
+          condition: Reduces_Enemy
+          value:
+            number: -10
+            unit: percentage
+        - attribute: HP
+          condition: Reduces_Enemy
+          value:
+            number: -10
+            unit: percentage
+  specialities:
+    - name: Siege Machine Assault
+      attribute:
+        - level: 'Green'
+          buff:
+          - attribute: Attack
+            class: Siege
+            value:
+              number: 1
+              unit: percentage
+          - attribute: HP
+            class: Siege
+            value:
+              number: 1
+              unit: percentage
+        - level: 'Blue'
+          buff:
+          - attribute: Attack
+            class: Siege
+            value:
+              number: 1
+              unit: percentage
+          - attribute: HP
+            class: Siege
+            value:
+              number: 1
+              unit: percentage
+        - level: 'Purple'
+          buff:
+          - attribute: Attack
+            class: Siege
+            value:
+              number: 2
+              unit: percentage
+          - attribute: HP
+            class: Siege
+            value:
+              number: 2
+              unit: percentage
+        - level: 'Orange'
+          buff:
+          - attribute: Attack
+            class: Siege
+            value:
+              number: 2
+              unit: percentage
+          - attribute: HP
+            class: Siege
+            value:
+              number: 2
+              unit: percentage
+        - level: 'Gold'
+          buff:
+          - attribute: Attack
+            class: Siege
+            value:
+              number: 4
+              unit: percentage
+          - attribute: HP
+            class: Siege
+            value:
+              number: 4
+              unit: percentage
+    - name: Sabotage
+      attribute:
+        - level: 'Green'
+          buff:
+          - attribute: Defense
+            condition: Enemy
+            value:
+              number: -1
+              unit: percentage
+        - level: 'Blue'
+          buff:
+          - attribute: Defense
+            condition: Enemy
+            value:
+              number: -1
+              unit: percentage
+        - level: 'Purple'
+          buff:
+          - attribute: Defense
+            condition: Enemy
+            value:
+              number: -2
+              unit: percentage
+        - level: 'Orange'
+          buff:
+          - attribute: Defense
+            condition: Enemy
+            value:
+              number: -2
+              unit: percentage
+        - level: 'Gold'
+          buff:
+          - attribute: Defense
+            condition: Enemy
+            value:
+              number: -4
+              unit: percentage
+    - name: King's Ambition
+      attribute:
+        - level: 'Green'
+          buff:
+          - attribute: Death_to_Soul
+            condition: In_Main_City
+            value:
+              number: 1
+              unit: percentage
+        - level: 'Blue'
+          buff:
+          - attribute: Death_to_Soul
+            condition: In_Main_City
+            value:
+              number: 1
+              unit: percentage
+        - level: 'Purple'
+          buff:
+          - attribute: Death_to_Soul
+            condition: In_Main_City
+            value:
+              number: 1
+              unit: percentage
+        - level: 'Orange'
+          buff:
+          - attribute: Death_to_Soul
+            condition: In_Main_City
+            value:
+              number: 2
+              unit: percentage
+        - level: 'Gold'
+          buff:
+          - attribute: Death_to_Soul
+            condition: In_Main_City
+            value:
+              number: 4
+              unit: percentage
+    - name: Harald BlueTooth
+      attribute:
+        - level: 'Green'
+          buff:
+          - attribute: Wounded_to_Death
+            condition: Enemy
+            value:
+              number: 1
+              unit: percentage
+          - attribute: Defense
+            condition: Enemy
+            value:
+              number: -1
+              unit: percentage
+        - level: 'Blue'
+          buff:
+          - attribute: Wounded_to_Death
+            condition: Enemy
+            value:
+              number: 1
+              unit: percentage
+          - attribute: Defense
+            condition: Enemy
+            value:
+              number: -1
+              unit: percentage
+        - level: 'Purple'
+          buff:
+          - attribute: Wounded_to_Death
+            condition: Enemy
+            value:
+              number: -2
+              unit: percentage
+          - attribute: Defense
+            condition: Enemy
+            value:
+              number: -2
+              unit: percentage
+        - level: 'Orange'
+          buff:
+          - attribute: Wounded_to_Death
+            condition: Enemy
+            value:
+              number: 2
+              unit: percentage
+          - attribute: Defense
+            condition: Enemy
+            value:
+              number: -2
+              unit: percentage
+        - level: 'Gold'
+          buff:
+          - attribute: Wounded_to_Death
+            condition: Enemy
+            value:
+              number: 4
+              unit: percentage
+          - attribute: Defense
+            condition: Enemy
+            value:
+              number: -4
+              unit: percentage
+  ascending:
+        - level: '6'
+          buff:
+          - attribute: Defense
+            condition: Enemy
+            value:
+              number: -10
+              unit: percentage
+        - level: '7'
+          buff:
+          - attribute: Defense
+            condition: Enemy
+            class: Archers
+            value:
+              number: -10
+              unit: percentage
+          - attribute: Defense
+            condition: Enemy
+            class: Siege
+            value:
+              number: -10
+              unit: percentage
+          - attribute: SubCity_Training_Speed
+            condition: When_City_Mayor_for_this_SubCity
+            value:
+              number: 20
+              unit: percentage
+        - level: '8'
+          buff:
+          - attribute: Defense
+            condition: Enemy
+            class: Ground
+            value:
+              number: -10
+              unit: percentage
+          - attribute: Defense
+            condition: Enemy
+            class: Mounted
+            value:
+              number: -10
+              unit: percentage
+          - attribute: Death_to_Wounded
+            condition: When_City_Mayor_for_this_SubCity
+            value:
+              number: 15
+              unit: percentage
+        - level: '9'
+          buff:
+          - attribute: HP
+            condition: Enemy
+            value:
+              number: -10
+              unit: percentage
+        - level: '10'
+          buff:
+          - attribute: Attack
+            condition: Enemy
+            value:
+              number: -10
+              unit: percentage
