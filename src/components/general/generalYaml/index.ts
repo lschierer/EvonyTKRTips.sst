@@ -5,7 +5,7 @@ import { createRef, ref, type Ref } from 'lit/directives/ref.js';
 
 import { withStores } from "@nanostores/lit";
 
-
+import { type MapStore } from "nanostores";
 
 const DEBUG = false;
 
@@ -39,12 +39,13 @@ import { parse, isDocument } from 'yaml'
 
 import { GeneralBuffController } from "./Buff.ts";
 
-import { addValue, formInit, getValue, formValues } from '../formValueStore.ts';
+import { addValue, formInit, getValue, formValues } from '../../formValueStore.ts';
 
 import * as b from "@schemas/baseSchemas.ts";
 
-import { GeneralElement } from '@schemas/generalsSchema.ts';
+import { GeneralElement, generalRole, type generalRoleType } from '@schemas/generalsSchema.ts';
 import type { ZodError } from "zod";
+import { primaryInvestmentMap, secondaryInvestmentMap } from "../generalInvestmentStore.ts";
 
 export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
 
@@ -67,62 +68,6 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
 
   constructor() {
     super();
-  }
-
-  public static override get styles(): CSSResultArray {
-    const localstyle = css`
-      div.Intrinsic {
-        display: flex;
-        flex-direction: column;
-
-        & div.leadership, div.attack, div.defense, div.politics {
-          display: flex;
-          width: 100%;
-          flex-direction: row;
-          justify-content: flex-start;
-          gap: var(--spectrum-global-dimension-size-125);
-          
-          #leadership, #lgi, #attack, #agi, #defense, #dgi, #politics, #pgi {
-            width: 7rem;
-          }
-        }
-      }
-      div.specialities, div.books, div.ascending {
-        & div.green, div.blue, div.purple, div.orange, div.gold {
-          span.h5 {
-            font-weight: bold;
-          }         
-        }
-        .valueFieldGroup {
-          background-color: var(--spectrum-celery-600);
-          width: 100%;
-
-          & sp-number-field {
-            width: 7rem;
-          }
-        }
-      }
-      #ResultsDiv {
-        display: block;
-        white-space: pre;
-        min-height: 60vh;
-        height: fit-content;
-        width: 75%;
-        padding-left: 3rem;
-      }
-      .valid {
-        border: 1.5px solid var(--spectrum-celery-500);
-      }
-
-      .invalid {
-        border: 1.5px solid var(--spectrum-red-800);
-      }
-
-      `
-    if (super.styles !== null && super.styles !== undefined) {
-      return [super.styles, localstyle];
-    } else return [localstyle];
-
   }
 
   public connectedCallback() {
@@ -846,6 +791,62 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
     <div class=${classMap(this.resultClassList)} id="ResultsDiv"  ${ref(this.resultDiv)}>${exportable}</div>
     ${this.validationError}
     `
+  }
+
+  public static override get styles(): CSSResultArray {
+    const localstyle = css`
+      div.Intrinsic {
+        display: flex;
+        flex-direction: column;
+
+        & div.leadership, div.attack, div.defense, div.politics {
+          display: flex;
+          width: 100%;
+          flex-direction: row;
+          justify-content: flex-start;
+          gap: var(--spectrum-global-dimension-size-125);
+          
+          #leadership, #lgi, #attack, #agi, #defense, #dgi, #politics, #pgi {
+            width: 7rem;
+          }
+        }
+      }
+      div.specialities, div.books, div.ascending {
+        & div.green, div.blue, div.purple, div.orange, div.gold {
+          span.h5 {
+            font-weight: bold;
+          }         
+        }
+        .valueFieldGroup {
+          background-color: var(--spectrum-celery-600);
+          width: 100%;
+
+          & sp-number-field {
+            width: 7rem;
+          }
+        }
+      }
+      #ResultsDiv {
+        display: block;
+        white-space: pre;
+        min-height: 60vh;
+        height: fit-content;
+        width: 75%;
+        padding-left: 3rem;
+      }
+      .valid {
+        border: 1.5px solid var(--spectrum-celery-500);
+      }
+
+      .invalid {
+        border: 1.5px solid var(--spectrum-red-800);
+      }
+
+      `
+    if (super.styles !== null && super.styles !== undefined) {
+      return [super.styles, localstyle];
+    } else return [localstyle];
+
   }
 
   render() {
