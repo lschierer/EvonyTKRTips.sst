@@ -25,7 +25,7 @@
     "@nanostores/logger": "^0.2.4",
     "@nanostores/persistent": "^0.9.1",
     "@spectrum-css/button": "^11.0.18",
-    "@spectrum-css/icon": "^4.0.5",
+    "@spectrum-css/icon": "^5.0.0",
     "@spectrum-css/page": "^6.0.10",
     "@spectrum-css/sidenav": "^4.0.19",
     "@spectrum-css/splitview": "^4.0.10",
