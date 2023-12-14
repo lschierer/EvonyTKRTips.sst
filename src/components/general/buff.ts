@@ -63,10 +63,11 @@ export const buffAdverbs: { [key in generalUseCaseType]: b.BuffAdverbArrayType }
         b.Condition.enum.When_The_Main_Defense_General,
         b.Condition.enum.In_City,
     ],
-    [generalUseCase.enum.Mayors]: [
+    [generalUseCase.enum.Mayor]: [
         b.Condition.enum.Reduces_Enemy,
         b.Condition.enum.Enemy,
-        b.Condition.enum.When_the_City_Mayor,
+        b.Condition.enum.When_City_Mayor,
+        b.Condition.enum.When_City_Mayor_for_this_SubCity,
     ],
 }
 

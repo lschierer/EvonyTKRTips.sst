@@ -22,23 +22,26 @@ import {
 } from './generalInvestmentStore.ts';
 
 import {
-    BuffAdverbs,
-    type BuffAdverbsType,
+    Condition,
+    type ConditionType,
     type BuffAdverbArrayType,
-    generalSchema,
-    type General,
-    generalObjectSchema,
+    type GeneralClassType,
+    type GeneralPairType,
     generalUseCase,
+    GeneralPair,
     type generalUseCaseType,
-    type generalObject,
-    levelSchema,
-    type levelSchemaType,
-    qualitySchema,
-    type qualitySchemaType,
+    GeneralElement,
+    type GeneralElementType,
+    levels,
+    type levelsType,
+    qualityColor,
+    type qualityColorType,
     type standardSkillBookType,
-    troopClass,
-    type troopClassType, buffSchema, 
-} from "@schemas/evonySchemas.ts";
+    ClassEnum,
+    type ClassEnumType,
+    AttributeSchema,
+    type Attribute,
+} from "@schemas/index";
 
 import {tableGeneral} from "@components/general/tableGeneral.ts";
 import {
@@ -54,7 +57,7 @@ export class GeneralDetails extends withStores(SpectrumElement, [conflictingGene
     public generalId: string;
 
     @state()
-    private general: General | null = null;
+    private general: GeneralClassType | null = null;
 
     constructor() {
         super();
@@ -76,7 +79,7 @@ export class GeneralDetails extends withStores(SpectrumElement, [conflictingGene
                 } else throw new Error('Status code error: ' + response.status);
             }).then((text) => {
                 const jsonResult = JSON.parse(text);
-                const result = generalObjectSchema.safeParse(jsonResult)
+                const result = GeneralElement.safeParse(jsonResult)
                 if(result.success) {
                     this.general = result.data.general;
                     return true;

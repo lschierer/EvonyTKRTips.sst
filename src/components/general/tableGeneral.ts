@@ -1,77 +1,82 @@
 import {
-  BuffAdverbs,
-  type BuffAdverbsType,
+  Condition,
+  type ConditionType,
   type BuffAdverbArrayType,
+  GeneralClass,
+  type GeneralClassType,
+  type GeneralPairType,
   generalUseCase,
+  GeneralPair,
   type generalUseCaseType,
-  generalSchema,
-  type General,
-  generalObjectSchema,
-  type generalObject,
-  levelSchema,
-  type levelSchemaType,
-  qualitySchema,
-  type qualitySchemaType,
-  troopClass,
-  type troopClassType,
+  GeneralElement,
+  type GeneralElementType,
+  levels,
+  type levelsType,
+  qualityColor,
+  type qualityColorType,
   type standardSkillBookType,
-} from "@schemas/evonySchemas.ts";
+  ClassEnum,
+  type ClassEnumType,
+  AttributeSchema,
+  type Attribute,
+} from "@schemas/index";
 
 import {buff} from "@components/general/buff.ts";
 import {z} from "zod";
 
-const buffAdverbs: {[key in generalUseCaseType]: BuffAdverbArrayType} = {
+const BuffAdverbs: {[key in generalUseCaseType]: BuffAdverbArrayType} = {
   [generalUseCase.enum.all]: [
-    BuffAdverbs.enum.Attacking,
-    BuffAdverbs.enum.Marching,
-    BuffAdverbs.enum.When_Rallying,
-    BuffAdverbs.enum.dragon_to_the_attack,
-    BuffAdverbs.enum.leading_the_army_to_attack,
-    BuffAdverbs.enum.Reinforcing,
-    BuffAdverbs.enum.Defending,
+    Condition.enum.Attacking,
+    Condition.enum.Marching,
+    Condition.enum.When_Rallying,
+    Condition.enum.dragon_to_the_attack,
+    Condition.enum.leading_the_army_to_attack,
+    Condition.enum.Reinforcing,
+    Condition.enum.Defending,
   ],
   [generalUseCase.enum.Monsters]: [
-    BuffAdverbs.enum.Attacking,
-    BuffAdverbs.enum.Marching,
-    BuffAdverbs.enum.When_Rallying,
-    BuffAdverbs.enum.dragon_to_the_attack,
-    BuffAdverbs.enum.leading_the_army_to_attack,
-    BuffAdverbs.enum.Against_Monsters,
-    BuffAdverbs.enum.Reduces_Monster,
+    Condition.enum.Attacking,
+    Condition.enum.Marching,
+    Condition.enum.When_Rallying,
+    Condition.enum.dragon_to_the_attack,
+    Condition.enum.leading_the_army_to_attack,
+    Condition.enum.Against_Monsters,
+    Condition.enum.Reduces_Monster,
   ],
   [generalUseCase.enum.Attack]: [
-    BuffAdverbs.enum.Attacking,
-    BuffAdverbs.enum.Marching,
-    BuffAdverbs.enum.dragon_to_the_attack,
-    BuffAdverbs.enum.leading_the_army_to_attack,
-    BuffAdverbs.enum.Reduces_Enemy,
-    BuffAdverbs.enum.Enemy,
+    Condition.enum.Attacking,
+    Condition.enum.Marching,
+    Condition.enum.dragon_to_the_attack,
+    Condition.enum.leading_the_army_to_attack,
+    Condition.enum.Reduces_Enemy,
+    Condition.enum.Enemy,
   ],
   [generalUseCase.enum.Defense]: [
-    BuffAdverbs.enum.Reinforcing,
-    BuffAdverbs.enum.Defending,
-    BuffAdverbs.enum.Reduces_Enemy,
-    BuffAdverbs.enum.Enemy,
+    Condition.enum.Reinforcing,
+    Condition.enum.Defending,
+    Condition.enum.Reduces_Enemy,
+    Condition.enum.Enemy,
   ],
   [generalUseCase.enum.Overall]: [
-    BuffAdverbs.enum.Reduces_Enemy,
-    BuffAdverbs.enum.Enemy,
+    Condition.enum.Reduces_Enemy,
+    Condition.enum.Enemy,
   ],
   [generalUseCase.enum.Wall]: [
-    BuffAdverbs.enum.Reduces_Enemy,
-    BuffAdverbs.enum.Enemy,
-    BuffAdverbs.enum.Defending,
-    BuffAdverbs.enum.When_The_Main_Defense_General,
-    BuffAdverbs.enum.In_City,
+    Condition.enum.Reduces_Enemy,
+    Condition.enum.Enemy,
+    Condition.enum.Defending,
+    Condition.enum.When_The_Main_Defense_General,
+    Condition.enum.In_City,
   ],
-  [generalUseCase.enum.Mayors]: [
-    BuffAdverbs.enum.Reduces_Enemy,
-    BuffAdverbs.enum.Enemy,
-    BuffAdverbs.enum.When_the_City_Mayor,
+  [generalUseCase.enum.Mayor]: [
+    Condition.enum.Reduces_Enemy,
+    Condition.enum.Enemy,
+    Condition.enum.When_City_Mayor,
+    Condition.enum.When_City_Mayor_for_this_SubCity,
   ],
 }
 
-const generalArray = z.array(generalObjectSchema).nullish();
+const generalArray = z.array(GeneralElement).nullish();
 type generalArrayType = z.infer<typeof generalArray>;
 
 export class tableGeneral {
@@ -84,9 +89,9 @@ export class tableGeneral {
   private _attackBuff: number;
   private _hpBuff: number;
   private _defenseBuff: number;
-  private unitClass: troopClassType | string;
-  readonly general: General | null;
-  private adverbs: BuffAdverbArrayType = buffAdverbs[generalUseCase.enum.all];
+  private unitClass: ClassEnumType | string;
+  readonly general: GeneralClassType | null;
+  private adverbs: BuffAdverbArrayType = BuffAdverbs[generalUseCase.enum.all];
   
   getIntrinsic() {
     return {attack: this.attack, defense: this.defense, hp: this.hp};
@@ -119,8 +124,8 @@ export class tableGeneral {
     return this.unitClass;
   }
   
-  public constructor(g:  General, useCase: generalUseCaseType ) {
-    const validation = generalSchema.safeParse(g);
+  public constructor(g:  GeneralClassType, useCase: generalUseCaseType ) {
+    const validation = GeneralClass.safeParse(g);
     if(validation.success) {
       this.name = validation.data.name;
       this.general = g;
@@ -134,7 +139,7 @@ export class tableGeneral {
       this.attackBuff = 0;
       this.hpBuff = 0;
       this.defenseBuff = 0;
-      this.adverbs = buffAdverbs[useCase];
+      this.adverbs = BuffAdverbs[useCase];
       
     } else {
       console.error(`invalid general`);
@@ -151,10 +156,10 @@ export class tableGeneral {
   }
   
   public setAdverbs(useCase: generalUseCaseType) {
-    this.adverbs = buffAdverbs[useCase];
+    this.adverbs = BuffAdverbs[useCase];
   }
   
-  public computeBuffs(props: {dragon: boolean, beast: boolean, ascending: levelSchemaType, speciality1: qualitySchemaType, speciality2: qualitySchemaType, speciality3: qualitySchemaType, speciality4: qualitySchemaType, extraBooks: standardSkillBookType[] }) {
+  public computeBuffs(props: {dragon: boolean, beast: boolean, ascending: levelsType, speciality1: qualityColorType, speciality2: qualityColorType, speciality3: qualityColorType, speciality4: qualityColorType, extraBooks: standardSkillBookType[] }) {
     if(this.general !== null && this.general !== undefined) {
       const {attackBuff, defenseBuff, hpBuff} = buff(this.general,this.adverbs, props);
       this.attackBuff = attackBuff;

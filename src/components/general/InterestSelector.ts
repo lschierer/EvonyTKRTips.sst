@@ -16,8 +16,8 @@ import {SpectrumElement} from "@spectrum-web-components/base";
 
 import {
   generalUseCase,
-  type generalUseCaseType, troopClass
-} from "@schemas/evonySchemas.ts";
+  type generalUseCaseType, ClassEnum
+} from "@schemas/index";
 import {type generalInvestment, typeAndUseMap} from './generalInvestmentStore.ts';
 
 @customElement('interest-selector')
@@ -49,7 +49,7 @@ export class InterestSelector extends withStores(SpectrumElement,[typeAndUseMap]
     this.dispatchEvent(myEvent);
     const picker = (e.target as Picker);
     if(!picker.id.localeCompare('unitClass')){
-      const validation = troopClass.safeParse(picker.value);
+      const validation = ClassEnum.safeParse(picker.value);
       if(validation.success) {
         typeAndUseMap.setKey('type', validation.data)
       }
