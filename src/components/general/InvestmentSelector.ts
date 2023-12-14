@@ -27,11 +27,12 @@ import {
   dragon,
   generalUseCase,
   type generalUseCaseType,
-  levelSchema,
-  type levelSchemaType,
-  qualitySchema,
-  type qualitySchemaType, specialty
-} from "@schemas/evonySchemas.ts";
+  levels,
+  type levelsType,
+  qualityColor,
+  type qualityColorType,
+  Speciality,
+} from "@schemas/index";
 
 import {BoS, type BoSType, type generalInvestment, primaryInvestmentMap, secondaryInvestmentMap} from './generalInvestmentStore.ts';
 import { ascending } from "d3";
@@ -51,7 +52,7 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
   @state()
   private disableSpecial4: boolean = false;
   
-  private Special4disabledValue: qualitySchemaType = qualitySchema.enum.Gold;
+  private Special4disabledValue: qualityColorType = qualityColor.enum.Gold;
   
   constructor() {
     super();
@@ -83,33 +84,33 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
         if (!this.investmentMapGet[this._role]['speciality1']()) { 
           initialsetcounter++;
           if(this._role === generalRole.enum.primary) {
-            primaryInvestmentMap.setKey('speciality1',qualitySchema.enum.Gold)
+            primaryInvestmentMap.setKey('speciality1',qualityColor.enum.Gold)
           } else {
-            secondaryInvestmentMap.setKey('speciality1',qualitySchema.enum.Gold)
+            secondaryInvestmentMap.setKey('speciality1',qualityColor.enum.Gold)
           }
         }
         if (!this.investmentMapGet[this._role]['speciality2']() ) { 
           initialsetcounter++;
           if(this._role === generalRole.enum.primary) {
-            primaryInvestmentMap.setKey('speciality2',qualitySchema.enum.Gold)
+            primaryInvestmentMap.setKey('speciality2',qualityColor.enum.Gold)
           } else {
-            secondaryInvestmentMap.setKey('speciality2',qualitySchema.enum.Gold)
+            secondaryInvestmentMap.setKey('speciality2',qualityColor.enum.Gold)
           }
         }
         if (!this.investmentMapGet[this._role]['speciality3']() ) { 
           initialsetcounter++;
           if(this._role === generalRole.enum.primary) {
-            primaryInvestmentMap.setKey('speciality3',qualitySchema.enum.Gold)
+            primaryInvestmentMap.setKey('speciality3',qualityColor.enum.Gold)
           } else {
-            secondaryInvestmentMap.setKey('speciality3',qualitySchema.enum.Gold)
+            secondaryInvestmentMap.setKey('speciality3',qualityColor.enum.Gold)
           }
         }
         if (!this.investmentMapGet[this._role]['speciality4']() ) { 
           initialsetcounter++;
           if(this._role === generalRole.enum.primary) {
-            primaryInvestmentMap.setKey('speciality4',qualitySchema.enum.Gold)
+            primaryInvestmentMap.setKey('speciality4',qualityColor.enum.Gold)
           } else {
-            secondaryInvestmentMap.setKey('speciality4',qualitySchema.enum.Gold)
+            secondaryInvestmentMap.setKey('speciality4',qualityColor.enum.Gold)
           }
         }
         if(initialsetcounter === 4) {
@@ -141,54 +142,54 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
     const picker = (e.target as Picker);
     if (this._role === generalRole.enum.primary) {
       if (!picker.id.localeCompare('ascending')) {
-        const validation = levelSchema.safeParse(picker.value)
+        const validation = levels.safeParse(picker.value)
         if (validation.success) {
           primaryInvestmentMap.setKey('ascending', validation.data)
         }
       } else if (!picker.id.localeCompare('Speciality1')) {
-        const validation = qualitySchema.safeParse(picker.value);
+        const validation = qualityColor.safeParse(picker.value);
         if (validation.success) {
           primaryInvestmentMap.setKey('speciality1', validation.data);
         }
       } else if (!picker.id.localeCompare('Speciality2')) {
-        const validation = qualitySchema.safeParse(picker.value);
+        const validation = qualityColor.safeParse(picker.value);
         if (validation.success) {
           primaryInvestmentMap.setKey('speciality2', validation.data);
         }
       } else if (!picker.id.localeCompare('Speciality3')) {
-        const validation = qualitySchema.safeParse(picker.value);
+        const validation = qualityColor.safeParse(picker.value);
         if (validation.success) {
           primaryInvestmentMap.setKey('speciality3', validation.data);
         }
       } else if (!picker.id.localeCompare('Speciality4')) {
-        const validation = qualitySchema.safeParse(picker.value);
+        const validation = qualityColor.safeParse(picker.value);
         if (validation.success) {
           primaryInvestmentMap.setKey('speciality4', validation.data);
         }
       }
     } else {
       if (!picker.id.localeCompare('ascending')) {
-        const validation = levelSchema.safeParse(picker.value)
+        const validation = levels.safeParse(picker.value)
         if (validation.success) {
           secondaryInvestmentMap.setKey('ascending', validation.data)
         }
       } else if (!picker.id.localeCompare('Speciality1')) {
-        const validation = qualitySchema.safeParse(picker.value);
+        const validation = qualityColor.safeParse(picker.value);
         if (validation.success) {
           secondaryInvestmentMap.setKey('speciality1', validation.data);
         }
       } else if (!picker.id.localeCompare('Speciality2')) {
-        const validation = qualitySchema.safeParse(picker.value);
+        const validation = qualityColor.safeParse(picker.value);
         if (validation.success) {
           secondaryInvestmentMap.setKey('speciality2', validation.data);
         }
       } else if (!picker.id.localeCompare('Speciality3')) {
-        const validation = qualitySchema.safeParse(picker.value);
+        const validation = qualityColor.safeParse(picker.value);
         if (validation.success) {
           secondaryInvestmentMap.setKey('speciality3', validation.data);
         }
       } else if (!picker.id.localeCompare('Speciality4')) {
-        const validation = qualitySchema.safeParse(picker.value);
+        const validation = qualityColor.safeParse(picker.value);
         if (validation.success) {
           secondaryInvestmentMap.setKey('speciality4', validation.data);
         }
@@ -288,7 +289,7 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
   private disabler: Record<string, (tf: boolean) => void> = {
     'primary' : (tf: boolean) => {
       if(tf) {
-        primaryInvestmentMap.setKey('speciality4', qualitySchema.enum.Disabled);
+        primaryInvestmentMap.setKey('speciality4', qualityColor.enum.Disabled);
         this.disableSpecial4 = true;
       } else {
         primaryInvestmentMap.setKey('speciality4',this.Special4disabledValue)
@@ -297,7 +298,7 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
     },
     'secondary' : (tf) => {
       if(tf) {
-        secondaryInvestmentMap.setKey('speciality4', qualitySchema.enum.Disabled);
+        secondaryInvestmentMap.setKey('speciality4', qualityColor.enum.Disabled);
         this.disableSpecial4 = true;
       } else {
         secondaryInvestmentMap.setKey('speciality4',this.Special4disabledValue)
@@ -308,45 +309,45 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
 
   private disable4 (){
         
-    let specials = new Array<qualitySchemaType>();
-    let value = qualitySchema.safeParse(this.investmentMapGet[this._role]['speciality1']());
+    let specials = new Array<qualityColorType>();
+    let value = qualityColor.safeParse(this.investmentMapGet[this._role]['speciality1']());
     if(value.success){
       specials.push(value.data);
     }
-    value = qualitySchema.safeParse(this.investmentMapGet[this._role]['speciality2']());
+    value = qualityColor.safeParse(this.investmentMapGet[this._role]['speciality2']());
     if(value.success){
       specials.push(value.data);
     }
-    value = qualitySchema.safeParse(this.investmentMapGet[this._role]['speciality3']());
+    value = qualityColor.safeParse(this.investmentMapGet[this._role]['speciality3']());
     if(value.success){
       specials.push(value.data);
     }
-    if(specials.includes(qualitySchema.enum.Disabled)) {
-      const value = qualitySchema.safeParse(this.investmentMapGet[this._role]['speciality4']());
+    if(specials.includes(qualityColor.enum.Disabled)) {
+      const value = qualityColor.safeParse(this.investmentMapGet[this._role]['speciality4']());
       if(value.success) {
         this.Special4disabledValue = value.data;
       }
       this.disabler[this._role](true);
-    } else if ( specials.includes(qualitySchema.enum.Green)) {
-      const value = qualitySchema.safeParse(this.investmentMapGet[this._role]['speciality4']());
+    } else if ( specials.includes(qualityColor.enum.Green)) {
+      const value = qualityColor.safeParse(this.investmentMapGet[this._role]['speciality4']());
       if(value.success) {
         this.Special4disabledValue = value.data;
       }
       this.disabler[this._role](true);
-    } else if (specials.includes(qualitySchema.enum.Blue)) {
-      const value = qualitySchema.safeParse(this.investmentMapGet[this._role]['speciality4']());
+    } else if (specials.includes(qualityColor.enum.Blue)) {
+      const value = qualityColor.safeParse(this.investmentMapGet[this._role]['speciality4']());
       if(value.success) {
         this.Special4disabledValue = value.data;
       }
       this.disabler[this._role](true);
-    } else if (specials.includes(qualitySchema.enum.Purple)) {
-      const value = qualitySchema.safeParse(this.investmentMapGet[this._role]['speciality4']());
+    } else if (specials.includes(qualityColor.enum.Purple)) {
+      const value = qualityColor.safeParse(this.investmentMapGet[this._role]['speciality4']());
       if(value.success) {
         this.Special4disabledValue = value.data;
       }
       this.disabler[this._role](true);
-    } else if (specials.includes(qualitySchema.enum.Orange)){
-      const value = qualitySchema.safeParse(this.investmentMapGet[this._role]['speciality4']());
+    } else if (specials.includes(qualityColor.enum.Orange)){
+      const value = qualityColor.safeParse(this.investmentMapGet[this._role]['speciality4']());
       if(value.success) {
         this.Special4disabledValue = value.data;
       }
@@ -414,36 +415,36 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
                     <sp-field-label for="Speciality1" size="s">1st Speciality</sp-field-label>
                     <sp-picker id="Speciality1" size="s" label=${this.investmentMapGet[this._role]['speciality1']()} value=${this.investmentMapGet[this._role]['speciality1']()}
                                @change=${this.changeHandler}>
-                        <sp-menu-item value=${qualitySchema.enum.Disabled}>Not Active</sp-menu-item>
-                        <sp-menu-item value=${qualitySchema.enum.Green}>Green</sp-menu-item>
-                        <sp-menu-item value=${qualitySchema.enum.Blue}>Blue</sp-menu-item>
-                        <sp-menu-item value=${qualitySchema.enum.Purple}>Purple</sp-menu-item>
-                        <sp-menu-item value=${qualitySchema.enum.Orange}>Orange</sp-menu-item>
-                        <sp-menu-item value=${qualitySchema.enum.Gold}>Gold</sp-menu-item>
+                        <sp-menu-item value=${qualityColor.enum.Disabled}>Not Active</sp-menu-item>
+                        <sp-menu-item value=${qualityColor.enum.Green}>Green</sp-menu-item>
+                        <sp-menu-item value=${qualityColor.enum.Blue}>Blue</sp-menu-item>
+                        <sp-menu-item value=${qualityColor.enum.Purple}>Purple</sp-menu-item>
+                        <sp-menu-item value=${qualityColor.enum.Orange}>Orange</sp-menu-item>
+                        <sp-menu-item value=${qualityColor.enum.Gold}>Gold</sp-menu-item>
                     </sp-picker>
                 </div>
                 <div>
                     <sp-field-label for="Speciality2" size="s">2nd Speciality</sp-field-label>
                     <sp-picker id="Speciality2" size="s" label=${this.investmentMapGet[this._role]['speciality2']()} value=${this.investmentMapGet[this._role]['speciality2']()}
                                @change=${this.changeHandler}>
-                        <sp-menu-item value=${qualitySchema.enum.Disabled}>Not Active</sp-menu-item>
-                        <sp-menu-item value=${qualitySchema.enum.Green}>Green</sp-menu-item>
-                        <sp-menu-item value=${qualitySchema.enum.Blue}>Blue</sp-menu-item>
-                        <sp-menu-item value=${qualitySchema.enum.Purple}>Purple</sp-menu-item>
-                        <sp-menu-item value=${qualitySchema.enum.Orange}>Orange</sp-menu-item>
-                        <sp-menu-item value=${qualitySchema.enum.Gold}>Gold</sp-menu-item>
+                        <sp-menu-item value=${qualityColor.enum.Disabled}>Not Active</sp-menu-item>
+                        <sp-menu-item value=${qualityColor.enum.Green}>Green</sp-menu-item>
+                        <sp-menu-item value=${qualityColor.enum.Blue}>Blue</sp-menu-item>
+                        <sp-menu-item value=${qualityColor.enum.Purple}>Purple</sp-menu-item>
+                        <sp-menu-item value=${qualityColor.enum.Orange}>Orange</sp-menu-item>
+                        <sp-menu-item value=${qualityColor.enum.Gold}>Gold</sp-menu-item>
                     </sp-picker>
                 </div>
                 <div>
                     <sp-field-label for="Speciality3" size="s">3rd Speciality</sp-field-label>
                     <sp-picker id="Speciality3" size="s" label=${this.investmentMapGet[this._role]['speciality3']()} value=${this.investmentMapGet[this._role]['speciality3']()}
                                @change=${this.changeHandler}>
-                        <sp-menu-item value=${qualitySchema.enum.Disabled}>Not Active</sp-menu-item>
-                        <sp-menu-item value=${qualitySchema.enum.Green}>Green</sp-menu-item>
-                        <sp-menu-item value=${qualitySchema.enum.Blue}>Blue</sp-menu-item>
-                        <sp-menu-item value=${qualitySchema.enum.Purple}>Purple</sp-menu-item>
-                        <sp-menu-item value=${qualitySchema.enum.Orange}>Orange</sp-menu-item>
-                        <sp-menu-item value=${qualitySchema.enum.Gold}>Gold</sp-menu-item>
+                        <sp-menu-item value=${qualityColor.enum.Disabled}>Not Active</sp-menu-item>
+                        <sp-menu-item value=${qualityColor.enum.Green}>Green</sp-menu-item>
+                        <sp-menu-item value=${qualityColor.enum.Blue}>Blue</sp-menu-item>
+                        <sp-menu-item value=${qualityColor.enum.Purple}>Purple</sp-menu-item>
+                        <sp-menu-item value=${qualityColor.enum.Orange}>Orange</sp-menu-item>
+                        <sp-menu-item value=${qualityColor.enum.Gold}>Gold</sp-menu-item>
                     </sp-picker>
                 </div>
                 <div>
@@ -451,12 +452,12 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
                     <sp-picker id="Speciality4" size="s" label=${this.investmentMapGet[this._role]['speciality4']()} value=${this.investmentMapGet[this._role]['speciality4']()}
                                ?disabled=${this.disableSpecial4}
                                @change=${this.changeHandler}>
-                        <sp-menu-item value=${qualitySchema.enum.Disabled}>Not Active</sp-menu-item>
-                        <sp-menu-item value=${qualitySchema.enum.Green}>Green</sp-menu-item>
-                        <sp-menu-item value=${qualitySchema.enum.Blue}>Blue</sp-menu-item>
-                        <sp-menu-item value=${qualitySchema.enum.Purple}>Purple</sp-menu-item>
-                        <sp-menu-item value=${qualitySchema.enum.Orange}>Orange</sp-menu-item>
-                        <sp-menu-item value=${qualitySchema.enum.Gold}>Gold</sp-menu-item>
+                        <sp-menu-item value=${qualityColor.enum.Disabled}>Not Active</sp-menu-item>
+                        <sp-menu-item value=${qualityColor.enum.Green}>Green</sp-menu-item>
+                        <sp-menu-item value=${qualityColor.enum.Blue}>Blue</sp-menu-item>
+                        <sp-menu-item value=${qualityColor.enum.Purple}>Purple</sp-menu-item>
+                        <sp-menu-item value=${qualityColor.enum.Orange}>Orange</sp-menu-item>
+                        <sp-menu-item value=${qualityColor.enum.Gold}>Gold</sp-menu-item>
                     </sp-picker>
                 </div>
             </sp-field-group>
