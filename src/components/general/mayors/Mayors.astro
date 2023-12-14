@@ -129,53 +129,8 @@ if (result2.success) {
   return null;
 }
 ---
-<script>
-  import {
-    Book, 
-    type BookType,
-    ConflictArray,
-    type ConflictArrayType,
-    generalSpecialists,
-    type generalSpecialistsType,
-    GeneralArray,
-    type GeneralArrayType,
-    generalConflicts,
-    GeneralElement,
-    type GeneralElementType,
-    ClassEnum,
-    generalUseCase,
-    type standardSkillBookType,
-    type ConflictDatumType,
-    standardSkillBook
-  } from "../../../schemas";
-  import type { TableContainer } from "./tableContainer";
-  import * as z from 'zod';
-  import { LitElement } from "lit";
 
+{(allGeneralsString !== null) && <TableContainer allGenerals={allGeneralsString} client:only="lit" ></TableContainer> }
 
-  class DataLoader extends HTMLElement {
-
-    constructor() {
-      super()
-      const allGeneralsData = this.dataset.agd;
-      const allConflictData = this.dataset.acd;
-      const container = this.parentElement?.querySelector('table-container')
-      if(container !== null && container !== undefined ) {
-        if(allGeneralsData !== null && allGeneralsData !== undefined) {
-          console.log(`container found and generals populated`)
-
-        } else {
-          console.log(`allGeneralsData null or undefined`)
-        }
-      } else {
-        console.log(`container undefined`)
-      }
-    }
-  }
-  customElements.define('data-loader', DataLoader);
-</script>
-<data-loader data-acd={allConflictData} data-agd={allGeneralsString} />
-
-<TableContainer allGenerals={allGeneralsString} />
 
 
