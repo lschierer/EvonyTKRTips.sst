@@ -13,6 +13,7 @@ import {
   standardSkillBook,
   type ClassEnumType,
   type GeneralArrayType,
+  type GeneralElementType,
   type generalUseCaseType,
   type levelsType,
   type qualityColorType,
@@ -87,7 +88,7 @@ export class TableContainer extends LitElement {
   protected willUpdate(changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>) {
     super.willUpdate(changedProperties)
     console.log(`tableContainer willUpdate`)
-    if(changedProperties.has('allGenerals')){
+    if(changedProperties.has('allGenerals') ){
       console.log(`change to allGenerals detected`)
       if(this.allGenerals !== null) {
         const go = JSON.parse(this.allGenerals);
@@ -102,11 +103,15 @@ export class TableContainer extends LitElement {
 
   public render() {
     return html`
-      ${when(this.allGenerals !== null, 
+      ${when(this._allGenerals !== null, 
         () => {
-          return html`
-            allGenerals has data
-          `
+          let t = html``;
+          this._allGenerals.forEach((g: GeneralElementType) => {
+            t = html`${t}
+              ${g.general.name}<br/>
+            `
+          })
+          return t;
       },  () => nothing )}
     `
   }
