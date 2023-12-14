@@ -12,7 +12,7 @@
     "sst:dev": "sst dev"
   },
   "dependencies": {
-    "@astrojs/lit": "^3.0.3",
+    "@astrojs/lit": "^4.0.0",
     "@astrojs/mdx": "^2.0.1",
     "@astrojs/node": "^7.0.1",
     "@astrojs/starlight": "^0.15.0",
@@ -71,7 +71,7 @@
     "@spectrum-web-components/top-nav": "^0.40.1",
     "@webcomponents/template-shadowroot": "^0.2.1",
     "add": "^2.0.6",
-    "astro": "^4.0.4",
+    "astro": "^4.0.5",
     "aws-sdk": "^2.1518.0",
     "bcp-47": "^2.1.0",
     "d3": "^7.8.5",
@@ -79,7 +79,7 @@
     "d3-selection": "^3.0.0",
     "iconify-icon": "^1.0.8",
     "just-install": "^1.0.11",
-    "lit": "^2.8.0",
+    "lit": "^3.1.0",
     "nanodelay": "^2.0.2",
     "nanostores": "^0.9.5",
     "path-scurry": "^1.10.1",
@@ -119,11 +119,11 @@
     "postcss-import": "^15.1.0",
     "prettier": "^3.1.1",
     "sst": "2.38.7",
-    "starlight-links-validator": "^0.4.2",
+    "starlight-links-validator": "^0.5.0",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "tslib": "^2.6.2",
-    "typescript": "5.2.2"
+    "typescript": "5.3.3"
   },
   "overrides": {
     "graphql": "16.5.0"
