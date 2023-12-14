@@ -142,7 +142,7 @@ export const generalPairs = computed([allGenerals, typeAndUseMap,conflictingGene
             if(type !== b.ClassEnum.enum.all) {
               if (one.general.score_as !== null && one.general.score_as !== undefined) {
                 if (one.general.score_as !== null && one.general.score_as !== undefined) {
-                  if (type !== null && type !== undefined && type !== b.ClassEnum.enum.all) {
+                  if (type !== null && type !== undefined) {
                     if (one.general.score_as !== type) {
                       if (DEBUG) { console.log(`found a conflict between ${one.general.name} and ${type}`) }
                       continue;

@@ -2,20 +2,22 @@ const DEBUG = false;
 
 import {
   buffUnion,
-  type buff,
-  generalSchema,
-  type General,
+  type Buff,
+  GeneralClass,
+  type GeneralClassType,
   generalConflictCollection,
-  generalObjectSchema,
-  type generalObject,
+  GeneralElement,
+  type GeneralElementType,
   standardSkillBook,
   type standardSkillBookType,
-  troopClass,
-  type troopClassType, generalConflicts, type generalConflictsType,
-    type nameConflictsTypes,
-    type otherConflictType,
-    type bookConflictsType,
-} from '@schemas/evonySchemas';
+  ClassEnum,
+  type ClassEnumType, 
+  generalConflicts, 
+  type generalConflictsType,
+  type nameConflictsTypes,
+  type otherConflictType,
+  type bookConflictsType,
+} from '@schemas/index';
 
 import {atom, map, action, computed} from "nanostores";
 import { logger } from '@nanostores/logger'
@@ -108,7 +110,7 @@ export const conflictingBooks = computed(conflictRecords, CBs => {
   return null;
 })
 
-export function checkConflicts (name1: string, name2: string, generalClass?: troopClassType) {
+export function checkConflicts (name1: string, name2: string, generalClass?: ClassEnumType) {
   if(name1 === name2 || !name1.localeCompare(name2, undefined, {sensitivity: 'base'})) {
     return true;
   }

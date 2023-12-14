@@ -2,7 +2,6 @@ import * as z from "zod";
 
 import * as b from './baseSchemas';
 
-
 export const beast = z.object({
     name: z.string(),
     quality: b.qualityColor,
