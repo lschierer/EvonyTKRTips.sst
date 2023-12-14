@@ -2,7 +2,13 @@ import { LitElement, html, type PropertyValues, type PropertyValueMap, nothing }
 import { customElement, property, state } from 'lit/decorators.js';
 import {when} from 'lit/directives/when.js';
 
-import { provide, createContext } from "@lit/context";
+import { provide, createContext, ContextProvider } from '@lit/context';
+
+import {
+  type generalTypeAndUse, 
+  type generalInvestment, 
+  generalsContext,
+} from "./contexts"
 
 import {
   ClassEnum,
@@ -20,37 +26,18 @@ import {
   type standardSkillBookType,
 } from "@schemas/index";
 
-export interface generalTypeAndUse {
-  type: ClassEnumType,
-  use: generalUseCaseType,
-}
 
-export interface generalInvestment {
-  dragon: boolean,
-  beast: boolean,
-  ascending:  levelsType,
-  speciality1: qualityColorType,
-  speciality2: qualityColorType,
-  speciality3: qualityColorType,
-  speciality4: qualityColorType,
-  extraBooks: standardSkillBookType[],
-}
-
-export const generals = createContext('generals');
-
-export const typeAndUseMap = createContext('typeAndUseMap');
-
-export const primaryInvestmentMap = createContext('primaryInvestmentMap');
-
-export const secondaryInvestmentMap = createContext('secondaryInvestmentMap');
+import { GeneralTable } from './table';
 
 @customElement("table-container")
 export class TableContainer extends LitElement {
-    
-  @state()
-  _allGenerals: GeneralArrayType = [];
-
+  
+  
+  @provide({context: generalsContext})
   @property({attribute: false})
+  theGenerals: GeneralArrayType | undefined = undefined;
+
+  @property({type: String})
   public allGenerals: string | null = null;
 
   
@@ -95,23 +82,31 @@ export class TableContainer extends LitElement {
         const result = GeneralArray.safeParse(go);
         if(result.success) {
           console.log(`success`);
-          this._allGenerals = result.data;
+          this.theGenerals = result.data;
+        } else {
+          console.error(`${result.error}`)
         }
+      } else {
+        console.log(`allGenerals is null`)
       }
     }
   }
 
   public render() {
     return html`
-      ${when(this._allGenerals !== null, 
+      test2
+      ${when(this.theGenerals !== undefined, 
         () => {
           let t = html``;
-          this._allGenerals.forEach((g: GeneralElementType) => {
+          this.theGenerals!.forEach((g: GeneralElementType) => {
             t = html`${t}
               ${g.general.name}<br/>
             `
           })
-          return t;
+          return html`
+            ${t}<br/>
+            ${(this.theGenerals !== undefined) ? html`<general-table />` : nothing }
+          `;
       },  () => nothing )}
     `
   }
