@@ -38,9 +38,10 @@ import {
   type TableHeadCell,
   type TableRow
 } from '@spectrum-web-components/table';
-import { SpectrumElement } from "@spectrum-web-components/base";
+import { SpectrumElement, type PropertyValueMap } from "@spectrum-web-components/base";
 import '@spectrum-web-components/table/elements.js';
 
+import { TableGeneral } from "./generals";
 
 @customElement("general-table")
 export class GeneralTable extends SpectrumElement {
@@ -51,11 +52,61 @@ export class GeneralTable extends SpectrumElement {
 
   private tableRef: Ref<Table> = createRef();
 
+  @state()
+  private generalRecords:Record<string,TableGeneral >[] = new Array<Record<string,TableGeneral>>();
+
   protected willUpdate(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
     super.willUpdate(_changedProperties);
     if(_changedProperties.has('theGenerals')){
       if(DEBUG) {console.log(`mayor table willUpdate`)}
+      if(this.theGenerals !== undefined && this.theGenerals !== null) {
+        if(DEBUG) {console.log(`and I have generals`)}
+        const items: Record<string,TableGeneral >[] = this.theGenerals.map((datum) => {
+          if(datum !== null && datum !== undefined) {
+            const name = datum.general.name;
+            const tg = new TableGeneral;
+            tg.thisGeneral = datum.general;
+            const r: Record<string,TableGeneral > = {'general': tg};
+            return r;
+          } 
+        }).filter(this.isTableGeneral)
+        this.generalRecords = items;
+        if(this.tableRef.value !== undefined && this.tableRef.value !== null){
+          if(DEBUG) {console.log(`updating items with ${items.length}`)}
+          this.tableRef.value.items = items;
+        }
+      }
+    }
+  }
+  
+  private isTableGeneral(g: Record<string, TableGeneral > | undefined): g is Record<string, TableGeneral> {
+    return !!g;
+  }
 
+  protected firstUpdated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+    if(DEBUG) {console.log(`mayor table firstUpdated`)}
+    if(this.renderRoot !== undefined && this.renderRoot !== null) {
+      if(this.tableRef !== undefined && this.tableRef !== null) {
+        if(this.tableRef.value !== undefined && this.tableRef.value !== null) {
+          const table = this.tableRef.value;
+          
+          table.renderItem = (item, index) => {
+            const cell1 = document.createElement('sp-table-cell');
+            cell1.textContent = index.toString().padStart(3);
+            cell1.id = 'index';
+            const t = (item.general as TableGeneral).render();
+            if(t !== undefined && t !== null) {
+              return html`${cell1}${t}`;
+            } else {
+              return html`${cell1}`
+            }
+          }
+
+          if(table.items === null || table.items === undefined || (Array.isArray(table.items) && table.items.length === 0)) {
+            table.items = this.generalRecords;
+          }
+        }
+      }
     }
   }
 
@@ -84,6 +135,7 @@ export class GeneralTable extends SpectrumElement {
           }
         }
         
+    
         & #primeName {
           flex-grow: 3;
         }
@@ -92,9 +144,44 @@ export class GeneralTable extends SpectrumElement {
           flex-grow: 3;
         }
 
+        & #index {
+          flex 1 1 .5;
+
+        }
+
+        & sp-table-head {
+          
+          width: 100%;
+          
+
+          & sp-table-head-cell {
+            border-left-style: solid;
+            border-left-width: 0.1px;
+            writing-mode: vertical-rl;
+            text-wrap: balance;
+            flex: 1 1 1rem;
+            min-height: var(--spectrum-global-dimension-size-400);
+            font-size: small;
+          }
+        }
+
         & sp-table-body {
           min-height: var(--spectrum-global-dimension-size-900);
+          & sp-table-cell {
+            border-left-style: solid;
+            border-left-width: 0.1px;
+          }
         }
+
+        @media screen and (max-width: 960px) {
+
+          .table-container sp-table-cell,
+          .table-container sp-table-head-cell {
+            font-size: x-small;
+          }
+
+        }
+
       }
       `
     if (super.styles !== null && super.styles !== undefined) {
@@ -110,6 +197,7 @@ export class GeneralTable extends SpectrumElement {
       ${(this.theGenerals !== undefined) ?  this.theGenerals?.length : nothing }
       <sp-table size="m" style="height: calc(var(--spectrum-global-dimension-size-3600)*2)"scroller="true" ${ref(this.tableRef)}>
         <sp-table-head>
+          <sp-table-head-cell class="index" id="index">Index</sp-table-head-cell>
           <sp-table-head-cell sortable sort-direction="desc" id='primeName' sort-key="primeName">
             Mayor Name
           </sp-table-head-cell>
