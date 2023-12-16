@@ -114,62 +114,83 @@ export class GeneralTable extends SpectrumElement {
     const localstyle = css`
       sp-table {
         background-color: var(--spectrum-cyan-600);
-        
-        .cellDiv {
-          display: flex;
-          flex-flow: row wrap;
-          justify-content: space-evenly;
-          width: 100%;
-
-          & .name {
-            flex: 3;
-          }
-
-          & .status {
-            flex: 1;
-          }
-
-          & sp-status-light {
-            align-self: center;
-            padding: 1px;
-          }
-        }
-        
-    
-        & #primeName {
-          flex-grow: 3;
-        }
-          
-        & #assistName {
-          flex-grow: 3;
-        }
-
-        & #index {
-          flex 1 1 .5;
-
-        }
-
+             
         & sp-table-head {
-          
           width: 100%;
           
-
           & sp-table-head-cell {
-            border-left-style: solid;
-            border-left-width: 0.1px;
+
             writing-mode: vertical-rl;
-            text-wrap: balance;
-            flex: 1 1 1rem;
-            min-height: var(--spectrum-global-dimension-size-400);
+            
+            text-wrap: wrap;
+            word-wrap: break-word;
+            
             font-size: small;
+          }
+          
+          & #index {
+            writing-mode: vertical-rl;
+            width: 32px;  
+            flex-grow: 0;
+            flex-shrink: 0;
+          }
+
+          & #primeName {
+            writing-mode: horizontal-tb;
+            flex-grow: 3;
+            flex-shrink: 1;
+            flex-basis: max-content;
+          
           }
         }
 
         & sp-table-body {
+          
           min-height: var(--spectrum-global-dimension-size-900);
+          
           & sp-table-cell {
-            border-left-style: solid;
+            border-left-style: none;
             border-left-width: 0.1px;
+          }
+
+          #index {
+            flex-grow: 0;
+            flex-shrink: 0;
+            width: 32px;  
+          }
+
+          & .buff {
+            flex-grow: 0;
+            flex-shrink: 1;
+            flex-basis: 55px;
+            max-width: 55px;
+          }
+          & #primeName {
+            writing-mode: horizontal-tb;
+            flex-grow: 3;
+            flex-shrink: 0;
+            flex-basis: max-content;
+
+            .celldiv {
+              display: flex;
+              flex-flow: row wrap;
+              justify-content: space-evenly;
+              width: 100%;
+
+              & .name {
+                flex: 3;
+              }
+
+              & .status {
+                flex: 1;
+              }
+
+              & sp-status-light {
+                align-self: center;
+                padding: 1px;
+              }
+            }
+
           }
         }
 
@@ -195,7 +216,7 @@ export class GeneralTable extends SpectrumElement {
   render() {
     return html`
       ${(this.theGenerals !== undefined) ?  this.theGenerals?.length : nothing }
-      <sp-table size="m" style="height: calc(var(--spectrum-global-dimension-size-3600)*2)"scroller="true" ${ref(this.tableRef)}>
+      <sp-table size="m" role='grid' style="height: calc(var(--spectrum-global-dimension-size-3600)*2)"scroller="true" ${ref(this.tableRef)}>
         <sp-table-head>
           <sp-table-head-cell class="index" id="index">Index</sp-table-head-cell>
           <sp-table-head-cell sortable sort-direction="desc" id='primeName' sort-key="primeName">
