@@ -1,4 +1,4 @@
-import { LitElement, html, css, type CSSResultGroup, type CSSResultArray, getCompatibleStyle, type PropertyValues, type PropertyValueMap, nothing } from "lit";
+import { LitElement, html, css, type CSSResultGroup, type CSSResultArray, getCompatibleStyle, type PropertyValues, nothing } from "lit";
 import { customElement, property, state } from 'lit/decorators.js';
 import {when} from 'lit/directives/when.js';
 import {ifDefined} from 'lit/directives/if-defined.js';
@@ -117,7 +117,8 @@ export class GeneralTable extends SpectrumElement {
              
         & sp-table-head {
           width: 100%;
-          
+          max-height: 120px;
+
           & sp-table-head-cell {
 
             writing-mode: vertical-rl;
