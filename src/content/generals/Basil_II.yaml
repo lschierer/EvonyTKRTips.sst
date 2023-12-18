@@ -140,7 +140,7 @@ general:
             value:
               number: -4
               unit: percentage
-    - name: Ground Troop Defense
+    - name: War God
       attribute:
         - level: 'Green'
           buff:
@@ -172,7 +172,7 @@ general:
             value:
               number: 2
               unit: percentage
-    - name: Ground Troop Defense
+    - name: Battle of Kleidion
       attribute:
         - level: 'Green'
           buff:
