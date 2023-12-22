@@ -38,9 +38,6 @@ export default defineConfig({
       },
     },
   ],
-  experimental: {
-    contentCollectionCache: true,
-  },
   vite: {
     build: {
       minify: false,
