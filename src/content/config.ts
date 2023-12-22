@@ -5,10 +5,12 @@ import {
   BlazonSetSechma,
   GeneralElement,
   generalConflicts,
+  Speciality,
 } from '../schemas/index.js';
 
 export const collections = {
   docs: defineCollection({ schema: docsSchema() }),
+  specialities: defineCollection({type: 'data', schema: Speciality}),
   i18n: defineCollection({ type: 'data', schema: i18nSchema() }),
   art: defineCollection({type: 'data', schema: artTreasureSchema}),
   blazons: defineCollection({type: 'data', schema: BlazonSetSechma}),

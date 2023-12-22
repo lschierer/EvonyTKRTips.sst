@@ -1,0 +1,38 @@
+---
+name: Fortune
+attribute:
+  - level: Green
+    buff:
+      - condition: Against_Monsters
+        attribute: Double_Items_Drop_Rate
+        value:
+          number: 1
+          unit: percentage
+  - level: Blue
+    buff:
+      - condition: Against_Monsters
+        attribute: Double_Items_Drop_Rate
+        value:
+          number: 2
+          unit: percentage
+  - level: Purple
+    buff:
+      - condition: Against_Monsters
+        attribute: Double_Items_Drop_Rate
+        value:
+          number: 3
+          unit: percentage
+  - level: Orange
+    buff:
+      - condition: Against_Monsters
+        attribute: Double_Items_Drop_Rate
+        value:
+          number: 3
+          unit: percentage
+  - level: Gold
+    buff:
+      - condition: Against_Monsters
+        attribute: Double_Items_Drop_Rate
+        value:
+          number: 5
+          unit: percentage
