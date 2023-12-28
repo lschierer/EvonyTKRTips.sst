@@ -1,19 +1,19 @@
 
 const DEBUG = false;
 
-import * as b from '@schemas/baseSchemas.ts';
+import * as b from '@schemas/baseSchemas';
 
 import {
     type AscendingType,
     type GeneralClassType,
     generalUseCase,
     type generalUseCaseType
-} from '@schemas/generalsSchema.ts'
+} from '@schemas/generalsSchema'
 
 import {
     Speciality,
     type SpecialityType
-} from '@schemas/specialitySchema.ts'
+} from '@schemas/specialitySchema'
 
 
 import { type generalInvestment, } from './selectionStore'
