@@ -1,0 +1,50 @@
+conflicts:
+  01HJV8VNDFA3HQ8TTPA0J8ZDA4:
+    - Louis IX
+  other:
+    - Subutai
+    - Louis IX
+    - Minamoto no Yoshitsune
+    - Harold III
+    - Henry V
+    - Edward the Black Prince
+    - Jumong
+    - Antara
+    - Edward III
+books:
+  - name: Ranged Defense Increase
+    level: '1'
+    buff:
+    - attribute: Defense
+      condition: When_Not_Mine
+      class: Archers
+      value:
+        number: 10
+        unit: percentage
+  - name: Ranged Defense Increase
+    level: '2'
+    buff:
+    - attribute: Defense
+      condition: When_Not_Mine
+      class: Archers
+      value:
+        number: 15
+        unit: percentage
+  - name: Ranged Defense Increase
+    level: '3'
+    buff:
+    - attribute: Defense
+      condition: When_Not_Mine
+      class: Archers
+      value:
+        number: 20
+        unit: percentage
+  - name: Ranged Defense Increase
+    level: '4'
+    buff:
+    - attribute: Defense
+      condition: When_Not_Mine
+      class: Archers
+      value:
+        number: 25
+        unit: percentage
