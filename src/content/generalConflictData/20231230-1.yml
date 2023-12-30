@@ -1,5 +1,7 @@
 conflicts:
-  01HES90861A1V9J8PHZE9KA32N:
+  01HJWP9N003Z59GS19KQD749SN:
+    - Marcus Agrippa
+  other:
     - Douglas
     - Charles XII
     - James Conrad
@@ -11,8 +13,3 @@ conflicts:
     - Gnarr
     - Mehmed II
     - Mihai
-  other:
-    - Simeon the Great
-    - Marcus Agrippa
-    - Louis IX
-    
