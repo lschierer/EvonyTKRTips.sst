@@ -3,7 +3,6 @@ conflicts:
     - Louis IX
   other:
     - Subutai
-    - Louis IX
     - Minamoto no Yoshitsune
     - Harold III
     - Henry V
@@ -11,6 +10,7 @@ conflicts:
     - Jumong
     - Antara
     - Edward III
+    - Mihai
 books:
   - name: Ranged Defense Increase
     level: '1'

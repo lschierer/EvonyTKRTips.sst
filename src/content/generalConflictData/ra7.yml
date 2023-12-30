@@ -9,7 +9,7 @@ books:
   - name: March Size Increase
     level: '1'
     buff:
-    - attribute: Attack
+    - attribute: March_Size_Capacity
       condition: When_Not_Mine
       class: Archers
       value:
@@ -18,7 +18,7 @@ books:
   - name: March Size Increase
     level: '2'
     buff:
-    - attribute: Attack
+    - attribute: March_Size_Capacity
       condition: When_Not_Mine
       class: Archers
       value:
@@ -27,7 +27,7 @@ books:
   - name: March Size Increase
     level: '3'
     buff:
-    - attribute: Attack
+    - attribute: March_Size_Capacity
       condition: When_Not_Mine
       class: Archers
       value:
@@ -36,7 +36,7 @@ books:
   - name: March Size Increase
     level: '4'
     buff:
-    - attribute: Attack
+    - attribute: March_Size_Capacity
       condition: When_Not_Mine
       class: Archers
       value:
