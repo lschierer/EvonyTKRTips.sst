@@ -1,0 +1,46 @@
+conflicts:
+  01HKVDKZTWXMEVWN2TEGJ5B3KE:
+    - Winfield Scott
+  other:
+    - Elektra
+    - Vladimir the Great
+    - Li Shimin
+    - Louis IX
+    - Prince Rhaeger
+books:
+  - name: Ranged Attack Increase
+    level: '1'
+    buff:
+    - attribute: Attack
+      condition: When_Not_Mine
+      class: Archers
+      value:
+        number: 10
+        unit: percentage
+  - name: Ranged Attack Increase
+    level: '2'
+    buff:
+    - attribute: Attack
+      condition: When_Not_Mine
+      class: Archers
+      value:
+        number: 15
+        unit: percentage
+  - name: Ranged Attack Increase
+    level: '3'
+    buff:
+    - attribute: Attack
+      condition: When_Not_Mine
+      class: Archers
+      value:
+        number: 20
+        unit: percentage
+  - name: Ranged Attack Increase
+    level: '4'
+    buff:
+    - attribute: Attack
+      condition: When_Not_Mine
+      class: Archers
+      value:
+        number: 25
+        unit: percentage
