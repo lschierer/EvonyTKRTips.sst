@@ -11,6 +11,7 @@ conflicts:
     - Elektra
     - Vladimir the Great
     - Winfield Scott
+    - Louis IX
     - Li Shimin
 books:
 - name: Ranged Attack Increase

@@ -1,0 +1,81 @@
+conflicts:
+  01HKVDRS2MHZSAX58NQCZTTKEP:
+    - Li Shimin
+  other:
+    - Elektra
+    - Vladimir the Great
+    - Winfield Scott
+    - Louis IX
+    - Prince Rhaeger
+    - Eleanor
+    - King Arthur
+    - Genghis Khan
+books:
+  - name: Ranged Attack Increase
+    level: '1'
+    buff:
+    - attribute: Attack
+      condition: When_Not_Mine
+      class: Archers
+      value:
+        number: 10
+        unit: percentage
+  - name: Ranged Attack Increase
+    level: '2'
+    buff:
+    - attribute: Attack
+      condition: When_Not_Mine
+      class: Archers
+      value:
+        number: 15
+        unit: percentage
+  - name: Ranged Attack Increase
+    level: '3'
+    buff:
+    - attribute: Attack
+      condition: When_Not_Mine
+      class: Archers
+      value:
+        number: 20
+        unit: percentage
+  - name: Ranged Attack Increase
+    level: '4'
+    buff:
+    - attribute: Attack
+      condition: When_Not_Mine
+      class: Archers
+      value:
+        number: 25
+        unit: percentage
+  - name: March Size Increase
+    level: '1'
+    buff:
+    - attribute: March_Size_Capacity
+      class: Archers
+      value:
+        number: 3
+        unit: percentage
+  - name: March Size Increase
+    level: '2'
+    buff:
+    - attribute: March_Size_Capacity
+      class: Archers
+      value:
+        number: 6
+        unit: percentage
+  - name: March Size Increase
+    level: '3'
+    buff:
+    - attribute: March_Size_Capacity
+      class: Archers
+      value:
+        number: 9
+        unit: percentage
+  - name: March Size Increase
+    level: '4'
+    buff:
+    - attribute: March_Size_Capacity
+      class: Archers
+      value:
+        number: 12
+        unit: percentage
