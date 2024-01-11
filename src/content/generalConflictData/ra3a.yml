@@ -10,7 +10,6 @@ conflicts:
     - Jumong
     - Antara
     - Edward III
-    - Mihai
 books:
   - name: Ranged Defense Increase
     level: '1'
