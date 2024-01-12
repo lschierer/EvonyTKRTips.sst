@@ -4,6 +4,8 @@ conflicts:
     - Soult
     - Epaminondas
     - Oda Nobunaga
+  other:
+    - Sweyn Forkbeard
 books:
   - name: Ground Attack Increase
     level: '1'
