@@ -34,8 +34,7 @@ import {
   Speciality,
 } from "@schemas/index";
 
-import {BoS, type BoSType, type generalInvestment, primaryInvestmentMap, secondaryInvestmentMap} from './generalInvestmentStore.ts';
-import { ascending } from "d3";
+import {BoS, type BoSType, type generalInvestment, primaryInvestmentMap, secondaryInvestmentMap} from './generalInvestmentStore';
 
 const generalRole = z.enum(['primary','secondary']);
 type generalRoleType = z.infer<typeof generalRole>;
