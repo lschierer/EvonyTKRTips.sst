@@ -10,6 +10,7 @@ conflicts:
     - Jumong
     - Antara
     - Edward III
+    - Idunn
 books:
   - name: Ranged Defense Increase
     level: '1'
