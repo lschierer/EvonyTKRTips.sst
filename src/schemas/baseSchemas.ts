@@ -103,6 +103,7 @@ export const AttributeSchema = z.enum([
  'Training_Speed',
  'Marching_Speed',
  'March_Size_Capacity',
+ 'March_Time',
  'Rally_Capacity',
  'Attack_Speed',
  'Wounded_to_Death',
