@@ -15,8 +15,8 @@ dependencies:
     specifier: ^8.0.0
     version: 8.0.0(astro@4.2.1)
   '@astrojs/starlight':
-    specifier: ^0.15.4
-    version: 0.15.4(astro@4.2.1)
+    specifier: ^0.16.0
+    version: 0.16.0(astro@4.2.1)
   '@lit-labs/router':
     specifier: ^0.1.3
     version: 0.1.3
@@ -293,8 +293,8 @@ devDependencies:
     specifier: ^6.0.3
     version: 6.0.3(postcss@8.4.33)
   dotenv:
-    specifier: ^16.3.1
-    version: 16.3.1
+    specifier: ^16.3.2
+    version: 16.3.2
   eslint:
     specifier: ^8.56.0
     version: 8.56.0
@@ -318,7 +318,7 @@ devDependencies:
     version: 2.39.6
   starlight-links-validator:
     specifier: ^0.5.2
-    version: 0.5.2(@astrojs/starlight@0.15.4)(astro@4.2.1)
+    version: 0.5.2(@astrojs/starlight@0.16.0)(astro@4.2.1)
   ts-node:
     specifier: ^10.9.2
     version: 10.9.2(@types/node@20.11.5)(typescript@5.3.3)
@@ -495,8 +495,8 @@ packages:
       sitemap: 7.1.1
       zod: 3.22.4
 
-  /@astrojs/starlight@0.15.4(astro@4.2.1):
-    resolution: {integrity: sha512-o3heYH+RltsCsvO3L0qLnnFJEakwLSRoxW4wFX2zDeDWta9BIpdSOo7+Zg+sSn7k9RPOhI9SGvdFx67B53I18Q==}
+  /@astrojs/starlight@0.16.0(astro@4.2.1):
+    resolution: {integrity: sha512-zwSNiCqzZeiuivUp4Yhx+eMLGww8v8cRYoCYXg9myTXNUwphqPaVG3rp7dbaZ4y1MaejnjYWB444ZRItEgTDcQ==}
     peerDependencies:
       astro: ^4.0.0
     dependencies:
@@ -6509,8 +6509,8 @@ packages:
       is-obj: 2.0.0
     dev: true
 
-  /dotenv@16.3.1:
-    resolution: {integrity: sha512-IPzF4w4/Rd94bA9imS68tZBaYyBWSCE47V1RGuMrB94iyTOIEwRmVL2x/4An+6mETpLrKJ5hQkB8W4kFAadeIQ==}
+  /dotenv@16.3.2:
+    resolution: {integrity: sha512-HTlk5nmhkm8F6JcdXvHIzaorzCoziNQT9mGxLPVXW8wJF1TiGSL60ZGB4gHWabHOaMmWmhvk2/lPHfnBiT78AQ==}
     engines: {node: '>=12'}
     dev: true
 
@@ -8015,7 +8015,7 @@ packages:
         optional: true
     dependencies:
       chalk: 4.1.2
-      dotenv: 16.3.1
+      dotenv: 16.3.2
       kysely: 0.25.0
       micromatch: 4.0.5
       minimist: 1.2.8
@@ -10473,7 +10473,7 @@ packages:
       constructs: 10.3.0
       cross-spawn: 7.0.3
       dendriform-immer-patch-optimiser: 2.1.3(immer@9.0.21)
-      dotenv: 16.3.1
+      dotenv: 16.3.2
       esbuild: 0.18.13
       express: 4.18.2
       fast-jwt: 3.3.2
@@ -10519,14 +10519,14 @@ packages:
       escape-string-regexp: 2.0.0
     dev: true
 
-  /starlight-links-validator@0.5.2(@astrojs/starlight@0.15.4)(astro@4.2.1):
+  /starlight-links-validator@0.5.2(@astrojs/starlight@0.16.0)(astro@4.2.1):
     resolution: {integrity: sha512-0zI4QdbuGmguzJl/3ToMwWlbjVa/6BGthMYi68eQcd7ujqa3EUeIwCtUa+ZzG4YcjzIr+uFBfAphQGspj3XPLg==}
     engines: {node: '>=18.14.1'}
     peerDependencies:
       '@astrojs/starlight': '>=0.15.0'
       astro: '>=4.0.0'
     dependencies:
-      '@astrojs/starlight': 0.15.4(astro@4.2.1)
+      '@astrojs/starlight': 0.16.0(astro@4.2.1)
       astro: 4.2.1(@types/node@20.11.5)(typescript@5.3.3)
       github-slugger: 2.0.0
       hast-util-from-html: 2.0.1
