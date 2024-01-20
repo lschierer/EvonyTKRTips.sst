@@ -94,9 +94,11 @@ function buffFilter(current: b.BuffType, general: GeneralClassType, score_for: b
     let toReturn = false;
     const dragon = props.dragon;
     const beast = props.beast;
+    let condition = current.condition || null;
     //if(DEBUG) {console.log(`g is ${name}, current is ${JSON.stringify(current)}`)};
     if (current.condition !== undefined && current.condition !== null) {
         const condition: b.BuffAdverbArrayType = [current.condition].flat();
+
         if (!dragon) {
             if (DEBUG) { console.log(`${name} doesn't have a dragon`) }
             if (condition.includes(b.Condition.enum.dragon_to_the_attack)) {
@@ -218,7 +220,9 @@ export function buff(eg: GeneralClassType, situations: b.BuffAdverbArrayType, pr
                             if (DEBUG) { console.log(`applying ${JSON.stringify(current)} to ${general.name}`) }
                             const buff_type = current.value.unit;
                             //we apply the anti-defense and anti-hp to the attack
-                            if ((current.condition !== null && current.condition !== undefined) &&
+                            if (
+                                (props.debuffLead !== undefined && props.debuffLead !== null && props.debuffLead === true) && 
+                                (current.condition !== null && current.condition !== undefined) &&
                                 (
                                     ([current.condition].flat().includes(b.Condition.enum.Reduces_Monster)) ||
                                     ([current.condition].flat().includes(b.Condition.enum.Reduces_Enemy)) ||
@@ -237,7 +241,7 @@ export function buff(eg: GeneralClassType, situations: b.BuffAdverbArrayType, pr
                         if (apply && current.value !== undefined && current.value !== null) {
                             const buff_type = current.value.unit;
                             //we apply the anti-attack here to the defense
-                            if ((current.condition !== null && current.condition !== undefined) &&
+                            if ((props.debuffLead !== undefined && props.debuffLead !== null && props.debuffLead === true) && (current.condition !== null && current.condition !== undefined) &&
                                 (
                                     ([current.condition].flat().includes(b.Condition.enum.Reduces_Monster)) ||
                                     ([current.condition].flat().includes(b.Condition.enum.Reduces_Enemy)) ||

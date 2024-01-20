@@ -118,6 +118,8 @@ export class PairingRow extends withStores(LitElement, [generalPairs, conflictin
   @state()
   private statusLight2: statusLightsType = statusLights.enum.neutral;
 
+  @state()
+  private buffLead: boolean = false;
 
   @state()
   private props: generalInvestment = {
@@ -128,6 +130,7 @@ export class PairingRow extends withStores(LitElement, [generalPairs, conflictin
     speciality2: primaryInvestmentMap.get().speciality2,
     speciality3: primaryInvestmentMap.get().speciality3,
     speciality4: primaryInvestmentMap.get().speciality4,
+    debuffLead: primaryInvestmentMap.get().debuffLead,
     extraBooks: [],
   };
 
@@ -140,6 +143,7 @@ export class PairingRow extends withStores(LitElement, [generalPairs, conflictin
     speciality2: secondaryInvestmentMap.get().speciality2 ? secondaryInvestmentMap.get().speciality2 : b.qualityColor.enum.Disabled,
     speciality3: secondaryInvestmentMap.get().speciality3 ? secondaryInvestmentMap.get().speciality3 : b.qualityColor.enum.Disabled,
     speciality4: secondaryInvestmentMap.get().speciality4 ? secondaryInvestmentMap.get().speciality4 : b.qualityColor.enum.Disabled,
+    debuffLead: this.props.debuffLead,
     extraBooks: [],
   };
   
@@ -160,6 +164,7 @@ export class PairingRow extends withStores(LitElement, [generalPairs, conflictin
       this.props = {
         dragon: pim.dragon,
         beast: pim.beast,
+        debuffLead: pim.debuffLead,
         ascending: pim.ascending,
         speciality1: pim.speciality1,
         speciality2: pim.speciality2,
@@ -170,6 +175,13 @@ export class PairingRow extends withStores(LitElement, [generalPairs, conflictin
       if (this.one !== null && this.one !== undefined) {
         this.computeBuffs();
       }
+      if(this.buffLead !== pim.debuffLead) {
+        if(DEBUG) {console.log(`row buffLead being set`)}
+        this.buffLead = pim.debuffLead;
+        this.Assistprops.debuffLead = pim.debuffLead;
+        this.computeBuffs();
+        this.requestUpdate();
+      }
 
     })
 
@@ -178,6 +190,7 @@ export class PairingRow extends withStores(LitElement, [generalPairs, conflictin
       this.Assistprops = {
         dragon: sim.dragon,
         beast: sim.beast,
+        debuffLead: this.props.debuffLead,
         ascending: '0' as b.levelsType,
         speciality1: sim.speciality1,
         speciality2: sim.speciality2,
