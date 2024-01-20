@@ -281,8 +281,8 @@ devDependencies:
     specifier: ^6.19.0
     version: 6.19.0(eslint@8.56.0)(typescript@5.3.3)
   astro-sst:
-    specifier: 2.39.6
-    version: 2.39.6
+    specifier: 2.39.7
+    version: 2.39.7
   aws-cdk-lib:
     specifier: 2.110.1
     version: 2.110.1(constructs@10.3.0)
@@ -314,8 +314,8 @@ devDependencies:
     specifier: ^3.2.4
     version: 3.2.4
   sst:
-    specifier: 2.39.6
-    version: 2.39.6
+    specifier: 2.39.7
+    version: 2.39.7
   starlight-links-validator:
     specifier: ^0.5.2
     version: 0.5.2(@astrojs/starlight@0.16.0)(astro@4.2.1)
@@ -3790,15 +3790,6 @@ packages:
       tslib: 2.6.2
     dev: true
 
-  /@smithy/util-endpoints@1.0.5:
-    resolution: {integrity: sha512-K7qNuCOD5K/90MjHvHm9kJldrfm40UxWYQxNEShMFxV/lCCCRIg8R4uu1PFAxRvPxNpIdcrh1uK6I1ISjDXZJw==}
-    engines: {node: '>= 14.0.0'}
-    dependencies:
-      '@smithy/node-config-provider': 2.2.0
-      '@smithy/types': 2.9.0
-      tslib: 2.6.2
-    dev: true
-
   /@smithy/util-endpoints@1.1.0:
     resolution: {integrity: sha512-gKzfdj5pyEOg1fVOsZVpVPRWAXbWqt9JgZdwU4cjKlJ57Fuccfk0ui5twh1TYvuJWtR2Tw3GwUmUuBM3qRWJJg==}
     engines: {node: '>= 14.0.0'}
@@ -5247,8 +5238,8 @@ packages:
       astro: 4.2.1(@types/node@20.11.5)(typescript@5.3.3)
       remark-expressive-code: 0.31.0
 
-  /astro-sst@2.39.6:
-    resolution: {integrity: sha512-YhUqIXA66vGeU6vX7pa2uRu3ZIR7DnlrPw2AMA9iQlIIsYDPwYuVciAbXNY9CskcKlinxUpQt2vfml/Q8hD+1g==}
+  /astro-sst@2.39.7:
+    resolution: {integrity: sha512-hBwF7y/X+ee6HYtn1cmbb4JKP8JZaq5BZ3PFLioBkiAQS2lsDe+3LMhLwanQEIgiAjEPo/Bi4iv11nAUqfibuA==}
     dependencies:
       '@astrojs/webapi': 3.0.0
       set-cookie-parser: 2.6.0
@@ -5835,7 +5826,7 @@ packages:
     resolution: {integrity: sha512-rraC8NXWOEjhADbZe9QBNzLAN5Q3fsTPQtBV+fEVj6xKIgDgNiEVE6ZNfHpZOqfQ21YUzfVNUXLOEZquYvQPPg==}
     dependencies:
       leven: 2.1.0
-      minimist: 1.2.6
+      minimist: 1.2.8
     dev: true
 
   /common-ancestor-path@1.0.1:
@@ -8910,7 +8901,7 @@ packages:
       duplexify: 4.1.2
       help-me: 3.0.0
       inherits: 2.0.4
-      minimist: 1.2.6
+      minimist: 1.2.8
       mqtt-packet: 6.10.0
       pump: 3.0.0
       readable-stream: 3.6.2
@@ -10420,8 +10411,8 @@ packages:
       fsevents: 2.3.2
     dev: true
 
-  /sst@2.39.6:
-    resolution: {integrity: sha512-7g02hLh/pnMfVh5Q+qv5roreD+no3OP2kbdNdrWwxpWKlQn/pp7IBpU3TvWw2+MNKR8VE7QqbVyKsMjier5VCQ==}
+  /sst@2.39.7:
+    resolution: {integrity: sha512-cJ/AbVXuWBC9Lawbk9WUobejjsrZknfKIKEvbnwQaiJ0vLJ4VjR/NMj1X5Oh1JJeeLnRLrRIL3Al2BKuzuIQbw==}
     hasBin: true
     peerDependencies:
       '@sls-next/lambda-at-edge': ^3.7.0
@@ -10457,7 +10448,6 @@ packages:
       '@babel/generator': 7.23.6
       '@babel/plugin-syntax-typescript': 7.23.3(@babel/core@7.23.7)
       '@smithy/signature-v4': 2.1.0
-      '@smithy/util-endpoints': 1.0.5
       '@trpc/server': 9.16.0
       adm-zip: 0.5.10
       aws-cdk-lib: 2.110.1(constructs@10.3.0)
