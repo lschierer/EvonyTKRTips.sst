@@ -21,6 +21,7 @@ import {
   RadioGroup
 } from '@spectrum-web-components/radio';
 import '@spectrum-web-components/tooltip/sp-tooltip.js';
+import '@spectrum-web-components/switch/sp-switch.js';
 import {SpectrumElement} from "@spectrum-web-components/base";
 
 const DEBUG = false;
@@ -67,6 +68,9 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
   private _beast: boolean = false;
 
   @state()
+  private debuffLead: boolean = false;
+
+  @state()
   private _ascending: b.levelsType = b.levels.enum[10];
 
   private Special4disabledValue: boolean = false;
@@ -90,6 +94,7 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
   
   connectedCallback() {
     super.connectedCallback();    
+    this.addEventListener('debuff', (e) => this.toggleDebuffLead());
   }
   
   private yieldToMain () {
@@ -128,6 +133,11 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
     }
   }
 
+  protected toggleDebuffLead() {
+    if(DEBUG) {console.log(`InvestmentSelector toggling debuff`)}
+    this.debuffLead = (!(this.debuffLead));
+    primaryInvestmentMap.setKey('debuffLead',this.debuffLead);
+  }
 
   protected changeHandler(e: CustomEvent) {
     console.log(`test`)
@@ -202,6 +212,7 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
   private radioHandler(e: CustomEvent) {
     const radio = (e.target as RadioGroup);
     if(radio !== null && radio !== undefined && radio.selected !== null && radio.selected !== undefined) {
+      
       const valid = BoS.safeParse(radio.selected)
       if(valid.success) {
         const value = valid.data;
@@ -235,6 +246,7 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
       } else {
         console.error(valid.error)
       }
+    
     } else {
     }
   }
@@ -400,8 +412,23 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
   
   
   public render() {
+
+    let debuffHtml = html``;
     let ascendingHtml = html``;
     if (this._role === generalRole.enum.primary) {
+      debuffHtml = html`
+        <div>
+          <sp-field-group horizontal>
+            <sp-switch 
+              value=${this.debuffLead} 
+              checked=${this.debuffLead ? 'true' : nothing }
+              onclick="this.dispatchEvent(new Event('debuff', {bubbles: true, composed: true}))"
+              >
+              Will you be the Primary Debuff
+            </sp-switch>
+          </sp-field-group horizontal>
+        </div>
+      `;
       ascendingHtml = html`
           <div>
               <sp-field-label for="ascending" size="s">Ascending Level</sp-field-label>
@@ -418,6 +445,7 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
     return html`
         <div class="fieldGroup">
             <p id="InvestmentFieldGroupHeader">${this._role.charAt(0).toUpperCase() + this._role.slice(1)} General</p>
+            ${debuffHtml}
             <sp-field-group horizontal>
                 <sp-help-text slot="help-text">Indicate your investment level in the generals.</sp-help-text>
                 ${ascendingHtml}

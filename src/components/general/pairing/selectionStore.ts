@@ -18,6 +18,7 @@ export type BoSType = z.infer<typeof BoS>;
 export interface generalInvestment {
   dragon: boolean,
   beast: boolean,
+  debuffLead: boolean,
   ascending: b.levelsType,
   speciality1: b.qualityColorType,
   speciality2: b.qualityColorType,
@@ -76,6 +77,7 @@ export const PrimaryInvestmentInitialize = action(primaryInvestmentMap, 'Initial
       store.setKey('ascending',b.levels.enum[10])
       store.setKey('dragon', true)
       store.setKey('beast', false)
+      store.setKey('debuffLead', false);
     }
   }
 });

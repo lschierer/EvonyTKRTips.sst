@@ -87,6 +87,7 @@ export class PairingPage extends withStores(SpectrumElement, [allGenerals,genera
     for(let ns in stores) {
       stores[ns].subscribe((ms) => {
         if(DEBUG) {console.log(`store ${ns}`)}
+        this.requestUpdate();
       })
     }
 
