@@ -1,0 +1,469 @@
+---
+general:
+  name: Freyja
+  display: summary
+  leadership: 124
+  leadership_increment: 9.15
+  attack: 120
+  attack_increment: 8.97
+  defense: 119
+  defense_increment: 8.89
+  politics: 106
+  politics_increment: 8.61
+  stars: '10'
+  level: '1'
+  score_as: Ground
+  books:
+    - name: Glorious Blade
+      buff:
+        - attribute: HP
+          condition: When_Defending_Outside_The_Main_City
+          class: Ground
+          value:
+            number: 50
+            unit: percentage
+        - attribute: Attack
+          condition: When_Defending_Outside_The_Main_City
+          class: Ground
+          value:
+            number: 40
+            unit: percentage
+        - attribute: Defense
+          condition: When_Defending_Outside_The_Main_City
+          class: Ground
+          value:
+            number: 40
+            unit: percentage
+  specialities:
+    - name: Ground Troop Defense
+      attribute:
+        - level: Green
+          buff:
+            - attribute: HP
+              class: Ground
+              value:
+                number: 1
+                unit: percentage
+            - attribute: Defense
+              class: Ground
+              value:
+                number: 1
+                unit: percentage
+        - level: Blue
+          buff:
+            - attribute: HP
+              class: Ground
+              value:
+                number: 1
+                unit: percentage
+            - attribute: Defense
+              class: Ground
+              value:
+                number: 1
+                unit: percentage
+        - level: Purple
+          buff:
+            - attribute: HP
+              class: Ground
+              value:
+                number: 2
+                unit: percentage
+            - attribute: Defense
+              class: Ground
+              value:
+                number: 2
+                unit: percentage
+        - level: Orange
+          buff:
+            - attribute: HP
+              class: Ground
+              value:
+                number: 2
+                unit: percentage
+            - attribute: Defense
+              class: Ground
+              value:
+                number: 2
+                unit: percentage
+        - level: Gold
+          buff:
+            - attribute: HP
+              class: Ground
+              value:
+                number: 4
+                unit: percentage
+            - attribute: Defense
+              class: Ground
+              value:
+                number: 4
+                unit: percentage
+    - name: Annihilation
+      attribute:
+      - level: Green
+        buff:
+          - attribute: March_Size_Capacity
+            value:
+              number: 1
+              unit: percentage
+          - attribute: Attack
+            condition: Attacking
+            class: Mounted
+            value:
+              number: 1
+              unit: percentage
+          - attribute: Attack
+            condition: Attacking
+            class: Ground
+            value:
+              number: 1
+              unit: percentage
+      - level: Blue
+        buff:
+          - attribute: March_Size_Capacity
+            value:
+              number: 1
+              unit: percentage
+          - attribute: Attack
+            condition: Attacking
+            class: Mounted
+            value:
+              number: 1
+              unit: percentage
+          - attribute: Attack
+            condition: Attacking
+            class: Ground
+            value:
+              number: 1
+              unit: percentage
+      - level: Purple
+        buff:
+          - attribute: March_Size_Capacity
+            value:
+              number: 1
+              unit: percentage
+          - attribute: Attack
+            condition: Attacking
+            class: Mounted
+            value:
+              number: 2
+              unit: percentage
+          - attribute: Attack
+            condition: Attacking
+            class: Ground
+            value:
+              number: 2
+              unit: percentage
+      - level: Orange
+        buff:
+          - attribute: March_Size_Capacity
+            value:
+              number: 1
+              unit: percentage
+          - attribute: Attack
+            condition: Attacking
+            class: Mounted
+            value:
+              number: 2
+              unit: percentage
+          - attribute: Attack
+            condition: Attacking
+            class: Ground
+            value:
+              number: 2
+              unit: percentage
+      - level: Gold
+        buff:
+          - attribute: March_Size_Capacity
+            value:
+              number: 2
+              unit: percentage
+          - attribute: Attack
+            condition: Attacking
+            class: Mounted
+            value:
+              number: 4
+              unit: percentage
+          - attribute: Attack
+            condition: Attacking
+            class: Ground
+            value:
+              number: 4
+              unit: percentage
+    - name: Ground Troop Ares
+      attribute:
+        - level: Green
+          buff:
+            - attribute: Attack
+              class: Ground
+              value:
+                number: 1
+                unit: percentage
+            - attribute: HP
+              class: Ground
+              value:
+                number: 1
+                unit: percentage
+            - attribute: Defense
+              class: Ground
+              value:
+                number: 1
+                unit: percentage
+        - level: Blue
+          buff:
+            - attribute: Attack
+              class: Ground
+              value:
+                number: 1
+                unit: percentage
+            - attribute: HP
+              class: Ground
+              value:
+                number: 1
+                unit: percentage
+            - attribute: Defense
+              class: Ground
+              value:
+                number: 1
+                unit: percentage
+        - level: Purple
+          buff:
+            - attribute: Attack
+              class: Ground
+              value:
+                number: 2
+                unit: percentage
+            - attribute: HP
+              class: Ground
+              value:
+                number: 2
+                unit: percentage
+            - attribute: Defense
+              class: Ground
+              value:
+                number: 2
+                unit: percentage
+        - level: Orange
+          buff:
+            - attribute: Attack
+              class: Ground
+              value:
+                number: 2
+                unit: percentage
+            - attribute: HP
+              class: Ground
+              value:
+                number: 2
+                unit: percentage
+            - attribute: Defense
+              class: Ground
+              value:
+                number: 2
+                unit: percentage
+        - level: Gold
+          buff:
+            - attribute: Attack
+              class: Ground
+              value:
+                number: 4
+                unit: percentage
+            - attribute: HP
+              class: Ground
+              value:
+                number: 4
+                unit: percentage
+            - attribute: Defense
+              class: Ground
+              value:
+                number: 4
+                unit: percentage
+    - name: Dawn Goddess
+      attribute:
+        - level: 'Green'
+          buff:
+          - attribute: Attack
+            condition: When_Defending_Outside_The_Main_City
+            class: Ground
+            value:
+              number: 5
+              unit: percentage
+          - attribute: Defense
+            condition: When_Defending_Outside_The_Main_City
+            class: Ground
+            value:
+              number: 5
+              unit: percentage
+          - attribute: HP
+            condition: When_Defending_Outside_The_Main_City
+            value:
+              number: 4
+              unit: percentage
+        - level: 'Blue'
+          buff:
+          - attribute: Attack
+            condition: When_Defending_Outside_The_Main_City
+            class: Ground
+            value:
+              number: 5
+              unit: percentage
+          - attribute: Defense
+            condition: When_Defending_Outside_The_Main_City
+            class: Ground
+            value:
+              number: 5
+              unit: percentage
+          - attribute: HP
+            condition: When_Defending_Outside_The_Main_City
+            class: Ground
+            value:
+              number: 4
+              unit: percentage
+        - level: 'Purple'
+          buff:
+          - attribute: Attack
+            condition: When_Defending_Outside_The_Main_City
+            class: Ground
+            value:
+              number: 10
+              unit: percentage
+          - attribute: Defense
+            condition: When_Defending_Outside_The_Main_City
+            class: Ground
+            value:
+              number: 10
+              unit: percentage
+          - attribute: HP
+            condition: When_Defending_Outside_The_Main_City
+            class: Ground
+            value:
+              number: 8
+              unit: percentage
+        - level: 'Orange'
+          buff:
+          - attribute: Attack
+            condition: When_Defending_Outside_The_Main_City
+            class: Ground
+            value:
+              number: 10
+              unit: percentage
+          - attribute: Defense
+            condition: When_Defending_Outside_The_Main_City
+            class: Ground
+            value:
+              number: 10
+              unit: percentage
+          - attribute: HP
+            condition: When_Defending_Outside_The_Main_City
+            class: Ground
+            value:
+              number: 8
+              unit: percentage
+        - level: 'Gold'
+          buff:
+          - attribute: Attack
+            condition: When_Defending_Outside_The_Main_City
+            class: Ground
+            value:
+              number: 20
+              unit: percentage
+          - attribute: Defense
+            condition: When_Defending_Outside_The_Main_City
+            class: Ground
+            value:
+              number: 20
+              unit: percentage
+          - attribute: HP
+            condition: When_Defending_Outside_The_Main_City
+            class: Ground
+            value:
+              number: 16
+              unit: percentage
+  ascending:
+        - level: '6'
+          buff:
+          - attribute: HP
+            condition: When_Defending_Outside_The_Main_City
+            class: Ground
+            value:
+              number: 20
+              unit: percentage
+          - attribute: Attack
+            condition: When_Defending_Outside_The_Main_City
+            class: Ground
+            value:
+              number: 10
+              unit: percentage
+        - level: '7'
+          buff:
+          - attribute: Death_to_Wounded
+            condition: When_Defending_Outside_The_Main_City
+            value:
+              number: 8
+              unit: percentage
+          - attribute: Attack
+            condition: When_Defending_Outside_The_Main_City
+            class: Ground
+            value:
+              number: 10
+              unit: percentage
+          - attribute: Attack
+            condition: When_Defending_Outside_The_Main_City
+            class: Mounted
+            value:
+              number: 10
+              unit: percentage
+        - level: '8'
+          buff:
+          - attribute: March_Size_Capacity
+            value:
+              number: 12
+              unit: percentage
+          - attribute: Attack
+            condition: When_Defending_Outside_The_Main_City
+            class: Ground
+            value:
+              number: 10
+              unit: percentage
+          - attribute: Attack
+            condition: When_Defending_Outside_The_Main_City
+            class: Mounted
+            value:
+              number: 10
+              unit: percentage
+        - level: '9'
+          buff:
+          - attribute: HP
+            class: Ground
+            value:
+              number: 30
+              unit: percentage
+          - attribute: Attack
+            condition: When_Defending_Outside_The_Main_City
+            class: Ground
+            value:
+              number: 15
+              unit: percentage
+          - attribute: Attack
+            condition: When_Defending_Outside_The_Main_City
+            class: Mounted
+            value:
+              number: 15
+              unit: percentage
+        - level: '10'
+          buff:
+          - attribute: Attack
+            class: Ground
+            value:
+              number: 50
+              unit: percentage
+          - attribute: Attack
+            condition: When_Defending_Outside_The_Main_City
+            class: Ground
+            value:
+              number: 35
+              unit: percentage
+          - attribute: Defense
+            condition: When_Defending_Outside_The_Main_City
+            class: Ground
+            value:
+              number: 35
+              unit: percentage
