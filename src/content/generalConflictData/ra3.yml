@@ -13,6 +13,7 @@ conflicts:
     - Winfield Scott
     - Louis IX
     - Li Shimin
+    - Idunn
 books:
 - name: Ranged Attack Increase
   level: '1'

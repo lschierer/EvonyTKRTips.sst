@@ -30,6 +30,7 @@ export const buffAdverbs: { [key in generalUseCaseType]: b.BuffAdverbArrayType }
         b.Condition.enum.leading_the_army_to_attack,
         b.Condition.enum.Reinforcing,
         b.Condition.enum.Defending,
+        b.Condition.enum.When_Defending_Outside_The_Main_City,
     ],
     [generalUseCase.enum.Monsters]: [
         b.Condition.enum.Attacking,
@@ -60,6 +61,7 @@ export const buffAdverbs: { [key in generalUseCaseType]: b.BuffAdverbArrayType }
         b.Condition.enum.Reduces_Enemy,
         b.Condition.enum.Reduces_Enemy_with_a_Dragon,
         b.Condition.enum.Enemy,
+        b.Condition.enum.When_Defending_Outside_The_Main_City,
     ],
     [generalUseCase.enum.Overall]: [
         b.Condition.enum.Reduces_Enemy,
