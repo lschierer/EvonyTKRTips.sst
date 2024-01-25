@@ -1,5 +1,5 @@
 ---
-title: 'Killing Fafnir with Aethelflaed and t13s'
+title: 'Killing Cerberus Level 2 with Aethelflaed and t13s'
 author: 'Luke Schierer'
 sortOrder: 2
 ---
