@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "sst bind astro dev",
     "start": "astro dev",
-    "build": "echo RootDir=${PWD} > .env && astro build",
+    "build": "pnpm install && echo RootDir=${PWD} > .env && astro build",
     "preview": "astro preview",
     "astro": "astro",
     "sst:deploy": "sst deploy",
