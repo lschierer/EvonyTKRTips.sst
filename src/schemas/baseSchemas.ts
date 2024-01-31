@@ -102,6 +102,7 @@ export const AttributeSchema = z.enum([
  'Range',
  'Training_Speed',
  'Marching_Speed',
+ 'Marching_Speed_to_Monsters',
  'March_Size_Capacity',
  'March_Time',
  'Rally_Capacity',
@@ -112,8 +113,10 @@ export const AttributeSchema = z.enum([
  'Load',
  'Double_Items_Drop_Rate',
  'Healing_Speed',
+ 'Stamina_cost',
  'SubCity_Training_Speed',
  'SubCity_Troop_Capacity',
+ 'Monster_Attack',
 ]);
 export type Attribute = z.infer<typeof AttributeSchema>;
 
