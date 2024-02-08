@@ -1,11 +1,12 @@
 conflicts:
   01HFAMT643M2WZ2YD9RRQ7YCVH:
+    - Lu Xun
     - Ludwig
+    - Alexander the Great
+    - Scipio Africanus
+    - Carus
+  other: 
     - Aurelian
     - Elise
     - Maeda Toshiie
     - Guan Yu
-    - Alexander the Great
-    - Carus
-  other: 
-    - Scipio Africanus

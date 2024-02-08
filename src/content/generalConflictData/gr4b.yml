@@ -1,16 +1,15 @@
-conflicts:
-  01HGMDRGS3DCNQVMEHVN9GFG2P:
-    - Trajan
+conflicts: 
+  01HP2TR3PTFK066SAASGKZ3QZP:
+    - Peter the Great
+    - Miyamoto Muashi
   other:
+    - Trajan
     - Robert the Bruce
-    - Pyrrhus
-    - Freyja
 books:
   - name: Ground HP Increase
     level: '1'
     buff:
     - attribute: HP
-      condition: When_Not_Mine
       class: Ground
       value:
         number: 10
@@ -19,7 +18,6 @@ books:
     level: '2'
     buff:
     - attribute: HP
-      condition: When_Not_Mine
       class: Ground
       value:
         number: 15
@@ -28,7 +26,6 @@ books:
     level: '3'
     buff:
     - attribute: HP
-      condition: When_Not_Mine
       class: Ground
       value:
         number: 20
@@ -37,7 +34,6 @@ books:
     level: '4'
     buff:
     - attribute: HP
-      condition: When_Not_Mine
       class: Ground
       value:
         number: 25
