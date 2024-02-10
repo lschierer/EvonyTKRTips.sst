@@ -15,7 +15,8 @@
     "@astrojs/lit": "^4.0.1",
     "@astrojs/mdx": "^2.1.1",
     "@astrojs/node": "^8.2.0",
-    "@astrojs/starlight": "^0.17.4",
+    "@astrojs/starlight": "^0.18.0",
+    "@astrojs/upgrade": "^0.2.2",
     "@lit-labs/router": "^0.1.3",
     "@lit-labs/ssr-client": "^1.1.7",
     "@lit-labs/ssr-dom-shim": "^1.2.0",
@@ -93,7 +94,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.5.1",
+    "@astrojs/check": "^0.5.2",
     "@astrojs/ts-plugin": "^1.5.0",
     "@tsconfig/node18": "^18.2.2",
     "@tsconfig/node20": "^20.1.2",
