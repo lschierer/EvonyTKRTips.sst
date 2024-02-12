@@ -1,4 +1,5 @@
 import { defineConfig } from 'astro/config';
+import aws from "astro-sst";
 import starlight from '@astrojs/starlight';
 import starlightLinksValidator from 'starlight-links-validator'
 import lit from "@astrojs/lit";
@@ -8,12 +9,20 @@ import {sidebar} from './src/sidebar.ts';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://evonytkrtips.net',
+  output: "server",
+  adapter: aws({
+    responseMode: "stream",
+  }),
   compressHTML: false,
   integrations: [
     lit(),
-    starlightLinksValidator(),
     starlight({
       title: 'Evony TKR Tips',
+      plugins: [
+        starlightLinksValidator({
+          errorOnRelativeLinks: false,
+        }),
+      ],
       components: {
         // Override the default `SocialLinks` component.
         PageFrame: './src/components/Spectrum/PageFrame.astro',
