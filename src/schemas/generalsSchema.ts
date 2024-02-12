@@ -122,3 +122,28 @@ export const GeneralPair = z.object({
 });
 
 export type GeneralPairType = z.infer<typeof GeneralPair>;
+
+export const CovenantAttributeCategory = z.enum([
+  "War Covenant",
+  "Cooperation Covenant",
+  "Peace Covenant",
+  "Faith Covenant",
+  "Honor Covenant",
+  "Civilization Covenant",
+])
+
+export type CovenantAttributeCategoryType = z.infer<typeof CovenantAttributeCategory>;
+
+export const CovenantAttribute = z.object({
+  "category": CovenantAttributeCategory,
+  "type": z.enum(['personal','passive']),
+  "buff": z.array(b.Buff),
+});
+
+export type CovenantAttributeType = z.infer<typeof CovenantAttribute>;
+
+export const Covenant = z.object({
+  "name": z.string(),
+  "generals": z.string().array(),
+  "attributes": z.array(CovenantAttribute).optional(),
+})
