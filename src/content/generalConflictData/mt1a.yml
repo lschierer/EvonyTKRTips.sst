@@ -1,0 +1,46 @@
+conflicts:
+  01HPNDFH9P4Z5KEKM3JZH78Z7T:
+    - George A. Custer
+    - Barbarossa
+  other:
+    - Lysander
+    - Gaius Octavius
+    - Bertrand du Guesclin
+    - Cyrus the Great
+    - Mordred
+    - Hannibal
+    - King Arthur
+    - Genghis Khan
+books:
+  - name: March Size Increase
+    level: '1'
+    buff:
+    - attribute: March_Size_Capacity
+      condition: When_Not_Mine
+      value:
+        number: 3
+        unit: percentage
+  - name: March Size Increase
+    level: '2'
+    buff:
+    - attribute: March_Size_Capacity
+      condition: When_Not_Mine
+      value:
+        number: 6
+        unit: percentage
+  - name: March Size Increase
+    level: '3'
+    buff:
+    - attribute: March_Size_Capacity
+      condition: When_Not_Mine
+      value:
+        number: 9
+        unit: percentage
+  - name: March Size Increase
+    level: '4'
+    buff:
+    - attribute: March_Size_Capacity
+      condition: When_Not_Mine
+      value:
+        number: 12
+        unit: percentage
