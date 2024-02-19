@@ -7,6 +7,7 @@ conflicts:
     - Septimius Serverus
     - William Wallace
     - Khalid
+    - My Guiying
 books:
   - name: Siege Attack
     level: '1'
