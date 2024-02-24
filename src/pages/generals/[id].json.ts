@@ -9,6 +9,8 @@ import { getCollection, getEntry, type CollectionEntry  } from 'astro:content';
 import type { HTMLAttributes } from 'astro/types'
 import {z, ZodError} from 'zod'
 
+export const prerender = true;
+
 import {
   GeneralClass,
   type GeneralClassType,
