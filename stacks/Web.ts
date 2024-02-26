@@ -1,22 +1,19 @@
-import {use, AppSyncApi, AstroSite, Table, Api as ApiGateway} from "sst/constructs";
+import {use, AppSyncApi, StaticSite, Table, Api as ApiGateway} from "sst/constructs";
 import type { StackContext } from 'sst/constructs';
 import * as cdk from "aws-cdk-lib";
 
 export function Web({ stack }: StackContext) {
 
 
-  const site = new AstroSite(stack, "Site", {
+  const site = new StaticSite(stack, "Site", {
     path: './',
-    warm: 2,
     buildCommand: "pnpm run build",
     cdk: {
       distribution: {
         defaultRootObject: "index.html",
       },
     },
-    nodejs: {
-      splitting: true,
-    },
+    buildOutput: "dist",
     customDomain: {
       domainName: stack.stage === "prod" ? "evonytkrtips.net" : `${stack.stage}.evonytkrtips.net`,
       domainAlias: stack.stage === "prod" ? "www.evonytkrtips.net" : `www.${stack.stage}.evonytkrtips.net`,
