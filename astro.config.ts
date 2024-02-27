@@ -28,6 +28,15 @@ export default defineConfig({
       customCss: [
         './src/styles/styles.css',
       ],
+      head: [
+        {
+          tag: 'script',
+          attrs: {
+            src: "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8360834774752607",
+            defer: true,
+          }
+        }
+      ],
       lastUpdated: true,
       pagination: true,
       sidebar: sidebar,
