@@ -11,6 +11,7 @@ conflicts:
     - Hannibal
     - King Arthur
     - Genghis Khan
+    - Jayavarman II
 books:
   - name: March Size Increase
     level: '1'
