@@ -1,5 +1,6 @@
 conflicts:
   01HNP2VSPGA7AWKN10M2ABCR3G:
+    - Jayavarman II
     - Lysander
     - Gaius Octavius
     - Bertrand du Guesclin
@@ -11,4 +12,3 @@ conflicts:
     - Napoleon Prime
     - Roland
     - Hannibal
-    - Jayavarman II
