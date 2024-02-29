@@ -3,5 +3,16 @@ import type { Props } from '@astrojs/starlight/props';
 import Default from '@astrojs/starlight/components/Footer.astro';
 ---
 
+
 <Default {...Astro.props}><slot /></Default>
-<a href="/policy/privacy/">Privacy Policy</a>
+<style>
+    .policies {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+    }
+</style>
+<div class="policies">
+    <a href="/policy/privacy/">Privacy Policy</a>
+</div>
+
