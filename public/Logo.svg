@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="73.768105mm"
+   height="11.425659mm"
+   viewBox="0 0 73.768105 11.425659"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25)"
+   sodipodi:docname="Logo.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="0.84096521"
+     inkscape:cx="252.68584"
+     inkscape:cy="240.79474"
+     inkscape:window-width="1856"
+     inkscape:window-height="974"
+     inkscape:window-x="848"
+     inkscape:window-y="52"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1">
+    <rect
+       x="53.509941"
+       y="54.699055"
+       width="689.68372"
+       height="103.45256"
+       id="rect1" />
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-14.157792,-15.663398)">
+    <text
+       xml:space="preserve"
+       transform="scale(0.26458333)"
+       id="text1"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect1);fill:#000000;fill-opacity:1;stroke:none"><tspan
+         x="53.509766"
+         y="91.192431"
+         id="tspan3"><tspan
+           style="font-family:Wargames;-inkscape-font-specification:'Wargames, Normal';fill:#000080"
+           id="tspan2">EvonyTKRTips</tspan></tspan></text>
+  </g>
+</svg>
