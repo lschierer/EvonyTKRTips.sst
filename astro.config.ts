@@ -24,6 +24,7 @@ export default defineConfig({
         // Override the default `SocialLinks` component.
         PageFrame: './src/components/Spectrum/PageFrame.astro',
         Header: './src/components/Spectrum/TopNav.astro',
+        Footer: './src/components/Footer.astro',
       },
       customCss: [
         './src/styles/styles.css',
