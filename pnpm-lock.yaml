@@ -287,11 +287,11 @@ devDependencies:
     specifier: ^7.0.2
     version: 7.0.2(eslint@8.56.0)(typescript@5.3.3)
   astro-sst:
-    specifier: 2.40.3
-    version: 2.40.3
+    specifier: 2.40.4
+    version: 2.40.4
   aws-cdk-lib:
-    specifier: 2.130.0
-    version: 2.130.0(constructs@10.3.0)
+    specifier: 2.124.0
+    version: 2.124.0(constructs@10.3.0)
   constructs:
     specifier: 10.3.0
     version: 10.3.0
@@ -320,8 +320,8 @@ devDependencies:
     specifier: ^3.2.5
     version: 3.2.5
   sst:
-    specifier: 2.40.3
-    version: 2.40.3(@aws-sdk/credential-provider-node@3.515.0)
+    specifier: 2.40.4
+    version: 2.40.4(@aws-sdk/credential-provider-node@3.515.0)
   starlight-links-validator:
     specifier: ^0.5.3
     version: 0.5.3(@astrojs/starlight@0.20.1)(astro@4.4.6)
@@ -5292,8 +5292,8 @@ packages:
       hast-util-to-html: 8.0.4
       remark-expressive-code: 0.33.4
 
-  /astro-sst@2.40.3:
-    resolution: {integrity: sha512-vbCnLHyfFexYoUqQ3H4BA1oVK3fy0SyLfOgl6nEm50tz3dp2nMND+yNPtroTlL8S8/TYcnkkB+tKhT7aoLwOEA==}
+  /astro-sst@2.40.4:
+    resolution: {integrity: sha512-Sr97svUwyTzLLxRDxxQoWiglTRYGVOEq98KeoPefEI2kMa+FWpjiIicPY92zYJiZLA6DMzLB9TGvu/xyo6jmQQ==}
     dependencies:
       '@astrojs/webapi': 3.0.0
       set-cookie-parser: 2.6.0
@@ -5436,30 +5436,6 @@ packages:
       - semver
       - table
       - yaml
-
-  /aws-cdk-lib@2.130.0(constructs@10.3.0):
-    resolution: {integrity: sha512-yK7ibePipdjlI4AFM94fwwtsCkmpWJ0JFZTMPahahC/3Pxe/BA/nnI/4Namvl5QPxW5QlU0xQYU7cywioq3RQg==}
-    engines: {node: '>= 14.15.0'}
-    peerDependencies:
-      constructs: ^10.0.0
-    dependencies:
-      '@aws-cdk/asset-awscli-v1': 2.2.202
-      '@aws-cdk/asset-kubectl-v20': 2.1.2
-      '@aws-cdk/asset-node-proxy-agent-v6': 2.0.1
-      constructs: 10.3.0
-    dev: true
-    bundledDependencies:
-      - '@balena/dockerignore'
-      - case
-      - fs-extra
-      - ignore
-      - jsonschema
-      - minimatch
-      - punycode
-      - semver
-      - table
-      - yaml
-      - mime-types
 
   /aws-crt@1.21.1:
     resolution: {integrity: sha512-pSLf1Xg5P2Owa+n/82hkEXV22q56kbxJOxX4FB5DvvHpTokOygz6nFj+/cS9dnv3tNZgOiUjTvsz0Xk1ldyi0w==}
@@ -5934,7 +5910,7 @@ packages:
     resolution: {integrity: sha512-rraC8NXWOEjhADbZe9QBNzLAN5Q3fsTPQtBV+fEVj6xKIgDgNiEVE6ZNfHpZOqfQ21YUzfVNUXLOEZquYvQPPg==}
     dependencies:
       leven: 2.1.0
-      minimist: 1.2.6
+      minimist: 1.2.8
     dev: true
 
   /common-ancestor-path@1.0.1:
@@ -9062,7 +9038,7 @@ packages:
       duplexify: 4.1.2
       help-me: 3.0.0
       inherits: 2.0.4
-      minimist: 1.2.6
+      minimist: 1.2.8
       mqtt-packet: 6.10.0
       pump: 3.0.0
       readable-stream: 3.6.2
@@ -10570,8 +10546,8 @@ packages:
       fsevents: 2.3.2
     dev: true
 
-  /sst@2.40.3(@aws-sdk/credential-provider-node@3.515.0):
-    resolution: {integrity: sha512-Lwjw8DpIE57fG1Rra0h/Mp7ykwDVsFe/Y1M/UmTFjpH9EunxuDka2miaI24msLYuov3XNaIFRbdeKLAdigMBXg==}
+  /sst@2.40.4(@aws-sdk/credential-provider-node@3.515.0):
+    resolution: {integrity: sha512-nKGs9RX9V8sC4jPTBOIeHKrn2Um8rSnaSJVcq100Xle9YP9OmfSVqx0C/kCiMXX7NRFStwTY5UQV7tQgqxpFvg==}
     hasBin: true
     peerDependencies:
       '@sls-next/lambda-at-edge': ^3.7.0
