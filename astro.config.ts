@@ -35,6 +35,13 @@ export default defineConfig({
             src: "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8360834774752607",
             defer: true,
           }
+        },
+        {
+          tag: 'meta',
+          attrs: {
+            name: "google-adsense-account",
+            content: "ca-pub-8360834774752607",
+          }
         }
       ],
       lastUpdated: true,
