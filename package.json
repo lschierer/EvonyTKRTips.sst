@@ -118,7 +118,7 @@
     "postcss-import": "^16.0.1",
     "prettier": "^3.2.5",
     "sst": "2.40.6",
-    "starlight-links-validator": "^0.5.3",
+    "starlight-links-validator": "^0.6.0",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "tslib": "^2.6.2",
