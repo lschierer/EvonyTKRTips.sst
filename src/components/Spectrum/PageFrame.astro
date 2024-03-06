@@ -20,6 +20,10 @@ import Default from '@astrojs/starlight/components/PageFrame.astro';
     scale="medium"
     
 >
-    <Default class=".header" {...Astro.props}><slot name="header" slot="header"/><slot name="sidebar" slot="sidebar"/><slot /></Default>
+    <Default class=".header" {...Astro.props}>
+        <slot name="header" slot="header"/>
+        <slot name="sidebar" slot="sidebar"/>
+        <slot />
+    </Default>
 </sp-theme>
 
