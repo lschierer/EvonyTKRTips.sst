@@ -23,7 +23,7 @@ export default defineConfig({
       components: {
         PageFrame: './src/components/Spectrum/PageFrame.astro',
         Header: './src/components/Spectrum/TopNav.astro',
-        Footer: './src/components/Footer.astro',
+        Footer: './src/components/footer.astro',
       },
       customCss: [
         './src/styles/styles.css',
@@ -34,6 +34,13 @@ export default defineConfig({
           attrs: {
             src: "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8360834774752607",
             defer: true,
+          }
+        },
+        {
+          tag: 'meta',
+          attrs: {
+            name: "google-adsense-account",
+            content: "ca-pub-8360834774752607",
           }
         }
       ],
