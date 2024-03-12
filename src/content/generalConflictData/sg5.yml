@@ -10,7 +10,6 @@ books:
     level: '1'
     buff:
     - attribute: March_Size_Capacity
-      class: Siege
       condition: When_Not_Mine
       value:
         number: 3
@@ -19,7 +18,6 @@ books:
     level: '2'
     buff:
     - attribute: March_Size_Capacity
-      class: Siege
       condition: When_Not_Mine
       value:
         number: 6
@@ -28,7 +26,6 @@ books:
     level: '3'
     buff:
     - attribute: March_Size_Capacity
-      class: Siege
       condition: When_Not_Mine
       value:
         number: 9
@@ -37,7 +34,6 @@ books:
     level: '4'
     buff:
     - attribute: March_Size_Capacity
-      class: Siege
       condition: When_Not_Mine
       value:
         number: 12
