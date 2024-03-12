@@ -71,7 +71,7 @@
     "@spectrum-web-components/top-nav": "^0.41.2",
     "@webcomponents/template-shadowroot": "^0.2.1",
     "add": "^2.0.6",
-    "astro": "^4.5.1",
+    "astro": "^4.5.2",
     "bcp-47": "^2.1.0",
     "d3": "^7.8.5",
     "d3-dsv": "^3.0.1",
@@ -92,8 +92,8 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.5.7",
-    "@astrojs/ts-plugin": "^1.5.3",
+    "@astrojs/check": "^0.5.8",
+    "@astrojs/ts-plugin": "^1.6.0",
     "@tsconfig/node18": "^18.2.2",
     "@tsconfig/node20": "^20.1.2",
     "@types/d3": "^7.4.3",
