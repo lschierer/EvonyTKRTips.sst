@@ -1,0 +1,180 @@
+---
+general:
+  name: Antara
+  display: summary
+  leadership: 109
+  leadership_increment: 7.68
+  attack: 103
+  attack_increment: 7.75
+  defense: 100
+  defense_increment: 7.93
+  politics: 67
+  politics_increment: 6.25
+  stars: '10'
+  level: '1'
+  score_as: Archers
+  books:
+  - name: Heroism
+    buff:
+      - attribute: Attack
+        class: Archers
+        value:
+          number: 35
+          unit: percentage
+  specialities:
+    - name: Ranged Troop Defense
+      attribute:
+        - level: Green
+          buff:
+            - attribute: HP
+              class: Archers
+              value:
+                number: 1
+                unit: percentage
+            - attribute: Defense
+              class: Archers
+              value:
+                number: 1
+                unit: percentage
+        - level: Blue
+          buff:
+            - attribute: HP
+              class: Archers
+              value:
+                number: 1
+                unit: percentage
+            - attribute: Defense
+              class: Archers
+              value:
+                number: 1
+                unit: percentage
+        - level: Purple
+          buff:
+            - attribute: HP
+              class: Archers
+              value:
+                number: 2
+                unit: percentage
+            - attribute: Defense
+              class: Archers
+              value:
+                number: 2
+                unit: percentage
+        - level: Orange
+          buff:
+            - attribute: HP
+              class: Archers
+              value:
+                number: 2
+                unit: percentage
+            - attribute: Defense
+              class: Archers
+              value:
+                number: 2
+                unit: percentage
+        - level: Gold
+          buff:
+            - attribute: HP
+              class: Archers
+              value:
+                number: 4
+                unit: percentage
+            - attribute: Defense
+              class: Archers
+              value:
+                number: 4
+                unit: percentage
+    - name: Bash
+      attribute:
+        - level: Green
+          buff:
+            - attribute: Attack
+              class: Archers
+              value:
+                number: 1
+                unit: percentage
+            - attribute: Attack
+              class: Siege
+              value:
+                number: 1
+                unit: percentage
+        - level: Blue
+          buff:
+            - attribute: Attack
+              class: Archers
+              value:
+                number: 1
+                unit: percentage
+            - attribute: Attack
+              class: Siege
+              value:
+                number: 1
+                unit: percentage
+        - level: Purple
+          buff:
+            - attribute: Attack
+              class: Archers
+              value:
+                number: 2
+                unit: percentage
+            - attribute: Attack
+              class: Siege
+              value:
+                number: 2
+                unit: percentage
+        - level: Orange
+          buff:
+            - attribute: Attack
+              class: Archers
+              value:
+                number: 2
+                unit: percentage
+            - attribute: Attack
+              class: Siege
+              value:
+                number: 2
+                unit: percentage
+        - level: Gold
+          buff:
+            - attribute: Attack
+              class: Archers
+              value:
+                number: 4
+                unit: percentage
+            - attribute: Attack
+              class: Siege
+              value:
+                number: 4
+                unit: percentage
+    - name: Unparalleled Leader
+      attribute:
+        - level: 'Green'
+          buff:
+          - attribute: Death_to_Wounded
+            value:
+              number: 1
+              unit: percentage
+        - level: 'Blue'
+          buff:
+          - attribute: Death_to_Wounded
+            value:
+              number: 1
+              unit: percentage
+        - level: 'Purple'
+          buff:
+          - attribute: Death_to_Wounded
+            value:
+              number: 2
+              unit: percentage
+        - level: 'Orange'
+          buff:
+          - attribute: Death_to_Wounded
+            value:
+              number: 2
+              unit: percentage
+        - level: 'Gold'
+          buff:
+          - attribute: Death_to_Wounded
+            value:
+              number: 4
+              unit: percentage
