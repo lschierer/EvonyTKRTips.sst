@@ -284,93 +284,101 @@ export function buff(eg: GeneralClassType, situations: b.BuffAdverbArrayType, pr
             fourth = fourth && (!saLevels.includes(b.qualityColor.enum.Orange))
             for(let i = 0; i < (fourth ? 4 : 3); i++) {
                 const s = general.specialities[i];
-                s.attribute.map((sa) => {
-                    let proceed = false;
-                    switch (saLevels[i]) {
-                        case 'Gold':
-                            if (!sa.level.localeCompare('Gold')) {
-                                proceed = true;
-                                break;
-                            }
-                        case 'Orange':
-                            if (!sa.level.localeCompare('Orange')) {
-                                proceed = true;
-                                break;
-                            }
-                        case 'Purple':
-                            if (!sa.level.localeCompare('Purple')) {
-                                proceed = true;
-                                break;
-                            }
-                        case 'Blue':
-                            if (!sa.level.localeCompare('Blue')) {
-                                proceed = true;
-                                break;
-                            }
-                        case 'Green':
-                            if (!sa.level.localeCompare('Green')) {
-                                proceed = true;
-                                break;
-                            }
-                        default:
-                            proceed = false;
-                    }
-                    if (proceed) {
-                        const buff: b.BuffType[] = [sa.buff].flat()
-                        buff.map((current) => {
-                            if (current !== undefined && current !== null && general !== undefined) {
-                                let apply = buffFilter(current, general, b.AttributeSchema.enum.Attack, props, situations);
-                                if (apply && current.value !== undefined && current.value !== null) {
-                                    const buff_type = current.value.unit;
-                                    if ((current.condition !== null && current.condition !== undefined) &&
-                                        (
-                                            ([current.condition].flat().includes(b.Condition.enum.Reduces_Monster)) ||
-                                            ([current.condition].flat().includes(b.Condition.enum.Reduces_Enemy)) ||
-                                            (([current.condition].flat().includes(b.Condition.enum.Reduces_Enemy_with_a_Dragon)) && (props.dragon === true))
-                                        )
-                                    ) {
-                                        attack = attack + Math.abs(current.value.number);
-                                    } else if (!buff_type.localeCompare(b.UnitSchema.enum.percentage)) {
-                                        attack = attack + current.value.number
-                                    }
+                if(s !== undefined && s !== null ) {
+                    if(!(Object.prototype.toString.call(s) === "[object String]")) {
+                        (s as SpecialityType).attribute.map((sa) => {
+                            let proceed = false;
+                            const curSaL = saLevels[i];
+                            if(curSaL !== undefined && curSaL !== null) {
+                                switch (saLevels[i]) {
+                                    case 'Gold':
+                                        if (!sa.level.localeCompare('Gold')) {
+                                            proceed = true;
+                                            break;
+                                        }
+                                    case 'Orange':
+                                        if (!sa.level.localeCompare('Orange')) {
+                                            proceed = true;
+                                            break;
+                                        }
+                                    case 'Purple':
+                                        if (!sa.level.localeCompare('Purple')) {
+                                            proceed = true;
+                                            break;
+                                        }
+                                    case 'Blue':
+                                        if (!sa.level.localeCompare('Blue')) {
+                                            proceed = true;
+                                            break;
+                                        }
+                                    case 'Green':
+                                        if (!sa.level.localeCompare('Green')) {
+                                            proceed = true;
+                                            break;
+                                        }
+                                    default:
+                                        proceed = false;
                                 }
-                                apply = buffFilter(current, general, b.AttributeSchema.enum.Defense, props, situations);
-                                if (apply && current.value !== undefined && current.value !== null) {
-                                    const buff_type = current.value.unit;
-                                    if ((current.condition !== null && current.condition !== undefined) &&
-                                        (
-                                            ([current.condition].flat().includes(b.Condition.enum.Reduces_Monster)) ||
-                                            ([current.condition].flat().includes(b.Condition.enum.Reduces_Enemy)) ||
-                                            ([current.condition].flat().includes(b.Condition.enum.Reduces_Enemy_in_Attack)) ||
-                                            (([current.condition].flat().includes(b.Condition.enum.Reduces_Enemy_with_a_Dragon)) && (props.dragon === true))
-                                        )
-                                    ) {
-                                        defense = defense + Math.abs(current.value.number);
-                                    } else if (!buff_type.localeCompare(b.UnitSchema.enum.percentage)) {
-                                        defense = defense + current.value.number
+                            }
+                            if (proceed) {
+                                const buff: b.BuffType[] = [sa.buff].flat()
+                                buff.map((current) => {
+                                    if (current !== undefined && current !== null && general !== undefined) {
+                                        let apply = buffFilter(current, general, b.AttributeSchema.enum.Attack, props, situations);
+                                        if (apply && current.value !== undefined && current.value !== null) {
+                                            const buff_type = current.value.unit;
+                                            if ((current.condition !== null && current.condition !== undefined) &&
+                                                (
+                                                    ([current.condition].flat().includes(b.Condition.enum.Reduces_Monster)) ||
+                                                    ([current.condition].flat().includes(b.Condition.enum.Reduces_Enemy)) ||
+                                                    (([current.condition].flat().includes(b.Condition.enum.Reduces_Enemy_with_a_Dragon)) && (props.dragon === true))
+                                                )
+                                            ) {
+                                                attack = attack + Math.abs(current.value.number);
+                                            } else if (!buff_type.localeCompare(b.UnitSchema.enum.percentage)) {
+                                                attack = attack + current.value.number
+                                            }
+                                        }
+                                        apply = buffFilter(current, general, b.AttributeSchema.enum.Defense, props, situations);
+                                        if (apply && current.value !== undefined && current.value !== null) {
+                                            const buff_type = current.value.unit;
+                                            if ((current.condition !== null && current.condition !== undefined) &&
+                                                (
+                                                    ([current.condition].flat().includes(b.Condition.enum.Reduces_Monster)) ||
+                                                    ([current.condition].flat().includes(b.Condition.enum.Reduces_Enemy)) ||
+                                                    ([current.condition].flat().includes(b.Condition.enum.Reduces_Enemy_in_Attack)) ||
+                                                    (([current.condition].flat().includes(b.Condition.enum.Reduces_Enemy_with_a_Dragon)) && (props.dragon === true))
+                                                )
+                                            ) {
+                                                defense = defense + Math.abs(current.value.number);
+                                            } else if (!buff_type.localeCompare(b.UnitSchema.enum.percentage)) {
+                                                defense = defense + current.value.number
+                                            }
+                                        }
+                                        apply = buffFilter(current, general, b.AttributeSchema.enum.HP, props, situations);
+                                        if (apply && current.value !== undefined && current.value !== null) {
+                                            const buff_type = current.value.unit;
+                                            if (!buff_type.localeCompare(b.UnitSchema.enum.percentage)) {
+                                                hp = hp + current.value.number
+                                            }
+                                        }
+                                        apply = buffFilter(current,general, b.AttributeSchema.enum.March_Size_Capacity, props, situations);
+                                        if(apply && current.value !== undefined && current.value !== null ) {
+                                            const buff_type = current.value.unit;
+                                            if(!buff_type.localeCompare(b.UnitSchema.enum.percentage)) {
+                                                march = march + current.value.number;
+                                            }
+                                        }
+                                    } else {
                                     }
-                                }
-                                apply = buffFilter(current, general, b.AttributeSchema.enum.HP, props, situations);
-                                if (apply && current.value !== undefined && current.value !== null) {
-                                    const buff_type = current.value.unit;
-                                    if (!buff_type.localeCompare(b.UnitSchema.enum.percentage)) {
-                                        hp = hp + current.value.number
-                                    }
-                                }
-                                apply = buffFilter(current,general, b.AttributeSchema.enum.March_Size_Capacity, props, situations);
-                                if(apply && current.value !== undefined && current.value !== null ) {
-                                    const buff_type = current.value.unit;
-                                    if(!buff_type.localeCompare(b.UnitSchema.enum.percentage)) {
-                                        march = march + current.value.number;
-                                    }
-                                }
+                                })
                             } else {
                             }
+        
                         })
-                    } else {
                     }
-
-                })
+                    
+                }
             }
         }
 
