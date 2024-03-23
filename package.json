@@ -95,8 +95,8 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.5.9",
-    "@astrojs/ts-plugin": "^1.6.0",
+    "@astrojs/check": "^0.5.10",
+    "@astrojs/ts-plugin": "^1.6.1",
     "@tsconfig/node18": "^18.2.2",
     "@tsconfig/node20": "^20.1.2",
     "@types/d3": "^7.4.3",
@@ -108,7 +108,7 @@
     "@types/node": "^20.11.30",
     "@typescript-eslint/eslint-plugin": "^7.3.1",
     "@typescript-eslint/parser": "^7.3.1",
-    "astro-sst": "2.41.3",
+    "astro-sst": "2.41.4",
     "aws-cdk-lib": "2.132.1",
     "constructs": "10.3.0",
     "cssnano": "^6.1.1",
@@ -120,7 +120,7 @@
     "postcss-import": "^16.1.0",
     "prettier": "^3.2.5",
     "remark-lint": "^9.1.2",
-    "sst": "2.41.3",
+    "sst": "2.41.4",
     "starlight-links-validator": "^0.6.0",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
