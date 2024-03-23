@@ -251,11 +251,11 @@ dependencies:
 
 devDependencies:
   '@astrojs/check':
-    specifier: ^0.5.9
-    version: 0.5.9(prettier@3.2.5)(typescript@5.3.3)
+    specifier: ^0.5.10
+    version: 0.5.10(prettier@3.2.5)(typescript@5.3.3)
   '@astrojs/ts-plugin':
-    specifier: ^1.6.0
-    version: 1.6.0
+    specifier: ^1.6.1
+    version: 1.6.1
   '@tsconfig/node18':
     specifier: ^18.2.2
     version: 18.2.2
@@ -290,8 +290,8 @@ devDependencies:
     specifier: ^7.3.1
     version: 7.3.1(eslint@8.57.0)(typescript@5.3.3)
   astro-sst:
-    specifier: 2.41.3
-    version: 2.41.3
+    specifier: 2.41.4
+    version: 2.41.4
   aws-cdk-lib:
     specifier: 2.132.1
     version: 2.132.1(constructs@10.3.0)
@@ -326,8 +326,8 @@ devDependencies:
     specifier: ^9.1.2
     version: 9.1.2
   sst:
-    specifier: 2.41.3
-    version: 2.41.3(@aws-sdk/credential-provider-node@3.540.0)
+    specifier: 2.41.4
+    version: 2.41.4(@aws-sdk/credential-provider-node@3.540.0)
   starlight-links-validator:
     specifier: ^0.6.0
     version: 0.6.0(@astrojs/starlight@0.21.2)(astro@4.5.9)
@@ -366,13 +366,13 @@ packages:
       '@jridgewell/gen-mapping': 0.3.5
       '@jridgewell/trace-mapping': 0.3.25
 
-  /@astrojs/check@0.5.9(prettier@3.2.5)(typescript@5.3.3):
-    resolution: {integrity: sha512-+QsQMtYq4oso+gmilJC9HLmdi0glZ+04V/VyyTTPry7n21jqjX9SfgDpLGxMk5cwPC/vwZMkn6ORGPnkZS/L5w==}
+  /@astrojs/check@0.5.10(prettier@3.2.5)(typescript@5.3.3):
+    resolution: {integrity: sha512-vliHXM9cu/viGeKiksUM4mXfO816ohWtawTl2ADPgTsd4nUMjFiyAl7xFZhF34yy4hq4qf7jvK1F2PlR3b5I5w==}
     hasBin: true
     peerDependencies:
       typescript: ^5.0.0
     dependencies:
-      '@astrojs/language-server': 2.8.3(prettier@3.2.5)(typescript@5.3.3)
+      '@astrojs/language-server': 2.8.4(prettier@3.2.5)(typescript@5.3.3)
       chokidar: 3.6.0
       fast-glob: 3.3.2
       kleur: 4.1.5
@@ -397,8 +397,8 @@ packages:
   /@astrojs/internal-helpers@0.3.0:
     resolution: {integrity: sha512-tGmHvrhpzuz0JBHaJX8GywN9g4rldVNHtkoVDC3m/DdzBO70jGoVuc0uuNVglRYnsdwkbG0K02Iw3nOOR3/Y4g==}
 
-  /@astrojs/language-server@2.8.3(prettier@3.2.5)(typescript@5.3.3):
-    resolution: {integrity: sha512-tO47Lcue7OPXfIDbKVDcshwpC13yaWaTVLyiSOnQ2Yng2Z2SgcJf06Cj4xMpJqGp6s7/o/gcQWYUTl2bpkWKig==}
+  /@astrojs/language-server@2.8.4(prettier@3.2.5)(typescript@5.3.3):
+    resolution: {integrity: sha512-sJH5vGTBkhgA8+hdhzX78UUp4cFz4Mt7xkEkevD188OS5bDMkaue6hK+dtXWM47mnrXFveXA2u38K7S+5+IRjA==}
     hasBin: true
     peerDependencies:
       prettier: ^3.0.0
@@ -560,8 +560,8 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
-  /@astrojs/ts-plugin@1.6.0:
-    resolution: {integrity: sha512-4ChbUPhMCQFajE7FmDQTZigtq8JM4cD8Z0m++po0QKUS0OgWYPBUo5wPhMPJgbIot8tf+e26xKWWcJqkGNl9gA==}
+  /@astrojs/ts-plugin@1.6.1:
+    resolution: {integrity: sha512-13mkBo5K3J/mUN/pt/4qxbwBJSmm/X2HAzOZaYg2AildnN/JxiZ2rm60LMssUXhHHhrxQoKslCh06l9sHSkCMQ==}
     dependencies:
       '@astrojs/compiler': 2.7.0
       '@jridgewell/sourcemap-codec': 1.4.15
@@ -5614,8 +5614,8 @@ packages:
       hast-util-to-html: 8.0.4
       remark-expressive-code: 0.33.5
 
-  /astro-sst@2.41.3:
-    resolution: {integrity: sha512-NZfyR3WWADgGl/59RxASAxryDl1+WIdXvGoYNR85+nbLPNLBG3w4bbsDEYO37yeXsV1/H5rYjk2G46yvZFP5PA==}
+  /astro-sst@2.41.4:
+    resolution: {integrity: sha512-0lDb+3E1XKePDVxP0dmMVhGAL/L+F/XmJn86BSh5OcIaR5g8AuaG3jgSfi1gY0yLYSKyPDFhro65+un8Y6tjEg==}
     dependencies:
       '@astrojs/webapi': 3.0.0
       set-cookie-parser: 2.6.0
@@ -5980,7 +5980,7 @@ packages:
     resolution: {integrity: sha512-xq+q3SRMOxGivLhBNaUdC64hDTQwejJ+H0T/NB1XMtTVEwNTrfFF3gAxiyW0Bu/xWEGhjVKgUcMhCrUy2+uCWg==}
     dependencies:
       base64-js: 1.5.1
-      ieee754: 1.1.13
+      ieee754: 1.2.1
       isarray: 1.0.0
     dev: true
 
@@ -6236,7 +6236,7 @@ packages:
     resolution: {integrity: sha512-rraC8NXWOEjhADbZe9QBNzLAN5Q3fsTPQtBV+fEVj6xKIgDgNiEVE6ZNfHpZOqfQ21YUzfVNUXLOEZquYvQPPg==}
     dependencies:
       leven: 2.1.0
-      minimist: 1.2.6
+      minimist: 1.2.8
     dev: true
 
   /common-ancestor-path@1.0.1:
@@ -9659,7 +9659,7 @@ packages:
       duplexify: 4.1.3
       help-me: 3.0.0
       inherits: 2.0.4
-      minimist: 1.2.6
+      minimist: 1.2.8
       mqtt-packet: 6.10.0
       pump: 3.0.0
       readable-stream: 3.6.2
@@ -11194,8 +11194,8 @@ packages:
       fsevents: 2.3.2
     dev: true
 
-  /sst@2.41.3(@aws-sdk/credential-provider-node@3.540.0):
-    resolution: {integrity: sha512-aA5Xs82Z7BFTZOoa27DZdIfUW6J6MxeMwTrFShNc+1uvsFCPz0TbZ6TDIaSZCjXwSHxWae0Yl+EvemCx8xtNHg==}
+  /sst@2.41.4(@aws-sdk/credential-provider-node@3.540.0):
+    resolution: {integrity: sha512-a1o14VXlWWEQDI5izfv03Yo60Ne7JGm+j5agMiv9JrNMr0Ap+y9dTETGgrwPPpEb4EVFFIQnEFmyO1bIL7Bsdg==}
     hasBin: true
     peerDependencies:
       '@sls-next/lambda-at-edge': ^3.7.0
@@ -12343,7 +12343,7 @@ packages:
     resolution: {integrity: sha512-T4rieHaC1EXcES0Kxxj4JWgaUQHDk+qwHcYOCFHfiwKz7tOVPLq7Hjq9dM1WCMhylqMEfP7hMcOIChvotiZegA==}
     engines: {node: '>=4.0.0'}
     dependencies:
-      sax: 1.2.1
+      sax: 1.3.0
       xmlbuilder: 11.0.1
     dev: true
 
