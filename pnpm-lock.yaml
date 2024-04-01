@@ -15,8 +15,8 @@ dependencies:
     specifier: ^8.2.5
     version: 8.2.5(astro@4.5.12)
   '@astrojs/starlight':
-    specifier: ^0.21.2
-    version: 0.21.2(astro@4.5.12)
+    specifier: ^0.21.3
+    version: 0.21.3(astro@4.5.12)
   '@astrojs/upgrade':
     specifier: ^0.2.3
     version: 0.2.3
@@ -333,7 +333,7 @@ devDependencies:
     version: 2.41.4(@aws-sdk/credential-provider-node@3.540.0)
   starlight-links-validator:
     specifier: ^0.7.1
-    version: 0.7.1(@astrojs/starlight@0.21.2)(astro@4.5.12)
+    version: 0.7.1(@astrojs/starlight@0.21.3)(astro@4.5.12)
   ts-node:
     specifier: ^10.9.2
     version: 10.9.2(@types/node@20.11.30)(typescript@5.3.3)
@@ -520,8 +520,8 @@ packages:
       sitemap: 7.1.1
       zod: 3.22.4
 
-  /@astrojs/starlight@0.21.2(astro@4.5.12):
-    resolution: {integrity: sha512-ziDfrbhBjw/+HwMITk6yz7SbkQKQJZY9GlaPHntSPq4kYs+b2ru3toIxj2l3T9LUFtUpNWHkj+C1wJTmfLZfaw==}
+  /@astrojs/starlight@0.21.3(astro@4.5.12):
+    resolution: {integrity: sha512-SvIKB8ECR+RhYdTg3bKsTL2e5Yac75eTatfOMGjkp3ced9Bx34xXMSURuKx/AHBWo1X/+WoWzKT3Y3d2y7kkVg==}
     peerDependencies:
       astro: ^4.2.7
     dependencies:
@@ -11327,14 +11327,14 @@ packages:
       escape-string-regexp: 2.0.0
     dev: true
 
-  /starlight-links-validator@0.7.1(@astrojs/starlight@0.21.2)(astro@4.5.12):
+  /starlight-links-validator@0.7.1(@astrojs/starlight@0.21.3)(astro@4.5.12):
     resolution: {integrity: sha512-6SYqCGQdiiTMrgCE4d3F/kFae1rYzuVk0QUs9MXqj6w65tZLvd4qieTrN2NdDNMWXyoxzUTR+ehNzajqr7ZUEg==}
     engines: {node: '>=18.14.1'}
     peerDependencies:
       '@astrojs/starlight': '>=0.15.0'
       astro: '>=4.0.0'
     dependencies:
-      '@astrojs/starlight': 0.21.2(astro@4.5.12)
+      '@astrojs/starlight': 0.21.3(astro@4.5.12)
       astro: 4.5.12(@types/node@20.11.30)(typescript@5.3.3)
       github-slugger: 2.0.0
       hast-util-from-html: 2.0.1
