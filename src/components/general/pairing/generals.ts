@@ -1,4 +1,4 @@
-import { atom, map, action, computed } from "nanostores";
+import { atom, map,  computed } from "nanostores";
 import { persistentAtom, persistentMap } from '@nanostores/persistent'
 import { logger } from '@nanostores/logger'
 
@@ -205,8 +205,8 @@ export const generalPairs = computed([allGenerals, typeAndUseMap,conflictingGene
 )
 
 
-export const togglePrimary = action(selections, 'toggleP', (store, general: GeneralElementType, enabled: boolean) => {
-  const data = store.get().primaries;
+export function togglePrimary (general: GeneralElementType, enabled: boolean) {
+  const data = selections.get().primaries;
   const nd = new Array<GeneralToggleType>();
   if(data !== null && data !== undefined ) {
     for(let i =0; i < data.length; i++) {
@@ -239,16 +239,18 @@ export const togglePrimary = action(selections, 'toggleP', (store, general: Gene
     
   }
   if(DEBUG){console.log(`nd has final length ${nd.length}`)}
-  store.setKey('primaries',nd)
-})
+  selections.setKey('primaries',nd)
+}
 
-export const toggleSecondary = action(selections, 'toggleS', (store, general: GeneralElementType, enabled: boolean) => {
+export function toggleSecondary ( general: GeneralElementType, enabled: boolean) {
+  let store = selections;
   const data = store.get().secondaries;
   
-})
+}
 
-export const resetPrimary = action(selections, 'resetP', (store) => {
-  if(store !== null && store !== undefined) {
+export function resetPrimary ()  {
+  if(selections !== null && selections !== undefined) {
+
     let nd = new Array<GeneralToggleType>();
     const generals = allGenerals.get();
     if(generals !== null && generals !== undefined) {
@@ -260,15 +262,16 @@ export const resetPrimary = action(selections, 'resetP', (store) => {
           }
         }
       }
-      store.setKey('primaries',nd);
+      selections.setKey('primaries',nd);
     }
     else { 
-      store.setKey('primaries', null);
+      selections.setKey('primaries', null);
     }
   }
-})
+}
 
-export const resetSecondary = action(selections, 'reset', (store) => {
+export function resetSecondary () {
+  let store = selections;
   if(store !== null && store !== undefined) {
     let nd = new Array<GeneralToggleType>();
     const generals = allGenerals.get();
@@ -287,7 +290,7 @@ export const resetSecondary = action(selections, 'reset', (store) => {
       store.setKey('secondaries', null);
     }
   }
-})
+}
 
 let d1 = null;
 

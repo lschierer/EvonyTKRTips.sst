@@ -1,4 +1,4 @@
-import { action, atom } from 'nanostores'
+import {  atom } from 'nanostores'
 import { persistentAtom } from '@nanostores/persistent'
 import { logger } from '@nanostores/logger'
 
@@ -14,13 +14,13 @@ let destroy = logger({
   'FormValues': formValues,
 })
 
-export const formInit = action(formValues, 'initialize',(store) => {
-  store.set([]);
-})
+export function formInit () {
+  formValues.set([]);
+}
 
-export const addValue = action(formValues, 'AddValue', (store, mykey: string, v: string|number|boolean) => {
+export function addValue (mykey: string, v: string|number|boolean) {
   const returnable = new Map<string, number|string|boolean>();
-  let mystore = store.get();
+  let mystore = formValues.get();
   if(mystore !== null) {
     mystore.forEach((val) => {
       const k = Object.keys(val)[0];
@@ -34,8 +34,8 @@ export const addValue = action(formValues, 'AddValue', (store, mykey: string, v:
     const nv:FormValues = {[key]: value}
     storable.push(nv);
   })
-  store.set(storable);
-});
+  formValues.set(storable);
+};
 
 export const getValue = (mykey: string) => {
   const values = new Map<string, number|string|boolean>();

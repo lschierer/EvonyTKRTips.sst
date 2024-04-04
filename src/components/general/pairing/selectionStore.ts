@@ -1,5 +1,5 @@
 import {z} from "zod";
-import {map, action} from "nanostores";
+import {map} from "nanostores";
 import { logger } from '@nanostores/logger'
 
 import * as b from "@schemas/baseSchemas.ts";
@@ -48,19 +48,18 @@ if(DEBUG) {
 })
 }
 
-export const pickType = action(typeAndUseMap, 'Pick Type', 
-(store, newType: b.ClassEnumType) => {
-  store.setKey('type',newType)
-})
+export function pickType(newType: b.ClassEnumType){
+  typeAndUseMap.setKey('type', newType);
+}
 
-export const pickUseCase = action(typeAndUseMap, 'Pick Use Case', 
-(store, newCase: generalUseCaseType) => {
-  store.setKey('use', newCase);
-})
 
-export const PrimaryInvestmentInitialize = action(primaryInvestmentMap, 'Initialize PIM', (store) => {
-  if(store.value !== undefined && store.value !== null) {
-    const value = store.value;
+export function pickUseCase( newCase: generalUseCaseType) {
+  typeAndUseMap.setKey('use', newCase);
+}
+
+export function PrimaryInvestmentInitialize () {
+  if(primaryInvestmentMap.value !== undefined && primaryInvestmentMap.value !== null) {
+    const value = primaryInvestmentMap.value;
     if(
       (value.speciality1 === undefined || value.speciality1 === null) &&
       (value.speciality2 === undefined || value.speciality2 === null) &&
@@ -70,21 +69,21 @@ export const PrimaryInvestmentInitialize = action(primaryInvestmentMap, 'Initial
       (value.beast === undefined || value.beast === null) &&
       (value.ascending === undefined || value.ascending === null)
     ) {
-      store.setKey('speciality1', b.qualityColor.enum.Gold)
-      store.setKey('speciality2', b.qualityColor.enum.Gold)
-      store.setKey('speciality3', b.qualityColor.enum.Gold)
-      store.setKey('speciality4', b.qualityColor.enum.Gold)
-      store.setKey('ascending',b.levels.enum[10])
-      store.setKey('dragon', true)
-      store.setKey('beast', false)
-      store.setKey('debuffLead', false);
+      primaryInvestmentMap.setKey('speciality1', b.qualityColor.enum.Gold)
+      primaryInvestmentMap.setKey('speciality2', b.qualityColor.enum.Gold)
+      primaryInvestmentMap.setKey('speciality3', b.qualityColor.enum.Gold)
+      primaryInvestmentMap.setKey('speciality4', b.qualityColor.enum.Gold)
+      primaryInvestmentMap.setKey('ascending',b.levels.enum[10])
+      primaryInvestmentMap.setKey('dragon', true)
+      primaryInvestmentMap.setKey('beast', false)
+      primaryInvestmentMap.setKey('debuffLead', false);
     }
   }
-});
+};
 
-export const SecondaryInvestmentInitialize = action(secondaryInvestmentMap, 'Initialize SIM', (store) => {
-  if(store.value !== undefined && store.value !== null) {
-    const value = store.value;
+export function SecondaryInvestmentInitialize () {
+  if(secondaryInvestmentMap.value !== undefined && secondaryInvestmentMap.value !== null) {
+    const value = secondaryInvestmentMap.value;
     if(
       (value.speciality1 === undefined || value.speciality1 === null) &&
       (value.speciality2 === undefined || value.speciality2 === null) &&
@@ -94,13 +93,13 @@ export const SecondaryInvestmentInitialize = action(secondaryInvestmentMap, 'Ini
       (value.beast === undefined || value.beast === null) &&
       (value.ascending === undefined || value.ascending === null)
     ) {
-      store.setKey('speciality1', b.qualityColor.enum.Gold)
-      store.setKey('speciality2', b.qualityColor.enum.Gold)
-      store.setKey('speciality3', b.qualityColor.enum.Gold)
-      store.setKey('speciality4', b.qualityColor.enum.Gold)
-      store.setKey('ascending',b.levels.enum[0])
-      store.setKey('dragon', false)
-      store.setKey('beast', false)
+      secondaryInvestmentMap.setKey('speciality1', b.qualityColor.enum.Gold)
+      secondaryInvestmentMap.setKey('speciality2', b.qualityColor.enum.Gold)
+      secondaryInvestmentMap.setKey('speciality3', b.qualityColor.enum.Gold)
+      secondaryInvestmentMap.setKey('speciality4', b.qualityColor.enum.Gold)
+      secondaryInvestmentMap.setKey('ascending',b.levels.enum[0])
+      secondaryInvestmentMap.setKey('dragon', false)
+      secondaryInvestmentMap.setKey('beast', false)
     }
   }
-});
+};
