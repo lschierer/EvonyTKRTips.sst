@@ -3,7 +3,7 @@ import {customElement, property, state} from 'lit/decorators.js';
 import {ref, createRef,  type Ref} from 'lit/directives/ref.js';
 import { StoreController } from "@nanostores/lit";
 
-const DEBUG = true;
+const DEBUG = false;
 
 
 import { SpectrumElement } from '@spectrum-web-components/base';

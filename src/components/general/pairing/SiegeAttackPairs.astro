@@ -39,6 +39,8 @@ import {
 
 import { PairingPage } from "./index";
 
+const DEBUG = false;
+
 const dataUrl = new URL("/generals/all.json", Astro.url);
 const conflictData = new URL("/generalConflictData/conflicts.json", Astro.url);
 
@@ -68,9 +70,9 @@ let result:
 );
 let allGeneralsData: string | null = null;
 if (result.success) {
-  console.log(`validation passed`);
+  if (DEBUG) console.log(`validation passed`);
   if (result.data !== undefined && result.data !== null) {
-    console.log(`and has data`);
+    if (DEBUG) console.log(`and has data`);
     allGeneralsData = JSON.stringify(result.data);
   }
 } else {
@@ -134,7 +136,7 @@ if (result.success) {
       super();
       for (let ns in this.stores) {
         this.stores[ns].subscribe((ms) => {
-          console.log(`subscribe for ${ns}`);
+          //console.log(`subscribe for ${ns}`);
         });
       }
       
@@ -144,13 +146,13 @@ if (result.success) {
       if (allGeneralsData !== null && allGeneralsData !== undefined) {
         allGenerals.set(JSON.parse(allGeneralsData));
       } else {
-        console.log(`dataset agd was null or undefined`);
+        //console.log(`dataset agd was null or undefined`);
       }
 
       if (allConflictData !== null && allConflictData !== undefined) {
         conflictRecords.set(JSON.parse(allConflictData));
       } else {
-        console.log(`dataset acd was null or undefined`);
+        //console.log(`dataset acd was null or undefined`);
       }
     }
   }
