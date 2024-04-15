@@ -11,6 +11,7 @@ conflicts:
     - Antara
     - Edward III
     - Idunn
+    - Idunn (Siege)
 books:
   - name: Ranged Defense Increase
     level: '1'
