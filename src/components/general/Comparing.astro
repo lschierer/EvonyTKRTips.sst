@@ -4,4 +4,4 @@ import {ComparingTable} from "./ComparingTable";
 const dataUrl = new URL('/generals/all.json', Astro.url)
 ---
 
-<ComparingTable dataurl={dataUrl} client:only></ComparingTable>
+<ComparingTable dataurl={dataUrl} client:only="lit"></ComparingTable>

@@ -140,7 +140,7 @@ if (validation.success) {
         if (notes.data !== undefined && notes.data !== null && notes.data.length >= 1) {
             const result = mydata.map((note) => {
                 return `
-                    <sp-banner class="not-content" type=${severity[note.severity]()} client:only>
+                    <sp-banner class="not-content" type=${severity[note.severity]()} client:only="lit">
                         <div slot="header">General Usage Note</div>
                         <div slot="content">
                             ${note.text}
@@ -216,7 +216,7 @@ if (validation.success) {
                     type=${warning ? 
                         severity[syslogSeverity.enum.warning]()
                         : severity[syslogSeverity.enum.alert]()} 
-                    client:only>
+                    client:only="lit">
                         <div slot="header">General Conflict Notice</div>
                         <div slot="content">
                             This general has conflicts with the ${book.name} level ${book.level} skill book.

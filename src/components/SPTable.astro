@@ -15,6 +15,6 @@ const csvUrl = new URL(cvsName, Astro.url);
 ---
 <script >
 </script>
-<CompareMayors dataurl={csvUrl} client:only>
+<CompareMayors dataurl={csvUrl} client:only="lit">
     <slot></slot>
 </CompareMayors>
