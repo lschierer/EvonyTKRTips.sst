@@ -1,35 +1,35 @@
 ---
 name: Suppress
 attribute:
-  - level: 'Green'
+  - level: Green
     buff:
     - attribute: HP
       condition: Enemy
       value:
         number: -1
         unit: percentage
-  - level: 'Blue'
+  - level: Blue
     buff:
     - attribute: HP
       condition: Enemy
       value:
         number: -1
         unit: percentage
-  - level: 'Purple'
+  - level: Purple
     buff:
     - attribute: HP
       condition: Enemy
       value:
         number: -2
         unit: percentage
-  - level: 'Orange'
+  - level: Orange
     buff:
     - attribute: HP
       condition: Enemy
       value:
         number: -2
         unit: percentage
-  - level: 'Gold'
+  - level: Gold
     buff:
     - attribute: HP
       condition: Enemy

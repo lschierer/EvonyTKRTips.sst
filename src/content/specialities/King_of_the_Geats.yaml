@@ -1,7 +1,7 @@
 ---
 name: King of the Geats
 attribute:
-  - level: 'Green'
+  - level: Green
     buff:
     - attribute: Attack
       condition: Against_Monsters
@@ -19,7 +19,7 @@ attribute:
       value:
         number: 3
         unit: percentage
-  - level: 'Blue'
+  - level: Blue
     buff:
     - attribute: Attack
       condition: Against_Monsters
@@ -37,7 +37,7 @@ attribute:
       value:
         number: 4
         unit: percentage
-  - level: 'Purple'
+  - level: Purple
     buff:
     - attribute: Attack
       condition: Against_Monsters
@@ -55,7 +55,7 @@ attribute:
       value:
         number: 7
         unit: percentage
-  - level: 'Orange'
+  - level: Orange
     buff:
     - attribute: Attack
       condition: Against_Monsters
@@ -73,7 +73,7 @@ attribute:
       value:
         number: 7
         unit: percentage
-  - level: 'Gold'
+  - level: Gold
     buff:
     - attribute: Attack
       condition: Against_Monsters

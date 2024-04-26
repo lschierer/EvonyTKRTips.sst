@@ -1,63 +1,88 @@
 ---
-name: Siege Machine Assault
+name: Ground Troop Ares
 attribute:
-  - level: 'Green'
+  - level: Green
     buff:
     - attribute: Attack
-      class: Siege
+      class: Ground
+      value:
+        number: 1
+        unit: percentage
+    - attribute: Defense
+      class: Ground
       value:
         number: 1
         unit: percentage
     - attribute: HP
-      class: Siege
+      class: Ground
       value:
         number: 1
         unit: percentage
-  - level: 'Blue'
+  - level: Blue
     buff:
     - attribute: Attack
-      class: Siege
+      class: Ground
+      value:
+        number: 1
+        unit: percentage
+    - attribute: Defense
+      class: Ground
       value:
         number: 1
         unit: percentage
     - attribute: HP
-      class: Siege
+      class: Ground
       value:
         number: 1
         unit: percentage
-  - level: 'Purple'
+  - level: Purple
     buff:
     - attribute: Attack
-      class: Siege
+      class: Ground
+      value:
+        number: 2
+        unit: percentage
+    - attribute: Defense
+      class: Ground
       value:
         number: 2
         unit: percentage
     - attribute: HP
-      class: Siege
+      class: Ground
       value:
         number: 2
         unit: percentage
-  - level: 'Orange'
+  - level: Orange
     buff:
     - attribute: Attack
-      class: Siege
+      class: Ground
+      value:
+        number: 2
+        unit: percentage
+    - attribute: Defense
+      class: Ground
       value:
         number: 2
         unit: percentage
     - attribute: HP
-      class: Siege
+      class: Ground
       value:
         number: 2
         unit: percentage
-  - level: 'Gold'
+  - level: Gold
     buff:
     - attribute: Attack
-      class: Siege
+      class: Ground
+      value:
+        number: 4
+        unit: percentage
+    - attribute: Defense
+      class: Ground
       value:
         number: 4
         unit: percentage
     - attribute: HP
-      class: Siege
+      class: Ground
       value:
         number: 4
         unit: percentage

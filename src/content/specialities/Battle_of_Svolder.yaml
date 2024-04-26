@@ -1,7 +1,7 @@
 ---
 name: Battle of Svolder
 attribute:
-  - level: 'Green'
+  - level: Green
     buff:
     - attribute: Attack
       class: Ground
@@ -18,7 +18,7 @@ attribute:
       value:
         number: 1
         unit: percentage
-  - level: 'Blue'
+  - level: Blue
     buff:
     - attribute: Attack
       class: Ground
@@ -35,7 +35,7 @@ attribute:
       value:
         number: 2
         unit: percentage
-  - level: 'Purple'
+  - level: Purple
     buff:
     - attribute: Attack
       class: Ground
@@ -52,7 +52,7 @@ attribute:
       value:
         number: 3
         unit: percentage
-  - level: 'Orange'
+  - level: Orange
     buff:
     - attribute: Attack
       class: Ground
@@ -69,7 +69,7 @@ attribute:
       value:
         number: 3
         unit: percentage
-  - level: 'Gold'
+  - level: Gold
     buff:
     - attribute: Attack
       class: Ground
