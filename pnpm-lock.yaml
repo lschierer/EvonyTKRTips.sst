@@ -251,6 +251,9 @@ importers:
       yaml:
         specifier: ^2.4.1
         version: 2.4.1
+      yq:
+        specifier: ^0.0.1
+        version: 0.0.1
       zod:
         specifier: ^3.23.4
         version: 3.23.4
@@ -5920,6 +5923,9 @@ packages:
 
   yoga-wasm-web@0.3.3:
     resolution: {integrity: sha512-N+d4UJSJbt/R3wqY7Coqs5pcV0aUj2j9IaQ3rNj9bVCLld8tTGKRa2USARjnvZJWVx1NDmQev8EknoczaOQDOA==}
+
+  yq@0.0.1:
+    resolution: {integrity: sha512-COvAm2Oc/W0kjvtyWVkThG4V6MPrMUhCRfO5XrzvojAn3Xb5/YRrMBbF3DrxRo/1o8TySMn2ZGLyt1fLj/TuLw==}
 
   zip-stream@4.1.1:
     resolution: {integrity: sha512-9qv4rlDiopXg4E69k+vMHjNN63YFMe9sZMrdlvKnCjlCRWeCBswPPMPUfx+ipsAWq1LXHe70RcbaHdJJpS6hyQ==}
@@ -13606,6 +13612,8 @@ snapshots:
   yocto-queue@1.0.0: {}
 
   yoga-wasm-web@0.3.3: {}
+
+  yq@0.0.1: {}
 
   zip-stream@4.1.1:
     dependencies:
