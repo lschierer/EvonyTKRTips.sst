@@ -68,16 +68,6 @@ const severity = {
     },
 }
 
-const buffProps = {
-  dragon: true,
-  beast: false,
-  ascending: '10',
-  speciality1: 'Gold',
-  speciality2: 'Gold',
-  speciality3: 'Gold',
-  speciality4: 'Gold',
-  extraBooks: [],
-}
 
 
 const {generalEntry} = Astro.props;
@@ -95,11 +85,8 @@ let usageNotes = '';
 let general: GeneralClassType ;
 let generalName = '';
 let attack = 0;
-let attackBuff = 0;
 let defense = 0;
-let defenseBuff = 0;
 let hp = 0;
-let hpBuff = 0;
 let starsNum = 0;
 let starsLimit = 0;
 let starsHtml = ' ';
@@ -127,12 +114,9 @@ if (validation.success) {
     
     generalName = general.name.toLocaleLowerCase().replace(/\s+/g, '_');
     
-    attackBuff = 0
-    defenseBuff = 0
-    hpBuff = 0
-    attack = (general.attack + (general.attack_increment as number) * 45) + (general.attack + (general.attack_increment as number) * 45 * attackBuff)
-    defense = (general.defense + (general.defense_increment as number) * 45) + (general.defense + (general.defense_increment as number) * 45 * defenseBuff)
-    hp = (general.leadership + (general.leadership_increment as number) * 45) + (general.leadership + (general.leadership_increment as number) * 45 * hpBuff)
+    attack = (general.attack + (general.attack_increment as number) * 45)
+    defense = (general.defense + (general.defense_increment as number) * 45)
+    hp = (general.leadership + (general.leadership_increment as number) * 45)
     level = (general.display === 'summary') ? (+general.level * 45) : +general.level;
     const notes = z.array(Note).safeParse(general.note);
     if (notes.success) {
@@ -273,25 +257,60 @@ if (validation.success) {
           <span class="label spectrum-Body spectrum-Body--sizeS">Base:</span> {general[ia as keyof typeof general]}<br/>
           <span class="label spectrum-Body spectrum-Body--sizeS">Growth Rate:</span> {general[(ia + '_increment') as keyof typeof general]}<br/>
           <span class="label spectrum-Body spectrum-Body--sizeS">Max:</span> {((general[(ia as keyof typeof general)] as number) + ((general[((ia + '_increment') as keyof typeof general)] as number) * 45)).toFixed(2)}<br/>
-          {(!ia.localeCompare("attack")) &&
-            <>
-              <span class="label spectrum-Body spectrum-Body--sizeS">Effective Buff:</span> {attackBuff}<br/>
-              <span class="label spectrum-Body spectrum-Body--sizeS">Score:</span> {attack.toFixed(2)}<br/>
-            </>}
-          {(!ia.localeCompare("defense")) &&
-            <>
-                <span class="label spectrum-Body spectrum-Body--sizeS">Effective Buff:</span> {defenseBuff}<br/>
-                <span class="label spectrum-Body spectrum-Body--sizeS">Score:</span> {defense.toFixed(2)}<br/>
-            </>}
-          {(!ia.localeCompare("leadership")) &&
-            <>
-                <span class="label spectrum-Body spectrum-Body--sizeS">Effective Buff:</span> {hpBuff}<br/>
-                <span class="label spectrum-Body spectrum-Body--sizeS">Score:</span> {hp.toFixed(2)}<br/>
-            </>}
         </div>
       ))}
     </div>
     <br/>
+    {general.books && (
+    <div class="SkillBooks non-content" style="margin: 1px;">
+        <span class="spectrum-Heading spectrum-Heading--sizeXS">Special Skill:</span>
+        {general.books.map((book: BookType) => (
+          (specialSkillBook.safeParse(book)).success && (
+            <>
+                <span class="spectrum-Heading spectrum-Heading--sizeXXS">{book.name}</span>
+                {Array.isArray((book as specialSkillBookType).buff) && (
+                  <ul class="non-content" id={book.name.toLocaleLowerCase().replace(/\s+/g, '_')}>
+                      {book.buff.map((b) => (
+                        <li >
+                            {b.condition ? (b.condition as string).replaceAll(/_/g, ' ') : ''} 
+                            {(b.class === undefined || b.class === null) ? '' : b.class !== 'all' ? b.class : 'all troops '} 
+                            {b.attribute ? b.attribute.replaceAll(/_/g, ' ') : ''} 
+                            {(b.value && b.value.number < 0) ? '-' : '+'}{b.value!.number}{b.value!.unit ? '%' : ''}
+                        </li>
+                      ))}
+                  </ul>
+                )}
+            </>
+          )
+        ))}
+    </div>
+  )}
+  <br/>
+  {(starsNum && general.ascending) && (
+    <span class="label spectrum-Heading spectrum-Heading--sizeXS">Ascending Attributes</span>
+    <div class="Ascending non-content">
+    {general.ascending.map((a) => (
+        <>
+            <div class="ascendingAttribute non-content">
+                <span class="spectrum-Heading spectrum-Heading--sizeXXS center">
+                    {+a.level - 5}{+a.level >= 9 ? 'th' : +a.level === 8 ? 'rd' : (+a.level) === 7 ? "nd" : 'st'} Star
+                </span><br/>
+                <ul class="non-content">
+                    {a.buff.map((b: BuffType) => (
+                    <li class="non-content">
+                        {b.condition ? (b.condition as string).replaceAll(/_/g, ' '): ''} 
+                        {(b.class === undefined || b.class === null) ? '' : b.class !== 'all' ? b.class : 'all troops '} 
+                        {b.attribute? b.attribute.replaceAll(/_/g, ' ') : ''} 
+                        {(b.value && b.value.number < 0) ? '-' : '+'}{b.value!.number}{b.value!.unit ? '%' : ''}
+                    </li>
+                    ))}
+                </ul>
+            </div>
+        </>
+    ))}
+    </div>
+  )}
+  <br/>
   {general.specialities && (
     <span class="label spectrum-Heading spectrum-Heading--sizeXS">Specialities</span>
     <div class="Specialities non-content">
@@ -320,56 +339,6 @@ if (validation.success) {
                 </div>
               )}
           </div>
-        ))}
-    </div>
-  )}
-    <br/>
-  {(starsNum && general.ascending) && (
-          <span class="label spectrum-Heading spectrum-Heading--sizeXS">Ascending Attributes</span>
-          <div class="Ascending non-content">
-            {general.ascending.map((a) => (
-                    <>
-                        <div class="ascendingAttribute non-content">
-                            <span class="spectrum-Heading spectrum-Heading--sizeXXS center">
-                                {+a.level - 5}{+a.level >= 9 ? 'th' : +a.level === 8 ? 'rd' : (+a.level) === 7 ? "nd" : 'st'} Star
-                            </span><br/>
-                            <ul class="non-content">
-                              {a.buff.map((b: BuffType) => (
-                                <li class="non-content">
-                                    {b.condition ? (b.condition as string).replaceAll(/_/g, ' '): ''} 
-                                    {(b.class === undefined || b.class === null) ? '' : b.class !== 'all' ? b.class : 'all troops '} 
-                                    {b.attribute? b.attribute.replaceAll(/_/g, ' ') : ''} 
-                                    {(b.value && b.value.number < 0) ? '-' : '+'}{b.value!.number}{b.value!.unit ? '%' : ''}
-                                </li>
-                              ))}
-                            </ul>
-                        </div>
-                    </>
-            ))}
-          </div>
-  )}
-    <br/>
-  {general.books && (
-    <div class="SkillBooks non-content" style="margin: 1px;">
-        <span class="spectrum-Heading spectrum-Heading--sizeXS">Special Skill:</span>
-        {general.books.map((book: BookType) => (
-          (specialSkillBook.safeParse(book)).success && (
-            <>
-                <span class="spectrum-Heading spectrum-Heading--sizeXXS">{book.name}</span>
-                {Array.isArray((book as specialSkillBookType).buff) && (
-                  <ul class="non-content" id={book.name.toLocaleLowerCase().replace(/\s+/g, '_')}>
-                      {book.buff.map((b) => (
-                        <li >
-                            {b.condition ? (b.condition as string).replaceAll(/_/g, ' ') : ''} 
-                            {(b.class === undefined || b.class === null) ? '' : b.class !== 'all' ? b.class : 'all troops '} 
-                            {b.attribute ? b.attribute.replaceAll(/_/g, ' ') : ''} 
-                            {(b.value && b.value.number < 0) ? '-' : '+'}{b.value!.number}{b.value!.unit ? '%' : ''}
-                        </li>
-                      ))}
-                  </ul>
-                )}
-            </>
-          )
         ))}
     </div>
   )}
