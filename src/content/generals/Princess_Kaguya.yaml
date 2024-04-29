@@ -37,350 +37,81 @@ general:
   ascending:
     - level: '6'
       buff:
-      - attribute: Defense
-        class: Archers
-        value:
-          number: 15
-          unit: percentage
-      - attribute: Defense
-        class: Siege
-        value:
-          number: 15
-          unit: percentage
-      - attribute: HP
-        class: Archers
-        value:
-          number: 10
-          unit: percentage
-      - attribute: HP
-        class: Siege
-        value:
-          number: 10
-          unit: percentage
+        - attribute: Defense
+          class: Archers
+          value:
+            number: 15
+            unit: percentage
+        - attribute: Defense
+          class: Siege
+          value:
+            number: 15
+            unit: percentage
+        - attribute: HP
+          class: Archers
+          value:
+            number: 10
+            unit: percentage
+        - attribute: HP
+          class: Siege
+          value:
+            number: 10
+            unit: percentage
     - level: '7'
       buff:
-      - attribute: Wounded_to_Death
-        condition: Enemy_In_City
-        value:
-          number: 10
-          unit: percentage
+        - attribute: Wounded_to_Death
+          condition: Enemy_In_City
+          value:
+            number: 10
+            unit: percentage
     - level: '8'
       buff:
-      - attribute: March_Size_Capacity
-        value:
-          number: 14
-          unit: percentage
+        - attribute: March_Size_Capacity
+          value:
+            number: 14
+            unit: percentage
     - level: '9'
       buff:
-      - attribute: Attack
-        condition: Marching
-        class: Archers
-        value:
-          number: 10
-          unit: percentage
-      - attribute: HP
-        condition: Marching
-        class: Archers
-        value:
-          number: 20
-          unit: percentage
-      - attribute: HP
-        condition: Marching
-        class: Siege
-        value:
-          number: 20
-          unit: percentage
+        - attribute: Attack
+          condition: Marching
+          class: Archers
+          value:
+            number: 10
+            unit: percentage
+        - attribute: HP
+          condition: Marching
+          class: Archers
+          value:
+            number: 20
+            unit: percentage
+        - attribute: HP
+          condition: Marching
+          class: Siege
+          value:
+            number: 20
+            unit: percentage
     - level: '10'
       buff:
-      - attribute: Attack
-        condition: Marching
-        class: Archers
-        value:
-          number: 15
-          unit: percentage
-      - attribute: Defense
-        condition: Marching
-        class: Archers
-        value:
-          number: 20
-          unit: percentage
-      - attribute: Defense
-        condition: Marching
-        class: Siege
-        value:
-          number: 20
-          unit: percentage
+        - attribute: Attack
+          condition: Marching
+          class: Archers
+          value:
+            number: 15
+            unit: percentage
+        - attribute: Defense
+          condition: Marching
+          class: Archers
+          value:
+            number: 20
+            unit: percentage
+        - attribute: Defense
+          condition: Marching
+          class: Siege
+          value:
+            number: 20
+            unit: percentage
   specialities:
-    - name: Ranged Troop Formation
-      attribute:
-        - level: 'Green'
-          buff:
-          - attribute: Attack
-            class: Archers
-            value:
-              number: 1
-              unit: percentage
-          - attribute: Defense
-            class: Archers
-            value:
-              number: 1
-              unit: percentage
-        - level: 'Blue'
-          buff:
-          - attribute: Attack
-            class: Archers
-            value:
-              number: 1
-              unit: percentage
-          - attribute: Defense
-            class: Archers
-            value:
-              number: 1
-              unit: percentage
-        - level: 'Purple'
-          buff:
-          - attribute: Attack
-            class: Archers
-            value:
-              number: 2
-              unit: percentage
-          - attribute: Defense
-            class: Archers
-            value:
-              number: 2
-              unit: percentage
-        - level: 'Orange'
-          buff:
-          - attribute: Attack
-            class: Archers
-            value:
-              number: 2
-              unit: percentage
-          - attribute: Defense
-            class: Archers
-            value:
-              number: 2
-              unit: percentage
-        - level: 'Gold'
-          buff:
-          - attribute: Attack
-            class: Archers
-            value:
-              number: 4
-              unit: percentage
-          - attribute: Defense
-            class: Archers
-            value:
-              number: 4
-              unit: percentage
-    - name: Siege
-      attribute:
-        - level: 'Green'
-          buff:
-          - attribute: March_Size_Capacity
-            value:
-              number: 1
-              unit: percentage
-          - attribute: Attack
-            condition: Attacking
-            class: Siege
-            value:
-              number: 1
-              unit: percentage
-          - attribute: Attack
-            condition: Attacking
-            class: Archers
-            value:
-              number: 1
-              unit: percentage
-        - level: 'Blue'
-          buff:
-          - attribute: March_Size_Capacity
-            value:
-              number: 1
-              unit: percentage
-          - attribute: Attack
-            condition: Attacking
-            class: Siege
-            value:
-              number: 1
-              unit: percentage
-          - attribute: Attack
-            condition: Attacking
-            class: Archers
-            value:
-              number: 1
-              unit: percentage
-        - level: 'Purple'
-          buff:
-          - attribute: March_Size_Capacity
-            value:
-              number: 1
-              unit: percentage
-          - attribute: Attack
-            condition: Attacking
-            class: Siege
-            value:
-              number: 2
-              unit: percentage
-          - attribute: Attack
-            condition: Attacking
-            class: Archers
-            value:
-              number: 2
-              unit: percentage
-        - level: 'Orange'
-          buff:
-          - attribute: March_Size_Capacity
-            value:
-              number: 1
-              unit: percentage
-          - attribute: Attack
-            condition: Attacking
-            class: Siege
-            value:
-              number: 2
-              unit: percentage
-          - attribute: Attack
-            condition: Attacking
-            class: Archers
-            value:
-              number: 2
-              unit: percentage
-        - level: 'Gold'
-          buff:
-          - attribute: March_Size_Capacity
-            value:
-              number: 2
-              unit: percentage
-          - attribute: Attack
-            condition: Attacking
-            class: Siege
-            value:
-              number: 4
-              unit: percentage
-          - attribute: Attack
-            condition: Attacking
-            class: Archers
-            value:
-              number: 4
-              unit: percentage
-    - name: War God
-      attribute:
-        - level: Green
-          buff:
-            - attribute: Attack
-              value:
-                number: 1
-                unit: percentage
-        - level: Blue
-          buff:
-            - attribute: Attack
-              value:
-                number: 1
-                unit: percentage
-        - level: Purple
-          buff:
-            - attribute: Attack
-              value:
-                number: 1
-                unit: percentage
-        - level: Orange
-          buff:
-            - attribute: Attack
-              value:
-                number: 1
-                unit: percentage
-        - level: Gold
-          buff:
-            - attribute: Attack
-              value:
-                number: 2
-                unit: percentage
-    - name: The Tale of the Bamboo Cutter
-      attribute:
-        - level: Green
-          buff:
-            - attribute: Attack
-              class: Archers
-              value:
-                number: 3
-                unit: percentage
-            - attribute: Defense
-              class: Archers
-              value:
-                number: 2
-                unit: percentage
-            - attribute: HP
-              class: Archers
-              value:
-                number: 2
-                unit: percentage
-        - level: Blue
-          buff:
-            - attribute: Attack
-              class: Archers
-              value:
-                number: 3
-                unit: percentage
-            - attribute: Defense
-              class: Archers
-              value:
-                number: 2
-                unit: percentage
-            - attribute: HP
-              class: Archers
-              value:
-                number: 2
-                unit: percentage
-        - level: Purple
-          buff:
-            - attribute: Attack
-              class: Archers
-              value:
-                number: 6
-                unit: percentage
-            - attribute: Defense
-              class: Archers
-              value:
-                number: 3
-                unit: percentage
-            - attribute: HP
-              class: Archers
-              value:
-                number: 3
-                unit: percentage
-        - level: Orange
-          buff:
-            - attribute: Attack
-              class: Archers
-              value:
-                number: 6
-                unit: percentage
-            - attribute: Defense
-              class: Archers
-              value:
-                number: 3
-                unit: percentage
-            - attribute: HP
-              class: Archers
-              value:
-                number: 3
-                unit: percentage
-        - level: Gold
-          buff:
-            - attribute: Attack
-              class: Archers
-              value:
-                number: 12
-                unit: percentage
-            - attribute: Defense
-              class: Archers
-              value:
-                number: 5
-                unit: percentage
-            - attribute: HP
-              class: Archers
-              value:
-                number: 5
-                unit: percentage
+    - Ranged Troop Formation
+    - Siege
+    - War God
+    - The Tale of the Bamboo Cutter

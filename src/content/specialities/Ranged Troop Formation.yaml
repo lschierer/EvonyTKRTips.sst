@@ -6,7 +6,7 @@ attribute:
       - attribute: Attack
         class: Archers
         value:
-          number: 1
+          number: 2
           unit: percentage
       - attribute: Defense
         class: Archers

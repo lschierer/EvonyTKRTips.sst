@@ -29,403 +29,79 @@ general:
             number: 15
             unit: percentage
   specialities:
-    - name: Siege Machine Assault
-      attribute:
-        - level: Green
-          buff:
-            - attribute: Attack
-              class: Siege
-              value:
-                number: 1
-                unit: percentage
-            - attribute: HP
-              class: Siege
-              value:
-                number: 1
-                unit: percentage
-        - level: Blue
-          buff:
-            - attribute: Attack
-              class: Siege
-              value:
-                number: 1
-                unit: percentage
-            - attribute: HP
-              class: Siege
-              value:
-                number: 1
-                unit: percentage
-        - level: Purple
-          buff:
-            - attribute: Attack
-              class: Siege
-              value:
-                number: 2
-                unit: percentage
-            - attribute: HP
-              class: Siege
-              value:
-                number: 2
-                unit: percentage
-        - level: Orange
-          buff:
-            - attribute: Attack
-              class: Siege
-              value:
-                number: 2
-                unit: percentage
-            - attribute: HP
-              class: Siege
-              value:
-                number: 2
-                unit: percentage
-        - level: Gold
-          buff:
-            - attribute: Attack
-              class: Siege
-              value:
-                number: 4
-                unit: percentage
-            - attribute: HP
-              class: Siege
-              value:
-                number: 4
-                unit: percentage
-    - name: Siege
-      attribute:
-        - level: Green
-          buff:
-            - attribute: March_Size_Capacity
-              value:
-                number: 1
-                unit: percentage
-            - attribute: Attack
-              condition: Attacking
-              class: Siege
-              value:
-                number: 1
-                unit: percentage
-            - attribute: Attack
-              condition: Attacking
-              class: Archers
-              value:
-                number: 1
-                unit: percentage
-        - level: Blue
-          buff:
-            - attribute: March_Size_Capacity
-              value:
-                number: 1
-                unit: percentage
-            - attribute: Attack
-              condition: Attacking
-              class: Siege
-              value:
-                number: 1
-                unit: percentage
-            - attribute: Attack
-              condition: Attacking
-              class: Archers
-              value:
-                number: 1
-                unit: percentage
-        - level: Purple
-          buff:
-            - attribute: March_Size_Capacity
-              value:
-                number: 1
-                unit: percentage
-            - attribute: Attack
-              condition: Attacking
-              class: Siege
-              value:
-                number: 2
-                unit: percentage
-            - attribute: Attack
-              condition: Attacking
-              class: Archers
-              value:
-                number: 2
-                unit: percentage
-        - level: Orange
-          buff:
-            - attribute: March_Size_Capacity
-              value:
-                number: 1
-                unit: percentage
-            - attribute: Attack
-              condition: Attacking
-              class: Siege
-              value:
-                number: 2
-                unit: percentage
-            - attribute: Attack
-              condition: Attacking
-              class: Archers
-              value:
-                number: 2
-                unit: percentage
-        - level: Gold
-          buff:
-            - attribute: March_Size_Capacity
-              value:
-                number: 2
-                unit: percentage
-            - attribute: Attack
-              condition: Attacking
-              class: Siege
-              value:
-                number: 4
-                unit: percentage
-            - attribute: Attack
-              condition: Attacking
-              class: Archers
-              value:
-                number: 4
-                unit: percentage
-    - name: Siege Machine Ares
-      attribute:
-        - level: Green
-          buff:
-            - attribute: Attack
-              class: Siege
-              value:
-                number: 1
-                unit: percentage
-            - attribute: HP
-              class: Siege
-              value:
-                number: 1
-                unit: percentage
-            - attribute: Defense
-              class: Siege
-              value:
-                number: 1
-                unit: percentage
-        - level: Blue
-          buff:
-            - attribute: Attack
-              class: Siege
-              value:
-                number: 1
-                unit: percentage
-            - attribute: HP
-              class: Siege
-              value:
-                number: 1
-                unit: percentage
-            - attribute: Defense
-              class: Siege
-              value:
-                number: 1
-                unit: percentage
-        - level: Purple
-          buff:
-            - attribute: Attack
-              class: Siege
-              value:
-                number: 2
-                unit: percentage
-            - attribute: HP
-              class: Siege
-              value:
-                number: 2
-                unit: percentage
-            - attribute: Defense
-              class: Siege
-              value:
-                number: 2
-                unit: percentage
-        - level: Orange
-          buff:
-            - attribute: Attack
-              class: Siege
-              value:
-                number: 2
-                unit: percentage
-            - attribute: HP
-              class: Siege
-              value:
-                number: 2
-                unit: percentage
-            - attribute: Defense
-              class: Siege
-              value:
-                number: 2
-                unit: percentage
-        - level: Gold
-          buff:
-            - attribute: Attack
-              class: Siege
-              value:
-                number: 4
-                unit: percentage
-            - attribute: HP
-              class: Siege
-              value:
-                number: 4
-                unit: percentage
-            - attribute: Defense
-              class: Siege
-              value:
-                number: 4
-                unit: percentage
-    - name: Battle of Carrhae
-      attribute:
-        - level: 'Green'
-          buff:
-          - attribute: Attack
-            class: Siege
-            value:
-              number: 2
-              unit: percentage
-          - attribute: Defense
-            class: Siege
-            value:
-              number: 2
-              unit: percentage
-          - attribute: HP
-            class: Siege
-            value:
-              number: 2
-              unit: percentage
-        - level: 'Blue'
-          buff:
-          - attribute: Attack
-            class: Siege
-            value:
-              number: 3
-              unit: percentage
-          - attribute: Defense
-            class: Siege
-            value:
-              number: 2
-              unit: percentage
-          - attribute: HP
-            class: Siege
-            value:
-              number: 2
-              unit: percentage
-        - level: 'Purple'
-          buff:
-          - attribute: Attack
-            class: Siege
-            value:
-              number: 5
-              unit: percentage
-          - attribute: Defense
-            class: Siege
-            value:
-              number: 4
-              unit: percentage
-          - attribute: HP
-            class: Siege
-            value:
-              number: 4
-              unit: percentage
-        - level: 'Orange'
-          buff:
-          - attribute: Attack
-            class: Siege
-            value:
-              number: 5
-              unit: percentage
-          - attribute: Defense
-            class: Siege
-            value:
-              number: 4
-              unit: percentage
-          - attribute: HP
-            class: Siege
-            value:
-              number: 4
-              unit: percentage
-        - level: 'Gold'
-          buff:
-          - attribute: Attack
-            class: Siege
-            value:
-              number: 10
-              unit: percentage
-          - attribute: Defense
-            class: Siege
-            value:
-              number: 8
-              unit: percentage
-          - attribute: HP
-            class: Siege
-            value:
-              number: 8
-              unit: percentage
+    - Siege Machine Assault
+    - Siege
+    - Siege Machine Ares
+    - Battle of Carrhae
   ascending:
-        - level: '6'
-          buff:
-          - attribute: Attack
-            class: Siege
-            value:
-              number: 5
-              unit: percentage
-          - attribute: Defense
-            class: Siege
-            value:
-              number: 10
-              unit: percentage
-          - attribute: HP
-            class: Siege
-            value:
-              number: 10
-              unit: percentage
-        - level: '7'
-          buff:
-          - attribute: Wounded_to_Death
-            condition: Enemy_In_City
-            value:
-              number: 10
-              unit: percentage
-        - level: '8'
-          buff:
-          - attribute: Rally_Capacity
-            condition: When_Rallying
-            value:
-              number: 8
-              unit: percentage
-        - level: '9'
-          buff:
-          - attribute: Attack
-            class: Siege
-            value:
-              number: 5
-              unit: percentage
-          - attribute: Defense
-            class: Siege
-            value:
-              number: 10
-              unit: percentage
-          - attribute: HP
-            class: Siege
-            value:
-              number: 10
-              unit: percentage
-        - level: '10'
-          buff:
-          - attribute: Attack
-            class: Siege
-            value:
-              number: 5
-              unit: percentage
-          - attribute: Defense
-            class: Siege
-            value:
-              number: 10
-              unit: percentage
-          - attribute: HP
-            class: Siege
-            value:
-              number: 10
-              unit: percentage
-          - attribute: Attack
-            condition: dragon_to_the_attack
-            class: Siege
-            value:
-              number: 10
-              unit: percentage
+    - level: '6'
+      buff:
+        - attribute: Attack
+          class: Siege
+          value:
+            number: 5
+            unit: percentage
+        - attribute: Defense
+          class: Siege
+          value:
+            number: 10
+            unit: percentage
+        - attribute: HP
+          class: Siege
+          value:
+            number: 10
+            unit: percentage
+    - level: '7'
+      buff:
+        - attribute: Wounded_to_Death
+          condition: Enemy_In_City
+          value:
+            number: 10
+            unit: percentage
+    - level: '8'
+      buff:
+        - attribute: Rally_Capacity
+          condition: When_Rallying
+          value:
+            number: 8
+            unit: percentage
+    - level: '9'
+      buff:
+        - attribute: Attack
+          class: Siege
+          value:
+            number: 5
+            unit: percentage
+        - attribute: Defense
+          class: Siege
+          value:
+            number: 10
+            unit: percentage
+        - attribute: HP
+          class: Siege
+          value:
+            number: 10
+            unit: percentage
+    - level: '10'
+      buff:
+        - attribute: Attack
+          class: Siege
+          value:
+            number: 5
+            unit: percentage
+        - attribute: Defense
+          class: Siege
+          value:
+            number: 10
+            unit: percentage
+        - attribute: HP
+          class: Siege
+          value:
+            number: 10
+            unit: percentage
+        - attribute: Attack
+          condition: dragon_to_the_attack
+          class: Siege
+          value:
+            number: 10
+            unit: percentage

@@ -35,439 +35,100 @@ general:
             number: 30
             unit: percentage
   specialities:
-    - name: Mounted Troop Formation
-      attribute:
-        - level: Green
-          buff:
-            - attribute: Attack
-              class: Mounted
-              value:
-                number: 1
-                unit: percentage
-            - attribute: Defense
-              class: Mounted
-              value:
-                number: 1
-                unit: percentage
-        - level: Blue
-          buff:
-            - attribute: Attack
-              class: Mounted
-              value:
-                number: 1
-                unit: percentage
-            - attribute: Defense
-              class: Mounted
-              value:
-                number: 1
-                unit: percentage
-        - level: Purple
-          buff:
-            - attribute: Attack
-              class: Mounted
-              value:
-                number: 2
-                unit: percentage
-            - attribute: Defense
-              class: Mounted
-              value:
-                number: 2
-                unit: percentage
-        - level: Orange
-          buff:
-            - attribute: Attack
-              class: Mounted
-              value:
-                number: 2
-                unit: percentage
-            - attribute: Defense
-              class: Mounted
-              value:
-                number: 2
-                unit: percentage
-        - level: Gold
-          buff:
-            - attribute: Attack
-              class: Mounted
-              value:
-                number: 4
-                unit: percentage
-            - attribute: Defense
-              class: Mounted
-              value:
-                number: 4
-                unit: percentage
-    - name: Strike
-      attribute:
-        - level: Green
-          buff:
-            - attribute: Attack
-              class: Mounted
-              condition: Marching
-              value:
-                number: 2
-                unit: percentage
-            - attribute: Marching_Speed
-              value:
-                number: 1
-                unit: percentage
-        - level: Blue
-          buff:
-            - attribute: Attack
-              class: Mounted
-              condition: Marching
-              value:
-                number: 2
-                unit: percentage
-            - attribute: Marching_Speed
-              value:
-                number: 1
-                unit: percentage
-        - level: Purple
-          buff:
-            - attribute: Attack
-              class: Mounted
-              condition: Marching
-              value:
-                number: 4
-                unit: percentage
-            - attribute: Marching_Speed
-              value:
-                number: 2
-                unit: percentage
-        - level: Orange
-          buff:
-            - attribute: Attack
-              class: Mounted
-              condition: Marching
-              value:
-                number: 4
-                unit: percentage
-            - attribute: Marching_Speed
-              value:
-                number: 2
-                unit: percentage
-        - level: Gold
-          buff:
-            - attribute: Attack
-              class: Mounted
-              condition: Marching
-              value:
-                number: 8
-                unit: percentage
-            - attribute: Marching_Speed
-              value:
-                number: 4
-                unit: percentage
-    - name: Mounted Troop Ares
-      attribute:
-        - level: Green
-          buff:
-            - attribute: Attack
-              class: Mounted
-              value:
-                number: 1
-                unit: percentage
-            - attribute: HP
-              class: Mounted
-              value:
-                number: 1
-                unit: percentage
-            - attribute: Defense
-              class: Mounted
-              value:
-                number: 1
-                unit: percentage
-        - level: Blue
-          buff:
-            - attribute: Attack
-              class: Mounted
-              value:
-                number: 1
-                unit: percentage
-            - attribute: HP
-              class: Mounted
-              value:
-                number: 1
-                unit: percentage
-            - attribute: Defense
-              class: Mounted
-              value:
-                number: 1
-                unit: percentage
-        - level: Purple
-          buff:
-            - attribute: Attack
-              class: Mounted
-              value:
-                number: 2
-                unit: percentage
-            - attribute: HP
-              class: Mounted
-              value:
-                number: 2
-                unit: percentage
-            - attribute: Defense
-              class: Mounted
-              value:
-                number: 2
-                unit: percentage
-        - level: Orange
-          buff:
-            - attribute: Attack
-              class: Mounted
-              value:
-                number: 2
-                unit: percentage
-            - attribute: HP
-              class: Mounted
-              value:
-                number: 2
-                unit: percentage
-            - attribute: Defense
-              class: Mounted
-              value:
-                number: 2
-                unit: percentage
-        - level: Gold
-          buff:
-            - attribute: Attack
-              class: Mounted
-              value:
-                number: 4
-                unit: percentage
-            - attribute: HP
-              class: Mounted
-              value:
-                number: 4
-                unit: percentage
-            - attribute: Defense
-              class: Mounted
-              value:
-                number: 4
-                unit: percentage
-    - name: Bonaparte Dynasty
-      attribute:
-        - level: 'Green'
-          buff:
-          - attribute: Attack
-            condition: dragon_to_the_attack
-            class: Mounted
-            value:
-              number: 4
-              unit: percentage
-          - attribute: Defense
-            condition: dragon_to_the_attack
-            class: Mounted
-            value:
-              number: 3
-              unit: percentage
-          - attribute: Attack
-            condition: Reduces_Enemy_with_a_Dragon
-            class: Archers
-            value:
-              number: -1
-              unit: percentage
-          - attribute: Attack
-            condition: Reduces_Enemy_with_a_Dragon
-            class: Siege
-            value:
-              number: -1
-              unit: percentage
-        - level: 'Blue'
-          buff:
-          - attribute: Attack
-            condition: dragon_to_the_attack
-            class: Mounted
-            value:
-              number: 4
-              unit: percentage
-          - attribute: Defense
-            condition: dragon_to_the_attack
-            class: Mounted
-            value:
-              number: 3
-              unit: percentage
-          - attribute: Attack
-            condition: Reduces_Enemy_with_a_Dragon
-            class: Archers
-            value:
-              number: -2
-              unit: percentage
-          - attribute: Attack
-            condition: Reduces_Enemy_with_a_Dragon
-            class: Siege
-            value:
-              number: -2
-              unit: percentage
-        - level: 'Purple'
-          buff:
-          - attribute: Attack
-            condition: dragon_to_the_attack
-            class: Mounted
-            value:
-              number: 8
-              unit: percentage
-          - attribute: Defense
-            condition: dragon_to_the_attack
-            class: Mounted
-            value:
-              number: 6
-              unit: percentage
-          - attribute: Attack
-            condition: Reduces_Enemy_with_a_Dragon
-            class: Archers
-            value:
-              number: -3
-              unit: percentage
-          - attribute: Attack
-            condition: Reduces_Enemy_with_a_Dragon
-            class: Siege
-            value:
-              number: -3
-              unit: percentage
-        - level: 'Orange'
-          buff:
-          - attribute: Attack
-            condition: dragon_to_the_attack
-            class: Mounted
-            value:
-              number: 8
-              unit: percentage
-          - attribute: Defense
-            condition: dragon_to_the_attack
-            class: Mounted
-            value:
-              number: 6
-              unit: percentage
-          - attribute: Attack
-            condition: Reduces_Enemy_with_a_Dragon
-            class: Archers
-            value:
-              number: -3
-              unit: percentage
-          - attribute: Attack
-            condition: Reduces_Enemy_with_a_Dragon
-            class: Siege
-            value:
-              number: -3
-              unit: percentage
-        - level: 'Gold'
-          buff:
-          - attribute: Attack
-            condition: dragon_to_the_attack
-            class: Mounted
-            value:
-              number: 16
-              unit: percentage
-          - attribute: Defense
-            condition: dragon_to_the_attack
-            class: Mounted
-            value:
-              number: 12
-              unit: percentage
-          - attribute: Attack
-            condition: Reduces_Enemy_with_a_Dragon
-            class: Archers
-            value:
-              number: -6
-              unit: percentage
-          - attribute: Attack
-            condition: Reduces_Enemy_with_a_Dragon
-            class: Siege
-            value:
-              number: -6
-              unit: percentage
+    - Mounted Troop Formation
+    - Strike
+    - Mounted Troop Ares
+    - Bonaparte Dynasty
   ascending:
-        - level: '6'
-          buff:
-          - attribute: Attack
-            condition: Marching
-            class: Ground
-            value:
-              number: 10
-              unit: percentage
-          - attribute: Attack
-            condition: Marching
-            class: Mounted
-            value:
-              number: 10
-              unit: percentage
-          - attribute: Defense
-            condition: Marching
-            class: Ground
-            value:
-              number: 5
-              unit: percentage
-          - attribute: HP
-            condition: Marching
-            class: Ground
-            value:
-              number: 5
-              unit: percentage
-          - attribute: Defense
-            condition: Marching
-            class: Mounted
-            value:
-              number: 5
-              unit: percentage
-          - attribute: HP
-            condition: Marching
-            class: Mounted
-            value:
-              number: 5
-              unit: percentage
-        - level: '7'
-          buff:
-          - attribute: Death_to_Wounded
-            condition: Marching
-            value:
-              number: 10
-              unit: percentage
-        - level: '8'
-          buff:
-          - attribute: Attack
-            condition: Marching
-            class: Ground
-            value:
-              number: 15
-              unit: percentage
-          - attribute: Attack
-            condition: Marching
-            class: Mounted
-            value:
-              number: 15
-              unit: percentage
-          - attribute: March_Size_Capacity
-            condition: Marching
-            value:
-              number: 8
-              unit: percentage
-        - level: '9'
-          buff:
-          - attribute: Defense
-            condition: Marching
-            class: Mounted
-            value:
-              number: 25
-              unit: percentage
-          - attribute: HP
-            condition: Marching
-            class: Mounted
-            value:
-              number: 30
-              unit: percentage
-        - level: '10'
-          buff:
-          - attribute: Attack
-            condition: Marching
-            class: Mounted
-            value:
-              number: 35
-              unit: percentage
-          - attribute: Defense
-            condition: Marching
-            class: Mounted
-            value:
-              number: 30
-              unit: percentage
+    - level: '6'
+      buff:
+        - attribute: Attack
+          condition: Marching
+          class: Ground
+          value:
+            number: 10
+            unit: percentage
+        - attribute: Attack
+          condition: Marching
+          class: Mounted
+          value:
+            number: 10
+            unit: percentage
+        - attribute: Defense
+          condition: Marching
+          class: Ground
+          value:
+            number: 5
+            unit: percentage
+        - attribute: HP
+          condition: Marching
+          class: Ground
+          value:
+            number: 5
+            unit: percentage
+        - attribute: Defense
+          condition: Marching
+          class: Mounted
+          value:
+            number: 5
+            unit: percentage
+        - attribute: HP
+          condition: Marching
+          class: Mounted
+          value:
+            number: 5
+            unit: percentage
+    - level: '7'
+      buff:
+        - attribute: Death_to_Wounded
+          condition: Marching
+          value:
+            number: 10
+            unit: percentage
+    - level: '8'
+      buff:
+        - attribute: Attack
+          condition: Marching
+          class: Ground
+          value:
+            number: 15
+            unit: percentage
+        - attribute: Attack
+          condition: Marching
+          class: Mounted
+          value:
+            number: 15
+            unit: percentage
+        - attribute: March_Size_Capacity
+          condition: Marching
+          value:
+            number: 8
+            unit: percentage
+    - level: '9'
+      buff:
+        - attribute: Defense
+          condition: Marching
+          class: Mounted
+          value:
+            number: 25
+            unit: percentage
+        - attribute: HP
+          condition: Marching
+          class: Mounted
+          value:
+            number: 30
+            unit: percentage
+    - level: '10'
+      buff:
+        - attribute: Attack
+          condition: Marching
+          class: Mounted
+          value:
+            number: 35
+            unit: percentage
+        - attribute: Defense
+          condition: Marching
+          class: Mounted
+          value:
+            number: 30
+            unit: percentage

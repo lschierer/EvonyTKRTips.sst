@@ -4,13 +4,13 @@ general:
   display: summary
   level: '1'
   stars: '10'
-  leadership: 120 
+  leadership: 120
   leadership_increment: 9.00
-  attack: 121 
+  attack: 121
   attack_increment: 8.94
-  defense: 117 
+  defense: 117
   defense_increment: 8.91
-  politics: 102 
+  politics: 102
   politics_increment: 8.52
   score_as: Mounted
   books:
@@ -47,7 +47,7 @@ general:
           value:
             number: 6
             unit: percentage
-        - attribute:: Attack
+        - 'attribute:': Attack
           class: Mounted
           value:
             number: 10
@@ -76,251 +76,7 @@ general:
             number: 20
             unit: percentage
   specialities:
-    - name: Mounted Troop Defense
-      attribute:
-        - level: Green
-          buff:
-            - attribute: HP
-              class: Mounted
-              value:
-                number: 1
-                unit: percentage
-            - attribute: Defense
-              class: Mounted
-              value:
-                number: 1
-                unit: percentage
-        - level: Blue
-          buff:
-            - attribute: HP
-              class: Mounted
-              value:
-                number: 1
-                unit: percentage
-            - attribute: Defense
-              class: Mounted
-              value:
-                number: 1
-                unit: percentage
-        - level: Purple
-          buff:
-            - attribute: HP
-              class: Mounted
-              value:
-                number: 2
-                unit: percentage
-            - attribute: Defense
-              class: Mounted
-              value:
-                number: 2
-                unit: percentage
-        - level: Orange
-          buff:
-            - attribute: HP
-              class: Mounted
-              value:
-                number: 2
-                unit: percentage
-            - attribute: Defense
-              class: Mounted
-              value:
-                number: 2
-                unit: percentage
-        - level: Gold
-          buff:
-            - attribute: HP
-              class: Mounted
-              value:
-                number: 4
-                unit: percentage
-            - attribute: Defense
-              class: Mounted
-              value:
-                number: 4
-                unit: percentage
-    - name: Suppress
-      attribute:
-        - level: Green
-          buff:
-            - attribute: HP
-              condition: Reduces_Enemy
-              value:
-                number: -1
-                unit: percentage
-        - level: Blue
-          buff:
-            - attribute: HP
-              condition: Reduces_Enemy
-              value:
-                number: -1
-                unit: percentage
-        - level: Purple
-          buff:
-            - attribute: HP
-              condition: Reduces_Enemy
-              value:
-                number: -2
-                unit: percentage
-        - level: Orange
-          buff:
-            - attribute: HP
-              condition: Reduces_Enemy
-              value:
-                number: -2
-                unit: percentage
-        - level: Gold
-          buff:
-            - attribute: HP
-              condition: Reduces_Enemy
-              value:
-                number: -4
-                unit: percentage
-    - name: Mounted Troop Ares
-      attribute:
-        - level: Green
-          buff:
-            - attribute: Attack
-              class: Mounted
-              value:
-                number: 1
-                unit: percentage
-            - attribute: HP
-              class: Mounted
-              value:
-                number: 1
-                unit: percentage
-            - attribute: Defense
-              class: Mounted
-              value:
-                number: 1
-                unit: percentage
-        - level: Blue
-          buff:
-            - attribute: Attack
-              class: Mounted
-              value:
-                number: 1
-                unit: percentage
-            - attribute: HP
-              class: Mounted
-              value:
-                number: 1
-                unit: percentage
-            - attribute: Defense
-              class: Mounted
-              value:
-                number: 1
-                unit: percentage
-        - level: Purple
-          buff:
-            - attribute: Attack
-              class: Mounted
-              value:
-                number: 2
-                unit: percentage
-            - attribute: HP
-              class: Mounted
-              value:
-                number: 2
-                unit: percentage
-            - attribute: Defense
-              class: Mounted
-              value:
-                number: 2
-                unit: percentage
-        - level: Orange
-          buff:
-            - attribute: Attack
-              class: Mounted
-              value:
-                number: 2
-                unit: percentage
-            - attribute: HP
-              class: Mounted
-              value:
-                number: 2
-                unit: percentage
-            - attribute: Defense
-              class: Mounted
-              value:
-                number: 2
-                unit: percentage
-        - level: Gold
-          buff:
-            - attribute: Attack
-              class: Mounted
-              value:
-                number: 4
-                unit: percentage
-            - attribute: HP
-              class: Mounted
-              value:
-                number: 4
-                unit: percentage
-            - attribute: Defense
-              class: Mounted
-              value:
-                number: 4
-                unit: percentage
-    - name: Siege of Odawara
-      attribute:
-        - level: Green
-          buff:
-            - attribute: Attack
-              class: Mounted
-              value:
-                number: 2
-                unit: percentage
-            - attribute: HP
-              class: Mounted
-              value:
-                number: 3
-                unit: percentage
-        - level: Blue
-          buff:
-            - attribute: Attack
-              class: Mounted
-              value:
-                number: 3
-                unit: percentage
-            - attribute: HP
-              class: Mounted
-              value:
-                number: 4
-                unit: percentage
-        - level: Purple
-          buff:
-            - attribute: Attack
-              class: Mounted
-              value:
-                number: 5
-                unit: percentage
-            - attribute: HP
-              class: Mounted
-              value:
-                number: 7
-                unit: percentage
-        - level: Orange
-          buff:
-            - attribute: Attack
-              class: Mounted
-              value:
-                number: 5
-                unit: percentage
-            - attribute: HP
-              class: Mounted
-              value:
-                number: 7
-                unit: percentage
-        - level: Gold
-          buff:
-            - attribute: Attack
-              class: Mounted
-              value:
-                number: 10
-                unit: percentage
-            - attribute: HP
-              class: Mounted
-              value:
-                number: 14
-                unit: percentage
+    - Mounted Troop Defense
+    - Suppress
+    - Mounted Troop Ares
+    - Siege of Odawara
