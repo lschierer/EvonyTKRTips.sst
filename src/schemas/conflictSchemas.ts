@@ -1,8 +1,8 @@
 import * as z from "zod";
 
-import * as b from './baseSchemas';
+
 import { standardSkillBook } from "./bookSchemas";
-import {Book, type BookType} from './bookSchemas';
+import {Book, } from './bookSchemas';
 
 
 export const bookConflicts = z.object({books: z.array(standardSkillBook)})

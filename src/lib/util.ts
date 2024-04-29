@@ -1,7 +1,9 @@
+/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
 export function isEmpty(obj: Record<string, any>): boolean {
     return Object.keys(obj).length === 0 && obj.constructor === Object;
 }
-  
+
+/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
 type T = /*unresolved*/ any
 
 export function setDifference(setA: Set<T>, setB: Set<T>) {
@@ -12,13 +14,20 @@ export function setDifference(setA: Set<T>, setB: Set<T>) {
     return _difference;
   }
   
-export function arrayDifference(a: Array<T>, b: Array<T>) {
-    const _difference = new Array();
-    for(let i = 0; i < a.length; i++) {
-        const v = a[i];
+export function arrayDifference(a: T[], b: T[]) {
+    const _difference: T[] = [];
+    for(const i of a) {
+        /* eslint-disable-next-line
+         @typescript-eslint/no-unsafe-assignment,
+         @typescript-eslint/no-unsafe-member-access
+         */
+        const v: T = a[i];
         if(!b.includes(v)) {
             _difference.push(v)
         }
     }
+    /* eslint-disable-next-line
+        @typescript-eslint/no-unsafe-return
+    */
     return _difference;
 }   

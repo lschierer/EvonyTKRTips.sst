@@ -1,26 +1,17 @@
 import {
   type APIRoute,
-  type InferGetStaticParamsType,
-  type InferGetStaticPropsType,
-  type GetStaticPaths
 } from 'astro';
 import { getCollection,  type CollectionEntry  } from 'astro:content';
 
-import type { HTMLAttributes } from 'astro/types'
-import {z, ZodError} from 'zod'
-
 import {
-  GeneralClass,
-  type GeneralClassType,
-  GeneralElement,
-  type GeneralElementType, generalConflicts
+generalConflicts
 } from "@schemas/index";
 
 
-export const GET: APIRoute = async ({ params, request }) => {
+export const GET: APIRoute = async () => {
   const collectionArray:CollectionEntry<'generalConflictData'>[]  = await getCollection('generalConflictData');
   if(collectionArray !== null && collectionArray !== undefined) {
-    let result = collectionArray.map((ca) => {
+    const result = collectionArray.map((ca) => {
       const validation = generalConflicts.safeParse(ca.data);
       if(validation.success) {
 

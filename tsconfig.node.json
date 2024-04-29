@@ -10,6 +10,7 @@
       // but *only* in ts-node.  Useful if you want ts-node and tsc to use
       // different options with a single tsconfig.json.
       "target": "ES2020",
+      "module": "es2020",
       "lib": ["es2020", "DOM"],
     }
   },

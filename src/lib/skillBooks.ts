@@ -2,10 +2,7 @@ import {z} from 'zod';
 import { ulid } from 'ulid'
 
 import {
-    bookConflicts,
-    type bookConflictsType,
     ClassEnum,
-    type ClassEnumType,
 } from "../schemas/index.js";
 
 const bookAttributes = z.enum([
@@ -43,7 +40,7 @@ const book = z.object({
 
 type bookType = z.infer<typeof book>;
 
-const ClassEnumes = [
+const ClassEnums = [
     ClassEnum.enum.Archers, 
     ClassEnum.enum.Ground, 
     ClassEnum.enum.Mounted, 
@@ -51,16 +48,17 @@ const ClassEnumes = [
     ClassEnum.enum.all,
 ];
 
-const bookValues:Map<bookType,string> = new Map();
+const bookValues:Map<bookType,string> = new Map<bookType,string>();
 const t = {book: bookAttributes.enum.HP, level: 1, class: ClassEnum.enum.Ground};
-let value = '---\n';
-    value = value.concat('books:\n')
-    value = value.concat('  ', ulid(),':\n')
+const value: string = '---\n'
+    .concat('books:\n')
+    .concat('  ', ulid(),':\n');
 bookValues.set(t, value);
 
 const mapIter = bookValues.values();
 
 
-for(let i of mapIter ){
+for(const i of mapIter ){
     console.log(i);
+
 }
