@@ -1,13 +1,7 @@
 import {
   type APIRoute,
-  type InferGetStaticParamsType,
-  type InferGetStaticPropsType,
-  type GetStaticPaths
 } from 'astro';
 import { getCollection,  type CollectionEntry  } from 'astro:content';
-
-import type { HTMLAttributes } from 'astro/types'
-import {z, ZodError} from 'zod'
 
 import {
   Speciality,
@@ -15,12 +9,12 @@ import {
 } from "@schemas/index";
 
 
-export const GET: APIRoute = async ({ params, request }) => {
+export const GET: APIRoute = async () => {
   const specialityObjects: CollectionEntry<'specialities'>[]  = await getCollection('specialities');
   if(specialityObjects !== null && specialityObjects !== undefined) {
     
-    let specialityIterator = specialityObjects.values();
-    let allSpecialities = new Array<SpecialityType>();
+    const specialityIterator = specialityObjects.values();
+    const allSpecialities = new Array<SpecialityType>();
     for (const v of specialityIterator) {
       const validation = Speciality.safeParse(v.data);
       if(validation.success) {
