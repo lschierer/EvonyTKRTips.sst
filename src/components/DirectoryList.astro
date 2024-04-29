@@ -1,31 +1,64 @@
 ---
-import {getCollection} from "astro:content";
+import {getCollection, type CollectionEntry} from "astro:content";
 import { LinkCard, CardGrid } from '@astrojs/starlight/components';
-import type { HTMLAttributes } from 'astro/types'
+import { pathHasLocale } from "astro:i18n";
+
+interface Props {
+  dir?: string;
+  recurse?: string;
+}
+
+type docsContent = CollectionEntry<'docs'>;
 
 
-const {slug} = Astro.params;
-const { dir } = Astro.props;
+const { dir, recurse }: Props = Astro.props;
+let slug: string = Astro.params.slug ??  '';
+const compstring: string  =  dir ?? slug ?? '';
+console.log(`compstring is ${compstring}`)
+
+const recurseComp: string = recurse ?? 'false';
 
 let count2 = 0;
-const allPages = await getCollection('docs');
-let searchPages = allPages.filter((p) => {
-  if(dir !== null && dir !== undefined) {
-    //using undefined because I do not know how to get the actual locale for the browser reliably.
-    if(p.slug.localeCompare(dir,undefined, {sensitivity: 'base'})) {
-      return p.id.toLocaleLowerCase().startsWith(dir);
-    }
-  } else { //default to using the current directory
-    //using undefined because I do not know how to get the actual locale for the browser reliably.
-    if(p.slug.localeCompare(slug,undefined, {sensitivity: 'base'})) {
-      return p.id.toLocaleLowerCase().startsWith(slug);
+const allPages: CollectionEntry<'docs'>[] = await getCollection('docs');
+count2 = allPages.length;
+
+let searchPages: CollectionEntry<'docs'>[] = allPages.filter((p: docsContent) => {
+  //using undefined because I do not know how to get the actual locale for the browser reliably.
+  if(p === undefined) return false; else {
+    const c: docsContent = p;
+    if(!c.slug.includes(compstring)){
+      return false;
+    } else {
+      if(!recurseComp.toLocaleLowerCase().localeCompare('false')){
+        if(p.slug.localeCompare(compstring, undefined, {sensitivity: 'base'})) {
+          return p.slug.toLocaleLowerCase().startsWith(dir ? dir : compstring);
+        }
+      } else {
+        if(p.slug.localeCompare(compstring, undefined, {sensitivity: 'base'})) {
+          if(p.slug.toLocaleLowerCase().startsWith(compstring)) {
+            let base: string = compstring;
+            let pComp: string = p.slug;
+            while (
+              base.length  > 0 && 
+              pComp.toLocaleLowerCase().startsWith(base)
+            ) {
+                base = base.substring(1);
+                pComp = pComp.substring(1);
+            }
+            if(pComp.lastIndexOf('/') !== 0){
+              console.log(`includes / pComp is ${pComp}`)
+              return true;
+            } else {
+              return false;
+            }
+          }
+        }
+      }
     }
   }
-  count2++;
-  return false;
 })
 
-searchPages = searchPages.sort((a,b) => {
+searchPages = searchPages.sort((a: docsContent,b: docsContent) => {
   if(a.data.sidebar.order && b.data.sidebar.order) {
     return a.data.sidebar.order - b.data.sidebar.order;
   } else if (a.data.sidebar.order) {
@@ -38,17 +71,31 @@ searchPages = searchPages.sort((a,b) => {
 })
 
 const count = searchPages.length
-const test = ["one", "two", "three"]
+const refTarget = dir ?? slug;
+
+let commentString = '<!--\n'
+commentString = `${commentString}count is ${count}\n`
+commentString = `${commentString}count2 is ${count2}\n`
+commentString = `${commentString}slug is ${slug}\n`;
+commentString = `${commentString}refTarget is ${refTarget}`;
+commentString = `${commentString}-->`;
 
 ---
-<!--
-count is {count}<br/>
-count2 is {count2}<br/>
-slug is {slug}<br/>
--->
+<Fragment set:html={commentString} />
 
 <CardGrid stagger>
-  { searchPages.map((p) => (
-    <LinkCard href={'/'.concat(p.slug)} title={p.data.title} description={p.data.description}/>
-  ))}
+  { searchPages.map((p:docsContent) => {
+    const slug: string = '/'.concat(p.slug)
+    const title = p.data.title;
+    const desc = p.data.description;
+    return (
+      <LinkCard 
+        title={title}
+        description={desc}
+        href={slug}
+        />
+        
+    )
+
+  })}
 </CardGrid>
