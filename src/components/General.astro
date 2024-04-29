@@ -28,6 +28,8 @@ import {
   syslogSeverity,
   type syslogSeverityType,
 type BuffType,
+    Speciality,
+    type SpecialityType,
 } from '@schemas/index';
 
 import { generalUseCase,
@@ -35,11 +37,9 @@ import { generalUseCase,
 } from '@schemas/generalsSchema.ts'
 
 
-import { buffAdverbs, buff as buff_calc} from './general/buff.ts';
 
 import { BookIcon } from '@spectrum-web-components/icons-workflow';
 
-const adverbs = buffAdverbs[generalUseCase.enum.all]
 
 const severity = {
     [syslogSeverity.enum.emerg]: () => {
@@ -107,6 +107,7 @@ let level = 1;
 const intrinsic = ["leadership", "attack", "defense", "politics"]
 let conflictData: bookConflictsType[] = new Array<bookConflictsType>();
 let collectionArray: CollectionEntry<'generalConflictData'>[] | generalConflictsType[];
+let generalSpecials: SpecialityType[] = new Array<SpecialityType>();
 
 const validation = GeneralElement.safeParse(data);
 if (validation.success) {
@@ -126,10 +127,9 @@ if (validation.success) {
     
     generalName = general.name.toLocaleLowerCase().replace(/\s+/g, '_');
     
-    const result = buff_calc(general, adverbs, buffProps)
-    attackBuff = result.attackBuff;
-    defenseBuff = result.defenseBuff;
-    hpBuff = result.hpBuff;
+    attackBuff = 0
+    defenseBuff = 0
+    hpBuff = 0
     attack = (general.attack + (general.attack_increment as number) * 45) + (general.attack + (general.attack_increment as number) * 45 * attackBuff)
     defense = (general.defense + (general.defense_increment as number) * 45) + (general.defense + (general.defense_increment as number) * 45 * defenseBuff)
     hp = (general.leadership + (general.leadership_increment as number) * 45) + (general.leadership + (general.leadership_increment as number) * 45 * hpBuff)
@@ -169,11 +169,9 @@ if (validation.success) {
                         let conflicts = valid2.data.conflicts;
                         for (const key in conflicts) {
                             if (key.localeCompare('other')) {
-                                console.log(`inside Record of conflicts`)
                                 const items = conflicts[key as keyof typeof conflicts];
                                 const gc = new Set<string>;
                                 items.forEach((g) => {
-                                    console.log(`--${JSON.stringify(g)}--`);
                                     gc.add(g);
                                 })
                                 if ([...gc].includes(general.name)) {
@@ -193,13 +191,11 @@ if (validation.success) {
         conflictData = [conflictData].flat(1);
         const result = conflictData.map((c) => {
             if (c !== null && c !== undefined && c.books !== null && c.books !== undefined) {
-                console.log(`${JSON.stringify(c)}`)
                 return c.books.map((book: standardSkillBookType) => {
                   let condition = 'all the time.';
                   let warning = false;
                   for (let i = 0; i < book.buff.length; i++) {
                     const keys = Object.keys(book.buff[i]);
-                    console.log(`found keys ${keys}`)
                     if(book.buff[i].condition !== null && book.buff[i].condition !== undefined ) {
                         if (book.buff[i].condition === Condition.enum.When_Not_Mine) {
                             condition = 'when the book is on my paired general.'
@@ -220,7 +216,7 @@ if (validation.success) {
                         <div slot="header">General Conflict Notice</div>
                         <div slot="content">
                             This general has conflicts with the ${book.name} level ${book.level} skill book.
-                            This conflict is in effect ${condition}
+                            ${(condition === Condition.enum.When_Not_Mine) ? "This conflict is in effect when the book is on my assistant" : "This conflict is in effect all the time" } 
                         </div>
                     </sp-banner>
                     `;
@@ -236,9 +232,24 @@ if (validation.success) {
             })
         }
     }
+
+    if(general.specialities !== undefined && general.specialities !== null) {
+        await Promise.all(general.specialities.map(async (s:string) => {
+            const special: CollectionEntry<'specialities'> | undefined = await getEntry('specialities', s);
+            if(special !== undefined) {
+                generalSpecials.push(special.data);
+            } else {
+                console.log(`could not retrieve ${s}`)
+            }
+        }))
+    } else {
+        console.log(`no general specialities`)
+    }
 }
 
+
 ---
+
 <script>
     import '@spectrum-web-components/banner/sp-banner.js';
 </script>
@@ -284,7 +295,7 @@ if (validation.success) {
   {general.specialities && (
     <span class="label spectrum-Heading spectrum-Heading--sizeXS">Specialities</span>
     <div class="Specialities non-content">
-        {general.specialities && general.specialities.map((gs) => (
+        {generalSpecials && generalSpecials.map((gs) => (
           <div class="Speciality non-content">
               <span class="label spectrum-Heading spectrum-Heading--sizeXXS">{gs.name}</span>
               {Array.isArray(gs.attribute) && (
