@@ -1,38 +1,38 @@
 ---
-- name: Hunter
-  attribute:
-    - level: Green
-      buff:
-        - condition: Reduces_Monster
-          attribute: Attack
-          value:
-            number: -1
-            unit: percentage
-    - level: Blue
-      buff:
-        - condition: Reduces_Monster
-          attribute: Attack
-          value:
-            number: -2
-            unit: percentage
-    - level: Purple
-      buff:
-        - condition: Reduces_Monster
-          attribute: Attack
-          value:
-            number: -3
-            unit: percentage
-    - level: Orange
-      buff:
-        - condition: Reduces_Monster
-          attribute: Attack
-          value:
-            number: -3
-            unit: percentage
-    - level: Gold
-      buff:
-        - condition: Reduces_Monster
-          attribute: Attack
-          value:
-            number: -6
-            unit: percentage
+name: Hunter
+attribute:
+  - level: Green
+    buff:
+      - condition: Reduces_Monster
+        attribute: Attack
+        value:
+          number: -1
+          unit: percentage
+  - level: Blue
+    buff:
+      - condition: Reduces_Monster
+        attribute: Attack
+        value:
+          number: -2
+          unit: percentage
+  - level: Purple
+    buff:
+      - condition: Reduces_Monster
+        attribute: Attack
+        value:
+          number: -3
+          unit: percentage
+  - level: Orange
+    buff:
+      - condition: Reduces_Monster
+        attribute: Attack
+        value:
+          number: -3
+          unit: percentage
+  - level: Gold
+    buff:
+      - condition: Reduces_Monster
+        attribute: Attack
+        value:
+          number: -6
+          unit: percentage
