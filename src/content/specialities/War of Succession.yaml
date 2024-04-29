@@ -5,30 +5,30 @@ attribute:
     buff:
       - attribute: Attack
         class: Mounted
-        condition: Against_Monsters
+        condition: Against Monsters
         value:
           number: 2
           unit: percentage
       - attribute: Attack
         class: Ground
-        condition: Against_Monsters
+        condition: Against Monsters
         value:
           number: 2
           unit: percentage
       - attribute: Defense
         class: Mounted
-        condition: Against_Monsters
+        condition: Against Monsters
         value:
           number: 2
           unit: percentage
       - attribute: Defense
         class: Ground
-        condition: Against_Monsters
+        condition: Against Monsters
         value:
           number: 2
           unit: percentage
       - attribute: Marching_Speed_to_Monsters
-        condition: Against_Monsters
+        condition: Against Monsters
         value:
           number: 3
           unit: percentage
@@ -36,30 +36,30 @@ attribute:
     buff:
       - attribute: Attack
         class: Mounted
-        condition: Against_Monsters
+        condition: Against Monsters
         value:
           number: 3
           unit: percentage
       - attribute: Attack
         class: Ground
-        condition: Against_Monsters
+        condition: Against Monsters
         value:
           number: 3
           unit: percentage
       - attribute: Defense
         class: Mounted
-        condition: Against_Monsters
+        condition: Against Monsters
         value:
           number: 3
           unit: percentage
       - attribute: Defense
         class: Ground
-        condition: Against_Monsters
+        condition: Against Monsters
         value:
           number: 3
           unit: percentage
       - attribute: Marching_Speed_to_Monsters
-        condition: Against_Monsters
+        condition: Against Monsters
         value:
           number: 3
           unit: percentage
@@ -67,30 +67,30 @@ attribute:
     buff:
       - attribute: Attack
         class: Mounted
-        condition: Against_Monsters
+        condition: Against Monsters
         value:
           number: 5
           unit: percentage
       - attribute: Attack
         class: Ground
-        condition: Against_Monsters
+        condition: Against Monsters
         value:
           number: 5
           unit: percentage
       - attribute: Defense
         class: Mounted
-        condition: Against_Monsters
+        condition: Against Monsters
         value:
           number: 6
           unit: percentage
       - attribute: Defense
         class: Ground
-        condition: Against_Monsters
+        condition: Against Monsters
         value:
           number: 5
           unit: percentage
       - attribute: Marching_Speed_to_Monsters
-        condition: Against_Monsters
+        condition: Against Monsters
         value:
           number: 6
           unit: percentage
@@ -98,30 +98,30 @@ attribute:
     buff:
       - attribute: Attack
         class: Mounted
-        condition: Against_Monsters
+        condition: Against Monsters
         value:
           number: 5
           unit: percentage
       - attribute: Attack
         class: Ground
-        condition: Against_Monsters
+        condition: Against Monsters
         value:
           number: 5
           unit: percentage
       - attribute: Defense
         class: Mounted
-        condition: Against_Monsters
+        condition: Against Monsters
         value:
           number: 5
           unit: percentage
       - attribute: Defense
         class: Ground
-        condition: Against_Monsters
+        condition: Against Monsters
         value:
           number: 5
           unit: percentage
       - attribute: Marching_Speed_to_Monsters
-        condition: Against_Monsters
+        condition: Against Monsters
         value:
           number: 6
           unit: percentage
@@ -129,30 +129,30 @@ attribute:
     buff:
       - attribute: Attack
         class: Mounted
-        condition: Against_Monsters
+        condition: Against Monsters
         value:
           number: 10
           unit: percentage
       - attribute: Attack
         class: Ground
-        condition: Against_Monsters
+        condition: Against Monsters
         value:
           number: 10
           unit: percentage
       - attribute: Defense
         class: Mounted
-        condition: Against_Monsters
+        condition: Against Monsters
         value:
           number: 10
           unit: percentage
       - attribute: Defense
         class: Ground
-        condition: Against_Monsters
+        condition: Against Monsters
         value:
           number: 10
           unit: percentage
       - attribute: Marching_Speed_to_Monsters
-        condition: Against_Monsters
+        condition: Against Monsters
         value:
           number: 12
           unit: percentage

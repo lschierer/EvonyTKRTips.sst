@@ -68,13 +68,13 @@ general:
     - level: '8'
       buff:
         - attribute: Attack
-          condition: Against_Monsters
+          condition: Against Monsters
           class: Mounted
           value:
             number: 16
             unit: percentage
         - attribute: HP
-          condition: Against_Monsters
+          condition: Against Monsters
           class: Mounted
           value:
             number: 10

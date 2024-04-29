@@ -67,7 +67,7 @@ export const Condition = z.enum([
   'When_The_Main_Defense_General',
   'During_SvS',
   'When_an_officer',
-  'Against_Monsters',
+  'Against Monsters',
   'When_City_Mayor',
   'When_City_Mayor_for_this_SubCity',
   'Reduces_Enemy',
@@ -117,6 +117,7 @@ export const AttributeSchema = z.enum([
  'SubCity_Training_Speed',
  'SubCity_Troop_Capacity',
  'Monster_Attack',
+ 'Double Items Drop Rate',
 ]);
 export type Attribute = z.infer<typeof AttributeSchema>;
 

@@ -17,7 +17,7 @@ general:
     - name: Strategy Expert
       buff:
         - attribute: Stamina_cost
-          condition: Against_Monsters
+          condition: Against Monsters
           value:
             number: 25
             unit: percentage
@@ -25,12 +25,12 @@ general:
     - level: '6'
       buff:
         - attribute: Attack
-          condition: Against_Monsters
+          condition: Against Monsters
           value:
             number: 5
             unit: percentage
         - attribute: Defense
-          condition: Against_Monsters
+          condition: Against Monsters
           value:
             number: 10
             unit: percentage
@@ -42,7 +42,7 @@ general:
             number: -10
             unit: percentage
         - attribute: HP
-          condition: Against_Monsters
+          condition: Against Monsters
           value:
             number: 15
             unit: percentage
@@ -54,31 +54,31 @@ general:
             number: 10
             unit: percentage
         - attribute: Defense
-          condition: Against_Monsters
+          condition: Against Monsters
           value:
             number: 15
             unit: percentage
     - level: '9'
       buff:
         - attribute: Attack
-          condition: Against_Monsters
+          condition: Against Monsters
           value:
             number: 5
             unit: percentage
         - attribute: HP
-          condition: Against_Monsters
+          condition: Against Monsters
           value:
             number: 15
             unit: percentage
     - level: '10'
       buff:
         - attribute: Attack
-          condition: Against_Monsters
+          condition: Against Monsters
           value:
             number: 10
             unit: percentage
         - attribute: Defense
-          condition: Against_Monsters
+          condition: Against Monsters
           value:
             number: 10
             unit: percentage

@@ -4,14 +4,9 @@ general:
   level: '1'
   display: summary
   note:
-    - severity: warning
-      text: >
-        This general is incompatible with the Mounted Troops\' Attack Against Monsters Skill Book
-
     - severity: info
       text: >
         The Mounted Troops' Attack Skill Book may, however, be used.
-
   score_as: Mounted
   stars: '10'
   leadership: 112
@@ -26,7 +21,7 @@ general:
     - name: Lady of the Mercians
       buff:
         - attribute: Attack
-          condition: Against_Monsters
+          condition: Against Monsters
           class: Mounted
           value:
             number: 55
@@ -35,13 +30,13 @@ general:
     - level: '6'
       buff:
         - attribute: HP
-          condition: Against_Monsters
+          condition: Against Monsters
           class: Mounted
           value:
             number: 30
             unit: percentage
         - attribute: Defense
-          condition: Against_Monsters
+          condition: Against Monsters
           class: Mounted
           value:
             number: 10
@@ -54,7 +49,7 @@ general:
             number: -10
             unit: percentage
         - attribute: HP
-          condition: Against_Monsters
+          condition: Against Monsters
           value:
             number: 15
             unit: percentage
@@ -66,38 +61,38 @@ general:
             number: -10
             unit: percentage
         - attribute: Defense
-          condition: Against_Monsters
+          condition: Against Monsters
           value:
             number: 20
             unit: percentage
     - level: '9'
       buff:
         - attribute: Attack
-          condition: Against_Monsters
+          condition: Against Monsters
           class: Mounted
           value:
             number: 15
             unit: percentage
         - attribute: HP
-          condition: Against_Monsters
+          condition: Against Monsters
           value:
             number: 20
             unit: percentage
     - level: '10'
       buff:
         - attribute: Attack
-          condition: Against_Monsters
+          condition: Against Monsters
           class: Mounted
           value:
             number: 20
             unit: percentage
         - attribute: Defense
-          condition: Against_Monsters
+          condition: Against Monsters
           value:
             number: 10
             unit: percentage
         - attribute: HP
-          condition: Against_Monsters
+          condition: Against Monsters
           value:
             number: 10
             unit: percentage

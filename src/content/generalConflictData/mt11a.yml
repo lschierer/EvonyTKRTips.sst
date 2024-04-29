@@ -1,0 +1,39 @@
+conflicts:
+  01HGKYRM7NSSF1WYJZMA52BV90:
+    - Theodora
+  other:
+    - Biabars
+    - Cleopatra
+books:
+  - name: Luck
+    level: '1'
+    buff:
+      - attribute: Double Items Drop Rate
+        condition: When_Not_Mine
+        value:
+          number: 5
+          unit: percentage
+  - name: Luck
+    level: '2'
+    buff:
+      - attribute: Double Items Drop Rate
+        condition: When_Not_Mine
+        value:
+          number: 10
+          unit: percentage
+  - name: Luck
+    level: '3'
+    buff:
+      - attribute: Double Items Drop Rate
+        condition: When_Not_Mine
+        value:
+          number: 15
+          unit: percentage
+  - name: Luck
+    level: '4'
+    buff:
+      - attribute: Double Items Drop Rate
+        condition: When_Not_Mine
+        value:
+          number: 18
+          unit: percentage

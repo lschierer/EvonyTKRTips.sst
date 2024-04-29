@@ -4,7 +4,7 @@ attribute:
   - level: Green
     buff:
     - attribute: Attack
-      condition: Against_Monsters
+      condition: Against Monsters
       class: Mounted
       value:
         number: 4
@@ -15,14 +15,14 @@ attribute:
         number: 1
         unit: percentage
     - attribute: Marching_Speed_to_Monsters
-      condition: Against_Monsters
+      condition: Against Monsters
       value:
         number: 3
         unit: percentage
   - level: Blue
     buff:
     - attribute: Attack
-      condition: Against_Monsters
+      condition: Against Monsters
       class: Mounted
       value:
         number: 4
@@ -33,14 +33,14 @@ attribute:
         number: 2
         unit: percentage
     - attribute: Marching_Speed_to_Monsters
-      condition: Against_Monsters
+      condition: Against Monsters
       value:
         number: 4
         unit: percentage
   - level: Purple
     buff:
     - attribute: Attack
-      condition: Against_Monsters
+      condition: Against Monsters
       class: Mounted
       value:
         number: 8
@@ -51,14 +51,14 @@ attribute:
         number: 3
         unit: percentage
     - attribute: Marching_Speed_to_Monsters
-      condition: Against_Monsters
+      condition: Against Monsters
       value:
         number: 7
         unit: percentage
   - level: Orange
     buff:
     - attribute: Attack
-      condition: Against_Monsters
+      condition: Against Monsters
       class: Mounted
       value:
         number: 8
@@ -69,14 +69,14 @@ attribute:
         number: 3
         unit: percentage
     - attribute: Marching_Speed_to_Monsters
-      condition: Against_Monsters
+      condition: Against Monsters
       value:
         number: 7
         unit: percentage
   - level: Gold
     buff:
     - attribute: Attack
-      condition: Against_Monsters
+      condition: Against Monsters
       class: Mounted
       value:
         number: 16
@@ -87,7 +87,7 @@ attribute:
         number: 6
         unit: percentage
     - attribute: Marching_Speed_to_Monsters
-      condition: Against_Monsters
+      condition: Against Monsters
       value:
         number: 14
         unit: percentage
