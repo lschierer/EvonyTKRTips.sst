@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "types": ["@types/node", "unplugin-icons/types/astro"],
-    "module": "es2020",
     "noEmit": true,
     "allowJs": true,
     "strictNullChecks": true,
@@ -26,6 +25,5 @@
     ".astro/**.js",
     "src/**/*.ts",
     "src/**/*.astro",
-    "stacks/**.ts",
   ]
 }
