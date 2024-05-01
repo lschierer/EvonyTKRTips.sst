@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "types": ["@types/node", "unplugin-icons/types/astro"],
+    "noEmit": true,
+    "allowJs": true,
+    "strictNullChecks": true,
+    "verbatimModuleSyntax": true,
+    "plugins": [
+      {
+        "name": "@astrojs/ts-plugin"
+      },
+    ],
+    "paths": {
+      "@components/*": ["./src/components/*"],
+      "@layouts/*": ["./src/layouts/*"],
+      "@lib/*": ["./src/lib/*"],
+      "@schemas/*": ["./src/schemas/*"],
+      "@styles/*": ["./src/styles/*"],
+      "@public/*": ["./public/*"],
+    },
+  },
+  "extends": "astro/tsconfigs/strict",
+  "include": [
+    ".astro/**.ts",
+    ".astro/**.js",
+    "src/**/*.ts",
+    "src/**/*.astro",
+  ]
+}

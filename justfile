@@ -1,5 +1,6 @@
 tmpdir  := `mktemp`
 export PATH := "./node_modules/.bin:" + env_var('PATH')
+export NODE_OPTIONS := '--max_old_space_size=10240'
 set dotenv-load
 
 export PNPM := `which pnpm`
@@ -10,7 +11,11 @@ install:
 dev: install
     ${PNPM} astro dev
 
-check: install
+lint: 
+    echo "ESLint server using NODE_OPTIONS: $NODE_OPTIONS"
+    ${PNPM} eslint --debug --fix .
+
+check: install lint
     ${PNPM} astro check;
     # ${PNPM} tsc -p tsconfig.node.json --noEmit;
 
