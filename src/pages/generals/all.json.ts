@@ -21,8 +21,8 @@ export const GET: APIRoute = async ({ params, request }) => {
   const generalObjects: CollectionEntry<'generals'>[]  = await getCollection('generals');
   if(generalObjects !== null && generalObjects !== undefined) {
     
-    let generalIterator = generalObjects.values();
-    let allGenerals = new Array<GeneralElementType>();
+    const generalIterator = generalObjects.values();
+    const allGenerals = new Array<GeneralElementType>();
     for (const v of generalIterator) {
       const validation = GeneralElement.safeParse(v.data);
       if(validation.success) {

@@ -12,8 +12,8 @@ export function setDifference(setA: Set<T>, setB: Set<T>) {
     return _difference;
   }
   
-export function arrayDifference(a: Array<T>, b: Array<T>) {
-    const _difference = new Array();
+export function arrayDifference(a: T[], b: T[]) {
+    const _difference = [];
     for(let i = 0; i < a.length; i++) {
         const v = a[i];
         if(!b.includes(v)) {

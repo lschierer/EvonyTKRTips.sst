@@ -59,7 +59,7 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
   private resultClassList = { 'not-content': true, valid: false, invalid: false }
 
   @state()
-  private specialities: boolean = false;
+  private specialities = false;
 
   @state()
   private buffEventPending: Record<string, boolean> = {};
@@ -112,41 +112,41 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
     if (target !== null && target !== undefined) {
       if (!(target as Element).id.localeCompare('al1numattrs')) {
         if ((target as NumberField).value > 0) {
-          this.buffEventPending['al1name'] = true;
+          this.buffEventPending.al1name = true;
         } else {
-          this.buffEventPending['al1name'] = false;
+          this.buffEventPending.al1name = false;
         }
         addValue('al1name', 'isSet');
       }
       if (!(target as Element).id.localeCompare('al2numattrs')) {
         if ((target as NumberField).value > 0) {
-          this.buffEventPending['al2name'] = true;
+          this.buffEventPending.al2name = true;
         } else {
-          this.buffEventPending['al2name'] = false;
+          this.buffEventPending.al2name = false;
         }
         addValue('al2name', 'isSet');
       }
       if (!(target as Element).id.localeCompare('al3numattrs')) {
         if ((target as NumberField).value > 0) {
-          this.buffEventPending['al3name'] = true;
+          this.buffEventPending.al3name = true;
         } else {
-          this.buffEventPending['al3name'] = false;
+          this.buffEventPending.al3name = false;
         }
         addValue('al3name', 'isSet');
       }
       if (!(target as Element).id.localeCompare('al4numattrs')) {
         if ((target as NumberField).value > 0) {
-          this.buffEventPending['al4name'] = true;
+          this.buffEventPending.al4name = true;
         } else {
-          this.buffEventPending['al4name'] = false;
+          this.buffEventPending.al4name = false;
         }
         addValue('al4name', 'isSet');
       }
       if (!(target as Element).id.localeCompare('al5numattrs')) {
         if ((target as NumberField).value > 0) {
-          this.buffEventPending['al5name'] = true;
+          this.buffEventPending.al5name = true;
         } else {
-          this.buffEventPending['al5name'] = false;
+          this.buffEventPending.al5name = false;
         }
         addValue('al5name', 'isSet');
       }
@@ -646,11 +646,11 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
       exportable = `${exportable}\n  level: '1'`
       exportable = `${exportable}\n  score_as: ${getValue('score_as')}`
 
-      if (this.buffEventPending['b1name']) {
+      if (this.buffEventPending.b1name) {
         console.log(`b1name is set`)
         exportable = `${exportable}\n  books:`;
         exportable = `${exportable}\n    - name: ${getValue('b1name')}`;
-        let s1 = this.buffs.render('special', 'b1.', 'right', 'b1numattrs');
+        const s1 = this.buffs.render('special', 'b1.', 'right', 'b1numattrs');
         const toAdd = s1.values;
         if (toAdd.length >= 1) {
           console.log(`books s1 is '${toAdd}'`)
@@ -658,127 +658,127 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
         }
       }
       if (
-        (this.buffEventPending['s1name']) ||
-        (this.buffEventPending['s2name']) ||
-        (this.buffEventPending['s3name']) ||
-        (this.buffEventPending['s4name'])
+        (this.buffEventPending.s1name) ||
+        (this.buffEventPending.s2name) ||
+        (this.buffEventPending.s3name) ||
+        (this.buffEventPending.s4name)
       ) {
         exportable = `${exportable}\n  specialities:`
 
-        if (this.buffEventPending['s1name']) {
+        if (this.buffEventPending.s1name) {
           console.log(`detected something to get`)
           exportable = `${exportable}\n    - name: ${getValue('s1name')}`;
           exportable = `${exportable}\n      attribute:`;
 
-          let s1 = this.buffs.render(b.qualityColor.enum.Green, `1.`, 'right', 's1numattrs');
+          const s1 = this.buffs.render(b.qualityColor.enum.Green, `1.`, 'right', 's1numattrs');
           console.log(`s1 is ${s1}`)
           exportable = `${exportable}\n${s1.values}`
-          let s2 = this.buffs.render(b.qualityColor.enum.Blue, '1.', 'right', 's1numattrs')
+          const s2 = this.buffs.render(b.qualityColor.enum.Blue, '1.', 'right', 's1numattrs')
           exportable = `${exportable}\n${s2.values}`
-          let s3 = this.buffs.render(b.qualityColor.enum.Purple, '1.', 'right', 's1numattrs')
+          const s3 = this.buffs.render(b.qualityColor.enum.Purple, '1.', 'right', 's1numattrs')
           exportable = `${exportable}\n${s3.values}`
-          let s4 = this.buffs.render(b.qualityColor.enum.Orange, '1.', 'right', 's1numattrs')
+          const s4 = this.buffs.render(b.qualityColor.enum.Orange, '1.', 'right', 's1numattrs')
           exportable = `${exportable}\n${s4.values}`
-          let s5 = this.buffs.render(b.qualityColor.enum.Gold, '1.', 'right', 's1numattrs')
+          const s5 = this.buffs.render(b.qualityColor.enum.Gold, '1.', 'right', 's1numattrs')
           exportable = `${exportable}\n${s5.values}`
         }
 
-        if (this.buffEventPending['s2name']) {
+        if (this.buffEventPending.s2name) {
           console.log(`detected something to get`)
           exportable = `${exportable}\n    - name: ${getValue('s2name')}`;
           exportable = `${exportable}\n      attribute:`;
-          let s1 = this.buffs.render(b.qualityColor.enum.Green, '2.', 'right', 's2numattrs');
+          const s1 = this.buffs.render(b.qualityColor.enum.Green, '2.', 'right', 's2numattrs');
           exportable = `${exportable}\n${s1.values}`
-          let s2 = this.buffs.render(b.qualityColor.enum.Blue, '2.', 'right', 's2numattrs')
+          const s2 = this.buffs.render(b.qualityColor.enum.Blue, '2.', 'right', 's2numattrs')
           exportable = `${exportable}\n${s2.values}`
-          let s3 = this.buffs.render(b.qualityColor.enum.Purple, '2.', 'right', 's2numattrs')
+          const s3 = this.buffs.render(b.qualityColor.enum.Purple, '2.', 'right', 's2numattrs')
           exportable = `${exportable}\n${s3.values}`
-          let s4 = this.buffs.render(b.qualityColor.enum.Orange, '2.', 'right', 's2numattrs')
+          const s4 = this.buffs.render(b.qualityColor.enum.Orange, '2.', 'right', 's2numattrs')
           exportable = `${exportable}\n${s4.values}`
-          let s5 = this.buffs.render(b.qualityColor.enum.Gold, '2.', 'right', 's2numattrs')
+          const s5 = this.buffs.render(b.qualityColor.enum.Gold, '2.', 'right', 's2numattrs')
           exportable = `${exportable}\n${s5.values}`
         }
 
-        if (this.buffEventPending['s3name']) {
+        if (this.buffEventPending.s3name) {
           console.log(`detected something to get`)
           exportable = `${exportable}\n    - name: ${getValue('s1name')}`;
           exportable = `${exportable}\n      attribute:`;
-          let s1 = this.buffs.render(b.qualityColor.enum.Green, '3.', 'right', 's3numattrs');
+          const s1 = this.buffs.render(b.qualityColor.enum.Green, '3.', 'right', 's3numattrs');
           exportable = `${exportable}\n${s1.values}`
-          let s2 = this.buffs.render(b.qualityColor.enum.Blue, '3.', 'right', 's3numattrs')
+          const s2 = this.buffs.render(b.qualityColor.enum.Blue, '3.', 'right', 's3numattrs')
           exportable = `${exportable}\n${s2.values}`
-          let s3 = this.buffs.render(b.qualityColor.enum.Purple, '3.', 'right', 's3numattrs')
+          const s3 = this.buffs.render(b.qualityColor.enum.Purple, '3.', 'right', 's3numattrs')
           exportable = `${exportable}\n${s3.values}`
-          let s4 = this.buffs.render(b.qualityColor.enum.Orange, '3.', 'right', 's3numattrs')
+          const s4 = this.buffs.render(b.qualityColor.enum.Orange, '3.', 'right', 's3numattrs')
           exportable = `${exportable}\n${s4.values}`
-          let s5 = this.buffs.render(b.qualityColor.enum.Gold, '3.', 'right', 's3numattrs')
+          const s5 = this.buffs.render(b.qualityColor.enum.Gold, '3.', 'right', 's3numattrs')
           exportable = `${exportable}\n${s5.values}`
         }
 
-        if (this.buffEventPending['s4name']) {
+        if (this.buffEventPending.s4name) {
           console.log(`detected something to get`)
           exportable = `${exportable}\n    - name: ${getValue('s1name')}`;
           exportable = `${exportable}\n      attribute:`;
-          let s1 = this.buffs.render(b.qualityColor.enum.Green, '4.', 'right', 's4numattrs');
+          const s1 = this.buffs.render(b.qualityColor.enum.Green, '4.', 'right', 's4numattrs');
           console.log(`s1 is ${s1}`)
           exportable = `${exportable}\n${s1.values}`
-          let s2 = this.buffs.render(b.qualityColor.enum.Blue, '4.', 'right', 's4numattrs')
+          const s2 = this.buffs.render(b.qualityColor.enum.Blue, '4.', 'right', 's4numattrs')
           exportable = `${exportable}\n${s2.values}`
-          let s3 = this.buffs.render(b.qualityColor.enum.Purple, '4.', 'right', 's4numattrs')
+          const s3 = this.buffs.render(b.qualityColor.enum.Purple, '4.', 'right', 's4numattrs')
           exportable = `${exportable}\n${s3.values}`
-          let s4 = this.buffs.render(b.qualityColor.enum.Orange, '4.', 'right', 's4numattrs')
+          const s4 = this.buffs.render(b.qualityColor.enum.Orange, '4.', 'right', 's4numattrs')
           exportable = `${exportable}\n${s4.values}`
-          let s5 = this.buffs.render(b.qualityColor.enum.Gold, '4.', 'right', 's4numattrs')
+          const s5 = this.buffs.render(b.qualityColor.enum.Gold, '4.', 'right', 's4numattrs')
           exportable = `${exportable}\n${s5.values}`
         }
 
       }
       if (
-        (this.buffEventPending['al1name']) ||
-        (this.buffEventPending['al2name']) ||
-        (this.buffEventPending['al3name']) ||
-        (this.buffEventPending['al4name']) ||
-        (this.buffEventPending['al5name'])
+        (this.buffEventPending.al1name) ||
+        (this.buffEventPending.al2name) ||
+        (this.buffEventPending.al3name) ||
+        (this.buffEventPending.al4name) ||
+        (this.buffEventPending.al5name)
       ) {
         exportable = `${exportable}\n  ascending:`
 
-        if (this.buffEventPending['al1name']) {
+        if (this.buffEventPending.al1name) {
           console.log(`detected something to get`)
-          let s1 = this.buffs.render((6).toString(), '.', 'right', 'al1numattrs');
+          const s1 = this.buffs.render((6).toString(), '.', 'right', 'al1numattrs');
           console.log(`s1 is ${s1}`)
           exportable = `${exportable}\n${s1.values}`
         }
 
-        if (this.buffEventPending['al2name']) {
+        if (this.buffEventPending.al2name) {
           console.log(`detected something to get`)
-          let s1 = this.buffs.render((7).toString(), '.', 'right', 'al2numattrs');
+          const s1 = this.buffs.render((7).toString(), '.', 'right', 'al2numattrs');
           console.log(`s1 is ${s1}`)
           exportable = `${exportable}\n${s1.values}`
         }
 
-        if (this.buffEventPending['al3name']) {
+        if (this.buffEventPending.al3name) {
           console.log(`detected something to get`)
-          let s1 = this.buffs.render((8).toString(), '.', 'right', 'al3numattrs');
+          const s1 = this.buffs.render((8).toString(), '.', 'right', 'al3numattrs');
           console.log(`s1 is ${s1}`)
           exportable = `${exportable}\n${s1.values}`
         }
 
-        if (this.buffEventPending['al4name']) {
+        if (this.buffEventPending.al4name) {
           console.log(`detected something to get`)
-          let s1 = this.buffs.render((9).toString(), '.', 'right', 'al4numattrs');
+          const s1 = this.buffs.render((9).toString(), '.', 'right', 'al4numattrs');
           console.log(`s1 is ${s1}`)
           exportable = `${exportable}\n${s1.values}`
         }
 
-        if (this.buffEventPending['al5name']) {
+        if (this.buffEventPending.al5name) {
           console.log(`detected something to get`)
-          let s1 = this.buffs.render((10).toString(), '.', 'right', 'al5numattrs');
+          const s1 = this.buffs.render((10).toString(), '.', 'right', 'al5numattrs');
           console.log(`s1 is ${s1}`)
           exportable = `${exportable}\n${s1.values}`
         }
 
       } else {
-        console.log(`ascending Pending check: ${this.buffEventPending['al1name']}`)
+        console.log(`ascending Pending check: ${this.buffEventPending.al1name}`)
       }
 
 

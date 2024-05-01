@@ -20,7 +20,7 @@ import {
 export const GET: APIRoute = async ({ params, request }) => {
   const collectionArray:CollectionEntry<'generalConflictData'>[]  = await getCollection('generalConflictData');
   if(collectionArray !== null && collectionArray !== undefined) {
-    let result = collectionArray.map((ca) => {
+    const result = collectionArray.map((ca) => {
       const validation = generalConflicts.safeParse(ca.data);
       if(validation.success) {
 

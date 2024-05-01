@@ -32,7 +32,7 @@ import {
 const dataUrl = new URL("/generals/all.json", Astro.url);
 const conflictData = new URL("/generalConflictData/conflicts.json", Astro.url);
 
-let allGeneralsJson: string = "";
+let allGeneralsJson = "";
 const generalObjects: CollectionEntry<"generals">[] =
   await getCollection("generals");
 if (generalObjects !== null && generalObjects !== undefined) {
@@ -69,7 +69,7 @@ if (result.success) {
   console.error(result.error);
 }
 
-let allConflictJson: string = "";
+let allConflictJson = "";
 const collectionArray: CollectionEntry<"generalConflictData">[] =
   await getCollection("generalConflictData");
 if (collectionArray !== null && collectionArray !== undefined) {
@@ -88,14 +88,14 @@ const result2 = ConflictArray.safeParse(JSON.parse(allConflictJson));
 let allConflictData: string | null = null;
 if (result2.success) {
   if (result2.data !== undefined && result2.data !== null) {
-    let Returnable = new Map<string, Array<standardSkillBookType>>();
+    let Returnable = new Map<string, standardSkillBookType[]>();
     result2.data.map((datum: ConflictDatumType) => {
       let conflicts = datum.conflicts;
       let match = false;
       if(conflicts !== null && conflicts !== undefined) {
         for (const key in conflicts) {
           if(key.localeCompare('other')) {
-            const items = conflicts[key as keyof typeof conflicts];
+            const items = conflicts[key];
             let tg = allGenerals?.filter((g) => {
               return items.includes(g.general.name);
             })
@@ -112,7 +112,7 @@ if (result2.success) {
           if(books !== null && books !== undefined) {
             for (const key in conflicts) {
               if (key.localeCompare('other')) {
-                const items = conflicts[key as keyof typeof conflicts];
+                const items = conflicts[key];
                 items.forEach((g: string) => {
                   Returnable.set(g, books);
                 })

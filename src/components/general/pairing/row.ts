@@ -82,28 +82,28 @@ export class PairingRow extends withStores(LitElement, [generalPairs, conflictin
 
   
   @state()
-  private attack_buff: number = 0;
+  private attack_buff = 0;
 
   public getAttackBuff() {
     return this.attack_buff;
   }
 
   @state()
-  private defense_buff: number = 0;
+  private defense_buff = 0;
 
   public getDefenseBuff() {
     return this.defense_buff;
   }
 
   @state()
-  private hp_buff: number = 0;
+  private hp_buff = 0;
 
   public getHPBuff() {
     return this.hp_buff;
   }
 
   @state()
-  private march_buff: number = 0;
+  private march_buff = 0;
 
   public getMarchBuff() {
     return this.march_buff;
@@ -119,7 +119,7 @@ export class PairingRow extends withStores(LitElement, [generalPairs, conflictin
   private statusLight2: statusLightsType = statusLights.enum.neutral;
 
   @state()
-  private buffLead: boolean = false;
+  private buffLead = false;
 
   @state()
   private props: generalInvestment = {
@@ -261,7 +261,7 @@ export class PairingRow extends withStores(LitElement, [generalPairs, conflictin
   computeBuffs() {
     if (DEBUG) { console.log(`rows computeBuffs start`) }
     if(this.one !== null && this.one !== undefined) {
-      let { attackBuff, defenseBuff, hpBuff, marchBuff } = buff(this.one, this.adverbs, this.props);
+      const { attackBuff, defenseBuff, hpBuff, marchBuff } = buff(this.one, this.adverbs, this.props);
       if(DEBUG) {console.log(`${this.one.name} a ${attackBuff} d ${defenseBuff} h ${hpBuff}`)}
       this.one.totalBuffs = {
         attack: attackBuff,
@@ -284,7 +284,7 @@ export class PairingRow extends withStores(LitElement, [generalPairs, conflictin
       if (DEBUG) { console.log(`o ${this.one.name}, attack now ${this.attack_buff}`) }
       if (this.two !== null) {
         if (!checkConflicts(this.one.name, this.two.name, this.unitClass)) {
-          let { attackBuff, defenseBuff, hpBuff, marchBuff } = buff(this.two, this.adverbs, this.Assistprops);
+          const { attackBuff, defenseBuff, hpBuff, marchBuff } = buff(this.two, this.adverbs, this.Assistprops);
           if(DEBUG) {console.log(`${this.two.name} a ${attackBuff} d ${defenseBuff} h ${hpBuff}`)}
           this.two.totalBuffs = {
             attack: attackBuff,
@@ -323,9 +323,9 @@ export class PairingRow extends withStores(LitElement, [generalPairs, conflictin
   }
 
   public render1() {
-    let statusOverlay = html``;
+    const statusOverlay = html``;
     if (this.one !== null && this.one !== undefined) {
-      let mySkillConflicts = (conflictingBooks.get()!).get(this.one.name);
+      const mySkillConflicts = (conflictingBooks.get()!).get(this.one.name);
       if (mySkillConflicts !== null && mySkillConflicts !== undefined) {
         if (mySkillConflicts.length >= 1) {
           this.statusLight1 = statusLights.enum.notice;
@@ -355,8 +355,8 @@ export class PairingRow extends withStores(LitElement, [generalPairs, conflictin
       (this.statusLight1 === statusLights.enum.indigo)) {
         if(this.one.books !== null && this.one.books !== undefined) {
           const book1: BookType = this.one.books[0];
-          const buffArray: b.BuffType[] = book1['buff'];
-          for(let be in buffArray) {
+          const buffArray: b.BuffType[] = book1.buff;
+          for(const be in buffArray) {
             const condition = buffArray[be].condition;
             if(condition !== null && condition !== undefined) {
               if ((condition === b.Condition.enum.dragon_to_the_attack) ||
@@ -389,7 +389,7 @@ export class PairingRow extends withStores(LitElement, [generalPairs, conflictin
 
   public render2() {
     if (this.two !== null && this.two !== undefined) {
-      let mySkillConflicts = (conflictingBooks.get()!).get(this.two.name);
+      const mySkillConflicts = (conflictingBooks.get()!).get(this.two.name);
       if (mySkillConflicts !== null && mySkillConflicts !== undefined) {
         if (mySkillConflicts.length >= 1) {
           this.statusLight2 = statusLights.enum.notice;
@@ -419,8 +419,8 @@ export class PairingRow extends withStores(LitElement, [generalPairs, conflictin
       (this.statusLight2 === statusLights.enum.indigo)) {
         if(this.two!.books !== null && this.two!.books !== undefined) {
           const book1: BookType = this.two!.books[0];
-          const buffArray: b.BuffType[] = book1['buff'];
-          for(let be in buffArray) {
+          const buffArray: b.BuffType[] = book1.buff;
+          for(const be in buffArray) {
             const condition = buffArray[be].condition;
             if(condition !== null && condition !== undefined) {
               if ((condition === b.Condition.enum.dragon_to_the_attack) ||

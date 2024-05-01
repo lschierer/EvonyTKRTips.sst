@@ -156,7 +156,7 @@ function buffFilter(current: b.BuffType, general: GeneralClassType, score_for: b
     return toReturn;
 }
 
-const ascendingLevel: { [key: string]: boolean } = {
+const ascendingLevel: Record<string, boolean> = {
     '0': false,
     '1': false,
     '2': false,
@@ -175,8 +175,8 @@ export function buff(eg: GeneralClassType, situations: b.BuffAdverbArrayType, pr
     let attack = 0;
     let hp = 0;
     let defense = 0;
-    let rally = 0;
-    let march = 0;
+    const rally = 0;
+    const march = 0;
     if (eg.score_as !== null && eg.score_as !== undefined) {
         //const general = eg.general;
         const general = eg;

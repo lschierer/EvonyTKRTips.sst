@@ -130,9 +130,9 @@ if (validation.success) {
     attackBuff = result.attackBuff;
     defenseBuff = result.defenseBuff;
     hpBuff = result.hpBuff;
-    attack = (general.attack + (general.attack_increment as number) * 45) + (general.attack + (general.attack_increment as number) * 45 * attackBuff)
-    defense = (general.defense + (general.defense_increment as number) * 45) + (general.defense + (general.defense_increment as number) * 45 * defenseBuff)
-    hp = (general.leadership + (general.leadership_increment as number) * 45) + (general.leadership + (general.leadership_increment as number) * 45 * hpBuff)
+    attack = (general.attack + (general.attack_increment) * 45) + (general.attack + (general.attack_increment) * 45 * attackBuff)
+    defense = (general.defense + (general.defense_increment) * 45) + (general.defense + (general.defense_increment) * 45 * defenseBuff)
+    hp = (general.leadership + (general.leadership_increment) * 45) + (general.leadership + (general.leadership_increment) * 45 * hpBuff)
     level = (general.display === 'summary') ? (+general.level * 45) : +general.level;
     const notes = z.array(Note).safeParse(general.note);
     if (notes.success) {
@@ -165,12 +165,12 @@ if (validation.success) {
                 let valid2 = generalConflicts.safeParse(o1);
                 if (valid2.success) {
                     let data: generalConflictsType | undefined;
-                    if (valid2.data !== undefined && valid2.data.conflicts !== undefined) {
+                    if (valid2.data?.conflicts !== undefined) {
                         let conflicts = valid2.data.conflicts;
                         for (const key in conflicts) {
                             if (key.localeCompare('other')) {
                                 console.log(`inside Record of conflicts`)
-                                const items = conflicts[key as keyof typeof conflicts];
+                                const items = conflicts[key];
                                 const gc = new Set<string>;
                                 items.forEach((g) => {
                                     console.log(`--${JSON.stringify(g)}--`);

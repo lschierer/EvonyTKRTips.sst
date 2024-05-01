@@ -44,7 +44,7 @@ const DEBUG = false;
 const dataUrl = new URL("/generals/all.json", Astro.url);
 const conflictData = new URL("/generalConflictData/conflicts.json", Astro.url);
 
-let allGeneralsJson: string = "";
+let allGeneralsJson = "";
 const generalObjects: CollectionEntry<"generals">[] =
   await getCollection("generals");
 if (generalObjects !== null && generalObjects !== undefined) {
@@ -79,7 +79,7 @@ if (result.success) {
   console.error(result.error);
 }
 
-let allConflictJson: string = "";
+let allConflictJson = "";
 const collectionArray: CollectionEntry<"generalConflictData">[] =
   await getCollection("generalConflictData");
 if (collectionArray !== null && collectionArray !== undefined) {

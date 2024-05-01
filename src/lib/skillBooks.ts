@@ -51,7 +51,7 @@ const ClassEnumes = [
     ClassEnum.enum.all,
 ];
 
-const bookValues:Map<bookType,string> = new Map();
+const bookValues = new Map<bookType,string>();
 const t = {book: bookAttributes.enum.HP, level: 1, class: ClassEnum.enum.Ground};
 let value = '---\n';
     value = value.concat('books:\n')
@@ -61,6 +61,6 @@ bookValues.set(t, value);
 const mapIter = bookValues.values();
 
 
-for(let i of mapIter ){
+for(const i of mapIter ){
     console.log(i);
 }

@@ -155,8 +155,8 @@ export class PairingTable extends withStores(SpectrumElement, [generalPairs, pri
           if (DEBUG) { console.log(`rowCreator: ${one.name}:${two.name} types: ${one.score_as}:${two.score_as}`) }
           if (one !== null && one !== undefined && two !== null && two !== undefined) {
             const newRowItem = new PairingRow();
-            (newRowItem as PairingRow).one = one;
-            (newRowItem as PairingRow).two = two;
+            (newRowItem).one = one;
+            (newRowItem).two = two;
             newRowItem.adverbs = buffAdverbs[use];
             this.rowMapper(newRowItem, label)
           }
@@ -178,26 +178,26 @@ export class PairingTable extends withStores(SpectrumElement, [generalPairs, pri
   }
   
   public pairSorter(direction: string, key: string, a: PairingRow, b: PairingRow) {
-    let ga: string | number = 0;
-    let gb: string | number = 0;
+    const ga: string | number = 0;
+    const gb: string | number = 0;
     const sortFunction: Record<string, (a: PairingRow, b: PairingRow) => number> = {
       ['primeName']: (a, b) => {
-        let ga = a.one!.name
-        let gb = b.one!.name
+        const ga = a.one!.name
+        const gb = b.one!.name
         return (direction === 'asc') ?
           (ga.localeCompare(gb, undefined, { sensitivity: "base" })) :
           (gb.localeCompare(ga, undefined, { sensitivity: "base" }))
       },
       ['assistName']: (a, b) => {
-        let ga = a.two!.name;
-        let gb = b.two!.name;
+        const ga = a.two!.name;
+        const gb = b.two!.name;
         return (direction === 'asc') ?
           (ga.localeCompare(gb, undefined, { sensitivity: "base" })) :
           (gb.localeCompare(ga, undefined, { sensitivity: "base" }))
       },
       ['attackBuff']: (a, b) => {
-        let ga = a.getAttackBuff();
-        let gb = b.getAttackBuff();
+        const ga = a.getAttackBuff();
+        const gb = b.getAttackBuff();
         if (ga === gb) {
           return 0;
         } else {
@@ -207,8 +207,8 @@ export class PairingTable extends withStores(SpectrumElement, [generalPairs, pri
         }
       },
       ['defenseBuff']: (a, b) => {
-        let ga = a.getDefenseBuff();
-        let gb = b.getDefenseBuff();
+        const ga = a.getDefenseBuff();
+        const gb = b.getDefenseBuff();
         if (ga === gb) {
           return 0;
         } else {
@@ -218,8 +218,8 @@ export class PairingTable extends withStores(SpectrumElement, [generalPairs, pri
         }
       },
       ['HPBuff']: (a, b) => {
-        let ga = a.getHPBuff();
-        let gb = b.getHPBuff();
+        const ga = a.getHPBuff();
+        const gb = b.getHPBuff();
         if (ga === gb) {
           return 0;
         } else {
@@ -229,8 +229,8 @@ export class PairingTable extends withStores(SpectrumElement, [generalPairs, pri
         }
       },
       ['marchBuff']: (a, b) => {
-        let ga = a.getMarchBuff();
-        let gb = b.getMarchBuff();
+        const ga = a.getMarchBuff();
+        const gb = b.getMarchBuff();
         if (ga === gb) {
           return 0;
         } else {
@@ -265,8 +265,8 @@ export class PairingTable extends withStores(SpectrumElement, [generalPairs, pri
       const TempRecords = [...this.records];
         this.records = new Array<tableRecord>();
         TempRecords.map((r) => {
-          let myItem = (Object.values(r as tableRecord)[0] as PairingRow);
-          let myLabel = (Object.keys(r as tableRecord))[0];
+          const myItem = (Object.values(r)[0]);
+          const myLabel = (Object.keys(r))[0];
           this.rowMapper(myItem,myLabel);
         });
         if(this.table !== null && this.table !== undefined) {
@@ -279,8 +279,8 @@ export class PairingTable extends withStores(SpectrumElement, [generalPairs, pri
       this.table = this.tableRef.value;
       if (this.table !== undefined && this.table !== null) {
         this.table.renderItem = (item, index) => {
-          let myItem = (Object.values(item as tableRecord)[0] as PairingRow);
-          let myKey = Object.keys(item)[0];
+          const myItem = (Object.values(item as tableRecord)[0]);
+          const myKey = Object.keys(item)[0];
           if(myItem !== undefined && myItem !== null) {
             return html`${myItem.render()}`
           }
@@ -291,7 +291,7 @@ export class PairingTable extends withStores(SpectrumElement, [generalPairs, pri
         this.table.addEventListener('sorted', (event) => {
           const { sortDirection, sortKey } = (event as CustomEvent).detail;
 
-          let items = (this.table!.items).sort((a, b) => {
+          const items = (this.table!.items).sort((a, b) => {
             const itemA = Object.values(a)[0];
             const itemB = Object.values(b)[0]
             return this.pairSorter(sortDirection, sortKey, (itemA as PairingRow), (itemB as PairingRow));
@@ -324,8 +324,8 @@ export class PairingTable extends withStores(SpectrumElement, [generalPairs, pri
           const TempRecords = [...this.records];
             this.records = new Array<tableRecord>();
             TempRecords.map((r) => {
-              let myItem = (Object.values(r as tableRecord)[0] as PairingRow);
-              let myLabel = (Object.keys(r as tableRecord))[0];
+              const myItem = (Object.values(r)[0]);
+              const myLabel = (Object.keys(r))[0];
               this.rowMapper(myItem,myLabel);
             });
             if(this.table !== null && this.table !== undefined) {

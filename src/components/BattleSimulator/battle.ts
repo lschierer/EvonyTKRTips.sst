@@ -55,7 +55,7 @@ export class EvonyBattle extends withStores(SpectrumElement, [formValues]) {
   private _defenderSiegeTiers: TroopTier[] = new Array<TroopTier>();
 
   @state()
-  private _battlefieldSize: number = 0;
+  private _battlefieldSize = 0;
 
   constructor() {
     super()

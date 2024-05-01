@@ -160,7 +160,7 @@ export class CompareMayors extends LitElement {
 
                 this.table.addEventListener('sorted', (event) => {
                     const {sortDirection, sortKey} = (event as CustomEvent).detail;
-                    let items = this.table!.items.sort((a, b) => {
+                    const items = this.table!.items.sort((a, b) => {
                         return sortDirection === 'asc' ?
                             (a[sortKey] as string).localeCompare((b[sortKey] as string)) :
                             (b[sortKey]as string).localeCompare((a[sortKey] as string));
@@ -198,8 +198,8 @@ export class CompareMayors extends LitElement {
                 this.items =r;
             }).then(() => {
                 for(let i = 0; i < this.items!.length; i ++) {
-                    let row:dsv.DSVRowString<string> = this.items![i];
-                    let nR = { "row": row }
+                    const row:dsv.DSVRowString<string> = this.items![i];
+                    const nR = { "row": row }
                     this.records.push(nR.row);
                 }
                 return true;
@@ -207,7 +207,7 @@ export class CompareMayors extends LitElement {
                 return false;
             });
             if(this.renderRoot){
-                let table:Table|null = this.renderRoot.querySelector('#'+ this.tableName);
+                const table:Table|null = this.renderRoot.querySelector('#'+ this.tableName);
                 if(table){
                     table.items = this.records;
                 } else {

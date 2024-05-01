@@ -61,13 +61,13 @@ import {ConflictArray, type ConflictArrayType} from "@schemas/conflictSchemas.ts
 export class PairingPage extends withStores(SpectrumElement, [allGenerals,generalPairs,conflictingGenerals,conflictRecords,typeAndUseMap,primaryInvestmentMap, secondaryInvestmentMap]) {
 
   @property({type: String})
-  public dataUrl: string = 'http://localhost';
+  public dataUrl = 'http://localhost';
 
   @state()
   private _dataUrl: URL = new URL(this.dataUrl);
 
   @property({type: String})
-  public conflictData: string = 'http://localhost';
+  public conflictData = 'http://localhost';
 
   @state()
   private _conflictData: URL = new URL(this.conflictData);
@@ -84,7 +84,7 @@ export class PairingPage extends withStores(SpectrumElement, [allGenerals,genera
       primaryInvestmentMap,
       secondaryInvestmentMap,
     ]
-    for(let ns in stores) {
+    for(const ns in stores) {
       stores[ns].subscribe((ms) => {
         if(DEBUG) {console.log(`store ${ns}`)}
         this.requestUpdate();

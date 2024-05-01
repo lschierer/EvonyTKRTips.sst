@@ -81,8 +81,8 @@ type generalArrayType = z.infer<typeof generalArray>;
 
 export class tableGeneral {
   readonly name: string;
-  private dragon: boolean = false;
-  private beast: boolean = false;
+  private dragon = false;
+  private beast = false;
   private attack: number;
   private defense: number;
   private hp: number;

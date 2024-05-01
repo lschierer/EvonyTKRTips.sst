@@ -207,7 +207,7 @@ export class GeneralTable extends SpectrumElement {
       }
       `
     if (super.styles !== null && super.styles !== undefined) {
-      let cra: CSSResultArray = ([super.styles].flat() as CSSResultArray);
+      const cra: CSSResultArray = ([super.styles].flat() as CSSResultArray);
       cra.push(localstyle);
       return cra as CSSResultGroup;
     } else return [localstyle];

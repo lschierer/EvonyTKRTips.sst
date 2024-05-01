@@ -62,18 +62,18 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
   private _speciality4: b.qualityColorType = b.qualityColor.enum.Gold;
 
   @state()
-  private _dragon: boolean = true;
+  private _dragon = true;
 
   @state()
-  private _beast: boolean = false;
+  private _beast = false;
 
   @state()
-  private debuffLead: boolean = false;
+  private debuffLead = false;
 
   @state()
   private _ascending: b.levelsType = b.levels.enum[10];
 
-  private Special4disabledValue: boolean = false;
+  private Special4disabledValue = false;
 
   constructor() {
     super();
@@ -141,7 +141,7 @@ export class InvestmentSelector extends withStores(SpectrumElement, [primaryInve
 
   protected changeHandler(e: CustomEvent) {
     console.log(`test`)
-    let myEvent = new CustomEvent('PickerChanged', {
+    const myEvent = new CustomEvent('PickerChanged', {
       detail: {
         id: (e.target as Picker).id,
         value: (e.target as Picker).value,
