@@ -42,7 +42,7 @@ export const primaryInvestmentMap = map<generalInvestment>();
 
 export const secondaryInvestmentMap = map<generalInvestment>();
 
-let destroy = logger({
+const destroy = logger({
   'GeneralTypeAndUseCase': typeAndUseMap,
   'PrimaryGeneralInvestment': primaryInvestmentMap,
   'SecondaryGeneralInvestment': secondaryInvestmentMap,

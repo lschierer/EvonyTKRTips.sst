@@ -10,7 +10,7 @@ export const formValues = persistentAtom<FormValues[]>('evonyTKRTips', [], {
   decode: JSON.parse,
 })
 
-let destroy = logger({
+const destroy = logger({
   'FormValues': formValues,
 })
 
@@ -20,7 +20,7 @@ export function formInit () {
 
 export function addValue (mykey: string, v: string|number|boolean) {
   const returnable = new Map<string, number|string|boolean>();
-  let mystore = formValues.get();
+  const mystore = formValues.get();
   if(mystore !== null) {
     mystore.forEach((val) => {
       const k = Object.keys(val)[0];

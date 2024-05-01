@@ -78,8 +78,8 @@ export class GeneralFilter extends withStores(SpectrumElement, [allGenerals, fil
       if(DEBUG) {console.log(`ag subscribe in general-filter`) }
       if(ag !== null && ag !== undefined) {
         const valid = GeneralArray.safeParse(ag);
-        let spv = selections.get().primaries;
-        let ssv = selections.get().secondaries;
+        const spv = selections.get().primaries;
+        const ssv = selections.get().secondaries;
         if(valid.success) {
           if(DEBUG) {console.log(`ag subscribe I have a valid ag`)}
           if(spv === null || spv === undefined) {
@@ -277,13 +277,13 @@ export class GeneralFilter extends withStores(SpectrumElement, [allGenerals, fil
   render() {
     let spt = html``;
     let sst = html``;
-    let npv = new Array<string>();
-    let nsv = new Array<string>();
-    let primaries = selections.get().primaries;
+    const npv = new Array<string>();
+    const nsv = new Array<string>();
+    const primaries = selections.get().primaries;
     if(primaries === null || primaries === undefined) {
       resetPrimary();
     }
-    let secondaries = selections.get().secondaries;
+    const secondaries = selections.get().secondaries;
     if(secondaries === null || secondaries === undefined) {
       resetSecondary();
     }
@@ -296,8 +296,8 @@ export class GeneralFilter extends withStores(SpectrumElement, [allGenerals, fil
             if(generals[i] !== null && generals[i] !== undefined) {
               const v = generals[i];
               const k = v.general.name;
-              let p: boolean = false;
-              let s: boolean = false;
+              let p = false;
+              let s = false;
               if(primaries.length > 0) {
                 for(let i  = 0; i < primaries.length; i++) {
                   const r = primaries[i];

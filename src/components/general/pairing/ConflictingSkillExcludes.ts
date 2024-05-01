@@ -32,9 +32,7 @@ import {
 import { typeAndUseMap, primaryInvestmentMap, secondaryInvestmentMap } from "./selectionStore";
 
 
-type GeneralDictionary = {
-  [key: string]: Array<string>;
-}
+type GeneralDictionary = Record<string, string[]>;
 
 const letters = new Set(["a", "b", "c"]);
 
@@ -45,15 +43,15 @@ export const conflictingGenerals = computed([conflictRecords], (CRs) => {
   if (CRs !== undefined && CRs !== null) {
     const valid = ConflictArray.safeParse(CRs)
     if (valid.success) {
-      let Returnable = new Map<string, Array<string>>();
+      const Returnable = new Map<string, string[]>();
       for (let i = 0; i < valid.data.length; i++) {
-        let o1: ConflictDatumType = valid.data[i]
+        const o1: ConflictDatumType = valid.data[i]
         let data: ConflictDatumType | undefined;
-        let conflicts = o1.conflicts;
+        const conflicts = o1.conflicts;
         for (const key in conflicts) {
           if(DEBUG){console.log(`evaluating key ${key} for o1.conflicts`)}
           if (key.localeCompare('other')) {
-            const items = conflicts[key as keyof typeof conflicts];
+            const items = conflicts[key];
             items.forEach((g: string) => {
               const gc = new Set<string>;
               items.forEach((g2: string) => {
@@ -84,17 +82,17 @@ export const conflictingBooks = computed(conflictRecords, CBs => {
   if (CBs !== null && CBs !== undefined) {
     const valid = ConflictArray.safeParse(CBs);
     if (valid.success) {
-      let Returnable = new Map<string, Array<standardSkillBookType>>();
+      const Returnable = new Map<string, standardSkillBookType[]>();
       for (let i = 0; i < valid.data.length; i++) {
-        let o1: ConflictDatumType = valid.data[i]
-        let conflicts = o1.conflicts;
-        let valid3 = standardSkillBook.array().safeParse(o1.books);
+        const o1: ConflictDatumType = valid.data[i]
+        const conflicts = o1.conflicts;
+        const valid3 = standardSkillBook.array().safeParse(o1.books);
         if (valid3.success) {
-          let books = valid3.data;
+          const books = valid3.data;
           if (books !== null && conflicts !== null) {
             for (const key in conflicts) {
               if (key.localeCompare('other')) {
-                const items = conflicts[key as keyof typeof conflicts];
+                const items = conflicts[key];
                 items.forEach((g: string) => {
                   Returnable.set(g, books);
                 })
@@ -116,7 +114,7 @@ export function checkConflicts(name1: string, name2: string, generalType: b.Clas
   if (name1 === name2 || !name1.localeCompare(name2, undefined, { sensitivity: 'base' })) {
     return true;
   }
-  let records = conflictingGenerals.get()
+  const records = conflictingGenerals.get()
   if (records !== null && records !== undefined) {
     const personal = records.get(name1)
     if (personal !== null && personal !== undefined) {
@@ -132,7 +130,7 @@ export function checkConflicts(name1: string, name2: string, generalType: b.Clas
 
 export function checkBoSConflicts(name: string) {
   if(DEBUG) {console.log(`checking for Dragon/Beast conflicts for ${name}`)}
-  let records = conflictingBooks.get();
+  const records = conflictingBooks.get();
   
 }
 

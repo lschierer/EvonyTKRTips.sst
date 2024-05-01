@@ -106,7 +106,7 @@ export class EvonySiege extends withStores(SpectrumElement, [formValues]) {
   }
 
   @property({type: Number})
-  public count: number = 0;
+  public count = 0;
 
   @property({type: String})
   public tier: TierType = Tier.enum.t1;

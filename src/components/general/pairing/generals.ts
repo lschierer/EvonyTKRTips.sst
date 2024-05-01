@@ -92,7 +92,7 @@ export const filteredSecondaries = computed([allGenerals, selections], (ag, ss) 
   if(agv.success && (ss !== undefined && ss !== null )) {
     const secondaries = ss.secondaries;  
     if(secondaries !== null && secondaries !== undefined && !util.isEmpty(secondaries)) {
-      for(let i in agv.data) {
+      for(const i in agv.data) {
         const one = agv.data[i];
         const os = secondaries.filter((sv) => {
           const k = Object.keys(sv)[0];
@@ -137,7 +137,7 @@ export const generalPairs = computed([allGenerals, typeAndUseMap,conflictingGene
         }
         const valid = GeneralArray.safeParse(g);
         if (valid.success && fpv.success && fsv.success) {
-          for (let i in fpv.data) {
+          for (const i in fpv.data) {
             const one = fpv.data[i];
             if(type !== b.ClassEnum.enum.all) {
               if (one.general.score_as !== null && one.general.score_as !== undefined) {
@@ -154,7 +154,7 @@ export const generalPairs = computed([allGenerals, typeAndUseMap,conflictingGene
 
             const conflicts = c.get(one.general.name);
             const pairs = new Set<GeneralPairType>
-            for (let j in fsv.data) {
+            for (const j in fsv.data) {
               const two = fsv.data[j];
               if (one.general.name.localeCompare(two.general.name, undefined, { sensitivity: 'base' })) {
                 if (conflicts !== null && conflicts !== undefined && conflicts.length >= 1) {
@@ -243,7 +243,7 @@ export function togglePrimary (general: GeneralElementType, enabled: boolean) {
 }
 
 export function toggleSecondary ( general: GeneralElementType, enabled: boolean) {
-  let store = selections;
+  const store = selections;
   const data = store.get().secondaries;
   
 }
@@ -251,7 +251,7 @@ export function toggleSecondary ( general: GeneralElementType, enabled: boolean)
 export function resetPrimary ()  {
   if(selections !== null && selections !== undefined) {
 
-    let nd = new Array<GeneralToggleType>();
+    const nd = new Array<GeneralToggleType>();
     const generals = allGenerals.get();
     if(generals !== null && generals !== undefined) {
       for(let i = 0; i < generals.length; i++){
@@ -271,9 +271,9 @@ export function resetPrimary ()  {
 }
 
 export function resetSecondary () {
-  let store = selections;
+  const store = selections;
   if(store !== null && store !== undefined) {
-    let nd = new Array<GeneralToggleType>();
+    const nd = new Array<GeneralToggleType>();
     const generals = allGenerals.get();
     if(generals !== null && generals !== undefined) {
       for(let i = 0; i < generals.length; i++){
@@ -305,7 +305,7 @@ let d2 = logger({
   'selections': selections,
 });
 */
-let d3 = null;
+const d3 = null;
 if(DEBUG) {
   logger({
     'filteredPrimaries': filteredPrimaries,
@@ -314,7 +314,7 @@ if(DEBUG) {
   });
 }
 
-let d4 = logger({
+const d4 = logger({
   'GeneralPairs': generalPairs,
 });
 

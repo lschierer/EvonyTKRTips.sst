@@ -41,16 +41,16 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
     }
   
     @state()
-    private baseMarch: number = 0;
+    private baseMarch = 0;
 
     @state()
     private rallySpotSize = 1;
 
     @state()
-    private TH_S3: boolean = false;
+    private TH_S3 = false;
 
     @state()
-    private TH_S4: boolean = false;
+    private TH_S4 = false;
 
     static RallySpotSize = new Map(Object.entries({
         1:800,
@@ -486,25 +486,25 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                     this.TH_S3 = false;
                     this.TH_S4 = false;
                 } 
-                this.baseMarch = (MarchCalc.RallySpotSize.get(base.toString()) !== undefined) ? (MarchCalc.RallySpotSize.get(base.toString()) as number) : 800;
+                this.baseMarch = (MarchCalc.RallySpotSize.get(base.toString()) !== undefined) ? (MarchCalc.RallySpotSize.get(base.toString())!) : 800;
                 const mathBase = this.baseMarch;
                 const imperialSeat = getValue('ImperialSeat');
                 if(imperialSeat !== undefined && imperialSeat !== null) {
-                    this.baseMarch = this.baseMarch + mathBase * ((MarchCalc.ImperialSeat.get(imperialSeat.toString()) !== undefined) ? (MarchCalc.ImperialSeat.get(imperialSeat.toString()) as number): 0)
+                    this.baseMarch = this.baseMarch + mathBase * ((MarchCalc.ImperialSeat.get(imperialSeat.toString()) !== undefined) ? (MarchCalc.ImperialSeat.get(imperialSeat.toString())!): 0)
                 }
                 const horn = getValue('WarHorn');
                 if(horn !== undefined && horn !== null) {
-                    this.baseMarch = this.baseMarch + ((MarchCalc.WarHorn.get(horn.toString()) !== undefined) ? (MarchCalc.WarHorn.get(horn.toString()) as number) : 0)
+                    this.baseMarch = this.baseMarch + ((MarchCalc.WarHorn.get(horn.toString()) !== undefined) ? (MarchCalc.WarHorn.get(horn.toString())!) : 0)
                 }
                 const VIP = getValue('VIP');
                 if(VIP !== undefined && VIP !== null) {
-                    this.baseMarch = this.baseMarch + ((MarchCalc.VIP.get(VIP.toString()) !== undefined) ? (MarchCalc.VIP.get(VIP.toString())as number) : 0)
+                    this.baseMarch = this.baseMarch + ((MarchCalc.VIP.get(VIP.toString()) !== undefined) ? (MarchCalc.VIP.get(VIP.toString())!) : 0)
                 }
                 const rank = getValue('rank');
                 if(rank !== undefined) {
                     if(!(rank as string).localeCompare('knight')){
-                        if(DEBUG) {console.log(`${(MarchCalc.Rank.get(rank as string)! as number)}`)}
-                        this.baseMarch = this.baseMarch + (MarchCalc.Rank.get(rank as string)! as number)
+                        if(DEBUG) {console.log(`${(MarchCalc.Rank.get(rank as string)!)}`)}
+                        this.baseMarch = this.baseMarch + (MarchCalc.Rank.get(rank as string)!)
                     } else if(!(rank as string).localeCompare('baron')){
                         this.baseMarch = this.baseMarch + (MarchCalc.Rank.get(rank as string))! 
                     } else if(!(rank as string).localeCompare('viscount')){
@@ -522,7 +522,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                 let r = getValue('Coordination');
                 if(r !== undefined && (r as number) > 0) {
                     if(DEBUG) {console.log(`Coordination r is ${r}`)}
-                    let v = Object.values(MarchCalc.Research.get('Military')!.Coordination!)[(r as number )] as number
+                    const v = Object.values(MarchCalc.Research.get('Military')!.Coordination!)[(r as number )]
                     if(DEBUG) {console.log(`Coordination v is ${v}`)}
                     if(v !== undefined) {
                         this.baseMarch = this.baseMarch + v;
@@ -531,7 +531,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                 r = getValue('AdvCoordination');
                 if(r !== undefined && (r as number) > 0) {
                     if(DEBUG) {console.log(`AdvCoordination r is ${r}`)}
-                    let v = Object.values(MarchCalc.Research.get('Military')!.AdvancedCordination!)[(r as number )] as number
+                    const v = Object.values(MarchCalc.Research.get('Military')!.AdvancedCordination!)[(r as number )]
                     if(DEBUG) {console.log(`AdvCoordination v is ${v}`)}
                     if(v !== undefined) {
                         this.baseMarch = this.baseMarch + mathBase * v;
@@ -540,7 +540,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                 r = getValue('SuperCoordination');
                 if(r !== undefined && (r as number) > 0) {
                     if(DEBUG) {console.log(`SuperCoordination r is ${r}`)}
-                    let v = Object.values(MarchCalc.Research.get('Military')!.SuperCoordination!)[(r as number )] as number
+                    const v = Object.values(MarchCalc.Research.get('Military')!.SuperCoordination!)[(r as number )]
                     if(DEBUG) {console.log(`SuperCoordination v is ${v}`)}
                     if(v !== undefined) {
                         this.baseMarch = this.baseMarch + v;
@@ -549,7 +549,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                 r = getValue('SuprCoordination');
                 if(r !== undefined && (r as number) > 0) {
                     if(DEBUG) {console.log(`SuprCoordination r is ${r}`)}
-                    let v = Object.values(MarchCalc.Research.get('Military')!.SupremeCoordination!)[(r as number )] as number
+                    const v = Object.values(MarchCalc.Research.get('Military')!.SupremeCoordination!)[(r as number )]
                     if(DEBUG) {console.log(`SuprCoordination v is ${v}`)}
                     if(v !== undefined) {
                         this.baseMarch = this.baseMarch + mathBase * v;
@@ -558,7 +558,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                 r = getValue('Prestige');
                 if(r !== undefined && (r as number) > 0) {
                     if(DEBUG) {console.log(`Prestige r is ${r}`)}
-                    let v = Object.values(MarchCalc.Research.get('MilitaryAdvance')!.Prestige!)[(r as number )] as number
+                    const v = Object.values(MarchCalc.Research.get('MilitaryAdvance')!.Prestige!)[(r as number )]
                     if(DEBUG) {console.log(`Prestige v is ${v}`)}
                     if(v !== undefined) {
                         this.baseMarch = this.baseMarch + v;
@@ -567,7 +567,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                 r = getValue('AdvPrestige');
                 if(r !== undefined && (r as number) > 0) {
                     if(DEBUG) {console.log(`AdvPrestige r is ${r}`)}
-                    let v = Object.values(MarchCalc.Research.get('MilitaryAdvance')!.AdvancedPrestige!)[(r as number )] as number
+                    const v = Object.values(MarchCalc.Research.get('MilitaryAdvance')!.AdvancedPrestige!)[(r as number )]
                     if(DEBUG) {console.log(`AdvPrestige v is ${v}`)}
                     if(v !== undefined) {
                         this.baseMarch = this.baseMarch + v;
@@ -591,7 +591,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                     r = getValue('Banquet');
                     if(r !== undefined) {
                         if(!(r as string).localeCompare('true')){
-                            let r2 = getValue('BNF');
+                            const r2 = getValue('BNF');
                             if(r2 !== undefined){
                                 if(DEBUG) {console.log(`i il bnf r2 defined ${r2 as number}`)}
                                 this.baseMarch = this.baseMarch + Object.values(MarchCalc.idealLand.get('Banquet')!)[(r2 as number)-1]
@@ -614,7 +614,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                     if(r !== undefined) {
                         if(!(r as string).localeCompare('checked')) {
                             this.baseMarch = this.baseMarch + mathBase * 0.05;
-                            let r2 = getValue('TH_S3');
+                            const r2 = getValue('TH_S3');
                             this.TH_S3 = true;
                             if(r2 !== undefined) {
                                 if(!(r2 as string).localeCompare('Green')) {
@@ -632,7 +632,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                                 } else if(!(r2 as string).localeCompare('Gold')) {
                                     this.baseMarch = this.baseMarch + mathBase * 0.06;
                                     this.TH_S4 = true;
-                                    let r3 = getValue('TH_S4');
+                                    const r3 = getValue('TH_S4');
                                     if(r3 !== undefined) {
                                         if(!(r3 as string).localeCompare('Green')) {
                                             this.baseMarch = this.baseMarch + mathBase * 0.01;
@@ -658,7 +658,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                 }
             } else {
                 addValue('keepSize',1);
-                this.baseMarch = MarchCalc.RallySpotSize.get('1') as number;
+                this.baseMarch = MarchCalc.RallySpotSize.get('1')!;
             }
         } else {
             addValue('keepSize',1);

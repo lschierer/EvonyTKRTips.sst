@@ -74,7 +74,7 @@ export class TypeSelector extends withStores(SpectrumElement,[typeAndUseMap]) {
   private observer = new MutationObserver(this.MutationObserverCallback);
   
   protected  changeHandler(e: Event) {
-    let myEvent = new CustomEvent('PickerChanged',{
+    const myEvent = new CustomEvent('PickerChanged',{
       detail: {
         id: (e.target as Picker).id,
         value: (e.target as Picker).value,

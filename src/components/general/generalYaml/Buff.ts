@@ -136,7 +136,7 @@ export class GeneralBuffController implements ReactiveController {
         for(let i = 0; i < (getValue(rkey) as number); i++) {
           fieldLabel = sindex + i.toString() + '_' + level;
           console.log(`new label is ${fieldLabel}`)
-          let attribute: number | string |boolean |null| undefined = getValue(fieldLabel.concat('_attribute')) 
+          const attribute: number | string |boolean |null| undefined = getValue(fieldLabel.concat('_attribute')) 
           if(attribute === undefined || attribute === null) {
             console.log(`${exportable}\n${initialBlanks}- attribute: value pending`)
           } else {
@@ -144,7 +144,7 @@ export class GeneralBuffController implements ReactiveController {
           }
           
           const condition_label = fieldLabel.concat('_condition');
-          let condition: number | string |boolean |null| undefined = getValue(condition_label) 
+          const condition: number | string |boolean |null| undefined = getValue(condition_label) 
           if(condition === undefined || condition === null) {
             console.log(`${exportable}\n${initialBlanks}  condition: value pending`)
           } else {
@@ -154,14 +154,14 @@ export class GeneralBuffController implements ReactiveController {
             
           }
   
-          let tclass: number | string |boolean |null| undefined = getValue(fieldLabel.concat('_class')) 
+          const tclass: number | string |boolean |null| undefined = getValue(fieldLabel.concat('_class')) 
           if(tclass === undefined || tclass === null) {
             console.log(`${exportable}\n${initialBlanks}  class: value pending`);
           } else if((tclass !== 'all') && (tclass !== 'none')) {
             exportable = `${exportable}\n${initialBlanks}    class: ${tclass}`
           }
   
-          let tvalue: number | string |boolean |null| undefined = getValue(fieldLabel.concat('_valueN')) 
+          const tvalue: number | string |boolean |null| undefined = getValue(fieldLabel.concat('_valueN')) 
           if(tvalue === undefined || tvalue === null) {
             console.log(`${exportable}\n${initialBlanks}  value: value pending`)
           } else  {
