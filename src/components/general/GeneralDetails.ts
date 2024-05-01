@@ -19,7 +19,7 @@ import {
     primaryInvestmentMap,
     secondaryInvestmentMap,
     typeAndUseMap
-} from './generalInvestmentStore.ts';
+} from './generalInvestmentStore';
 
 import {
     Condition,
@@ -43,11 +43,11 @@ import {
     type Attribute,
 } from "@schemas/index";
 
-import {tableGeneral} from "@components/general/tableGeneral.ts";
+import {tableGeneral} from "@components/general/tableGeneral";
 import {
     conflictingGenerals,
     conflictRecords,
-} from "@components/general/ConflictingSkillExcludes.ts";
+} from "@components/general/ConflictingSkillExcludes";
 
 
 @customElement('general-details')
