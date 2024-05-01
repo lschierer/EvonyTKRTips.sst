@@ -1,4 +1,4 @@
-import { atom, map, action, computed } from "nanostores";
+import { atom, map,  computed } from "nanostores";
 import { logger } from '@nanostores/logger'
 
 import { z } from "zod";
