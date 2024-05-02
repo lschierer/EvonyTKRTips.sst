@@ -14,26 +14,7 @@ general:
   level: '1'
   score_as: Mounted
   books:
-    - name: The Eagle of Brittany
-      buff:
-        - attribute: Attack
-          class: Mounted
-          condition: leading_the_army_to_attack
-          value:
-            number: 35
-            unit: percentage
-        - attribute: Defense
-          class: Mounted
-          condition: leading_the_army_to_attack
-          value:
-            number: 20
-            unit: percentage
-        - attribute: Defense
-          class: Ground
-          condition: leading_the_army_to_attack
-          value:
-            number: 20
-            unit: percentage
+    - The Eagle of Brittany
   specialities:
     - Mounted Troop Defense
     - Strike

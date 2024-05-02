@@ -7,6 +7,7 @@ general:
     - severity: info
       text: >
         The Mounted Troops' Attack Skill Book may, however, be used.
+
   score_as: Mounted
   stars: '10'
   leadership: 112
@@ -18,14 +19,7 @@ general:
   politics: 113
   politics_increment: 8.44
   books:
-    - name: Lady of the Mercians
-      buff:
-        - attribute: Attack
-          condition: Against Monsters
-          class: Mounted
-          value:
-            number: 55
-            unit: percentage
+    - Lady of the Mercians
   ascending:
     - level: '6'
       buff:

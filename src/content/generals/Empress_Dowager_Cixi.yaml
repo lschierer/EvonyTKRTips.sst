@@ -14,19 +14,7 @@ general:
   level: '1'
   score_as: Mayor
   books:
-    - name: Curses
-      buff:
-        - attribute: Defense
-          condition: Reduces_Enemy
-          value:
-            number: -15
-            unit: percentage
-        - attribute: Defense
-          condition: Reduces_Enemy
-          class: Ground
-          value:
-            number: -15
-            unit: percentage
+    - Curses
   specialities:
     - Mounted Troop Defense
     - Suppress

@@ -95,6 +95,7 @@ const intrinsic = ["leadership", "attack", "defense", "politics"]
 let conflictData: bookConflictsType[] = new Array<bookConflictsType>();
 let collectionArray: CollectionEntry<'generalConflictData'>[] | generalConflictsType[];
 let generalSpecials: SpecialityType[] = new Array<SpecialityType>();
+let generalBooks: BookType[] = new Array<BookType>();
 
 const validation = GeneralElement.safeParse(data);
 if (validation.success) {
@@ -217,6 +218,19 @@ if (validation.success) {
         }
     }
 
+    if(general.books !== undefined && general.books !== null) {
+        await Promise.all(general.books.map(async (b:string) => {
+            const book: CollectionEntry<'skillBooks'> | undefined = await getEntry('skillBooks', b);
+            if(book !== undefined) {
+                generalBooks.push(book.data);
+            } else {
+                console.log(`could not retrieve ${b}`);
+            }
+        }))
+    } else {
+        console.log(`no general books`)
+    }
+
     if(general.specialities !== undefined && general.specialities !== null) {
         await Promise.all(general.specialities.map(async (s:string) => {
             const special: CollectionEntry<'specialities'> | undefined = await getEntry('specialities', s);
@@ -264,7 +278,7 @@ if (validation.success) {
     {general.books && (
     <div class="SkillBooks non-content" style="margin: 1px;">
         <span class="spectrum-Heading spectrum-Heading--sizeXS">Special Skill:</span>
-        {general.books.map((book: BookType) => (
+        {generalBooks.map((book: BookType) => (
           (specialSkillBook.safeParse(book)).success && (
             <>
                 <span class="spectrum-Heading spectrum-Heading--sizeXXS">{book.name}</span>

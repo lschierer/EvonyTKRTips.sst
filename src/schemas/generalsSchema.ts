@@ -99,7 +99,7 @@ export const GeneralClass = z.object({
       }).nullish(),
     "score_as": generalSpecialists.optional(),
     "specialities": z.array(z.string()).nullish(),
-    "books": z.array(Book).nullish(),
+    "books": z.array(z.string()).nullish(),
     "ascending": z.array(Ascending).nullish(),
     "note": z.array(Note).nullish(),
     "totalBuffs": totalBuffs.nullish(),

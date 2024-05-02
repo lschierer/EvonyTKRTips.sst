@@ -14,31 +14,7 @@ general:
   level: '1'
   stars: '10'
   books:
-    - name: Foresight
-      buff:
-        - attribute: Attack
-          condition: leading_the_army_to_attack
-          class: Mounted
-          value:
-            number: 40
-            unit: percentage
-        - attribute: Attack
-          class: Ground
-          value:
-            number: 40
-            unit: percentage
-        - condition: leading_the_army_to_attack
-          attribute: Defense
-          class: Mounted
-          value:
-            number: 25
-            unit: percentage
-        - condition: leading_the_army_to_attack
-          attribute: HP
-          class: Mounted
-          value:
-            number: 25
-            unit: percentage
+    - Foresight
   specialities:
     - Mounted Troop Assault
     - Strike

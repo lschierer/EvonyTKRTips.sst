@@ -14,18 +14,7 @@ general:
   level: '1'
   score_as: Archers
   books:
-    - name: Saint Louis
-      buff:
-        - attribute: Attack
-          class: Archers
-          value:
-            number: 40
-            unit: percentage
-        - attribute: Defense
-          class: Archers
-          value:
-            number: 45
-            unit: percentage
+    - Saint Louis
   specialities:
     - Ranged Troop Formation
     - Siege

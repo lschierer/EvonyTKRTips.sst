@@ -14,26 +14,7 @@ general:
   level: '1'
   score_as: Archers
   books:
-    - name: Battle of Selimbar
-      buff:
-        - attribute: Attack
-          condition: leading_the_army_to_attack
-          class: Archers
-          value:
-            number: 45
-            unit: percentage
-        - attribute: Defense
-          condition: leading_the_army_to_attack
-          class: Archers
-          value:
-            number: 45
-            unit: percentage
-        - attribute: Defense
-          condition: leading_the_army_to_attack
-          class: Siege
-          value:
-            number: 45
-            unit: percentage
+    - Battle of Selimbar
   ascending:
     - level: '6'
       buff:

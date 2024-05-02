@@ -14,23 +14,7 @@ general:
   politics: 107
   politics_increment: 8.64
   books:
-    - name: Crossing the River Rhine
-      buff:
-        - attribute: Attack
-          class: Ground
-          value:
-            number: 35
-            unit: percentage
-        - attribute: Defense
-          class: Ground
-          value:
-            number: 35
-            unit: percentage
-        - attribute: Defense
-          class: Mounted
-          value:
-            number: 35
-            unit: percentage
+    - Crossing the River Rhine
   ascending:
     - level: '6'
       buff:

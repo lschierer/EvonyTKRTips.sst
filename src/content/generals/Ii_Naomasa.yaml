@@ -14,18 +14,7 @@ general:
   politics_increment: 8.52
   score_as: Mounted
   books:
-    - name: Red Demon
-      buff:
-        - attribute: Attack
-          class: Mounted
-          value:
-            number: 25
-            unit: percentage
-        - attribute: HP
-          class: Mounted
-          value:
-            number: 40
-            unit: percentage
+    - Red Demon
   ascending:
     - level: '6'
       buff:

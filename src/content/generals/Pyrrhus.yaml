@@ -94,25 +94,4 @@ general:
             number: 15
             unit: percentage
   books:
-    - name: Pyrrhic War
-      buff:
-        - attribute: Attack
-          class: Ground
-          value:
-            number: 35
-            unit: percentage
-        - attribute: Defense
-          class: Ground
-          value:
-            number: 35
-            unit: percentage
-        - attribute: HP
-          class: Ground
-          value:
-            number: 15
-            unit: percentage
-        - attribute: HP
-          class: Mounted
-          value:
-            number: 15
-            unit: percentage
+    - Pyrrhic War

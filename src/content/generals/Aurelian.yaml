@@ -14,26 +14,7 @@ general:
   level: '1'
   stars: '10'
   books:
-    - name: Restorer of the World
-      buff:
-        - condition: leading_the_army_to_attack
-          class: Ground
-          attribute: Attack
-          value:
-            number: 40
-            unit: percentage
-        - condition: leading_the_army_to_attack
-          class: Ground
-          attribute: HP
-          value:
-            number: 35
-            unit: percentage
-        - condition: leading_the_army_to_attack
-          class: Mounted
-          attribute: HP
-          value:
-            number: 35
-            unit: percentage
+    - Restorer of the World
   specialities:
     - Ground Troop Formation
     - Sabotage

@@ -14,26 +14,7 @@ general:
   politics: 107
   politics_increment: 8.62
   books:
-    - name: Battle of Xiaoting
-      buff:
-        - attribute: Attack
-          class: Ground
-          condition: leading_the_army_to_attack
-          value:
-            number: 45
-            unit: percentage
-        - attribute: Defense
-          class: Ground
-          condition: leading_the_army_to_attack
-          value:
-            number: 30
-            unit: percentage
-        - attribute: Defense
-          class: Mounted
-          condition: leading_the_army_to_attack
-          value:
-            number: 30
-            unit: percentage
+    - Battle of Xiaoting
   specialities:
     - Ground Troop Defense
     - Formation

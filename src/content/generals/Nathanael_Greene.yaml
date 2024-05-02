@@ -14,13 +14,7 @@ general:
   level: '1'
   score_as: Mounted
   books:
-    - name: Strategy Expert
-      buff:
-        - attribute: Stamina_cost
-          condition: Against Monsters
-          value:
-            number: 25
-            unit: percentage
+    - Strategy Expert
   ascending:
     - level: '6'
       buff:
