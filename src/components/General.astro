@@ -284,30 +284,32 @@ if (validation.success) {
   {general.specialities && (
     <span class="label spectrum-Heading spectrum-Heading--sizeXS">Specialities</span>
     <div class="Specialities non-content">
-        {general.specialities && general.specialities.map((gs) => (
-          <div class="Speciality non-content">
-              <span class="label spectrum-Heading spectrum-Heading--sizeXXS">{gs.name}</span>
-              {Array.isArray(gs.attribute) && (
-                <div class="non-content">
-                    {gs.attribute.map((s) => (
-                      <div class={"non-content " + s.level}  >
-                          <span class="label spectrum-Body spectrum-Body--sizeM">{s.level} Level:</span>
-                          <ul >
-                              {s.buff.map((b: BuffType) => (
-                                <>
-                                    <li >
-                                        {b.condition ? (b.condition as string).replaceAll(/_/g, ' ') : ''} 
-                                        {b.class !== 'all' ? b.class : 'all troops '} 
-                                        {b.attribute ? b.attribute.replaceAll(/_/g, ' ') : ''} 
-                                        {(b.value && b.value.number < 0) ? '-' : '+'}{b.value!.number}{b.value!.unit ? '%' : ''}
-                                    </li>
-                                </>
-                              ))}
-                          </ul>
-                      </div>
-                    ))}
+        {general.specialities && general.specialities.map((gs, index) =>(
+            <div class={"SpecialityName" + index + " non-content"}>
+                <span class="label spectrum-Heading spectrum-Heading--sizeXXS">
+                    {gs.name}
+                </span>
+            </div>
+        ))}
+        {general.specialities && general.specialities.map((gs, index) => (
+          <div class={"Speciality" + index + " non-content"}>
+            {Array.isArray(gs.attribute) && gs.attribute.map((s) => (
+                <div class={"non-content " + s.level}  >
+                    <span class="label spectrum-Body spectrum-Body--sizeM">{s.level} Level:</span>
+                    <ul >
+                        {s.buff.map((b: BuffType) => (
+                        <>
+                            <li >
+                                {b.condition ? (b.condition as string).replaceAll(/_/g, ' ') : ''} 
+                                {b.class !== 'all' ? b.class : 'all troops '} 
+                                {b.attribute ? b.attribute.replaceAll(/_/g, ' ') : ''} 
+                                {(b.value && b.value.number < 0) ? '-' : '+'}{b.value!.number}{b.value!.unit ? '%' : ''}
+                            </li>
+                        </>
+                        ))}
+                    </ul>
                 </div>
-              )}
+            ))}
           </div>
         ))}
     </div>
@@ -413,9 +415,17 @@ if (validation.success) {
 
         & .Specialities {
             margin: 1px;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            column-gap: 2px;
+            align-items: start;
+
+            & [class^="Speciality"] {
+                grid-column-end: span 1;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+            }
 
             & .Green {
                 background-color: var(--spectrum-celery-400);
