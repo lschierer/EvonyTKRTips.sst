@@ -1,19 +1,18 @@
 ---
-books:
-  - name: Prophecy Key
-    buff:
-      - attribute: Attack
-        class: Ground
-        value:
-          number: 45
-          unit: percentage
-      - attribute: Defense
-        class: Ground
-        value:
-          number: 35
-          unit: percentage
-      - attribute: HP
-        class: Ground
-        value:
-          number: 35
-          unit: percentage
+- name: Prophecy Key
+  buff:
+    - attribute: Attack
+      class: Ground
+      value:
+        number: 45
+        unit: percentage
+    - attribute: Defense
+      class: Ground
+      value:
+        number: 35
+        unit: percentage
+    - attribute: HP
+      class: Ground
+      value:
+        number: 35
+        unit: percentage
