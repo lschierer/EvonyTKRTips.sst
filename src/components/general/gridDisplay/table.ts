@@ -115,13 +115,13 @@ export class GeneralTable extends SizedMixin(SpectrumElement, {
     > = {
       ["primeName"]: (a, b) => {
         const ga = a.primary;
-        const gb = b.secondary;
+        const gb = b.primary;
         return direction === "asc"
           ? ga.localeCompare(gb, undefined, { sensitivity: "base" })
           : gb.localeCompare(ga, undefined, { sensitivity: "base" });
       },
       ["assistName"]: (a, b) => {
-        const ga = a.primary;
+        const ga = a.secondary;
         const gb = b.secondary;
         return direction === "asc"
           ? ga.localeCompare(gb, undefined, { sensitivity: "base" })
@@ -193,7 +193,7 @@ export class GeneralTable extends SizedMixin(SpectrumElement, {
         const { sortDirection, sortKey } = (event as CustomEvent).detail;
 
         const items = this.table!.items.sort((a, b) => {
-          const itemA = Object.values(a)[0];
+          const itemA = Object.values(a)[0] as TableRowDataType;
           const itemB = Object.values(b)[0];
           return this.pairSorter(
             sortDirection,
