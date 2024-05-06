@@ -30,12 +30,12 @@ import { Picker } from '@spectrum-web-components/picker';
 import '@spectrum-web-components/status-light/sp-status-light.js';
 import '@spectrum-web-components/tooltip/sp-tooltip.js';
 
-import { TypeSelector } from './TypeSelector.ts';
-import { InvestmentSelector } from './InvestmentSelector.ts';
+import { TypeSelector } from './TypeSelector';
+import { InvestmentSelector } from './InvestmentSelector';
 
-import { PairingRow } from "./row.ts";
+import { PairingRow } from "./row";
 
-import * as b from '@schemas/baseSchemas.ts';
+import * as b from '@schemas/baseSchemas';
 
 import {
   type GeneralClassType,
@@ -43,7 +43,7 @@ import {
   generalUseCase,
   GeneralPair,
   type generalUseCaseType
-} from '@schemas/generalsSchema.ts';
+} from '@schemas/generalsSchema';
 
 import {
   type generalInvestment,
@@ -51,11 +51,11 @@ import {
   primaryInvestmentMap,
   secondaryInvestmentMap,
   typeAndUseMap,
-} from './selectionStore.ts';
+} from './selectionStore';
 
-import { generalPairs } from './generals.ts'
+import { generalPairs } from './generals'
 
-import { buffAdverbs } from './buff.ts';
+import { buffAdverbs } from './buff';
 import type { Pair } from "yaml";
 
 type tableRecord = Record<string, PairingRow>;
