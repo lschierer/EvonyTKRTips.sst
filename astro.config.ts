@@ -9,7 +9,8 @@ import {sidebar} from './src/sidebar.ts';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://evonytkrtips.net',
-  
+  output: "hybrid",
+  adapter: aws(),
   compressHTML: false,
   integrations: [
     lit(),
