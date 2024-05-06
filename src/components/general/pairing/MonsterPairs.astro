@@ -2,9 +2,7 @@
 import { getCollection, type CollectionEntry } from "astro:content";
 
 import { z, type ZodError } from "zod";
-import { TypeSelector } from "./TypeSelector.ts";
-import { InvestmentSelector } from "./InvestmentSelector.ts";
-import { PairingTable } from "./table.ts";
+import { GridDisplay } from "../gridDisplay/gridDisplay";
 import {
   type generalInvestment,
   type generalTypeAndUse,
@@ -101,66 +99,55 @@ if (result.success) {
   console.error(result.error);
 }
 ---
-
-<script>
-  import {
-    primaryInvestmentMap,
-    secondaryInvestmentMap,
-    typeAndUseMap,
-    pickType,
-    pickUseCase,
-  } from "./selectionStore";
-  import {ClassEnum, generalUseCase} from "../../../schemas"
-  import { allGenerals, generalPairs } from "./generals";
-  import {
-    conflictingGenerals,
-    conflictRecords,
-  } from "./ConflictingSkillExcludes";
-  import { map, atom } from "nanostores";
-
-  class Stores extends HTMLElement {
-    private stores = [
-      allGenerals,
-      generalPairs,
-      conflictingGenerals,
+<div class="sp-table-container">
+  <script>
+    import { allGenerals } from "./generals";
+    import {
       conflictRecords,
-      typeAndUseMap,
-      primaryInvestmentMap,
-      secondaryInvestmentMap,
-    ];
+    } from "./ConflictingSkillExcludes";
 
-    constructor() {
-      super();
-      for (let ns in this.stores) {
-        this.stores[ns].subscribe((ms) => {
-          console.log(`subscribe for ${ns}`);
-        });
-      }
-      pickType(ClassEnum.enum.Mounted);
-      pickUseCase(generalUseCase.enum.Monsters);
-      const allGeneralsData = this.dataset.agd;
-      const allConflictData = this.dataset.acd;
+    import {
+      type GeneralElementType,
+      type ConflictArrayType,
+      type ConflictDatumType,
+    } from "@schemas/index";
 
-      if (allGeneralsData !== null && allGeneralsData !== undefined) {
-        allGenerals.set(JSON.parse(allGeneralsData));
-      } else {
-        console.log(`dataset agd was null or undefined`);
-      }
+    class Stores extends HTMLElement {
 
-      if (allConflictData !== null && allConflictData !== undefined) {
-        conflictRecords.set(JSON.parse(allConflictData));
-      } else {
-        console.log(`dataset acd was null or undefined`);
+      public allGenerals: GeneralElementType[] = new Array<GeneralElementType>();
+
+      public conflictRecords: ConflictArrayType = new Array<ConflictDatumType>();
+
+      constructor() {
+        super();
+
+        const allGeneralsData = this.dataset.agd;
+        const allConflictData = this.dataset.acd;
+
+        if (allGeneralsData !== null && allGeneralsData !== undefined) {
+          this.allGenerals = [...JSON.parse(allGeneralsData)];
+        } else {
+          console.log(`dataset agd was null or undefined`);
+        }
+
+        if (allConflictData !== null && allConflictData !== undefined) {
+          this.conflictRecords = [...JSON.parse(allConflictData)];
+        } else {
+          console.log(`dataset acd was null or undefined`);
+        }
       }
     }
-  }
-  customElements.define("astro-stores", Stores);
-</script>
-{
-  allGeneralsData && allConflictData && (
-    <astro-stores data-acd={allConflictData} data-agd={allGeneralsData} />
-  )
-}
+    customElements.define("astro-stores", Stores);
+  </script>
+  <GridDisplay client:only="lit" >
+    {
+      allGeneralsData && allConflictData && (
+        <astro-stores slot="astro-store" data-acd={allConflictData} data-agd={allGeneralsData} />
+      )
+    }
+  </GridDisplay>
+
+</div>
 
 <style>
   .sp-table-container {
@@ -169,9 +156,3 @@ if (result.success) {
     min-height: calc(var(--spectrum-global-dimension-size-6000) * 2);
   }
 </style>
-
-<div class="sp-table-container">
-  <InvestmentSelector generalRole="primary" client:only="lit" />
-  <InvestmentSelector generalRole="secondary" client:only="lit" />
-  <PairingTable client:only="lit" />
-</div>
