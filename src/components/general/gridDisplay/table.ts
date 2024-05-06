@@ -55,9 +55,10 @@ export class GeneralTable extends SizedMixin(SpectrumElement, {
   defaultSize: "m",
   noDefaultSize: false,
 }) {
-
-
-  private generalStore = new ContextConsumer(this, {context: GeneralStoreContext})
+  private generalStore = new ContextConsumer(this, {
+    context: GeneralStoreContext,
+    subscribe: true,
+  });
 
   @state()
   private table: Table | undefined;
@@ -65,11 +66,23 @@ export class GeneralTable extends SizedMixin(SpectrumElement, {
   private tableRef: Ref<Table> = createRef();
 
   private pairFinder() {
+    if (DEBUG) console.log(`gridDisplay table pairFinder; start`);
     const TableData = new Array<TableRecord>();
     if (this.generalStore !== undefined && this.generalStore !== null) {
-     if(this.generalStore.value !== undefined && this.generalStore.value !== null) {
+      if (
+        this.generalStore.value !== undefined &&
+        this.generalStore.value !== null
+      ) {
+        if (DEBUG)
+          console.log(`gridDisplay table pairFinder; with general store`);
         const allGenerals = this.generalStore.value.allGenerals;
-        if (allGenerals !== undefined && allGenerals !== null) {
+        if (
+          allGenerals !== undefined &&
+          allGenerals !== null &&
+          allGenerals.length > 0
+        ) {
+          if (DEBUG)
+            console.log(`gridDisplay table pairFinder; with generals in store`);
           for (const general of allGenerals) {
             const s = general.general.name;
             for (let i = 0; i < allGenerals.length; i++) {
@@ -85,7 +98,7 @@ export class GeneralTable extends SizedMixin(SpectrumElement, {
             }
           }
         }
-     }
+      }
     }
     return TableData;
   }
@@ -139,6 +152,28 @@ export class GeneralTable extends SizedMixin(SpectrumElement, {
     if (this.renderRoot) {
       this.table = this.tableRef.value;
       if (this.table !== undefined && this.table !== null) {
+        if (DEBUG) console.log(`gridDisplay table firstUpdated; table defined`);
+
+        if (
+          this.generalStore !== undefined &&
+          this.generalStore !== null &&
+          this.generalStore.value !== undefined &&
+          this.generalStore.value !== null
+        ) {
+          if (DEBUG)
+            console.log(`gridDisplay table firstUpdated; generalstore`);
+          const records = this.pairFinder();
+          if (records.length > 0) {
+            if (DEBUG)
+              console.log(
+                `gridDisplay table firstUpdated; ${records.length} records`
+              );
+
+            this.table.items = [...records];
+          } else {
+            console.log(`gridDisplay table firstUpdated; no records`);
+          }
+        }
         this.table.renderItem = (item, index) => {
           const tItem = Object.values(item as TableRecord)[0];
           if (tItem !== undefined && tItem !== null) {
@@ -176,16 +211,14 @@ export class GeneralTable extends SizedMixin(SpectrumElement, {
     _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>
   ): void {
     super.willUpdate(_changedProperties);
-    if(DEBUG) console.log(`gridDisplay table willupdate; called`)
+    if (DEBUG) console.log(`${Object.keys(_changedProperties)}`);
+    if (DEBUG) console.log(`gridDisplay table willupdate; called`);
     if (this.renderRoot) {
-      if(DEBUG) console.log(`gridDisplay table willupdate; renderRoot`)
+      if (DEBUG) console.log(`gridDisplay table willupdate; renderRoot`);
       if (this.table !== null && this.table !== undefined) {
-        if(DEBUG) console.log(`gridDisplay table willupdate; table defined`)
+        if (DEBUG) console.log(`gridDisplay table willupdate; table defined`);
         if (_changedProperties.has("generalStore")) {
-          const records = this.pairFinder();
-          if (records.length < 0) {
-            this.table.items = [...records];
-          }
+          if (DEBUG) console.log(`gridDisplay table willupdate; generalStore`);
         }
       }
     }
@@ -234,12 +267,35 @@ export class GeneralTable extends SizedMixin(SpectrumElement, {
   protected render() {
     let returnString = html``;
 
+    if (this.table !== undefined && this.table !== null) {
+      if (DEBUG)
+        console.log(`gridDisplay table render called when table exists`);
+      if (
+        this.generalStore.value !== undefined &&
+        this.generalStore.value !== null &&
+        this.generalStore.value.allGenerals !== undefined &&
+        this.generalStore.value.allGenerals !== null &&
+        this.generalStore.value.allGenerals.length > 0
+      ) {
+        console.log(`gridDisplay table render calling pairFinder`);
+        const records = this.pairFinder();
+        if (records.length > 0) {
+          this.table.items = [...records];
+        }
+      }
+      if (DEBUG)
+        console.log(
+          `gridDisplay table render ${this.table.items.length} items`
+        );
+    }
+
     if (this.generalStore !== undefined && this.generalStore !== null) {
       if (
         this.generalStore.value !== undefined &&
-        this.generalStore.value !== null && 
+        this.generalStore.value !== null &&
         this.generalStore.value.allGenerals !== undefined &&
-        this.generalStore.value.allGenerals !== null
+        this.generalStore.value.allGenerals !== null &&
+        this.generalStore.value.allGenerals.length > 0
       ) {
         const allGenerals = this.generalStore.value.allGenerals;
 
@@ -251,6 +307,11 @@ export class GeneralTable extends SizedMixin(SpectrumElement, {
                         ${ref(this.tableRef)}
                         >
                         <sp-table-head>
+                            <sp-table-head-cell
+                              id='index'
+                              >
+                              Index
+                            </sp-table-head-cell>
                             <sp-table-head-cell 
                                 id='primeName'
                                 sortable

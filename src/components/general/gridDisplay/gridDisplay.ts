@@ -1,6 +1,6 @@
 import { html } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
-import { provide,  } from "@lit/context";
+import { ContextProvider, provide,  } from "@lit/context";
 import {Task, initialState} from '@lit/task';
 
 import {
@@ -12,30 +12,34 @@ import {
 import {type GeneralStore, GeneralStoreContext} from './GeneralContext';
 import { allGenerals } from "../pairing/generals";
 
+const DEBUG = true;
+
 @customElement("grid-display")
 export class GridDisplay extends SpectrumElement {
 
-  @provide({ 
-    context: GeneralStoreContext,
-  })
   @state()
-  generalStore = {
-    allGenerals: null,
-    conflicts: null,
-  };
+  generalStore = new ContextProvider(this, {
+    context: GeneralStoreContext,
+    initialValue: {
+      allGenerals: null,
+      conflicts: null,
+    }
+  });
 
   handleSlotchange(e) {
-    console.log(`grid-display handleSlotchange called`);
+    if (DEBUG) console.log(`grid-display handleSlotchange called`);
     const childNodes = e.target.assignedNodes({ flatten: true });
-    // ... do something with childNodes ...
+    let needsUpdate = false;
     if (
-      this.generalStore.allGenerals === undefined ||
-      !Array.isArray(this.generalStore.allGenerals) ||
-      this.generalStore.allGenerals.length <= 0
+      this.generalStore.value.allGenerals === undefined ||
+      !Array.isArray(this.generalStore.value.allGenerals) ||
+      this.generalStore.value.allGenerals.length <= 0
     ) {
-      this.generalStore.allGenerals = childNodes
+      if(DEBUG) console.log(`grid-display handleSlotchange; generals store defined generals are zero`)
+      this.generalStore.value.allGenerals = childNodes
         .map((node) => {
           if (node.allGenerals !== undefined && node.allGenerals !== null) {
+            if(DEBUG) console.log(`found node with allGenerals property`)
             return node.allGenerals;
           } else {
             console.log(
@@ -44,15 +48,16 @@ export class GridDisplay extends SpectrumElement {
           }
         })
         .flat();
-      this.requestUpdate();
+      if(DEBUG) console.log(`updated to allGenerals ${this.generalStore.value.allGenerals.length}`)
+      needsUpdate = true;
     }
 
     if (
-      this.generalStore.conflicts === undefined ||
-      !Array.isArray(this.generalStore.conflicts) ||
-      this.generalStore.conflicts.length <= 0
+      this.generalStore.value.conflicts === undefined ||
+      !Array.isArray(this.generalStore.value.conflicts) ||
+      this.generalStore.value.conflicts.length <= 0
     ) {
-      this.generalStore.conflicts = childNodes
+      this.generalStore.value.conflicts = childNodes
         .map((node) => {
           if (
             node.conflictRecords !== undefined &&
@@ -62,15 +67,22 @@ export class GridDisplay extends SpectrumElement {
           }
         })
         .flat();
+        needsUpdate = true;
+    }
+    if(needsUpdate) {
+      if(DEBUG) console.log(`gridDisplay handleSlotChange needsUpdate if`)
       this.requestUpdate();
     }
   }
 
   render() {
     if (
-      this.generalStore.allGenerals === undefined ||
-      !Array.isArray(this.generalStore.allGenerals) ||
-      this.generalStore.allGenerals.length <= 0
+      this.generalStore.value.allGenerals === undefined ||
+      this.generalStore.value.allGenerals === null || 
+      (this.generalStore.value.allGenerals!== null && 
+        !Array.isArray(this.generalStore.value.allGenerals) ||
+        this.generalStore.value.allGenerals.length <= 0
+      )
     ) {
       return html`
         gridDisplay
@@ -78,7 +90,7 @@ export class GridDisplay extends SpectrumElement {
       `;
     } else {
       return html` 
-        I have ${this.generalStore.allGenerals.length} generals 
+        I have ${this.generalStore.value.allGenerals.length} generals 
         <general-table />
       `;
     }
