@@ -27,7 +27,7 @@ general:
           value:
             number: 15
             unit: percentage
-    - name: Dragon God
+    - name: Dragon God - Martinus
       buff:
         - attribute: Attack
           class: Mounted
