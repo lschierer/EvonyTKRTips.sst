@@ -227,9 +227,9 @@ export class GeneralTable extends SizedMixin(SpectrumElement, {
           const tItem = Object.values(item as TableRecord)[0];
           if (tItem !== undefined && tItem !== null) {
             return html`
-              <sp-table-cell>${index}</sp-table-cell>
-              <sp-table-cell>${tItem.primary}</sp-table-cell>
-              <sp-table-cell>${tItem.secondary}</sp-table-cell>
+              <sp-table-cell class="index">${index}</sp-table-cell>
+              <sp-table-cell class="name">${tItem.primary}</sp-table-cell>
+              <sp-table-cell class="name">${tItem.secondary}</sp-table-cell>
             `;
           } else {
             console.error(`renderItem called for null or undefined item`);
@@ -277,11 +277,19 @@ export class GeneralTable extends SizedMixin(SpectrumElement, {
       sp-table {
         background-color: var(--spectrum-cyan-600);
 
+        & .index {
+          flex-grow: 1;
+          flex-shrink: 1;
+          max-width: var(--spectrum-global-dimension-size-600);
+        }
+
         .cellDiv {
           display: flex;
           flex-flow: row wrap;
           justify-content: space-evenly;
           width: 100%;
+
+          
 
           & .name {
             flex: 3;
@@ -353,6 +361,7 @@ export class GeneralTable extends SizedMixin(SpectrumElement, {
                         >
                         <sp-table-head>
                             <sp-table-head-cell
+                              class='index'
                               id='index'
                               >
                               Index
