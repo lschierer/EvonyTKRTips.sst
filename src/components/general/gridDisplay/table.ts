@@ -57,6 +57,8 @@ export class GeneralTable extends SizedMixin(SpectrumElement, {
   defaultSize: "m",
   noDefaultSize: false,
 }) {
+
+  @state()
   private generalStore = new ContextConsumer(this, {
     context: GeneralStoreContext,
     subscribe: true,

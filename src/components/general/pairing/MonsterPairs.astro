@@ -3,38 +3,18 @@ import { getCollection, type CollectionEntry } from "astro:content";
 
 import { z, type ZodError } from "zod";
 import { GridDisplay } from "../gridDisplay/gridDisplay";
-import {
-  type generalInvestment,
-  type generalTypeAndUse,
-  primaryInvestmentMap,
-  secondaryInvestmentMap,
-  typeAndUseMap,
-} from "./selectionStore.ts";
 
 import {
-  conflictingGenerals,
-  conflictRecords,
-} from "./ConflictingSkillExcludes.ts";
-
-import { allGenerals, generalPairs } from "./generals.ts";
-
-import {
+  ConflictArray,
+  type ConflictArrayType,
   GeneralArray,
   type GeneralArrayType,
   generalConflicts,
   GeneralElement,
   type GeneralElementType,
-ClassEnum,
-} from "@schemas/index";
-
-import { Book, type BookType } from "@schemas/bookSchemas.ts";
-
-import {
-  ConflictArray,
-  type ConflictArrayType,
-} from "@schemas/conflictSchemas.ts";
-
-import { PairingPage } from "./index";
+  generalUseCase,
+  ClassEnum,
+} from "@schemas/index.ts";
 
 const dataUrl = new URL("/generals/all.json", Astro.url);
 const conflictData = new URL("/generalConflictData/conflicts.json", Astro.url);
@@ -101,10 +81,6 @@ if (result.success) {
 ---
 <div class="sp-table-container">
   <script>
-    import { allGenerals } from "./generals";
-    import {
-      conflictRecords,
-    } from "./ConflictingSkillExcludes";
 
     import {
       type GeneralElementType,
@@ -139,7 +115,7 @@ if (result.success) {
     }
     customElements.define("astro-stores", Stores);
   </script>
-  <GridDisplay client:only="lit" >
+  <GridDisplay useCase={generalUseCase.enum.Monsters} disableUseCase='true' client:only="lit" >
     {
       allGeneralsData && allConflictData && (
         <astro-stores slot="astro-store" data-acd={allConflictData} data-agd={allGeneralsData} />
