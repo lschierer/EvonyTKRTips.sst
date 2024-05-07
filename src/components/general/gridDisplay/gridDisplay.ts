@@ -37,7 +37,7 @@ export class GridDisplay extends SpectrumElement {
     ) {
       if(DEBUG) console.log(`grid-display handleSlotchange; generals store defined generals are zero`)
       this.generalStore.value.allGenerals = childNodes
-        .map((node) => {
+        .map((node: any) => {
           if (node.allGenerals !== undefined && node.allGenerals !== null) {
             if(DEBUG) console.log(`found node with allGenerals property`)
             return node.allGenerals;
@@ -48,7 +48,7 @@ export class GridDisplay extends SpectrumElement {
           }
         })
         .flat();
-      if(DEBUG) console.log(`updated to allGenerals ${this.generalStore.value.allGenerals.length}`)
+      if(DEBUG) console.log(`updated to allGenerals ${this.generalStore?.value?.allGenerals?.length}`)
       needsUpdate = true;
     }
 
