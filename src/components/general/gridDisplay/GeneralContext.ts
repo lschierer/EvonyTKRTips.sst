@@ -16,7 +16,6 @@ import {
     conflicts: ConflictArray.nullish(),
   });
 
-
   export type GeneralStore = z.infer<typeof GeneralStoreObject>;
   
   

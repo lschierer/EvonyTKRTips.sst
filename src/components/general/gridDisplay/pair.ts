@@ -16,7 +16,7 @@ export class generalPair {
 
     readonly secondary: GeneralClassType | null;
 
-    constructor(p: GeneralClassType, allGenerals: GeneralElementType[], index: number = 1) {
+    constructor(p: GeneralClassType, allGenerals: GeneralElementType[], index = 1) {
         this.primary = p;
 
         let currentIndex = 0;

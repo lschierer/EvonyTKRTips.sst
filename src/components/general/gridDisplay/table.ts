@@ -35,6 +35,8 @@ import {
   type GeneralElementType,
 } from "@schemas/index";
 
+import { arrayUniqueFilter } from "@lib/util";
+
 import { generalPair } from "./pair";
 
 import { type GeneralStore, GeneralStoreContext } from "./GeneralContext";
@@ -85,15 +87,64 @@ export class GeneralTable extends SizedMixin(SpectrumElement, {
             console.log(`gridDisplay table pairFinder; with generals in store`);
           for (const general of allGenerals) {
             const s = general.general.name;
+            let conflictData: ConflictDatumType[] =
+              new Array<ConflictDatumType>();
+            if (
+              this.generalStore.value.conflicts !== undefined &&
+              this.generalStore.value.conflicts !== null
+            ) {
+              conflictData = this.generalStore.value?.conflicts.filter(
+                (datum: ConflictDatumType, index) => {
+                  const conflicts = Object.values(datum.conflicts);
+                  
+                  if (Array.isArray(conflicts[0])) {
+                    const cA = [...conflicts[0]]
+                      .flat()
+                      .filter(arrayUniqueFilter);
+                    if (cA.includes(s)) {
+                      return true;
+                    }
+                  } else {
+                    return false;
+                  }
+                  return false;
+                }
+              );
+            }
+            if (DEBUG) console.log(`${s} has ${conflictData.length} conflict records`);
             for (let i = 0; i < allGenerals.length; i++) {
               const pair = new generalPair(general.general, allGenerals, i);
+              let conflict_exclude = false;
               if (pair.secondary !== null) {
-                TableData.push({
-                  s: {
-                    primary: pair.primary.name,
-                    secondary: pair.secondary.name,
-                  },
-                });
+                if (conflictData.length > 0) {
+                  for (const datum of conflictData) {
+                    const conflicts = Object.values(datum.conflicts);
+                    if (Array.isArray(conflicts[0])) {
+                      let cA = [...conflicts[0]];
+                      if(Array.isArray(conflicts[1])){
+                        cA = [...cA, ...conflicts[1]].flat();
+                      }
+                      if (cA.includes(pair.secondary.name)) {
+                        conflict_exclude = true;
+                      }
+                    } else {
+                      if (DEBUG)
+                        console.log(
+                          `conflictData at index 0 ${Object.keys(conflictData)[0]}`
+                        );
+                    }
+                  }
+                } else {
+                  console.log(`I have no conflict data`)
+                }
+                if (!conflict_exclude) {
+                  TableData.push({
+                    s: {
+                      primary: pair.primary.name,
+                      secondary: pair.secondary.name,
+                    },
+                  });
+                }
               }
             }
           }
@@ -155,9 +206,7 @@ export class GeneralTable extends SizedMixin(SpectrumElement, {
         if (DEBUG) console.log(`gridDisplay table firstUpdated; table defined`);
 
         if (
-          this.generalStore !== undefined &&
-          this.generalStore !== null &&
-          this.generalStore.value !== undefined &&
+          this.generalStore?.value !== undefined &&
           this.generalStore.value !== null
         ) {
           if (DEBUG)
@@ -198,7 +247,7 @@ export class GeneralTable extends SizedMixin(SpectrumElement, {
           return this.pairSorter(
             sortDirection,
             sortKey,
-            itemA as TableRowDataType,
+            itemA,
             itemB as TableRowDataType
           );
         });
@@ -271,9 +320,7 @@ export class GeneralTable extends SizedMixin(SpectrumElement, {
       if (DEBUG)
         console.log(`gridDisplay table render called when table exists`);
       if (
-        this.generalStore.value !== undefined &&
-        this.generalStore.value !== null &&
-        this.generalStore.value.allGenerals !== undefined &&
+        this.generalStore.value?.allGenerals !== undefined &&
         this.generalStore.value.allGenerals !== null &&
         this.generalStore.value.allGenerals.length > 0
       ) {
@@ -291,9 +338,7 @@ export class GeneralTable extends SizedMixin(SpectrumElement, {
 
     if (this.generalStore !== undefined && this.generalStore !== null) {
       if (
-        this.generalStore.value !== undefined &&
-        this.generalStore.value !== null &&
-        this.generalStore.value.allGenerals !== undefined &&
+        this.generalStore.value?.allGenerals !== undefined &&
         this.generalStore.value.allGenerals !== null &&
         this.generalStore.value.allGenerals.length > 0
       ) {
