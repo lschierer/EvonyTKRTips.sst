@@ -12,6 +12,8 @@ conflicts:
     - King Arthur
     - Genghis Khan
     - Jayavarman II
+    - Napoleon (Prime)
+    - Roland
 books:
   - name: March Size Increase
     level: '1'
