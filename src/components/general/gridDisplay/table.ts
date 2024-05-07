@@ -355,7 +355,7 @@ export class GeneralTable extends SizedMixin(SpectrumElement, {
         returnString = html`${returnString}
                     <sp-table 
                         size="m" 
-                        style="height: calc(var(--spectrum-global-dimension-size-3600)*2)
+                        style="height: calc(var(--spectrum-global-dimension-size-3600)*2)"
                         scroller="true" 
                         ${ref(this.tableRef)}
                         >
