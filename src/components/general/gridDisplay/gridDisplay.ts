@@ -26,9 +26,9 @@ export class GridDisplay extends SpectrumElement {
     }
   });
 
-  handleSlotchange(e) {
+  handleSlotchange(e: Event) {
     if (DEBUG) console.log(`grid-display handleSlotchange called`);
-    const childNodes = e.target.assignedNodes({ flatten: true });
+    const childNodes = (e.target as HTMLSlotElement).assignedNodes({ flatten: true });
     let needsUpdate = false;
     if (
       this.generalStore.value.allGenerals === undefined ||
@@ -58,7 +58,7 @@ export class GridDisplay extends SpectrumElement {
       this.generalStore.value.conflicts.length <= 0
     ) {
       this.generalStore.value.conflicts = childNodes
-        .map((node) => {
+        .map((node: any) => {
           if (
             node.conflictRecords !== undefined &&
             node.conflictRecords !== null
