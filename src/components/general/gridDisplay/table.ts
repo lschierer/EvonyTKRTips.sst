@@ -173,14 +173,14 @@ export class GeneralTable extends SizedMixin(SpectrumElement, {
       string,
       (a: TableRowDataType, b: TableRowDataType) => number
     > = {
-      ["primeName"]: (a, b) => {
+      ["pName"]: (a, b) => {
         const ga = a.primary;
         const gb = b.primary;
         return direction === "asc"
           ? ga.localeCompare(gb, undefined, { sensitivity: "base" })
           : gb.localeCompare(ga, undefined, { sensitivity: "base" });
       },
-      ["assistName"]: (a, b) => {
+      ["aName"]: (a, b) => {
         const ga = a.secondary;
         const gb = b.secondary;
         return direction === "asc"
@@ -316,6 +316,10 @@ export class GeneralTable extends SizedMixin(SpectrumElement, {
     .divTableHeading { display: table-header-group;}
     .divTableFoot { display: table-footer-group;}
     .divTableBody { display: table-row-group;}
+
+    #index { 
+      width: var(--spectrum-global-dimension-size-25);
+    }
     `;
     return [localstyle];
   }
@@ -336,6 +340,28 @@ export class GeneralTable extends SizedMixin(SpectrumElement, {
         const records = this.pairFinder();
         if (records.length > 0) {
           this.tableData = [...records];
+          returnString = html`
+            <div class='divTableBody' >
+            ${this.tableData.map((Datum, index) => 
+              html`
+                <div class='divTableRow'>
+                  <div class='divTableCell' id='index'>
+                    ${index}
+                  </div>
+                  <div class='divTableCell' id='pName'>
+                    ${Datum.primary}
+                  </div>
+                  <div class='divTableCell' id='aName'>
+                    ${Datum.secondary}
+                  </div>
+                  <div class='divTableCell'>
+                    &nbsp;
+                  </div>
+                </div>
+              `
+            )}
+            </div>
+          `
         }
       }
       if (DEBUG)
@@ -344,29 +370,26 @@ export class GeneralTable extends SizedMixin(SpectrumElement, {
         );
     }
 
-    returnString = html`
-      <div class='.divTable-body' >
-      </div>
-    `
+    
 
     returnString = html`
       <div class='divTable' ${ref(this.tableRef)}>
-      <div class="divTableHeading">
-      <div class="divTableRow">
-        <div class="divTableHead">
-          Index
+        <div class="divTableHeading">
+          <div class="divTableRow">
+            <div class="divTableHead" id='index'>
+              Index
+            </div>
+            <div class="divTableHead" id='pName'>
+              Primary General
+            </div>
+            <div class="divTableHead" id='aName'>
+              Assistant General
+            </div>
+            <div class="divTableHead">
+              Details
+            </div>
+          </div>
         </div>
-        <div class="divTableHead">
-          Primary General
-        </div>
-        <div class="divTableHead">
-          Assistant General
-        </div>
-        <div class="divTableHead">
-          Details
-        </div>
-      </div>
-    </div>
         ${returnString}
       </div>
     `
