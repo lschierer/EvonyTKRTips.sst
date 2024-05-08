@@ -2,7 +2,7 @@
   "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
     "baseUrl": ".",
-    "module": "es2020",
+    "module": "es2022",
     "moduleResolution": "bundler",
     "jsx": "preserve",
     "resolveJsonModule": true,

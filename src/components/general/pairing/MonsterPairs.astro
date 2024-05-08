@@ -1,8 +1,10 @@
 ---
 import { getCollection, type CollectionEntry } from "astro:content";
+import type { ComponentProps } from "astro/types";
 
 import { z, type ZodError } from "zod";
-import { GridDisplay } from "../gridDisplay/gridDisplay";
+import GridDisplay from "../gridDisplay/gridDisplay.astro";
+type GridDisplayProps = ComponentProps<typeof GridDisplay>;
 
 import {
   ConflictArray,
@@ -14,17 +16,26 @@ import {
   type GeneralElementType,
   generalUseCase,
   ClassEnum,
+  type ConflictDatumType,
+ConflictDatum,
 } from "@schemas/index.ts";
 
 const dataUrl = new URL("/generals/all.json", Astro.url);
 const conflictData = new URL("/generalConflictData/conflicts.json", Astro.url);
 
 let allGeneralsJson = "";
+let allGenerals = new Array<GeneralElementType>();
+
+let allConflicts = new Array<ConflictDatumType>();
+let allConflictsJson = "";
+
+
 const generalObjects: CollectionEntry<"generals">[] =
   await getCollection("generals");
+
 if (generalObjects !== null && generalObjects !== undefined) {
   let generalIterator = generalObjects.values();
-  let allGenerals = new Array<GeneralElementType>();
+
   for (const v of generalIterator) {
     const validation = GeneralElement.safeParse(v.data);
     if (validation.success) {
@@ -38,97 +49,62 @@ if (generalObjects !== null && generalObjects !== undefined) {
   allGeneralsJson = JSON.stringify(allGenerals);
 }
 
-let result:
-  | { success: true; data: GeneralArrayType | ConflictArrayType }
+let aresult:
+  | { success: true; data: GeneralArrayType }
   | { success: false; error: ZodError } = GeneralArray.safeParse(
   JSON.parse(allGeneralsJson)
 );
-let allGeneralsData: string | null = null;
-if (result.success) {
+if (aresult.success ) {
   console.log(`validation passed`);
-  if (result.data !== undefined && result.data !== null) {
-    console.log(`and has data`);
-    allGeneralsData = JSON.stringify(result.data);
+  if(! (aresult.data !== undefined && aresult.data !== null && aresult.data.length > 1)) {
+    console.error(`but I have no data`);
   }
 } else {
-  console.error(result.error);
+  console.error(aresult.error);
 }
 
-let allConflictJson = "";
-const collectionArray: CollectionEntry<"generalConflictData">[] =
+const ConflictObjects: CollectionEntry<"generalConflictData">[] =
   await getCollection("generalConflictData");
-if (collectionArray !== null && collectionArray !== undefined) {
-  let result = collectionArray.map((ca) => {
-    const validation = generalConflicts.safeParse(ca.data);
+
+if (ConflictObjects !== null && ConflictObjects !== undefined) {
+  let conflictIterator = ConflictObjects.values();
+
+  for (const v of conflictIterator) {
+    const validation = ConflictDatum.safeParse(v.data);
     if (validation.success) {
-      return validation.data;
+      allConflicts.push(validation.data);
     } else {
       console.error(`bad validation ${validation.error}`);
     }
-  });
-  allConflictJson = JSON.stringify(result);
+  }
+  allConflictsJson = JSON.stringify(allConflicts);
 }
 
-result = ConflictArray.safeParse(JSON.parse(allConflictJson));
-let allConflictData: string | null = null;
-if (result.success) {
-  if (result.data !== undefined && result.data !== null) {
-    allConflictData = JSON.stringify(result.data);
+let cresult:
+  | { success: true; data: ConflictArrayType }
+  | { success: false; error: ZodError } = ConflictArray.safeParse(JSON.parse(allConflictsJson));
+if (cresult.success) {
+  console.log(`validation passed`);
+  if (cresult.data !== undefined && cresult.data !== null) {
+    console.log(`and has data`);
+    if(! (cresult.data !== undefined && cresult.data !== null && cresult.data.length > 1)) {
+    console.error(`but I have no data`);
+  }
   }
 } else {
-  console.error(result.error);
+  console.error(cresult.error);
 }
+
 ---
-<div class="sp-table-container">
-  <script>
 
-    import {
-      type GeneralElementType,
-      type ConflictArrayType,
-      type ConflictDatumType,
-    } from "@schemas/index";
-
-    class Stores extends HTMLElement {
-
-      public allGenerals: GeneralElementType[] = new Array<GeneralElementType>();
-
-      public conflictRecords: ConflictArrayType = new Array<ConflictDatumType>();
-
-      constructor() {
-        super();
-
-        const allGeneralsData = this.dataset.agd;
-        const allConflictData = this.dataset.acd;
-
-        if (allGeneralsData !== null && allGeneralsData !== undefined) {
-          this.allGenerals = [...JSON.parse(allGeneralsData)];
-        } else {
-          console.log(`dataset agd was null or undefined`);
-        }
-
-        if (allConflictData !== null && allConflictData !== undefined) {
-          this.conflictRecords = [...JSON.parse(allConflictData)];
-        } else {
-          console.log(`dataset acd was null or undefined`);
-        }
-      }
-    }
-    customElements.define("astro-stores", Stores);
-  </script>
-  <GridDisplay useCase={generalUseCase.enum.Monsters} disableUseCase='true' client:only="lit" >
-    {
-      allGeneralsData && allConflictData && (
-        <astro-stores slot="astro-store" data-acd={allConflictData} data-agd={allGeneralsData} />
-      )
-    }
-  </GridDisplay>
-
+<div class="table-container">
+  <GridDisplay allGenerals={allGenerals} allConflicts={allConflicts} />
 </div>
 
 <style>
-  .sp-table-container {
+  .table-container {
     display: block;
     flex: 2 0 auto;
-    min-height: calc(var(--spectrum-global-dimension-size-6000) * 2);
+    
   }
 </style>
