@@ -27,7 +27,7 @@ export default defineConfig({
         Footer: './src/components/footer.astro',
       },
       customCss: [
-        './src/styles/styles.css',
+        './src/styles/custom.css',
       ],
       head: [
         {
