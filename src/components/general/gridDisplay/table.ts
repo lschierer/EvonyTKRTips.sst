@@ -335,12 +335,12 @@ export class GeneralTable extends SizedMixin(SpectrumElement, {
         console.log(`gridDisplay table render calling pairFinder`);
         const records = this.pairFinder();
         if (records.length > 0) {
-          this.table.items = [...records];
+          this.tableData = [...records];
         }
       }
       if (DEBUG)
         console.log(
-          `gridDisplay table render ${this.table.items.length} items`
+          `gridDisplay table render ${this.tableData.length} items`
         );
     }
 
