@@ -1,3 +1,4 @@
+
 import { html } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { ref, createRef, type Ref } from "lit/directives/ref.js";
@@ -14,17 +15,10 @@ import {
   SizedMixin,
   type PropertyValueMap,
 } from "@spectrum-web-components/base";
-
-import {
-  Table,
-  type TableBody,
-  type TableCell,
-  type TableCheckboxCell,
-  type TableHead,
-  type TableHeadCell,
-  type TableRow,
-} from "@spectrum-web-components/table";
-import "@spectrum-web-components/table/elements.js";
+import '@spectrum-web-components/combobox/sp-combobox.js';
+import { type ComboboxOption} from '@spectrum-web-components/combobox';
+import '@spectrum-web-components/field-label/sp-field-label.js';
+import '@spectrum-web-components/menu/sp-menu-item.js';
 
 import {
   ConflictArray,
@@ -49,8 +43,6 @@ const TableRowData = z.object({
 });
 type TableRowDataType = z.infer<typeof TableRowData>;
 
-type TableRecord = Record<string, TableRowDataType>;
-
 @customElement("general-table")
 export class GeneralTable extends SizedMixin(SpectrumElement, {
   validSizes: ["s", "m", "l", "xl"],
@@ -64,14 +56,21 @@ export class GeneralTable extends SizedMixin(SpectrumElement, {
     subscribe: true,
   });
 
-  @state()
-  private table: Table | undefined;
+  private tableRef: Ref<HTMLElement> = createRef();
 
-  private tableRef: Ref<Table> = createRef();
+  @state()
+  private table: HTMLElement | undefined = ;
+
+  
+  @state()
+  private pGeneralOptions: ComboboxOption[] = new Array<ComboboxOption>();
+
+  @state()
+  private aGeneralOptions: ComboboxOption[] = new Array<ComboboxOption>();
 
   private pairFinder() {
     if (DEBUG) console.log(`gridDisplay table pairFinder; start`);
-    const TableData = new Array<TableRecord>();
+    const TableData = new Array<TableRowDataType>();
     if (this.generalStore !== undefined && this.generalStore !== null) {
       if (
         this.generalStore.value !== undefined &&
@@ -89,6 +88,14 @@ export class GeneralTable extends SizedMixin(SpectrumElement, {
             console.log(`gridDisplay table pairFinder; with generals in store`);
           for (const general of allGenerals) {
             const s = general.general.name;
+            this.pGeneralOptions.push({
+              value: s,
+              itemText: s,
+            });
+            this.aGeneralOptions.push({
+              value: s,
+              itemText: s,
+            });
             let conflictData: ConflictDatumType[] =
               new Array<ConflictDatumType>();
             if (
@@ -141,10 +148,8 @@ export class GeneralTable extends SizedMixin(SpectrumElement, {
                 }
                 if (!conflict_exclude) {
                   TableData.push({
-                    s: {
-                      primary: pair.primary.name,
-                      secondary: pair.secondary.name,
-                    },
+                    primary: pair.primary.name,
+                    secondary: pair.secondary.name,
                   });
                 }
               }
@@ -225,20 +230,8 @@ export class GeneralTable extends SizedMixin(SpectrumElement, {
             console.log(`gridDisplay table firstUpdated; no records`);
           }
         }
-        this.table.renderItem = (item, index) => {
-          const tItem = Object.values(item as TableRecord)[0];
-          if (tItem !== undefined && tItem !== null) {
-            return html`
-              <sp-table-cell class="index">${index}</sp-table-cell>
-              <sp-table-cell class="name">${tItem.primary}</sp-table-cell>
-              <sp-table-cell class="name">${tItem.secondary}</sp-table-cell>
-            `;
-          } else {
-            console.error(`renderItem called for null or undefined item`);
-            return html``;
-          }
-        };
-      }
+
+      
 
       this.table?.addEventListener("sorted", (event) => {
         const { sortDirection, sortKey } = (event as CustomEvent).detail;
@@ -276,55 +269,57 @@ export class GeneralTable extends SizedMixin(SpectrumElement, {
   }
   public static override get styles(): CSSResultArray {
     const localstyle = css`
-      sp-table {
-        background-color: var(--spectrum-cyan-600);
-
-        & .index {
-          flex-grow: 1;
-          flex-shrink: 1;
-          max-width: var(--spectrum-global-dimension-size-600);
-        }
-
-        .cellDiv {
-          display: flex;
-          flex-flow: row wrap;
-          justify-content: space-evenly;
-          width: 100%;
-
-          
-
-          & .name {
-            flex: 3;
-          }
-
-          & .status {
-            flex: 1;
-          }
-
-          & sp-status-light {
-            align-self: center;
-            padding: 1px;
-          }
-        }
-
-        & #primeName {
-          flex-grow: 3;
-        }
-
-        & #assistName {
-          flex-grow: 3;
-        }
-
-        & sp-table-body {
-          min-height: var(--spectrum-global-dimension-size-900);
-        }
-      }
+    .divTable{ 
+      display: table; 
+      border: 0px solid var(--sl-color-black);
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      border-collapse: collapse;
+    }
+    .divTable .divTableCell, .divTable .divTableHead {
+      border: 1px solid var(--sl-color-black);
+      padding: 1px 1px;
+    }
+    .divTable .divTableBody .divTableCell {
+      font-size: var(--spectrum-detail-size-m);
+    }
+    .divTable .divTableRow:nth-child(even) {
+      background: var(--Cyan-600-Theme-1-3-hex);
+    }
+    .divTable .divTableHeading {
+      background: var(--Cyan-600-Theme-1-1-hex);
+      border-bottom: 5px solid var(--sl-color-black);
+    }
+    .divTable .divTableHeading .divTableHead {
+      font-size: calc(var(--spectrum-detail-size-m) + 1px));
+      font-weight: bold;
+      color: var(--sl-color-black);
+      text-align: center;
+      border-left: 2px solid var(--sl-color-black);
+    }
+    .divTable .divTableHeading .divTableHead:first-child {
+      border-left: none;
+    }
+    
+     .tableFootStyle {
+      font-size: var(--spectrum-detail-size-m);
+    }
+    /* DivTable.com */
+    
+    .divTableRow { display: table-row; }
+    .divTableHeading { display: table-header-group;}
+    .divTableCell, .divTableHead { display: table-cell;}
+    .divTableHeading { display: table-header-group;}
+    .divTableFoot { display: table-footer-group;}
+    .divTableBody { display: table-row-group;}
     `;
     return [localstyle];
   }
 
   protected render() {
-    let returnString = html``;
+    let returnString = html`
+    `;
 
     if (this.table !== undefined && this.table !== null) {
       if (DEBUG)
@@ -346,49 +341,32 @@ export class GeneralTable extends SizedMixin(SpectrumElement, {
         );
     }
 
-    if (this.generalStore !== undefined && this.generalStore !== null) {
-      if (
-        this.generalStore.value?.allGenerals !== undefined &&
-        this.generalStore.value.allGenerals !== null &&
-        this.generalStore.value.allGenerals.length > 0
-      ) {
-        const allGenerals = this.generalStore.value.allGenerals;
+    returnString = html`
+      <div class='.divTable-body' >
+      </div>
+    `
 
-        returnString = html`${returnString}
-                    <sp-table 
-                        size="m" 
-                        style="height: calc(var(--spectrum-global-dimension-size-3600)*2)"
-                        scroller="true" 
-                        ${ref(this.tableRef)}
-                        >
-                        <sp-table-head>
-                            <sp-table-head-cell
-                              class='index'
-                              id='index'
-                              >
-                              Index
-                            </sp-table-head-cell>
-                            <sp-table-head-cell 
-                                id='primeName'
-                                sortable
-                                sort-direction='desc'
-                                sort-key='primeName'
-                                >
-                                Primary General
-                            </sp-table-head-cell>
-                            <sp-table-head-cell 
-                                id='assistName'
-                                sortable
-                                sort-direction='desc'
-                                sort-key='assistName'
-                                >
-                                Secondary General
-                            </sp-table-head-cell>
-                        </sp-table-head>
-                    </sp-table>
-                `;
-      }
-    }
+    returnString = html`
+      <div class='divTable' ${ref(this.tableRef)}>
+      <div class="divTableHeading">
+      <div class="divTableRow">
+        <div class="divTableHead">
+          Index
+        </div>
+        <div class="divTableHead">
+          Primary General
+        </div>
+        <div class="divTableHead">
+          Assistant General
+        </div>
+        <div class="divTableHead">
+          Details
+        </div>
+      </div>
+    </div>
+        ${returnString}
+      </div>
+    `
     return returnString;
   }
 }
