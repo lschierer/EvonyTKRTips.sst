@@ -8,8 +8,8 @@ import { getCollection, getEntry, type CollectionEntry  } from 'astro:content';
 export const prerender = true;
 
 export async function getStaticPaths() {
-  const specialityObjects: CollectionEntry<'generals'>[]  = await getCollection('generals');
-  return specialityObjects.map(entry => ({
+  const generalObjects: CollectionEntry<'generals'>[]  = await getCollection('generals');
+  return generalObjects.map(entry => ({
     params: {id: entry.id,}, props: { entry },
   }));
 }
