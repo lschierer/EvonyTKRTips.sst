@@ -16,7 +16,7 @@ import {
   type PropertyValueMap,
 } from "@spectrum-web-components/base";
 import '@spectrum-web-components/combobox/sp-combobox.js';
-import { type ComboboxOption} from '@spectrum-web-components/combobox';
+import { type ComboboxOption } from '@spectrum-web-components/combobox';
 import '@spectrum-web-components/field-label/sp-field-label.js';
 import '@spectrum-web-components/menu/sp-menu-item.js';
 
@@ -59,9 +59,11 @@ export class GeneralTable extends SizedMixin(SpectrumElement, {
   private tableRef: Ref<HTMLElement> = createRef();
 
   @state()
-  private table: HTMLElement | undefined = ;
+  private table: HTMLElement | undefined = this.tableRef?.value;
 
-  
+  @state()
+  private tableData: TableRowDataType[] = new Array<TableRowDataType>();
+
   @state()
   private pGeneralOptions: ComboboxOption[] = new Array<ComboboxOption>();
 
@@ -105,7 +107,7 @@ export class GeneralTable extends SizedMixin(SpectrumElement, {
               conflictData = this.generalStore.value?.conflicts.filter(
                 (datum: ConflictDatumType, index) => {
                   const conflicts = Object.values(datum.conflicts);
-                  
+
                   if (Array.isArray(conflicts[0])) {
                     const cA = [...conflicts[0]]
                       .flat()
@@ -130,7 +132,7 @@ export class GeneralTable extends SizedMixin(SpectrumElement, {
                     const conflicts = Object.values(datum.conflicts);
                     if (Array.isArray(conflicts[0])) {
                       let cA = [...conflicts[0]];
-                      if(Array.isArray(conflicts[1])){
+                      if (Array.isArray(conflicts[1])) {
                         cA = [...cA, ...conflicts[1]].flat();
                       }
                       if (cA.includes(pair.secondary.name)) {
@@ -225,29 +227,30 @@ export class GeneralTable extends SizedMixin(SpectrumElement, {
                 `gridDisplay table firstUpdated; ${records.length} records`
               );
 
-            this.table.items = [...records];
+            this.tableData = [...records];
           } else {
             console.log(`gridDisplay table firstUpdated; no records`);
           }
         }
 
-      
 
-      this.table?.addEventListener("sorted", (event) => {
-        const { sortDirection, sortKey } = (event as CustomEvent).detail;
 
-        const items = this.table!.items.sort((a, b) => {
-          const itemA = Object.values(a)[0] as TableRowDataType;
-          const itemB = Object.values(b)[0];
-          return this.pairSorter(
-            sortDirection,
-            sortKey,
-            itemA,
-            itemB as TableRowDataType
-          );
+        this.table?.addEventListener("sorted", (event) => {
+          const { sortDirection, sortKey } = (event as CustomEvent).detail;
+
+          const items = this.tableData.sort((a, b) => {
+            const itemA = a;
+            const itemB = b;
+            return this.pairSorter(
+              sortDirection,
+              sortKey,
+              itemA,
+              itemB as TableRowDataType
+            );
+          });
+          this.tableData = [...items];
         });
-        this.table!.items = [...items];
-      });
+      }
     }
   }
 
