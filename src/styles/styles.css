@@ -80,6 +80,11 @@ governing permissions and limitations under the License.
 	--sl-color-gray-5: #1f3c4b;
 	--sl-color-gray-6: #0d2a38;
 	--sl-color-black: #0e1a20;
+	--Cyan-600-Theme-1-1-hex: #0486B4;
+	--Cyan-600-Theme-1-2-hex: #466973;
+	--Cyan-600-Theme-1-3-hex: #88C0D9; 
+	--Cyan-600-Theme-1-4-hex: #343D40; 
+	--Cyan-600-Theme-1-5-hex: #12B0DA; 
 }
 /* Light mode colors. */
 :root[data-theme='light'] {
@@ -95,6 +100,11 @@ governing permissions and limitations under the License.
 	--sl-color-gray-6: #e3f0f7;
 	--sl-color-gray-7: #f1f7fb;
 	--sl-color-black: #ffffff;
+	--Cyan-600-Theme-1-1-hex: #0486B4;
+	--Cyan-600-Theme-1-2-hex: #466973;
+	--Cyan-600-Theme-1-3-hex: #88C0D9; 
+	--Cyan-600-Theme-1-4-hex: #343D40; 
+	--Cyan-600-Theme-1-5-hex: #12B0DA; 
 }
 
 
