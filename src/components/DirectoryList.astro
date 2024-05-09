@@ -10,11 +10,12 @@ interface Props {
 
 type docsContent = CollectionEntry<'docs'>;
 
+const DEBUG = false;
 
 const { dir, recurse }: Props = Astro.props;
 let slug: string = Astro.params.slug ??  '';
 const compstring: string  =  dir ?? slug ?? '';
-console.log(`compstring is ${compstring}`)
+if (DEBUG) console.log(`compstring is ${compstring}`)
 
 const recurseComp: string = recurse ?? 'false';
 
@@ -46,7 +47,7 @@ let searchPages: CollectionEntry<'docs'>[] = allPages.filter((p: docsContent) =>
                 pComp = pComp.substring(1);
             }
             if(pComp.lastIndexOf('/') !== 0){
-              console.log(`includes / pComp is ${pComp}`)
+              if (DEBUG) console.log(`includes / pComp is ${pComp}`)
               return true;
             } else {
               return false;
