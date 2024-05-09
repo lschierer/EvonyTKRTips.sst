@@ -1,5 +1,10 @@
 ---
+//this component many not be SSR because it depends on an API endpoint I cannot make static. 
+export const prerender = false;
+import { Debug } from 'astro:components';
 import type { ComponentProps } from 'astro/types';
+
+import { z } from 'zod';
 
 import "@spectrum-css/vars/dist/spectrum-global.css";
 import "@spectrum-css/vars/dist/spectrum-medium.css";
@@ -12,7 +17,9 @@ import {
   ConflictDatum,
   type ConflictDatumType,
   GeneralElement,
-  type GeneralElementType
+  type GeneralElementType,
+  GeneralPair,
+  type GeneralPairType,
 } from '@schemas/index';
 
 interface Props {
@@ -23,11 +30,32 @@ interface Props {
 
 const { allGenerals, allConflicts } = Astro.props;
 
+
+const pairsData: Array<GeneralPairType|undefined> = (await Promise.all(allGenerals.map(async (tg) => {
+  const response = await fetch(new URL(`/generalPairs/${tg.general.name}/${tg.general.score_as}.json`, Astro.url));
+  const j: GeneralPairType[] = await response.json()
+  const validation = z.array(GeneralPair).safeParse(j)
+  if(validation.success) {
+    return validation.data;
+  } else {
+    console.log(`${validation.error}`)
+  }
+  }))).filter((pair) => {
+    const validation = z.array(GeneralPair).safeParse(pair);
+    if(validation.success) {
+      return true;
+    } else {
+      console.log(`${validation.error}`)
+      console.log(`${JSON.stringify(pair)}`)
+      return false;
+    }
+  }).flat();
+
 ---
 
 <div
   class="spectrum-Table-scroller spectrum-Table spectrum-Table--sizeM spectrum-Table--emphasized"
-  style="height: 200px"
+  style="height: 600px"
 >
   <div class="spectrum-Table-main" role="table">
     <div class="spectrum-Table-head" role="rowgroup">
@@ -56,14 +84,25 @@ const { allGenerals, allConflicts } = Astro.props;
         </div>
       </div>
     </div>
+    
     <div class="spectrum-Table-body" role="rowgroup">
-      {allGenerals.map((gi, index) => (
+      {pairsData.map((pi, index) => (pi && (
         <div class="spectrum-Table-row" role="rowgroup">
-          <div class="spectrum-Table-cell" role="cell">{index}</div>
-          <div class="spectrum-Table-cell" role="cell">{gi.general.name}</div>
-          <div class="spectrum-Table-cell" role="cell">{gi.general.name}</div>
+          <div class="spectrum-Table-cell" role="cell">
+            {index}
+          </div>
+          <div class="spectrum-Table-cell" role="cell">
+            {pi ? pi.primary.name : `${index} not present `}
+          </div>
+          <div class="spectrum-Table-cell" role="cell">
+            {pi? pi.secondary.name : `${index} not present`}
+          </div>
         </div>
-      ))}
-    </div>
+      )))}
+    </div> 
   </div>
 </div>
+
+<style>
+
+</style>
