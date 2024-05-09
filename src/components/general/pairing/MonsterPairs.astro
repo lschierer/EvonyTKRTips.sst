@@ -20,6 +20,8 @@ import {
 ConflictDatum,
 } from "@schemas/index.ts";
 
+const DEBUG = false;
+
 const dataUrl = new URL("/generals/all.json", Astro.url);
 const conflictData = new URL("/generalConflictData/conflicts.json", Astro.url);
 
@@ -55,7 +57,7 @@ let aresult:
   JSON.parse(allGeneralsJson)
 );
 if (aresult.success ) {
-  console.log(`validation passed`);
+  if (DEBUG) console.log(`validation passed`);
   if(! (aresult.data !== undefined && aresult.data !== null && aresult.data.length > 1)) {
     console.error(`but I have no data`);
   }
@@ -84,9 +86,9 @@ let cresult:
   | { success: true; data: ConflictArrayType }
   | { success: false; error: ZodError } = ConflictArray.safeParse(JSON.parse(allConflictsJson));
 if (cresult.success) {
-  console.log(`validation passed`);
+  if (DEBUG) console.log(`validation passed`);
   if (cresult.data !== undefined && cresult.data !== null) {
-    console.log(`and has data`);
+    if (DEBUG) console.log(`and has data`);
     if(! (cresult.data !== undefined && cresult.data !== null && cresult.data.length > 1)) {
     console.error(`but I have no data`);
   }
