@@ -16,13 +16,13 @@ importers:
         version: 4.0.1(@webcomponents/template-shadowroot@0.2.1)(lit@3.1.3)
       '@astrojs/mdx':
         specifier: ^3.0.0
-        version: 3.0.0(astro@4.8.1(@types/node@20.12.11)(typescript@5.4.5))
+        version: 3.0.0(astro@4.8.2(@types/node@20.12.11)(typescript@5.4.5))
       '@astrojs/node':
         specifier: ^8.2.5
-        version: 8.2.5(astro@4.8.1(@types/node@20.12.11)(typescript@5.4.5))
+        version: 8.2.5(astro@4.8.2(@types/node@20.12.11)(typescript@5.4.5))
       '@astrojs/starlight':
         specifier: ^0.22.2
-        version: 0.22.2(astro@4.8.1(@types/node@20.12.11)(typescript@5.4.5))
+        version: 0.22.2(astro@4.8.2(@types/node@20.12.11)(typescript@5.4.5))
       '@carbon/web-components':
         specifier: ^2.8.0
         version: 2.8.0(@carbon/grid@11.22.0)(@carbon/layout@11.21.0)(@carbon/motion@11.17.0)(@carbon/themes@11.34.0)(@carbon/type@11.26.0)
@@ -207,8 +207,8 @@ importers:
         specifier: ^2.0.6
         version: 2.0.6
       astro:
-        specifier: ^4.8.1
-        version: 4.8.1(@types/node@20.12.11)(typescript@5.4.5)
+        specifier: ^4.8.2
+        version: 4.8.2(@types/node@20.12.11)(typescript@5.4.5)
       bcp-47:
         specifier: ^2.1.0
         version: 2.1.0
@@ -356,7 +356,7 @@ importers:
         version: 2.41.5(@aws-sdk/client-sso-oidc@3.572.0(aws-crt@1.21.2))(aws-crt@1.21.2)
       starlight-links-validator:
         specifier: ^0.8.0
-        version: 0.8.0(@astrojs/starlight@0.22.2(astro@4.8.1(@types/node@20.12.11)(typescript@5.4.5)))(astro@4.8.1(@types/node@20.12.11)(typescript@5.4.5))
+        version: 0.8.0(@astrojs/starlight@0.22.2(astro@4.8.2(@types/node@20.12.11)(typescript@5.4.5)))(astro@4.8.2(@types/node@20.12.11)(typescript@5.4.5))
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@20.12.11)(typescript@5.4.5)
@@ -2893,8 +2893,8 @@ packages:
     engines: {node: ^18.17.1 || ^20.3.0 || >=21.0.0, npm: '>=9.6.5', pnpm: '>=7.1.0'}
     hasBin: true
 
-  astro@4.8.1:
-    resolution: {integrity: sha512-m11p7QkROpKbercBSqv99Q+ueN0azsw/SwG67qjxmUXS9jHghc9IYSsZLbwEuR6wH5qHkaeKx8y2rV64mYKOFw==}
+  astro@4.8.2:
+    resolution: {integrity: sha512-WBrnNePQ03cF5c+9sjD3TeyJodWMuPCwygDOUo7r+7LbKDN9TJK+KxIxo01AOX4HcexhxcLiTVVCBLSsi+OX9A==}
     engines: {node: ^18.17.1 || ^20.3.0 || >=21.0.0, npm: '>=9.6.5', pnpm: '>=7.1.0'}
     hasBin: true
 
@@ -7168,12 +7168,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@astrojs/mdx@2.3.1(astro@4.8.1(@types/node@20.12.11)(typescript@5.4.5))':
+  '@astrojs/mdx@2.3.1(astro@4.8.2(@types/node@20.12.11)(typescript@5.4.5))':
     dependencies:
       '@astrojs/markdown-remark': 5.1.0
       '@mdx-js/mdx': 3.0.1
       acorn: 8.11.3
-      astro: 4.8.1(@types/node@20.12.11)(typescript@5.4.5)
+      astro: 4.8.2(@types/node@20.12.11)(typescript@5.4.5)
       es-module-lexer: 1.5.2
       estree-util-visit: 2.0.0
       github-slugger: 2.0.0
@@ -7189,12 +7189,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@astrojs/mdx@3.0.0(astro@4.8.1(@types/node@20.12.11)(typescript@5.4.5))':
+  '@astrojs/mdx@3.0.0(astro@4.8.2(@types/node@20.12.11)(typescript@5.4.5))':
     dependencies:
       '@astrojs/markdown-remark': 5.1.0
       '@mdx-js/mdx': 3.0.1
       acorn: 8.11.3
-      astro: 4.8.1(@types/node@20.12.11)(typescript@5.4.5)
+      astro: 4.8.2(@types/node@20.12.11)(typescript@5.4.5)
       es-module-lexer: 1.5.2
       estree-util-visit: 2.0.0
       github-slugger: 2.0.0
@@ -7210,9 +7210,9 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@astrojs/node@8.2.5(astro@4.8.1(@types/node@20.12.11)(typescript@5.4.5))':
+  '@astrojs/node@8.2.5(astro@4.8.2(@types/node@20.12.11)(typescript@5.4.5))':
     dependencies:
-      astro: 4.8.1(@types/node@20.12.11)(typescript@5.4.5)
+      astro: 4.8.2(@types/node@20.12.11)(typescript@5.4.5)
       send: 0.18.0
       server-destroy: 1.0.1
     transitivePeerDependencies:
@@ -7228,15 +7228,15 @@ snapshots:
       stream-replace-string: 2.0.0
       zod: 3.23.8
 
-  '@astrojs/starlight@0.22.2(astro@4.8.1(@types/node@20.12.11)(typescript@5.4.5))':
+  '@astrojs/starlight@0.22.2(astro@4.8.2(@types/node@20.12.11)(typescript@5.4.5))':
     dependencies:
-      '@astrojs/mdx': 2.3.1(astro@4.8.1(@types/node@20.12.11)(typescript@5.4.5))
+      '@astrojs/mdx': 2.3.1(astro@4.8.2(@types/node@20.12.11)(typescript@5.4.5))
       '@astrojs/sitemap': 3.1.4
       '@pagefind/default-ui': 1.1.0
       '@types/hast': 3.0.4
       '@types/mdast': 4.0.3
-      astro: 4.8.1(@types/node@20.12.11)(typescript@5.4.5)
-      astro-expressive-code: 0.35.3(astro@4.8.1(@types/node@20.12.11)(typescript@5.4.5))
+      astro: 4.8.2(@types/node@20.12.11)(typescript@5.4.5)
+      astro-expressive-code: 0.35.3(astro@4.8.2(@types/node@20.12.11)(typescript@5.4.5))
       bcp-47: 2.1.0
       hast-util-from-html: 2.0.1
       hast-util-select: 6.0.2
@@ -11030,9 +11030,9 @@ snapshots:
       - supports-color
       - typescript
 
-  astro-expressive-code@0.35.3(astro@4.8.1(@types/node@20.12.11)(typescript@5.4.5)):
+  astro-expressive-code@0.35.3(astro@4.8.2(@types/node@20.12.11)(typescript@5.4.5)):
     dependencies:
-      astro: 4.8.1(@types/node@20.12.11)(typescript@5.4.5)
+      astro: 4.8.2(@types/node@20.12.11)(typescript@5.4.5)
       rehype-expressive-code: 0.35.3
 
   astro-sst@2.41.5:
@@ -11118,7 +11118,7 @@ snapshots:
       - terser
       - typescript
 
-  astro@4.8.1(@types/node@20.12.11)(typescript@5.4.5):
+  astro@4.8.2(@types/node@20.12.11)(typescript@5.4.5):
     dependencies:
       '@astrojs/compiler': 2.8.0
       '@astrojs/internal-helpers': 0.4.0
@@ -15447,10 +15447,10 @@ snapshots:
     dependencies:
       escape-string-regexp: 2.0.0
 
-  starlight-links-validator@0.8.0(@astrojs/starlight@0.22.2(astro@4.8.1(@types/node@20.12.11)(typescript@5.4.5)))(astro@4.8.1(@types/node@20.12.11)(typescript@5.4.5)):
+  starlight-links-validator@0.8.0(@astrojs/starlight@0.22.2(astro@4.8.2(@types/node@20.12.11)(typescript@5.4.5)))(astro@4.8.2(@types/node@20.12.11)(typescript@5.4.5)):
     dependencies:
-      '@astrojs/starlight': 0.22.2(astro@4.8.1(@types/node@20.12.11)(typescript@5.4.5))
-      astro: 4.8.1(@types/node@20.12.11)(typescript@5.4.5)
+      '@astrojs/starlight': 0.22.2(astro@4.8.2(@types/node@20.12.11)(typescript@5.4.5))
+      astro: 4.8.2(@types/node@20.12.11)(typescript@5.4.5)
       github-slugger: 2.0.0
       hast-util-from-html: 2.0.1
       hast-util-has-property: 3.0.0
