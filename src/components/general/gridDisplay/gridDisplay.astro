@@ -16,7 +16,6 @@ import {
   GeneralPair,
   type GeneralPairType,
 } from '@schemas/index';
-import General from '@components/General.astro';
 
 interface Props {
   name: string;
@@ -29,6 +28,8 @@ const sortOptions = z.enum(["primary", "secondary"]);
 type sortOptionsType = z.infer<typeof sortOptions>;
 
 let sortBy: sortOptionsType = sortOptions.enum.primary;
+const pairs: Array<GeneralPairType> = new Array<GeneralPairType>();
+
 
 /*
 if (Astro.request.method === "POST") {
@@ -131,24 +132,28 @@ const sortPairFunction = (
 const pairsData: (GeneralPairType[] | string )[]   = (
    await Promise.all(
     allGenerals.map(async (tg) => {
-      const response = await fetch(
+      /*const response = await fetch(
         new URL(
           `/generalPairs/${tg.general.name}-${tg.general.score_as}.json`,
           Astro.url
         )
       );
-      const j: GeneralPairType[] = await response.json();
-      const validation = z.array(GeneralPair).safeParse(j);
-      if (validation.success) {
-        return validation.data;
+      if(response.ok) {
+        const j: GeneralPairType[] = await response.json();
+        const validation = z.array(GeneralPair).safeParse(j);
+        if (validation.success) {
+          return validation.data;
+        } else {
+          console.log(`${validation.error.message}`);
+          return "";
+        }
       } else {
-        console.log(`${validation.error.message}`);
         return "";
-      }
-    })
-  ))
-  
-const pairs: Array<GeneralPairType> = new Array<GeneralPairType>();
+      }*/
+      return ""
+    }
+  )))
+
   
 for (const pd of pairsData.flat()) {
   const validation = GeneralPair.safeParse(pd);
