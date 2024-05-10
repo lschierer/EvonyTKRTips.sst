@@ -19,7 +19,7 @@ import {
   type generalSpecialistsType,
   GeneralArray,
   type GeneralArrayType,
-  generalConflicts,
+  ConflictDatum,
   GeneralElement,
   type GeneralElementType,
   ClassEnum,
@@ -74,7 +74,7 @@ const collectionArray: CollectionEntry<"generalConflictData">[] =
   await getCollection("generalConflictData");
 if (collectionArray !== null && collectionArray !== undefined) {
   let result = collectionArray.map((ca) => {
-    const validation = generalConflicts.safeParse(ca.data);
+    const validation = ConflictDatum.safeParse(ca.data);
     if (validation.success) {
       return validation.data;
     } else {
@@ -95,12 +95,14 @@ if (result2.success) {
       if(conflicts !== null && conflicts !== undefined) {
         for (const key in conflicts) {
           if(key.localeCompare('other')) {
-            const items = conflicts[key];
-            let tg = allGenerals?.filter((g) => {
-              return items.includes(g.general.name);
-            })
-            if(tg !== null && tg !== undefined) {
-              match = true;      
+            const items = conflicts[key as keyof typeof conflicts];
+            if(items !== undefined && Array.isArray(items) && items.length > 0) {
+              let tg = allGenerals?.filter((g) => {
+                return items.includes(g.general.name);
+              })
+              if(tg !== null && tg !== undefined) {
+                match = true;      
+              }
             }
           }
         }
@@ -112,10 +114,12 @@ if (result2.success) {
           if(books !== null && books !== undefined) {
             for (const key in conflicts) {
               if (key.localeCompare('other')) {
-                const items = conflicts[key];
-                items.forEach((g: string) => {
-                  Returnable.set(g, books);
-                })
+                const items = conflicts[key as keyof typeof conflicts];
+                if(items !== undefined && Array.isArray(items) && items.length > 0) {
+                  items.forEach((g: string) => {
+                    Returnable.set(g, books);
+                  })
+                }
               }
             }
           }
