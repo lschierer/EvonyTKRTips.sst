@@ -11,9 +11,9 @@ import {
   type Buff,
   Condition,
   type GeneralClassType,
-  generalConflicts,
-  type generalConflictsType,
-  generalConflictCollection,
+  ConflictDatum,
+  type ConflictDatumType,
+  ConflictArray,
   type GeneralElementType,
   GeneralClass,
   Note,
@@ -93,7 +93,7 @@ let starsHtml = ' ';
 let level = 1;
 const intrinsic = ["leadership", "attack", "defense", "politics"]
 let conflictData: bookConflictsType[] = new Array<bookConflictsType>();
-let collectionArray: CollectionEntry<'generalConflictData'>[] | generalConflictsType[];
+let collectionArray: CollectionEntry<'generalConflictData'>[] | ConflictDatumType[];
 let generalSpecials: SpecialityType[] = new Array<SpecialityType>();
 let generalBooks: BookType[] = new Array<BookType>();
 
@@ -143,15 +143,18 @@ if (validation.success) {
         collectionArray = collectionArray.map((ca) => {
             return ca.data
         });
-        const valid = generalConflictCollection.safeParse(collectionArray)
+        const valid = ConflictArray.safeParse(collectionArray)
         if (valid.success) {
             for (let i = 0; i < valid.data.length; i++) {
                 let o1 = valid.data[i]
-                let valid2 = generalConflicts.safeParse(o1);
+                let valid2 = ConflictDatum.safeParse(o1);
                 if (valid2.success) {
-                    let data: generalConflictsType | undefined;
-                    if (valid2.data?.conflicts !== undefined) {
-                        let conflicts = valid2.data.conflicts;
+                    let data: ConflictDatumType | undefined;
+                    const o2: ConflictDatumType = valid2.data;
+                    const o2Keys = Object.keys(o2);
+                    const keyIndex = o2Keys.indexOf('conflicts');
+                    if (keyIndex >= 0 && o2.conflicts) {
+                        let conflicts = o2.conflicts;
                         for (const key in conflicts) {
                             if (key.localeCompare('other')) {
                                 const items = conflicts[key];
