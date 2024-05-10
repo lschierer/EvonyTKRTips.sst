@@ -1,8 +1,7 @@
 ---
-//this component many not be SSR because it depends on an API endpoint I cannot make static.
-export const prerender = true;
+export const prerender = false;
 
-import { z } from 'zod';
+import { z } from "zod";
 
 import "@spectrum-css/vars/dist/spectrum-global.css";
 import "@spectrum-css/vars/dist/spectrum-medium.css";
@@ -12,24 +11,27 @@ import "@spectrum-css/icon/dist/index.css";
 import "@spectrum-css/ui-icons/dist/medium/Arrow100.svg";
 
 import {
+  GeneralElement,
   type GeneralElementType,
   GeneralPair,
   type GeneralPairType,
-} from '@schemas/index';
+} from "@schemas/index";
 
 interface Props {
   name: string;
   allGenerals: GeneralElementType[];
   class?: string;
 }
+
+const DEBUG = true;
+
 const { name, allGenerals } = Astro.props;
 
 const sortOptions = z.enum(["primary", "secondary"]);
 type sortOptionsType = z.infer<typeof sortOptions>;
 
 let sortBy: sortOptionsType = sortOptions.enum.primary;
-const pairs: Array<GeneralPairType> = new Array<GeneralPairType>();
-
+const pairs: GeneralPairType[] = new Array<GeneralPairType>();
 
 /*
 if (Astro.request.method === "POST") {
@@ -70,7 +72,7 @@ if (Astro.request.method === "POST") {
           .toLocaleLowerCase(undefined)
           .localeCompare("true", undefined)
       ) {
-        console.log(`setting sortby to secondary`);
+        if (DEBUG) console.log(`setting sortby to secondary`);
         sortBy = sortOptions.enum.secondary;
       }
     }
@@ -111,10 +113,7 @@ const sortPairSelector: Record<
   [sortOptions.enum.secondary]: sortPairsBySecondary,
 };
 
-const sortPairFunction = (
-  a: GeneralPairType ,
-  b: GeneralPairType 
-) => {
+const sortPairFunction = (a: GeneralPairType, b: GeneralPairType) => {
   if (a === undefined) {
     if (b === undefined) {
       return 0;
@@ -129,77 +128,78 @@ const sortPairFunction = (
   }
 };
 
-const pairsData: (GeneralPairType[] | string )[]   = (
-   await Promise.all(
-    allGenerals.map(async (tg) => {
-      /*const response = await fetch(
-        new URL(
-          `/generalPairs/${tg.general.name}-${tg.general.score_as}.json`,
-          Astro.url
-        )
-      );
-      if(response.ok) {
+const pairsData: (GeneralPairType[] | string)[] = await Promise.all(
+  allGenerals.map(async (tg) => {
+    if (DEBUG) console.log(`fetching ${tg.general.name}`);
+    const v1 = GeneralElement.safeParse(tg);
+    if (v1.success) {
+      const g1 = v1.data.general;
+      const pairUrl = new URL(`/generalPairs/${g1.name}-${g1.score_as}.json`, Astro.url)
+      if (DEBUG) console.log(`url is ${pairUrl.toString()}`)
+      const response = await fetch(pairUrl);
+      //const response = null;
+      if (response !== null && response.ok) {
         const j: GeneralPairType[] = await response.json();
         const validation = z.array(GeneralPair).safeParse(j);
         if (validation.success) {
           return validation.data;
         } else {
-          console.log(`${validation.error.message}`);
+          console.log(
+            `pair type validation failed: ${validation.error.message}`
+          );
           return "";
         }
       } else {
         return "";
-      }*/
-      return ""
+      }
+    }  else {
+      console.log(`allGenerals has invalid general in it.`)
     }
-  )))
+    return "";
+  })
+);
 
-  
 for (const pd of pairsData.flat()) {
   const validation = GeneralPair.safeParse(pd);
-  if(validation.success) {
-    pairs.push(validation.data)
+  if (validation.success) {
+    pairs.push(validation.data);
   }
 }
-
 ---
 
-<div id={name}
+<div
+  id={name}
   class="spectrum-Table-scroller spectrum-Table spectrum-Table--sizeM spectrum-Table--emphasized"
   style="height: 600px"
 >
-  
-    <div class="spectrum-Table-main" role="table">
-      <div class="spectrum-Table-head" role="rowgroup">
-        <div role="row">
-          <div class="spectrum-Table-headCell" role="columnheader">
-            <span class="spectrum-Table-columnTitle">Index</span>
-          </div>
-          <div
-            class:list={["spectrum-Table-headCell", "is-sortable"]}
-            role="columnheader"
-            aria-sort="descending"
-            tabindex="0"
-          >
-            
-              <span class="spectrum-Table-columnTitle">Primary General</span>
-            
-          </div>
-          <div
-            class="spectrum-Table-headCell"
-            role="columnheader"
-            aria-sort="none"
-            tabindex="0"
-          >
-            
-              <span class="spectrum-Table-columnTitle">Assistant General </span>
-              
-          </div>
+  <div class="spectrum-Table-main" role="table">
+    <div class="spectrum-Table-head" role="rowgroup">
+      <div role="row">
+        <div class="spectrum-Table-headCell" role="columnheader">
+          <span class="spectrum-Table-columnTitle">Index</span>
+        </div>
+        <div
+          class:list={["spectrum-Table-headCell", "is-sortable"]}
+          role="columnheader"
+          aria-sort="descending"
+          tabindex="0"
+        >
+          <span class="spectrum-Table-columnTitle">Primary General</span>
+        </div>
+        <div
+          class="spectrum-Table-headCell"
+          role="columnheader"
+          aria-sort="none"
+          tabindex="0"
+        >
+          <span class="spectrum-Table-columnTitle">Assistant General </span>
         </div>
       </div>
+    </div>
 
-      <div class="spectrum-Table-body" role="rowgroup">
-        {(pairs.length > 0) && 
+    <div class="spectrum-Table-body" role="rowgroup">
+      {
+        pairs.length > 0 &&
           pairs.map(
             (pi, index) =>
               pi && (
@@ -216,10 +216,9 @@ for (const pd of pairsData.flat()) {
                 </div>
               )
           )
-        }
-      </div>
+      }
     </div>
-  
+  </div>
 </div>
 
 <style></style>

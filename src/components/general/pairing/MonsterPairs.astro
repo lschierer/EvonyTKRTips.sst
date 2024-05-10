@@ -36,7 +36,7 @@ if (generalObjects !== null && generalObjects !== undefined) {
         allGenerals.push(validation.data);
       }
     } else {
-      console.error(`bad validation ${validation.error}`);
+      console.error(`bad validation ${validation.error.message}`);
     }
   }
   allGeneralsJson = JSON.stringify(allGenerals);
@@ -59,7 +59,11 @@ if (aresult.success ) {
 ---
 
 <div class="table-container">
-  <GridDisplay name={table_name} allGenerals={allGenerals}  />
+  <GridDisplay 
+    name={table_name} 
+    allGenerals={allGenerals} 
+    
+  ></GridDisplay>
 </div>
 
 <style>
