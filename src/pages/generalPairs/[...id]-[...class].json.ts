@@ -106,8 +106,8 @@ export const GET: APIRoute = async ({ params }): Promise<Response> => {
   const returningPairs = Array<GeneralPairType>();
 
   if (id !== undefined && id !== null) {
-    //const g1Entry = await getEntry("generals", id);
-    const g1Entry = null;
+    const g1Entry = await getEntry("generals", id);
+    //const g1Entry = null;
     if (g1Entry === undefined || g1Entry === null) {
       //this should never happen
       console.log(`g1Entry was undefined or null`);
@@ -118,8 +118,8 @@ export const GET: APIRoute = async ({ params }): Promise<Response> => {
         if (DEBUG) console.log(`v1 sucess`);
         const g1: GeneralClassType = v1.data.general;
 
-        //const conflictData = await getConflictDataForGeneral(g1);
-        const conflictData = new Array<ConflictDatumType>();
+        const conflictData = await getConflictDataForGeneral(g1);
+        //const conflictData = new Array<ConflictDatumType>();
 
         let potentialMatches: GeneralClassType[];
         if (gc !== undefined && gc !== null) {
