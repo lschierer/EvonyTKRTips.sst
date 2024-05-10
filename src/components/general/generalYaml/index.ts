@@ -37,15 +37,15 @@ import { Textfield } from '@spectrum-web-components/textfield';
 
 import { parse, isDocument } from 'yaml'
 
-import { GeneralBuffController } from "./Buff.ts";
+import { GeneralBuffController } from "./Buff";
 
-import { addValue, formInit, getValue, formValues } from '../../formValueStore.ts';
+import { addValue, formInit, getValue, formValues } from '../../formValueStore';
 
-import * as b from "@schemas/baseSchemas.ts";
+import * as b from "@schemas/baseSchemas";
 
-import { GeneralElement, generalRole, type generalRoleType } from '@schemas/generalsSchema.ts';
+import { GeneralElement, } from '@schemas/index';
 import type { ZodError } from "zod";
-import { primaryInvestmentMap, secondaryInvestmentMap } from "../generalInvestmentStore.ts";
+
 
 export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
 
