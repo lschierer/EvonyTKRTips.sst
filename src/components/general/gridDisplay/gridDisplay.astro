@@ -1,8 +1,6 @@
 ---
-//this component many not be SSR because it depends on an API endpoint I cannot make static. 
-export const prerender = false;
-import { Debug } from 'astro:components';
-import type { ComponentProps } from 'astro/types';
+//this component many not be SSR because it depends on an API endpoint I cannot make static.
+export const prerender = true;
 
 import { z } from 'zod';
 
@@ -14,95 +12,209 @@ import "@spectrum-css/icon/dist/index.css";
 import "@spectrum-css/ui-icons/dist/medium/Arrow100.svg";
 
 import {
-  ConflictDatum,
-  type ConflictDatumType,
-  GeneralElement,
   type GeneralElementType,
   GeneralPair,
   type GeneralPairType,
 } from '@schemas/index';
+import General from '@components/General.astro';
 
 interface Props {
-  allGenerals: GeneralElementType[],
-  allConflicts: ConflictDatumType[],
-  class?: String;
+  name: string;
+  allGenerals: GeneralElementType[];
+  class?: string;
 }
+const { name, allGenerals } = Astro.props;
 
-const { allGenerals, allConflicts } = Astro.props;
+const sortOptions = z.enum(["primary", "secondary"]);
+type sortOptionsType = z.infer<typeof sortOptions>;
 
+let sortBy: sortOptionsType = sortOptions.enum.primary;
 
-const pairsData: Array<GeneralPairType|undefined> = (await Promise.all(allGenerals.map(async (tg) => {
-  const response = await fetch(new URL(`/generalPairs/${tg.general.name}/${tg.general.score_as}.json`, Astro.url));
-  const j: GeneralPairType[] = await response.json()
-  const validation = z.array(GeneralPair).safeParse(j)
-  if(validation.success) {
-    return validation.data;
-  } else {
-    console.log(`${validation.error}`)
-  }
-  }))).filter((pair) => {
-    const validation = z.array(GeneralPair).safeParse(pair);
-    if(validation.success) {
-      return true;
-    } else {
-      console.log(`${validation.error}`)
-      console.log(`${JSON.stringify(pair)}`)
-      return false;
+/*
+if (Astro.request.method === "POST") {
+  try {
+    const data = await Astro.request.formData();
+    const sortPrimaryInput = data.get("primary");
+    if (
+      (z.string().safeParse(sortPrimaryInput).success &&
+        (sortPrimaryInput as string).length > 0) ||
+      !(sortPrimaryInput as string)
+        .toLocaleLowerCase(undefined)
+        .localeCompare("false", undefined) ||
+      !(sortPrimaryInput as string)
+        .toLocaleLowerCase(undefined)
+        .localeCompare("true", undefined)
+    ) {
+      if (
+        !(sortPrimaryInput as string)
+          .toLocaleLowerCase(undefined)
+          .localeCompare("true", undefined)
+      ) {
+        sortBy = sortOptions.enum.primary;
+      }
     }
-  }).flat();
+    const sortSecondaryInput = data.get("primary");
+    if (
+      (z.string().safeParse(sortSecondaryInput).success &&
+        (sortSecondaryInput as string).length > 0) ||
+      !(sortSecondaryInput as string)
+        .toLocaleLowerCase(undefined)
+        .localeCompare("false", undefined) ||
+      !(sortSecondaryInput as string)
+        .toLocaleLowerCase(undefined)
+        .localeCompare("true", undefined)
+    ) {
+      if (
+        !(sortSecondaryInput as string)
+          .toLocaleLowerCase(undefined)
+          .localeCompare("true", undefined)
+      ) {
+        console.log(`setting sortby to secondary`);
+        sortBy = sortOptions.enum.secondary;
+      }
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log(`form error is ${error.message}`);
+      console.log(`content type was ${error.name}`);
+    }
+  }
+}
+*/
+
+const sortPairsByPrimary = (a: GeneralPairType, b: GeneralPairType): number => {
+  const one = a.primary.name;
+  const two = b.primary.name;
+  return one
+    .toLocaleLowerCase(undefined)
+    .localeCompare(two.toLocaleLowerCase(undefined), undefined, {
+      sensitivity: "base",
+    });
+};
+
+const sortPairsBySecondary = (a: GeneralPairType, b: GeneralPairType) => {
+  const one = a.secondary.name;
+  const two = b.secondary.name;
+  return one
+    .toLocaleLowerCase(undefined)
+    .localeCompare(two.toLocaleLowerCase(undefined), undefined, {
+      sensitivity: "base",
+    });
+};
+
+const sortPairSelector: Record<
+  sortOptionsType,
+  (a: GeneralPairType, b: GeneralPairType) => number
+> = {
+  [sortOptions.enum.primary]: sortPairsByPrimary,
+  [sortOptions.enum.secondary]: sortPairsBySecondary,
+};
+
+const sortPairFunction = (
+  a: GeneralPairType ,
+  b: GeneralPairType 
+) => {
+  if (a === undefined) {
+    if (b === undefined) {
+      return 0;
+    } else {
+      return 1;
+    }
+  } else {
+    if (b === undefined) {
+      return -1;
+    }
+    return sortPairSelector[sortBy](a, b);
+  }
+};
+
+const pairsData: (GeneralPairType[] | string )[]   = (
+   await Promise.all(
+    allGenerals.map(async (tg) => {
+      const response = await fetch(
+        new URL(
+          `/generalPairs/${tg.general.name}-${tg.general.score_as}.json`,
+          Astro.url
+        )
+      );
+      const j: GeneralPairType[] = await response.json();
+      const validation = z.array(GeneralPair).safeParse(j);
+      if (validation.success) {
+        return validation.data;
+      } else {
+        console.log(`${validation.error.message}`);
+        return "";
+      }
+    })
+  ))
+  
+const pairs: Array<GeneralPairType> = new Array<GeneralPairType>();
+  
+for (const pd of pairsData.flat()) {
+  const validation = GeneralPair.safeParse(pd);
+  if(validation.success) {
+    pairs.push(validation.data)
+  }
+}
 
 ---
 
-<div
+<div id={name}
   class="spectrum-Table-scroller spectrum-Table spectrum-Table--sizeM spectrum-Table--emphasized"
   style="height: 600px"
 >
-  <div class="spectrum-Table-main" role="table">
-    <div class="spectrum-Table-head" role="rowgroup">
-      <div role="row">
-        <div
-          class="spectrum-Table-headCell"
-          role="columnheader"
-        >
-          <span class="spectrum-Table-columnTitle">Index</span>
-        </div>
-        <div
-          class="spectrum-Table-headCell is-sortable is-sorted-desc"
-          role="columnheader"
-          aria-sort="descending"
-          tabindex="0"
-        >
-          <span class="spectrum-Table-columnTitle">Primary General</span>
-        </div>
-        <div 
-          class="spectrum-Table-headCell" 
-          role="columnheader"
-          aria-sort="none"
-          tabindex="0"
-        >
-          <span class="spectrum-Table-columnTitle">Assistant General
+  
+    <div class="spectrum-Table-main" role="table">
+      <div class="spectrum-Table-head" role="rowgroup">
+        <div role="row">
+          <div class="spectrum-Table-headCell" role="columnheader">
+            <span class="spectrum-Table-columnTitle">Index</span>
+          </div>
+          <div
+            class:list={["spectrum-Table-headCell", "is-sortable"]}
+            role="columnheader"
+            aria-sort="descending"
+            tabindex="0"
+          >
+            
+              <span class="spectrum-Table-columnTitle">Primary General</span>
+            
+          </div>
+          <div
+            class="spectrum-Table-headCell"
+            role="columnheader"
+            aria-sort="none"
+            tabindex="0"
+          >
+            
+              <span class="spectrum-Table-columnTitle">Assistant General </span>
+              
+          </div>
         </div>
       </div>
+
+      <div class="spectrum-Table-body" role="rowgroup">
+        {(pairs.length > 0) && 
+          pairs.map(
+            (pi, index) =>
+              pi && (
+                <div class="spectrum-Table-row" role="rowgroup">
+                  <div class="spectrum-Table-cell" role="cell">
+                    {index}
+                  </div>
+                  <div class="spectrum-Table-cell" role="cell">
+                    {pi ? pi.primary.name : `${index} not present `}
+                  </div>
+                  <div class="spectrum-Table-cell" role="cell">
+                    {pi ? pi.secondary.name : `${index} not present`}
+                  </div>
+                </div>
+              )
+          )
+        }
+      </div>
     </div>
-    
-    <div class="spectrum-Table-body" role="rowgroup">
-      {pairsData.map((pi, index) => (pi && (
-        <div class="spectrum-Table-row" role="rowgroup">
-          <div class="spectrum-Table-cell" role="cell">
-            {index}
-          </div>
-          <div class="spectrum-Table-cell" role="cell">
-            {pi ? pi.primary.name : `${index} not present `}
-          </div>
-          <div class="spectrum-Table-cell" role="cell">
-            {pi? pi.secondary.name : `${index} not present`}
-          </div>
-        </div>
-      )))}
-    </div> 
-  </div>
+  
 </div>
 
-<style>
-
-</style>
+<style></style>

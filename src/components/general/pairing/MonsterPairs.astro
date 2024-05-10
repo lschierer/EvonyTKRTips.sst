@@ -1,8 +1,11 @@
 ---
+export const prerender = true;
+
 import { getCollection, type CollectionEntry } from "astro:content";
 import type { ComponentProps } from "astro/types";
 
 import { z, type ZodError } from "zod";
+import { ulid } from "ulidx";
 import GridDisplay from "../gridDisplay/gridDisplay.astro";
 type GridDisplayProps = ComponentProps<typeof GridDisplay>;
 
@@ -22,14 +25,10 @@ ConflictDatum,
 
 const DEBUG = false;
 
-const dataUrl = new URL("/generals/all.json", Astro.url);
-const conflictData = new URL("/generalConflictData/conflicts.json", Astro.url);
+const table_name = `${Astro.url.pathname}-${ulid()}`
 
 let allGeneralsJson = "";
 let allGenerals = new Array<GeneralElementType>();
-
-let allConflicts = new Array<ConflictDatumType>();
-let allConflictsJson = "";
 
 
 const generalObjects: CollectionEntry<"generals">[] =
@@ -65,42 +64,10 @@ if (aresult.success ) {
   console.error(aresult.error);
 }
 
-const ConflictObjects: CollectionEntry<"generalConflictData">[] =
-  await getCollection("generalConflictData");
-
-if (ConflictObjects !== null && ConflictObjects !== undefined) {
-  let conflictIterator = ConflictObjects.values();
-
-  for (const v of conflictIterator) {
-    const validation = ConflictDatum.safeParse(v.data);
-    if (validation.success) {
-      allConflicts.push(validation.data);
-    } else {
-      console.error(`bad validation ${validation.error}`);
-    }
-  }
-  allConflictsJson = JSON.stringify(allConflicts);
-}
-
-let cresult:
-  | { success: true; data: ConflictArrayType }
-  | { success: false; error: ZodError } = ConflictArray.safeParse(JSON.parse(allConflictsJson));
-if (cresult.success) {
-  if (DEBUG) console.log(`validation passed`);
-  if (cresult.data !== undefined && cresult.data !== null) {
-    if (DEBUG) console.log(`and has data`);
-    if(! (cresult.data !== undefined && cresult.data !== null && cresult.data.length > 1)) {
-    console.error(`but I have no data`);
-  }
-  }
-} else {
-  console.error(cresult.error);
-}
-
 ---
 
 <div class="table-container">
-  <GridDisplay allGenerals={allGenerals} allConflicts={allConflicts} />
+  <GridDisplay name={table_name} allGenerals={allGenerals}  />
 </div>
 
 <style>

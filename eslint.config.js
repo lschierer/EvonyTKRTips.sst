@@ -10,6 +10,7 @@ export default tseslint.config(
     ignores: [
       "astro.config.ts",
       "dist/**/*.js",
+      "dist/**/*.mjs",
       "eslint.config.js",
       "node_modules/**/*.js",
       "src/env.d.ts",

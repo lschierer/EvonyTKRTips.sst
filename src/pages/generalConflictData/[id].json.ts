@@ -1,7 +1,6 @@
 export const prerender = true;
 
 import {
-  type APIContext,
   type APIRoute,
   type InferGetStaticParamsType,
   type InferGetStaticPropsType,
@@ -9,8 +8,6 @@ import {
 import { getCollection,  type CollectionEntry  } from 'astro:content';
 
 import {
-  ConflictDatum,
-  type ConflictDatumType,
   generalConflicts
 } from "@schemas/index";
 
@@ -25,7 +22,7 @@ export async function getStaticPaths() {
 type Params = InferGetStaticParamsType<typeof getStaticPaths>; // eslint-disable-line
 type Props = InferGetStaticPropsType<typeof getStaticPaths>; // eslint-disable-line
 
-export const GET: APIRoute = async ({ params, request }) => {
+export const GET: APIRoute = async ({ params }) => {
   const id = params.id;
   if(id !== undefined && id !== null) {
     const collectionArray:CollectionEntry<'generalConflictData'>[]  = await 

@@ -1,3 +1,3 @@
-import { ulid } from 'ulid'
+import { ulid } from 'ulidx'
 
 console.log(`${ulid()}`);
