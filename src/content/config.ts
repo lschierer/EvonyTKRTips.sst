@@ -5,7 +5,7 @@ import {
   artTreasureSchema,
   BlazonSetSechma,
   GeneralElement,
-  generalConflicts,
+  ConflictDatum,
   Speciality,
 } from '../schemas/index';
 
@@ -17,5 +17,5 @@ export const collections = {
   art: defineCollection({type: 'data', schema: artTreasureSchema}),
   blazons: defineCollection({type: 'data', schema: BlazonSetSechma}),
   generals: defineCollection({type: 'data', schema: GeneralElement}),
-  generalConflictData: defineCollection(({type: 'data', schema: generalConflicts})),
+  generalConflictData: defineCollection(({type: 'data', schema: ConflictDatum})),
 };

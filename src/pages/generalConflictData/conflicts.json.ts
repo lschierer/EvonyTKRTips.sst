@@ -4,7 +4,7 @@ import {
 import { getCollection,  type CollectionEntry  } from 'astro:content';
 
 import {
-generalConflicts
+  ConflictDatum
 } from "@schemas/index";
 
 
@@ -12,7 +12,7 @@ export const GET: APIRoute = async () => {
   const collectionArray:CollectionEntry<'generalConflictData'>[]  = await getCollection('generalConflictData');
   if(collectionArray !== null && collectionArray !== undefined) {
     const result = collectionArray.map((ca) => {
-      const validation = generalConflicts.safeParse(ca.data);
+      const validation = ConflictDatum.safeParse(ca.data);
       if(validation.success) {
 
         return validation.data

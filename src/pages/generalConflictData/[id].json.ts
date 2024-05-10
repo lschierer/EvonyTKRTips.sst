@@ -8,7 +8,7 @@ import {
 import { getCollection,  type CollectionEntry  } from 'astro:content';
 
 import {
-  generalConflicts
+  ConflictDatum
 } from "@schemas/index";
 
 export async function getStaticPaths() {
@@ -35,7 +35,7 @@ export const GET: APIRoute = async ({ params }) => {
 
     if(collectionArray !== null && collectionArray !== undefined) {
       const result = collectionArray.map((ca) => {
-        const validation = generalConflicts.safeParse(ca.data);
+        const validation = ConflictDatum.safeParse(ca.data);
         if(validation.success) {
   
           return validation.data
