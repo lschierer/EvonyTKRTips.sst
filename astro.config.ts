@@ -16,6 +16,7 @@ export default defineConfig({
     lit(),
     starlight({
       title: 'Evony TKR Tips',
+      disable404Route: true,
       plugins: [
         starlightLinksValidator({
           errorOnRelativeLinks: false,
