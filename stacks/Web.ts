@@ -21,6 +21,7 @@ export function Web({ stack }: StackContext) {
     environment: {
 
     },
+    runtime: 'nodejs20.x',
   });
 
   stack.addOutputs({
