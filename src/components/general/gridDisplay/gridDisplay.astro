@@ -139,6 +139,7 @@ const pairsData: (GeneralPairType[] | string)[] = await Promise.all(
       const response = await fetch(pairUrl);
       //const response = null;
       if (response !== null && response.ok) {
+        if (DEBUG) console.log(`responce was ok`)
         const j: GeneralPairType[] = await response.json();
         const validation = z.array(GeneralPair).safeParse(j);
         if (validation.success) {
