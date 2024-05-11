@@ -7,6 +7,7 @@ export function Web({ stack }: StackContext) {
 
   const site = new StaticSite(stack, "Site", {
     path: './',
+    errorPage: "404.html",
     buildCommand: "pnpm run build",
     cdk: {
       distribution: {
@@ -19,6 +20,7 @@ export function Web({ stack }: StackContext) {
       domainAlias: stack.stage === "prod" ? "www.evonytkrtips.net" : `www.${stack.stage}.evonytkrtips.net`,
       hostedZone: "evonytkrtips.net",
     },
+    
     environment: {
 
     },
