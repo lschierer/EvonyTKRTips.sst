@@ -10,7 +10,11 @@ import {sidebar} from './src/sidebar.ts';
 export default defineConfig({
   site: 'https://evonytkrtips.net',
   output: "hybrid",
-  adapter: aws(),
+  adapter: aws({
+    serverRoutes: [
+      "generals/pair-picking/*",
+    ]
+  }),
   compressHTML: false,
   experimental: {
     actions: true,
