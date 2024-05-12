@@ -33,7 +33,7 @@ type sortOptionsType = z.infer<typeof sortOptions>;
 let sortBy: sortOptionsType = sortOptions.enum.primary;
 const pairs: GeneralPairType[] = new Array<GeneralPairType>();
 
-/*
+
 if (Astro.request.method === "POST") {
   try {
     const data = await Astro.request.formData();
@@ -83,7 +83,7 @@ if (Astro.request.method === "POST") {
     }
   }
 }
-*/
+
 
 const sortPairsByPrimary = (a: GeneralPairType, b: GeneralPairType): number => {
   const one = a.primary.name;
@@ -130,7 +130,6 @@ const sortPairFunction = (a: GeneralPairType, b: GeneralPairType) => {
 
 const pairsData: (GeneralPairType[] | string)[] = await Promise.all(
   allGenerals.map(async (tg) => {
-    if (DEBUG) console.log(`fetching ${tg.general.name}`);
     const v1 = GeneralElement.safeParse(tg);
     if (v1.success) {
       const g1 = v1.data.general;
@@ -138,11 +137,9 @@ const pairsData: (GeneralPairType[] | string)[] = await Promise.all(
         `/generalPairs/${g1.name}-${g1.score_as}.json`,
         Astro.url,
       );
-      if (DEBUG) console.log(`url is ${pairUrl.toString()}`);
       const response = await fetch(pairUrl);
       //const response = null;
       if (response !== null && response.ok) {
-        if (DEBUG) console.log(`responce was ok`);
         const j: GeneralPairType[] = await response.json();
         const validation = z.array(GeneralPair).safeParse(j);
         if (validation.success) {
@@ -177,53 +174,63 @@ for (const pd of pairsData.flat()) {
     class="spectrum-Table-scroller spectrum-Table spectrum-Table--sizeM spectrum-Table--emphasized"
     style="height: 600px"
   >
-    <div class="spectrum-Table-main" role="table">
-      <div class="spectrum-Table-head" role="rowgroup">
-        <div role="row">
-          <div class="spectrum-Table-headCell" role="columnheader">
-            <span class="spectrum-Table-columnTitle">Index</span>
-          </div>
-          <div
-            class:list={["spectrum-Table-headCell", "is-sortable"]}
-            role="columnheader"
-            aria-sort="descending"
-            tabindex="0"
-          >
-            <span class="spectrum-Table-columnTitle">Primary General</span>
-          </div>
-          <div
-            class="spectrum-Table-headCell"
-            role="columnheader"
-            aria-sort="none"
-            tabindex="0"
-          >
-            <span class="spectrum-Table-columnTitle">Assistant General </span>
+    <form method="POST">
+      <div class="spectrum-Table-main" role="table">
+        <div class="spectrum-Table-head" role="rowgroup">
+          <div role="row">
+            <div class="spectrum-Table-headCell" role="columnheader">
+              <span class="spectrum-Table-columnTitle">Index</span>
+            </div>
+            <div
+              class:list={["spectrum-Table-headCell", "is-sortable"]}
+              role="columnheader"
+              aria-sort="descending"
+              tabindex="0"
+            >
+              <button
+                type="submit"
+                name="pGeneral"
+                value="pGeneral"
+              >
+                <span class="spectrum-Table-columnTitle">Primary General</span>
+              </button>
+            </div>
+            <div
+              class="spectrum-Table-headCell"
+              role="columnheader"
+              aria-sort="none"
+              tabindex="0"
+            >
+              <button>
+                <span class="spectrum-Table-columnTitle">Assistant General </span>
+              </button>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="spectrum-Table-body" role="rowgroup">
-        {
-          pairs.length > 0 &&
-            pairs.map(
-              (pi, index) =>
-                pi && (
-                  <div class="spectrum-Table-row" role="rowgroup">
-                    <div class="spectrum-Table-cell" role="cell">
-                      {index}
+        <div class="spectrum-Table-body" role="rowgroup">
+          {
+            pairs.length > 0 &&
+              pairs.map(
+                (pi, index) =>
+                  pi && (
+                    <div class="spectrum-Table-row" role="rowgroup">
+                      <div class="spectrum-Table-cell" role="cell">
+                        {index}
+                      </div>
+                      <div class="spectrum-Table-cell" role="cell">
+                        {pi ? pi.primary.name : `${index} not present `}
+                      </div>
+                      <div class="spectrum-Table-cell" role="cell">
+                        {pi ? pi.secondary.name : `${index} not present`}
+                      </div>
                     </div>
-                    <div class="spectrum-Table-cell" role="cell">
-                      {pi ? pi.primary.name : `${index} not present `}
-                    </div>
-                    <div class="spectrum-Table-cell" role="cell">
-                      {pi ? pi.secondary.name : `${index} not present`}
-                    </div>
-                  </div>
-                ),
-            )
-        }
+                  ),
+              )
+          }
+        </div>
       </div>
-    </div>
+    </form>
   </div>
 </div>
 <style></style>
