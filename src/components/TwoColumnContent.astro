@@ -1,0 +1,30 @@
+---
+import type { Props } from '@astrojs/starlight/props';
+import Default from '@astrojs/starlight/components/TwoColumnContent.astro';
+---
+
+<div id="twoColumnContainer" >
+    <Default {...Astro.props} class="lg:sl-flex" id="wrap"><slot /></Default>
+    <div class="policies" id="policies">
+        <a href="/policy/privacy/">Privacy Policy</a>
+    </div>    
+</div>
+
+<style>
+    #twoColumnContainer {
+        display: grid;
+        grid-template-columns: auto;
+        grid-template-rows: min-content 1fr;
+        place-items: stretch;
+        justify-content: center;
+        align-content: start;
+    }
+    #wrap {
+        grid-row-start: 0;
+    }
+    #policies {
+        grid-row-start: 1
+        grid-row-end: span 1;
+    }
+</style>
+
