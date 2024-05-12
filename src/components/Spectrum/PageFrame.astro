@@ -7,23 +7,18 @@ import { ElementResolutionController, elementResolverUpdatedSymbol } from '@spec
 
 import Default from '@astrojs/starlight/components/PageFrame.astro';
 
+import "node_modules/@spectrum-css/tokens/dist/index.css";
+import "node_modules/@spectrum-css/typography/dist/index.css";
+import "node_modules/@spectrum-css/icon/dist/index.css";
 
 ---
-<script>
-    import '@spectrum-web-components/theme/sp-theme.js';
-    import '@spectrum-web-components/theme/src/themes.js';
 
-</script>
-<sp-theme
-    theme="spectrum"
-    color="light"
-    scale="medium"
-    
->
-    <Default class=".header" {...Astro.props}>
-        <slot name="header" slot="header"/>
-        <slot name="sidebar" slot="sidebar"/>
-        <slot />
-    </Default>
-</sp-theme>
+    <div class="spectrum spectrum--medium ">
+        <Default class=".header" {...Astro.props}>
+            <slot name="header" slot="header"/>
+            <slot name="sidebar" slot="sidebar"/>
+            <slot />
+        </Default>
+    </div>
+
 

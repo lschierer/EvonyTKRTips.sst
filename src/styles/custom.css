@@ -66,10 +66,12 @@ governing permissions and limitations under the License.
   --sl-nav-pad-y: 0.1px;
   --sl-content-width: 90%;
 	--sl-sidebar-width: 15rem;
+	
 }
 
 /* Dark mode colors. */
 :root {
+	--sl-color-bg-nav: #0486B4;
 	--sl-color-accent-low: #0d2734;
 	--sl-color-accent: #00739c;
 	--sl-color-accent-high: #b0cede;
@@ -89,6 +91,7 @@ governing permissions and limitations under the License.
 }
 /* Light mode colors. */
 :root[data-theme='light'] {
+	--sl-color-bg-nav: #0486B4;
 	--sl-color-accent-low: #c4dbe7;
 	--sl-color-accent: #00759f;
 	--sl-color-accent-high: #08374b;

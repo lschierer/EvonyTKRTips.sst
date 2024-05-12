@@ -24,7 +24,7 @@ export default defineConfig({
       ],
       components: {
         PageFrame: './src/components/Spectrum/PageFrame.astro',
-        Header: './src/components/Spectrum/TopNav.astro',
+        ThemeProvider: './src/components/Spectrum/ThemeProvider.astro',
         Footer: './src/components/footer.astro',
       },
       customCss: [
