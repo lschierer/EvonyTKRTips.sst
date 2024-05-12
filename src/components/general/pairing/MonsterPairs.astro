@@ -1,11 +1,12 @@
 ---
+export const prerender = false;
 
 import { getCollection, type CollectionEntry } from "astro:content";
 import type { ComponentProps } from "astro/types";
 
 import { type ZodError } from "zod";
 import { ulid } from "ulidx";
-import GridDisplay from "../gridDisplay/gridDisplay.astro";
+import GridDisplay from "./gridDisplay.astro";
 type GridDisplayProps = ComponentProps<typeof GridDisplay>;
 
 import {
@@ -62,7 +63,6 @@ if (aresult.success ) {
   <GridDisplay 
     name={table_name} 
     allGenerals={allGenerals} 
-    
   ></GridDisplay>
 </div>
 
