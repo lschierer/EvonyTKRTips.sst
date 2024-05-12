@@ -9,9 +9,9 @@
       // compilerOptions specified here will override those declared below,
       // but *only* in ts-node.  Useful if you want ts-node and tsc to use
       // different options with a single tsconfig.json.
-      "target": "ES2020",
-      "module": "es2020",
-      "lib": ["es2020", "DOM"],
+      "target": "ES2022",
+      "module": "es2022",
+      "lib": ["es2022", "DOM"],
     }
   },
   "compilerOptions": {
