@@ -12,11 +12,15 @@ export default defineConfig({
   output: "hybrid",
   adapter: aws(),
   compressHTML: false,
+  experimental: {
+    actions: true,
+  },
   integrations: [
     lit(),
     starlight({
       title: 'Evony TKR Tips',
       disable404Route: true,
+      pagefind: false,
       plugins: [
         starlightLinksValidator({
           errorOnRelativeLinks: false,
