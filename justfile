@@ -9,7 +9,7 @@ install:
     ${PNPM} install
 
 dev: install
-    ${PNPM} astro dev
+    ${PNPM} run dev
 
 lint: 
     echo "ESLint server using NODE_OPTIONS: $NODE_OPTIONS"
