@@ -21,8 +21,6 @@
   },
   "extends": "astro/tsconfigs/strict",
   "include": [
-    ".astro/**.ts",
-    ".astro/**.js",
     "src/**/*.ts",
     "src/**/*.astro",
   ]

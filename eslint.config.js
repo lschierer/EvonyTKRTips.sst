@@ -8,6 +8,8 @@ import eslintConfigPrettier from "eslint-config-prettier";
 export default tseslint.config(
   {
     ignores: [
+			".astro/*.js",
+			".astro/*.ts",
       "astro.config.ts",
       "dist/**/*.js",
       "dist/**/*.mjs",
@@ -32,7 +34,7 @@ export default tseslint.config(
   ...tseslint.configs.recommendedTypeChecked,
   ...tseslint.configs.stylisticTypeChecked,
   ...eslintPluginAstro.configs['flat/recommended'],
-  eslintConfigPrettier,
+	eslintConfigPrettier,
   {
     languageOptions: {
       parserOptions: {
