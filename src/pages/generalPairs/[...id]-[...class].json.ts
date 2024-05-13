@@ -2,7 +2,7 @@ export const prerender = false;
 const DEBUG = false;
 import { type APIRoute } from "astro";
 import { getCollection, getEntry, type CollectionEntry } from "astro:content";
-import type { InferGetStaticParamsType, GetStaticPaths } from "astro";
+//import type { InferGetStaticParamsType, GetStaticPaths } from "astro";
 
 import {
   type ConflictDatumType,
@@ -15,6 +15,8 @@ import {
   GeneralClass,
 } from "@schemas/index";
 
+/* I am getting all sorts of warnings any time these pages are static. 
+ * so getStaticPaths is not needed.
 export const getStaticPaths = (async () => {
   const generals = await getCollection("generals");
   const returnable = generalSpecialists.options
@@ -33,6 +35,7 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths;
 
 type Params = InferGetStaticParamsType<typeof getStaticPaths>;
+*/
 
 const getConflictDataForGeneral = async function (
   target: GeneralClassType
