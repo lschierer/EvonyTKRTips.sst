@@ -1,12 +1,15 @@
 ---
 export const prerender = false;
+import type { ComponentProps } from 'astro/types';
 
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
-const { title } = Astro.props.frontmatter || Astro.props;
+type StarlightPageProps = ComponentProps<typeof StarlightPage>;
+
+const frontmatter = (Astro.props as StarlightPageProps).frontmatter;
 
 ---
 
-<StarlightPage frontmatter={Astro.props.frontmatter}>
+<StarlightPage frontmatter={frontmatter}>
   using DynamicPage Template
 </StarlightPage>
 
