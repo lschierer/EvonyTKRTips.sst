@@ -7,6 +7,8 @@ import { getCollection } from 'astro:content';
 import {z} from "astro:content"
 import type { SidebarEntry } from '@astrojs/starlight/utils/navigation';
 
+const DEBUG=false;
+
 const { Props } = Astro.props ;
 
 const sidebar: Props['sidebar'] = Astro.props.sidebar; 
@@ -15,7 +17,7 @@ const sidebar: Props['sidebar'] = Astro.props.sidebar;
 const generals = await getCollection('generals');
 
 if(generals !== undefined && Array.isArray(generals) && generals.length > 0) {
-    console.log(`${generals.length} generals`)
+    if (DEBUG) console.log(`${generals.length} generals`)
     const generalsBar = []; 
     for (const g of generals) {
         if(g !== undefined && g !== null) {
@@ -29,18 +31,18 @@ if(generals !== undefined && Array.isArray(generals) && generals.length > 0) {
             });
         }
     }
-    console.log(`${generalsBar.length} general entries`)
+    if (DEBUG) console.log(`${generalsBar.length} general entries`)
     for(const Tentry of sidebar) {
         if(! Tentry.label.localeCompare('Generals')) {
             const detailsBar = Tentry.entries;
-            console.log(`found Generals as Tentry`)
-            console.log(`entries is ${JSON.stringify(detailsBar)}`)
+            if (DEBUG) console.log(`found Generals as Tentry`)
+            if (DEBUG) console.log(`entries is ${JSON.stringify(detailsBar)}`)
             const Tindex = sidebar.indexOf(Tentry);
             for (const SEntry of (detailsBar as SidebarEntry[])) {
                 if( ! (SEntry as SidebarEntry).label.localeCompare('Details on Specific Generals')) {
-                    console.log(`found Details as SEntry`)
+                    if (DEBUG) console.log(`found Details as SEntry`)
                     const Sindex = detailsBar.indexOf(SEntry);
-                    console.log(`index is ${Sindex}`)
+                    if (DEBUG) console.log(`index is ${Sindex}`)
                     detailsBar.splice(Sindex, 1, {
                         label: 'Details on Specific Generals',
                         collapsed: true,
@@ -48,16 +50,16 @@ if(generals !== undefined && Array.isArray(generals) && generals.length > 0) {
                         entries: [...generalsBar],
                     })
                 } else {
-                    console.log(`SEntry rejected ${SEntry.label}`)
+                    if (DEBUG) console.log(`SEntry rejected ${SEntry.label}`)
                 }
             }
         } else {
-            console.log(`rejected ${Tentry.label}`)
+            if (DEBUG) console.log(`rejected ${Tentry.label}`)
         }
     }
 
 } else {
-    console.log(`no generals`)
+    if (DEBUG) console.log(`no generals`)
 }
 
 ---
