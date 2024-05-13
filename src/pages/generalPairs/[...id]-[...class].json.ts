@@ -1,4 +1,4 @@
-export const prerender = true;
+export const prerender = false;
 const DEBUG = false;
 import { type APIRoute } from "astro";
 import { getCollection, getEntry, type CollectionEntry } from "astro:content";
@@ -96,7 +96,7 @@ const getGeneralsBySpeciality = async function (
   return returningGenerals;
 };
 
-export const GET: APIRoute = async ({ params }): Promise<Response> => {
+export const GET: APIRoute = async ({ params, request }): Promise<Response> => {
   const id = params.id;
   const gc = params.class;
   if (DEBUG) console.log(`id is ${id}`);
