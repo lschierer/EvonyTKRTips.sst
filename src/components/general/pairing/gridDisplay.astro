@@ -27,56 +27,64 @@ const DEBUG = true;
 
 const { name, allGenerals } = Astro.props;
 
-const sortOptions = z.enum(["primary", "secondary"]);
-type sortOptionsType = z.infer<typeof sortOptions>;
+const sortByOptions = z.enum(["primary", "secondary"]);
+type sortByOptionsType = z.infer<typeof sortByOptions>;
 
-let sortBy: sortOptionsType = sortOptions.enum.primary;
+const sortDirectionOptions = z.enum(['ascending', "decending"]);
+type sortDirectionType = z.infer<typeof sortDirectionOptions>;
+
+let sortBy: sortByOptionsType = sortByOptions.enum.primary;
+let sortDirection: sortDirectionType = sortDirectionOptions.enum.decending;
+
 const pairs: GeneralPairType[] = new Array<GeneralPairType>();
 
 
+let sortPrimaryInput: boolean | sortDirectionType | null = false;
+let sortSecondaryInput: boolean | sortDirectionType | null = false;
+
+let sortPrimaryValue: sortDirectionType = sortDirectionOptions.enum.decending;
+let sortSecondaryValue: sortDirectionType = sortDirectionOptions.enum.decending;
+
 if (Astro.request.method === "POST") {
   try {
+    if(DEBUG) console.log(`executing POST try block`)
     const data = await Astro.request.formData();
-    const sortPrimaryInput = data.get("primary");
-    if (
-      (z.string().safeParse(sortPrimaryInput).success &&
-        (sortPrimaryInput as string).length > 0) ||
-      !(sortPrimaryInput as string)
-        .toLocaleLowerCase(undefined)
-        .localeCompare("false", undefined) ||
-      !(sortPrimaryInput as string)
-        .toLocaleLowerCase(undefined)
-        .localeCompare("true", undefined)
-    ) {
-      if (
-        !(sortPrimaryInput as string)
-          .toLocaleLowerCase(undefined)
-          .localeCompare("true", undefined)
-      ) {
-        sortBy = sortOptions.enum.primary;
+    if(sortPrimaryInput === false) {
+      //not prievously sorted by primary
+      const v = sortDirectionOptions.safeParse(data.get('pGeneral'));
+      if(v.success) {
+        if(DEBUG) console.log(`sortPrimaryInput was false, is now ${v.data}`)
+        sortPrimaryInput = true;
+        sortBy = sortByOptions.enum.primary
+        sortDirection = v.data;
+        if(sortDirection === sortDirectionOptions.enum.ascending) {
+          sortPrimaryValue = sortDirectionOptions.enum.decending
+        } else {
+          sortPrimaryValue = sortDirectionOptions.enum.ascending;
+        }
       }
+    } else {
+      if(DEBUG) console.log(`values are ${sortPrimaryInput} and ${sortSecondaryInput}`)
     }
-    const sortSecondaryInput = data.get("primary");
-    if (
-      (z.string().safeParse(sortSecondaryInput).success &&
-        (sortSecondaryInput as string).length > 0) ||
-      !(sortSecondaryInput as string)
-        .toLocaleLowerCase(undefined)
-        .localeCompare("false", undefined) ||
-      !(sortSecondaryInput as string)
-        .toLocaleLowerCase(undefined)
-        .localeCompare("true", undefined)
-    ) {
-      if (
-        !(sortSecondaryInput as string)
-          .toLocaleLowerCase(undefined)
-          .localeCompare("true", undefined)
-      ) {
-        if (DEBUG) console.log(`setting sortby to secondary`);
-        sortBy = sortOptions.enum.secondary;
+    if(sortSecondaryInput === false) {
+      //not prievously sorted by primary
+      const v = sortDirectionOptions.safeParse(data.get('sGeneral'));
+      if(v.success) {
+        if(DEBUG) console.log(`sortSecondaryInput was false, is now ${v.data}`)
+        sortSecondaryInput = true;
+        sortBy = sortByOptions.enum.secondary;
+        sortDirection = v.data;
+        if(sortDirection === sortDirectionOptions.enum.ascending) {
+          sortSecondaryValue = sortDirectionOptions.enum.decending
+        } else {
+          sortSecondaryValue = sortDirectionOptions.enum.ascending;
+        }
       }
+    } else {
+      if(DEBUG) console.log(`values are ${sortPrimaryInput} and ${sortSecondaryInput}`)
     }
   } catch (error) {
+    if(DEBUG) console.log(`executing POST catch block`)
     if (error instanceof Error) {
       console.log(`form error is ${error.message}`);
       console.log(`content type was ${error.name}`);
@@ -106,11 +114,11 @@ const sortPairsBySecondary = (a: GeneralPairType, b: GeneralPairType) => {
 };
 
 const sortPairSelector: Record<
-  sortOptionsType,
+  sortByOptionsType,
   (a: GeneralPairType, b: GeneralPairType) => number
 > = {
-  [sortOptions.enum.primary]: sortPairsByPrimary,
-  [sortOptions.enum.secondary]: sortPairsBySecondary,
+  [sortByOptions.enum.primary]: sortPairsByPrimary,
+  [sortByOptions.enum.secondary]: sortPairsBySecondary,
 };
 
 const sortPairFunction = (a: GeneralPairType, b: GeneralPairType) => {
@@ -124,7 +132,10 @@ const sortPairFunction = (a: GeneralPairType, b: GeneralPairType) => {
     if (b === undefined) {
       return -1;
     }
-    return sortPairSelector[sortBy](a, b);
+    if(sortDirection === sortDirectionOptions.enum.decending) {
+      return sortPairSelector[sortBy](a, b);
+    }
+    return sortPairSelector[sortBy](b, a);
   }
 };
 
@@ -166,6 +177,7 @@ for (const pd of pairsData.flat()) {
     pairs.push(validation.data);
   }
 }
+pairs.sort(sortPairFunction)
 ---
 
 <div class="spectrum spectrum--medium ">
@@ -174,7 +186,8 @@ for (const pd of pairsData.flat()) {
     class="spectrum-Table-scroller spectrum-Table spectrum-Table--sizeM spectrum-Table--emphasized"
     style="height: 600px"
   >
-    <form method="POST">
+    <form name={name} method="POST">
+      <input type="text" name="testinput" />
       <div class="spectrum-Table-main" role="table">
         <div class="spectrum-Table-head" role="rowgroup">
           <div role="row">
@@ -190,7 +203,7 @@ for (const pd of pairsData.flat()) {
               <button
                 type="submit"
                 name="pGeneral"
-                value="pGeneral"
+                value={sortPrimaryValue}
               >
                 <span class="spectrum-Table-columnTitle">Primary General</span>
               </button>
@@ -201,7 +214,11 @@ for (const pd of pairsData.flat()) {
               aria-sort="none"
               tabindex="0"
             >
-              <button>
+              <button
+                type="submit"
+                name="sGeneral"
+                value={sortSecondaryValue}
+              >
                 <span class="spectrum-Table-columnTitle">Assistant General </span>
               </button>
             </div>
@@ -212,8 +229,8 @@ for (const pd of pairsData.flat()) {
           {
             pairs.length > 0 &&
               pairs.map(
-                (pi, index) =>
-                  pi && (
+                (pi, index) => (
+                  pi  && (
                     <div class="spectrum-Table-row" role="rowgroup">
                       <div class="spectrum-Table-cell" role="cell">
                         {index}
@@ -225,7 +242,7 @@ for (const pd of pairsData.flat()) {
                         {pi ? pi.secondary.name : `${index} not present`}
                       </div>
                     </div>
-                  ),
+                  )),
               )
           }
         </div>
