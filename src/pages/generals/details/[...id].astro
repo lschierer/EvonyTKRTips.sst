@@ -5,31 +5,30 @@ import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 import General from "@components/General.astro"
 import type { InferGetStaticParamsType, InferGetStaticPropsType, GetStaticPaths } from 'astro';
 
-const tableOfContents = false
 const DEBUG = true;
 
 import { getEntry, getCollection } from "astro:content";
 
-export async function getStaticPaths() {
+export const  getStaticPaths = (async () =>  {
   const blogEntries = await getCollection('generals');
   return blogEntries.map(entry => ({
     params: { id: entry.id }, props: { entry },
   }));
-}
+}) satisfies GetStaticPaths;
 
 type Params = InferGetStaticParamsType<typeof getStaticPaths>;
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
 const { id }: Params = Astro.params;
 if (id === undefined) {
-  console.log(`id was undefined`)
+  if (DEBUG) console.log(`id was undefined`)
   throw new Error("Id is required");
 }
 
 const entry = await getEntry("generals", id);
 
 if (entry === undefined) {
-  console.log(`${id} was not found`)
+  if (DEBUG) console.log(`${id} was not found`)
   return Astro.redirect("/404");
 }
 
