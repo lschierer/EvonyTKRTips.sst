@@ -37,7 +37,7 @@ if(generals !== undefined && Array.isArray(generals) && generals.length > 0) {
             if (DEBUG) console.log(`entries is ${JSON.stringify(detailsBar)}`)
             const Tindex = sidebar.indexOf(Tentry);
             for (const SEntry of (detailsBar as SidebarEntry[])) {
-                if( ! (SEntry as SidebarEntry).label.localeCompare('Details on Specific Generals')) {
+                if( ! (SEntry).label.localeCompare('Details on Specific Generals')) {
                     if (DEBUG) console.log(`found Details as SEntry`)
                     const Sindex = detailsBar.indexOf(SEntry);
                     if (DEBUG) console.log(`index is ${Sindex}`)
