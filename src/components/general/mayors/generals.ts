@@ -15,7 +15,7 @@ import { ifDefined } from "lit/directives/if-defined.js";
 import { ref, createRef, type Ref } from "lit/directives/ref.js";
 import { consume } from "@lit/context";
 
-import * as z from "zod";
+import {z} from "astro:content";
 
 import {
   type generalTypeAndUse,

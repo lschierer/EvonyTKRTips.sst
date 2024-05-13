@@ -5,7 +5,7 @@ import { ref, createRef, type Ref } from 'lit/directives/ref.js';
 const DEBUG = false;
 import { withStores } from "@nanostores/lit";
 
-import { z, type ZodError } from 'zod';
+import { z } from 'astro:content';
 
 import { SpectrumElement } from '@spectrum-web-components/base';
 

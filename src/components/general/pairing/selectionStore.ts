@@ -1,4 +1,4 @@
-import {z} from "zod";
+import {z} from "astro:content";
 import {map} from "nanostores";
 import { logger } from '@nanostores/logger'
 

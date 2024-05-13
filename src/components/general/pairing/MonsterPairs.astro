@@ -1,10 +1,9 @@
 ---
 export const prerender = false;
 
-import { getCollection, type CollectionEntry } from "astro:content";
+import { getCollection, type CollectionEntry, z } from "astro:content";
 import type { ComponentProps } from "astro/types";
 
-import { type ZodError } from "zod";
 import { ulid } from "ulidx";
 import GridDisplay from "./gridDisplay.astro";
 type GridDisplayProps = ComponentProps<typeof GridDisplay>;
@@ -45,7 +44,7 @@ if (generalObjects !== null && generalObjects !== undefined) {
 
 let aresult:
   | { success: true; data: GeneralArrayType }
-  | { success: false; error: ZodError } = GeneralArray.safeParse(
+  | { success: false; error: z.ZodError } = GeneralArray.safeParse(
   JSON.parse(allGeneralsJson)
 );
 if (aresult.success ) {
