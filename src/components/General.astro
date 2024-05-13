@@ -1,10 +1,7 @@
 ---
 import {Debug} from 'astro:components';
-import {getEntry, getCollection, type CollectionEntry} from "astro:content";
+import {getEntry, getCollection, type CollectionEntry, z} from "astro:content";
 import 'iconify-icon';
-import {z} from 'zod';
-
-import Banner from "../components/Spectrum/Banner.astro";
 
 import {
   type bookConflictsType,
@@ -34,7 +31,7 @@ type BuffType,
 
 import { generalUseCase,
     type generalUseCaseType
-} from '@schemas/generalsSchema.ts'
+} from '@schemas/generalsSchema'
 
 
 
@@ -43,32 +40,34 @@ import { BookIcon } from '@spectrum-web-components/icons-workflow';
 
 const severity = {
     [syslogSeverity.enum.emerg]: () => {
-        return "error"
+        return "starlight-aside--danger"
     },
     [syslogSeverity.enum.alert]: () => {
-        return "error"
+        return "starlight-aside--danger"
     },
     [syslogSeverity.enum.crit]: () => {
-        return "error"
+        return "starlight-aside--danger"
     },
     [syslogSeverity.enum.err]: () => {
-        return "warning"
+        return "starlight-aside--caution"
     },
     [syslogSeverity.enum.warning]: () => {
-        return "warning"
+        return "starlight-aside--caution"
     },
     [syslogSeverity.enum.notice]: () => {
-        return "info"
+        return "starlight-aside--caution"
     },
     [syslogSeverity.enum.info]: () => {
-        return "info"
+        return "starlight-aside--caution"
     },
     [syslogSeverity.enum.debug]: () => {
-        return "info"
+        return "note"
     },
 }
 
-
+interface Props {
+    generalEntry: string ;
+}
 
 const {generalEntry} = Astro.props;
 let data;
@@ -82,7 +81,7 @@ if (entry === undefined || entry === null) {
     data = entry.data;
 }
 let usageNotes = '';
-let general: GeneralClassType ;
+let general: GeneralClassType | null = null;
 let generalName = '';
 let attack = 0;
 let defense = 0;
@@ -125,12 +124,12 @@ if (validation.success) {
         if (notes.data !== undefined && notes.data !== null && notes.data.length >= 1) {
             const result = mydata.map((note) => {
                 return `
-                    <sp-banner class="not-content" type=${severity[note.severity]()} client:only="lit">
-                        <div slot="header">General Usage Note</div>
-                        <div slot="content">
-                            ${note.text}
-                        </div>
-                    </sp-banner><br/>
+                    <aside class='starlight-aside ${severity[note.severity]()}' >
+                        <p class="starlight-aside__title">
+                            General Usage Note
+                        </p>
+                        ${note.text}
+                    </aside>
                     `;
             })
             if(result !== null && result !== undefined) {
@@ -196,17 +195,17 @@ if (validation.success) {
                     }
                   }
                   return `
-                    <sp-banner class="not-content" 
-                    type=${warning ? 
-                        severity[syslogSeverity.enum.warning]()
-                        : severity[syslogSeverity.enum.alert]()} 
-                    client:only="lit">
-                        <div slot="header">General Conflict Notice</div>
-                        <div slot="content">
-                            This general has conflicts with the ${book.name} level ${book.level} skill book.
-                            ${(condition === Condition.enum.When_Not_Mine) ? "This conflict is in effect when the book is on my assistant" : "This conflict is in effect all the time" } 
-                        </div>
-                    </sp-banner>
+                    <aside class='starlight-aside ${warning ? 
+                            severity[syslogSeverity.enum.warning]()
+                            : severity[syslogSeverity.enum.alert]()}'
+                        >
+                        <p class="starlight-aside__title">
+                            General Conflict Notice
+                        </p>
+                        This general has conflicts with the ${book.name} level ${book.level} skill book.
+                        ${(condition === Condition.enum.When_Not_Mine) ? "This conflict is in effect when the book is on my assistant" : "This conflict is in effect all the time" } 
+                        
+                    </aside>
                     `;
                 
                 })
@@ -251,9 +250,6 @@ if (validation.success) {
 const generalSpecialsCount = generalSpecials.length;
 ---
 
-<script>
-    import '@spectrum-web-components/banner/sp-banner.js';
-</script>
 {(general !== undefined && general !== null) && (
 <div class="not-content UsageNotes">
     <Fragment set:html={usageNotes} />
@@ -468,7 +464,7 @@ const generalSpecialsCount = generalSpecials.length;
 
     }
 
-    sp-banner {
+    aside.starlight-aside {
         margin-top: 5px;
     }
 

@@ -1,0 +1,41 @@
+---
+export const prerender = true;
+
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import General from "@components/General.astro"
+import type { InferGetStaticParamsType, InferGetStaticPropsType, GetStaticPaths } from 'astro';
+
+const tableOfContents = false
+const DEBUG = true;
+
+import { getEntry, getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const blogEntries = await getCollection('generals');
+  return blogEntries.map(entry => ({
+    params: { id: entry.id }, props: { entry },
+  }));
+}
+
+type Params = InferGetStaticParamsType<typeof getStaticPaths>;
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { id }: Params = Astro.params;
+if (id === undefined) {
+  console.log(`id was undefined`)
+  throw new Error("Id is required");
+}
+
+const entry = await getEntry("generals", id);
+
+if (entry === undefined) {
+  console.log(`${id} was not found`)
+  return Astro.redirect("/404");
+}
+
+
+---
+<StarlightPage frontmatter={{title: `Details for ${id}`,tableOfContents: true,}}>
+    <General generalEntry={id}/>
+    <slot/>
+</StarlightPage>

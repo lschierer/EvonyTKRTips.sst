@@ -1,4 +1,4 @@
-import * as z from 'zod';
+import {z} from 'astro:content';
 
 export const levels = z.enum([
   '0',

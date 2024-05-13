@@ -34,6 +34,7 @@ export default defineConfig({
         PageFrame: './src/components/Spectrum/PageFrame.astro',
         ThemeProvider: './src/components/Spectrum/ThemeProvider.astro',
         TwoColumnContent: './src/components/TwoColumnContent.astro',
+        Sidebar: './src/components/Sidebar.astro'
       },
       customCss: [
         './src/styles/custom.css',

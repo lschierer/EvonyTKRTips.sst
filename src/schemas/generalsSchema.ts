@@ -1,4 +1,4 @@
-import * as z from "zod";
+import {z} from "astro:content";
 
 import * as b from './baseSchemas';
 

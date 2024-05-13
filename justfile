@@ -20,8 +20,8 @@ check: install lint
     # ${PNPM} tsc -p tsconfig.node.json --noEmit;
 
 build: install pre-build
-    ${PNPM} tsc -p tsconfig.node.json
-    ./bin/generalDetailsPages.sh
+    #${PNPM} tsc -p tsconfig.node.json
+    #./bin/generalDetailsPages.sh
     ${PNPM} astro build
 
 pre-build: install

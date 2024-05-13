@@ -1,8 +1,0 @@
----
-import {PairingPage} from "./index";
-
-const dataUrl = new URL('/generals/all.json', Astro.url)
-const conflictData = new URL('/generalConflictData/conflicts.json', Astro.url)
----
-
-<PairingPage dataurl={dataUrl.toString()} conflictdata={conflictData.toString()} client:only="lit"></PairingPage>
