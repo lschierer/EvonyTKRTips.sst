@@ -2,10 +2,9 @@
 export const prerender = false;
 
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
-const { title } = Astro.props.frontmatter || Astro.props;
-const DEBUG = false;
-
 import { getEntry } from "astro:content";
+
+const DEBUG = false;
 
 const { slug } = Astro.params;
 if (slug === undefined) {
