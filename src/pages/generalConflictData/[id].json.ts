@@ -2,6 +2,7 @@ export const prerender = true;
 
 import {
   type APIRoute,
+  type GetStaticPaths,
   type InferGetStaticParamsType,
   type InferGetStaticPropsType,
 } from 'astro';
@@ -11,13 +12,13 @@ import {
   ConflictDatum
 } from "@schemas/index";
 
-export async function getStaticPaths() {
+export const getStaticPaths = (async () => {
   const generalObjects: CollectionEntry<'generals'>[]  = await getCollection('generals');
   const returnable =  generalObjects.map(entry => ({
     params: {id: entry.id,}, props: { entry },
   }));
   return returnable;
-}
+}) satisfies GetStaticPaths;
 
 type Params = InferGetStaticParamsType<typeof getStaticPaths>; // eslint-disable-line
 type Props = InferGetStaticPropsType<typeof getStaticPaths>; // eslint-disable-line
