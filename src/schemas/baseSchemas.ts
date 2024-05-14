@@ -63,7 +63,7 @@ export const AscendingLevels = levels.refine((l) => {
       return false;
     }
 });
-export type AscendingLevels = z.infer<typeof AscendingLevels>;
+export type AscendingLevelsType = z.infer<typeof AscendingLevels>;
 
 export const Condition = z.enum([
   'When_Not_Mine',
