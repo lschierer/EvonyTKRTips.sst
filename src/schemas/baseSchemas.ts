@@ -65,6 +65,21 @@ export const AscendingLevels = levels.refine((l) => {
 });
 export type AscendingLevelsType = z.infer<typeof AscendingLevels>;
 
+export const ActivationSituations = z.enum([
+  'Solo PvP',
+  'Rally Owner PvP',
+  'Rally Participant PvP',
+  'Defense of Camp',
+  'Defense of Self',
+  'Defense of Buildings',
+  'Reinforcement of Buildings',
+  'Reinforcement of Others',
+  'Solo Monster',
+  'Rally Owner Monster',
+  'Rally Participant Monster'
+])
+export type ActivationSituationsType = z.infer<typeof ActivationSituations>;
+
 export const Condition = z.enum([
   'When_Not_Mine',
   'Attacking',
