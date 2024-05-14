@@ -76,7 +76,7 @@ export class GeneralBuffController implements ReactiveController {
 
         <sp-field-label for=${fieldLabel.concat('_attribute')} required>Attribute</sp-field-label>
         <sp-picker id=${fieldLabel.concat('_attribute')} size="s" value="always" label="When does this take effect" @change=${(this.host as GeneralYaml).sformHandler}>
-          ${b.AttributeSchema.options.flatMap((a) => {
+          ${b.Attribute.options.flatMap((a) => {
             return html`
               <sp-menu-item value="${a}">${a.replaceAll('_',' ')}</sp-menu-item>
             `

@@ -93,7 +93,7 @@ export const syslogSeverity = z.enum([
 
 export type syslogSeverityType = z.infer<typeof syslogSeverity>;
 
-export const AttributeSchema = z.enum([
+export const Attribute = z.enum([
  'Attack',
  'Defense',
  'HP',
@@ -119,7 +119,7 @@ export const AttributeSchema = z.enum([
  'Monster_Attack',
  'Double Items Drop Rate',
 ]);
-export type Attribute = z.infer<typeof AttributeSchema>;
+export type AttributeType = z.infer<typeof Attribute>;
 
 
 export const qualityColor = z.enum([
@@ -158,7 +158,7 @@ export const BuffAdverbArray = z.array(Condition);
 export type BuffAdverbArrayType = z.infer<typeof BuffAdverbArray>;
 
 export const Buff = z.object({
-  'attribute': AttributeSchema.optional(),
+  'attribute': Attribute.optional(),
   'condition': z.union([Condition,BuffAdverbArray]).optional(),
   'class': ClassEnum.nullish(),
   'value': ValueSchema.nullish(),

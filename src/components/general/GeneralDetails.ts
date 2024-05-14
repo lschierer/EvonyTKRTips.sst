@@ -39,8 +39,8 @@ import {
     type standardSkillBookType,
     ClassEnum,
     type ClassEnumType,
-    AttributeSchema,
-    type Attribute,
+    Attribute,
+    type AttributeType,
 } from "@schemas/index";
 
 import {tableGeneral} from "@components/general/tableGeneral";

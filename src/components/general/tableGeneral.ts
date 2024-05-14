@@ -17,8 +17,8 @@ import {
   type standardSkillBookType,
   ClassEnum,
   type ClassEnumType,
-  AttributeSchema,
-  type Attribute,
+  Attribute,
+  type AttributeType,
 } from "@schemas/index";
 
 import {buff} from "@components/general/buff.ts";
