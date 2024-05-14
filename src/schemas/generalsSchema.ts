@@ -39,19 +39,7 @@ export const Note = z.object({
 export type NoteType = z.infer<typeof Note>;
 
 export const Ascending = z.object({
-    "level": b.levels.refine((l) => {
-        switch (l) {
-          case '0':
-          case '6':
-          case '7':
-          case '8':
-          case '9':
-          case '10':
-            return true;
-          default:
-            return false;
-          }
-      }),
+    "level": b.AscendingLevels,
     "buff": z.array(b.Buff),
 });
 export type AscendingType = z.infer<typeof Ascending>;
