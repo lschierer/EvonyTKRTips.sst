@@ -99,7 +99,7 @@ const getGeneralsBySpeciality = async function (
   return returningGenerals;
 };
 
-export const GET: APIRoute = async ({ params, request }): Promise<Response> => {
+export const GET: APIRoute = async ({ params }): Promise<Response> => {
   const id = params.id;
   const gc = params.class;
   if (DEBUG) console.log(`id is ${id}`);
