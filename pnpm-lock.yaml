@@ -60,8 +60,8 @@ importers:
         specifier: ^5.1.0
         version: 5.1.0(@spectrum-css/icon@7.1.0(@spectrum-css/tokens@14.0.0))(@spectrum-css/tokens@14.0.0)
       '@spectrum-css/splitview':
-        specifier: ^5.1.0
-        version: 5.1.0(@spectrum-css/tokens@14.0.0)
+        specifier: ^5.2.0
+        version: 5.2.0(@spectrum-css/tokens@14.0.0)
       '@spectrum-css/table':
         specifier: ^6.1.0
         version: 6.1.0(@spectrum-css/button@13.1.0(@spectrum-css/icon@7.1.0(@spectrum-css/tokens@14.0.0))(@spectrum-css/tokens@14.0.0))(@spectrum-css/icon@7.1.0(@spectrum-css/tokens@14.0.0))(@spectrum-css/tokens@14.0.0)
@@ -2120,8 +2120,8 @@ packages:
       '@spectrum-css/icon':
         optional: true
 
-  '@spectrum-css/splitview@5.1.0':
-    resolution: {integrity: sha512-18IuJ2/eFT2fsicoyVJbW8y2du2QvLYZNUhnSu8gPJlv0Las0TL/THrUuZZGow5o6cUcDxXOMUX6rz9GmcgBXg==}
+  '@spectrum-css/splitview@5.2.0':
+    resolution: {integrity: sha512-hqdmeI54uqEk1FjZBmiiQBsy4FUUf6UnOzUYU/WnwxIs8nFqUWqO7fM61Ty/ovVdwXc24W45KY2imKOCC9ROuA==}
     peerDependencies:
       '@spectrum-css/tokens': '>=14'
 
@@ -9344,7 +9344,7 @@ snapshots:
     optionalDependencies:
       '@spectrum-css/icon': 7.1.0(@spectrum-css/tokens@14.0.0)
 
-  '@spectrum-css/splitview@5.1.0(@spectrum-css/tokens@14.0.0)':
+  '@spectrum-css/splitview@5.2.0(@spectrum-css/tokens@14.0.0)':
     dependencies:
       '@spectrum-css/tokens': 14.0.0
 
