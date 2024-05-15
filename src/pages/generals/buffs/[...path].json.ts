@@ -1,4 +1,6 @@
 export const prerender = true;
+const DEBUG = true;
+const DEBUG2 = false;
 
 import {BaseN} from 'js-combinatorics';
 
@@ -42,7 +44,6 @@ import { isBuffEffective } from '@lib/buffUtils';
 import  * as EvAnsRanking from '@lib/EvAnsAttributeRanking'
 import { skillBook } from 'src/assets/evonySchemas';
 
-const DEBUG = true;
 
 const BuffParams = z.object({
   id: z.string(),
@@ -72,31 +73,31 @@ export const getStaticPaths = (async () => {
   const ColorArray = [...ColorBaseN].filter((ca) => {
     if(ca[3].localeCompare(qualityColor.enum.Disabled)) {
       if(ca[0].localeCompare(qualityColor.enum.Gold)) {
-        if(DEBUG) console.log(`ca false 1 for ${ca.toString()}`)
+        if(DEBUG2) console.log(`ca false 1 for ${ca.toString()}`)
         return false
       }
       if(ca[1].localeCompare(qualityColor.enum.Gold)) {
-        if(DEBUG) console.log(`ca false 2 for ${ca.toString()}`)
+        if(DEBUG2) console.log(`ca false 2 for ${ca.toString()}`)
         return false
       }
       if(ca[2].localeCompare(qualityColor.enum.Gold)) {
-        if(DEBUG) console.log(`ca false 3 for ${ca.toString()}`)
+        if(DEBUG2) console.log(`ca false 3 for ${ca.toString()}`)
         return false
       }
     } else {
-      if(DEBUG) console.log(`ca3 if passed ${ca.toString()}`)
+      if(DEBUG2) console.log(`ca3 if passed ${ca.toString()}`)
     }
     if(ca[4].localeCompare(qualityColor.enum.Disabled)) {
       if(ca[3].localeCompare(qualityColor.enum.Gold)) {
-        if(DEBUG) console.log(`ca false 4 for ${ca.toString()}`)
+        if(DEBUG2) console.log(`ca false 4 for ${ca.toString()}`)
         return false
       }else {
-        if(DEBUG) console.log(`ca3 if passed for ${ca.toString()}`)
+        if(DEBUG2) console.log(`ca3 if passed for ${ca.toString()}`)
       }
     } else {
-      if (DEBUG) console.log(`ca4 if passed ${ca.toString()}`)
+      if (DEBUG2) console.log(`ca4 if passed ${ca.toString()}`)
     }
-    if (DEBUG) console.log(`ca returning true for ${ca.toString()}`)
+    if (DEBUG2) console.log(`ca returning true for ${ca.toString()}`)
     return true;
   })
   if (DEBUG) console.log(`ca after filtering, ${ColorArray.length} options left`)
