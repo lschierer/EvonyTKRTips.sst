@@ -22,8 +22,8 @@ import {
   
   type AttributeType,
   beast,
-  Buff,
-  type BuffType,
+  BuffParams,
+  type BuffParamsType,
   Condition,
   type ConditionType,
   GeneralClass,
@@ -44,28 +44,6 @@ import { isBuffEffective } from '@lib/buffUtils';
 import  * as EvAnsRanking from '@lib/EvAnsAttributeRanking'
 import { skillBook } from 'src/assets/evonySchemas';
 
-
-const BuffParams = z.object({
-  id: z.string(),
-  special1: qualityColor,
-  special2: qualityColor,
-  special3: qualityColor,
-  special4: qualityColor,
-  special5: qualityColor.optional(),
-  stars: AscendingLevels,
-  dragon: z.boolean().default(false),
-  beast: z.boolean().default(false),
-  EvAnsRanking: z.number().default(0),
-})
-
-type BuffParamsType = z.infer<typeof BuffParams>;
-
-const relevantLevels = ['0',
-  '1',
-  '2',
-  '3',
-  '4',
-  '5',];
 
 const ColorBaseN = new BaseN(qualityColor.options, 5);
 const ColorArray = [...ColorBaseN].filter((ca) => {
@@ -206,13 +184,13 @@ const EvAnsBuff = z.function()
   })
 
 export const GET: APIRoute = async ({ params }) => {
-  const {id }= params ?? '';
+  const {id }= params ;
   if( id !== undefined && id.length > 0) {
     
     
         
     if (id.localeCompare('')) {
-      if (DEBUG) console.log(`id is ${id}, path was ${params.path}`)
+      if (DEBUG) console.log(`id is ${id}, params were ${JSON.stringify(params)}`)
       const entry = await getEntry('generals', id);
       if (entry !== null && entry !== undefined) {
         const general = entry.data.general;

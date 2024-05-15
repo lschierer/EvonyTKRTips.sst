@@ -192,3 +192,17 @@ export type BuffType = z.infer<typeof Buff>;
 export const buffUnion = z.array(Buff);
 
 
+export const BuffParams = z.object({
+  id: z.string(),
+  special1: qualityColor,
+  special2: qualityColor,
+  special3: qualityColor,
+  special4: qualityColor,
+  special5: qualityColor.default(qualityColor.enum.Disabled),
+  stars: AscendingLevels,
+  dragon: z.boolean().default(false),
+  beast: z.boolean().default(false),
+  EvAnsRanking: z.number().default(0),
+})
+
+export type BuffParamsType = z.infer<typeof BuffParams>;
