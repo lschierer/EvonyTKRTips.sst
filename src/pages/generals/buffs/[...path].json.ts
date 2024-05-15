@@ -103,6 +103,18 @@ export const getStaticPaths = (async () => {
   if (DEBUG) console.log(`ca after filtering, ${ColorArray.length} options left`)
 
   const generals = await getCollection('generals');
+  generals.sort((a, b) => {
+    if(a.id === undefined || a.id === null) {
+      if(b.id === undefined || b.id === null) {
+        return 0;
+      }
+      return -1
+    } else if (b.id === undefined || b.id === null) {
+      return 1
+    } else {
+      return a.id.localeCompare(b.id, undefined, {sensitivity: 'base'});
+    }
+  })
   generals.map((general) => {
     if (general?.id !== undefined && general?.id !== null) {
       const name = general.id;
