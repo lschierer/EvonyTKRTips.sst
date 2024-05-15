@@ -7,7 +7,7 @@ import { withStores } from "@nanostores/lit";
 
 import { ulid } from 'ulidx';
 
-import {z} from 'zod';
+import {z} from 'astro:content';
 
 const DEBUG = true;
 
