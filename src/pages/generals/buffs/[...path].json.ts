@@ -44,7 +44,7 @@ import { skillBook } from 'src/assets/evonySchemas';
 
 const DEBUG = true;
 
-const AttackParams = z.object({
+const BuffParams = z.object({
   id: z.string(),
   special1: qualityColor,
   special2: qualityColor,
@@ -56,7 +56,7 @@ const AttackParams = z.object({
   beast: z.boolean().default(false),
 })
 
-type AttackParamsType = z.infer<typeof AttackParams>;
+type BuffParamsType = z.infer<typeof BuffParams>;
 
 const relevantLevels = ['0',
   '1',
@@ -192,7 +192,7 @@ export const getStaticPaths = (async () => {
 
 //from https://www.evonyanswers.com/post/evony-answers-attribute-methodology-explanation
 const EvAnsBuff = z.function()
-  .args(GeneralClass, generalUseCase, AttackParams)
+  .args(GeneralClass, generalUseCase, BuffParams)
   .returns(z.union([z.number(), z.promise(z.number())]) )
   .implement(async (gc, gu, ap) => {
 
@@ -218,7 +218,7 @@ const EvAnsBuff = z.function()
                 if(gc.score_as !== undefined ) {
                   if(!gc.score_as.localeCompare(generalSpecialists.enum.Archers, undefined, {sensitivity: 'base'})) {
                     if(tb.attribute !== undefined) {
-                      
+
                     }
                   }
                 }
@@ -243,17 +243,94 @@ const EvAnsBuff = z.function()
   })
 
 export const GET: APIRoute = async ({ params }) => {
-  const id: string = params.path?.split('/').shift() ?? '';
-  if (id !== '') {
-    if (DEBUG) console.log(`id is ${id}, path was ${params.path}`)
-    const entry = await getEntry('generals', id);
+  const path = params.path ?? '';
+  let id = '';
+  let s1 = '';
+  let s2 = '';
+  let s3 = '';
+  let s4 = '';
+  let s5 = '';
+  let sl = '';
+  let dragon = false;
+  let beast = false;
+  let BP: BuffParamsType = ({
+    id: '',
+    special1: qualityColor.enum.Disabled,
+    special2: qualityColor.enum.Disabled,
+    special3: qualityColor.enum.Disabled,
+    special4: qualityColor.enum.Disabled,
+    special5: qualityColor.enum.Disabled,
+    stars: AscendingLevels.enum[0],
+    dragon: false,
+    beast: false,
+  })
+  if(path.length > 0 && path.includes('/')) {
+    const pA = path.split('/');
+    BP.id = pA.shift() ?? '';
+    if(pA.length > 3) {
+      s1 = pA.shift() ?? ''
+      let v = qualityColor.safeParse(s1);
+      if(v.success) {
+        BP.special1 = v.data;
+      }
+      s2 = pA.shift() ?? ''
+      v = qualityColor.safeParse(s2);
+      if(v.success) {
+        BP.special2 = v.data;
+      }
+      s3 = pA.shift() ?? ''
+      v = qualityColor.safeParse(s3);
+      if(v.success) {
+        BP.special3 = v.data;
+      }
+      if(pA.length > 3) {
+        s4 = pA.shift() ?? ''
+        v = qualityColor.safeParse(s4);
+        if(v.success) {
+          BP.special4 = v.data;
+        }
+        if(pA.length > 3) {
+          s5 = pA.shift() ?? ''
+          v = qualityColor.safeParse(s5);
+          if(v.success) {
+            BP.special5 = v.data;
+          }
+        }
+      }
+    } 
+    if(pA.length === 3) {
+      sl = pA.shift() ?? ''
+      let v = AscendingLevels.safeParse(sl);
+      if(v.success) {
+        BP.stars = v.data;
+      }
+      let t = pA.shift() ?? ''
+      if(t.localeCompare('true')) {
+        BP.dragon = true
+      }
+      t = pA.shift() ?? ''
+      if(t.localeCompare('true')) {
+        BP.beast = true
+      }
+    } else  {
+      console.log(`something went wrong parsing the path for ${path}`)
+    }
+  }
+  
+  if (BP.id.localeCompare('')) {
+    if (DEBUG) console.log(`id is ${BP.id}, path was ${params.path}`)
+    const entry = await getEntry('generals', BP.id);
     if (entry !== null && entry !== undefined) {
       const general = entry.data.general;
-
+      const AttackingScore = await EvAnsBuff(general, generalUseCase.enum.Attack, BP)
       return new Response(
-        JSON.stringify(1)
+        JSON.stringify(AttackingScore)
       )
+    } else {
+      if (DEBUG) console.log(`no general found, path was ${path}`)
     }
+  } else {
+    if(DEBUG) console.log(`id was null, path was ${path}`)
   }
   return new Response(JSON.stringify('1'))
 }
