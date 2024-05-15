@@ -2,24 +2,25 @@ import {
   type APIRoute,
   type InferGetStaticParamsType,
   type InferGetStaticPropsType,
+  type getStaticPaths,
 } from 'astro';
 import { getCollection, getEntry, type CollectionEntry  } from 'astro:content';
 
 export const prerender = true;
+const DEBUG = false;
 
-export async function getStaticPaths() {
+export const getStaticPaths = (async () => {
   const specialityObjects: CollectionEntry<'specialities'>[]  = await getCollection('specialities');
   return specialityObjects.map(entry => ({
     params: {id: entry.id,}, props: { entry },
   }));
-}
+}) satisfies getStaticPaths;
 
 type Params = InferGetStaticParamsType<typeof getStaticPaths>; // eslint-disable-line
 type Props = InferGetStaticPropsType<typeof getStaticPaths>; // eslint-disable-line
 
-export const GET: APIRoute = async ({ params, request }) => {
+export const GET: APIRoute = async ({ params }) => {
   let id: string = params.id ? params.id : '';
-  const req = request;
   if(id !== '') {
     if(id.includes('/')){
       const temp = id.split('/').pop() ;
@@ -27,7 +28,7 @@ export const GET: APIRoute = async ({ params, request }) => {
         id = temp;
       }
     }
-    console.log(`id is ${id}, request was ${req.url.toString()}`)
+    if (DEBUG) console.log(`id is ${id}, params were ${JSON.stringify(params)}`)
     const entry = await getEntry('specialities',id);
     if(entry !== null && entry !== undefined) {
       return new Response(
