@@ -11,7 +11,7 @@ import {
   type InferGetStaticPropsType,
 } from 'astro';
 
-import { getEntry, getCollection, z } from 'astro:content'
+import { getEntry, getCollection, z, type CollectionEntry } from 'astro:content'
 
 import {
   type ActivationSituationsType,
@@ -21,6 +21,7 @@ import {
   type AttributeType,
   beast,
   Buff,
+  type BuffType,
   Condition,
   type ConditionType,
   GeneralClass,
@@ -32,9 +33,14 @@ import {
   generalSpecialists,
   type generalSpecialistsType,
   type generalUseCaseType,
+  specialSkillBook,
+  type specialSkillBookType,
 } from '@schemas/index'
 
 import { isBuffEffective } from '@lib/buffUtils';
+
+import  * as EvAnsRanking from '@lib/EvAnsAttributeRanking'
+import { skillBook } from 'src/assets/evonySchemas';
 
 const DEBUG = true;
 
@@ -183,26 +189,57 @@ export const getStaticPaths = (async () => {
   return returnable;
 }) satisfies GetStaticPaths;
 
-const EvAnsAttributeMultipliers: Record<generalSpecialistsType, (s: ActivationSituationsType, bc: ConditionType, a: AttributeType) => number> = (s: ActivationSituationsType, bc: ConditionType, a: AttributeType) => {
-  const effective = isBuffEffective(s, bc);
-  if(effective) {
-    
-  }
-}
 
 //from https://www.evonyanswers.com/post/evony-answers-attribute-methodology-explanation
 const EvAnsBuff = z.function()
   .args(GeneralClass, generalUseCase, AttackParams)
-  .returns(z.union([ValueSchema, z.array(ValueSchema)]))
-  .implement((gc, gu, ap) => {
-    const BAS = 0;
-    const BSS = 0;
+  .returns(z.union([z.number(), z.promise(z.number())]) )
+  .implement(async (gc, gu, ap) => {
+
+    //Basic Attribute Score is easy. 
+    const BasicAttack = gc.attack + (45 * gc.attack_increment);
+    const BasicDefense = gc.defense + (45 * gc.defense_increment);
+    const BasicLeaderShip = gc.leadership + (45 * gc.leadership_increment);
+    const BasicPolitics = gc.politics + (45 * gc.politics_increment);
+    const BAS = BasicAttack + BasicDefense + BasicLeaderShip + BasicPolitics;
+
+    //Built-in SkillBook Score is much more complicated
+    let BSS = 0;
+    if (gc.books !== undefined && Array.isArray(gc.books) && gc.books.length > 0) {
+      const bisbC: CollectionEntry<'skillBooks'> | undefined = await getEntry('skillBooks', gc.books[0]);
+      if(bisbC !== undefined) {
+        const v = specialSkillBook.safeParse(bisbC.data);
+        if(v.success) {
+          const bisb: specialSkillBookType = v.data;
+          for( const tb of bisb.buff) {
+            if(tb !== undefined && tb.value !== undefined) {
+              if(tb.class === undefined) {
+                //this is an all class buff
+                if(gc.score_as !== undefined ) {
+                  if(!gc.score_as.localeCompare(generalSpecialists.enum.Archers, undefined, {sensitivity: 'base'})) {
+                    if(tb.attribute !== undefined) {
+                      
+                    }
+                  }
+                }
+              }
+            } else {
+              console.log(`how to score a buff with no value? gc is ${gc.name}`)
+            }
+          }
+        }
+      }
+    }
+    
+
+    
     const fourSB = 0;
     const threeSS = 0;
     const fourSS = 0;
     const AES = 0;
 
-
+    return BAS + BSS + fourSB + threeSS + AES;
+      
   })
 
 export const GET: APIRoute = async ({ params }) => {
