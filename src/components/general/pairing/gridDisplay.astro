@@ -17,6 +17,8 @@ import {
   type GeneralPairType,
 } from "@schemas/index";
 
+import { DisplayGeneral, DisplayPair } from './general';
+
 interface Props {
   name: string;
   allGenerals: GeneralElementType[];
@@ -27,7 +29,9 @@ const DEBUG = true;
 
 const { name, allGenerals } = Astro.props;
 
-const sortByOptions = z.enum(["primary", "secondary"]);
+const myUrl = Astro.url;
+
+const sortByOptions = z.enum(["primary", "secondary", 'EvAnsRank']);
 type sortByOptionsType = z.infer<typeof sortByOptions>;
 
 const sortDirectionOptions = z.enum(['ascending', "decending"]);
@@ -36,7 +40,7 @@ type sortDirectionType = z.infer<typeof sortDirectionOptions>;
 let sortBy: sortByOptionsType = sortByOptions.enum.primary;
 let sortDirection: sortDirectionType = sortDirectionOptions.enum.decending;
 
-const pairs: GeneralPairType[] = new Array<GeneralPairType>();
+const pairs: Array<DisplayPair> = new Array<DisplayPair>();
 
 
 let sortPrimaryInput: boolean | sortDirectionType | null = false;
@@ -44,6 +48,9 @@ let sortSecondaryInput: boolean | sortDirectionType | null = false;
 
 let sortPrimaryValue: sortDirectionType = sortDirectionOptions.enum.decending;
 let sortSecondaryValue: sortDirectionType = sortDirectionOptions.enum.decending;
+
+let sortEvAnsRankInput: boolean | sortDirectionType | null = false;
+let sortEvAnsRankValue: sortDirectionType = sortDirectionOptions.enum.decending;
 
 if (Astro.request.method === "POST") {
   try {
@@ -93,9 +100,9 @@ if (Astro.request.method === "POST") {
 }
 
 
-const sortPairsByPrimary = (a: GeneralPairType, b: GeneralPairType): number => {
-  const one = a.primary.name;
-  const two = b.primary.name;
+const sortPairsByPrimary = (a: DisplayPair, b: DisplayPair): number => {
+  const one = a.primary.general.name;
+  const two = b.primary.general.name;
   return one
     .toLocaleLowerCase(undefined)
     .localeCompare(two.toLocaleLowerCase(undefined), undefined, {
@@ -103,25 +110,35 @@ const sortPairsByPrimary = (a: GeneralPairType, b: GeneralPairType): number => {
     });
 };
 
-const sortPairsBySecondary = (a: GeneralPairType, b: GeneralPairType) => {
-  const one = a.secondary.name;
-  const two = b.secondary.name;
+const sortPairsBySecondary = (a: DisplayPair, b: DisplayPair) => {
+  const one = a.secondary.general.name;
+  const two = b.secondary.general.name;
   return one
     .toLocaleLowerCase(undefined)
     .localeCompare(two.toLocaleLowerCase(undefined), undefined, {
       sensitivity: "base",
     });
 };
+
+const sortPairsByEvAnsRank = (a: DisplayPair, b: DisplayPair) => {
+  if(a.EvAnsRanking === b.EvAnsRanking) {
+    return 0
+  } else if (a.EvAnsRanking < b.EvAnsRanking) {
+    return -1
+  }
+  return 1;
+}
 
 const sortPairSelector: Record<
   sortByOptionsType,
-  (a: GeneralPairType, b: GeneralPairType) => number
+  (a: DisplayPair, b: DisplayPair) => number
 > = {
   [sortByOptions.enum.primary]: sortPairsByPrimary,
   [sortByOptions.enum.secondary]: sortPairsBySecondary,
+  [sortByOptions.enum.EvAnsRank]: sortPairsByEvAnsRank,
 };
 
-const sortPairFunction = (a: GeneralPairType, b: GeneralPairType) => {
+const sortPairFunction = (a: DisplayPair, b: DisplayPair) => {
   if (a === undefined) {
     if (b === undefined) {
       return 0;
@@ -174,7 +191,9 @@ const pairsData: (GeneralPairType[] | string)[] = await Promise.all(
 for (const pd of pairsData.flat()) {
   const validation = GeneralPair.safeParse(pd);
   if (validation.success) {
-    pairs.push(validation.data);
+    const p = new DisplayGeneral(validation.data.primary, myUrl);
+    const s = new DisplayGeneral(validation.data.secondary, myUrl);
+    pairs.push(new DisplayPair(p,s));
   }
 }
 pairs.sort(sortPairFunction)
@@ -221,6 +240,20 @@ pairs.sort(sortPairFunction)
                 <span class="spectrum-Table-columnTitle">Assistant General </span>
               </button>
             </div>
+            <div
+              class="spectrum-Table-headCell"
+              role="columnheader"
+              aria-sort="none"
+              tabindex="0"
+            >
+              <button
+                type="submit"
+                name="EvAnsRank"
+                value={sortEvAnsRankValue}
+              >
+                <span class="spectrum-Table-columnTitle">Score</span>
+              </button>
+            </div>
           </div>
         </div>
 
@@ -235,10 +268,13 @@ pairs.sort(sortPairFunction)
                         {index}
                       </div>
                       <div class="spectrum-Table-cell" role="cell">
-                        {pi ? pi.primary.name : `${index} not present `}
+                        {pi.primary.general.name}
                       </div>
                       <div class="spectrum-Table-cell" role="cell">
-                        {pi ? pi.secondary.name : `${index} not present`}
+                        {pi.secondary.general.name}
+                      </div>
+                      <div class="spectrum-Table-cell" role="cell">
+                        {pi.EvAnsRanking()}
                       </div>
                     </div>
                   )),
