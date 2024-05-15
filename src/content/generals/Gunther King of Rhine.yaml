@@ -17,6 +17,9 @@ general:
     - The King of Atlis
     - King of Rhine
   specialities:
+    - Siege Machine Formation
+    - Bash
+    - Siege Machine Ares
     - Rhine Flame Axe
   ascending:
     - level: '6'
