@@ -1,4 +1,4 @@
-import {z} from 'zod';
+import {z} from 'astro:content';
 import { ulid } from 'ulidx'
 
 import {
