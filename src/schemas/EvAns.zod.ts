@@ -13,6 +13,12 @@ export const ScoreWeightings = z.record(
   z.object({
     GroundOffense: z.number(),
     GroundToughness: z.number(),
+    RangedOffense: z.number(),
+    RangedToughness: z.number(),
+    MountedOffense: z.number(),
+    MountedToughness: z.number(),
+    SiegeOffense: z.number(),
+    SiegeToughness: z.number(),
     EnemyDebuffs: z.number(),
     default: z.number(),
   })
