@@ -261,10 +261,10 @@ export const GET: APIRoute = async ({ params }) => {
         )
         
       } else {
-        if (DEBUG) console.log(`no general found, path was ${JSON.stringify(BP)}`)
+        if (DEBUG) console.log(`no general found, id was ${JSON.stringify(id)}`)
       }
     } else {
-      if(DEBUG) console.log(`id was null, path was ${JSON.stringify(BP)}`)
+      if(DEBUG) console.log(`id was null, params were ${JSON.stringify(params)}`)
     }
   }
   
