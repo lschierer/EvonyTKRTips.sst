@@ -50,19 +50,14 @@ export const levels = z.enum([
 ]);
 export type levelsType = z.infer<typeof levels>;
 
-export const AscendingLevels = levels.refine((l) => {
-  switch (l) {
-    case '0':
-    case '6':
-    case '7':
-    case '8':
-    case '9':
-    case '10':
-      return true;
-    default:
-      return false;
-    }
-});
+export const AscendingLevels = z.enum([
+  '0',
+  '6',
+  '7',
+  '8',
+  '9',
+  '10',
+])
 export type AscendingLevelsType = z.infer<typeof AscendingLevels>;
 
 export const ActivationSituations = z.enum([
