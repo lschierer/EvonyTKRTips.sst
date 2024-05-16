@@ -2,7 +2,8 @@ import {z} from "astro:content";
 
 import * as b from './baseSchemas';
 
-import {Book, } from './bookSchemas';
+import {Book, specialSkillBook, standardSkillBook, } from './bookSchemas';
+import { Speciality } from "./specialitySchema";
 
 export const generalRole = z.enum(['primary','secondary']);
 export type generalRoleType = z.infer<typeof generalRole>;
@@ -133,3 +134,16 @@ export const Covenant = z.object({
   "generals": z.string().array(),
   "attributes": z.array(CovenantAttribute).optional(),
 })
+
+export const ExtendedGeneral = z.object({
+  general: GeneralClass,
+  specialities: z.array(Speciality),
+  books: z.array(z.union([Book, specialSkillBook,standardSkillBook])),
+  computedBuffs: z.array(b.BuffParams),
+  complete: z.boolean().default(false),
+})
+
+export type ExtendedGeneralType = z.infer<typeof ExtendedGeneral>;
+
+export const ExtendedGeneralSet = z.set(ExtendedGeneral);
+export type ExtendedGeneralSetType = z.infer<typeof ExtendedGeneralSet>;

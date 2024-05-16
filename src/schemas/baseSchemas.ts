@@ -194,15 +194,18 @@ export const buffUnion = z.array(Buff);
 
 export const BuffParams = z.object({
   id: z.string(),
-  special1: qualityColor,
-  special2: qualityColor,
-  special3: qualityColor,
-  special4: qualityColor,
+  special1: qualityColor.default(qualityColor.enum.Disabled),
+  special2: qualityColor.default(qualityColor.enum.Disabled),
+  special3: qualityColor.default(qualityColor.enum.Disabled),
+  special4: qualityColor.default(qualityColor.enum.Disabled),
   special5: qualityColor.default(qualityColor.enum.Disabled),
-  stars: AscendingLevels,
+  stars: AscendingLevels.default(AscendingLevels.enum[0]),
   dragon: z.boolean().default(false),
   beast: z.boolean().default(false),
   EvAnsRanking: z.number().default(0),
 })
 
 export type BuffParamsType = z.infer<typeof BuffParams>;
+
+export const InvestmentOptionsSchema = z.array(z.union([qualityColor, AscendingLevels, z.boolean()]));
+export type InvestmentOptionsType = z.infer<typeof InvestmentOptionsSchema>;

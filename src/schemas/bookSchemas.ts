@@ -5,8 +5,8 @@ import * as b from './baseSchemas';
 
 export const Book = z.object({
   "name": z.string(),
-  "level": z.string(),
-  "buff": z.array(b.Buff),
+  "level": z.string().optional(),
+  "buff": z.array(b.Buff).nonempty(),
 });
 export type BookType = z.infer<typeof Book>;
 

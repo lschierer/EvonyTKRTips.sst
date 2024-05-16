@@ -11,37 +11,37 @@ import "@spectrum-css/icon/dist/index.css";
 import "@spectrum-css/ui-icons/dist/medium/Arrow100.svg";
 
 import {
+  ExtendedGeneral,
   GeneralElement,
   type GeneralElementType,
   GeneralPair,
   type GeneralPairType,
+  GeneralClass,
 } from "@schemas/index";
 
-import { DisplayGeneral, DisplayPair } from './general';
+import { DisplayGeneral, DisplayPair } from "./general";
 
 interface Props {
   name: string;
-  allGenerals: GeneralElementType[];
   class?: string;
 }
 
 const DEBUG = true;
 
-const { name, allGenerals } = Astro.props;
+const { name } = Astro.props;
 
 const myUrl = Astro.url;
 
-const sortByOptions = z.enum(["primary", "secondary", 'EvAnsRank']);
+const sortByOptions = z.enum(["primary", "secondary", "EvAnsRank"]);
 type sortByOptionsType = z.infer<typeof sortByOptions>;
 
-const sortDirectionOptions = z.enum(['ascending', "decending"]);
+const sortDirectionOptions = z.enum(["ascending", "decending"]);
 type sortDirectionType = z.infer<typeof sortDirectionOptions>;
 
 let sortBy: sortByOptionsType = sortByOptions.enum.primary;
 let sortDirection: sortDirectionType = sortDirectionOptions.enum.decending;
 
 const pairs: Array<DisplayPair> = new Array<DisplayPair>();
-
 
 let sortPrimaryInput: boolean | sortDirectionType | null = false;
 let sortSecondaryInput: boolean | sortDirectionType | null = false;
@@ -54,51 +54,53 @@ let sortEvAnsRankValue: sortDirectionType = sortDirectionOptions.enum.decending;
 
 if (Astro.request.method === "POST") {
   try {
-    if(DEBUG) console.log(`executing POST try block`)
+    if (DEBUG) console.log(`executing POST try block`);
     const data = await Astro.request.formData();
-    if(sortPrimaryInput === false) {
+    if (sortPrimaryInput === false) {
       //not prievously sorted by primary
-      const v = sortDirectionOptions.safeParse(data.get('pGeneral'));
-      if(v.success) {
-        if(DEBUG) console.log(`sortPrimaryInput was false, is now ${v.data}`)
+      const v = sortDirectionOptions.safeParse(data.get("pGeneral"));
+      if (v.success) {
+        if (DEBUG) console.log(`sortPrimaryInput was false, is now ${v.data}`);
         sortPrimaryInput = true;
-        sortBy = sortByOptions.enum.primary
+        sortBy = sortByOptions.enum.primary;
         sortDirection = v.data;
-        if(sortDirection === sortDirectionOptions.enum.ascending) {
-          sortPrimaryValue = sortDirectionOptions.enum.decending
+        if (sortDirection === sortDirectionOptions.enum.ascending) {
+          sortPrimaryValue = sortDirectionOptions.enum.decending;
         } else {
           sortPrimaryValue = sortDirectionOptions.enum.ascending;
         }
       }
     } else {
-      if(DEBUG) console.log(`values are ${sortPrimaryInput} and ${sortSecondaryInput}`)
+      if (DEBUG)
+        console.log(`values are ${sortPrimaryInput} and ${sortSecondaryInput}`);
     }
-    if(sortSecondaryInput === false) {
+    if (sortSecondaryInput === false) {
       //not prievously sorted by primary
-      const v = sortDirectionOptions.safeParse(data.get('sGeneral'));
-      if(v.success) {
-        if(DEBUG) console.log(`sortSecondaryInput was false, is now ${v.data}`)
+      const v = sortDirectionOptions.safeParse(data.get("sGeneral"));
+      if (v.success) {
+        if (DEBUG)
+          console.log(`sortSecondaryInput was false, is now ${v.data}`);
         sortSecondaryInput = true;
         sortBy = sortByOptions.enum.secondary;
         sortDirection = v.data;
-        if(sortDirection === sortDirectionOptions.enum.ascending) {
-          sortSecondaryValue = sortDirectionOptions.enum.decending
+        if (sortDirection === sortDirectionOptions.enum.ascending) {
+          sortSecondaryValue = sortDirectionOptions.enum.decending;
         } else {
           sortSecondaryValue = sortDirectionOptions.enum.ascending;
         }
       }
     } else {
-      if(DEBUG) console.log(`values are ${sortPrimaryInput} and ${sortSecondaryInput}`)
+      if (DEBUG)
+        console.log(`values are ${sortPrimaryInput} and ${sortSecondaryInput}`);
     }
   } catch (error) {
-    if(DEBUG) console.log(`executing POST catch block`)
+    if (DEBUG) console.log(`executing POST catch block`);
     if (error instanceof Error) {
       console.log(`form error is ${error.message}`);
       console.log(`content type was ${error.name}`);
     }
   }
 }
-
 
 const sortPairsByPrimary = (a: DisplayPair, b: DisplayPair): number => {
   const one = a.primary.general.name;
@@ -121,13 +123,13 @@ const sortPairsBySecondary = (a: DisplayPair, b: DisplayPair) => {
 };
 
 const sortPairsByEvAnsRank = (a: DisplayPair, b: DisplayPair) => {
-  if(a.EvAnsRanking === b.EvAnsRanking) {
-    return 0
+  if (a.EvAnsRanking === b.EvAnsRanking) {
+    return 0;
   } else if (a.EvAnsRanking < b.EvAnsRanking) {
-    return -1
+    return -1;
   }
   return 1;
-}
+};
 
 const sortPairSelector: Record<
   sortByOptionsType,
@@ -149,21 +151,22 @@ const sortPairFunction = (a: DisplayPair, b: DisplayPair) => {
     if (b === undefined) {
       return -1;
     }
-    if(sortDirection === sortDirectionOptions.enum.decending) {
+    if (sortDirection === sortDirectionOptions.enum.decending) {
       return sortPairSelector[sortBy](a, b);
     }
     return sortPairSelector[sortBy](b, a);
   }
 };
-
-const pairsData: (GeneralPairType[] | string)[] = await Promise.all(
-  allGenerals.map(async (tg) => {
-    const v1 = GeneralElement.safeParse(tg);
+if (DEBUG) console.log(`# Generals: ${Astro.locals.ExtendedGeneralSet.size}`);
+const pairsData = new Array<Array<GeneralPairType>>();
+if (Astro.locals.ExtendedGeneralSet.size > 0) {
+  for (const tg of Astro.locals.ExtendedGeneralSet) {
+    const v1 = ExtendedGeneral.safeParse(tg);
     if (v1.success) {
       const g1 = v1.data.general;
       const pairUrl = new URL(
         `/generalPairs/${g1.name}-${g1.score_as}.json`,
-        Astro.url,
+        Astro.url
       );
       const response = await fetch(pairUrl);
       //const response = null;
@@ -171,35 +174,33 @@ const pairsData: (GeneralPairType[] | string)[] = await Promise.all(
         const j: GeneralPairType[] = await response.json();
         const validation = z.array(GeneralPair).safeParse(j);
         if (validation.success) {
-          return validation.data;
+          pairsData.push(validation.data);
         } else {
           console.log(
-            `pair type validation failed: ${validation.error.message}`,
+            `pair type validation failed: ${validation.error.message}`
           );
-          return "";
         }
       } else {
-        return "";
+        console.log(`responce for ${pairUrl.toString()} was not ok`);
       }
     } else {
-      console.log(`allGenerals has invalid general in it.`);
+      console.log(`Astro.locals.ExtendedGeneralSet has invalid general in it.`);
     }
-    return "";
-  }),
-);
+  }
 
-for (const pd of pairsData.flat()) {
-  const validation = GeneralPair.safeParse(pd);
-  if (validation.success) {
-    const p = new DisplayGeneral(validation.data.primary, myUrl);
-    const s = new DisplayGeneral(validation.data.secondary, myUrl);
-    pairs.push(new DisplayPair(p,s));
+  for (const pd of pairsData.flat()) {
+    const validation = GeneralPair.safeParse(pd);
+    if (validation.success) {
+      const p = new DisplayGeneral(validation.data.primary, myUrl);
+      const s = new DisplayGeneral(validation.data.secondary, myUrl);
+      pairs.push(new DisplayPair(p, s));
+    }
   }
 }
-pairs.sort(sortPairFunction)
+pairs.sort(sortPairFunction);
 ---
 
-<div class="spectrum spectrum--medium ">
+<div class="spectrum spectrum--medium">
   <div
     id={name}
     class="spectrum-Table-scroller spectrum-Table spectrum-Table--sizeM spectrum-Table--emphasized"
@@ -218,11 +219,7 @@ pairs.sort(sortPairFunction)
               aria-sort="descending"
               tabindex="0"
             >
-              <button
-                type="submit"
-                name="pGeneral"
-                value={sortPrimaryValue}
-              >
+              <button type="submit" name="pGeneral" value={sortPrimaryValue}>
                 <span class="spectrum-Table-columnTitle">Primary General</span>
               </button>
             </div>
@@ -232,12 +229,10 @@ pairs.sort(sortPairFunction)
               aria-sort="none"
               tabindex="0"
             >
-              <button
-                type="submit"
-                name="sGeneral"
-                value={sortSecondaryValue}
-              >
-                <span class="spectrum-Table-columnTitle">Assistant General </span>
+              <button type="submit" name="sGeneral" value={sortSecondaryValue}>
+                <span class="spectrum-Table-columnTitle"
+                  >Assistant General
+                </span>
               </button>
             </div>
             <div
@@ -246,11 +241,7 @@ pairs.sort(sortPairFunction)
               aria-sort="none"
               tabindex="0"
             >
-              <button
-                type="submit"
-                name="EvAnsRank"
-                value={sortEvAnsRankValue}
-              >
+              <button type="submit" name="EvAnsRank" value={sortEvAnsRankValue}>
                 <span class="spectrum-Table-columnTitle">Score</span>
               </button>
             </div>
@@ -261,8 +252,8 @@ pairs.sort(sortPairFunction)
           {
             pairs.length > 0 &&
               pairs.map(
-                (pi, index) => (
-                  pi  && (
+                (pi, index) =>
+                  pi && (
                     <div class="spectrum-Table-row" role="rowgroup">
                       <div class="spectrum-Table-cell" role="cell">
                         {index}
@@ -277,7 +268,7 @@ pairs.sort(sortPairFunction)
                         {pi.EvAnsRanking()}
                       </div>
                     </div>
-                  )),
+                  )
               )
           }
         </div>

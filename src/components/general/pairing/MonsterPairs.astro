@@ -5,6 +5,7 @@ import { getCollection, type CollectionEntry, z } from "astro:content";
 import type { ComponentProps } from "astro/types";
 
 import { ulid } from "ulidx";
+
 import GridDisplay from "./gridDisplay.astro";
 type GridDisplayProps = ComponentProps<typeof GridDisplay>;
 
@@ -16,12 +17,13 @@ import {
   ClassEnum,
 } from "@schemas/index";
 
-const DEBUG = false;
+const DEBUG = true;
 
 const table_name = `${Astro.url.pathname}-${ulid()}`
 
 let allGeneralsJson = "";
 let allGenerals = new Array<GeneralElementType>();
+let generalsPromise = false ; 
 
 const generalObjects: CollectionEntry<"generals">[] =
   await getCollection("generals");
@@ -40,6 +42,10 @@ if (generalObjects !== null && generalObjects !== undefined) {
     }
   }
   allGeneralsJson = JSON.stringify(allGenerals);
+  allGenerals.map((g) => {
+    if (DEBUG) console.log(`adding ${g.general.name}`)
+    Astro.locals.addEG2EGS(g.general);
+  })
 }
 
 let aresult:
@@ -61,7 +67,6 @@ if (aresult.success ) {
 <div class="table-container">
   <GridDisplay 
     name={table_name} 
-    allGenerals={allGenerals} 
   ></GridDisplay>
 </div>
 
