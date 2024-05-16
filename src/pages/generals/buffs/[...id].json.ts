@@ -5,6 +5,7 @@ const DEBUG2 = false;
 import {BaseN} from 'js-combinatorics';
 
 import {
+  type APIContext,
   type APIRoute,
   
   type GetStaticPaths,
@@ -14,6 +15,8 @@ import {
 } from 'astro';
 
 import { getEntry, getCollection, z, type CollectionEntry } from 'astro:content'
+
+
 
 import {
   type ActivationSituationsType,
@@ -43,7 +46,6 @@ import { isBuffEffective } from '@lib/buffUtils';
 
 import  * as EvAnsRanking from '@lib/EvAnsAttributeRanking'
 import { skillBook } from 'src/assets/evonySchemas';
-
 
 const ColorBaseN = new BaseN(qualityColor.options, 5);
 const ColorArray = [...ColorBaseN].filter((ca) => {
@@ -88,6 +90,8 @@ const InvestmentOptions = ColorArray.map((ca) => {
   })
   return alMap.flat()
 }).flat();
+
+
 export const getStaticPaths = (async () => {
   const returnable = Array<GetStaticPathsItem>();
 
@@ -183,57 +187,67 @@ const EvAnsBuff = z.function()
       
   })
 
-export const GET: APIRoute = async ({ params }) => {
+const responseCreator = z.function()
+  .args(GeneralClass)
+  .returns(z.promise(z.array(BuffParams)))
+  .implement(async (general) => {
+    const data = await Promise.all(InvestmentOptions.map(async (IO) => {
+      const BP: BuffParamsType = ({
+        id: general.name,
+        special1: qualityColor.enum.Disabled,
+        special2: qualityColor.enum.Disabled,
+        special3: qualityColor.enum.Disabled,
+        special4: qualityColor.enum.Disabled,
+        special5: qualityColor.enum.Disabled,
+        stars: AscendingLevels.enum[0],
+        dragon: false,
+        beast: false,
+        EvAnsRanking: 0,
+      })
+
+      if(Array.isArray(general.specialities) && general.specialities.length > 0) {
+        if(DEBUG2) console.log(JSON.stringify(IO))
+        let t = qualityColor.safeParse(IO[0])
+        if(t.success) {
+          BP.special1 = t.data
+        } else {
+          console.log(`error parsing InvestmentOptions ${t.error.message}`)
+          console.log(JSON.stringify(IO))
+        }
+        
+        BP.special2 = qualityColor.parse(IO[1]);
+        BP.special3 = qualityColor.parse(IO[2]);
+        if(general.specialities.length >= 4) {
+          BP.special4 = qualityColor.parse(IO[3]);
+          if(general.specialities.length >= 5) {
+            BP.special5 = qualityColor.parse(IO[4])
+          }
+        }
+        BP.stars = AscendingLevels.parse(IO[5])
+        BP.dragon = z.boolean().parse(IO[6])
+        BP.beast = z.boolean().parse(IO[7])
+      }
+      BP.EvAnsRanking = Math.floor(await EvAnsBuff(general, generalUseCase.enum.Attack, BP))
+
+      return BP;
+
+    }))
+    return data;
+  })
+
+
+
+export const GET: APIRoute = async  ({ params }: APIContext) => {
   const {id }= params ;
   if( id !== undefined && id.length > 0) {
-    
-    
-        
     if (id.localeCompare('')) {
       if (DEBUG) console.log(`id is ${id}, params were ${JSON.stringify(params)}`)
-      const entry = await getEntry('generals', id);
+      const entry: CollectionEntry<'generals'> | undefined = await getEntry('generals', id);
       if (entry !== null && entry !== undefined) {
         const general = entry.data.general;
-        const data = await Promise.all(InvestmentOptions.map(async (IO) => {
-          let BP: BuffParamsType = ({
-            id: id,
-            special1: qualityColor.enum.Disabled,
-            special2: qualityColor.enum.Disabled,
-            special3: qualityColor.enum.Disabled,
-            special4: qualityColor.enum.Disabled,
-            special5: qualityColor.enum.Disabled,
-            stars: AscendingLevels.enum[0],
-            dragon: false,
-            beast: false,
-            EvAnsRanking: 0,
-          })
-          if(Array.isArray(general.specialities) && general.specialities.length > 0) {
-            if(DEBUG2) console.log(JSON.stringify(IO))
-            let t = qualityColor.safeParse(IO[0])
-            if(t.success) {
-              BP.special1 = t.data
-            } else {
-              console.log(`error parsing InvestmentOptions ${t.error.message}`)
-              console.log(JSON.stringify(IO))
-            }
+
+        const data = await responseCreator(general)
             
-            BP.special2 = qualityColor.parse(IO[1]);
-            BP.special3 = qualityColor.parse(IO[2]);
-            if(general.specialities.length >= 4) {
-              BP.special4 = qualityColor.parse(IO[3]);
-              if(general.specialities.length >= 5) {
-                BP.special5 = qualityColor.parse(IO[4])
-              }
-            }
-            BP.stars = AscendingLevels.parse(IO[5])
-            BP.dragon = z.boolean().parse(IO[6])
-            BP.beast = z.boolean().parse(IO[7])
-          }
-          BP.EvAnsRanking = Math.floor(await EvAnsBuff(general, generalUseCase.enum.Attack, BP))
-        
-          return BP
-        }))
-        
         return new Response(
           JSON.stringify(data)
         )
@@ -248,5 +262,3 @@ export const GET: APIRoute = async ({ params }) => {
   
   return new Response(JSON.stringify('1'))
 }
-
-
