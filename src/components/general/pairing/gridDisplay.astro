@@ -191,9 +191,9 @@ if (Astro.locals.ExtendedGeneralSet.size > 0) {
   for (const pd of pairsData.flat()) {
     const validation = GeneralPair.safeParse(pd);
     if (validation.success) {
-      const p = new DisplayGeneral(validation.data.primary, myUrl);
-      const s = new DisplayGeneral(validation.data.secondary, myUrl);
-      pairs.push(new DisplayPair(p, s));
+      const p = new DisplayGeneral(validation.data.primary, myUrl, Astro.locals);
+      const s = new DisplayGeneral(validation.data.secondary, myUrl, Astro.locals);
+      pairs.push(new DisplayPair(p, s, Astro.locals));
     }
   }
 }

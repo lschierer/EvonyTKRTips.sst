@@ -125,8 +125,11 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
   const buffComputer = z
     .function()
     .args(GeneralClass)
-    .returns(z.promise(z.array(BuffParams)))
-    .implement(async (general) => {
+    .returns(z.array(BuffParams))
+    .implement((general) => {
+
+      //.returns(z.promise(z.array(BuffParams)))
+      //.implement(async (general) => {
       const data = Array<BuffParamsType>();
       locals.InvestmentOptions.forEach(async (IO) => {
         const v1 = InvestmentOptionsSchema.safeParse(IO);
@@ -149,21 +152,21 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
             Array.isArray(general.specialities) &&
             general.specialities.length > 0
           ) {
-            let t = qualityColor.safeParse(thisOption.pop());
+            let t = qualityColor.safeParse(thisOption.shift());
             if (t.success) {
               BP.special1 = t.data;
             } else {
-              console.log(`error parsing InvestmentOptions ${t.error.message}`);
+              //console.log(`error parsing InvestmentOptions ${t.error.message}`);
               console.log(JSON.stringify(IO));
             }
-            t = qualityColor.safeParse(thisOption.pop());
+            t = qualityColor.safeParse(thisOption.shift());
             if (t.success) {
               BP.special2 = t.data;
             } else {
               console.log(`error parsing InvestmentOptions ${t.error.message}`);
               console.log(JSON.stringify(IO));
             }
-            t = qualityColor.safeParse(thisOption.pop());
+            t = qualityColor.safeParse(thisOption.shift());
             if (t.success) {
               BP.special3 = t.data;
             } else {
@@ -171,7 +174,7 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
               console.log(JSON.stringify(IO));
             }
             if (general.specialities.length >= 4) {
-              t = qualityColor.safeParse(thisOption.pop());
+              t = qualityColor.safeParse(thisOption.shift());
               if (t.success) {
                 BP.special4 = t.data;
               } else {
@@ -181,7 +184,7 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
                 console.log(JSON.stringify(IO));
               }
               if (general.specialities.length === 5) {
-                t = qualityColor.safeParse(thisOption.pop());
+                t = qualityColor.safeParse(thisOption.shift());
                 if (t.success) {
                   BP.special5 = t.data;
                 } else {
@@ -191,12 +194,12 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
                   console.log(JSON.stringify(IO));
                 }
               } else {
-                thisOption.pop()
+                thisOption.shift()
               }
             } else {
-              thisOption.pop()
+              thisOption.shift()
             }
-            let al = AscendingLevels.safeParse(thisOption.pop());
+            let al = AscendingLevels.safeParse(thisOption.shift());
             if (al.success) {
               BP.stars = al.data;
             } else {
@@ -205,26 +208,28 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
               );
               console.log(JSON.stringify(IO));
             }
-            const td = z.boolean().safeParse(thisOption.pop())
-            if(td.success) {
+            const td = z.boolean().safeParse(thisOption.shift())
+            if (td.success) {
               BP.dragon = td.data;
             } else {
               console.log(`error parsing InvestmentOptions ${td.error.message}`)
             }
-            const tb = z.boolean().safeParse(thisOption.pop());
-            if(tb.success) {
+            const tb = z.boolean().safeParse(thisOption.shift());
+            if (tb.success) {
               BP.beast = tb.data
             } else {
               console.log(`error parsing InvestmentOptions ${tb.error.message}`)
             }
+            BP.EvAnsRanking = Math.floor(
+              await EvAnsBuff(general, generalUseCase.enum.Attack, BP)
+            );
+            data.push(BP);
           }
-          BP.EvAnsRanking = Math.floor(
-            await EvAnsBuff(general, generalUseCase.enum.Attack, BP)
-          );
-          data.push(BP);
+        } else {
+          console.log(`Invalid InvestmentOption in Set ${JSON.stringify(IO)}`)
+          console.log(v1.error.message)
         }
-      });
-
+      })
       return data;
     });
 
@@ -237,58 +242,61 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
       let success = true;
       for (const entry of locals.ExtendedGeneralSet) {
         if (!entry.general.name.localeCompare(gn)) {
-          const general: GeneralClassType = entry.general;
+          const eg: GeneralClassType = entry.general;
           if (
-            Array.isArray(general.specialities) &&
-            general.specialities.length > 0
+            Array.isArray(eg.specialities) &&
+            eg.specialities.length > 0
           ) {
             await Promise.all(
-              general.specialities.map(async (special) => {
+              eg.specialities.map(async (special) => {
                 const sC = await getEntry("specialities", special);
                 if (sC !== undefined) {
                   const v = Speciality.safeParse(sC.data);
                   if (v.success) {
-                    entry.general.specialities.push(v.data);
+                    entry.specialities.push(v.data);
                   } else {
-                    console.log(`failed to get ${special} for ${general.name}`);
+                    console.log(`failed to get ${special} for ${eg.name}`);
                     console.log(v.error.message);
                   }
                 }
               })
             );
             if (
-              general.specialities.length !== entry.general.specialities.length
+              eg.specialities.length !== entry.general.specialities.length
             ) {
               console.log(
-                `specialities for ${general.name}: expected: ${general.specialities.length} have: ${entry.general.specialities.length}`
+                `specialities for ${eg.name}: expected: ${eg.specialities.length} have: ${entry.specialities.length}`
               );
               success = false;
             }
           }
-          if (Array.isArray(general.books) && general.books.length > 0) {
+          if (Array.isArray(eg.books) && eg.books.length > 0) {
             await Promise.all(
-              general.books.map(async (book) => {
+              eg.books.map(async (book) => {
                 const bC = await getEntry("skillBooks", book);
                 if (bC !== undefined) {
                   const v = Book.safeParse(bC.data);
                   if (v.success) {
-                    entry.general.books.push(v.data);
+                    entry.books.push(v.data);
                   } else {
-                    console.log(`failed to get ${book} for ${general.name}`);
+                    console.log(`failed to get ${book} for ${eg.name}`);
                     console.log(v.error.message);
                   }
                 }
               })
             );
-            if (general.books.length !== entry.general.books.length) {
+            if (eg.books.length !== entry.books.length) {
               console.log(
-                `books for ${general.name}: have ${entry.general.books.length} expected ${general.books.length}`
+                `books for ${eg.name}: have ${entry.general.books.length} expected ${eg.books.length}`
               );
               success = false;
             }
           }
           if (success) {
-            entry.general.computedBuffs = await buffComputer(general);
+            entry.general.computedBuffs = await buffComputer(eg);
+            entry.general.complete = true;
+          } else {
+            console.log(`failed to set buffs`)
             entry.general.complete = true;
           }
         }
@@ -313,8 +321,15 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
         computedBuffs: [],
         complete: false,
       };
-      locals.ExtendedGeneralSet.add(toAdd);
-      //enrichGeneral(general.name);
+      const test = ExtendedGeneral.safeParse(toAdd)
+      if (test.success) {
+        if (DEBUG) console.log(`addEG2EGS built a valid ExtendedGeneral for ${general.name}`)
+        locals.ExtendedGeneralSet.add(toAdd);
+        enrichGeneral(general.name);
+      } else {
+        console.log(`addEG2EGS built an invalid ExtendedGeneral for ${general.name}`)
+      }
+
       return;
     });
 

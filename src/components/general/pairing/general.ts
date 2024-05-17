@@ -1,3 +1,5 @@
+import { delay } from 'nanodelay'
+
 import {
   BuffParams,
   type BuffParamsType,
@@ -16,14 +18,18 @@ import {
 import * as EvAnsRanking from "@lib/EvAnsAttributeRanking";
 
 import { z } from "astro:content";
+import type { APIContext } from "astro";
+
 
 import { from, map, switchMap, throwError } from "rxjs";
-import {fromFetch} from 'rxjs/fetch'
+import { fromFetch } from 'rxjs/fetch'
 
 export const DEBUG = true;
 
 export class DisplayGeneral {
   private _url: URL;
+
+  private _context: App.Locals;
 
   public display: DisplayType = Display.enum.summary;
 
@@ -110,15 +116,51 @@ export class DisplayGeneral {
 
   public async computeEvAnsRanking() {
     let returnable = 0;
-    
+
+    if (this._context.ExtendedGeneralSet !== undefined) {
+      for (const eg of this._context.ExtendedGeneralSet) {
+
+        if (!eg.general.name.localeCompare(this.general.name)) {
+          let delayIteration = 1;
+          while (!(eg.complete as boolean) && delayIteration < 20) {
+            if (DEBUG) console.log(`in DispalyGeneral computeEvAnsRanking, ${delayIteration} delay for complete `)
+            await delay(60 * delayIteration)
+            delayIteration++;
+          }
+          const possibleBuffs = [...eg.computedBuffs as Array<BuffParamsType>]
+          for (const cb of possibleBuffs) {
+            if (cb.special1.localeCompare(this._special1)) {
+              if (cb.special2.localeCompare(this._special2)) {
+                if (cb.special3.localeCompare(this._special3)) {
+                  if (cb.special4.localeCompare(this._special4)) {
+                    if (cb.special5.localeCompare(this._special5)) {
+                      if (cb.stars.localeCompare(this._stars)) {
+                        if (cb.dragon === this._dragon) {
+                          if (cb.beast === this.beast) {
+                            returnable = cb.EvAnsRanking;
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
     return returnable;
   }
 
-  constructor(g: GeneralClassType, u: URL) {
+  constructor(g: GeneralClassType, u: URL, c: App.Locals) {
     //zod is an easy way to get a deep clone
     this.general = GeneralClass.parse(g);
 
     this._url = new URL("/", u);
+
+    this._context = c;
   }
 }
 
@@ -126,6 +168,8 @@ export class DisplayPair {
   private _primary: DisplayGeneral;
 
   private _secondary: DisplayGeneral;
+
+  private _context: App.Locals;
 
   get primary() {
     return this._primary;
@@ -155,8 +199,9 @@ export class DisplayPair {
     return total;
   };
 
-  constructor(p: DisplayGeneral, s: DisplayGeneral) {
+  constructor(p: DisplayGeneral, s: DisplayGeneral, c: App.Locals) {
     this._primary = p;
     this._secondary = s;
+    this._context = c;
   }
 }
