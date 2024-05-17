@@ -8,6 +8,8 @@ declare namespace App {
   interface Locals {
     ExtendedGeneralSet: Set<ExtendedGeneralType>,
     InvestmentOptions: Set<InvestmentOptionsType>,
-    addEG2EGS: function,
+    addEG2EGS: function (GeneralClass): void,
+    buffComputer: function (GeneralClass): Array<BuffParams>,
+    EvAnsBuff: function (GeneralClass, generalUseCase, BuffParams): number | Promise<number>,
   }
 }

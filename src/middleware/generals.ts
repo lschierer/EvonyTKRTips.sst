@@ -31,6 +31,7 @@ import { specialtyAttribute } from "src/assets/evonySchemas";
 
 const DEBUG = true;
 const DEBUG2 = false;
+const DEBUG3 = true;
 
 export const DisplayGeneralsMWRoutes = ["/generals/"];
 
@@ -43,12 +44,15 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
   });
   //define a bunch of functions almost like a class
 
+  
   //from https://www.evonyanswers.com/post/evony-answers-attribute-methodology-explanation
   const EvAnsBuff = z
     .function()
     .args(GeneralClass, generalUseCase, BuffParams)
     .returns(z.union([z.number(), z.promise(z.number())]))
     .implement(async (gc, gu, ap) => {
+      //if(DEBUG) console.log(`EvAnsBuff starting for ${gc.name}`)
+
       //https://evonyguidewiki.com/en/general-cultivate-en/#Relationship_between_Stats_value_Buff_value explains the attribute to buff relationship.
       const BasicAttack =
         Math.min(gc.attack + 45 * gc.attack_increment, 900) * 0.1 +
@@ -119,7 +123,7 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
       const fourSS = 0;
       const AES = 0;
 
-      return BAS + BSS + fourSB + threeSS + AES;
+      return Math.floor(BAS) + Math.floor(BSS) + Math.floor(fourSB) + Math.floor(threeSS) + Math.floor(AES);
     });
 
   const buffComputer = z
@@ -127,17 +131,17 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
     .args(GeneralClass)
     .returns(z.array(BuffParams))
     .implement((general) => {
-
+      if(DEBUG) console.log(`buffComputer starting, InvestmentOptions has size ${locals.InvestmentOptions.size}`)
       //.returns(z.promise(z.array(BuffParams)))
       //.implement(async (general) => {
       const data = Array<BuffParamsType>();
-      locals.InvestmentOptions.forEach(async (IO) => {
+      for(const IO of locals.InvestmentOptions) {
         const v1 = InvestmentOptionsSchema.safeParse(IO);
         if (v1.success) {
+          if(DEBUG3) console.log(`I have a valid IO`)
           const thisOption = v1.data;
 
           const BP: BuffParamsType = {
-            id: general.name,
             special1: qualityColor.enum.Disabled,
             special2: qualityColor.enum.Disabled,
             special3: qualityColor.enum.Disabled,
@@ -152,11 +156,12 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
             Array.isArray(general.specialities) &&
             general.specialities.length > 0
           ) {
+            if(DEBUG3) console.log(`${general.name} has specialities`)
             let t = qualityColor.safeParse(thisOption.shift());
             if (t.success) {
               BP.special1 = t.data;
             } else {
-              //console.log(`error parsing InvestmentOptions ${t.error.message}`);
+              console.log(`error parsing InvestmentOptions ${t.error.message}`);
               console.log(JSON.stringify(IO));
             }
             t = qualityColor.safeParse(thisOption.shift());
@@ -220,16 +225,17 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
             } else {
               console.log(`error parsing InvestmentOptions ${tb.error.message}`)
             }
-            BP.EvAnsRanking = Math.floor(
-              await EvAnsBuff(general, generalUseCase.enum.Attack, BP)
-            );
+            if(DEBUG3) console.log(`calling EvAnsBuff for ${JSON.stringify(BP)}`)
+            BP.EvAnsRanking = -5;
             data.push(BP);
+            //if(DEBUG3) console.log(`data now size ${data.length}`)
           }
         } else {
           console.log(`Invalid InvestmentOption in Set ${JSON.stringify(IO)}`)
           console.log(v1.error.message)
         }
-      })
+      }
+      if(DEBUG3) console.log(`returning data size ${data.length}`)
       return data;
     });
 
@@ -346,6 +352,14 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
       locals.addEG2EGS = addEG2EGS;
     }
 
+    if(locals.buffComputer === undefined) {
+      locals.buffComputer = buffComputer;
+    }
+
+    if(locals.EvAnsBuff === undefined) {
+      locals.EvAnsBuff = EvAnsBuff;
+    }
+
     if (locals.InvestmentOptions.size === 0) {
       const ColorBaseN = new BaseN(qualityColor.options, 5);
       [...ColorBaseN]
@@ -385,6 +399,7 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
               [...ca, al, false, false],
               [...ca, al, true, false],
               [...ca, al, false, true],
+              [...ca, al, true, true], //needed for summary pages even though no one can have both
             ];
           });
           return alMap.flat();

@@ -193,7 +193,6 @@ export const buffUnion = z.array(Buff);
 
 
 export const BuffParams = z.object({
-  id: z.string(),
   special1: qualityColor.default(qualityColor.enum.Disabled),
   special2: qualityColor.default(qualityColor.enum.Disabled),
   special3: qualityColor.default(qualityColor.enum.Disabled),

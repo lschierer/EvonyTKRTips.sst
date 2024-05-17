@@ -3,37 +3,44 @@ import {Debug} from 'astro:components';
 import {getEntry, getCollection, type CollectionEntry, z} from "astro:content";
 import 'iconify-icon';
 
+import {delay} from 'nanodelay'
 import {
-  type bookConflictsType,
-  type Buff,
-  Condition,
-  type GeneralClassType,
-  ConflictDatum,
-  type ConflictDatumType,
-  ConflictArray,
-  type GeneralElementType,
-  GeneralClass,
-  Note,
-  type NoteType,
-  GeneralElement,
-  type BookType,
-  standardSkillBook,
-  specialSkillBook,
-  type specialSkillBookType,
-  type standardSkillBookType,
-  Book, buffUnion,
-  syslogSeverity,
-  type syslogSeverityType,
-type BuffType,
+    AscendingLevels,
+    Book, 
+    type BookType,
+    type bookConflictsType,
+    type Buff,
+    type BuffType,
+    BuffParams,
+    type BuffParamsType,
+    buffUnion,
+    Condition,
+    ConflictArray,
+    ConflictDatum,
+    type ConflictDatumType,
+    GeneralClass,
+    type GeneralClassType,
+    GeneralElement,
+    type GeneralElementType,
+    type InvestmentOptionsType,
+    Note,
+    type NoteType,
     Speciality,
     type SpecialityType,
+    qualityColor,
+    specialSkillBook,
+    type specialSkillBookType,
+    standardSkillBook,
+    type standardSkillBookType,
+    syslogSeverity,
+    type syslogSeverityType,
 } from '@schemas/index';
 
 import { generalUseCase,
     type generalUseCaseType
 } from '@schemas/generalsSchema'
 
-
+const DEBUG = true;
 
 import { BookIcon } from '@spectrum-web-components/icons-workflow';
 
@@ -248,6 +255,66 @@ if (validation.success) {
 }
 
 const generalSpecialsCount = generalSpecials.length;
+
+let EvAnsRank = 0;
+let iterationBreaker = 0;
+while (iterationBreaker < 60 && (Astro.locals.InvestmentOptions === undefined || Astro.locals.InvestmentOptions.size === 0)) {
+    console.log(`I have a problem initializing the middleware ${iterationBreaker}`)
+    delay(60*iterationBreaker)
+}
+const v = z.array(BuffParams).safeParse(Astro.locals.buffComputer(general))
+if(v.success) {
+    if(DEBUG) console.log(`BuffComputer returned something that validates`)
+    const BPA = v.data;
+    if (DEBUG) console.log(`BPA has size ${BPA.length}`)
+    if(BPA.length > 0 ) {
+        const BP: BuffParamsType | undefined = BPA.filter((item) => {
+            //this page is for a summary display
+            if(item.dragon === true) {
+                if(item.beast === true) {
+                    if(!item.special1.localeCompare(qualityColor.enum.Gold)) {
+                        if(!item.special2.localeCompare(qualityColor.enum.Gold)) {
+                            if(!item.special3.localeCompare(qualityColor.enum.Gold)) {
+                                //for a summary page, the 5th special is always disabled
+                                if(!item.special5.localeCompare(qualityColor.enum.Disabled)) {
+                                    if(!item.stars.localeCompare(AscendingLevels.enum[10])) {
+                                        if(Array.isArray(general?.specialities) && general.specialities.length >= 4) {
+                                            if(!item.special4.localeCompare(qualityColor.enum.Gold)) {
+                                                return true;       
+                                            }
+                                        } else {
+                                            if(!item.special4.localeCompare(qualityColor.enum.Disabled)) {
+                                                return true;
+                                            }
+                                        }
+                                    }
+                                } 
+                            } 
+                        } 
+                    } 
+                }
+            } 
+            return false;
+        }).pop();
+
+        if(BP !== undefined && BP.EvAnsRanking === -5) {
+            if(DEBUG) console.log(`General.astro has a BP with no EvAnsRanking`)
+            EvAnsRank = await Astro.locals.EvAnsBuff(general, generalUseCase.enum.Attack, BP)
+        } else if (BP !== undefined) {
+            if(DEBUG) console.log(`General.astro has a BP with EvAnsRanking ${BP.EvAnsRanking}`)
+            EvAnsRank = BP.EvAnsRanking;
+        } else {
+            console.log(`however after filtering I am undefined`)
+        }
+    } else {
+        console.log(`returned an empty array` )
+    }
+    
+} else {
+    console.log(`General.astro retrieved invalid BP`)
+    console.log(v.error.message)
+}
+
 ---
 
 {(general !== undefined && general !== null) && (
@@ -272,6 +339,9 @@ const generalSpecialsCount = generalSpecials.length;
           <span class="label spectrum-Body spectrum-Body--sizeS">Max:</span> {((general[(ia as keyof typeof general)] as number) + ((general[((ia + '_increment') as keyof typeof general)] as number) * 45)).toFixed(2)}<br/>
         </div>
       ))}
+    </div>
+    <div class="EvAnsRanking">
+        Evony Answers Rank: {EvAnsRank}
     </div>
     <br/>
     {general.books && (
