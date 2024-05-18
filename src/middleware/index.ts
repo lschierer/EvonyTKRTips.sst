@@ -2,7 +2,7 @@ import { defineMiddleware, sequence } from "astro:middleware";
 
 import { DisplayGeneralsMW } from "./generals";
 
-const DEBUG = true;
+const DEBUG = false;
 
 const defaultHandler = defineMiddleware((context, next) => {
     if(DEBUG) console.log(`toplevel Middleware running`)
