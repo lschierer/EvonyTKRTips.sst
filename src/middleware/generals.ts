@@ -9,12 +9,15 @@ import {
 
 import { BaseN } from "js-combinatorics";
 
+import * as d3 from 'd3'
+
 import {
   AscendingLevels,
   Book,
   BuffParams,
   type BuffParamsType,
   BuffFilterReturn,
+  type BuffFilterReturnType,
   Display,
   ExtendedGeneral,
   type ExtendedGeneralType,
@@ -50,7 +53,7 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
   const filterInvestmentOptions = z
     .function()
     .args(ExtendedGeneral, InvestmentOptionsSchema)
-    .returns(z.union(BuffFilterReturn.options))
+    .returns(BuffFilterReturn)
     .implement((myEG: ExtendedGeneralType, desired: InvestmentOptionsType) => {
       const originalDesire = [...desired];
       if (DEBUGFilter) console.log(`desired is ${JSON.stringify(desired)}`);
@@ -168,11 +171,24 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
   //from https://www.evonyanswers.com/post/evony-answers-attribute-methodology-explanation
   const EvAnsBuff = z
     .function()
-    .args(GeneralClass, generalUseCase, BuffParams)
-    .returns(z.union([z.number(), z.promise(z.number())]))
-    .implement(async (gc, gu, ap) => {
+    .args(z.string(), Display, InvestmentOptionsSchema)
+    .returns(z.number())
+    .implement((name, display, IO) => {
       //if(DEBUG) console.log(`EvAnsBuff starting for ${gc.name}`)
+      const eg: ExtendedGeneralType = locals.ExtendedGeneralMap.get(name)
+      const gc = eg.general;
+      if(!display.localeCompare(Display.enum.assistant)) {
+        IO[5] = AscendingLevels.enum[0];
+      }
+      const BPv: BuffFilterReturnType = filterInvestmentOptions(eg, IO )
+      let BP: BuffParamsType;
+      if(!BPv.status.localeCompare('success')) {
+        BP = BPv.data;
 
+      } else {
+        console.log(JSON.stringify(BPv))
+        return -5;
+      }
       //https://evonyguidewiki.com/en/general-cultivate-en/#Relationship_between_Stats_value_Buff_value explains the attribute to buff relationship.
       const BasicAttack =
         Math.min(gc.attack + 45 * gc.attack_increment, 900) * 0.1 +
@@ -262,7 +278,7 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
           `buffComputer for ${name}, InvestmentOptions size ${locals.InvestmentOptions.size}`
         );
 
-      locals.ExtendedGeneralSet.forEach((item) => {
+      locals.ExtendedGeneralMap.forEach((item) => {
         if (!item.general.name.localeCompare(name)) {
           if (item.computedBuffs.length > 0) {
             return;
@@ -283,7 +299,6 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
                 stars: AscendingLevels.enum[0],
                 dragon: false,
                 beast: false,
-                EvAnsRanking: 0,
               };
               if (
                 Array.isArray(general.specialities) &&
@@ -366,7 +381,6 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
                 }
                 if (DEBUG3)
                   console.log(`calling EvAnsBuff for ${JSON.stringify(BP)}`);
-                BP.EvAnsRanking = -5;
                 item.computedBuffs.push(BP);
               }
             } else {
@@ -384,11 +398,12 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
   const enrichGeneral = z
     .function()
     .args(z.string())
-    .returns(z.promise(z.boolean()))
+    .returns(z.promise(z.void()))
     .implement(async (gn) => {
       if (DEBUG) console.log(`starating to enrich ${gn}`);
       let success = true;
-      for (const entry of locals.ExtendedGeneralSet) {
+      locals.ExtendedGeneralMap.forEach(async (entry) => {
+
         if (!entry.general.name.localeCompare(gn)) {
           const eg: GeneralClassType = entry.general;
           if (Array.isArray(eg.specialities) && eg.specialities.length > 0) {
@@ -443,8 +458,8 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
             entry.general.complete = true;
           }
         }
-      }
-      return true;
+      })
+      return;
     });
 
   const addEG2EGS = z
@@ -470,9 +485,11 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
           console.log(
             `addEG2EGS built a valid ExtendedGeneral for ${general.name}`
           );
-        if (DEBUG) console.log(locals.ExtendedGeneralSet.size);
-        locals.ExtendedGeneralSet.add(toAdd);
-        if (DEBUG) console.log(locals.ExtendedGeneralSet.size);
+        if (DEBUG) console.log(locals.ExtendedGeneralMap.size);
+        if (!locals.ExtendedGeneralMap.has(test.data.general.name)) {
+          locals.ExtendedGeneralMap.set(test.data.general.name, test.data)
+        }
+        if (DEBUG) console.log(locals.ExtendedGeneralMap.size);
         enrichGeneral(general.name);
       } else {
         console.log(
@@ -484,8 +501,8 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
     });
 
   const HandlerLogic = (locals: App.Locals) => {
-    if (locals.ExtendedGeneralSet === undefined) {
-      locals.ExtendedGeneralSet = new Set<ExtendedGeneralType>();
+    if (locals.ExtendedGeneralMap === undefined) {
+      locals.ExtendedGeneralMap = new d3.InternMap<string, ExtendedGeneralType>();
     }
 
     if (locals.InvestmentOptions === undefined) {

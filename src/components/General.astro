@@ -24,6 +24,7 @@ import {
   ConflictArray,
   ConflictDatum,
   type ConflictDatumType,
+  Display,
   ExtendedGeneral,
   type ExtendedGeneralType,
   GeneralClass,
@@ -132,7 +133,7 @@ if (dataV.success) {
   
   const delayIterator = 1;
   do {
-    Astro.locals.ExtendedGeneralSet.forEach((item) => {
+    Astro.locals.ExtendedGeneralMap.forEach((item) => {
       if(!pageGE.general.name.localeCompare(item.general.name)) {
         console.log(`found it ${item.computedBuffs.length}`)
         Astro.locals.buffComputer(item.general.name);
@@ -146,7 +147,7 @@ if (dataV.success) {
     delay(delayIterator*60)
     if(DEBUG) console.log(`iteration ${delayIterator}`)
   } while (
-    (Astro.locals.ExtendedGeneralSet.size === 0 ||
+    (Astro.locals.ExtendedGeneralMap.size === 0 ||
     Egeneral!.computedBuffs.length === 0 )&&
     delayIterator  < 100
   )
@@ -354,33 +355,17 @@ if (dataV.success) {
 
   if (Egeneral! !== undefined) {
     if(Egeneral.computedBuffs.length > 0 ) {
-      
-      const BPv = Astro.locals.filterInvestmentOptions(Egeneral,[
-          qualityColor.enum.Gold,
-          qualityColor.enum.Gold,
-          qualityColor.enum.Gold,
-          qualityColor.enum.Gold,
-          qualityColor.enum.Disabled,
-          AscendingLevels.enum[10],
-          true,
-          true,
+      EvAnsRank = await Astro.locals.EvAnsBuff(general.name, Display.enum.summary, [
+        qualityColor.enum.Gold,
+        qualityColor.enum.Gold,
+        qualityColor.enum.Gold,
+        qualityColor.enum.Gold,
+        qualityColor.enum.Disabled,
+        AscendingLevels.enum[10],
+        true,
+        true,
       ])
-      if(!(BPv.status as string).localeCompare('success')) {
-          const BP = BPv.data;
-          if(BP !== undefined && BP.EvAnsRanking === -5) {
-              if(DEBUG) console.log(`General.astro has a BP with no EvAnsRanking`)
-              EvAnsRank = -1;
-              EvAnsRank = await Astro.locals.EvAnsBuff(general, generalUseCase.enum.Attack, BP)
-          } else if (BP !== undefined) {
-              if(DEBUG) console.log(`General.astro has a BP with EvAnsRanking ${BP.EvAnsRanking}`)
-              EvAnsRank = BP.EvAnsRanking;
-          } else {
-              console.log(`however after filtering I am undefined`)
-          }
-      } else {
-        console.log(`BPV ${BPv.status}`)
-      }
-        
+       
     } else {
         console.log(`why is this empty now?` )
     }

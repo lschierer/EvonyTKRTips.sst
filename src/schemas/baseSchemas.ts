@@ -201,16 +201,12 @@ export const BuffParams = z.object({
   stars: AscendingLevels.default(AscendingLevels.enum[0]),
   dragon: z.boolean().default(false),
   beast: z.boolean().default(false),
-  EvAnsRanking: z.number().default(0),
 })
 export type BuffParamsType = z.infer<typeof BuffParams>;
 
 export const BuffFilterReturn = z.discriminatedUnion("status", [
   z.object({ status: z.literal("success"), data: BuffParams }),
-  z.object({
-    status: z.literal("error"),
-    error: z.string(),
-  }),
+  z.object({ status: z.literal("error"),   error: z.string(),}),
 ]);
 export type BuffFilterReturnType = z.infer<typeof BuffFilterReturn>;
 

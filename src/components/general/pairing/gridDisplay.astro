@@ -27,6 +27,7 @@ import {
   qualityColor,
   AscendingLevels,
   type ExtendedGeneralType,
+Display,
 } from "@schemas/index";
 
 import { DisplayGeneral, DisplayPair } from "./displayGeneral";
@@ -168,14 +169,14 @@ const sortPairFunction = (a: DisplayPair, b: DisplayPair) => {
     return sortPairSelector[sortBy](b, a);
   }
 };
-if (DEBUG) console.log(`# locals Generals: ${Astro.locals.ExtendedGeneralSet.size}`);
+if (DEBUG) console.log(`# locals Generals: ${Astro.locals.ExtendedGeneralMap.size}`);
 if (DEBUG)
   console.log(
     `# locals InvestmentOptions: ${Astro.locals.InvestmentOptions.size}`
   );
 
-if (Astro.locals.ExtendedGeneralSet.size > 0) {
-  for await (const eg1 of Astro.locals.ExtendedGeneralSet.values()) {
+if (Astro.locals.ExtendedGeneralMap.size > 0) {
+  for await (const eg1 of Astro.locals.ExtendedGeneralMap.values()) {
     if(DEBUG) console.log(`eg1 is ${eg1.general.name}`)
     const pairsData = new Array<GeneralPairType>();
     const dp1 = new DisplayGeneral(eg1.general, myUrl);
@@ -202,7 +203,7 @@ if (Astro.locals.ExtendedGeneralSet.size > 0) {
         console.log(`pairsdata: ${pairsData.length}`)
       }
       pairsData.forEach((pi) => {
-        for (const eg2 of Astro.locals.ExtendedGeneralSet.values()) {
+        for (const eg2 of Astro.locals.ExtendedGeneralMap.values()) {
           if(!pi.secondary.localeCompare(eg2.general.name)) {
             const dp2 = new DisplayGeneral(eg2.general, myUrl);
             const dbPair = new DisplayPair(dp1, dp2);
@@ -219,6 +220,21 @@ let pairArray = [...pairs].sort(sortPairFunction);
 pairArray = pairArray.map((pair) => {
   pair.primary.EvAnsRanking = 1;
   pair.secondary.EvAnsRanking = 2;
+
+  for (const actionable of Astro.locals.ExtendedGeneralMap.values()) {
+    if(!actionable.general.name.localeCompare(pair.primary.general.name)) {
+      const r = Astro.locals.EvAnsBuff(actionable.general.name, Display.enum.primary,InvestmentLevel)
+      if(DEBUG) console.log(`got ${r} as Ranking for primary ${actionable.general.name}`)
+      pair.primary.EvAnsRanking = r;
+    }
+    if(!actionable.general.name.localeCompare(pair.secondary.general.name)) {
+       let assistInvest = InvestmentLevel;
+       assistInvest[5] = AscendingLevels.enum[10];
+       const r = Astro.locals.EvAnsBuff(actionable.general.name, Display.enum.assistant, assistInvest)
+       if(DEBUG) console.log(`got ${r} as Ranking for secondary ${actionable.general.name}`)
+       pair.secondary.EvAnsRanking = r;
+    }
+  }
   return pair;
 })
 
