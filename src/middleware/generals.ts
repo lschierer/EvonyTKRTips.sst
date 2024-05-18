@@ -506,7 +506,7 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
     }
 
     if (locals.InvestmentOptions === undefined) {
-      locals.InvestmentOptions = new Set<InvestmentOptionsType>();
+      locals.InvestmentOptions = new d3.InternSet<InvestmentOptionsType>();
     }
 
     if (locals.addEG2EGS === undefined) {
