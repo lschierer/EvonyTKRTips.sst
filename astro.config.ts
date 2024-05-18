@@ -11,14 +11,13 @@ export default defineConfig({
   site: 'https://evonytkrtips.net',
   output: "hybrid",
   adapter: aws({
+    responseMode: "stream",
     serverRoutes: [
       "generals/pair-picking/*",
     ]
   }),
   compressHTML: false,
-  experimental: {
-    actions: true,
-  },
+  
   integrations: [
     lit(),
     starlight({
