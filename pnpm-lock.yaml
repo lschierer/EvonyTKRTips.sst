@@ -21,8 +21,8 @@ importers:
         specifier: ^8.2.5
         version: 8.2.5(astro@4.8.6(@types/node@20.12.12)(typescript@5.4.5))
       '@astrojs/starlight':
-        specifier: ^0.23.0
-        version: 0.23.0(astro@4.8.6(@types/node@20.12.12)(typescript@5.4.5))
+        specifier: ^0.23.1
+        version: 0.23.1(astro@4.8.6(@types/node@20.12.12)(typescript@5.4.5))
       '@lit-labs/router':
         specifier: ^0.1.3
         version: 0.1.3
@@ -301,11 +301,11 @@ importers:
         specifier: ^20.12.12
         version: 20.12.12
       astro-sst:
-        specifier: 2.41.5
-        version: 2.41.5
+        specifier: 2.42.0
+        version: 2.42.0
       aws-cdk-lib:
-        specifier: 2.132.1
-        version: 2.132.1(constructs@10.3.0)
+        specifier: 2.142.1
+        version: 2.142.1(constructs@10.3.0)
       constructs:
         specifier: 10.3.0
         version: 10.3.0
@@ -346,11 +346,11 @@ importers:
         specifier: ^10.0.0
         version: 10.0.0
       sst:
-        specifier: 2.41.5
-        version: 2.41.5(@aws-sdk/client-sso-oidc@3.577.0(aws-crt@1.21.2))(aws-crt@1.21.2)
+        specifier: 2.42.0
+        version: 2.42.0(@aws-sdk/client-sso-oidc@3.577.0(aws-crt@1.21.2))(aws-crt@1.21.2)
       starlight-links-validator:
         specifier: ^0.8.0
-        version: 0.8.0(@astrojs/starlight@0.23.0(astro@4.8.6(@types/node@20.12.12)(typescript@5.4.5)))(astro@4.8.6(@types/node@20.12.12)(typescript@5.4.5))
+        version: 0.8.0(@astrojs/starlight@0.23.1(astro@4.8.6(@types/node@20.12.12)(typescript@5.4.5)))(astro@4.8.6(@types/node@20.12.12)(typescript@5.4.5))
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@20.12.12)(typescript@5.4.5)
@@ -436,8 +436,8 @@ packages:
   '@astrojs/sitemap@3.1.4':
     resolution: {integrity: sha512-po8CqDCK14O6phU1mB5C8SyVLyQEa+7pJM8oXxs1mVh8DgvxxaA5E7lak1vzOmBcyyyHBW32jakGqNYc66sBRw==}
 
-  '@astrojs/starlight@0.23.0':
-    resolution: {integrity: sha512-DV7OEWQDVwQNXxBAGwOKd7Fwa0yb0/WamuUcQYhCIIRjFstaJ1KDc2gNOO2m3nHoCwFx4R7hj/WEeXlgHKE1tg==}
+  '@astrojs/starlight@0.23.1':
+    resolution: {integrity: sha512-BMVRpM4suTq4K2plzcISs/t5W3Xw2fHGWhSmF7lg90nps595yHp3j4gFpeukRrynwEhoNu0Bds1zgOBebC3Egg==}
     peerDependencies:
       astro: ^4.8.6
 
@@ -461,37 +461,40 @@ packages:
   '@aws-cdk/asset-node-proxy-agent-v6@2.0.3':
     resolution: {integrity: sha512-twhuEG+JPOYCYPx/xy5uH2+VUsIEhPTzDY0F1KuB+ocjWWB/KEDiOVL19nHvbPCB6fhWnkykXEMJ4HHcKvjtvg==}
 
-  '@aws-cdk/aws-lambda-python-alpha@2.132.1-alpha.0':
-    resolution: {integrity: sha512-YZNLRw4Yhxt615RfC2kzuvp6/7HdU6RQZHlz3+Cb1VGMcFFdKJhKB/TrMx7xNq2NMwp9CDgasLkdxYuF8Nmd4A==}
+  '@aws-cdk/aws-lambda-python-alpha@2.142.1-alpha.0':
+    resolution: {integrity: sha512-XknR1To5RJbMWR92h3VCOA+DaKnjLDgKSNrWVAdbqkrnlpB1zygWFSXQQeV38f8ySkCwbt8NaUw2Mhi3Z6w+Eg==}
     engines: {node: '>= 14.15.0'}
     peerDependencies:
-      aws-cdk-lib: ^2.132.1
+      aws-cdk-lib: ^2.142.1
       constructs: ^10.0.0
 
-  '@aws-cdk/aws-service-spec@0.0.52':
-    resolution: {integrity: sha512-SJA4xtG2y5NpTmtKtFNbrYh6BaFgKEcr7ye8N+S4H3KByXIa0NLOh5bPTVBjvyXiRPDJ9q39Xu433vxC3BsDhg==}
+  '@aws-cdk/aws-service-spec@0.1.2':
+    resolution: {integrity: sha512-FJ53m99YypZgb3zRIxf4b6mGy4HRrdUFWEaMHsmAjdB7exdkgl0TS+DIJ7+64e0RQerS8oQiv7ypuCT32c1xvw==}
 
-  '@aws-cdk/cloud-assembly-schema@2.132.1':
-    resolution: {integrity: sha512-PAusB9kKT9CELzbj8x5G3BpFl6Wjwk5ULn+8/uP21MIygWmAcktzOD2CVzkxMvljT7qU4KN1GEDCZXVqLzzomg==}
+  '@aws-cdk/cloud-assembly-schema@2.142.1':
+    resolution: {integrity: sha512-qXPblguf9+24YFZz8vECeB5NIXoghiokeQjSXYvZNS5VS+YhqvFSoN+YIu/aoJFfAiMsbamI2CW2Z8xs3qUtiQ==}
     engines: {node: '>= 14.15.0'}
     bundledDependencies:
       - jsonschema
       - semver
 
-  '@aws-cdk/cloudformation-diff@2.132.1':
-    resolution: {integrity: sha512-h93B/VC4lujT9gjeSgUCg3XaypDyydvggbpJ0jCbl2kagDK90SHInZm5yscPNof+FpT8Igvn+5yEUOLVnfFYYg==}
+  '@aws-cdk/cloudformation-diff@2.142.1':
+    resolution: {integrity: sha512-32tadRx2vzSLUk/5XDpHAxlXCDay0IpnrorTGk2svZDUgySSQoQjv5MA5B0P/1rQJ2ZOpurOIuneBwl6GLlUUg==}
     engines: {node: '>= 14.15.0'}
 
-  '@aws-cdk/cx-api@2.132.1':
-    resolution: {integrity: sha512-JWf9Xou9vtO7wMyDKvcbigjGLY6kPS31cYc+e+dJSMsCxWEbvpEdndAJOU7y9Y8/99SnvihYxEbgbpWGwcK/Xg==}
+  '@aws-cdk/cx-api@2.142.1':
+    resolution: {integrity: sha512-bj9cF8dkikv0LzH+aq0yan0BYDOrUsnTTTjSorC0oCJTzTfxo2hXGNGlP6nEfZr09Ws7tUemqPoHASgItzPHUA==}
     engines: {node: '>= 14.15.0'}
     peerDependencies:
-      '@aws-cdk/cloud-assembly-schema': 2.132.1
+      '@aws-cdk/cloud-assembly-schema': 2.142.1
     bundledDependencies:
       - semver
 
-  '@aws-cdk/service-spec-types@0.0.52':
-    resolution: {integrity: sha512-vVoZPgEmkUPeTVJSQ9iyXTiwnb6GiBbntJdnsWTr6I9ao66TuU9HijEcAQHxkC7CxTkian+3KSX/NTl01Klm0A==}
+  '@aws-cdk/service-spec-types@0.0.69':
+    resolution: {integrity: sha512-bYCdtU5ZGfYJyKsh25ILzdtXyC4poB64k9oQ1p8EeRngnh6TlxObO/J+sI1CDvOpGoa+BUzCdAhewIkdMjzl5A==}
+
+  '@aws-cdk/service-spec-types@0.0.70':
+    resolution: {integrity: sha512-MyxFn3CWC4d3aNwMigr6SKjudjg/AEwQWYKFF4aRlMcqJkys8KIRg5BaaZRFPYCO8pFW8AcrzGNutZt0O3cwWg==}
 
   '@aws-crypto/crc32@3.0.0':
     resolution: {integrity: sha512-IzSgsrxUcsrejQbPVilIKy16kAT52EwB6zSaI+M3xxIhKh5+aldEyvI+z6erM7TCLB2BJsFrtHjp6/4/sr+3dA==}
@@ -2767,8 +2770,8 @@ packages:
     peerDependencies:
       astro: ^4.0.0-beta || ^3.3.0
 
-  astro-sst@2.41.5:
-    resolution: {integrity: sha512-c6/H9h2ekWGUBvhQ2YXdwI0HL7wRc4fFBzZSFAbYW1INpG+Gmg72GQaGO6uUJZRKNPrQNUPihS9YviUhqI0PCQ==}
+  astro-sst@2.42.0:
+    resolution: {integrity: sha512-5r4QJkp6OW02YjJNLVAUi4rHnG8wL9un/LC80AK9dHjOpk2USNx11cQOORJu+KG1NsKfO5/S4Gx0BRpNLXhk8A==}
 
   astro@4.8.6:
     resolution: {integrity: sha512-psHIfK+e+bMPhRwghV9yCGH/uc1jvY4DHmDZdoEepax9yA7kzYH0wt3dpkqlcrO2zxl5jzSC3DmqZfkD6wnW9A==}
@@ -2806,8 +2809,8 @@ packages:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
     engines: {node: '>= 0.4'}
 
-  aws-cdk-lib@2.132.1:
-    resolution: {integrity: sha512-VheC7WcvmxiteNaZPucS9J9haGQZwbUtwNiNqsbTaEiru6ETUhf/yIOIamLto1kOKEPxCw2bfLkgYrWoCzwOpw==}
+  aws-cdk-lib@2.142.1:
+    resolution: {integrity: sha512-xs4NRoml5/Zh30YHSk/Wwmr7VcZOZHyIInuBye3gC/BYwCh1lsUe9/ChWIeLUCRhUrELd5npyoBOJiHb3ql7Rg==}
     engines: {node: '>= 14.15.0'}
     peerDependencies:
       constructs: ^10.0.0
@@ -2952,8 +2955,8 @@ packages:
   ccount@2.0.1:
     resolution: {integrity: sha512-eyrF0jiFpY+3drT6383f1qhkbGsLSifNAjA61IUjZjmLCWjItY6LB9ft9YhoDgwfmclB2zhu51Lc7+95b8NRAg==}
 
-  cdk-assets@2.132.1:
-    resolution: {integrity: sha512-npaa5DTO9GMdnErCk5mguR6XpaLZv1R36T3kJPgSuJDcD2T5gk7BzuMyJWQM0QHMLNw3fMOOjG1D7Wi39LJ3cQ==}
+  cdk-assets@2.142.1:
+    resolution: {integrity: sha512-zNQMXRWl9gp8KJHZyPk0agh9p180Ec/rW9ZrDk7rITnR5qMgFcaNO6on8BiQVGMALpv1A6UTp45FIiWkqGYf6A==}
     engines: {node: '>= 14.15.0'}
     hasBin: true
 
@@ -5814,13 +5817,13 @@ packages:
   sprintf-js@1.0.3:
     resolution: {integrity: sha512-D9cPgkvLlV3t3IzL0D0YLvGA9Ahk4PcvVwUbN0dSGr1aP0Nrt4AEnTUbuGvquEC0mA64Gqt1fzirlRs5ibXx8g==}
 
-  sst-aws-cdk@2.132.1:
-    resolution: {integrity: sha512-zep3sr+XkCmw9rHjgYQc44G+6s4eB/yxgLCCoi1h6R2AN8IarwZ4aHRwxAfigmJTPXYO6kmsxBIOcwjKy+oi3g==}
+  sst-aws-cdk@2.142.1:
+    resolution: {integrity: sha512-zrw3VpTfS6fEgpTo0J0lpkZg3nvuVsVzV3zcPswRx7EKIgBFndrAMBE38Wmvk2FBHYDp6OygdzbK8Gul/DJW+g==}
     engines: {node: '>= 14.15.0'}
     hasBin: true
 
-  sst@2.41.5:
-    resolution: {integrity: sha512-IM1O1CnDcrjAAsl0ag9fXxQ7zyjYXyZDxBZwcdrAbjnijaSBMheC9v3b+WMXmRj1YBiVOjGAHIgzkTJVp/REvg==}
+  sst@2.42.0:
+    resolution: {integrity: sha512-p3Wi8SS7pn0MQ+062uEiMZJX1iq2nSaJi76f+bQki2FLj9xu3l1F4x9IULv76pMFNPZKtNd8yr1/RT2RiwK95Q==}
     hasBin: true
     peerDependencies:
       '@sls-next/lambda-at-edge': ^3.7.0
@@ -6666,7 +6669,7 @@ snapshots:
       stream-replace-string: 2.0.0
       zod: 3.23.8
 
-  '@astrojs/starlight@0.23.0(astro@4.8.6(@types/node@20.12.12)(typescript@5.4.5))':
+  '@astrojs/starlight@0.23.1(astro@4.8.6(@types/node@20.12.12)(typescript@5.4.5))':
     dependencies:
       '@astrojs/mdx': 3.0.0(astro@4.8.6(@types/node@20.12.12)(typescript@5.4.5))
       '@astrojs/sitemap': 3.1.4
@@ -6723,33 +6726,37 @@ snapshots:
 
   '@aws-cdk/asset-node-proxy-agent-v6@2.0.3': {}
 
-  '@aws-cdk/aws-lambda-python-alpha@2.132.1-alpha.0(aws-cdk-lib@2.132.1(constructs@10.3.0))(constructs@10.3.0)':
+  '@aws-cdk/aws-lambda-python-alpha@2.142.1-alpha.0(aws-cdk-lib@2.142.1(constructs@10.3.0))(constructs@10.3.0)':
     dependencies:
-      aws-cdk-lib: 2.132.1(constructs@10.3.0)
+      aws-cdk-lib: 2.142.1(constructs@10.3.0)
       constructs: 10.3.0
 
-  '@aws-cdk/aws-service-spec@0.0.52':
+  '@aws-cdk/aws-service-spec@0.1.2':
     dependencies:
-      '@aws-cdk/service-spec-types': 0.0.52
+      '@aws-cdk/service-spec-types': 0.0.70
       '@cdklabs/tskb': 0.0.3
 
-  '@aws-cdk/cloud-assembly-schema@2.132.1': {}
+  '@aws-cdk/cloud-assembly-schema@2.142.1': {}
 
-  '@aws-cdk/cloudformation-diff@2.132.1':
+  '@aws-cdk/cloudformation-diff@2.142.1':
     dependencies:
-      '@aws-cdk/aws-service-spec': 0.0.52
-      '@aws-cdk/service-spec-types': 0.0.52
+      '@aws-cdk/aws-service-spec': 0.1.2
+      '@aws-cdk/service-spec-types': 0.0.69
       chalk: 4.1.2
       diff: 5.2.0
       fast-deep-equal: 3.1.3
       string-width: 4.2.3
       table: 6.8.2
 
-  '@aws-cdk/cx-api@2.132.1(@aws-cdk/cloud-assembly-schema@2.132.1)':
+  '@aws-cdk/cx-api@2.142.1(@aws-cdk/cloud-assembly-schema@2.142.1)':
     dependencies:
-      '@aws-cdk/cloud-assembly-schema': 2.132.1
+      '@aws-cdk/cloud-assembly-schema': 2.142.1
 
-  '@aws-cdk/service-spec-types@0.0.52':
+  '@aws-cdk/service-spec-types@0.0.69':
+    dependencies:
+      '@cdklabs/tskb': 0.0.3
+
+  '@aws-cdk/service-spec-types@0.0.70':
     dependencies:
       '@cdklabs/tskb': 0.0.3
 
@@ -10274,7 +10281,7 @@ snapshots:
       astro: 4.8.6(@types/node@20.12.12)(typescript@5.4.5)
       rehype-expressive-code: 0.35.3
 
-  astro-sst@2.41.5:
+  astro-sst@2.42.0:
     dependencies:
       '@astrojs/webapi': 3.0.0
       set-cookie-parser: 2.6.0
@@ -10378,7 +10385,7 @@ snapshots:
     dependencies:
       possible-typed-array-names: 1.0.0
 
-  aws-cdk-lib@2.132.1(constructs@10.3.0):
+  aws-cdk-lib@2.142.1(constructs@10.3.0):
     dependencies:
       '@aws-cdk/asset-awscli-v1': 2.2.202
       '@aws-cdk/asset-kubectl-v20': 2.1.2
@@ -10527,7 +10534,7 @@ snapshots:
   buffer@4.9.2:
     dependencies:
       base64-js: 1.5.1
-      ieee754: 1.1.13
+      ieee754: 1.2.1
       isarray: 1.0.0
 
   buffer@5.7.1:
@@ -10573,10 +10580,10 @@ snapshots:
 
   ccount@2.0.1: {}
 
-  cdk-assets@2.132.1:
+  cdk-assets@2.142.1:
     dependencies:
-      '@aws-cdk/cloud-assembly-schema': 2.132.1
-      '@aws-cdk/cx-api': 2.132.1(@aws-cdk/cloud-assembly-schema@2.132.1)
+      '@aws-cdk/cloud-assembly-schema': 2.142.1
+      '@aws-cdk/cx-api': 2.142.1(@aws-cdk/cloud-assembly-schema@2.142.1)
       archiver: 5.3.2
       aws-sdk: 2.1623.0
       glob: 7.2.3
@@ -10702,7 +10709,7 @@ snapshots:
   commist@1.1.0:
     dependencies:
       leven: 2.1.0
-      minimist: 1.2.6
+      minimist: 1.2.8
 
   common-ancestor-path@1.0.1: {}
 
@@ -12984,7 +12991,7 @@ snapshots:
       duplexify: 4.1.3
       help-me: 3.0.0
       inherits: 2.0.4
-      minimist: 1.2.6
+      minimist: 1.2.8
       mqtt-packet: 6.10.0
       pump: 3.0.0
       readable-stream: 3.6.2
@@ -14146,7 +14153,7 @@ snapshots:
 
   sprintf-js@1.0.3: {}
 
-  sst-aws-cdk@2.132.1:
+  sst-aws-cdk@2.142.1:
     dependencies:
       archiver: 5.3.2
       chalk: 4.1.2
@@ -14156,12 +14163,12 @@ snapshots:
     optionalDependencies:
       fsevents: 2.3.2
 
-  sst@2.41.5(@aws-sdk/client-sso-oidc@3.577.0(aws-crt@1.21.2))(aws-crt@1.21.2):
+  sst@2.42.0(@aws-sdk/client-sso-oidc@3.577.0(aws-crt@1.21.2))(aws-crt@1.21.2):
     dependencies:
-      '@aws-cdk/aws-lambda-python-alpha': 2.132.1-alpha.0(aws-cdk-lib@2.132.1(constructs@10.3.0))(constructs@10.3.0)
-      '@aws-cdk/cloud-assembly-schema': 2.132.1
-      '@aws-cdk/cloudformation-diff': 2.132.1
-      '@aws-cdk/cx-api': 2.132.1(@aws-cdk/cloud-assembly-schema@2.132.1)
+      '@aws-cdk/aws-lambda-python-alpha': 2.142.1-alpha.0(aws-cdk-lib@2.142.1(constructs@10.3.0))(constructs@10.3.0)
+      '@aws-cdk/cloud-assembly-schema': 2.142.1
+      '@aws-cdk/cloudformation-diff': 2.142.1
+      '@aws-cdk/cx-api': 2.142.1(@aws-cdk/cloud-assembly-schema@2.142.1)
       '@aws-crypto/sha256-js': 5.2.0
       '@aws-sdk/client-cloudformation': 3.577.0(aws-crt@1.21.2)
       '@aws-sdk/client-ecs': 3.577.0(aws-crt@1.21.2)
@@ -14186,11 +14193,11 @@ snapshots:
       '@smithy/signature-v4': 2.3.0
       '@trpc/server': 9.16.0
       adm-zip: 0.5.12
-      aws-cdk-lib: 2.132.1(constructs@10.3.0)
+      aws-cdk-lib: 2.142.1(constructs@10.3.0)
       aws-iot-device-sdk: 2.2.13
       aws-sdk: 2.1623.0
       builtin-modules: 3.2.0
-      cdk-assets: 2.132.1
+      cdk-assets: 2.142.1
       chalk: 5.3.0
       chokidar: 3.6.0
       ci-info: 3.9.0
@@ -14218,7 +14225,7 @@ snapshots:
       ora: 6.3.1
       react: 18.3.1
       remeda: 1.61.0
-      sst-aws-cdk: 2.132.1
+      sst-aws-cdk: 2.142.1
       tree-kill: 1.2.2
       undici: 5.28.4
       uuid: 9.0.1
@@ -14242,9 +14249,9 @@ snapshots:
     dependencies:
       escape-string-regexp: 2.0.0
 
-  starlight-links-validator@0.8.0(@astrojs/starlight@0.23.0(astro@4.8.6(@types/node@20.12.12)(typescript@5.4.5)))(astro@4.8.6(@types/node@20.12.12)(typescript@5.4.5)):
+  starlight-links-validator@0.8.0(@astrojs/starlight@0.23.1(astro@4.8.6(@types/node@20.12.12)(typescript@5.4.5)))(astro@4.8.6(@types/node@20.12.12)(typescript@5.4.5)):
     dependencies:
-      '@astrojs/starlight': 0.23.0(astro@4.8.6(@types/node@20.12.12)(typescript@5.4.5))
+      '@astrojs/starlight': 0.23.1(astro@4.8.6(@types/node@20.12.12)(typescript@5.4.5))
       astro: 4.8.6(@types/node@20.12.12)(typescript@5.4.5)
       github-slugger: 2.0.0
       hast-util-from-html: 2.0.1
@@ -14873,7 +14880,7 @@ snapshots:
 
   xml2js@0.6.2:
     dependencies:
-      sax: 1.2.1
+      sax: 1.3.0
       xmlbuilder: 11.0.1
 
   xmlbuilder@11.0.1: {}
