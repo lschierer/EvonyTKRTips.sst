@@ -10,11 +10,14 @@ import GridDisplay from "./gridDisplay.astro";
 type GridDisplayProps = ComponentProps<typeof GridDisplay>;
 
 import {
+  AscendingLevels,
   GeneralArray,
   type GeneralArrayType,
   GeneralElement,
   type GeneralElementType,
   ClassEnum,
+  type InvestmentOptionsType,
+  qualityColor,
 } from "@schemas/index";
 
 const DEBUG = true;
@@ -24,6 +27,19 @@ const table_name = `${Astro.url.pathname}-${ulid()}`
 let allGeneralsJson = "";
 let allGenerals = new Array<GeneralElementType>();
 let generalsPromise = false ; 
+
+//while no general can *have* both, I can evaluate generals assuming I will give them whichever that particular one needs. 
+let MyInvestmentLevel: InvestmentOptionsType = [
+  qualityColor.enum.Gold,
+  qualityColor.enum.Gold,
+  qualityColor.enum.Gold,
+  qualityColor.enum.Gold,
+  qualityColor.enum.Disabled,
+  AscendingLevels.enum[10],
+  true,
+  true,
+];
+  
 
 const generalObjects: CollectionEntry<"generals">[] =
   await getCollection("generals");
@@ -67,6 +83,7 @@ if (aresult.success ) {
 <div class="table-container">
   <GridDisplay 
     name={table_name} 
+    InvestmentLevel={MyInvestmentLevel}
   ></GridDisplay>
 </div>
 

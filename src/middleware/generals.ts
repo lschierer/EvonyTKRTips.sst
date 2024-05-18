@@ -31,7 +31,7 @@ import {
 } from "@schemas/index";
 import { specialtyAttribute } from "src/assets/evonySchemas";
 
-const DEBUG = true;
+const DEBUG = false;
 const DEBUG2 = false;
 const DEBUG3 = false;
 const DEBUGFilter = false;

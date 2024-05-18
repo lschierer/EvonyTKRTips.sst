@@ -29,8 +29,6 @@ export const DEBUG = true;
 export class DisplayGeneral {
   private _url: URL;
 
-  private _context: App.Locals;
-
   public display: DisplayType = Display.enum.summary;
 
   public general: GeneralClassType;
@@ -41,8 +39,8 @@ export class DisplayGeneral {
   private _special4: qualityColorType = qualityColor.enum.Disabled;
   private _special5: qualityColorType = qualityColor.enum.Disabled;
   private _stars: AscendingLevelsType = AscendingLevels.enum[0];
-  private _dragon: boolean = false;
-  private _beast: boolean = false;
+  private _dragon = false;
+  private _beast = false;
 
   get special1() {
     return this._special1;
@@ -114,53 +112,16 @@ export class DisplayGeneral {
     return this._EvAnsRanking;
   }
 
-  public async computeEvAnsRanking() {
-    let returnable = 0;
-
-    if (this._context.ExtendedGeneralSet !== undefined) {
-      for (const eg of this._context.ExtendedGeneralSet) {
-
-        if (!eg.general.name.localeCompare(this.general.name)) {
-          let delayIteration = 1;
-          while (!(eg.complete as boolean) && delayIteration < 20) {
-            if (DEBUG) console.log(`in DispalyGeneral computeEvAnsRanking, ${delayIteration} delay for complete `)
-            await delay(60 * delayIteration)
-            delayIteration++;
-          }
-          const possibleBuffs = [...eg.computedBuffs as Array<BuffParamsType>]
-          for (const cb of possibleBuffs) {
-            if (cb.special1.localeCompare(this._special1)) {
-              if (cb.special2.localeCompare(this._special2)) {
-                if (cb.special3.localeCompare(this._special3)) {
-                  if (cb.special4.localeCompare(this._special4)) {
-                    if (cb.special5.localeCompare(this._special5)) {
-                      if (cb.stars.localeCompare(this._stars)) {
-                        if (cb.dragon === this._dragon) {
-                          if (cb.beast === this.beast) {
-                            returnable = cb.EvAnsRanking;
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-
-    return returnable;
+  set EvAnsRanking(n) {
+    this._EvAnsRanking = n;
   }
 
-  constructor(g: GeneralClassType, u: URL, c: App.Locals) {
+  constructor(g: GeneralClassType, u: URL, ) {
     //zod is an easy way to get a deep clone
     this.general = GeneralClass.parse(g);
 
     this._url = new URL("/", u);
 
-    this._context = c;
   }
 }
 
@@ -168,8 +129,6 @@ export class DisplayPair {
   private _primary: DisplayGeneral;
 
   private _secondary: DisplayGeneral;
-
-  private _context: App.Locals;
 
   get primary() {
     return this._primary;
@@ -187,21 +146,15 @@ export class DisplayPair {
     this._secondary = s;
   }
 
-  public EvAnsRanking = async () => {
-    await Promise.all([
-      this._primary.computeEvAnsRanking(),
-      this._secondary.computeEvAnsRanking(),
-    ]).catch((e): void => {
-      console.log(`EvAnsRanking Promise All failed with message ${JSON.stringify(e.error)}`)
-    });
+  get EvAnsRanking() {
+    
     const total = this._primary.EvAnsRanking + this._secondary.EvAnsRanking;
     //if (DEBUG) console.log(`pair total EvAnsRanking is ${total}`);
     return total;
   };
 
-  constructor(p: DisplayGeneral, s: DisplayGeneral, c: App.Locals) {
+  constructor(p: DisplayGeneral, s: DisplayGeneral) {
     this._primary = p;
     this._secondary = s;
-    this._context = c;
   }
 }

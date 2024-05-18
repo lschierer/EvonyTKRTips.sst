@@ -3,6 +3,8 @@ export const prerender = false;
 
 import { z } from "astro:content";
 
+import { delay } from "nanodelay";
+
 import "@spectrum-css/vars/dist/spectrum-global.css";
 import "@spectrum-css/vars/dist/spectrum-medium.css";
 import "@spectrum-css/page/dist/index.css";
@@ -11,24 +13,33 @@ import "@spectrum-css/icon/dist/index.css";
 import "@spectrum-css/ui-icons/dist/medium/Arrow100.svg";
 
 import {
+  type BuffFilterReturnType,
+  BuffParams,
+  type BuffParamsType,
   ExtendedGeneral,
   GeneralElement,
   type GeneralElementType,
   GeneralPair,
   type GeneralPairType,
   GeneralClass,
+  generalUseCase,
+  type InvestmentOptionsType,
+  qualityColor,
+  AscendingLevels,
+  type ExtendedGeneralType,
 } from "@schemas/index";
 
-import { DisplayGeneral, DisplayPair } from "./general";
+import { DisplayGeneral, DisplayPair } from "./displayGeneral";
 
 interface Props {
   name: string;
+  InvestmentLevel: InvestmentOptionsType;
   class?: string;
 }
 
 const DEBUG = true;
 
-const { name } = Astro.props;
+const { name, InvestmentLevel } = Astro.props;
 
 const myUrl = Astro.url;
 
@@ -41,7 +52,7 @@ type sortDirectionType = z.infer<typeof sortDirectionOptions>;
 let sortBy: sortByOptionsType = sortByOptions.enum.primary;
 let sortDirection: sortDirectionType = sortDirectionOptions.enum.decending;
 
-const pairs: Array<DisplayPair> = new Array<DisplayPair>();
+const pairs: Set<DisplayPair> = new Set<DisplayPair>();
 
 let sortPrimaryInput: boolean | sortDirectionType | null = false;
 let sortSecondaryInput: boolean | sortDirectionType | null = false;
@@ -157,47 +168,60 @@ const sortPairFunction = (a: DisplayPair, b: DisplayPair) => {
     return sortPairSelector[sortBy](b, a);
   }
 };
-if (DEBUG) console.log(`# Generals: ${Astro.locals.ExtendedGeneralSet.size}`);
-const pairsData = new Array<Array<GeneralPairType>>();
-if (Astro.locals.ExtendedGeneralSet.size > 0) {
-  for (const tg of Astro.locals.ExtendedGeneralSet) {
-    const v1 = ExtendedGeneral.safeParse(tg);
-    if (v1.success) {
-      const g1 = v1.data.general;
-      const pairUrl = new URL(
-        `/generalPairs/${g1.name}-${g1.score_as}.json`,
-        Astro.url
-      );
-      const response = await fetch(pairUrl);
-      //const response = null;
-      if (response !== null && response.ok) {
-        const j: GeneralPairType[] = await response.json();
-        const validation = z.array(GeneralPair).safeParse(j);
-        if (validation.success) {
-          pairsData.push(validation.data);
-        } else {
-          console.log(
-            `pair type validation failed: ${validation.error.message}`
-          );
-        }
-      } else {
-        console.log(`responce for ${pairUrl.toString()} was not ok`);
-      }
-    } else {
-      console.log(`Astro.locals.ExtendedGeneralSet has invalid general in it.`);
-    }
-  }
+if (DEBUG) console.log(`# locals Generals: ${Astro.locals.ExtendedGeneralSet.size}`);
+if (DEBUG)
+  console.log(
+    `# locals InvestmentOptions: ${Astro.locals.InvestmentOptions.size}`
+  );
 
-  for (const pd of pairsData.flat()) {
-    const validation = GeneralPair.safeParse(pd);
-    if (validation.success) {
-      const p = new DisplayGeneral(validation.data.primary, myUrl, Astro.locals);
-      const s = new DisplayGeneral(validation.data.secondary, myUrl, Astro.locals);
-      pairs.push(new DisplayPair(p, s, Astro.locals));
+if (Astro.locals.ExtendedGeneralSet.size > 0) {
+  for await (const eg1 of Astro.locals.ExtendedGeneralSet.values()) {
+    if(DEBUG) console.log(`eg1 is ${eg1.general.name}`)
+    const pairsData = new Array<GeneralPairType>();
+    const dp1 = new DisplayGeneral(eg1.general, myUrl);
+    const pairUrl = new URL(
+      `/generalPairs/${eg1.general.name}-${eg1.general.score_as}.json`,
+      Astro.url
+    );
+    const response = await fetch(pairUrl);
+    if (response !== null && response.ok) {
+      const jr: Array<GeneralPairType> = await response.json();
+        const jrv = z.array(GeneralPair).safeParse(jr);
+        if(jrv.success) {
+          pairsData.push(...jrv.data)
+        } else {
+          console.log(`pair type validation failed: ${jrv.error.message}`)
+          console.log(JSON.stringify(jr))
+        }
+    } else {
+      console.log(`responce for ${pairUrl.toString()} was not ok`)
     }
-  }
+
+    if(pairsData.length > 0) {
+      if(DEBUG) {
+        console.log(`pairsdata: ${pairsData.length}`)
+      }
+      pairsData.forEach((pi) => {
+        for (const eg2 of Astro.locals.ExtendedGeneralSet.values()) {
+          if(!pi.secondary.localeCompare(eg2.general.name)) {
+            const dp2 = new DisplayGeneral(eg2.general, myUrl);
+            const dbPair = new DisplayPair(dp1, dp2);
+            pairs.add(dbPair)
+          }
+        }
+      })
+    }
+  };
 }
-pairs.sort(sortPairFunction);
+
+let pairArray = [...pairs].sort(sortPairFunction);
+
+pairArray = pairArray.map((pair) => {
+  pair.primary.EvAnsRanking = 1;
+  pair.secondary.EvAnsRanking = 2;
+  return pair;
+})
+
 ---
 
 <div class="spectrum spectrum--medium">
@@ -250,8 +274,8 @@ pairs.sort(sortPairFunction);
 
         <div class="spectrum-Table-body" role="rowgroup">
           {
-            pairs.length > 0 &&
-              pairs.map(
+            pairArray.length > 0 &&
+              pairArray.map(
                 (pi, index) =>
                   pi && (
                     <div class="spectrum-Table-row" role="rowgroup">
@@ -265,7 +289,7 @@ pairs.sort(sortPairFunction);
                         {pi.secondary.general.name}
                       </div>
                       <div class="spectrum-Table-cell" role="cell">
-                        {pi.EvAnsRanking()}
+                        {pi.EvAnsRanking}
                       </div>
                     </div>
                   )
