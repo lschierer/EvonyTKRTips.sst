@@ -1,0 +1,484 @@
+---
+general:
+  name: Hestia
+  display: summary
+  leadership: 128
+  leadership_increment: 9.08
+  attack: 121
+  attack_increment: 9.03
+  defense: 112
+  defense_increment: 8.82
+  politics: 105
+  politics_increment: 8.77
+  stars: '10'
+  level: '1'
+  score_as: Mounted
+  books:
+    - name: Dance of the Sacred Fire
+      buff:
+        - attribute: Attack
+          condition: leading_the_army_to_attack
+          class: Mounted
+          value:
+            number: 45
+            unit: percentage
+        - attribute: Defense
+          condition: leading_the_army_to_attack
+          class: Mounted
+          value:
+            number: 45
+            unit: percentage
+        - attribute: HP
+          condition: brings_dragon_or_beast_to_attack
+          class: Mounted
+          value:
+            number: 40
+            unit: percentage
+        - attribute: HP
+          condition: brings_dragon_or_beast_to_attack
+          class: Ground
+          value:
+            number: 40
+            unit: percentage
+  specialities:
+    - name: Mounted Troop Formation
+      attribute:
+        - level: Green
+          buff:
+            - attribute: Attack
+              class: Mounted
+              value:
+                number: 1
+                unit: percentage
+            - attribute: Defense
+              class: Mounted
+              value:
+                number: 1
+                unit: percentage
+        - level: Blue
+          buff:
+            - attribute: Attack
+              class: Mounted
+              value:
+                number: 1
+                unit: percentage
+            - attribute: Defense
+              class: Mounted
+              value:
+                number: 1
+                unit: percentage
+        - level: Purple
+          buff:
+            - attribute: Attack
+              class: Mounted
+              value:
+                number: 2
+                unit: percentage
+            - attribute: Defense
+              class: Mounted
+              value:
+                number: 2
+                unit: percentage
+        - level: Orange
+          buff:
+            - attribute: Attack
+              class: Mounted
+              value:
+                number: 2
+                unit: percentage
+            - attribute: Defense
+              class: Mounted
+              value:
+                number: 2
+                unit: percentage
+        - level: Gold
+          buff:
+            - attribute: Attack
+              class: Mounted
+              value:
+                number: 4
+                unit: percentage
+            - attribute: Defense
+              class: Mounted
+              value:
+                number: 4
+                unit: percentage
+    - name: Formation
+      attribute:
+        - level: Green
+          buff:
+            - attribute: Attack
+              class: Mounted
+              value:
+                number: 1
+                unit: percentage
+            - attribute: Attack
+              class: Ground
+              value:
+                number: 1
+                unit: percentage
+        - level: Blue
+          buff:
+            - attribute: Attack
+              class: Mounted
+              value:
+                number: 1
+                unit: percentage
+            - attribute: Attack
+              class: Ground
+              value:
+                number: 1
+                unit: percentage
+        - level: Purple
+          buff:
+            - attribute: Attack
+              class: Mounted
+              value:
+                number: 2
+                unit: percentage
+            - attribute: Attack
+              class: Ground
+              value:
+                number: 2
+                unit: percentage
+        - level: Orange
+          buff:
+            - attribute: Attack
+              class: Mounted
+              value:
+                number: 2
+                unit: percentage
+            - attribute: Attack
+              class: Ground
+              value:
+                number: 2
+                unit: percentage
+        - level: Gold
+          buff:
+            - attribute: Attack
+              class: Mounted
+              value:
+                number: 4
+                unit: percentage
+            - attribute: Attack
+              class: Ground
+              value:
+                number: 4
+                unit: percentage
+    - name: Mounted Troop Ares
+      attribute:
+        - level: Green
+          buff:
+            - attribute: Attack
+              class: Mounted
+              value:
+                number: 1
+                unit: percentage
+            - attribute: HP
+              class: Mounted
+              value:
+                number: 1
+                unit: percentage
+            - attribute: Defense
+              class: Mounted
+              value:
+                number: 1
+                unit: percentage
+        - level: Blue
+          buff:
+            - attribute: Attack
+              class: Mounted
+              value:
+                number: 1
+                unit: percentage
+            - attribute: HP
+              class: Mounted
+              value:
+                number: 1
+                unit: percentage
+            - attribute: Defense
+              class: Mounted
+              value:
+                number: 1
+                unit: percentage
+        - level: Purple
+          buff:
+            - attribute: Attack
+              class: Mounted
+              value:
+                number: 2
+                unit: percentage
+            - attribute: HP
+              class: Mounted
+              value:
+                number: 2
+                unit: percentage
+            - attribute: Defense
+              class: Mounted
+              value:
+                number: 2
+                unit: percentage
+        - level: Orange
+          buff:
+            - attribute: Attack
+              class: Mounted
+              value:
+                number: 2
+                unit: percentage
+            - attribute: HP
+              class: Mounted
+              value:
+                number: 2
+                unit: percentage
+            - attribute: Defense
+              class: Mounted
+              value:
+                number: 2
+                unit: percentage
+        - level: Gold
+          buff:
+            - attribute: Attack
+              class: Mounted
+              value:
+                number: 4
+                unit: percentage
+            - attribute: HP
+              class: Mounted
+              value:
+                number: 4
+                unit: percentage
+            - attribute: Defense
+              class: Mounted
+              value:
+                number: 4
+                unit: percentage
+    - name: Warm Shelter
+      attribute:
+        - level: 'Green'
+          buff:
+          - attribute: Attack
+            class: Mounted
+            value:
+              number: 5
+              unit: percentage
+          - attribute: Defense
+            class: Ground
+            value:
+              number: 2
+              unit: percentage
+          - attribute: Defense
+            class: Mounted
+            value:
+              number: 2
+              unit: percentage
+          - attribute: HP
+            class: Ground
+            value:
+              number: 2
+              unit: percentage
+          - attribute: HP
+            class: Mounted
+            value:
+              number: 2
+              unit: percentage
+        - level: 'Blue'
+          buff:
+          - attribute: Attack
+            class: Mounted
+            value:
+              number: 5
+              unit: percentage
+          - attribute: Defense
+            class: Ground
+            value:
+              number: 3
+              unit: percentage
+          - attribute: Defense
+            class: Mounted
+            value:
+              number: 3
+              unit: percentage
+          - attribute: HP
+            class: Ground
+            value:
+              number: 3
+              unit: percentage
+          - attribute: HP
+            class: Mounted
+            value:
+              number: 3
+              unit: percentage
+        - level: 'Purple'
+          buff:
+          - attribute: Attack
+            class: Mounted
+            value:
+              number: 10
+              unit: percentage
+          - attribute: Defense
+            class: Ground
+            value:
+              number: 5
+              unit: percentage
+          - attribute: Defense
+            class: Mounted
+            value:
+              number: 5
+              unit: percentage
+          - attribute: HP
+            class: Ground
+            value:
+              number: 5
+              unit: percentage
+          - attribute: HP
+            class: Mounted
+            value:
+              number: 5
+              unit: percentage
+        - level: 'Orange'
+          buff:
+          - attribute: Attack
+            class: Mounted
+            value:
+              number: 10
+              unit: percentage
+          - attribute: Defense
+            class: Ground
+            value:
+              number: 5
+              unit: percentage
+          - attribute: Defense
+            class: Mounted
+            value:
+              number: 5
+              unit: percentage
+          - attribute: HP
+            class: Ground
+            value:
+              number: 5
+              unit: percentage
+          - attribute: HP
+            class: Mounted
+            value:
+              number: 5
+              unit: percentage
+        - level: 'Gold'
+          buff:
+          - attribute: Attack
+            class: Mounted
+            value:
+              number: 20
+              unit: percentage
+          - attribute: Defense
+            class: Ground
+            value:
+              number: 10
+              unit: percentage
+          - attribute: Defense
+            class: Mounted
+            value:
+              number: 10
+              unit: percentage
+          - attribute: HP
+            class: Ground
+            value:
+              number: 10
+              unit: percentage
+          - attribute: HP
+            class: Mounted
+            value:
+              number: 10
+              unit: percentage
+  ascending:
+        - level: '6'
+          buff:
+          - attribute: Defense
+            condition: Marching
+            class: Ground
+            value:
+              number: 10
+              unit: percentage
+          - attribute: Defense
+            condition: Marching
+            class: Mounted
+            value:
+              number: 10
+              unit: percentage
+          - attribute: HP
+            condition: Marching
+            class: Ground
+            value:
+              number: 10
+              unit: percentage
+          - attribute: HP
+            condition: Marching
+            class: Mounted
+            value:
+              number: 10
+              unit: percentage
+        - level: '7'
+          buff:
+          - attribute: Death_to_Wounded
+            condition: Marching
+            value:
+              number: 8
+              unit: percentage
+        - level: '8'
+          buff:
+          - attribute: Attack
+            condition: Marching
+            class: Mounted
+            value:
+              number: 20
+              unit: percentage
+          - attribute: Defense
+            condition: Marching
+            class: Mounted
+            value:
+              number: 20
+              unit: percentage
+        - level: '9'
+          buff:
+          - attribute: Attack
+            condition: Marching
+            class: Mounted
+            value:
+              number: 10
+              unit: percentage
+          - attribute: Attack
+            condition: Marching
+            class: Ground
+            value:
+              number: 10
+              unit: percentage
+          - attribute: Defense
+            condition: Marching
+            class: Mounted
+            value:
+              number: 10
+              unit: percentage
+          - attribute: Defense
+            condition: Marching
+            class: Ground
+            value:
+              number: 10
+              unit: percentage
+        - level: '10'
+          buff:
+          - attribute: Attack
+            condition: Marching
+            class: Mounted
+            value:
+              number: 20
+              unit: percentage
+          - attribute: Defense
+            condition: Marching
+            class: Mounted
+            value:
+              number: 20
+              unit: percentage
+          - attribute: March_Size_Capacity
+            condition: Marching
+            value:
+              number: 10
+              unit: percentage
