@@ -1,5 +1,5 @@
 export const prerender = false;
-const DEBUG = false;
+const DEBUG = true;
 import { type APIRoute } from "astro";
 import { getCollection, getEntry, type CollectionEntry } from "astro:content";
 //import type { InferGetStaticParamsType, GetStaticPaths } from "astro";
@@ -40,21 +40,28 @@ type Params = InferGetStaticParamsType<typeof getStaticPaths>;
 const getConflictDataForGeneral = async function (
   target: GeneralClassType
 ): Promise<ConflictDatumType[]> {
-  const conflictData: ConflictDatumType[] = new Array<ConflictDatumType>();
+  if(DEBUG) console.log(`target is ${target.name}`)
+  const conflictData: Array<ConflictDatumType> = new Array<ConflictDatumType>();
 
   const collectionArray: CollectionEntry<"generalConflictData">[] =
     await getCollection("generalConflictData", ({ data }) => {
       const c = Object.values(data.conflicts).flat();
+      if(DEBUG) console.log(`this datum has ${c.length}`)
       if (c.includes(target.name)) {
+        if(DEBUG) console.log(`target ${target.name} in ${JSON.stringify(c)}`)
         return true;
+      } else {
+        if(DEBUG) console.log(`target ${target.name} not in ${JSON.stringify(c)}`)
       }
     });
 
   if (collectionArray !== null && collectionArray !== undefined) {
-    for (const datum of collectionArray) {
-      const validation = ConflictDatum.safeParse(datum);
+    for (const entry of collectionArray) {
+      const validation = ConflictDatum.safeParse(entry.data);
       if (validation.success) {
         conflictData.push(validation.data);
+      } else {
+        console.log(validation.error.message)
       }
     }
   }
@@ -123,7 +130,7 @@ export const GET: APIRoute = async ({ params }): Promise<Response> => {
         const conflictData = await getConflictDataForGeneral(g1);
         //const conflictData = new Array<ConflictDatumType>();
 
-        let potentialMatches: GeneralClassType[];
+        let potentialMatches: Array<GeneralClassType>;
         if (gc !== undefined && gc !== null) {
           const v2 = generalSpecialists.safeParse(gc);
           if (v2.success) {
