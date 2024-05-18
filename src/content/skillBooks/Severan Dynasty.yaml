@@ -1,7 +1,7 @@
 ---
 name: Severan Dynasty
 buff:
-  - attribute: attack
+  - attribute: Attack
     class: Siege
     value:
       number: 35
