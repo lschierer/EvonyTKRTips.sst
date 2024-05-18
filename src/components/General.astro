@@ -1,136 +1,200 @@
 ---
-import {Debug} from 'astro:components';
-import {getEntry, getCollection, type CollectionEntry, z} from "astro:content";
-import 'iconify-icon';
-
-import {delay} from 'nanodelay'
+import { Debug } from "astro:components";
 import {
-    AscendingLevels,
-    Book, 
-    type BookType,
-    type bookConflictsType,
-    type Buff,
-    type BuffType,
-    BuffParams,
-    type BuffParamsType,
-    buffUnion,
-    Condition,
-    ConflictArray,
-    ConflictDatum,
-    type ConflictDatumType,
-    GeneralClass,
-    type GeneralClassType,
-    GeneralElement,
-    type GeneralElementType,
-    type InvestmentOptionsType,
-    Note,
-    type NoteType,
-    Speciality,
-    type SpecialityType,
-    qualityColor,
-    specialSkillBook,
-    type specialSkillBookType,
-    standardSkillBook,
-    type standardSkillBookType,
-    syslogSeverity,
-    type syslogSeverityType,
-} from '@schemas/index';
+  getEntry,
+  getCollection,
+  type CollectionEntry,
+  z,
+} from "astro:content";
+import "iconify-icon";
 
-import { generalUseCase,
-    type generalUseCaseType
-} from '@schemas/generalsSchema'
+import { delay } from "nanodelay";
+
+import {
+  AscendingLevels,
+  Book,
+  type BookType,
+  type bookConflictsType,
+  type Buff,
+  type BuffType,
+  BuffParams,
+  type BuffParamsType,
+  buffUnion,
+  Condition,
+  ConflictArray,
+  ConflictDatum,
+  type ConflictDatumType,
+  ExtendedGeneral,
+  type ExtendedGeneralType,
+  GeneralClass,
+  type GeneralClassType,
+  GeneralElement,
+  type GeneralElementType,
+  type InvestmentOptionsType,
+  Note,
+  type NoteType,
+  Speciality,
+  type SpecialityType,
+  qualityColor,
+  specialSkillBook,
+  type specialSkillBookType,
+  standardSkillBook,
+  type standardSkillBookType,
+  syslogSeverity,
+  type syslogSeverityType,
+  dragon,
+  generalUseCase,
+} from "@schemas/index";
 
 const DEBUG = true;
 
-import { BookIcon } from '@spectrum-web-components/icons-workflow';
-
+import { BookIcon } from "@spectrum-web-components/icons-workflow";
 
 const severity = {
-    [syslogSeverity.enum.emerg]: () => {
-        return "starlight-aside--danger"
-    },
-    [syslogSeverity.enum.alert]: () => {
-        return "starlight-aside--danger"
-    },
-    [syslogSeverity.enum.crit]: () => {
-        return "starlight-aside--danger"
-    },
-    [syslogSeverity.enum.err]: () => {
-        return "starlight-aside--caution"
-    },
-    [syslogSeverity.enum.warning]: () => {
-        return "starlight-aside--caution"
-    },
-    [syslogSeverity.enum.notice]: () => {
-        return "starlight-aside--caution"
-    },
-    [syslogSeverity.enum.info]: () => {
-        return "starlight-aside--caution"
-    },
-    [syslogSeverity.enum.debug]: () => {
-        return "note"
-    },
-}
+  [syslogSeverity.enum.emerg]: () => {
+    return "starlight-aside--danger";
+  },
+  [syslogSeverity.enum.alert]: () => {
+    return "starlight-aside--danger";
+  },
+  [syslogSeverity.enum.crit]: () => {
+    return "starlight-aside--danger";
+  },
+  [syslogSeverity.enum.err]: () => {
+    return "starlight-aside--caution";
+  },
+  [syslogSeverity.enum.warning]: () => {
+    return "starlight-aside--caution";
+  },
+  [syslogSeverity.enum.notice]: () => {
+    return "starlight-aside--caution";
+  },
+  [syslogSeverity.enum.info]: () => {
+    return "starlight-aside--caution";
+  },
+  [syslogSeverity.enum.debug]: () => {
+    return "note";
+  },
+};
 
 interface Props {
-    generalEntry: string ;
+  generalEntry: string;
 }
 
-const {generalEntry} = Astro.props;
-let data;
-if (generalEntry === null || generalEntry === undefined || generalEntry.length <= 0) {
-    return Astro.redirect("/404");
-}
-const entry: CollectionEntry<'generals'> | undefined = await getEntry('generals', generalEntry);
-if (entry === undefined || entry === null) {
-    return Astro.redirect("/404");
-} else {
-    data = entry.data;
-}
-let usageNotes = '';
-let general: GeneralClassType | null = null;
-let generalName = '';
+//global variables
+let usageNotes = "";
+let EvAnsRank = 0;
+let generalName = "";
 let attack = 0;
 let defense = 0;
 let hp = 0;
 let starsNum = 0;
 let starsLimit = 0;
-let starsHtml = ' ';
+let starsHtml = " ";
 let level = 1;
-const intrinsic = ["leadership", "attack", "defense", "politics"]
+const intrinsic = ["leadership", "attack", "defense", "politics"];
 let conflictData: bookConflictsType[] = new Array<bookConflictsType>();
-let collectionArray: CollectionEntry<'generalConflictData'>[] | ConflictDatumType[];
-let generalSpecials: SpecialityType[] = new Array<SpecialityType>();
-let generalBooks: BookType[] = new Array<BookType>();
+let collectionArray:
+  | CollectionEntry<"generalConflictData">[]
+  | ConflictDatumType[];
 
-const validation = GeneralElement.safeParse(data);
-if (validation.success) {
-    const generaLObject = validation.data;
-    general = generaLObject.general;
-    
-    starsNum = +(general.stars ? general.stars : 0);
-    starsLimit = (starsNum <= 5) ? starsNum : 5;
-    for (let i = 0; i < starsLimit; i++) {
-        if ((starsNum >= 6) && (i < (starsNum - 5))) {
-            starsHtml = starsHtml.concat('<iconify-icon style="color: var(--spectrum-red-900)" icon="mdi:star"></iconify-icon>');
-        } else {
-            starsHtml = starsHtml.concat('<iconify-icon style="color: var(--spectrum-yellow-300)" icon="mdi:star"></iconify-icon>');
+let data;
+
+let pageGE: GeneralElementType;
+let Egeneral: ExtendedGeneralType;
+//end globals
+
+const { generalEntry } = Astro.props;
+
+if (
+  generalEntry === null ||
+  generalEntry === undefined ||
+  generalEntry.length <= 0
+) {
+  return Astro.redirect("/404");
+}
+
+const entry: CollectionEntry<"generals"> | undefined = await getEntry(
+  "generals",
+  generalEntry
+);
+
+if (entry === undefined || entry === null) {
+  return Astro.redirect("/404");
+} else {
+  data = entry.data;
+}
+
+const dataV = GeneralElement.safeParse(data);
+if (dataV.success) {
+  const pageGE = dataV.data;
+  Astro.locals.addEG2EGS(pageGE.general)
+  
+  const delayIterator = 1;
+  do {
+    Astro.locals.ExtendedGeneralSet.forEach((item) => {
+      if(!pageGE.general.name.localeCompare(item.general.name)) {
+        console.log(`found it ${item.computedBuffs.length}`)
+        Astro.locals.buffComputer(item.general.name);
+        Egeneral = item;
+        const EGV = ExtendedGeneral.safeParse(Egeneral)
+        if(!EGV.success) {
+          console.log(EGV.error.message)
         }
-        
+      }
+    })
+    delay(delayIterator*60)
+    if(DEBUG) console.log(`iteration ${delayIterator}`)
+  } while (
+    (Astro.locals.ExtendedGeneralSet.size === 0 ||
+    Egeneral!.computedBuffs.length === 0 )&&
+    delayIterator  < 100
+  )
+  if (DEBUG) console.log(`after dowhile ${Egeneral!.computedBuffs.length}`)
+
+  const EGV = ExtendedGeneral.safeParse(Egeneral!);
+  if (!EGV.success) {
+    console.log(`something very wrong`);
+    return Astro.redirect("/404");
+  } else {
+    if (DEBUG) console.log(`general validates after creation`);
+  }
+  const general = Egeneral!.general;
+
+  if (DEBUG) console.log(`created general ${Egeneral!.general.name}`);
+
+  
+
+  starsNum = +(general.stars ? general.stars : 0);
+  starsLimit = starsNum <= 5 ? starsNum : 5;
+  for (let i = 0; i < starsLimit; i++) {
+    if (starsNum >= 6 && i < starsNum - 5) {
+      starsHtml = starsHtml.concat(
+        '<iconify-icon style="color: var(--spectrum-red-900)" icon="mdi:star"></iconify-icon>'
+      );
+    } else {
+      starsHtml = starsHtml.concat(
+        '<iconify-icon style="color: var(--spectrum-yellow-300)" icon="mdi:star"></iconify-icon>'
+      );
     }
-    
-    generalName = general.name.toLocaleLowerCase().replace(/\s+/g, '_');
-    
-    attack = (general.attack + (general.attack_increment) * 45)
-    defense = (general.defense + (general.defense_increment) * 45)
-    hp = (general.leadership + (general.leadership_increment) * 45)
-    level = (general.display === 'summary') ? (+general.level * 45) : +general.level;
-    const notes = z.array(Note).safeParse(general.note);
-    if (notes.success) {
-        const mydata: NoteType[] = notes.data;
-        if (notes.data !== undefined && notes.data !== null && notes.data.length >= 1) {
-            const result = mydata.map((note) => {
-                return `
+  }
+
+  generalName = general.name.toLocaleLowerCase().replace(/\s+/g, "_");
+
+  attack = general.attack + general.attack_increment * 45;
+  defense = general.defense + general.defense_increment * 45;
+  hp = general.leadership + general.leadership_increment * 45;
+  level = general.display === "summary" ? +general.level * 45 : +general.level;
+  const notes = z.array(Note).safeParse(general.note);
+  if (notes.success) {
+    const mydata: NoteType[] = notes.data;
+    if (
+      notes.data !== undefined &&
+      notes.data !== null &&
+      notes.data.length >= 1
+    ) {
+      const result = mydata.map((note) => {
+        return `
                     <aside class='starlight-aside ${severity[note.severity]()}' >
                         <p class="starlight-aside__title">
                             General Usage Note
@@ -138,186 +202,213 @@ if (validation.success) {
                         ${note.text}
                     </aside>
                     `;
-            })
-            if(result !== null && result !== undefined) {
-                result.forEach(r => usageNotes = usageNotes.concat(r))
-            }
-        }
+      });
+      if (result !== null && result !== undefined) {
+        result.forEach((r) => (usageNotes = usageNotes.concat(r)));
+      }
     }
-    collectionArray = await getCollection('generalConflictData');
-    if (collectionArray !== null && collectionArray !== undefined) {
-        collectionArray = collectionArray.map((ca) => {
-            return ca.data
-        });
-        const valid = ConflictArray.safeParse(collectionArray)
-        if (valid.success) {
-            for (let i = 0; i < valid.data.length; i++) {
-                let o1 = valid.data[i]
-                let valid2 = ConflictDatum.safeParse(o1);
-                if (valid2.success) {
-                    let data: ConflictDatumType | undefined;
-                    const o2: ConflictDatumType = valid2.data;
-                    const o2Keys = Object.keys(o2);
-                    const keyIndex = o2Keys.indexOf('conflicts');
-                    if (keyIndex >= 0 && o2.conflicts) {
-                        let conflicts = o2.conflicts;
-                        for (const key in conflicts) {
-                            if (key.localeCompare('other')) {
-                                const items = conflicts[key];
-                                const gc = new Set<string>;
-                                items.forEach((g) => {
-                                    gc.add(g);
-                                })
-                                if ([...gc].includes(general.name)) {
-                                    if(valid2.data.books !== null && valid2.data.books !== undefined)  {
-                                        const books = {'books': valid2.data.books };
-                                        conflictData.push(books)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-    if (conflictData.length >= 1) {
-        conflictData = [conflictData].flat(1);
-        const result = conflictData.map((c) => {
-            if (c !== null && c !== undefined && c.books !== null && c.books !== undefined) {
-                return c.books.map((book: standardSkillBookType) => {
-                  let condition = 'all the time.';
-                  let warning = false;
-                  for (let i = 0; i < book.buff.length; i++) {
-                    const keys = Object.keys(book.buff[i]);
-                    if(book.buff[i].condition !== null && book.buff[i].condition !== undefined ) {
-                        if (book.buff[i].condition === Condition.enum.When_Not_Mine) {
-                            condition = 'when the book is on my paired general.'
-                            warning = true;
-                        } else {
-                            condition = book.buff[i].condition as string
-                        }
-                    } else {
-                        condition = 'all the time.' ;
-                    }
+  }
+  collectionArray = await getCollection("generalConflictData");
+  if (collectionArray !== null && collectionArray !== undefined) {
+    collectionArray = collectionArray.map((ca) => {
+      return ca.data;
+    });
+    const valid = ConflictArray.safeParse(collectionArray);
+    if (valid.success) {
+      for (let i = 0; i < valid.data.length; i++) {
+        let o1 = valid.data[i];
+        let valid2 = ConflictDatum.safeParse(o1);
+        if (valid2.success) {
+          let data: ConflictDatumType | undefined;
+          const o2: ConflictDatumType = valid2.data;
+          const o2Keys = Object.keys(o2);
+          const keyIndex = o2Keys.indexOf("conflicts");
+          if (keyIndex >= 0 && o2.conflicts) {
+            let conflicts = o2.conflicts;
+            for (const key in conflicts) {
+              if (key.localeCompare("other")) {
+                const items = conflicts[key];
+                const gc = new Set<string>();
+                items.forEach((g) => {
+                  gc.add(g);
+                });
+                if ([...gc].includes(general.name)) {
+                  if (
+                    valid2.data.books !== null &&
+                    valid2.data.books !== undefined
+                  ) {
+                    const books = { books: valid2.data.books };
+                    conflictData.push(books);
                   }
-                  return `
-                    <aside class='starlight-aside ${warning ? 
-                            severity[syslogSeverity.enum.warning]()
-                            : severity[syslogSeverity.enum.alert]()}'
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (conflictData.length >= 1) {
+    conflictData = [conflictData].flat(1);
+    const result = conflictData.map((c) => {
+      if (
+        c !== null &&
+        c !== undefined &&
+        c.books !== null &&
+        c.books !== undefined
+      ) {
+        return c.books.map((book: standardSkillBookType) => {
+          let condition = "all the time.";
+          let warning = false;
+          for (let i = 0; i < book.buff.length; i++) {
+            const keys = Object.keys(book.buff[i]);
+            if (
+              book.buff[i].condition !== null &&
+              book.buff[i].condition !== undefined
+            ) {
+              if (book.buff[i].condition === Condition.enum.When_Not_Mine) {
+                condition = "when the book is on my paired general.";
+                warning = true;
+              } else {
+                condition = book.buff[i].condition as string;
+              }
+            } else {
+              condition = "all the time.";
+            }
+          }
+          return `
+                    <aside class='starlight-aside ${
+                      warning
+                        ? severity[syslogSeverity.enum.warning]()
+                        : severity[syslogSeverity.enum.alert]()
+                    }'
                         >
                         <p class="starlight-aside__title">
                             General Conflict Notice
                         </p>
                         This general has conflicts with the ${book.name} level ${book.level} skill book.
-                        ${(condition === Condition.enum.When_Not_Mine) ? "This conflict is in effect when the book is on my assistant" : "This conflict is in effect all the time" } 
+                        ${condition === Condition.enum.When_Not_Mine ? "This conflict is in effect when the book is on my assistant" : "This conflict is in effect all the time"} 
                         
                     </aside>
                     `;
-                
-                })
-            }
-        })
-        if(result !== undefined) {
-            result.forEach((r) => {
-                if(r !== undefined) {
-                    r.forEach(r2 => usageNotes = usageNotes.concat(r2))
-                }
-            })
+        });
+      }
+    });
+    if (result !== undefined) {
+      result.forEach((r) => {
+        if (r !== undefined) {
+          r.forEach((r2) => (usageNotes = usageNotes.concat(r2)));
         }
+      });
     }
+  }
 
-    if(general.books !== undefined && general.books !== null) {
-        await Promise.all(general.books.map(async (b:string) => {
-            const book: CollectionEntry<'skillBooks'> | undefined = await getEntry('skillBooks', b);
-            if(book !== undefined) {
-                generalBooks.push(book.data);
-            } else {
-                console.log(`could not retrieve ${b}`);
-            }
-        }))
-    } else {
-        console.log(`no general books`)
-    }
-
-    if(general.specialities !== undefined && general.specialities !== null) {
-        await Promise.all(general.specialities.map(async (s:string) => {
-            const special: CollectionEntry<'specialities'> | undefined = await getEntry('specialities', s);
-            if(special !== undefined) {
-                generalSpecials.push(special.data);
-            } else {
-                console.log(`could not retrieve ${s}`)
-            }
-        }))
-    } else {
-        console.log(`no general specialities`)
-    }
-}
-
-const generalSpecialsCount = generalSpecials.length;
-
-let EvAnsRank = 0;
-let iterationBreaker = 0;
-while (iterationBreaker < 60 && (Astro.locals.InvestmentOptions === undefined || Astro.locals.InvestmentOptions.size === 0)) {
-    console.log(`I have a problem initializing the middleware ${iterationBreaker}`)
-    delay(60*iterationBreaker)
-}
-const v = z.array(BuffParams).safeParse(Astro.locals.buffComputer(general))
-if(v.success) {
-    if(DEBUG) console.log(`BuffComputer returned something that validates`)
-    const BPA = v.data;
-    if (DEBUG) console.log(`BPA has size ${BPA.length}`)
-    if(BPA.length > 0 ) {
-        const BP: BuffParamsType | undefined = BPA.filter((item) => {
-            //this page is for a summary display
-            if(item.dragon === true) {
-                if(item.beast === true) {
-                    if(!item.special1.localeCompare(qualityColor.enum.Gold)) {
-                        if(!item.special2.localeCompare(qualityColor.enum.Gold)) {
-                            if(!item.special3.localeCompare(qualityColor.enum.Gold)) {
-                                //for a summary page, the 5th special is always disabled
-                                if(!item.special5.localeCompare(qualityColor.enum.Disabled)) {
-                                    if(!item.stars.localeCompare(AscendingLevels.enum[10])) {
-                                        if(Array.isArray(general?.specialities) && general.specialities.length >= 4) {
-                                            if(!item.special4.localeCompare(qualityColor.enum.Gold)) {
-                                                return true;       
-                                            }
-                                        } else {
-                                            if(!item.special4.localeCompare(qualityColor.enum.Disabled)) {
-                                                return true;
-                                            }
-                                        }
-                                    }
-                                } 
-                            } 
-                        } 
-                    } 
-                }
-            } 
-            return false;
-        }).pop();
-
-        if(BP !== undefined && BP.EvAnsRanking === -5) {
-            if(DEBUG) console.log(`General.astro has a BP with no EvAnsRanking`)
-            EvAnsRank = await Astro.locals.EvAnsBuff(general, generalUseCase.enum.Attack, BP)
-        } else if (BP !== undefined) {
-            if(DEBUG) console.log(`General.astro has a BP with EvAnsRanking ${BP.EvAnsRanking}`)
-            EvAnsRank = BP.EvAnsRanking;
+  if (
+    Egeneral! !== undefined &&
+    general.books !== undefined &&
+    general.books !== null
+  ) {
+    await Promise.all(
+      general.books.map(async (b: string) => {
+        if (Egeneral !== null) {
+          const book: CollectionEntry<"skillBooks"> | undefined =
+            await getEntry("skillBooks", b);
+          if (book !== undefined) {
+            Egeneral.books.push(book.data);
+          } else {
+            console.log(`could not retrieve ${b}`);
+          }
         } else {
-            console.log(`however after filtering I am undefined`)
+          console.log(`cannot push books to null Egeneral`);
         }
+      })
+    );
+  } else {
+    console.log(`no general books`);
+  }
+
+  if (
+    Egeneral! !== undefined &&
+    Egeneral.general !== undefined &&
+    Array.isArray(Egeneral.general.specialities) &&
+    Egeneral.general.specialities.length > 0
+  ) {
+    await Promise.all(
+      Egeneral.general.specialities.map(async (s: string) => {
+        if (Egeneral !== null) {
+          const special: CollectionEntry<"specialities"> | undefined =
+            await getEntry("specialities", s);
+          if (special !== undefined) {
+            Egeneral.specialities.push(special.data);
+          } else {
+            console.log(`could not retrieve ${s}`);
+          }
+        } else {
+          console.log(`cannot push specials to null Egeneral`);
+        }
+      })
+    );
+  } else {
+    console.log(`no general specialities`);
+  }
+
+  if (Egeneral! !== undefined) {
+    if(Egeneral.computedBuffs.length > 0 ) {
+      
+      const BPv = Astro.locals.filterInvestmentOptions(Egeneral,[
+          qualityColor.enum.Gold,
+          qualityColor.enum.Gold,
+          qualityColor.enum.Gold,
+          qualityColor.enum.Gold,
+          qualityColor.enum.Disabled,
+          AscendingLevels.enum[10],
+          true,
+          true,
+      ])
+      if(!(BPv.status as string).localeCompare('success')) {
+          const BP = BPv.data;
+          if(BP !== undefined && BP.EvAnsRanking === -5) {
+              if(DEBUG) console.log(`General.astro has a BP with no EvAnsRanking`)
+              EvAnsRank = -1;
+              EvAnsRank = await Astro.locals.EvAnsBuff(general, generalUseCase.enum.Attack, BP)
+          } else if (BP !== undefined) {
+              if(DEBUG) console.log(`General.astro has a BP with EvAnsRanking ${BP.EvAnsRanking}`)
+              EvAnsRank = BP.EvAnsRanking;
+          } else {
+              console.log(`however after filtering I am undefined`)
+          }
+      } else {
+        console.log(`BPV ${BPv.status}`)
+      }
+        
     } else {
-        console.log(`returned an empty array` )
+        console.log(`why is this empty now?` )
     }
-    
-} else {
-    console.log(`General.astro retrieved invalid BP`)
-    console.log(v.error.message)
+        
+  }
+
+  const generalSpecialsCount =
+    Egeneral! !== undefined ? Egeneral.specialities.length : 0;
+
+  let iterationBreaker = 0;
+  while (
+    iterationBreaker < 60 &&
+    (Astro.locals.InvestmentOptions === undefined ||
+      Astro.locals.InvestmentOptions.size === 0)
+  ) {
+    console.log(
+      `I have a problem initializing the middleware ${iterationBreaker}`
+    );
+    delay(60 * iterationBreaker);
+  }
+
+  
 }
+const general = (Egeneral! !== undefined) ? Egeneral.general : null;
 
 ---
 
-{(general !== undefined && general !== null) && (
+{(Egeneral! !== undefined && Egeneral !== null && general !== null ) && (
 <div class="not-content UsageNotes">
     <Fragment set:html={usageNotes} />
 </div>
@@ -347,7 +438,7 @@ if(v.success) {
     {general.books && (
     <div class="SkillBooks non-content" style="margin: 1px;">
         <span class="spectrum-Heading spectrum-Heading--sizeXS">Special Skill:</span>
-        {generalBooks.map((book: BookType) => (
+        {Egeneral?.books.map((book: BookType) => (
           (specialSkillBook.safeParse(book)).success && (
             <>
                 <span class="spectrum-Heading spectrum-Heading--sizeXXS">{book.name}</span>
@@ -397,14 +488,14 @@ if(v.success) {
   {general.specialities && (
     <span class="label spectrum-Heading spectrum-Heading--sizeXS">Specialities</span>
     <div class="Specialities non-content">
-        {generalSpecials && generalSpecials.map((gs, index) => (
+        {Egeneral?.specialities.map((gs, index) => (
             <div class={"SpecialityName" + index + " non-content"}>
                 <span class="label spectrum-Heading spectrum-Heading--sizeXXS"> 
                     {gs.name}
                 </span>
             </div>
         ))}
-        {generalSpecials && generalSpecials.map((gs, index) => (
+        {Egeneral?.specialities.map((gs, index) => (
             <div class={"Speciality" + index + " non-content"}>
                 {Array.isArray(gs.attribute) && gs.attribute.map((s) => (
                     <div class={"non-content " + s.level} >

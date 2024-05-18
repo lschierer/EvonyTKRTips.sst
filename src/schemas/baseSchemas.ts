@@ -203,8 +203,17 @@ export const BuffParams = z.object({
   beast: z.boolean().default(false),
   EvAnsRanking: z.number().default(0),
 })
-
 export type BuffParamsType = z.infer<typeof BuffParams>;
 
-export const InvestmentOptionsSchema = z.array(z.union([qualityColor, AscendingLevels, z.boolean()]));
+export const BuffFilterReturn = z.discriminatedUnion("status", [
+  z.object({ status: z.literal("success"), data: BuffParams }),
+  z.object({
+    status: z.literal("error"),
+    error: z.string(),
+  }),
+]);
+export type BuffFilterReturnType = z.infer<typeof BuffFilterReturn>;
+
+export const InvestmentOptionsSchema = z.array(z.union([qualityColor, AscendingLevels, z.boolean()])).length(8);
 export type InvestmentOptionsType = z.infer<typeof InvestmentOptionsSchema>;
+

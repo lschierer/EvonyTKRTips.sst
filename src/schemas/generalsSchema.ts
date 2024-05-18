@@ -104,8 +104,8 @@ export const GeneralArray = z.array(GeneralElement);
 export type GeneralArrayType = z.infer<typeof GeneralArray>;
 
 export const GeneralPair = z.object({
-    primary: GeneralClass,
-    secondary: GeneralClass,
+    primary: z.string(),
+    secondary: z.string(),
 });
 
 export type GeneralPairType = z.infer<typeof GeneralPair>;

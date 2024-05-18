@@ -174,8 +174,8 @@ export const GET: APIRoute = async ({ params }): Promise<Response> => {
           if (DEBUG) console.log(`found ${potentialMatches.length} generals`);
           for (const match of potentialMatches) {
             const returnable: GeneralPairType = {
-              primary: g1,
-              secondary: match,
+              primary: g1.name,
+              secondary: match.name,
             };
             returningPairs.push(returnable);
           }
