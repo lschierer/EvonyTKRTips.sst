@@ -1,5 +1,7 @@
 export const prerender = false;
-const DEBUG = true;
+
+const DEBUG = false;
+
 import { type APIRoute } from "astro";
 import { getCollection, getEntry, type CollectionEntry } from "astro:content";
 //import type { InferGetStaticParamsType, GetStaticPaths } from "astro";
