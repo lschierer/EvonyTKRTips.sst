@@ -2,20 +2,20 @@ conflicts:
   01HES969S8E146GSF5ES358GWD:
     - Elektra
     - Elektra (Dragon God)
-    - Vladimir the Great
     - Idunn
     - Idunn (Siege)
+    - Vladimir the Great
   other:
-    - Louis IX
-    - Winfield Scott
-    - Li Shimin
-    - Subutai
-    - Minamoto no Yoshitsune
+    - Antara
+    - Edward the Black Prince
     - Harold III
     - Henry V
-    - Edward the Black Prince
     - Jumong
-    - Antara
+    - Li Shimin
+    - Louis IX
+    - Minamoto no Yoshitsune
+    - Subutai
+    - Winfield Scott
 books:
   - name: Ranged Attack Increase
     level: '1'

@@ -1,22 +1,59 @@
 conflicts:
-  01HJV8VNDFA3HQ8TTPA0J8ZDA4:
-    - Edward the Black Prince
+  01HY61QCTFDT8VCY748BWEPZWM:
+    - Louis IX
   other:
     - Antara
+    - Edward III
+    - Edward the Black Prince
     - Elektra
     - Elektra (Dragon God)
-    - Harold III
+    - Harold III 
     - Henry V
     - Idunn
     - Idunn (Siege)
     - Jumong
     - Li Shimin
-    - Louis IX
-    - Himiko
     - Minamoto no Yoshitsune
     - Subutai
     - Vladimir the Great
+    - Winfield Scott
 books:
+  - name: Ranged Defense Increase
+    level: '1'
+    buff:
+    - attribute: Defense
+      condition: When_Not_Mine
+      class: Archers
+      value:
+        number: 10
+        unit: percentage
+  - name: Ranged Defense Increase
+    level: '2'
+    buff:
+    - attribute: Defense
+      condition: When_Not_Mine
+      class: Archers
+      value:
+        number: 15
+        unit: percentage
+  - name: Ranged Defense Increase
+    level: '3'
+    buff:
+    - attribute: Defense
+      condition: When_Not_Mine
+      class: Archers
+      value:
+        number: 20
+        unit: percentage
+  - name: Ranged Defense Increase
+    level: '4'
+    buff:
+    - attribute: Defense
+      condition: When_Not_Mine
+      class: Archers
+      value:
+        number: 25
+        unit: percentage
   - name: Ranged Attack Increase
     level: '1'
     buff:
