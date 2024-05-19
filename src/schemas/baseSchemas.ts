@@ -193,22 +193,16 @@ export const buffUnion = z.array(Buff);
 
 
 export const BuffParams = z.object({
-  special1: qualityColor.default(qualityColor.enum.Disabled),
-  special2: qualityColor.default(qualityColor.enum.Disabled),
-  special3: qualityColor.default(qualityColor.enum.Disabled),
-  special4: qualityColor.default(qualityColor.enum.Disabled),
-  special5: qualityColor.default(qualityColor.enum.Disabled),
-  stars: AscendingLevels.default(AscendingLevels.enum[0]),
-  dragon: z.boolean().default(false),
-  beast: z.boolean().default(false),
+  special1: qualityColor.default(qualityColor.enum.Disabled), //0
+  special2: qualityColor.default(qualityColor.enum.Disabled), //1
+  special3: qualityColor.default(qualityColor.enum.Disabled), //2
+  special4: qualityColor.default(qualityColor.enum.Disabled), //3
+  special5: qualityColor.default(qualityColor.enum.Disabled), //4
+  stars: AscendingLevels.default(AscendingLevels.enum[0]),    //5
+  dragon: z.boolean().default(false),                         //6
+  beast: z.boolean().default(false),                          //7
 })
 export type BuffParamsType = z.infer<typeof BuffParams>;
-
-export const BuffFilterReturn = z.discriminatedUnion("status", [
-  z.object({ status: z.literal("success"), data: BuffParams }),
-  z.object({ status: z.literal("error"),   error: z.string(),}),
-]);
-export type BuffFilterReturnType = z.infer<typeof BuffFilterReturn>;
 
 export const InvestmentOptionsSchema = z.array(z.union([qualityColor, AscendingLevels, z.boolean()])).length(8);
 export type InvestmentOptionsType = z.infer<typeof InvestmentOptionsSchema>;

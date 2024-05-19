@@ -27,6 +27,7 @@ import {
   Display,
   ExtendedGeneral,
   type ExtendedGeneralType,
+  ExtendedGeneralStatus,
   GeneralClass,
   type GeneralClassType,
   GeneralElement,
@@ -47,7 +48,7 @@ import {
   generalUseCase,
 } from "@schemas/index";
 
-const DEBUG = false;
+const DEBUG = true;
 
 import { BookIcon } from "@spectrum-web-components/icons-workflow";
 
@@ -131,39 +132,56 @@ if (dataV.success) {
   const pageGE = dataV.data;
   Astro.locals.addEG2EGS(pageGE.general)
   
-  const delayIterator = 1;
-  do {
-    Astro.locals.ExtendedGeneralMap.forEach((item) => {
-      if(!pageGE.general.name.localeCompare(item.general.name)) {
-        console.log(`found it ${item.computedBuffs.length}`)
-        Astro.locals.buffComputer(item.general.name);
-        Egeneral = item;
-        const EGV = ExtendedGeneral.safeParse(Egeneral)
-        if(!EGV.success) {
-          console.log(EGV.error.message)
-        }
-      }
-    })
-    delay(delayIterator*60)
-    if(DEBUG) console.log(`iteration ${delayIterator}`)
-  } while (
-    (Astro.locals.ExtendedGeneralMap.size === 0 ||
-    Egeneral!.computedBuffs.length === 0 )&&
-    delayIterator  < 100
-  )
-  if (DEBUG) console.log(`after dowhile ${Egeneral!.computedBuffs.length}`)
-
-  const EGV = ExtendedGeneral.safeParse(Egeneral!);
-  if (!EGV.success) {
-    console.log(`something very wrong`);
-    return Astro.redirect("/404");
-  } else {
-    if (DEBUG) console.log(`general validates after creation`);
+  
+  let iterationBreaker = 0;
+  while (
+    iterationBreaker < 60 &&
+    (Astro.locals.InvestmentOptions === undefined ||
+      Astro.locals.InvestmentOptions.size === 0 ||
+      Astro.locals.ExtendedGeneralMap === undefined ||
+      Astro.locals.ExtendedGeneralMap.size === 0
+    )
+  ) {
+    console.log(
+      `I have a problem initializing the middleware ${iterationBreaker}`
+    );
+    delay(60 * iterationBreaker++ );
   }
+
+  Egeneral = Astro.locals.ExtendedGeneralMap.get(pageGE.general.name);
+  
+  iterationBreaker = 0;
+  do {
+    if(DEBUG) {
+      console.log(`${Egeneral.general.name} is ${Egeneral.status}`)
+      console.log(`iteration ${iterationBreaker} waiting for complete`)
+    }
+    await Astro.locals.enrichGeneral(Egeneral.general.name);
+    delay(++iterationBreaker * 60)
+  }while(!Egeneral.status.localeCompare(ExtendedGeneralStatus.enum.complete) && iterationBreaker < 60) 
+  Astro.locals.buffComputer(Egeneral.general.name);
   const general = Egeneral!.general;
 
-  if (DEBUG) console.log(`created general ${Egeneral!.general.name}`);
+  if(Egeneral.computedBuffs.length > 0 ) {
+    EvAnsRank = await Astro.locals.EvAnsBuff(general.name, Display.enum.summary, [
+      qualityColor.enum.Gold,
+      qualityColor.enum.Gold,
+      qualityColor.enum.Gold,
+      qualityColor.enum.Gold,
+      qualityColor.enum.Disabled,
+      AscendingLevels.enum[10],
+      true,
+      true,
+    ])
+    if(DEBUG) {console.log(`got EvAnsRank ${EvAnsRank}`)}
+  } else {
+      console.log(`why is this empty now?` )
+  }
+      
 
+
+  if (DEBUG) console.log(`created general ${Egeneral!.general.name}`);
+  
   
 
   starsNum = +(general.stars ? general.stars : 0);
@@ -209,6 +227,7 @@ if (dataV.success) {
       }
     }
   }
+
   collectionArray = await getCollection("generalConflictData");
   if (collectionArray !== null && collectionArray !== undefined) {
     collectionArray = collectionArray.map((ca) => {
@@ -304,88 +323,12 @@ if (dataV.success) {
     }
   }
 
-  if (
-    Egeneral! !== undefined &&
-    general.books !== undefined &&
-    general.books !== null
-  ) {
-    await Promise.all(
-      general.books.map(async (b: string) => {
-        if (Egeneral !== null) {
-          const book: CollectionEntry<"skillBooks"> | undefined =
-            await getEntry("skillBooks", b);
-          if (book !== undefined) {
-            Egeneral.books.push(book.data);
-          } else {
-            console.log(`could not retrieve ${b}`);
-          }
-        } else {
-          console.log(`cannot push books to null Egeneral`);
-        }
-      })
-    );
-  } else {
-    console.log(`no general books`);
-  }
-
-  if (
-    Egeneral! !== undefined &&
-    Egeneral.general !== undefined &&
-    Array.isArray(Egeneral.general.specialities) &&
-    Egeneral.general.specialities.length > 0
-  ) {
-    await Promise.all(
-      Egeneral.general.specialities.map(async (s: string) => {
-        if (Egeneral !== null) {
-          const special: CollectionEntry<"specialities"> | undefined =
-            await getEntry("specialities", s);
-          if (special !== undefined) {
-            Egeneral.specialities.push(special.data);
-          } else {
-            console.log(`could not retrieve ${s}`);
-          }
-        } else {
-          console.log(`cannot push specials to null Egeneral`);
-        }
-      })
-    );
-  } else {
-    console.log(`no general specialities`);
-  }
-
-  if (Egeneral! !== undefined) {
-    if(Egeneral.computedBuffs.length > 0 ) {
-      EvAnsRank = await Astro.locals.EvAnsBuff(general.name, Display.enum.summary, [
-        qualityColor.enum.Gold,
-        qualityColor.enum.Gold,
-        qualityColor.enum.Gold,
-        qualityColor.enum.Gold,
-        qualityColor.enum.Disabled,
-        AscendingLevels.enum[10],
-        true,
-        true,
-      ])
-       
-    } else {
-        console.log(`why is this empty now?` )
-    }
-        
-  }
+  
 
   const generalSpecialsCount =
     Egeneral! !== undefined ? Egeneral.specialities.length : 0;
 
-  let iterationBreaker = 0;
-  while (
-    iterationBreaker < 60 &&
-    (Astro.locals.InvestmentOptions === undefined ||
-      Astro.locals.InvestmentOptions.size === 0)
-  ) {
-    console.log(
-      `I have a problem initializing the middleware ${iterationBreaker}`
-    );
-    delay(60 * iterationBreaker);
-  }
+  
 
   
 }

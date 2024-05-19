@@ -135,12 +135,19 @@ export const Covenant = z.object({
   "attributes": z.array(CovenantAttribute).optional(),
 })
 
+export const ExtendedGeneralStatus = z.enum([
+  'created',
+  'processing',
+  'complete'
+])
+export type ExtendedGeneralStatusType = z.infer<typeof ExtendedGeneralStatus>;
+
 export const ExtendedGeneral = z.object({
   general: GeneralClass,
   specialities: z.array(Speciality),
   books: z.array(z.union([Book, specialSkillBook,standardSkillBook])),
   computedBuffs: z.array(b.BuffParams),
-  complete: z.boolean().default(false),
+  status: ExtendedGeneralStatus.default(ExtendedGeneralStatus.enum.created),
 })
 
 export type ExtendedGeneralType = z.infer<typeof ExtendedGeneral>;
