@@ -38,13 +38,13 @@ import {
 
 import { setTimeout } from 'timers/promises'
 
-const DEBUG = true;
+const DEBUG = false;
 const DEBUG2 = false;
 const DEBUG3 = false;
 const DEBUGFilter = false;
 const DEBUGBaseN = false;
 
-import {arrayUniqueFilter} from '@lib/util'
+import { arrayUniqueFilter } from '@lib/util'
 
 export const DisplayGeneralsMWRoutes = ["/generals/"];
 
@@ -53,104 +53,46 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
 
   const re = /[\[\]'",]/g;
 
+  //define a bunch of functions almost like a class
+
+  const InvestmentOptions2Key = z.function()
+    .args(BuffParams)
+    .returns(z.string())
+    .implement((BP: BuffParamsType) => {
+      return JSON.stringify(BP).replace(re, '');
+    })
+
   DisplayGeneralsMWRoutes.map((route) => {
     if (url.pathname.startsWith(route)) {
       continueHandler = true;
     }
   });
-  //define a bunch of functions almost like a class
-
-  const filterInvestmentOptions = z
-    .function()
-    .args(z.string(), InvestmentOptionsSchema)
-    .returns(BuffParams.nullable())
-    .implement((myEGname: string, desired: InvestmentOptionsType) => {
-      const originalDesire = [...desired];
-
-      if (DEBUGFilter) console.log(`desired is ${JSON.stringify(desired)}`);
-
-      const myEG: ExtendedGeneralType = locals.ExtendedGeneralMap.get(myEGname);
-      if (DEBUGFilter) {
-        console.log(`filtering for ${desired}`)
-        console.log(`${myEGname} has ${myEG.computedBuffs.length} options`)
-        console.log(`looking for: ${JSON.stringify(myEG.computedBuffs)}`)
-      }
-      if (myEG !== undefined && myEG !== null && myEG.computedBuffs.length > 0) {
-        
-          const f2 = myEG.computedBuffs.filter((item) => {
-            if (!item.special1.localeCompare(desired[0] as string)) {
-              if (!item.special2.localeCompare(desired[1] as string)) {
-                if (!item.special3.localeCompare(desired[2] as string)) {
-                  if (!item.special4.localeCompare(desired[3] as string)) {
-                    if (!item.special5.localeCompare(desired[4] as string)) {
-                      if (!item.stars.localeCompare(desired[5] as string)) {
-                        if (item.dragon === desired[6]) {
-                          if (item.beast === desired[7]) {
-                            return true;
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-            return false
-          })
-          if (f2.length > 0) {
-            if (f2.length > 1) {
-              console.log(`found too many, ${f2.length}`)
-              if (DEBUGFilter) {
-                console.log(`found: ${JSON.stringify(f2)}`)
-              }
-              const r: BuffParamsType | undefined = f2.shift()
-              if (r !== undefined) {
-                return r;
-              }
-            } else {
-              const r: BuffParamsType | undefined = f2.shift()
-              if (r !== undefined) {
-                return r;
-              }
-            }
-          } else {
-            if (DEBUGFilter) { console.log(`f2 loop found nothing`) }
-          }
-        
-      } else {
-        if (DEBUGFilter) console.log(`${myEG.general.name} computed Buffs 0`);
-      }
-
-      return null;
-    });
-
+  
   //from https://www.evonyanswers.com/post/evony-answers-attribute-methodology-explanation
   const EvAnsBuff = z
     .function()
-    .args(z.string(), Display, InvestmentOptionsSchema)
+    .args(z.string(), Display, BuffParams)
     .returns(z.number())
-    .implement((name, display, IO) => {
+    .implement((name, display, BP: BuffParamsType) => {
 
       if (DEBUG) console.log(`EvAnsBuff starting for ${name}`)
       const eg: ExtendedGeneralType = locals.ExtendedGeneralMap.get(name)
       const gc = eg.general;
 
       if (!eg.status.localeCompare(ExtendedGeneralStatus.enum.complete)) {
-        console.log(`called early!`)
+        if (DEBUG) { console.log(`called early!`) }
         return -6;
       }
 
-      if (!display.localeCompare(Display.enum.assistant)) {
-        IO[5] = AscendingLevels.enum[0];
-      }
-
-      const BPv: BuffParamsType | null = filterInvestmentOptions(name, IO)
-      let BP: BuffParamsType;
-      if (BPv !== null) {
-        BP = BPv;
-      } else {
-        console.log(`BPv: ${JSON.stringify(BPv)}`)
-        return -5;
+      const _BP: BuffParamsType = {
+        special1: BP.special1,
+        special2: BP.special2,
+        special3: BP.special3,
+        special4: BP.special4,
+        special5: BP.special5,
+        stars: (display.localeCompare(Display.enum.assistant)) ? BP.stars : AscendingLevels.enum[0],
+        dragon: BP.dragon,
+        beast: BP.beast,
       }
 
       //https://evonyguidewiki.com/en/general-cultivate-en/#Relationship_between_Stats_value_Buff_value explains the attribute to buff relationship.
@@ -232,71 +174,6 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
       );
     });
 
-  const buffComputer = z
-    .function()
-    .args(z.string())
-    .returns(z.void())
-    .implement((name) => {
-      if (DEBUG)
-        console.log(
-          `buffComputer for ${name}, InvestmentOptions size ${locals.InvestmentOptions.size}`
-        );
-      const item: ExtendedGeneralType = locals.ExtendedGeneralMap.get(name)
-
-      if (!item.general.name.localeCompare(name)) {
-        if (item.computedBuffs.length > 0) {
-          if (DEBUG) { 
-            console.log(`buffComputer ${name} returning early, this is done `) 
-            console.log(`buffComputer ${name} detected ${item.computedBuffs.length}`)
-
-          }
-          return;
-        }
-        const general = item.general;
-        if (Array.isArray(item.specialities)) {
-          for (const IO of locals.InvestmentOptions) {
-            const v1 = InvestmentOptionsSchema.safeParse(IO[1]);
-            if (v1.success) {
-              if (DEBUG3) console.log(`I have a valid IO`);
-              const thisOption: InvestmentOptionsType = v1.data;
-
-              const BP: BuffParamsType = {
-                special1: qualityColor.parse(thisOption[0]),
-                special2: qualityColor.parse(thisOption[1]),
-                special3: qualityColor.parse(thisOption[2]),
-                special4: qualityColor.parse(thisOption[3]),
-                special5: qualityColor.parse(thisOption[4]),
-                stars: AscendingLevels.parse(thisOption[5]),
-                dragon: z.boolean().parse(thisOption[6]),
-                beast: z.boolean().parse(thisOption[7]),
-              };
-
-              if (!BP.special5.localeCompare(qualityColor.enum.Disabled)) {
-                if (item.specialities.length < 5) {
-                  item.computedBuffs.push(BP)
-                  continue;
-                }
-                if (!BP.special4.localeCompare(qualityColor.enum.Disabled)) {
-                  if (item.specialities.length < 4) {
-                    item.computedBuffs.push(BP)
-                    continue;
-                  }
-                }
-              }
-              item.computedBuffs.push(BP)
-            } else {
-              console.log(
-                `Invalid InvestmentOption in Set ${JSON.stringify(IO)}`
-              );
-              console.log(`buffComputer ${JSON.stringify(v1.error.message)}`);
-            }
-          }
-        }
-        if (DEBUG3) console.log(`returning data size ${item.computedBuffs.length}`);
-      }
-
-    });
-
   const enrichGeneral = z
     .function()
     .args(z.string())
@@ -309,11 +186,11 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
       if (entry === undefined || entry === null) {
         return false;
       } else {
-        if(!entry.status.localeCompare(ExtendedGeneralStatus.enum.complete)) {
-          if(DEBUG) {console.log(`called when already complete`)}
+        if (!entry.status.localeCompare(ExtendedGeneralStatus.enum.complete)) {
+          if (DEBUG) { console.log(`called when already complete`) }
           return true
-        } else if(!entry.status.localeCompare(ExtendedGeneralStatus.enum.processing)) {
-          if(DEBUG) {console.log(`called while still processing`)}
+        } else if (!entry.status.localeCompare(ExtendedGeneralStatus.enum.processing)) {
+          if (DEBUG) { console.log(`called while still processing`) }
           return false;
         }
         entry.status = ExtendedGeneralStatus.enum.processing;
@@ -327,7 +204,7 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
               if (sC !== undefined) {
                 const v = Speciality.safeParse(sC.data);
                 if (v.success) {
-                  if(DEBUG) { console.log(`enrichGeneral ${gn}: pushing ${v.data.name}`)}
+                  if (DEBUG) { console.log(`enrichGeneral ${gn}: pushing ${v.data.name}`) }
                   entry.specialities.push(v.data);
                 } else {
                   console.log(`failed to get ${special} for ${entry.general.name}`);
@@ -335,7 +212,7 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
                 }
               }
             })
-            
+
           );
           if (entry.general.specialities.length !== entry.general.specialities.length) {
             console.log(
@@ -372,7 +249,6 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
         }
 
         if (success) {
-          buffComputer(entry.general.name);
           entry.status = ExtendedGeneralStatus.enum.complete;
         } else {
           console.log(`failed to set buffs`);
@@ -447,10 +323,6 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
       locals.addEG2EGS = addEG2EGS;
     }
 
-    if (locals.buffComputer === undefined) {
-      locals.buffComputer = buffComputer;
-    }
-
     if (locals.enrichGeneral === undefined) {
       locals.enrichGeneral = enrichGeneral;
     }
@@ -459,90 +331,10 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
       locals.EvAnsBuff = EvAnsBuff;
     }
 
-    if (locals.filterInvestmentOptions === undefined) {
-      locals.filterInvestmentOptions = filterInvestmentOptions;
+    if (locals.InvestmentOptions2Key === undefined) {
+      locals.InvestmentOptions2Key = InvestmentOptions2Key;
     }
 
-    if (locals.InvestmentOptions.size === 0) {
-      const ColorBaseN = new BaseN(qualityColor.options, 5);
-      [...ColorBaseN]
-        .filter((ca) => {
-          if (ca[4].localeCompare(qualityColor.enum.Disabled)) {
-            if (DEBUGBaseN) { console.log(`1it; ${ca[4]};`) }
-            if (
-              !ca[0].localeCompare(qualityColor.enum.Gold) &&
-              !ca[1].localeCompare(qualityColor.enum.Gold) &&
-              !ca[2].localeCompare(qualityColor.enum.Gold) &&
-              !ca[3].localeCompare(qualityColor.enum.Gold)
-            ) {
-              return true
-            } else {
-              return false;
-            }
-          } else {
-            if (DEBUGBaseN) { console.log(`1ie; ${ca[4]};`) }
-            if (ca[3].localeCompare(qualityColor.enum.Disabled)) {
-              if (DEBUGBaseN) { console.log(`2it; ${ca[3]};`) }
-              if (
-                !ca[0].localeCompare(qualityColor.enum.Gold) &&
-                !ca[1].localeCompare(qualityColor.enum.Gold) &&
-                !ca[2].localeCompare(qualityColor.enum.Gold)
-              ) {
-                return true
-              } else {
-                return false;
-              }
-            } else {
-              if (DEBUGBaseN) { console.log(`2ie; ${ca[3]};`) }
-              if (!ca[3].localeCompare(qualityColor.enum.Disabled)) {
-                if (DEBUGBaseN) { console.log(`3it; ${ca[3]}, ${ca[4]};`) }
-                if (
-                  !ca[3].localeCompare(qualityColor.enum.Disabled) &&
-                  !ca[4].localeCompare(qualityColor.enum.Disabled)
-                ) {
-                  return true
-                } else {
-                  return false;
-                }
-              }
-            }
-          }
-
-          if (DEBUGBaseN) { console.log(`----\n\n`) }
-          return false;
-        })
-        .map((ca) => {
-          const alMap = AscendingLevels.options.map((al) => {
-            const mv = z.array(InvestmentOptionsSchema).safeParse([
-              [...ca, al, false, false],
-              [...ca, al, true, false],
-              [...ca, al, false, true],
-              [...ca, al, true, true], //needed for summary pages even though no one can have both
-            ]);
-            if (mv.success) {
-              if (DEBUGBaseN) console.log(`alMap returning ${JSON.stringify(mv.data)}`)
-              return mv.data
-            } else {
-              console.log(`built the returning array badly in alMap`)
-            }
-          });
-          return alMap.flat();
-        })
-        .flat().filter(arrayUniqueFilter)
-        .map((item) => {
-          if (DEBUGBaseN) { console.log(`adding ${JSON.stringify(item)}`) }
-          const re = /[\[\]'",]/g;
-          const tk = JSON.stringify(item).replaceAll(re, '');
-          if (DEBUGBaseN) { console.log(`key is \\${tk}`) }
-          if (!locals.InvestmentOptions.has(tk)) {
-            locals.InvestmentOptions.set(tk, item);
-          }
-        });
-      if (DEBUG)
-        console.log(
-          `ca after filtering, ${locals.InvestmentOptions.size} options left`
-        );
-    }
   };
 
   //end of function definitions

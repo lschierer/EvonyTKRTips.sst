@@ -136,9 +136,7 @@ if (dataV.success) {
   let iterationBreaker = 0;
   while (
     iterationBreaker < 60 &&
-    (Astro.locals.InvestmentOptions === undefined ||
-      Astro.locals.InvestmentOptions.size === 0 ||
-      Astro.locals.ExtendedGeneralMap === undefined ||
+    ( Astro.locals.ExtendedGeneralMap === undefined ||
       Astro.locals.ExtendedGeneralMap.size === 0
     )
   ) {
@@ -159,26 +157,19 @@ if (dataV.success) {
     await Astro.locals.enrichGeneral(Egeneral.general.name);
     delay(++iterationBreaker * 60)
   }while(!Egeneral.status.localeCompare(ExtendedGeneralStatus.enum.complete) && iterationBreaker < 60) 
-  Astro.locals.buffComputer(Egeneral.general.name);
+  
   const general = Egeneral!.general;
-
-  if(Egeneral.computedBuffs.length > 0 ) {
-    EvAnsRank = await Astro.locals.EvAnsBuff(general.name, Display.enum.summary, [
-      qualityColor.enum.Gold,
-      qualityColor.enum.Gold,
-      qualityColor.enum.Gold,
-      qualityColor.enum.Gold,
-      qualityColor.enum.Disabled,
-      AscendingLevels.enum[10],
-      true,
-      true,
-    ])
-    if(DEBUG) {console.log(`got EvAnsRank ${EvAnsRank}`)}
-  } else {
-      console.log(`why is this empty now?` )
-  }
-      
-
+  EvAnsRank = await Astro.locals.EvAnsBuff(general.name, Display.enum.summary, {
+    special1: qualityColor.enum.Gold,
+    special2: qualityColor.enum.Gold,
+    special3: qualityColor.enum.Gold,
+    special4: qualityColor.enum.Gold,
+    special5: qualityColor.enum.Disabled,
+    stars: AscendingLevels.enum[10],
+    dragon: true,
+    beast: true,
+  })
+  if(DEBUG) {console.log(`got EvAnsRank ${EvAnsRank}`)}
 
   if (DEBUG) console.log(`created general ${Egeneral!.general.name}`);
   
