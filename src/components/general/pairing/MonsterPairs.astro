@@ -60,13 +60,8 @@ if (generalObjects !== null && generalObjects !== undefined) {
   allGeneralsJson = JSON.stringify(allGenerals);
   allGenerals.map(async(g) => {
     if (DEBUG) console.log(`adding ${g.general.name}`)
-    //remove this later
-    if(
-      g.general.name.includes('M') ||
-      g.general.name.includes('A')
-    ) {
-      Astro.locals.addEG2EGS(g.general);
-    }
+    Astro.locals.addEG2EGS(g.general);
+    
     await Astro.locals.enrichGeneral(g.general.name)
     .then(() => {
       if(DEBUG) {
