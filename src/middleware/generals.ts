@@ -24,8 +24,7 @@ import {
   GeneralClass,
   generalSpecialists,
   generalUseCase,
-  InvestmentOptionsSchema,
-  type InvestmentOptionsType,
+
   qualityColor,
   Speciality,
   specialSkillBook,
@@ -38,11 +37,8 @@ import {
 
 import { setTimeout } from 'timers/promises'
 
-const DEBUG = false;
-const DEBUG2 = false;
-const DEBUG3 = false;
-const DEBUGFilter = false;
-const DEBUGBaseN = false;
+const DEBUG = true;
+
 
 import { arrayUniqueFilter } from '@lib/util'
 
@@ -79,8 +75,8 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
       const eg: ExtendedGeneralType = locals.ExtendedGeneralMap.get(name)
       const gc = eg.general;
 
-      if (!eg.status.localeCompare(ExtendedGeneralStatus.enum.complete)) {
-        if (DEBUG) { console.log(`called early!`) }
+      if (eg.status.localeCompare(ExtendedGeneralStatus.enum.complete)) {
+        if (DEBUG) { console.log(`called early for ${name} status is ${eg.status}`) }
         return -6;
       }
 
@@ -249,22 +245,24 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
         }
 
         if (success) {
+          if (DEBUG) {
+            console.log(`enrichGeneral for ${gn} complete with status ${success}`)
+          }
           entry.status = ExtendedGeneralStatus.enum.complete;
+          if (DEBUG) {
+            console.log(`enrichGeneral work done for ${gn}`)
+            console.log(`specials: ${entry.specialities.length}`)
+            console.log(`books: ${entry.books.length}`)
+            console.log(`computedBuffs: ${entry.computedBuffs.length}`)
+            console.log(`status: ${entry.status}`)
+          }
+          return success;
         } else {
           console.log(`failed to set buffs`);
           return false;
         }
-        if (DEBUG) {
-          console.log(`enrichGeneral work done for ${gn}`)
-          console.log(`specials: ${entry.specialities.length}`)
-          console.log(`books: ${entry.books.length}`)
-          console.log(`computedBuffs: ${entry.computedBuffs.length}`)
-        }
-        if (DEBUG) {
-          console.log(`enrichGeneral for ${gn} complete with status ${success}`)
-        }
       }
-      return success
+      return false
     })
 
 
@@ -315,10 +313,7 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
       locals.ExtendedGeneralMap = new d3.InternMap<string, ExtendedGeneralType>();
     }
 
-    if (locals.InvestmentOptions === undefined) {
-      locals.InvestmentOptions = new d3.InternMap<string, InvestmentOptionsType>();
-    }
-
+    
     if (locals.addEG2EGS === undefined) {
       locals.addEG2EGS = addEG2EGS;
     }

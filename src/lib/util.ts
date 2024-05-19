@@ -1,3 +1,5 @@
+import { setTimeout } from 'timers/promises'
+
 /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
 export function isEmpty(obj: Record<string, any>): boolean {
     return Object.keys(obj).length === 0 && obj.constructor === Object;
@@ -35,3 +37,4 @@ export function arrayDifference(a: T[], b: T[]) {
 export function arrayUniqueFilter(value: any, index: number, self: any[]) { // eslint-disable-line
     return self.indexOf(value) === index;
 }
+

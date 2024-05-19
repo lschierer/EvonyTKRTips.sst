@@ -204,6 +204,4 @@ export const BuffParams = z.object({
 })
 export type BuffParamsType = z.infer<typeof BuffParams>;
 
-export const InvestmentOptionsSchema = z.array(z.union([qualityColor, AscendingLevels, z.boolean()])).length(8);
-export type InvestmentOptionsType = z.infer<typeof InvestmentOptionsSchema>;
 

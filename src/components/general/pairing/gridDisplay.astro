@@ -3,7 +3,7 @@ export const prerender = false;
 
 import { z } from "astro:content";
 
-import { delay } from "nanodelay";
+import { FixedWidthParser } from 'fixed-width-parser';
 
 import "@spectrum-css/vars/dist/spectrum-global.css";
 import "@spectrum-css/vars/dist/spectrum-medium.css";
@@ -12,8 +12,10 @@ import "@spectrum-css/table/dist/index.css";
 import "@spectrum-css/icon/dist/index.css";
 import "@spectrum-css/ui-icons/dist/medium/Arrow100.svg";
 
+import { delay } from 'nanodelay'
+
+
 import {
-  type BuffFilterReturnType,
   BuffParams,
   type BuffParamsType,
   ExtendedGeneral,
@@ -23,22 +25,22 @@ import {
   type GeneralPairType,
   GeneralClass,
   generalUseCase,
-  type InvestmentOptionsType,
   qualityColor,
   AscendingLevels,
   type ExtendedGeneralType,
 Display,
+ExtendedGeneralStatus,
 } from "@schemas/index";
 
-import { DisplayGeneral, DisplayPair } from "./displayGeneral";
+import GridRow from './gridRow.astro';
 
 interface Props {
   name: string;
-  InvestmentLevel: InvestmentOptionsType;
+  InvestmentLevel: BuffParamsType;
   class?: string;
 }
 
-const DEBUG = false;
+const DEBUG = true;
 
 const { name, InvestmentLevel } = Astro.props;
 
@@ -52,8 +54,6 @@ type sortDirectionType = z.infer<typeof sortDirectionOptions>;
 
 let sortBy: sortByOptionsType = sortByOptions.enum.primary;
 let sortDirection: sortDirectionType = sortDirectionOptions.enum.decending;
-
-const pairs: Set<DisplayPair> = new Set<DisplayPair>();
 
 let sortPrimaryInput: boolean | sortDirectionType | null = false;
 let sortSecondaryInput: boolean | sortDirectionType | null = false;
@@ -114,76 +114,32 @@ if (Astro.request.method === "POST") {
   }
 }
 
-const sortPairsByPrimary = (a: DisplayPair, b: DisplayPair): number => {
-  const one = a.primary.general.name;
-  const two = b.primary.general.name;
-  return one
-    .toLocaleLowerCase(undefined)
-    .localeCompare(two.toLocaleLowerCase(undefined), undefined, {
-      sensitivity: "base",
-    });
-};
 
-const sortPairsBySecondary = (a: DisplayPair, b: DisplayPair) => {
-  const one = a.secondary.general.name;
-  const two = b.secondary.general.name;
-  return one
-    .toLocaleLowerCase(undefined)
-    .localeCompare(two.toLocaleLowerCase(undefined), undefined, {
-      sensitivity: "base",
-    });
-};
 
-const sortPairsByEvAnsRank = (a: DisplayPair, b: DisplayPair) => {
-  if (a.EvAnsRanking === b.EvAnsRanking) {
-    return 0;
-  } else if (a.EvAnsRanking < b.EvAnsRanking) {
-    return -1;
-  }
-  return 1;
-};
 
-const sortPairSelector: Record<
-  sortByOptionsType,
-  (a: DisplayPair, b: DisplayPair) => number
-> = {
-  [sortByOptions.enum.primary]: sortPairsByPrimary,
-  [sortByOptions.enum.secondary]: sortPairsBySecondary,
-  [sortByOptions.enum.EvAnsRank]: sortPairsByEvAnsRank,
-};
-
-const sortPairFunction = (a: DisplayPair, b: DisplayPair) => {
-  if (a === undefined) {
-    if (b === undefined) {
-      return 0;
-    } else {
-      return 1;
-    }
-  } else {
-    if (b === undefined) {
-      return -1;
-    }
-    if (sortDirection === sortDirectionOptions.enum.decending) {
-      return sortPairSelector[sortBy](a, b);
-    }
-    return sortPairSelector[sortBy](b, a);
-  }
-};
-if (DEBUG) console.log(`# locals Generals: ${Astro.locals.ExtendedGeneralMap.size}`);
-if (DEBUG)
-  console.log(
-    `# locals InvestmentOptions: ${Astro.locals.InvestmentOptions.size}`
-  );
+if (DEBUG) {
+  console.log(`# locals Generals: ${Astro.locals.ExtendedGeneralMap.size}`);
+  
+}
+  
+const pairs = Array<GeneralPairType>();
 
 if (Astro.locals.ExtendedGeneralMap.size > 0) {
   for await (const eg1 of Astro.locals.ExtendedGeneralMap.values()) {
+    if(eg1 === undefined || eg1 === null) {
+      continue;
+    } else if (eg1.general === undefined || eg1.general === null ) {
+      continue;
+    }
     if(DEBUG) console.log(`eg1 is ${eg1.general.name}`)
     const pairsData = new Array<GeneralPairType>();
-    const dp1 = new DisplayGeneral(eg1.general, myUrl);
+    
     const pairUrl = new URL(
       `/generalPairs/${eg1.general.name}-${eg1.general.score_as}.json`,
       Astro.url
     );
+    
+    if(DEBUG) {console.log(`about to fetch ${pairUrl}`)}
     const response = await fetch(pairUrl);
     if (response !== null && response.ok) {
       const jr: Array<GeneralPairType> = await response.json();
@@ -203,40 +159,14 @@ if (Astro.locals.ExtendedGeneralMap.size > 0) {
         console.log(`pairsdata: ${pairsData.length}`)
       }
       pairsData.forEach((pi) => {
-        for (const eg2 of Astro.locals.ExtendedGeneralMap.values()) {
-          if(!pi.secondary.localeCompare(eg2.general.name)) {
-            const dp2 = new DisplayGeneral(eg2.general, myUrl);
-            const dbPair = new DisplayPair(dp1, dp2);
-            pairs.add(dbPair)
-          }
-        }
+        pairs.push(pi);
       })
     }
   };
 }
 
-let pairArray = [...pairs].sort(sortPairFunction);
+//let pairArray = [...pairs].sort(sortPairFunction);
 
-pairArray = pairArray.map((pair) => {
-  pair.primary.EvAnsRanking = 1;
-  pair.secondary.EvAnsRanking = 2;
-
-  for (const actionable of Astro.locals.ExtendedGeneralMap.values()) {
-    if(!actionable.general.name.localeCompare(pair.primary.general.name)) {
-      const r = Astro.locals.EvAnsBuff(actionable.general.name, Display.enum.primary,InvestmentLevel)
-      if(DEBUG) console.log(`got ${r} as Ranking for primary ${actionable.general.name}`)
-      pair.primary.EvAnsRanking = r;
-    }
-    if(!actionable.general.name.localeCompare(pair.secondary.general.name)) {
-       let assistInvest = InvestmentLevel;
-       assistInvest[5] = AscendingLevels.enum[10];
-       const r = Astro.locals.EvAnsBuff(actionable.general.name, Display.enum.assistant, assistInvest)
-       if(DEBUG) console.log(`got ${r} as Ranking for secondary ${actionable.general.name}`)
-       pair.secondary.EvAnsRanking = r;
-    }
-  }
-  return pair;
-})
 
 ---
 
@@ -290,25 +220,16 @@ pairArray = pairArray.map((pair) => {
 
         <div class="spectrum-Table-body" role="rowgroup">
           {
-            pairArray.length > 0 &&
-              pairArray.map(
-                (pi, index) =>
-                  pi && (
-                    <div class="spectrum-Table-row" role="rowgroup">
-                      <div class="spectrum-Table-cell" role="cell">
-                        {index}
-                      </div>
-                      <div class="spectrum-Table-cell" role="cell">
-                        {pi.primary.general.name}
-                      </div>
-                      <div class="spectrum-Table-cell" role="cell">
-                        {pi.secondary.general.name}
-                      </div>
-                      <div class="spectrum-Table-cell" role="cell">
-                        {pi.EvAnsRanking}
-                      </div>
-                    </div>
-                  )
+            pairs.length > 0 &&
+              pairs.map(
+                (pi, index) => (
+                  <GridRow
+                    index={index}
+                    primary={pi.primary} 
+                    secondary={pi.secondary} 
+                    InvestmentLevel={InvestmentLevel}
+                  ></GridRow>
+                )
               )
           }
         </div>
