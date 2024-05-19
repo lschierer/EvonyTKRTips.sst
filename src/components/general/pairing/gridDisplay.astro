@@ -101,9 +101,25 @@ if (Astro.request.method === "POST") {
           sortSecondaryValue = sortDirectionOptions.enum.ascending;
         }
       }
+      if(sortEvAnsRankInput === false) {
+        //not previously sorted by EvAnsRank
+        const v = sortDirectionOptions.safeParse(data.get("EvAnsRank"));
+        if (v.success) {
+          
+          if(DEBUG) { console.log(`sortEvAnsRankInput was false, is now ${v.data}`)}
+          sortEvAnsRankInput = true;
+          sortBy = sortByOptions.enum.EvAnsRank;
+          sortDirection = v.data;
+          if(sortDirection === sortDirectionOptions.enum.ascending) {
+            sortSecondaryValue = sortDirectionOptions.enum.decending;
+          } else {
+            sortSecondaryValue = sortDirectionOptions.enum.ascending;
+          }
+        }
+      }
     } else {
       if (DEBUG)
-        console.log(`values are ${sortPrimaryInput} and ${sortSecondaryInput}`);
+        console.log(`values are ${sortPrimaryInput}  ${sortSecondaryInput} ${sortEvAnsRankInput}`);
     }
   } catch (error) {
     if (DEBUG) console.log(`executing POST catch block`);
@@ -165,7 +181,62 @@ if (Astro.locals.ExtendedGeneralMap.size > 0) {
   };
 }
 
-//let pairArray = [...pairs].sort(sortPairFunction);
+const sortPairsByPrimary = (a:GeneralPairType, b:GeneralPairType): number => {
+  return (a.primary.localeCompare(b.primary, undefined, {sensitivity: 'base'}))
+}
+
+const sortPairsBySecondary = (a:GeneralPairType, b:GeneralPairType): number => {
+  return (a.secondary.localeCompare(b.secondary, undefined, {sensitivity: 'base'}))
+}
+
+const sortPairsByEvAnsRank = (a:GeneralPairType, b:GeneralPairType): number => {
+  const apr = Astro.locals.EvAnsBuff(a.primary, Display.enum.primary, InvestmentLevel)
+  const bpr = Astro.locals.EvAnsBuff(b.primary, Display.enum.primary, InvestmentLevel)
+  const asr = Astro.locals.EvAnsBuff(a.secondary, Display.enum.assistant, InvestmentLevel)
+  const bsr = Astro.locals.EvAnsBuff(b.secondary, Display.enum.assistant, InvestmentLevel)
+  if(DEBUG) {
+    console.log(`a.primary: ${a.primary}: ${apr}`)
+    console.log(`a.secondary: ${a.secondary}: ${asr}`)
+    console.log(`b.primary: ${b.primary}: ${bpr}`)
+    console.log(`b.secondary: ${b.secondary}: ${bsr}`)
+  }
+  if((apr +asr) === (bpr + bsr)) {
+    return 0
+  } else if ((apr +asr) < (bpr + bsr)) {
+    return -1
+  } else {
+    return 1
+  }
+}
+
+const sortPairSelector: Record<sortByOptionsType, (a:GeneralPairType, b:GeneralPairType) => number> = {
+  [sortByOptions.enum.primary]: sortPairsByPrimary,
+  [sortByOptions.enum.secondary]: sortPairsBySecondary,
+  [sortByOptions.enum.EvAnsRank]: sortPairsByEvAnsRank,
+}
+
+const sortPairFunction = (a:GeneralPairType, b:GeneralPairType) => {
+  if(DEBUG) {
+    console.log(`sortBy: ${sortBy}`)
+  }
+  if(a === undefined) {
+    if(b === undefined) {
+      return 0;
+    } else {
+      return 1;
+    }
+  } else if (b === undefined) {
+    return -1
+  } else {
+    if(!sortDirection.localeCompare(sortDirectionOptions.enum.decending)) {
+      return sortPairSelector[sortBy](a, b);
+    } else {
+      return sortPairSelector[sortBy](b, a);
+    }
+  }
+}
+
+let pairArray = [...pairs].sort(sortPairFunction);
 
 
 ---
@@ -220,8 +291,8 @@ if (Astro.locals.ExtendedGeneralMap.size > 0) {
 
         <div class="spectrum-Table-body" role="rowgroup">
           {
-            pairs.length > 0 &&
-              pairs.map(
+            pairArray.length > 0 &&
+            pairArray.map(
                 (pi, index) => (
                   <GridRow
                     index={index}
