@@ -9,7 +9,7 @@ declare namespace App {
     InvestmentOptions: d3.InternMap<string, InvestmentOptionsType>,
     addEG2EGS: function (GeneralClass): void,
     enrichGeneral: function (string): Promise<boolean>,
-    EvAnsBuff: function (GeneralClass, Display, BuffParams): number ,
+    EvAnsBuff: function (string, Display, BuffParams): number ,
     InvestmentOptions2Key: function(BuffParamsType): string,
   }
 }
