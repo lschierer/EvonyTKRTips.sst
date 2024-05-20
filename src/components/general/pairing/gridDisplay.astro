@@ -49,20 +49,20 @@ const myUrl = Astro.url;
 const sortByOptions = z.enum(["primary", "secondary", "EvAnsRank"]);
 type sortByOptionsType = z.infer<typeof sortByOptions>;
 
-const sortDirectionOptions = z.enum(["ascending", "decending"]);
+const sortDirectionOptions = z.enum(["ascending", "descending"]);
 type sortDirectionType = z.infer<typeof sortDirectionOptions>;
 
 let sortBy: sortByOptionsType = sortByOptions.enum.primary;
-let sortDirection: sortDirectionType = sortDirectionOptions.enum.decending;
+let sortDirection: sortDirectionType = sortDirectionOptions.enum.descending;
 
 let sortPrimaryInput: boolean | sortDirectionType | null = false;
 let sortSecondaryInput: boolean | sortDirectionType | null = false;
 
-let sortPrimaryValue: sortDirectionType = sortDirectionOptions.enum.decending;
-let sortSecondaryValue: sortDirectionType = sortDirectionOptions.enum.decending;
+let sortPrimaryValue: sortDirectionType = sortDirectionOptions.enum.descending;
+let sortSecondaryValue: sortDirectionType = sortDirectionOptions.enum.descending;
 
 let sortEvAnsRankInput: boolean | sortDirectionType | null = false;
-let sortEvAnsRankValue: sortDirectionType = sortDirectionOptions.enum.decending;
+let sortEvAnsRankValue: sortDirectionType = sortDirectionOptions.enum.descending;
 
 if (Astro.request.method === "POST") {
   try {
@@ -74,10 +74,12 @@ if (Astro.request.method === "POST") {
       if (v.success) {
         if (DEBUG) console.log(`sortPrimaryInput was false, is now ${v.data}`);
         sortPrimaryInput = true;
+        sortSecondaryInput = false;
+        sortEvAnsRankInput = false;
         sortBy = sortByOptions.enum.primary;
         sortDirection = v.data;
         if (sortDirection === sortDirectionOptions.enum.ascending) {
-          sortPrimaryValue = sortDirectionOptions.enum.decending;
+          sortPrimaryValue = sortDirectionOptions.enum.descending;
         } else {
           sortPrimaryValue = sortDirectionOptions.enum.ascending;
         }
@@ -93,10 +95,12 @@ if (Astro.request.method === "POST") {
         if (DEBUG)
           console.log(`sortSecondaryInput was false, is now ${v.data}`);
         sortSecondaryInput = true;
+        sortPrimaryInput = false;
+        sortEvAnsRankInput = false;
         sortBy = sortByOptions.enum.secondary;
         sortDirection = v.data;
         if (sortDirection === sortDirectionOptions.enum.ascending) {
-          sortSecondaryValue = sortDirectionOptions.enum.decending;
+          sortSecondaryValue = sortDirectionOptions.enum.descending;
         } else {
           sortSecondaryValue = sortDirectionOptions.enum.ascending;
         }
@@ -108,12 +112,14 @@ if (Astro.request.method === "POST") {
           
           if(DEBUG) { console.log(`sortEvAnsRankInput was false, is now ${v.data}`)}
           sortEvAnsRankInput = true;
+          sortPrimaryInput = false;
+          sortSecondaryInput = false;
           sortBy = sortByOptions.enum.EvAnsRank;
           sortDirection = v.data;
           if(sortDirection === sortDirectionOptions.enum.ascending) {
-            sortSecondaryValue = sortDirectionOptions.enum.decending;
+            sortEvAnsRankValue = sortDirectionOptions.enum.descending;
           } else {
-            sortSecondaryValue = sortDirectionOptions.enum.ascending;
+            sortEvAnsRankValue = sortDirectionOptions.enum.ascending;
           }
         }
       }
@@ -192,17 +198,19 @@ const sortPairsBySecondary = (a:GeneralPairType, b:GeneralPairType): number => {
 const sortPairsByEvAnsRank = (a:GeneralPairType, b:GeneralPairType): number => {
   const apr = Astro.locals.EvAnsBuff(a.primary, Display.enum.primary, InvestmentLevel)
   const bpr = Astro.locals.EvAnsBuff(b.primary, Display.enum.primary, InvestmentLevel)
+  
   const asr = Astro.locals.EvAnsBuff(a.secondary, Display.enum.assistant, InvestmentLevel)
   const bsr = Astro.locals.EvAnsBuff(b.secondary, Display.enum.assistant, InvestmentLevel)
+
+  const apt = (apr + asr)
+  const bpt = (bpr + bsr)
   if(DEBUG) {
-    console.log(`a.primary: ${a.primary}: ${apr}`)
-    console.log(`a.secondary: ${a.secondary}: ${asr}`)
-    console.log(`b.primary: ${b.primary}: ${bpr}`)
-    console.log(`b.secondary: ${b.secondary}: ${bsr}`)
+    console.log(`a.primary: ${a.primary}: ${apr}\ta.secondary: ${a.secondary}: ${asr}\ta: ${apt}`)
+    console.log(`b.primary: ${b.primary}: ${bpr}\tb.secondary: ${b.secondary}: ${bsr}\tb: ${bpt}`)
   }
-  if((apr +asr) === (bpr + bsr)) {
+  if(apt === bpt) {
     return 0
-  } else if ((apr +asr) < (bpr + bsr)) {
+  } else if (apt < bpt) {
     return -1
   } else {
     return 1
@@ -228,7 +236,7 @@ const sortPairFunction = (a:GeneralPairType, b:GeneralPairType) => {
   } else if (b === undefined) {
     return -1
   } else {
-    if(!sortDirection.localeCompare(sortDirectionOptions.enum.decending)) {
+    if(!sortDirection.localeCompare(sortDirectionOptions.enum.descending)) {
       return sortPairSelector[sortBy](a, b);
     } else {
       return sortPairSelector[sortBy](b, a);
@@ -257,7 +265,7 @@ let pairArray = [...pairs].sort(sortPairFunction);
             <div
               class:list={["spectrum-Table-headCell", "is-sortable"]}
               role="columnheader"
-              aria-sort="descending"
+              aria-sort={sortDirection}
               tabindex="0"
             >
               <button type="submit" name="pGeneral" value={sortPrimaryValue}>
