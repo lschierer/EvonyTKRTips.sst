@@ -12,6 +12,7 @@ import { BaseN } from "js-combinatorics";
 import * as d3 from 'd3'
 
 import {
+  Attribute,
   AscendingLevels,
   Book,
   BuffParams,
@@ -35,7 +36,7 @@ import {
   type standardSkillBookType,
 } from "@schemas/index";
 
-import { setTimeout } from 'timers/promises'
+import * as EvAnsAttributes from '@lib/EvAnsAttributeRanking';
 
 const DEBUG = false;
 
@@ -141,6 +142,11 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
                         )
                       ) {
                         if (tb.attribute !== undefined) {
+                          if(!tb.attribute.localeCompare(Attribute.enum.Attack)){
+                            if(!gc.score_as.localeCompare(generalSpecialists.enum.Mounted)){
+                              
+                            }
+                          }
                         }
                       }
                     }
