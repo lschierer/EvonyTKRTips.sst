@@ -9,7 +9,7 @@ import {
 
 import { BaseN } from "js-combinatorics";
 
-import * as d3 from 'd3'
+import * as d3 from "d3";
 
 import {
   Attribute,
@@ -17,7 +17,6 @@ import {
   Book,
   BuffParams,
   type BuffParamsType,
-
   Display,
   ExtendedGeneral,
   type ExtendedGeneralType,
@@ -25,7 +24,6 @@ import {
   GeneralClass,
   generalSpecialists,
   generalUseCase,
-
   qualityColor,
   Speciality,
   specialSkillBook,
@@ -36,12 +34,11 @@ import {
   type standardSkillBookType,
 } from "@schemas/index";
 
-import {EvAnsScoreComputer} from './EvAnsScoreComputer';
+import { EvAnsScoreComputer } from "./EvAnsScoreComputer";
 
-const DEBUG = false;
+const DEBUG = true;
 
-
-import { arrayUniqueFilter } from '@lib/util'
+import { arrayUniqueFilter } from "@lib/util";
 
 export const DisplayGeneralsMWRoutes = ["/generals/"];
 
@@ -52,33 +49,48 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
 
   //define a bunch of functions almost like a class
 
-  const InvestmentOptions2Key = z.function()
+  const InvestmentOptions2Key = z
+    .function()
     .args(BuffParams)
     .returns(z.string())
     .implement((BP: BuffParamsType) => {
-      return JSON.stringify(BP).replace(re, '');
-    })
+      return JSON.stringify(BP).replace(re, "");
+    });
 
   DisplayGeneralsMWRoutes.map((route) => {
     if (url.pathname.startsWith(route)) {
       continueHandler = true;
     }
   });
-  
+
   //from https://www.evonyanswers.com/post/evony-answers-attribute-methodology-explanation
   const GeneralBuffs = z
     .function()
     .args(z.string(), Display, BuffParams)
     .returns(z.promise(z.boolean()))
     .implement(async (name, display, BP: BuffParamsType) => {
-
-      if (DEBUG) console.log(`EvAnsBuff starting for ${name}`)
-      const eg: ExtendedGeneralType = locals.ExtendedGeneralMap.get(name)
+      if (DEBUG) console.log(`EvAnsBuff starting for ${name}`);
+      const eg: ExtendedGeneralType = locals.ExtendedGeneralMap.get(name);
       const gc = eg.general;
 
-      if (eg.status.localeCompare(ExtendedGeneralStatus.enum.complete)) {
-        if (DEBUG) { console.log(`called early for ${name} status is ${eg.status}`) }
-        return false;
+      if (!eg.status.localeCompare(ExtendedGeneralStatus.enum.complete)) {
+        if (DEBUG) {
+          console.log(`${name} status is ${eg.status}`);
+        }
+        return true;
+      } else if(
+        !eg.status.localeCompare(ExtendedGeneralStatus.enum.created) ||
+        !eg.status.localeCompare(ExtendedGeneralStatus.enum.fetching)
+      ){
+        if(DEBUG) {
+          console.log(`${name} status is ${eg.status}`)
+          console.log(`called early`)
+          return false
+        }
+       } else {
+        if (DEBUG) {
+          console.log(`${name} GeneralBuffs continuing to call EvAnsScoreComputer`);
+        }
       }
 
       const _BP: BuffParamsType = {
@@ -87,25 +99,30 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
         special3: BP.special3,
         special4: BP.special4,
         special5: BP.special5,
-        stars: (display.localeCompare(Display.enum.assistant)) ? BP.stars : AscendingLevels.enum[0],
+        stars: display.localeCompare(Display.enum.assistant)
+          ? BP.stars
+          : AscendingLevels.enum[0],
         dragon: BP.dragon,
         beast: BP.beast,
+      };
+
+      const rankScore = EvAnsScoreComputer(generalUseCase.enum.Attack, eg, _BP);
+      if (DEBUG) {
+        console.log(`in GeneralBuffs, got rankScore: ${rankScore} for ${name}`);
+      }
+      const hashKey = InvestmentOptions2Key(_BP);
+      eg.computedBuffs.set(hashKey, {
+        EvAns: rankScore,
+      });
+      if (DEBUG) {
+        console.log(`hashKey: ${hashKey}`);
+        console.log(`${eg.general.name}: rankScore: ${rankScore}`);
+        console.log(
+          `computedBuffs: ${JSON.stringify(Array.from(eg.computedBuffs))}`
+        );
+        console.log(eg.computedBuffs.get(hashKey)?.EvAns);
       }
 
-      await EvAnsScoreComputer(generalUseCase.enum.Attack, eg, _BP)
-      .then((rankScore) => {
-        const hashKey = InvestmentOptions2Key(_BP);
-        eg.computedBuffs.set(hashKey,{
-          EvAns: rankScore,
-        })
-        if(DEBUG) {
-          console.log(`hashKey: ${hashKey}`)
-          console.log(`${eg.general.name}: rankScore: ${rankScore}`)
-          console.log(`computedBuffs: ${JSON.stringify(Array.from(eg.computedBuffs))}`)
-          console.log(eg.computedBuffs.get(hashKey)?.EvAns)
-        }
-      })
-     
       return true;
     });
 
@@ -116,94 +133,164 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
     .implement(async (gn) => {
       if (DEBUG) console.log(`starating to enrich ${gn}`);
       let success = true;
-      const entry: ExtendedGeneralType | null = locals.ExtendedGeneralMap.get(gn) ?? null;
+      const entry: ExtendedGeneralType | null =
+        locals.ExtendedGeneralMap.get(gn) ?? null;
 
       if (entry === undefined || entry === null) {
+        console.log(`failed to find general ${gn}`);
         return false;
       } else {
         if (!entry.status.localeCompare(ExtendedGeneralStatus.enum.complete)) {
-          if (DEBUG) { console.log(`called when already complete`) }
-          return true
-        } else if (!entry.status.localeCompare(ExtendedGeneralStatus.enum.processing)) {
-          if (DEBUG) { console.log(`called while still processing`) }
+          return true;
+        } else if (
+          !entry.status.localeCompare(ExtendedGeneralStatus.enum.processing)
+        ) {
           return false;
-        }
-        entry.status = ExtendedGeneralStatus.enum.processing;
-
-        if (!Array.isArray(entry.general.specialities) || entry.general.specialities.length === 0) {
+        } else if (
+          !entry.status.localeCompare(ExtendedGeneralStatus.enum.fetching)
+        ) {
           return false;
         } else {
-          await Promise.all(
-            entry.general.specialities.map(async (special) => {
-              const sC = await getEntry("specialities", special);
-              if (sC !== undefined) {
-                const v = Speciality.safeParse(sC.data);
-                if (v.success) {
-                  if (DEBUG) { console.log(`enrichGeneral ${gn}: pushing ${v.data.name}`) }
-                  entry.specialities.push(v.data);
-                } else {
-                  console.log(`failed to get ${special} for ${entry.general.name}`);
-                  console.log(`enrichGeneral ${JSON.stringify(v.error.message)}`);
-                }
-              }
-            })
-
-          );
-          if (entry.general.specialities.length !== entry.general.specialities.length) {
-            console.log(
-              `specialities for ${entry.general.name}: expected: ${entry.general.specialities.length} have: ${entry.specialities.length}`
-            );
+          entry.status = ExtendedGeneralStatus.enum.fetching;
+          if (
+            !Array.isArray(entry.general.specialities) ||
+            entry.general.specialities.length === 0
+          ) {
+            console.log(`${gn} has no specialities`);
             return false;
           } else {
-            if (DEBUG) console.log(`enrichGeneral ${gn} specials success ${entry.specialities.length}`)
-          }
-        }
-        if (!Array.isArray(entry.general.books) || entry.general.books.length === 0) {
-          return false;
-        } else {
-          await Promise.all(
-            entry.general.books.map(async (book) => {
-              const bC = await getEntry("skillBooks", book);
-              if (bC !== undefined) {
-                const v = Book.safeParse(bC.data);
-                if (v.success) {
-                  entry.books.push(v.data);
+            await Promise.all(
+              entry.general.specialities.map(async (special) => {
+                const sC = await getEntry("specialities", special);
+                if (sC === undefined) {
+                  console.log(`failed to fetch special ${special} for ${gn}`);
+                  return false;
                 } else {
-                  console.log(`failed to get ${book} for ${gn}`);
-                  console.log(`enrichGeneral ${JSON.stringify(v.error.message)}`);
+                  const v = Speciality.safeParse(sC.data);
+                  if (v.error) {
+                    console.log(
+                      `got invalid speciality for ${special} of ${gn}`
+                    );
+                    return false;
+                  } else {
+                    entry.specialities.push(v.data);
+                  }
+                }
+              })
+            ).then(() => {
+              if (
+                Array.isArray(entry.general.specialities) &&
+                entry.general.specialities.length !== entry.specialities.length
+              ) {
+                console.log(
+                  `specialities for ${entry.general.name}: expected: ${entry.general.specialities.length} have: ${entry.specialities.length}`
+                );
+                return false;
+              } else {
+                if (DEBUG)
+                  console.log(
+                    `enrichGeneral ${gn} specials success ${entry.specialities.length}`
+                  );
+              }
+            });
+          }
+          if (
+            !Array.isArray(entry.general.books) ||
+            entry.general.books.length === 0
+          ) {
+            console.log(`${gn} has no books`);
+            return false;
+          } else {
+            await Promise.all(
+              entry.general.books.map(async (book) => {
+                const bC = await getEntry("skillBooks", book);
+                if (bC === undefined) {
+                  console.log(`failed to fetch book ${book} for ${gn}`);
+                  return false;
+                } else {
+                  const v = Book.safeParse(bC.data);
+                  if (v.error) {
+                    console.log(`got invalid book ${book} for ${gn}`);
+                    return false;
+                  } else {
+                    entry.books.push(v.data);
+                  }
+                }
+              })
+            ).then(() => {
+              if (
+                Array.isArray(entry.general.books) &&
+                entry.general.books.length !== entry.books.length
+              ) {
+                console.log(
+                  `${gn} books: have ${entry.books.length} expected: ${entry.general.books.length}`
+                );
+                return false;
+              } else {
+                if (DEBUG) {
+                  console.log(
+                    `enrichGeneral ${gn} books success ${entry.books.length}`
+                  );
                 }
               }
-            })
-          );
-          if (entry.general.books.length !== entry.books.length) {
-            console.log(
-              `books for ${gn}: have ${entry.books.length} expected ${entry.general.books.length}`
-            );
+            });
+          }
+          entry.status = ExtendedGeneralStatus.enum.processing;
+
+          const pbs = await GeneralBuffs(gn, Display.enum.primary, {
+            special1: qualityColor.enum.Gold,
+            special2: qualityColor.enum.Gold,
+            special3: qualityColor.enum.Gold,
+            special4: qualityColor.enum.Gold,
+            special5: qualityColor.enum.Disabled,
+            stars: AscendingLevels.enum[10],
+            dragon: true,
+            beast: true,
+          });
+          if (!pbs) {
+            console.log(`${gn}: failed to get GeneralBuffs as primary`);
+            return false;
+          }
+          const abs = await GeneralBuffs(gn, Display.enum.assistant, {
+            special1: qualityColor.enum.Gold,
+            special2: qualityColor.enum.Gold,
+            special3: qualityColor.enum.Gold,
+            special4: qualityColor.enum.Gold,
+            special5: qualityColor.enum.Disabled,
+            stars: AscendingLevels.enum[0],
+            dragon: true,
+            beast: true,
+          });
+          if (!abs) {
+            console.log(`${gn}: failed to get GeneralBuffs as assistant`);
+            return false;
+          }
+          const sbs = await GeneralBuffs(gn, Display.enum.summary, {
+            special1: qualityColor.enum.Gold,
+            special2: qualityColor.enum.Gold,
+            special3: qualityColor.enum.Gold,
+            special4: qualityColor.enum.Gold,
+            special5: qualityColor.enum.Disabled,
+            stars: AscendingLevels.enum[10],
+            dragon: true,
+            beast: true,
+          });
+          if (!sbs) {
+            console.log(`${gn}: failed to get GeneralBuffs as summary`);
             return false;
           }
         }
-
-        if (success) {
-          if (DEBUG) {
-            console.log(`enrichGeneral for ${gn} complete with status ${success}`)
-          }
-          entry.status = ExtendedGeneralStatus.enum.complete;
-          if (DEBUG) {
-            console.log(`enrichGeneral work done for ${gn}`)
-            console.log(`specials: ${entry.specialities.length}`)
-            console.log(`books: ${entry.books.length}`)
-            console.log(`computedBuffs: ${entry.computedBuffs.size}`)
-            console.log(`status: ${entry.status}`)
-          }
-          return success;
-        } else {
-          console.log(`failed to set buffs`);
-          return false;
+        entry.status = ExtendedGeneralStatus.enum.complete;
+        if (DEBUG) {
+          console.log(`enrichGeneral work done for ${gn}`);
+          console.log(`specials: ${entry.specialities.length}`);
+          console.log(`books: ${entry.books.length}`);
+          console.log(`computedBuffs: ${entry.computedBuffs.size}`);
+          console.log(`status: ${entry.status}`);
         }
+        return success;
       }
-      return false
-    })
-
+    });
 
   const addEG2EGS = z
     .function()
@@ -215,15 +302,16 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
           `middleware generals addEG2EGS running for ${general.name}`
         );
       if (locals.ExtendedGeneralMap.size > 0) {
-        if (locals.ExtendedGeneralMap.has(general.name))
-          return;
+        if (locals.ExtendedGeneralMap.has(general.name)) return;
       }
       const success = true;
       const toAdd: ExtendedGeneralType = {
         general: general,
         specialities: new Array<SpecialityType>(),
-        books: new Array<BookType | specialSkillBookType | standardSkillBookType>(),
-        computedBuffs: new Map<string, { EvAns: number}>(),
+        books: new Array<
+          BookType | specialSkillBookType | standardSkillBookType
+        >(),
+        computedBuffs: new Map<string, { EvAns: number }>(),
         status: ExtendedGeneralStatus.enum.created,
       };
       const test = ExtendedGeneral.safeParse(toAdd);
@@ -232,11 +320,15 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
           console.log(
             `addEG2EGS built a valid ExtendedGeneral for ${general.name}`
           );
-        if (DEBUG) console.log(`addEG2EGS: map size: ${locals.ExtendedGeneralMap.size}`);
+        if (DEBUG)
+          console.log(`addEG2EGS: map size: ${locals.ExtendedGeneralMap.size}`);
         if (!locals.ExtendedGeneralMap.has(test.data.general.name)) {
-          locals.ExtendedGeneralMap.set(test.data.general.name, test.data)
+          locals.ExtendedGeneralMap.set(test.data.general.name, test.data);
         }
-        if (DEBUG) console.log(`addEG2EGS: map size: ${locals.ExtendedGeneralMap.size} about to enrich.`);
+        if (DEBUG)
+          console.log(
+            `addEG2EGS: map size: ${locals.ExtendedGeneralMap.size} about to enrich.`
+          );
         enrichGeneral(general.name);
       } else {
         console.log(
@@ -249,10 +341,12 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
 
   const HandlerLogic = (locals: App.Locals) => {
     if (locals.ExtendedGeneralMap === undefined) {
-      locals.ExtendedGeneralMap = new d3.InternMap<string, ExtendedGeneralType>();
+      locals.ExtendedGeneralMap = new d3.InternMap<
+        string,
+        ExtendedGeneralType
+      >();
     }
 
-    
     if (locals.addEG2EGS === undefined) {
       locals.addEG2EGS = addEG2EGS;
     }
@@ -268,7 +362,6 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
     if (locals.InvestmentOptions2Key === undefined) {
       locals.InvestmentOptions2Key = InvestmentOptions2Key;
     }
-
   };
 
   //end of function definitions

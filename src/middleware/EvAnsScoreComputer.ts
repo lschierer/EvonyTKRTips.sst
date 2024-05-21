@@ -39,9 +39,9 @@ import { specialty } from "src/assets/evonySchemas";
  * https://evonyguidewiki.com/en/general-cultivate-en/#Relationship_between_Stats_value_Buff_value
  */
 
-const DEBUG = false;
-const DEBUG_BAS = false;
-const DEBUG_BSS = false;
+const DEBUG = true;
+const DEBUG_BAS = true;
+const DEBUG_BSS = true;
 
 const EvAnsBasic = z
   .function()
@@ -79,8 +79,8 @@ const EvAnsBasic = z
 const GroundPvPBuff = z
   .function()
   .args(z.string(), z.string(), Buff)
-  .returns(z.promise(z.number()))
-  .implement(async (bookName: string, generalName: string, tb: BuffType) => {
+  .returns(z.number())
+  .implement((bookName: string, generalName: string, tb: BuffType) => {
     let score = 0;
     if (tb !== undefined && tb.value !== undefined) {
       if (tb.condition !== undefined && tb.condition !== null) {
@@ -503,26 +503,24 @@ const GroundPvPBuff = z
 const GroundAttackPvPBSS = z
   .function()
   .args(ExtendedGeneral, BuffParams)
-  .returns(z.promise(z.number()))
-  .implement(async (eg: ExtendedGeneralType, bp: BuffParamsType) => {
+  .returns(z.number())
+  .implement((eg: ExtendedGeneralType, bp: BuffParamsType) => {
     const gc = eg.general;
     let score = 0;
     if (
-      gc.books !== undefined &&
-      Array.isArray(gc.books) &&
-      gc.books.length > 0
+      eg.books !== undefined &&
+      Array.isArray(eg.books) &&
+      eg.books.length > 0
     ) {
-      await Promise.all(
-        gc.books.map(async (book) => {
-          const bisbC: CollectionEntry<"skillBooks"> | undefined =
-            await getEntry("skillBooks", book);
-          if (bisbC !== undefined) {
-            const v = specialSkillBook.safeParse(bisbC.data);
+        eg.books.map((book) => {
+          
+          if (book !== undefined) {
+            const v = specialSkillBook.safeParse(book);
             if (v.success) {
               const bisb: specialSkillBookType = v.data;
               for (const tb of bisb.buff) {
                 const oldscore = score;
-                const tbscore = await GroundPvPBuff(bisb.name, gc.name, tb);
+                const tbscore = GroundPvPBuff(bisb.name, gc.name, tb);
                 score += tbscore;
                 if(DEBUG) {
                   console.log(`oldscore: ${oldscore} tbscore: ${tbscore} score: ${score}`)
@@ -531,21 +529,18 @@ const GroundAttackPvPBSS = z
             }
           }
         })
-      );
       score = Math.floor(score);
     }
 
     if (
-      gc.specialities !== undefined &&
-      Array.isArray(gc.specialities) &&
-      gc.specialities.length > 0
+      eg.specialities !== undefined &&
+      Array.isArray(eg.specialities) &&
+      eg.specialities.length > 0
     ) {
-      await Promise.all(
-        gc.specialities.map(async (special, index) => {
-          const specialC: CollectionEntry<"specialities"> | undefined =
-            await getEntry("specialities", special);
-          if (specialC !== undefined) {
-            const v = Speciality.safeParse(specialC.data);
+      
+        eg.specialities.map((special, index) => {
+          if (special !== undefined) {
+            const v = Speciality.safeParse(special);
             if (v.success) {
               const specialB: SpecialityType = v.data;
               for (const sl of specialB.attribute) {
@@ -568,7 +563,7 @@ const GroundAttackPvPBSS = z
                 ) {
                   for (const tb of sl.buff) {
                     const oldscore = score;
-                    const tbscore = await GroundPvPBuff(specialB.name, gc.name, tb);
+                    const tbscore = GroundPvPBuff(specialB.name, gc.name, tb);
                     score += tbscore;
                     if(DEBUG) {
                       console.log(`oldscore: ${oldscore} tbscore: ${tbscore} score: ${score}`)
@@ -598,7 +593,7 @@ const GroundAttackPvPBSS = z
                 ) {
                   for (const tb of sl.buff) {
                     const oldscore = score;
-                    const tbscore = await GroundPvPBuff(specialB.name, gc.name, tb);
+                    const tbscore = GroundPvPBuff(specialB.name, gc.name, tb);
                     score += tbscore;
                     if(DEBUG) {
                       console.log(`oldscore: ${oldscore} tbscore: ${tbscore} score: ${score}`)
@@ -633,7 +628,7 @@ const GroundAttackPvPBSS = z
                 ) {
                   for (const tb of sl.buff) {
                     const oldscore = score;
-                    const tbscore = await GroundPvPBuff(specialB.name, gc.name, tb);
+                    const tbscore = GroundPvPBuff(specialB.name, gc.name, tb);
                     score += tbscore;
                     if(DEBUG) {
                       console.log(`oldscore: ${oldscore} tbscore: ${tbscore} score: ${score}`)
@@ -673,7 +668,7 @@ const GroundAttackPvPBSS = z
                 ) {
                   for (const tb of sl.buff) {
                     const oldscore = score;
-                    const tbscore = await GroundPvPBuff(specialB.name, gc.name, tb);
+                    const tbscore = GroundPvPBuff(specialB.name, gc.name, tb);
                     score += tbscore;
                     if(DEBUG) {
                       console.log(`oldscore: ${oldscore} tbscore: ${tbscore} score: ${score}`)
@@ -698,7 +693,7 @@ const GroundAttackPvPBSS = z
                 ) {
                   for (const tb of sl.buff) {
                     const oldscore = score;
-                    const tbscore = await GroundPvPBuff(specialB.name, gc.name, tb);
+                    const tbscore = GroundPvPBuff(specialB.name, gc.name, tb);
                     score += tbscore;
                     if(DEBUG) {
                       console.log(`oldscore: ${oldscore} tbscore: ${tbscore} score: ${score}`)
@@ -709,7 +704,7 @@ const GroundAttackPvPBSS = z
             }
           }
         })
-      );
+
       score = Math.floor(score);
     }
     return score;
@@ -718,10 +713,14 @@ const GroundAttackPvPBSS = z
 const EvAnsGroundPvPAttack = z
   .function()
   .args(ExtendedGeneral, BuffParams)
-  .returns(z.promise(z.number()))
-  .implement(async (eg: ExtendedGeneralType, bp: BuffParamsType) => {
+  .returns(z.number())
+  .implement((eg: ExtendedGeneralType, bp: BuffParamsType) => {
+    if(DEBUG) {
+      console.log(`${eg.general.name}: EvAnsGroundPvPAttack starting`)
+    }
+    
     const BAS = EvAnsBasic(eg);
-    const BSS = await GroundAttackPvPBSS(eg, bp);
+    const BSS = GroundAttackPvPBSS(eg, bp);
 
     const TLGS = BAS + BSS;
     if (DEBUG) {
@@ -736,262 +735,166 @@ const useCaseSelector: Record<
   generalUseCaseType,
   Record<
     generalSpecialistsType,
-    (eg: ExtendedGeneralType, bp: BuffParamsType) => Promise<number>
+    (eg: ExtendedGeneralType, bp: BuffParamsType) => number
   >
 > = {
   [generalUseCase.enum.Attack]: {
     [generalSpecialists.enum.Archers]: () => {
-      return new Promise((resolve) => {
-        resolve(-7);
-      });
+      return -7
     },
     [generalSpecialists.enum.Ground]: EvAnsGroundPvPAttack,
     [generalSpecialists.enum.Mounted]: () => {
-      return new Promise((resolve) => {
-        resolve(-7);
-      });
+      return -7
     },
     [generalSpecialists.enum.Siege]: () => {
-      return new Promise((resolve) => {
-        resolve(-7);
-      });
+      return -7
     },
     [generalSpecialists.enum.Wall]: () => {
-      return new Promise((resolve) => {
-        resolve(-1);
-      });
+      return -1
     },
     [generalSpecialists.enum.Mayor]: () => {
-      return new Promise((resolve) => {
-        resolve(-2);
-      });
+      return -2
     },
     [generalSpecialists.enum.all]: () => {
-      return new Promise((resolve) => {
-        resolve(-3);
-      });
+      return -3
     },
   },
   [generalUseCase.enum.Defense]: {
     [generalSpecialists.enum.Archers]: () => {
-      return new Promise((resolve) => {
-        resolve(-7);
-      });
+      return -7
     },
     [generalSpecialists.enum.Ground]: () => {
-      return new Promise((resolve) => {
-        resolve(-7);
-      });
+      return -7
     },
     [generalSpecialists.enum.Mounted]: () => {
-      return new Promise((resolve) => {
-        resolve(-7);
-      });
+      return -7
     },
     [generalSpecialists.enum.Siege]: () => {
-      return new Promise((resolve) => {
-        resolve(-7);
-      });
+      return -7
     },
     [generalSpecialists.enum.Wall]: () => {
-      return new Promise((resolve) => {
-        resolve(-1);
-      });
+      return -1
     },
     [generalSpecialists.enum.Mayor]: () => {
-      return new Promise((resolve) => {
-        resolve(-2);
-      });
+      return -2
     },
     [generalSpecialists.enum.all]: () => {
-      return new Promise((resolve) => {
-        resolve(-3);
-      });
+      return -3
     },
   },
   [generalUseCase.enum.Monsters]: {
     [generalSpecialists.enum.Archers]: () => {
-      return new Promise((resolve) => {
-        resolve(-7);
-      });
+      return -7
     },
     [generalSpecialists.enum.Ground]: () => {
-      return new Promise((resolve) => {
-        resolve(-7);
-      });
+      return -7
     },
     [generalSpecialists.enum.Mounted]: () => {
-      return new Promise((resolve) => {
-        resolve(-7);
-      });
+      return -7
     },
     [generalSpecialists.enum.Siege]: () => {
-      return new Promise((resolve) => {
-        resolve(-7);
-      });
+      return -7
     },
     [generalSpecialists.enum.Wall]: () => {
-      return new Promise((resolve) => {
-        resolve(-1);
-      });
+      return -1
     },
     [generalSpecialists.enum.Mayor]: () => {
-      return new Promise((resolve) => {
-        resolve(-2);
-      });
+      return -2
     },
     [generalSpecialists.enum.all]: () => {
-      return new Promise((resolve) => {
-        resolve(-3);
-      });
+      return -3
     },
   },
   [generalUseCase.enum.Overall]: {
     [generalSpecialists.enum.Archers]: () => {
-      return new Promise((resolve) => {
-        resolve(-5);
-      });
+      return -5
     },
     [generalSpecialists.enum.Ground]: () => {
-      return new Promise((resolve) => {
-        resolve(-5);
-      });
+      return -5
     },
     [generalSpecialists.enum.Mounted]: () => {
-      return new Promise((resolve) => {
-        resolve(-5);
-      });
+      return -5
     },
     [generalSpecialists.enum.Siege]: () => {
-      return new Promise((resolve) => {
-        resolve(-5);
-      });
+      return -5
     },
     [generalSpecialists.enum.Wall]: () => {
-      return new Promise((resolve) => {
-        resolve(-5);
-      });
+      return -5
     },
     [generalSpecialists.enum.Mayor]: () => {
-      return new Promise((resolve) => {
-        resolve(-5);
-      });
+      return -5
     },
     [generalSpecialists.enum.all]: () => {
-      return new Promise((resolve) => {
-        resolve(-5);
-      });
+      return -5
     },
   },
   [generalUseCase.enum.Wall]: {
     [generalSpecialists.enum.Archers]: () => {
-      return new Promise((resolve) => {
-        resolve(-1);
-      });
+      return -1
     },
     [generalSpecialists.enum.Ground]: () => {
-      return new Promise((resolve) => {
-        resolve(-1);
-      });
+      return -1
     },
     [generalSpecialists.enum.Mounted]: () => {
-      return new Promise((resolve) => {
-        resolve(-1);
-      });
+      return -1
     },
     [generalSpecialists.enum.Siege]: () => {
-      return new Promise((resolve) => {
-        resolve(-1);
-      });
+      return -1
     },
     [generalSpecialists.enum.Wall]: () => {
-      return new Promise((resolve) => {
-        resolve(-1);
-      });
+      return -1
     },
     [generalSpecialists.enum.Mayor]: () => {
-      return new Promise((resolve) => {
-        resolve(-1);
-      });
+      return -1
     },
     [generalSpecialists.enum.all]: () => {
-      return new Promise((resolve) => {
-        resolve(-1);
-      });
+      return -1
     },
   },
   [generalUseCase.enum.Mayor]: {
     [generalSpecialists.enum.Archers]: () => {
-      return new Promise((resolve) => {
-        resolve(-2);
-      });
+      return -2
     },
     [generalSpecialists.enum.Ground]: () => {
-      return new Promise((resolve) => {
-        resolve(-2);
-      });
+      return -2
     },
     [generalSpecialists.enum.Mounted]: () => {
-      return new Promise((resolve) => {
-        resolve(-2);
-      });
+      return -2
     },
     [generalSpecialists.enum.Siege]: () => {
-      return new Promise((resolve) => {
-        resolve(-2);
-      });
+      return -2
     },
     [generalSpecialists.enum.Wall]: () => {
-      return new Promise((resolve) => {
-        resolve(-2);
-      });
+      return -2
     },
     [generalSpecialists.enum.Mayor]: () => {
-      return new Promise((resolve) => {
-        resolve(-2);
-      });
+      return -2
     },
     [generalSpecialists.enum.all]: () => {
-      return new Promise((resolve) => {
-        resolve(-2);
-      });
+      return -2
     },
   },
   [generalUseCase.enum.all]: {
     [generalSpecialists.enum.Archers]: () => {
-      return new Promise((resolve) => {
-        resolve(-3);
-      });
+      return -3
     },
     [generalSpecialists.enum.Ground]: () => {
-      return new Promise((resolve) => {
-        resolve(-3);
-      });
+      return -3
     },
     [generalSpecialists.enum.Mounted]: () => {
-      return new Promise((resolve) => {
-        resolve(-3);
-      });
+      return -3
     },
     [generalSpecialists.enum.Siege]: () => {
-      return new Promise((resolve) => {
-        resolve(-3);
-      });
+      return -3
     },
     [generalSpecialists.enum.Wall]: () => {
-      return new Promise((resolve) => {
-        resolve(-3);
-      });
+      return -3
     },
     [generalSpecialists.enum.Mayor]: () => {
-      return new Promise((resolve) => {
-        resolve(-3);
-      });
+      return -3
     },
     [generalSpecialists.enum.all]: () => {
-      return new Promise((resolve) => {
-        resolve(-3);
-      });
+      return -3
     },
   },
 };
@@ -999,13 +902,13 @@ const useCaseSelector: Record<
 export const EvAnsScoreComputer = z
   .function()
   .args(generalUseCase, ExtendedGeneral, BuffParams)
-  .returns(z.promise(z.number()))
+  .returns(z.number())
   .implement(
-    async (
+    (
       UseCase: generalUseCaseType,
       eg: ExtendedGeneralType,
       bp: BuffParamsType
     ) => {
-      return await useCaseSelector[UseCase][eg.general.score_as](eg, bp);
+      return useCaseSelector[UseCase][eg.general.score_as](eg, bp);
     }
   );
