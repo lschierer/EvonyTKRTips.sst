@@ -137,6 +137,7 @@ export const Covenant = z.object({
 
 export const ExtendedGeneralStatus = z.enum([
   'created',
+  'fetching',
   'processing',
   'complete'
 ])
