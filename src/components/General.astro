@@ -148,14 +148,7 @@ if (dataV.success) {
   Egeneral = Astro.locals.ExtendedGeneralMap.get(pageGE.general.name);
   
   iterationBreaker = 0;
-  do {
-    if(DEBUG) {
-      console.log(`${Egeneral.general.name} is ${Egeneral.status}`)
-      console.log(`iteration ${iterationBreaker} waiting for complete`)
-    }
-    await Astro.locals.enrichGeneral(Egeneral.general.name);
-    delay(++iterationBreaker * 60)
-  }while(Egeneral.status.localeCompare(ExtendedGeneralStatus.enum.complete) && iterationBreaker < 60) 
+  await Astro.locals.enrichGeneral(Egeneral.general.name);
   
   const general = Egeneral!.general;
   await Astro.locals.GeneralBuffs(general.name, Display.enum.summary, {
