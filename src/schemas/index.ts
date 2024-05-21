@@ -8,5 +8,6 @@ export * from './specialitySchema';
 export * from './statusLightsSchema';
 export * from './treasureSchemas';
 export * from './troopsSchemas';
+export * from './EvAns.zod';
 
 

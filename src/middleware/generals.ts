@@ -36,9 +36,9 @@ import {
   type standardSkillBookType,
 } from "@schemas/index";
 
-import * as EvAnsAttributes from '@lib/EvAnsAttributeRanking';
+import {EvAnsScoreComputer} from './EvAnsScoreComputer';
 
-const DEBUG = false;
+const DEBUG = true;
 
 
 import { arrayUniqueFilter } from '@lib/util'
@@ -69,8 +69,8 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
   const EvAnsBuff = z
     .function()
     .args(z.string(), Display, BuffParams)
-    .returns(z.number())
-    .implement((name, display, BP: BuffParamsType) => {
+    .returns(z.promise(z.number()))
+    .implement(async (name, display, BP: BuffParamsType) => {
 
       if (DEBUG) console.log(`EvAnsBuff starting for ${name}`)
       const eg: ExtendedGeneralType = locals.ExtendedGeneralMap.get(name)
@@ -92,88 +92,12 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
         beast: BP.beast,
       }
 
-      //https://evonyguidewiki.com/en/general-cultivate-en/#Relationship_between_Stats_value_Buff_value explains the attribute to buff relationship.
-      const BasicAttack =
-        Math.min(gc.attack + 45 * gc.attack_increment, 900) * 0.1 +
-        (gc.attack + 45 * gc.attack_increment > 900
-          ? ((gc.attack + 45 * gc.attack_increment) % 900) * 0.2
-          : 0);
-      const BasicDefense =
-        Math.min(gc.defense + 45 * gc.defense_increment, 900) * 0.1 +
-        (gc.defense + 45 * gc.defense_increment > 900
-          ? ((gc.defense + 45 * gc.defense_increment) % 900) * 0.2
-          : 0);
-      const BasicLeaderShip =
-        Math.min(gc.leadership + 45 * gc.leadership_increment, 900) * 0.1 +
-        (gc.leadership + 45 * gc.leadership_increment > 900
-          ? ((gc.leadership + 45 * gc.leadership_increment) % 900) * 0.2
-          : 0);
-      const BasicPolitics =
-        Math.min(gc.politics + 45 * gc.politics_increment, 900) * 0.1 +
-        (gc.politics + 45 * gc.politics_increment > 900
-          ? ((gc.politics + 45 * gc.politics_increment) % 900) * 0.2
-          : 0);
-      const BAS = BasicAttack + BasicDefense + BasicLeaderShip + BasicPolitics;
-
-      //Built-in SkillBook Score is much more complicated
-      const BSS = 0;
-      if (
-        gc.books !== undefined &&
-        Array.isArray(gc.books) &&
-        gc.books.length > 0
-      ) {
-        gc.books.map(async (book) => {
-          const bisbC: CollectionEntry<"skillBooks"> | undefined =
-            await getEntry("skillBooks", book);
-          if (bisbC !== undefined) {
-            const v = specialSkillBook.safeParse(bisbC.data);
-            if (v.success) {
-              const bisb: specialSkillBookType = v.data;
-              for (const tb of bisb.buff) {
-                if (tb !== undefined && tb.value !== undefined) {
-                  if (tb.class === undefined) {
-                    //this is an all class buff
-                    if (gc.score_as !== undefined) {
-                      if (
-                        !gc.score_as.localeCompare(
-                          generalSpecialists.enum.Archers,
-                          undefined,
-                          { sensitivity: "base" }
-                        )
-                      ) {
-                        if (tb.attribute !== undefined) {
-                          if(!tb.attribute.localeCompare(Attribute.enum.Attack)){
-                            if(!gc.score_as.localeCompare(generalSpecialists.enum.Mounted)){
-                              
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                } else {
-                  console.log(
-                    `how to score a buff with no value? gc is ${gc.name}`
-                  );
-                }
-              }
-            }
-          }
-        });
+      
+      const rankScore = await EvAnsScoreComputer(generalUseCase.enum.Attack, eg, BP);
+      if(DEBUG) {
+        console.log(`${eg.general.name}: rankScore: ${rankScore}`)
       }
-
-      const fourSB = 0;
-      const threeSS = 0;
-      const fourSS = 0;
-      const AES = 0;
-
-      return (
-        Math.floor(BAS) +
-        Math.floor(BSS) +
-        Math.floor(fourSB) +
-        Math.floor(threeSS) +
-        Math.floor(AES)
-      );
+      return rankScore;
     });
 
   const enrichGeneral = z

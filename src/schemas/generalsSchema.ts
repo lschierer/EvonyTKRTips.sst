@@ -86,7 +86,7 @@ export const GeneralClass = z.object({
         }
         return false;
       }).nullish(),
-    "score_as": generalSpecialists.optional(),
+    "score_as": generalSpecialists,
     "specialities": z.array(z.string()).nullish(),
     "books": z.array(z.string()).nullish(),
     "ascending": z.array(Ascending).nullish(),

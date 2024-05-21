@@ -1,19 +1,23 @@
 ---
+export const prerender = false;
 
-import { getCollection, type CollectionEntry } from "astro:content";
+import { getCollection, type CollectionEntry, z } from "astro:content";
 import type { ComponentProps } from "astro/types";
 
-import { type ZodError } from "zod";
 import { ulid } from "ulidx";
+
 import GridDisplay from "./gridDisplay.astro";
 type GridDisplayProps = ComponentProps<typeof GridDisplay>;
 
 import {
+  AscendingLevels,
   GeneralArray,
   type GeneralArrayType,
   GeneralElement,
   type GeneralElementType,
   ClassEnum,
+  qualityColor,
+  type BuffParamsType,
 } from "@schemas/index";
 
 const DEBUG = false;
@@ -22,6 +26,19 @@ const table_name = `${Astro.url.pathname}-${ulid()}`
 
 let allGeneralsJson = "";
 let allGenerals = new Array<GeneralElementType>();
+let generalsPromise = false;
+
+//while no general can *have* both, I can evaluate generals assuming I will give them whichever that particular one needs.
+let MyInvestmentLevel: BuffParamsType = {
+  special1: qualityColor.enum.Gold,
+  special2: qualityColor.enum.Gold,
+  special3: qualityColor.enum.Gold,
+  special4: qualityColor.enum.Gold,
+  special5: qualityColor.enum.Disabled,
+  stars: AscendingLevels.enum[10],
+  dragon: true,
+  beast: true,
+};
 
 const generalObjects: CollectionEntry<"generals">[] =
   await getCollection("generals");
@@ -40,11 +57,22 @@ if (generalObjects !== null && generalObjects !== undefined) {
     }
   }
   allGeneralsJson = JSON.stringify(allGenerals);
+  allGenerals.map(async (g) => {
+    if (DEBUG) console.log(`adding ${g.general.name}`)
+    Astro.locals.addEG2EGS(g.general);
+    
+    await Astro.locals.enrichGeneral(g.general.name)
+    .then(() => {
+      if(DEBUG) {
+        console.log(`${g.general.name} finished enriching function`)
+      }
+    });
+  });
 }
 
 let aresult:
   | { success: true; data: GeneralArrayType }
-  | { success: false; error: ZodError } = GeneralArray.safeParse(
+  | { success: false; error: z.ZodError } = GeneralArray.safeParse(
   JSON.parse(allGeneralsJson)
 );
 if (aresult.success ) {
@@ -61,8 +89,7 @@ if (aresult.success ) {
 <div class="table-container">
   <GridDisplay 
     name={table_name} 
-    allGenerals={allGenerals} 
-    
+    InvestmentLevel={MyInvestmentLevel}
   ></GridDisplay>
 </div>
 

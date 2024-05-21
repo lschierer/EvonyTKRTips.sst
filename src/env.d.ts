@@ -8,7 +8,7 @@ declare namespace App {
     ExtendedGeneralMap: d3.InternMap<string, ExtendedGeneralType>,
     addEG2EGS: function (GeneralClass): void,
     enrichGeneral: function (string): Promise<boolean>,
-    EvAnsBuff: function (string, Display, BuffParams): number ,
+    EvAnsBuff: function (string, Display, BuffParams): number | Promise<number> ,
     InvestmentOptions2Key: function(BuffParamsType): string,
   }
 }
