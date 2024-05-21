@@ -146,7 +146,9 @@ export const ExtendedGeneral = z.object({
   general: GeneralClass,
   specialities: z.array(Speciality),
   books: z.array(z.union([Book, specialSkillBook,standardSkillBook])),
-  computedBuffs: z.array(b.BuffParams),
+  computedBuffs: z.map(z.string(),z.object({
+    EvAns: z.number()
+  })),
   status: ExtendedGeneralStatus.default(ExtendedGeneralStatus.enum.created),
 })
 

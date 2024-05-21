@@ -158,7 +158,7 @@ if (dataV.success) {
   }while(Egeneral.status.localeCompare(ExtendedGeneralStatus.enum.complete) && iterationBreaker < 60) 
   
   const general = Egeneral!.general;
-  EvAnsRank = await Astro.locals.EvAnsBuff(general.name, Display.enum.summary, {
+  await Astro.locals.GeneralBuffs(general.name, Display.enum.summary, {
     special1: qualityColor.enum.Gold,
     special2: qualityColor.enum.Gold,
     special3: qualityColor.enum.Gold,
@@ -168,6 +168,16 @@ if (dataV.success) {
     dragon: true,
     beast: true,
   })
+  EvAnsRank = Egeneral.computedBuffs.get(Astro.locals.InvestmentOptions2Key({
+    special1: qualityColor.enum.Gold,
+    special2: qualityColor.enum.Gold,
+    special3: qualityColor.enum.Gold,
+    special4: qualityColor.enum.Gold,
+    special5: qualityColor.enum.Disabled,
+    stars: AscendingLevels.enum[10],
+    dragon: true,
+    beast: true,
+  }))?.EvAns ?? -6;
   if(DEBUG) {console.log(`got EvAnsRank ${EvAnsRank}`)}
 
   if (DEBUG) console.log(`created general ${Egeneral!.general.name}`);

@@ -38,7 +38,7 @@ import {
 
 import {EvAnsScoreComputer} from './EvAnsScoreComputer';
 
-const DEBUG = true;
+const DEBUG = false;
 
 
 import { arrayUniqueFilter } from '@lib/util'
@@ -66,10 +66,10 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
   });
   
   //from https://www.evonyanswers.com/post/evony-answers-attribute-methodology-explanation
-  const EvAnsBuff = z
+  const GeneralBuffs = z
     .function()
     .args(z.string(), Display, BuffParams)
-    .returns(z.promise(z.number()))
+    .returns(z.promise(z.boolean()))
     .implement(async (name, display, BP: BuffParamsType) => {
 
       if (DEBUG) console.log(`EvAnsBuff starting for ${name}`)
@@ -78,7 +78,7 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
 
       if (eg.status.localeCompare(ExtendedGeneralStatus.enum.complete)) {
         if (DEBUG) { console.log(`called early for ${name} status is ${eg.status}`) }
-        return -6;
+        return false;
       }
 
       const _BP: BuffParamsType = {
@@ -92,12 +92,21 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
         beast: BP.beast,
       }
 
-      
-      const rankScore = await EvAnsScoreComputer(generalUseCase.enum.Attack, eg, BP);
-      if(DEBUG) {
-        console.log(`${eg.general.name}: rankScore: ${rankScore}`)
-      }
-      return rankScore;
+      await EvAnsScoreComputer(generalUseCase.enum.Attack, eg, _BP)
+      .then((rankScore) => {
+        const hashKey = InvestmentOptions2Key(_BP);
+        eg.computedBuffs.set(hashKey,{
+          EvAns: rankScore,
+        })
+        if(DEBUG) {
+          console.log(`hashKey: ${hashKey}`)
+          console.log(`${eg.general.name}: rankScore: ${rankScore}`)
+          console.log(`computedBuffs: ${JSON.stringify(Array.from(eg.computedBuffs))}`)
+          console.log(eg.computedBuffs.get(hashKey)?.EvAns)
+        }
+      })
+     
+      return true;
     });
 
   const enrichGeneral = z
@@ -183,7 +192,7 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
             console.log(`enrichGeneral work done for ${gn}`)
             console.log(`specials: ${entry.specialities.length}`)
             console.log(`books: ${entry.books.length}`)
-            console.log(`computedBuffs: ${entry.computedBuffs.length}`)
+            console.log(`computedBuffs: ${entry.computedBuffs.size}`)
             console.log(`status: ${entry.status}`)
           }
           return success;
@@ -214,7 +223,7 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
         general: general,
         specialities: new Array<SpecialityType>(),
         books: new Array<BookType | specialSkillBookType | standardSkillBookType>(),
-        computedBuffs: new Array<BuffParamsType>(),
+        computedBuffs: new Map<string, { EvAns: number}>(),
         status: ExtendedGeneralStatus.enum.created,
       };
       const test = ExtendedGeneral.safeParse(toAdd);
@@ -252,8 +261,8 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
       locals.enrichGeneral = enrichGeneral;
     }
 
-    if (locals.EvAnsBuff === undefined) {
-      locals.EvAnsBuff = EvAnsBuff;
+    if (locals.GeneralBuffs === undefined) {
+      locals.GeneralBuffs = GeneralBuffs;
     }
 
     if (locals.InvestmentOptions2Key === undefined) {

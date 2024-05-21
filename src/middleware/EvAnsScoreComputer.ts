@@ -39,9 +39,9 @@ import { specialty } from "src/assets/evonySchemas";
  * https://evonyguidewiki.com/en/general-cultivate-en/#Relationship_between_Stats_value_Buff_value
  */
 
-const DEBUG = true;
-const DEBUG_BAS = true;
-const DEBUG_BSS = true;
+const DEBUG = false;
+const DEBUG_BAS = false;
+const DEBUG_BSS = false;
 
 const EvAnsBasic = z
   .function()
@@ -710,6 +710,7 @@ const GroundAttackPvPBSS = z
           }
         })
       );
+      score = Math.floor(score);
     }
     return score;
   });

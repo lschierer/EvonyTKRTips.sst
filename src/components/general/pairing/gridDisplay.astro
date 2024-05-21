@@ -196,15 +196,21 @@ const sortPairsBySecondary = (a:GeneralPairType, b:GeneralPairType): number => {
 }
 
 const sortPairsByEvAnsRank = (a:GeneralPairType, b:GeneralPairType): number => {
-  const apr = Astro.locals.EvAnsBuff(a.primary, Display.enum.primary, InvestmentLevel)
-  const bpr = Astro.locals.EvAnsBuff(b.primary, Display.enum.primary, InvestmentLevel)
-  
-  const asr = Astro.locals.EvAnsBuff(a.secondary, Display.enum.assistant, InvestmentLevel)
-  const bsr = Astro.locals.EvAnsBuff(b.secondary, Display.enum.assistant, InvestmentLevel)
+  const Aprimary: ExtendedGeneralType = Astro.locals.ExtendedGeneralMap.get(a.primary);
+  const Asecondary: ExtendedGeneralType = Astro.locals.ExtendedGeneralMap.get(a.secondary);
+  const Bprimary: ExtendedGeneralType = Astro.locals.ExtendedGeneralMap.get(b.primary);
+  const Bsecondary: ExtendedGeneralType = Astro.locals.ExtendedGeneralMap.get(b.secondary);
 
+  const apr = Aprimary.computedBuffs.get(Astro.locals.InvestmentOptions2Key(InvestmentLevel))?.EvAns ?? -1;
+  const asr = Asecondary.computedBuffs.get(Astro.locals.InvestmentOptions2Key(InvestmentLevel))?.EvAns ?? -2
+
+  const bpr = Bprimary.computedBuffs.get(Astro.locals.InvestmentOptions2Key(InvestmentLevel))?.EvAns ?? -3
+  const bsr = Bsecondary.computedBuffs.get(Astro.locals.InvestmentOptions2Key(InvestmentLevel))?.EvAns ?? -4
+  
   const apt = (apr + asr)
   const bpt = (bpr + bsr)
   if(DEBUG) {
+    console.log(`a.primary computed buffs: ${JSON.stringify(Array.from(Aprimary.computedBuffs))}`)
     console.log(`a.primary: ${a.primary}: ${apr}\ta.secondary: ${a.secondary}: ${asr}\ta: ${apt}`)
     console.log(`b.primary: ${b.primary}: ${bpr}\tb.secondary: ${b.secondary}: ${bsr}\tb: ${bpt}`)
   }
@@ -217,7 +223,7 @@ const sortPairsByEvAnsRank = (a:GeneralPairType, b:GeneralPairType): number => {
   }
 }
 
-const sortPairSelector: Record<sortByOptionsType, (a:GeneralPairType, b:GeneralPairType) => number> = {
+const sortPairSelector: Record<sortByOptionsType, (a:GeneralPairType, b:GeneralPairType) => number > = {
   [sortByOptions.enum.primary]: sortPairsByPrimary,
   [sortByOptions.enum.secondary]: sortPairsBySecondary,
   [sortByOptions.enum.EvAnsRank]: sortPairsByEvAnsRank,
