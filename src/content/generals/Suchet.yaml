@@ -63,7 +63,6 @@ general:
             number: 15
             unit: percentage
         - attribute: March_Size_Capacity
-          condition: When_Not_Mine
           value:
             number: 6
             unit: percentage
