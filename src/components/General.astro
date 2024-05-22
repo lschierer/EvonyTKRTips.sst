@@ -151,7 +151,7 @@ if (dataV.success) {
   await Astro.locals.enrichGeneral(Egeneral.general.name);
   
   const general = Egeneral!.general;
-  await Astro.locals.GeneralBuffs(general.name, Display.enum.summary, {
+  Astro.locals.GeneralBuffs(general.name, Display.enum.summary, {
     special1: qualityColor.enum.Gold,
     special2: qualityColor.enum.Gold,
     special3: qualityColor.enum.Gold,
