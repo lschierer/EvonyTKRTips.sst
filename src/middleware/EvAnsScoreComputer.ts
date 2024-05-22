@@ -3,8 +3,10 @@ import {
   Attribute,
   Buff,
   Condition,
+  Display,
   generalUseCase,
   generalSpecialists,
+  type DisplayType,
   type ExtendedGeneralType,
   type generalUseCaseType,
   type generalSpecialistsType,
@@ -1018,9 +1020,9 @@ const GroundAttackPvP34SS = z
 
 const EvAnsGroundPvPAttack = z
   .function()
-  .args(ExtendedGeneral, BuffParams)
+  .args(ExtendedGeneral, Display, BuffParams)
   .returns(z.number())
-  .implement((eg: ExtendedGeneralType, bp: BuffParamsType) => {
+  .implement((eg: ExtendedGeneralType, display: DisplayType, bp: BuffParamsType) => {
     if (DEBUG) {
       console.log(`${eg.general.name}: EvAnsGroundPvPAttack starting`);
     }
@@ -1030,7 +1032,23 @@ const EvAnsGroundPvPAttack = z
     const AES = GroundAttackPvPAES(eg, bp);
     const specialities = GroundAttackPvP34SS(eg, bp);
 
-    const TLGS = BAS + BSS + AES + specialities;
+    let TLGS = BSS + specialities ;
+    if(DEBUG) {
+      console.log(`TLGS with BSS and specialities`)
+      console.log(`${eg.general.name}: ${TLGS}`)
+    }
+    if(display.localeCompare(Display.enum.assistant)) {
+      TLGS += BAS 
+      if(DEBUG) {
+        console.log(`TLGS with BAS`)
+        console.log(`${eg.general.name}: ${TLGS}`)
+      }
+      TLGS += AES;
+      if(DEBUG) {
+        console.log(`TLGS with AES`)
+        console.log(`${eg.general.name}: ${TLGS}`)
+      }
+    }
     if (DEBUG) {
       console.log(
         `for ${eg.general.name} BAS: ${BAS} BSS: ${BSS} AES: ${AES} specialities: ${specialities} TLGS: ${TLGS}`
@@ -1043,7 +1061,7 @@ const useCaseSelector: Record<
   generalUseCaseType,
   Record<
     generalSpecialistsType,
-    (eg: ExtendedGeneralType, bp: BuffParamsType) => number
+    (eg: ExtendedGeneralType, display: DisplayType, bp: BuffParamsType) => number
   >
 > = {
   [generalUseCase.enum.Attack]: {
@@ -1209,14 +1227,15 @@ const useCaseSelector: Record<
 
 export const EvAnsScoreComputer = z
   .function()
-  .args(generalUseCase, ExtendedGeneral, BuffParams)
+  .args(generalUseCase, ExtendedGeneral, Display, BuffParams)
   .returns(z.number())
   .implement(
     (
       UseCase: generalUseCaseType,
       eg: ExtendedGeneralType,
+      display: DisplayType,
       bp: BuffParamsType
     ) => {
-      return useCaseSelector[UseCase][eg.general.score_as](eg, bp);
+      return useCaseSelector[UseCase][eg.general.score_as](eg, display, bp);
     }
   );

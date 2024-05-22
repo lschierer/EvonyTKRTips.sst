@@ -94,7 +94,7 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
         beast: BP.beast,
       };
 
-      const rankScore = EvAnsScoreComputer(generalUseCase.enum.Attack, eg, _BP);
+      const rankScore = EvAnsScoreComputer(generalUseCase.enum.Attack, eg, display,  _BP);
       if (DEBUG) {
         console.log(`in GeneralBuffs, got rankScore: ${rankScore} for ${name}`);
       }
