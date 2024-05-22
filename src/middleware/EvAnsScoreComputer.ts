@@ -106,6 +106,7 @@ const GroundPvPBuff = z
           tb.condition.includes(Condition.enum.Reduces_Monster) ||
           tb.condition.includes(Condition.enum.In_Main_City) ||
           tb.condition.includes(Condition.enum.Reinforcing) ||
+          tb.condition.includes(Condition.enum.When_Defending_Outside_The_Main_City) ||
           tb.condition.includes(Condition.enum.When_City_Mayor) ||
           tb.condition.includes(
             Condition.enum.When_City_Mayor_for_this_SubCity
