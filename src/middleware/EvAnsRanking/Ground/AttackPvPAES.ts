@@ -3,8 +3,8 @@ import {
   Buff, type ExtendedGeneralType, ExtendedGeneral, type BuffType, BuffParams,
   type BuffParamsType, AscendingLevels
 } from "@schemas/index";
-import { GroundPvPBuff } from "./GroundPvPBuff";
-import { DEBUG_AES, DEBUG } from "./EvAnsScoreComputer";
+import { GroundPvPBuff } from "./PvPBuff";
+import { DEBUG_AES, DEBUG } from "../../EvAnsScoreComputer";
 
 export const GroundAttackPvPAES = z
   .function()

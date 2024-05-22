@@ -5,8 +5,8 @@ import {
   specialSkillBook, BuffParams,
   type BuffParamsType
 } from "@schemas/index";
-import { GroundPvPBuff } from "./GroundPvPBuff";
-import { DEBUG_BSS } from "./EvAnsScoreComputer";
+import { GroundPvPBuff } from "./PvPBuff";
+import { DEBUG_BSS } from "../../EvAnsScoreComputer";
 
 export const GroundAttackPvPBSS = z
   .function()

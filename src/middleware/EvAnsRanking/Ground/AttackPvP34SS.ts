@@ -7,8 +7,8 @@ import {
   type BuffParamsType,
   qualityColor
 } from "@schemas/index";
-import { GroundPvPBuff } from "./GroundPvPBuff";
-import { DEBUG_34SS } from "./EvAnsScoreComputer";
+import { GroundPvPBuff } from "./PvPBuff";
+import { DEBUG_34SS } from "../../EvAnsScoreComputer";
 
 export const GroundAttackPvP34SS = z
   .function()

@@ -14,9 +14,9 @@ import {
 } from "@schemas/index";
 
 import { GroundPvPAttributeMultipliers } from "@lib/EvAnsAttributeRanking";
-import { GroundAttackPvPBSS } from "./GroundAttackPvPBSS";
-import { GroundAttackPvPAES } from "./GroundAttackPvPAES";
-import { GroundAttackPvP34SS } from "./GroundAttackPvP34SS";
+import { GroundAttackPvPBSS } from "./EvAnsRanking/Ground/AttackPvPBSS";
+import { GroundAttackPvPAES } from "./EvAnsRanking/Ground/AttackPvPAES";
+import { GroundAttackPvP34SS } from "./EvAnsRanking/Ground/AttackPvP34SS";
 
 /*******************
  * this is derived by reverse engineering the formula from
