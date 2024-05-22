@@ -132,7 +132,7 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
     .returns(z.promise(z.boolean()))
     .implement(async (gn) => {
       if (DEBUG) console.log(`starating to enrich ${gn}`);
-      let success = true;
+      const success = true;
       const entry: ExtendedGeneralType | null =
         locals.ExtendedGeneralMap.get(gn) ?? null;
 

@@ -49,7 +49,7 @@ const { index, primary, secondary, InvestmentLevel } = Astro.props;
 
 const pGeneral: ExtendedGeneralType = Astro.locals.ExtendedGeneralMap.get(primary) ;
 const sGeneral: ExtendedGeneralType = Astro.locals.ExtendedGeneralMap.get(secondary);
-type DisplayPair = {
+interface DisplayPair {
   primary: ExtendedGeneralType,
   secondary: ExtendedGeneralType,
   EvAnsRanking: number,

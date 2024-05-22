@@ -563,7 +563,7 @@ const GroundAttackPvPBSS = z
       Array.isArray(eg.books) &&
       eg.books.length > 0
     ) {
-      let book_score = eg.books.reduce((accumulator, book) => {
+      const book_score = eg.books.reduce((accumulator, book) => {
         if (book === undefined) {
           return accumulator
         } else {
@@ -620,9 +620,7 @@ const GroundAttackPvPAES = z
           console.log(`${gc.name}: Ascending ${index}`)
           console.log(`accumulator currently ${accumulator}`)
         }
-        if (eg.general.stars === undefined ||
-          eg.general.stars === null ||
-          !eg.general.stars.localeCompare(AscendingLevels.enum[0])
+        if (!eg.general.stars?.localeCompare(AscendingLevels.enum[0])
         ) {
           return accumulator
         } else {

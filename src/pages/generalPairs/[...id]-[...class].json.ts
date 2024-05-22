@@ -43,7 +43,7 @@ const getConflictDataForGeneral = async function (
   target: GeneralClassType
 ): Promise<ConflictDatumType[]> {
   if(DEBUG) console.log(`target is ${target.name}`)
-  const conflictData: Array<ConflictDatumType> = new Array<ConflictDatumType>();
+  const conflictData: ConflictDatumType[] = new Array<ConflictDatumType>();
 
   const collectionArray: CollectionEntry<"generalConflictData">[] =
     await getCollection("generalConflictData", ({ data }) => {
@@ -132,7 +132,7 @@ export const GET: APIRoute = async ({ params }): Promise<Response> => {
         const conflictData = await getConflictDataForGeneral(g1);
         //const conflictData = new Array<ConflictDatumType>();
 
-        let potentialMatches: Array<GeneralClassType>;
+        let potentialMatches: GeneralClassType[];
         if (gc !== undefined && gc !== null) {
           const v2 = generalSpecialists.safeParse(gc);
           if (v2.success) {

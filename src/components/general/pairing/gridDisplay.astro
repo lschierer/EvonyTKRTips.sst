@@ -92,7 +92,7 @@ if (Astro.locals.ExtendedGeneralMap.size > 0) {
     }
     const response = await fetch(pairUrl);
     if (response !== null && response.ok) {
-      const jr: Array<GeneralPairType> = await response.json();
+      const jr: GeneralPairType[] = await response.json();
       const jrv = z.array(GeneralPair).safeParse(jr);
       if (jrv.success) {
         pairsData.push(...jrv.data);
