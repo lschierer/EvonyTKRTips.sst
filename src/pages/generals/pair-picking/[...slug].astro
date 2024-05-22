@@ -9,7 +9,8 @@ const DEBUG = false;
 const { slug } = Astro.params;
 if (slug === undefined) {
   console.log(`slug was undefined`)
-  throw new Error("Slug is required");
+  console.log(JSON.stringify(Astro.params))
+  return Astro.redirect("/404");
 }
 
 const entry = await getEntry("docs", `generals/pair-picking/${slug}`);
