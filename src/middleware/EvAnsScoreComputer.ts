@@ -1,38 +1,29 @@
-import { type CollectionEntry, getEntry, z } from "astro:content";
+import { z } from "astro:content";
 import {
   Attribute,
   Buff,
   Condition,
-  Display,
   generalUseCase,
   generalSpecialists,
-  PvPAttributeMultipliers,
-  ScoreWeightings,
   type ExtendedGeneralType,
   type generalUseCaseType,
   type generalSpecialistsType,
   type specialSkillBookType,
   ExtendedGeneral,
-  ExtendedGeneralStatus,
   specialSkillBook,
   Speciality,
   ClassEnum,
   UnitSchema,
   type BuffType,
-  SpecialityLevel,
   type SpecialityType,
-  type SpecialityLevelType,
   BuffParams,
   type BuffParamsType,
   qualityColor,
   AscendingLevels,
-  type qualityColorType,
   ActivationSituations,
 } from "@schemas/index";
 
 import { GroundPvPAttributeMultipliers } from "@lib/EvAnsAttributeRanking";
-import { number } from "astro/zod";
-import { specialty } from "src/assets/evonySchemas";
 
 /*******************
  * this is derived by reverse engineering the formula from
@@ -97,9 +88,9 @@ const EvAnsBasicGround = z
 
 const GroundPvPBuff = z
   .function()
-  .args(z.string(), z.string(), Buff)
+  .args(z.string(), z.string(), Buff, BuffParams)
   .returns(z.number())
-  .implement((buffName: string, generalName: string, tb: BuffType) => {
+  .implement((buffName: string, generalName: string, tb: BuffType, bp: BuffParamsType) => {
     let score = 0;
     if (tb !== undefined && tb.value !== undefined) {
       if (DEBUG_GBUFF) {
@@ -131,6 +122,19 @@ const GroundPvPBuff = z
           }
           return 0;
         }
+
+        //check for dragon and beast buffs
+        if((tb.condition.includes(Condition.enum.Reduces_Enemy_with_a_Dragon) ||
+          tb.condition.includes(Condition.enum.brings_a_dragon) ||
+          tb.condition.includes(Condition.enum.dragon_to_the_attack)) &&
+          bp.dragon !== true) {
+            return 0
+          }
+        if((tb.condition.includes(Condition.enum.brings_dragon_or_beast_to_attack)) &&
+        (!(bp.dragon === true ||
+          bp.beast === true))){
+            return 0
+          }
       }
 
       //check if it is a all troop buff (all class buff)
@@ -579,7 +583,7 @@ const GroundAttackPvPBSS = z
                 console.log(JSON.stringify(tb))
                 console.log(`--- end tb ---`)
               }
-              const tbscore = GroundPvPBuff(bisb.name, gc.name, tb);
+              const tbscore = GroundPvPBuff(bisb.name, gc.name, tb, bp);
               if (DEBUG_BSS) {
                 console.log(JSON.stringify(tb))
                 console.log(`${eg.general.name}: ${book.name}: accumulating ${tbscore}`)
@@ -653,7 +657,7 @@ const GroundAttackPvPAES = z
                   const tbscore = GroundPvPBuff(
                     `Star ${index} ${ab.level}`,
                     eg.general.name,
-                    actual
+                    actual, bp
                   );
                   if (DEBUG_AES) {
                     console.log(`accumulating ${tbscore}`);
@@ -666,7 +670,7 @@ const GroundAttackPvPAES = z
                   const tbscore = GroundPvPBuff(
                     `Star ${index} ${ab.level}`,
                     eg.general.name,
-                    actual
+                    actual, bp
                   );
                   if (DEBUG_AES) {
                     console.log(`accumulating ${tbscore}`);
@@ -680,7 +684,7 @@ const GroundAttackPvPAES = z
                   const tbscore = GroundPvPBuff(
                     `Star ${index} ${ab.level}`,
                     eg.general.name,
-                    actual
+                    actual, bp
                   );
                   if (DEBUG_AES) {
                     console.log(`accumulating ${tbscore}`);
@@ -695,7 +699,7 @@ const GroundAttackPvPAES = z
                   const tbscore = GroundPvPBuff(
                     `Star ${index} ${ab.level}`,
                     eg.general.name,
-                    actual
+                    actual, bp
                   );
                   if (DEBUG_AES) {
                     console.log(`accumulating ${tbscore}`);
@@ -711,7 +715,7 @@ const GroundAttackPvPAES = z
                   const tbscore = GroundPvPBuff(
                     `Star ${index} ${ab.level}`,
                     eg.general.name,
-                    actual
+                    actual, bp
                   );
                   if (DEBUG_AES) {
                     console.log(`accumulating ${tbscore}`);
@@ -725,7 +729,7 @@ const GroundAttackPvPAES = z
               }, 0)
               return accumulator + array_total;
             } else {
-
+              console.log(`${gc.name} error parsing ${index}`)
             }
           } else {
             console.log(`${gc.name} has a null or undefined buff ${JSON.stringify(ab)}`)
@@ -808,14 +812,14 @@ const GroundAttackPvP34SS = z
                     if (sb === undefined || sb === null) {
                       return aGreen
                     } else {
-                      const sb_total = GroundPvPBuff(specialB.name, gc.name, sb);
+                      const sb_total = GroundPvPBuff(specialB.name, gc.name, sb, bp);
                       if (DEBUG_34SS) {
                         console.log(`accumulating ${sb_total} to ${aGreen}`)
                       }
                       aGreen += sb_total;
                     }
                     if (DEBUG_34SS) {
-                      console.log(`aGeen: ${aGreen} at end of green reduce`)
+                      console.log(`aGeen: ${aGreen} at end of green reduce ${index3}`)
                     }
                     return aGreen
                   }, 0)
@@ -851,9 +855,9 @@ const GroundAttackPvP34SS = z
                     if (sb === undefined || sb === null) {
                       return aBlue
                     } else {
-                      const sb_total = GroundPvPBuff(specialB.name, gc.name, sb);
+                      const sb_total = GroundPvPBuff(specialB.name, gc.name, sb, bp);
                       if (DEBUG_34SS) {
-                        console.log(`accumulating ${sb_total}`)
+                        console.log(`accumulating ${sb_total} ${index3}`)
                       }
                       aBlue += sb_total;
                     }
@@ -895,9 +899,9 @@ const GroundAttackPvP34SS = z
                     if (sb === undefined || sb === null) {
                       return aPurple
                     } else {
-                      const sb_total = GroundPvPBuff(specialB.name, gc.name, sb);
+                      const sb_total = GroundPvPBuff(specialB.name, gc.name, sb, bp);
                       if (DEBUG_34SS) {
-                        console.log(`accumulating ${sb_total}`)
+                        console.log(`accumulating ${sb_total} ${index3}`)
                       }
                       aPurple += sb_total;
                     }
@@ -944,9 +948,9 @@ const GroundAttackPvP34SS = z
                     if (sb === undefined || sb === null) {
                       return aOrange
                     } else {
-                      const sb_total = GroundPvPBuff(specialB.name, gc.name, sb);
+                      const sb_total = GroundPvPBuff(specialB.name, gc.name, sb, bp);
                       if (DEBUG_34SS) {
-                        console.log(`accumulating ${sb_total}`)
+                        console.log(`accumulating ${sb_total} ${index3}`)
                       }
                       aOrange += sb_total;
                     }
@@ -978,9 +982,9 @@ const GroundAttackPvP34SS = z
                     if (sb === undefined || sb === null) {
                       return aGold
                     } else {
-                      const sb_total = GroundPvPBuff(specialB.name, gc.name, sb);
+                      const sb_total = GroundPvPBuff(specialB.name, gc.name, sb, bp);
                       if (DEBUG_34SS) {
-                        console.log(`accumulating ${sb_total}`)
+                        console.log(`accumulating ${sb_total} ${index3}`)
                       }
                       aGold += sb_total;
                     }

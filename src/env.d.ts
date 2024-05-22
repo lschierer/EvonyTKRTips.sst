@@ -5,10 +5,10 @@
 
 declare namespace App {
   interface Locals {
-    ExtendedGeneralMap: d3.InternMap<string, ExtendedGeneralType>,
+    ExtendedGeneralMap: Map<string, ExtendedGeneralType>,
     addEG2EGS: function (GeneralClass): void,
     enrichGeneral: function (string): Promise<boolean>,
-    GeneralBuffs: function (string, Display, BuffParams): Promise<boolean> ,
+    GeneralBuffs: function (string, Display, BuffParams): boolean,
     InvestmentOptions2Key: function(BuffParamsType): string,
   }
 }

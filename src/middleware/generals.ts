@@ -1,18 +1,10 @@
 import { defineMiddleware } from "astro:middleware";
-import type { APIContext } from "astro";
 import {
   getEntry,
-  getCollection,
   z,
-  type CollectionEntry,
 } from "astro:content";
 
-import { BaseN } from "js-combinatorics";
-
-import * as d3 from "d3";
-
 import {
-  Attribute,
   AscendingLevels,
   Book,
   BuffParams,
@@ -22,13 +14,10 @@ import {
   type ExtendedGeneralType,
   ExtendedGeneralStatus,
   GeneralClass,
-  generalSpecialists,
   generalUseCase,
   qualityColor,
   Speciality,
-  specialSkillBook,
   type specialSkillBookType,
-  type GeneralClassType,
   type SpecialityType,
   type BookType,
   type standardSkillBookType,
@@ -38,14 +27,14 @@ import { EvAnsScoreComputer } from "./EvAnsScoreComputer";
 
 const DEBUG = false;
 
-import { arrayUniqueFilter } from "@lib/util";
+
 
 export const DisplayGeneralsMWRoutes = ["/generals/"];
 
 export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
   let continueHandler = false;
 
-  const re = /[\[\]'",]/g;
+  const re = /[[\]'",]/g;
 
   //define a bunch of functions almost like a class
 
@@ -67,11 +56,10 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
   const GeneralBuffs = z
     .function()
     .args(z.string(), Display, BuffParams)
-    .returns(z.promise(z.boolean()))
-    .implement(async (name, display, BP: BuffParamsType) => {
+    .returns(z.boolean())
+    .implement((name, display, BP: BuffParamsType) => {
       if (DEBUG) console.log(`EvAnsBuff starting for ${name}`);
       const eg: ExtendedGeneralType = locals.ExtendedGeneralMap.get(name);
-      const gc = eg.general;
 
       if (!eg.status.localeCompare(ExtendedGeneralStatus.enum.complete)) {
         if (DEBUG) {
@@ -237,7 +225,7 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
           }
           entry.status = ExtendedGeneralStatus.enum.processing;
 
-          const pbs = await GeneralBuffs(gn, Display.enum.primary, {
+          const pbs = GeneralBuffs(gn, Display.enum.primary, {
             special1: qualityColor.enum.Gold,
             special2: qualityColor.enum.Gold,
             special3: qualityColor.enum.Gold,
@@ -251,7 +239,7 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
             console.log(`${gn}: failed to get GeneralBuffs as primary`);
             return false;
           }
-          const abs = await GeneralBuffs(gn, Display.enum.assistant, {
+          const abs = GeneralBuffs(gn, Display.enum.assistant, {
             special1: qualityColor.enum.Gold,
             special2: qualityColor.enum.Gold,
             special3: qualityColor.enum.Gold,
@@ -265,7 +253,7 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
             console.log(`${gn}: failed to get GeneralBuffs as assistant`);
             return false;
           }
-          const sbs = await GeneralBuffs(gn, Display.enum.summary, {
+          const sbs = GeneralBuffs(gn, Display.enum.summary, {
             special1: qualityColor.enum.Gold,
             special2: qualityColor.enum.Gold,
             special3: qualityColor.enum.Gold,
@@ -304,7 +292,6 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
       if (locals.ExtendedGeneralMap.size > 0) {
         if (locals.ExtendedGeneralMap.has(general.name)) return;
       }
-      const success = true;
       const toAdd: ExtendedGeneralType = {
         general: general,
         specialities: new Array<SpecialityType>(),
@@ -329,7 +316,7 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
           console.log(
             `addEG2EGS: map size: ${locals.ExtendedGeneralMap.size} about to enrich.`
           );
-        enrichGeneral(general.name);
+        void enrichGeneral(general.name);
       } else {
         console.log(
           `addEG2EGS built an invalid ExtendedGeneral for ${general.name}`
@@ -341,10 +328,7 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
 
   const HandlerLogic = (locals: App.Locals) => {
     if (locals.ExtendedGeneralMap === undefined) {
-      locals.ExtendedGeneralMap = new d3.InternMap<
-        string,
-        ExtendedGeneralType
-      >();
+      locals.ExtendedGeneralMap = new Map<string,ExtendedGeneralType>();
     }
 
     if (locals.addEG2EGS === undefined) {

@@ -3,9 +3,7 @@
 import * as b from "../schemas/baseSchemas";
 
 import {
-  ScoreWeightings,
   type ScoreWeightings as ScoreWeightingsType,
-  PvPAttributeMultipliers,
   type PvPAttributeMultipliers as PvPAttributeMultipliersType,
 } from '../schemas/EvAns.zod'
 

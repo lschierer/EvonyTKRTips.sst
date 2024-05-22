@@ -15,20 +15,10 @@ import "@spectrum-css/ui-icons/dist/medium/Arrow100.svg";
 import { delay } from "nanodelay";
 
 import {
-  BuffParams,
   type BuffParamsType,
-  ExtendedGeneral,
-  GeneralElement,
-  type GeneralElementType,
   GeneralPair,
   type GeneralPairType,
-  GeneralClass,
-  generalUseCase,
-  qualityColor,
-  AscendingLevels,
   type ExtendedGeneralType,
-  type ExtendedGeneralStatusType,
-  Display,
   ExtendedGeneralStatus,
 } from "@schemas/index";
 
@@ -88,10 +78,10 @@ if (Astro.locals.ExtendedGeneralMap.size > 0) {
     );
 
     if (DEBUG) {
-      console.log(`about to fetch ${pairUrl}`);
+      console.log(`about to fetch ${pairUrl.toString()}`);
     }
     const response = await fetch(pairUrl);
-    if (response !== null && response.ok) {
+    if (response?.ok) {
       const jr: GeneralPairType[] = await response.json();
       const jrv = z.array(GeneralPair).safeParse(jr);
       if (jrv.success) {
@@ -215,7 +205,6 @@ const sortPairFunction = (a: GeneralPairType, b: GeneralPairType) => {
 if (Astro.request.method === "POST") {
   try {
     if (DEBUG) console.log(`executing POST try block`);
-    let continuePostLoop = true;
     await Promise.all([
         ...Astro.locals.ExtendedGeneralMap.values(),
       ].map(async (g: ExtendedGeneralType) => {
@@ -224,9 +213,9 @@ if (Astro.request.method === "POST") {
         }
         let iterationCount = 0;
         while(g.status.localeCompare(ExtendedGeneralStatus.enum.complete)) {
-          await delay(10 * ++iterationCount).then((iterationCount) => {
+          await delay(10 * ++iterationCount).then(() => {
             if(DEBUG) {
-              console.log(`${g.general.name} status ${g.status}`)
+              console.log(`${g.general.name} status ${g.status} ${iterationCount}`)
             }
           })
         }
