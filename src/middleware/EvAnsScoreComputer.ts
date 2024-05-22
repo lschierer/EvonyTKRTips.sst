@@ -42,12 +42,12 @@ import { specialty } from "src/assets/evonySchemas";
  * https://evonyguidewiki.com/en/general-cultivate-en/#Relationship_between_Stats_value_Buff_value
  */
 
-const DEBUG = true;
+const DEBUG = false;
 const DEBUG_GBUFF = false;
 const DEBUG_BAS = false;
 const DEBUG_BSS = false;
 const DEBUG_AES = false;
-const DEBUG_34SS = true;
+const DEBUG_34SS = false;
 
 
 

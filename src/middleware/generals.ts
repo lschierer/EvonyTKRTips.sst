@@ -36,7 +36,7 @@ import {
 
 import { EvAnsScoreComputer } from "./EvAnsScoreComputer";
 
-const DEBUG = true;
+const DEBUG = false;
 
 import { arrayUniqueFilter } from "@lib/util";
 
