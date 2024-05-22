@@ -4,7 +4,7 @@ import {
   type BuffParamsType, AscendingLevels
 } from "@schemas/index";
 import { GroundPvPBuff } from "./PvPBuff";
-import { DEBUG_AES, DEBUG } from "../../EvAnsScoreComputer";
+import { DEBUG_AES, DEBUG } from "../EvAnsScoreComputer";
 
 export const GroundAttackPvPAES = z
   .function()

@@ -23,7 +23,7 @@ import {
   type standardSkillBookType,
 } from "@schemas/index";
 
-import { EvAnsScoreComputer } from "./EvAnsScoreComputer";
+import { EvAnsScoreComputer } from "./EvAnsRanking/EvAnsScoreComputer";
 
 const DEBUG = false;
 

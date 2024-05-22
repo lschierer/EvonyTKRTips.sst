@@ -8,7 +8,7 @@ import {
   type BuffParamsType
 } from "@schemas/index";
 import { GroundPvPAttributeMultipliers } from "@lib/EvAnsAttributeRanking";
-import { DEBUG_GBUFF, DEBUG } from "../../EvAnsScoreComputer";
+import { DEBUG_GBUFF, DEBUG } from "../EvAnsScoreComputer";
 
 export const GroundPvPBuff = z
   .function()
