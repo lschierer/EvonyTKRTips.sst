@@ -27,6 +27,7 @@ import {
   qualityColor,
   AscendingLevels,
   type qualityColorType,
+  ActivationSituations,
 } from "@schemas/index";
 
 import { GroundPvPAttributeMultipliers } from "@lib/EvAnsAttributeRanking";
@@ -42,10 +43,15 @@ import { specialty } from "src/assets/evonySchemas";
  */
 
 const DEBUG = true;
+const DEBUG_GBUFF = false;
 const DEBUG_BAS = false;
-const DEBUG_BSS = true;
+const DEBUG_BSS = false;
+const DEBUG_AES = false;
+const DEBUG_34SS = true;
 
-const EvAnsBasic = z
+
+
+const EvAnsBasicGround = z
   .function()
   .args(ExtendedGeneral)
   .returns(z.number())
@@ -53,22 +59,32 @@ const EvAnsBasic = z
     const gc = eg.general;
 
     const BasicAttack =
-      gc.attack + 45 * gc.attack_increment < 900
-        ? (gc.attack + 45 * gc.attack_increment) * 0.1
-        : 90 + (gc.attack + 45 * gc.attack_increment - 900) * 0.2;
+      (500 + gc.attack + 45 * gc.attack_increment) < 900
+        ? (500+ gc.attack + 45 * gc.attack_increment) * 0.1
+        : 90 + (500 + gc.attack + 45 * gc.attack_increment - 900) * 0.2;
     const BasicDefense =
-      gc.defense + 45 * gc.defense_increment < 900
-        ? (gc.defense + 45 * gc.defense_increment) * 0.1
-        : 90 + (gc.defense + 45 * gc.defense_increment - 900) * 0.2;
+      (500 + gc.defense + 45 * gc.defense_increment) < 900
+        ? (500 + gc.defense + 45 * gc.defense_increment) * 0.1
+        : 90 + (500 + gc.defense + 45 * gc.defense_increment - 900) * 0.2;
     const BasicLeaderShip =
-      gc.leadership + 45 * gc.leadership_increment < 900
-        ? (gc.leadership + 45 * gc.leadership_increment) * 0.1
-        : 90 + (gc.leadership + 45 * gc.leadership_increment - 900) * 0.2;
+      (500 + gc.leadership + 45 * gc.leadership_increment) < 900
+        ? (500 + gc.leadership + 45 * gc.leadership_increment) * 0.1
+        : 90 + (500 + gc.leadership + 45 * gc.leadership_increment - 900) * 0.2;
     const BasicPolitics =
-      gc.politics + 45 * gc.politics_increment < 900
-        ? (gc.politics + 45 * gc.politics_increment) * 0.1
-        : 90 + (gc.politics + 45 * gc.politics_increment - 900) * 0.2;
-    const BAS = BasicAttack + BasicDefense + BasicLeaderShip + BasicPolitics;
+      (500 + gc.politics + 45 * gc.politics_increment) < 900
+        ? (500 + gc.politics + 45 * gc.politics_increment) * 0.1
+        : 90 + (500 + gc.politics + 45 * gc.politics_increment - 900) * 0.2;
+ 
+    const attackMultiplier = GroundPvPAttributeMultipliers[ActivationSituations.enum["Rally Owner PvP"]]?.Offensive.AllTroopAttack ?? 1;
+    const defenseMultiplier = GroundPvPAttributeMultipliers[ActivationSituations.enum["Rally Owner PvP"]]?.Toughness.AllTroopDefense ?? 1;
+    const HPMultipler = GroundPvPAttributeMultipliers[ActivationSituations.enum["Rally Owner PvP"]]?.Toughness.AllTroopHP ?? 1;
+    const PoliticsMultipler = GroundPvPAttributeMultipliers[ActivationSituations.enum["Rally Owner PvP"]]?.Preservation.Death2Wounded ?? 1;
+
+    const BAS = BasicAttack * attackMultiplier +
+      BasicDefense * defenseMultiplier +
+      BasicLeaderShip * HPMultipler +
+      BasicPolitics * PoliticsMultipler;
+
     if (DEBUG_BAS) {
       console.log(`BasicAttack: ${BasicAttack} for ${eg.general.name}`);
       console.log(`BasicDefense: ${BasicDefense} for ${eg.general.name}`);
@@ -86,13 +102,18 @@ const GroundPvPBuff = z
   .implement((buffName: string, generalName: string, tb: BuffType) => {
     let score = 0;
     if (tb !== undefined && tb.value !== undefined) {
+      if (DEBUG_GBUFF) {
+        console.log(`buff ${buffName} for ${generalName} check for value`)
+      }
       //check if buff has some conditions that never work for PvP
       if (tb.condition !== undefined && tb.condition !== null) {
+        if (DEBUG_GBUFF) {
+          console.log(`buff ${buffName} for ${generalName} check for no condition`)
+        }
         if (
           tb.condition.includes(Condition.enum["Against Monsters"]) ||
           tb.condition.includes(Condition.enum.Reduces_Monster) ||
           tb.condition.includes(Condition.enum.In_Main_City) ||
-          tb.condition.includes(Condition.enum.In_City) ||
           tb.condition.includes(Condition.enum.Reinforcing) ||
           tb.condition.includes(Condition.enum.When_City_Mayor) ||
           tb.condition.includes(
@@ -114,8 +135,14 @@ const GroundPvPBuff = z
 
       //check if it is a all troop buff (all class buff)
       if (tb.class === undefined || tb.class === null) {
+        if (DEBUG_GBUFF) {
+          console.log(`buff ${buffName} for ${generalName} check for no class`)
+        }
         //this is an all class buff
         if (tb.attribute !== undefined) {
+          if (DEBUG_GBUFF) {
+            console.log(`buff ${buffName} for ${generalName} check for no attribute`)
+          }
           if (!tb.attribute.localeCompare(Attribute.enum.March_Size_Capacity)) {
             if (tb.value !== undefined && tb.value !== null) {
               if (!tb.value.unit.localeCompare(UnitSchema.enum.percentage)) {
@@ -123,7 +150,7 @@ const GroundPvPBuff = z
                   GroundPvPAttributeMultipliers["Rally Owner PvP"]?.Offensive
                     .MarchSizeIncrease ?? 0;
                 const additional = tb.value.number * multiplier;
-                if (DEBUG_BSS) {
+                if (DEBUG_GBUFF) {
                   console.log(
                     `GroundPvPBuff: ${buffName} from ${generalName} adds ${additional} to ${score}`
                   );
@@ -150,7 +177,7 @@ const GroundPvPBuff = z
                       GroundPvPAttributeMultipliers["Rally Owner PvP"]
                         ?.AttackingAttackDebuff.ReduceAllAttack ?? 0;
                     const additional = tb.value.number * multiplier;
-                    if (DEBUG_BSS) {
+                    if (DEBUG_GBUFF) {
                       console.log(
                         `GroundPvPBuff: ${buffName} from ${generalName} adds ${additional} to ${score}`
                       );
@@ -166,7 +193,7 @@ const GroundPvPBuff = z
                     GroundPvPAttributeMultipliers["Rally Owner PvP"]?.Offensive
                       .AllTroopAttack ?? 0;
                   const additional = tb.value.number * multiplier;
-                  if (DEBUG_BSS) {
+                  if (DEBUG_GBUFF) {
                     console.log(
                       `GroundPvPBuff: ${buffName} from ${generalName} adds ${additional} to ${score}`
                     );
@@ -184,7 +211,7 @@ const GroundPvPBuff = z
                   GroundPvPAttributeMultipliers["Rally Owner PvP"]?.Offensive
                     .RallyCapacity ?? 0;
                 const additional = tb.value.number * multiplier;
-                if (DEBUG_BSS) {
+                if (DEBUG_GBUFF) {
                   console.log(
                     `GroundPvPBuff: ${buffName} from ${generalName} adds ${additional} to ${score}`
                   );
@@ -199,7 +226,7 @@ const GroundPvPBuff = z
                   GroundPvPAttributeMultipliers["Rally Owner PvP"]?.Toughness
                     .AllTroopDefense ?? 0;
                 const additional = tb.value.number * multiplier;
-                if (DEBUG_BSS) {
+                if (DEBUG_GBUFF) {
                   console.log(
                     `GroundPvPBuff: ${buffName} from ${generalName} adds ${additional} to ${score}`
                   );
@@ -214,7 +241,7 @@ const GroundPvPBuff = z
                   GroundPvPAttributeMultipliers["Rally Owner PvP"]?.Toughness
                     .AllTroopHP ?? 0;
                 const additional = tb.value.number * multiplier;
-                if (DEBUG_BSS) {
+                if (DEBUG_GBUFF) {
                   console.log(
                     `GroundPvPBuff: ${buffName} from ${generalName} adds ${additional} to ${score}`
                   );
@@ -243,7 +270,7 @@ const GroundPvPBuff = z
                       GroundPvPAttributeMultipliers["Rally Owner PvP"]
                         ?.Preservation.Death2WoundedWhenAttacking ?? 0;
                     const additional = tb.value.number * multiplier;
-                    if (DEBUG_BSS) {
+                    if (DEBUG_GBUFF) {
                       console.log(
                         `GroundPvPBuff: ${buffName} from ${generalName} adds ${additional} to ${score}`
                       );
@@ -255,7 +282,7 @@ const GroundPvPBuff = z
                     GroundPvPAttributeMultipliers["Rally Owner PvP"]
                       ?.Preservation.Death2Wounded ?? 0;
                   const additional = tb.value.number * multiplier;
-                  if (DEBUG_BSS) {
+                  if (DEBUG_GBUFF) {
                     console.log(
                       `GroundPvPBuff: ${buffName} from ${generalName} adds ${additional} to ${score}`
                     );
@@ -273,7 +300,24 @@ const GroundPvPBuff = z
                   GroundPvPAttributeMultipliers["Rally Owner PvP"]?.Preservation
                     .Death2Souls ?? 0;
                 const additional = tb.value.number * multiplier;
-                if (DEBUG_BSS) {
+                if (DEBUG_GBUFF) {
+                  console.log(
+                    `GroundPvPBuff: ${buffName} from ${generalName} adds ${additional} to ${score}`
+                  );
+                }
+                score = score + additional;
+              }
+            }
+          } else if ( //while this sometimes has conditions, they all apply to attackng PvP. 
+            !tb.attribute.localeCompare(Attribute.enum.Wounded_to_Death)
+          ) {
+            if (tb.value !== undefined && tb.value !== null) {
+              if (!tb.value.unit.localeCompare(UnitSchema.enum.percentage)) {
+                const multiplier =
+                  GroundPvPAttributeMultipliers["Rally Owner PvP"]?.Debilitation
+                    .Wounded2Death ?? 0;
+                const additional = tb.value.number * multiplier;
+                if (DEBUG_GBUFF) {
                   console.log(
                     `GroundPvPBuff: ${buffName} from ${generalName} adds ${additional} to ${score}`
                   );
@@ -296,7 +340,7 @@ const GroundPvPBuff = z
                   GroundPvPAttributeMultipliers["Rally Owner PvP"]?.Offensive
                     .GroundAttack ?? 0;
                 const additional = tb.value.number * multiplier;
-                if (DEBUG_BSS) {
+                if (DEBUG_GBUFF) {
                   console.log(
                     `GroundPvPBuff: ${buffName} from ${generalName} adds ${additional} to ${score}`
                   );
@@ -312,7 +356,7 @@ const GroundPvPBuff = z
                   GroundPvPAttributeMultipliers["Rally Owner PvP"]?.Toughness
                     .GroundDefense ?? 0;
                 const additional = tb.value.number * multiplier;
-                if (DEBUG_BSS) {
+                if (DEBUG_GBUFF) {
                   console.log(
                     `GroundPvPBuff: ${buffName} from ${generalName} adds ${additional} to ${score}`
                   );
@@ -327,7 +371,7 @@ const GroundPvPBuff = z
                   GroundPvPAttributeMultipliers["Rally Owner PvP"]?.Toughness
                     .GroundHP ?? 0;
                 const additional = tb.value.number * multiplier;
-                if (DEBUG_BSS) {
+                if (DEBUG_GBUFF) {
                   console.log(
                     `GroundPvPBuff: ${buffName} from ${generalName} adds ${additional} to ${score}`
                   );
@@ -348,7 +392,7 @@ const GroundPvPBuff = z
                   GroundPvPAttributeMultipliers["Rally Owner PvP"]?.Offensive
                     .RangedAttack ?? 0;
                 const additional = tb.value.number * multiplier;
-                if (DEBUG_BSS) {
+                if (DEBUG_GBUFF) {
                   console.log(
                     `GroundPvPBuff: ${buffName} from ${generalName} adds ${additional} to ${score}`
                   );
@@ -364,7 +408,7 @@ const GroundPvPBuff = z
                   GroundPvPAttributeMultipliers["Rally Owner PvP"]?.Toughness
                     .RangedDefense ?? 0;
                 const additional = tb.value.number * multiplier;
-                if (DEBUG_BSS) {
+                if (DEBUG_GBUFF) {
                   console.log(
                     `GroundPvPBuff: ${buffName} from ${generalName} adds ${additional} to ${score}`
                   );
@@ -379,7 +423,7 @@ const GroundPvPBuff = z
                   GroundPvPAttributeMultipliers["Rally Owner PvP"]?.Toughness
                     .RangedHP ?? 0;
                 const additional = tb.value.number * multiplier;
-                if (DEBUG_BSS) {
+                if (DEBUG_GBUFF) {
                   console.log(
                     `GroundPvPBuff: ${buffName} from ${generalName} adds ${additional} to ${score}`
                   );
@@ -400,7 +444,7 @@ const GroundPvPBuff = z
                   GroundPvPAttributeMultipliers["Rally Owner PvP"]?.Offensive
                     .SiegeAttack ?? 0;
                 const additional = tb.value.number * multiplier;
-                if (DEBUG_BSS) {
+                if (DEBUG_GBUFF) {
                   console.log(
                     `GroundPvPBuff: ${buffName} from ${generalName} adds ${additional} to ${score}`
                   );
@@ -416,7 +460,7 @@ const GroundPvPBuff = z
                   GroundPvPAttributeMultipliers["Rally Owner PvP"]?.Toughness
                     .SiegeDefense ?? 0;
                 const additional = tb.value.number * multiplier;
-                if (DEBUG_BSS) {
+                if (DEBUG_GBUFF) {
                   console.log(
                     `GroundPvPBuff: ${buffName} from ${generalName} adds ${additional} to ${score}`
                   );
@@ -431,7 +475,7 @@ const GroundPvPBuff = z
                   GroundPvPAttributeMultipliers["Rally Owner PvP"]?.Toughness
                     .SiegeHP ?? 0;
                 const additional = tb.value.number * multiplier;
-                if (DEBUG_BSS) {
+                if (DEBUG_GBUFF) {
                   console.log(
                     `GroundPvPBuff: ${buffName} from ${generalName} adds ${additional} to ${score}`
                   );
@@ -452,7 +496,7 @@ const GroundPvPBuff = z
                   GroundPvPAttributeMultipliers["Rally Owner PvP"]?.Offensive
                     .MountedAttack ?? 0;
                 const additional = tb.value.number * multiplier;
-                if (DEBUG_BSS) {
+                if (DEBUG_GBUFF) {
                   console.log(
                     `GroundPvPBuff: ${buffName} from ${generalName} adds ${additional} to ${score}`
                   );
@@ -468,7 +512,7 @@ const GroundPvPBuff = z
                   GroundPvPAttributeMultipliers["Rally Owner PvP"]?.Toughness
                     .MountedDefense ?? 0;
                 const additional = tb.value.number * multiplier;
-                if (DEBUG_BSS) {
+                if (DEBUG_GBUFF) {
                   console.log(
                     `GroundPvPBuff: ${buffName} from ${generalName} adds ${additional} to ${score}`
                   );
@@ -483,7 +527,7 @@ const GroundPvPBuff = z
                   GroundPvPAttributeMultipliers["Rally Owner PvP"]?.Toughness
                     .MountedHP ?? 0;
                 const additional = tb.value.number * multiplier;
-                if (DEBUG_BSS) {
+                if (DEBUG_GBUFF) {
                   console.log(
                     `GroundPvPBuff: ${buffName} from ${generalName} adds ${additional} to ${score}`
                   );
@@ -514,6 +558,56 @@ const GroundAttackPvPBSS = z
     const gc = eg.general;
     let BSS_Score = 0;
 
+    if (
+      eg.books !== undefined &&
+      Array.isArray(eg.books) &&
+      eg.books.length > 0
+    ) {
+      let book_score = eg.books.reduce((accumulator, book) => {
+        if (book === undefined) {
+          return accumulator
+        } else {
+          const v = specialSkillBook.safeParse(book);
+          if (v.error) {
+            console.log(`${eg.general.name} invalid book: ${book.name}`)
+            return accumulator
+          } else {
+            const bisb: specialSkillBookType = v.data;
+            const array_total = bisb.buff.reduce((a2, tb) => {
+              if (DEBUG_BSS) {
+                console.log(`--- start tb ---`)
+                console.log(JSON.stringify(tb))
+                console.log(`--- end tb ---`)
+              }
+              const tbscore = GroundPvPBuff(bisb.name, gc.name, tb);
+              if (DEBUG_BSS) {
+                console.log(JSON.stringify(tb))
+                console.log(`${eg.general.name}: ${book.name}: accumulating ${tbscore}`)
+              }
+              return tbscore + a2
+            }, 0)
+            return accumulator + array_total;
+          }
+        }
+        return accumulator
+      }, 0)
+      if (DEBUG_BSS) {
+        console.log(`${eg.general.name} total book buff: ${book_score}`)
+        console.log('')
+      }
+      BSS_Score += Math.floor(book_score);
+    }
+    return Math.floor(BSS_Score);
+  });
+
+const GroundAttackPvPAES = z
+  .function()
+  .args(ExtendedGeneral, BuffParams)
+  .returns(z.number())
+  .implement((eg: ExtendedGeneralType, bp: BuffParamsType) => {
+    const gc = eg.general;
+    let BSS_Score = 0;
+
     //I will assume you set the bp to disabled if it is an assistant.
     if (bp.stars.localeCompare(AscendingLevels.enum[0])) {
       if (!Array.isArray(eg.general.ascending)) {
@@ -521,321 +615,402 @@ const GroundAttackPvPBSS = z
         return -11;
       }
       const ascending_score = eg.general.ascending.reduce((accumulator, ab, index) => {
-        if (DEBUG_BSS) {
+        if (DEBUG_AES) {
+          console.log('')
           console.log(`${gc.name}: Ascending ${index}`)
+          console.log(`accumulator currently ${accumulator}`)
         }
         if (eg.general.stars === undefined ||
           eg.general.stars === null ||
           !eg.general.stars.localeCompare(AscendingLevels.enum[0])
         ) {
-          return 0
+          return accumulator
         } else {
-          if (DEBUG_BSS) {
+          if (DEBUG_AES) {
             console.log(`${index} starting detection`)
           }
           if (ab.buff !== undefined &&
             ab.buff !== null) {
-            const v = Buff.safeParse(ab.buff);
+            if (DEBUG_AES) {
+              console.log(`${gc.name} Star ${index} pass null check`)
+            }
+            const v = z.array(Buff).safeParse(ab.buff);
             if (v.success) {
-              const actual = v.data;
-              if (
-                !eg.general.stars.localeCompare(AscendingLevels.enum[10]) &&
-                !ab.level.localeCompare(AscendingLevels.enum[10])) {
-                const tbscore = GroundPvPBuff(
-                  `Star ${index} ${ab.level}`,
-                  eg.general.name,
-                  actual
-                );
-                if (DEBUG_BSS) {
-                  console.log(`accumulating ${tbscore}`);
-                }
-                return tbscore;
-              } else if ((
-                !eg.general.stars.localeCompare(AscendingLevels.enum[10]) ||
-                !eg.general.stars.localeCompare(AscendingLevels.enum[9])) &&
-                !ab.level.localeCompare(AscendingLevels.enum[9])) {
-                const tbscore = GroundPvPBuff(
-                  `Star ${index} ${ab.level}`,
-                  eg.general.name,
-                  actual
-                );
-                if (DEBUG_BSS) {
-                  console.log(`accumulating ${tbscore}`);
-                }
-                return tbscore;
-              } else if ((
-                !eg.general.stars.localeCompare(AscendingLevels.enum[10]) ||
-                !eg.general.stars.localeCompare(AscendingLevels.enum[9]) ||
-                !eg.general.stars.localeCompare(AscendingLevels.enum[8])) &&
-                !ab.level.localeCompare(AscendingLevels.enum[8])) {
-                const tbscore = GroundPvPBuff(
-                  `Star ${index} ${ab.level}`,
-                  eg.general.name,
-                  actual
-                );
-                if (DEBUG_BSS) {
-                  console.log(`accumulating ${tbscore}`);
-                }
-                return tbscore;
-              } else if ((
-                !eg.general.stars.localeCompare(AscendingLevels.enum[10]) ||
-                !eg.general.stars.localeCompare(AscendingLevels.enum[9]) ||
-                !eg.general.stars.localeCompare(AscendingLevels.enum[8]) ||
-                !eg.general.stars.localeCompare(AscendingLevels.enum[7])) &&
-                !ab.level.localeCompare(AscendingLevels.enum[7])) {
-                const tbscore = GroundPvPBuff(
-                  `Star ${index} ${ab.level}`,
-                  eg.general.name,
-                  actual
-                );
-                if (DEBUG_BSS) {
-                  console.log(`accumulating ${tbscore}`);
-                }
-                return tbscore;
-              } else if ((
-                !eg.general.stars.localeCompare(AscendingLevels.enum[10]) ||
-                !eg.general.stars.localeCompare(AscendingLevels.enum[9]) ||
-                !eg.general.stars.localeCompare(AscendingLevels.enum[8]) ||
-                !eg.general.stars.localeCompare(AscendingLevels.enum[7]) ||
-                !eg.general.stars.localeCompare(AscendingLevels.enum[6])) &&
-                !ab.level.localeCompare(AscendingLevels.enum[6])) {
-                const tbscore = GroundPvPBuff(
-                  `Star ${index} ${ab.level}`,
-                  eg.general.name,
-                  actual
-                );
-                if (DEBUG_BSS) {
-                  console.log(`accumulating ${tbscore}`);
-                }
-                return tbscore;
-              } else {
-                console.log(`${gc.name} Star ${index} ${ab.level} did not match anywhere deciding`)
-                console.log(JSON.stringify(ab.buff))
-                return 0
+              const barray = v.data;
+              if (DEBUG_AES) {
+                console.log('--Array--')
+                console.log(JSON.stringify(barray))
+                console.log('--Array--')
               }
+              const array_total = barray.reduce((accumulator, actual: BuffType) => {
+                if (DEBUG_AES) {
+                  console.log(JSON.stringify(actual))
+                }
+                if (eg.general.stars === undefined || eg.general.stars === null) {
+                  return accumulator
+                }
+                if (
+                  !eg.general.stars.localeCompare(AscendingLevels.enum[10]) &&
+                  !ab.level.localeCompare(AscendingLevels.enum[10])) {
+                  const tbscore = GroundPvPBuff(
+                    `Star ${index} ${ab.level}`,
+                    eg.general.name,
+                    actual
+                  );
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  return tbscore + accumulator;
+                } else if ((
+                  !eg.general.stars.localeCompare(AscendingLevels.enum[10]) ||
+                  !eg.general.stars.localeCompare(AscendingLevels.enum[9])) &&
+                  !ab.level.localeCompare(AscendingLevels.enum[9])) {
+                  const tbscore = GroundPvPBuff(
+                    `Star ${index} ${ab.level}`,
+                    eg.general.name,
+                    actual
+                  );
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  return tbscore + accumulator;
+                } else if ((
+                  !eg.general.stars.localeCompare(AscendingLevels.enum[10]) ||
+                  !eg.general.stars.localeCompare(AscendingLevels.enum[9]) ||
+                  !eg.general.stars.localeCompare(AscendingLevels.enum[8])) &&
+                  !ab.level.localeCompare(AscendingLevels.enum[8])) {
+                  const tbscore = GroundPvPBuff(
+                    `Star ${index} ${ab.level}`,
+                    eg.general.name,
+                    actual
+                  );
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  return tbscore + accumulator;
+                } else if ((
+                  !eg.general.stars.localeCompare(AscendingLevels.enum[10]) ||
+                  !eg.general.stars.localeCompare(AscendingLevels.enum[9]) ||
+                  !eg.general.stars.localeCompare(AscendingLevels.enum[8]) ||
+                  !eg.general.stars.localeCompare(AscendingLevels.enum[7])) &&
+                  !ab.level.localeCompare(AscendingLevels.enum[7])) {
+                  const tbscore = GroundPvPBuff(
+                    `Star ${index} ${ab.level}`,
+                    eg.general.name,
+                    actual
+                  );
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  return tbscore;
+                } else if ((
+                  !eg.general.stars.localeCompare(AscendingLevels.enum[10]) ||
+                  !eg.general.stars.localeCompare(AscendingLevels.enum[9]) ||
+                  !eg.general.stars.localeCompare(AscendingLevels.enum[8]) ||
+                  !eg.general.stars.localeCompare(AscendingLevels.enum[7]) ||
+                  !eg.general.stars.localeCompare(AscendingLevels.enum[6])) &&
+                  !ab.level.localeCompare(AscendingLevels.enum[6])) {
+                  const tbscore = GroundPvPBuff(
+                    `Star ${index} ${ab.level}`,
+                    eg.general.name,
+                    actual
+                  );
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  return tbscore + accumulator;
+                } else {
+                  console.log(`${gc.name} Star ${index} ${ab.level} did not match anywhere deciding`)
+                  console.log(JSON.stringify(ab.buff))
+                  return accumulator
+                }
+              }, 0)
+              return accumulator + array_total;
+            } else {
+
             }
           } else {
-            return 0;
+            console.log(`${gc.name} has a null or undefined buff ${JSON.stringify(ab)}`)
+            return accumulator;
           }
-          return 0;
+          console.log(`${gc.name} reached final Ascending return 0`)
+          return accumulator;
         }
       }, 0)
       if (DEBUG) {
         console.log(`${gc.name}: total ascending score: ${ascending_score} `)
+        console.log('')
       }
-      BSS_Score += ascending_score;
+      BSS_Score += Math.floor(ascending_score);
     }
-    if (
-      eg.books !== undefined &&
-      Array.isArray(eg.books) &&
-      eg.books.length > 0
-    ) {
-      eg.books.map((book) => {
-        if (book !== undefined) {
-          const v = specialSkillBook.safeParse(book);
-          if (v.success) {
-            const bisb: specialSkillBookType = v.data;
-            for (const tb of bisb.buff) {
-              const oldscore = BSS_Score;
-              const tbscore = GroundPvPBuff(bisb.name, gc.name, tb);
-              BSS_Score += tbscore;
-              if (DEBUG_BSS) {
-                console.log(
-                  `oldscore: ${oldscore} tbscore: ${tbscore} score: ${BSS_Score}`
-                );
-              }
-            }
-          }
-        }
-      });
-      BSS_Score = Math.floor(BSS_Score);
-    }
+
+    return Math.floor(BSS_Score);
+  });
+
+const GroundAttackPvP34SS = z
+  .function()
+  .args(ExtendedGeneral, BuffParams)
+  .returns(z.number())
+  .implement((eg: ExtendedGeneralType, bp: BuffParamsType) => {
+    const gc = eg.general;
+    let BSS_Score = 0;
 
     if (
       eg.specialities !== undefined &&
       Array.isArray(eg.specialities) &&
       eg.specialities.length > 0
     ) {
-      eg.specialities.map((special, index) => {
-        if (special !== undefined) {
+      const specialities_total = eg.specialities.reduce((a1, special, index1) => {
+        if (DEBUG_34SS) {
+          console.log("")
+          console.log(`--- ${special.name} ---`)
+          console.log(JSON.stringify(special.attribute))
+          console.log(`accumulator: ${a1}`)
+          console.log(`---`)
+        }
+        if (special === undefined || special === null) {
+          return a1
+        } else {
           const v = Speciality.safeParse(special);
-          if (v.success) {
+          if (v.error) {
+            console.log(`${eg.general.name}: invalid speciality: ${special.name}`)
+            return a1
+          } else {
             const specialB: SpecialityType = v.data;
-            for (const sl of specialB.attribute) {
-              if (
-                (sl.level.localeCompare(qualityColor.enum.Green) &&
-                  bp.special1.localeCompare(qualityColor.enum.Disabled) &&
-                  index === 0) ||
-                (sl.level.localeCompare(qualityColor.enum.Green) &&
-                  bp.special2.localeCompare(qualityColor.enum.Disabled) &&
-                  index === 1) ||
-                (sl.level.localeCompare(qualityColor.enum.Green) &&
-                  bp.special3.localeCompare(qualityColor.enum.Disabled) &&
-                  index === 2) ||
-                (sl.level.localeCompare(qualityColor.enum.Green) &&
-                  bp.special4.localeCompare(qualityColor.enum.Disabled) &&
-                  index === 3) ||
-                (sl.level.localeCompare(qualityColor.enum.Green) &&
-                  bp.special5.localeCompare(qualityColor.enum.Disabled) &&
-                  index === 4)
-              ) {
-                for (const tb of sl.buff) {
-                  const oldscore = BSS_Score;
-                  const tbscore = GroundPvPBuff(specialB.name, gc.name, tb);
-                  BSS_Score += tbscore;
-                  if (DEBUG_BSS) {
-                    console.log(
-                      `oldscore: ${oldscore} tbscore: ${tbscore} score: ${BSS_Score}`
-                    );
-                  }
+            const AA_total = specialB.attribute.reduce((a2, sa, index2) => {
+              if (sa === undefined || sa === null) {
+                return a2
+              } else {
+                if (DEBUG_34SS) {
+                  console.log(`---start sa ${index1} ${index2}---`)
+                  console.log(JSON.stringify(sa))
+                  console.log('--- end sa ---')
                 }
-              } else if (
-                (sl.level.localeCompare(qualityColor.enum.Blue) &&
-                  bp.special1.localeCompare(qualityColor.enum.Disabled) &&
-                  bp.special1.localeCompare(qualityColor.enum.Green) &&
-                  index === 0) ||
-                (sl.level.localeCompare(qualityColor.enum.Blue) &&
-                  bp.special2.localeCompare(qualityColor.enum.Disabled) &&
-                  bp.special2.localeCompare(qualityColor.enum.Green) &&
-                  index === 1) ||
-                (sl.level.localeCompare(qualityColor.enum.Blue) &&
-                  bp.special3.localeCompare(qualityColor.enum.Disabled) &&
-                  bp.special3.localeCompare(qualityColor.enum.Green) &&
-                  index === 2) ||
-                (sl.level.localeCompare(qualityColor.enum.Blue) &&
-                  bp.special4.localeCompare(qualityColor.enum.Disabled) &&
-                  bp.special4.localeCompare(qualityColor.enum.Green) &&
-                  index === 3) ||
-                (sl.level.localeCompare(qualityColor.enum.Blue) &&
-                  bp.special5.localeCompare(qualityColor.enum.Disabled) &&
-                  bp.special5.localeCompare(qualityColor.enum.Green) &&
-                  index === 4)
-              ) {
-                for (const tb of sl.buff) {
-                  const oldscore = BSS_Score;
-                  const tbscore = GroundPvPBuff(specialB.name, gc.name, tb);
-                  BSS_Score += tbscore;
-                  if (DEBUG_BSS) {
-                    console.log(
-                      `oldscore: ${oldscore} tbscore: ${tbscore} score: ${BSS_Score}`
-                    );
+                if (
+                  (!sa.level.localeCompare(qualityColor.enum.Green) &&
+                    bp.special1.localeCompare(qualityColor.enum.Disabled) &&
+                    index1 === 0) ||
+                  (!sa.level.localeCompare(qualityColor.enum.Green) &&
+                    bp.special2.localeCompare(qualityColor.enum.Disabled) &&
+                    index1 === 1) ||
+                  (!sa.level.localeCompare(qualityColor.enum.Green) &&
+                    bp.special3.localeCompare(qualityColor.enum.Disabled) &&
+                    index1 === 2) ||
+                  (!sa.level.localeCompare(qualityColor.enum.Green) &&
+                    bp.special4.localeCompare(qualityColor.enum.Disabled) &&
+                    index1 === 3) ||
+                  (!sa.level.localeCompare(qualityColor.enum.Green) &&
+                    bp.special5.localeCompare(qualityColor.enum.Disabled) &&
+                    index1 === 4)
+                ) {
+                  if (DEBUG_34SS) {
+                    console.log(`sa ${index1} ${index2} matches as an enabled green`)
                   }
+                  const gt = sa.buff.reduce((aGreen, sb, index3) => {
+                    if (sb === undefined || sb === null) {
+                      return aGreen
+                    } else {
+                      const sb_total = GroundPvPBuff(specialB.name, gc.name, sb);
+                      if (DEBUG_34SS) {
+                        console.log(`accumulating ${sb_total} to ${aGreen}`)
+                      }
+                      aGreen += sb_total;
+                    }
+                    if (DEBUG_34SS) {
+                      console.log(`aGeen: ${aGreen} at end of green reduce`)
+                    }
+                    return aGreen
+                  }, 0)
+                  a2 += gt;
                 }
-              } else if (
-                (sl.level.localeCompare(qualityColor.enum.Purple) &&
-                  bp.special1.localeCompare(qualityColor.enum.Disabled) &&
-                  bp.special1.localeCompare(qualityColor.enum.Green) &&
-                  bp.special1.localeCompare(qualityColor.enum.Blue) &&
-                  index === 0) ||
-                (sl.level.localeCompare(qualityColor.enum.Purple) &&
-                  bp.special2.localeCompare(qualityColor.enum.Disabled) &&
-                  bp.special2.localeCompare(qualityColor.enum.Green) &&
-                  bp.special2.localeCompare(qualityColor.enum.Blue) &&
-                  index === 1) ||
-                (sl.level.localeCompare(qualityColor.enum.Purple) &&
-                  bp.special3.localeCompare(qualityColor.enum.Disabled) &&
-                  bp.special3.localeCompare(qualityColor.enum.Green) &&
-                  bp.special3.localeCompare(qualityColor.enum.Blue) &&
-                  index === 2) ||
-                (sl.level.localeCompare(qualityColor.enum.Purple) &&
-                  bp.special4.localeCompare(qualityColor.enum.Disabled) &&
-                  bp.special4.localeCompare(qualityColor.enum.Green) &&
-                  bp.special4.localeCompare(qualityColor.enum.Blue) &&
-                  index === 3) ||
-                (sl.level.localeCompare(qualityColor.enum.Purple) &&
-                  bp.special5.localeCompare(qualityColor.enum.Disabled) &&
-                  bp.special5.localeCompare(qualityColor.enum.Green) &&
-                  bp.special5.localeCompare(qualityColor.enum.Blue) &&
-                  index === 4)
-              ) {
-                for (const tb of sl.buff) {
-                  const oldscore = BSS_Score;
-                  const tbscore = GroundPvPBuff(specialB.name, gc.name, tb);
-                  BSS_Score += tbscore;
-                  if (DEBUG_BSS) {
-                    console.log(
-                      `oldscore: ${oldscore} tbscore: ${tbscore} score: ${BSS_Score}`
-                    );
+                
+                if (
+                  (!sa.level.localeCompare(qualityColor.enum.Blue) &&
+                    (bp.special1.localeCompare(qualityColor.enum.Disabled) ||
+                      bp.special1.localeCompare(qualityColor.enum.Green)) &&
+                    index1 === 0) ||
+                  (!sa.level.localeCompare(qualityColor.enum.Blue) &&
+                    (bp.special2.localeCompare(qualityColor.enum.Disabled) ||
+                      bp.special2.localeCompare(qualityColor.enum.Green)) &&
+                    index1 === 1) ||
+                  (!sa.level.localeCompare(qualityColor.enum.Blue) &&
+                    (bp.special3.localeCompare(qualityColor.enum.Disabled) ||
+                      bp.special3.localeCompare(qualityColor.enum.Green)) &&
+                    index1 === 2) ||
+                  (!sa.level.localeCompare(qualityColor.enum.Blue) &&
+                    (bp.special4.localeCompare(qualityColor.enum.Disabled) ||
+                      bp.special4.localeCompare(qualityColor.enum.Green)) &&
+                    index1 === 3) ||
+                  (!sa.level.localeCompare(qualityColor.enum.Blue) &&
+                    (bp.special5.localeCompare(qualityColor.enum.Disabled) ||
+                      bp.special5.localeCompare(qualityColor.enum.Green)) &&
+                    index1 === 4)
+                ) {
+                  if (DEBUG_34SS) {
+                    console.log(`sa ${index1} ${index2} matches as an enabled Blue`)
                   }
+                  const bt = sa.buff.reduce((aBlue, sb, index3) => {
+                    if (sb === undefined || sb === null) {
+                      return aBlue
+                    } else {
+                      const sb_total = GroundPvPBuff(specialB.name, gc.name, sb);
+                      if (DEBUG_34SS) {
+                        console.log(`accumulating ${sb_total}`)
+                      }
+                      aBlue += sb_total;
+                    }
+                    return aBlue
+                  }, 0)
+                  a2 += bt;
                 }
-              } else if (
-                (sl.level.localeCompare(qualityColor.enum.Orange) &&
-                  bp.special1.localeCompare(qualityColor.enum.Disabled) &&
-                  bp.special1.localeCompare(qualityColor.enum.Green) &&
-                  bp.special1.localeCompare(qualityColor.enum.Blue) &&
-                  bp.special1.localeCompare(qualityColor.Enum.Purple) &&
-                  index === 0) ||
-                (sl.level.localeCompare(qualityColor.enum.Orange) &&
-                  bp.special2.localeCompare(qualityColor.enum.Disabled) &&
-                  bp.special2.localeCompare(qualityColor.enum.Green) &&
-                  bp.special2.localeCompare(qualityColor.enum.Blue) &&
-                  bp.special2.localeCompare(qualityColor.Enum.Purple) &&
-                  index === 1) ||
-                (sl.level.localeCompare(qualityColor.enum.Orange) &&
-                  bp.special3.localeCompare(qualityColor.enum.Disabled) &&
-                  bp.special3.localeCompare(qualityColor.enum.Green) &&
-                  bp.special3.localeCompare(qualityColor.enum.Blue) &&
-                  bp.special3.localeCompare(qualityColor.Enum.Purple) &&
-                  index === 2) ||
-                (sl.level.localeCompare(qualityColor.enum.Orange) &&
-                  bp.special4.localeCompare(qualityColor.enum.Disabled) &&
-                  bp.special4.localeCompare(qualityColor.enum.Green) &&
-                  bp.special4.localeCompare(qualityColor.enum.Blue) &&
-                  bp.special4.localeCompare(qualityColor.Enum.Purple) &&
-                  index === 3) ||
-                (sl.level.localeCompare(qualityColor.enum.Orange) &&
-                  bp.special5.localeCompare(qualityColor.enum.Disabled) &&
-                  bp.special5.localeCompare(qualityColor.enum.Green) &&
-                  bp.special5.localeCompare(qualityColor.enum.Blue) &&
-                  bp.special5.localeCompare(qualityColor.Enum.Purple) &&
-                  index === 4)
-              ) {
-                for (const tb of sl.buff) {
-                  const oldscore = BSS_Score;
-                  const tbscore = GroundPvPBuff(specialB.name, gc.name, tb);
-                  BSS_Score += tbscore;
-                  if (DEBUG_BSS) {
-                    console.log(
-                      `oldscore: ${oldscore} tbscore: ${tbscore} score: ${BSS_Score}`
-                    );
+                if (
+                  (!sa.level.localeCompare(qualityColor.enum.Purple) &&
+                    (bp.special1.localeCompare(qualityColor.enum.Disabled) ||
+                      bp.special1.localeCompare(qualityColor.enum.Green) ||
+                      bp.special1.localeCompare(qualityColor.enum.Blue)) &&
+                    index1 === 0) ||
+                  (!sa.level.localeCompare(qualityColor.enum.Purple) &&
+                    (bp.special2.localeCompare(qualityColor.enum.Disabled) ||
+                      bp.special2.localeCompare(qualityColor.enum.Green) ||
+                      bp.special2.localeCompare(qualityColor.enum.Blue)) &&
+                    index1 === 1) ||
+                  (!sa.level.localeCompare(qualityColor.enum.Purple) &&
+                    (bp.special3.localeCompare(qualityColor.enum.Disabled) ||
+                      bp.special3.localeCompare(qualityColor.enum.Green) ||
+                      bp.special3.localeCompare(qualityColor.enum.Blue)) &&
+                    index1 === 2) ||
+                  (!sa.level.localeCompare(qualityColor.enum.Purple) &&
+                    (bp.special4.localeCompare(qualityColor.enum.Disabled) ||
+                      bp.special4.localeCompare(qualityColor.enum.Green) ||
+                      bp.special4.localeCompare(qualityColor.enum.Blue)) &&
+                    index1 === 3) ||
+                  (!sa.level.localeCompare(qualityColor.enum.Purple) &&
+                    (bp.special5.localeCompare(qualityColor.enum.Disabled) ||
+                      bp.special5.localeCompare(qualityColor.enum.Green) ||
+                      bp.special5.localeCompare(qualityColor.enum.Blue)) &&
+                    index1 === 4)
+                ) {
+                  if (DEBUG_34SS) {
+                    console.log(`sa ${index1} ${index2} matches as an enabled Purple`)
                   }
+                  const pt = sa.buff.reduce((aPurple, sb, index3) => {
+                    if (sb === undefined || sb === null) {
+                      return aPurple
+                    } else {
+                      const sb_total = GroundPvPBuff(specialB.name, gc.name, sb);
+                      if (DEBUG_34SS) {
+                        console.log(`accumulating ${sb_total}`)
+                      }
+                      aPurple += sb_total;
+                    }
+                    return aPurple
+                  }, 0)
+                  a2 += pt;
                 }
-              } else if (
-                (sl.level.localeCompare(qualityColor.enum.Gold) &&
-                  !bp.special1.localeCompare(qualityColor.enum.Gold) &&
-                  index === 0) ||
-                (sl.level.localeCompare(qualityColor.enum.Gold) &&
-                  !bp.special2.localeCompare(qualityColor.enum.Gold) &&
-                  index === 1) ||
-                (sl.level.localeCompare(qualityColor.enum.Gold) &&
-                  !bp.special3.localeCompare(qualityColor.enum.Gold) &&
-                  index === 2) ||
-                (sl.level.localeCompare(qualityColor.enum.Gold) &&
-                  !bp.special4.localeCompare(qualityColor.enum.Gold) &&
-                  index === 3) ||
-                (sl.level.localeCompare(qualityColor.enum.Gold) &&
-                  !bp.special5.localeCompare(qualityColor.enum.Gold) &&
-                  index === 4)
-              ) {
-                for (const tb of sl.buff) {
-                  const oldscore = BSS_Score;
-                  const tbscore = GroundPvPBuff(specialB.name, gc.name, tb);
-                  BSS_Score += tbscore;
-                  if (DEBUG_BSS) {
-                    console.log(
-                      `oldscore: ${oldscore} tbscore: ${tbscore} score: ${BSS_Score}`
-                    );
+                if (
+                  (!sa.level.localeCompare(qualityColor.enum.Orange) &&
+                    (bp.special1.localeCompare(qualityColor.enum.Disabled) ||
+                      bp.special1.localeCompare(qualityColor.enum.Green) ||
+                      bp.special1.localeCompare(qualityColor.enum.Blue) ||
+                      bp.special1.localeCompare(qualityColor.enum.Purple)) &&
+                    index1 === 0) ||
+                  (!sa.level.localeCompare(qualityColor.enum.Orange) &&
+                    (bp.special2.localeCompare(qualityColor.enum.Disabled) ||
+                      bp.special2.localeCompare(qualityColor.enum.Green) ||
+                      bp.special2.localeCompare(qualityColor.enum.Blue) ||
+                      bp.special2.localeCompare(qualityColor.enum.Purple)) &&
+                    index1 === 1) ||
+                  (!sa.level.localeCompare(qualityColor.enum.Orange) &&
+                    (bp.special3.localeCompare(qualityColor.enum.Disabled) ||
+                      bp.special3.localeCompare(qualityColor.enum.Green) ||
+                      bp.special3.localeCompare(qualityColor.enum.Blue) ||
+                      bp.special3.localeCompare(qualityColor.enum.Purple)) &&
+                    index1 === 2) ||
+                  (!sa.level.localeCompare(qualityColor.enum.Orange) &&
+                    (bp.special4.localeCompare(qualityColor.enum.Disabled) ||
+                      bp.special4.localeCompare(qualityColor.enum.Green) ||
+                      bp.special4.localeCompare(qualityColor.enum.Blue) ||
+                      bp.special4.localeCompare(qualityColor.enum.Purple)) &&
+                    index1 === 3) ||
+                  (!sa.level.localeCompare(qualityColor.enum.Orange) &&
+                    (bp.special5.localeCompare(qualityColor.enum.Disabled) ||
+                      bp.special5.localeCompare(qualityColor.enum.Green) ||
+                      bp.special5.localeCompare(qualityColor.enum.Blue) ||
+                      bp.special5.localeCompare(qualityColor.enum.Purple)) &&
+                    index1 === 4)
+                ) {
+                  if (DEBUG_34SS) {
+                    console.log(`sa ${index1} ${index2} matches as an enabled Orange`)
                   }
+                  const ot = sa.buff.reduce((aOrange, sb, index3) => {
+                    if (sb === undefined || sb === null) {
+                      return aOrange
+                    } else {
+                      const sb_total = GroundPvPBuff(specialB.name, gc.name, sb);
+                      if (DEBUG_34SS) {
+                        console.log(`accumulating ${sb_total}`)
+                      }
+                      aOrange += sb_total;
+                    }
+                    return aOrange
+                  }, 0)
+                  a2 += ot;
+                }
+                if (
+                  (!sa.level.localeCompare(qualityColor.enum.Gold) &&
+                    !bp.special1.localeCompare(qualityColor.enum.Gold) &&
+                    index1 === 0) ||
+                  (!sa.level.localeCompare(qualityColor.enum.Gold) &&
+                    !bp.special2.localeCompare(qualityColor.enum.Gold) &&
+                    index1 === 1) ||
+                  (!sa.level.localeCompare(qualityColor.enum.Gold) &&
+                    !bp.special3.localeCompare(qualityColor.enum.Gold) &&
+                    index1 === 2) ||
+                  (!sa.level.localeCompare(qualityColor.enum.Gold) &&
+                    !bp.special4.localeCompare(qualityColor.enum.Gold) &&
+                    index1 === 3) ||
+                  (!sa.level.localeCompare(qualityColor.enum.Gold) &&
+                    !bp.special5.localeCompare(qualityColor.enum.Gold) &&
+                    index1 === 4)
+                ) {
+                  if (DEBUG_34SS) {
+                    console.log(`sa ${index1} ${index2} matches as an enabled Gold`)
+                  }
+                  const goldT = sa.buff.reduce((aGold, sb, index3) => {
+                    if (sb === undefined || sb === null) {
+                      return aGold
+                    } else {
+                      const sb_total = GroundPvPBuff(specialB.name, gc.name, sb);
+                      if (DEBUG_34SS) {
+                        console.log(`accumulating ${sb_total}`)
+                      }
+                      aGold += sb_total;
+                    }
+                    return aGold
+                  }, 0)
+                  a2 += goldT;
                 }
               }
-            }
+              if (DEBUG_34SS) {
+                console.log(`a2: ${a2}`)
+                console.log("")
+              }
+              return a2
+            }, 0)
+            return a1 + AA_total;
           }
         }
-      });
+        return a1
 
-      BSS_Score = Math.floor(BSS_Score);
+      }, 0)
+
+      if (DEBUG_34SS) {
+        console.log(`${eg.general.name}: specialities total: ${specialities_total}`)
+        console.log('')
+      }
+      BSS_Score += Math.floor(specialities_total);
     }
-    return BSS_Score;
+    return Math.floor(BSS_Score);
   });
 
 const EvAnsGroundPvPAttack = z
@@ -847,13 +1022,15 @@ const EvAnsGroundPvPAttack = z
       console.log(`${eg.general.name}: EvAnsGroundPvPAttack starting`);
     }
 
-    const BAS = EvAnsBasic(eg);
+    const BAS = EvAnsBasicGround(eg);
     const BSS = GroundAttackPvPBSS(eg, bp);
+    const AES = GroundAttackPvPAES(eg, bp);
+    const specialities = GroundAttackPvP34SS(eg, bp);
 
-    const TLGS = BAS + BSS;
+    const TLGS = BAS + BSS + AES + specialities;
     if (DEBUG) {
       console.log(
-        `for ${eg.general.name} BAS: ${BAS} BSS: ${BSS} TLGS: ${TLGS}`
+        `for ${eg.general.name} BAS: ${BAS} BSS: ${BSS} AES: ${AES} specialities: ${specialities} TLGS: ${TLGS}`
       );
     }
     return TLGS ?? -11;
