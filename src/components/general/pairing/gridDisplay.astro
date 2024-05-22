@@ -7,6 +7,7 @@ import { FixedWidthParser } from "fixed-width-parser";
 
 import "@spectrum-css/vars/dist/spectrum-global.css";
 import "@spectrum-css/vars/dist/spectrum-medium.css";
+import "@spectrum-css/button/dist/index.css";
 import "@spectrum-css/page/dist/index.css";
 import "@spectrum-css/table/dist/index.css";
 import "@spectrum-css/icon/dist/index.css";
@@ -20,6 +21,7 @@ import {
   type GeneralPairType,
   type ExtendedGeneralType,
   ExtendedGeneralStatus,
+AscendingLevels,
 } from "@schemas/index";
 
 import GridRow from "./gridRow.astro";
@@ -36,7 +38,7 @@ const { name, InvestmentLevel } = Astro.props;
 
 const myUrl = Astro.url;
 
-const sortByOptions = z.enum(["primary", "secondary", "EvAnsRank"]);
+const sortByOptions = z.enum(["primary", "secondary", "EvAnsRank", "AttackRank"]);
 type sortByOptionsType = z.infer<typeof sortByOptions>;
 
 const sortDirectionOptions = z.enum(["ascending", "descending"]);
@@ -54,6 +56,10 @@ let sortSecondaryValue: sortDirectionType =
 
 let sortEvAnsRankInput: boolean | sortDirectionType | null = false;
 let sortEvAnsRankValue: sortDirectionType =
+  sortDirectionOptions.enum.descending;
+
+let sortAttackRankInput: boolean | sortDirectionType | null = false;
+let sortAttackRankValue: sortDirectionType =
   sortDirectionOptions.enum.descending;
 
 if (DEBUG) {
@@ -175,6 +181,71 @@ const sortPairsByEvAnsRank = (
   }
 };
 
+const sortPairsAttackRank = (a: GeneralPairType, b: GeneralPairType): number => {
+  const Aprimary: ExtendedGeneralType = Astro.locals.ExtendedGeneralMap.get(
+    a.primary
+  );
+  const Asecondary: ExtendedGeneralType = Astro.locals.ExtendedGeneralMap.get(
+    a.secondary
+  );
+  const Bprimary: ExtendedGeneralType = Astro.locals.ExtendedGeneralMap.get(
+    b.primary
+  );
+  const Bsecondary: ExtendedGeneralType = Astro.locals.ExtendedGeneralMap.get(
+    b.secondary
+  );
+
+  const assistInvest: BuffParamsType = {
+    special1: InvestmentLevel.special1,
+    special2: InvestmentLevel.special1,
+    special3: InvestmentLevel.special1,
+    special4: InvestmentLevel.special1,
+    special5: InvestmentLevel.special1,
+    stars: AscendingLevels.enum[0],
+    dragon: InvestmentLevel.dragon,
+    beast: InvestmentLevel.beast
+  }
+
+  const apr =
+    Aprimary.computedBuffs.get(
+      Astro.locals.InvestmentOptions2Key(InvestmentLevel)
+    )?.AttackRank ?? -1;
+  const asr =
+    Asecondary.computedBuffs.get(
+      Astro.locals.InvestmentOptions2Key(assistInvest)
+    )?.AttackRank ?? -2;
+
+  const bpr =
+    Bprimary.computedBuffs.get(
+      Astro.locals.InvestmentOptions2Key(InvestmentLevel)
+    )?.AttackRank ?? -3;
+  const bsr =
+    Bsecondary.computedBuffs.get(
+      Astro.locals.InvestmentOptions2Key(assistInvest)
+    )?.AttackRank ?? -4;
+
+  const apt = apr + asr;
+  const bpt = bpr + bsr;
+  if (DEBUG) {
+    console.log(
+      `a.primary computed buffs: ${JSON.stringify(Array.from(Aprimary.computedBuffs))}`
+    );
+    console.log(
+      `a.primary: ${a.primary}: ${apr}\ta.secondary: ${a.secondary}: ${asr}\ta: ${apt}`
+    );
+    console.log(
+      `b.primary: ${b.primary}: ${bpr}\tb.secondary: ${b.secondary}: ${bsr}\tb: ${bpt}`
+    );
+  }
+  if (apt === bpt) {
+    return 0;
+  } else if (apt < bpt) {
+    return -1;
+  } else {
+    return 1;
+  }
+}
+
 const sortPairSelector: Record<
   sortByOptionsType,
   (a: GeneralPairType, b: GeneralPairType) => number
@@ -182,6 +253,7 @@ const sortPairSelector: Record<
   [sortByOptions.enum.primary]: sortPairsByPrimary,
   [sortByOptions.enum.secondary]: sortPairsBySecondary,
   [sortByOptions.enum.EvAnsRank]: sortPairsByEvAnsRank,
+  [sortByOptions.enum.AttackRank]: sortPairsAttackRank,
 };
 
 const sortPairFunction = (a: GeneralPairType, b: GeneralPairType) => {
@@ -277,10 +349,28 @@ if (Astro.request.method === "POST") {
           }
         }
       }
+      if (sortAttackRankInput === false) {
+        //not previously sorted by EvAnsRank
+        const v = sortDirectionOptions.safeParse(data.get("AttackRank"));
+        if (v.success) {
+          if (DEBUG) {
+            console.log(`sortAttackRankInput was false, is now ${v.data}`);
+          }
+          sortAttackRankInput = true;
+          sortEvAnsRankInput = false;
+          sortBy = sortByOptions.enum.AttackRank;
+          sortDirection = v.data;
+          if (sortDirection === sortDirectionOptions.enum.ascending) {
+            sortAttackRankValue = sortDirectionOptions.enum.descending;
+          } else {
+            sortAttackRankValue = sortDirectionOptions.enum.ascending;
+          }
+        }
+      }
     } else {
       if (DEBUG)
         console.log(
-          `values are ${sortPrimaryInput}  ${sortSecondaryInput} ${sortEvAnsRankInput}`
+          `values are ${sortPrimaryInput}  ${sortSecondaryInput} ${sortEvAnsRankInput} ${sortAttackRankInput}`
         );
     }
   } catch (error) {
@@ -314,30 +404,62 @@ let pairArray = [...pairs].sort(sortPairFunction);
               aria-sort={sortDirection}
               tabindex="0"
             >
-              <button type="submit" name="pGeneral" value={sortPrimaryValue}>
+              <button 
+                type="submit" 
+                name="pGeneral" 
+                value={sortPrimaryValue}
+                class="spectrum-Button spectrum-Button--outline spectrum-Button--primary spectrum-Button--sizeM"
+              >
                 <span class="spectrum-Table-columnTitle">Primary General</span>
               </button>
             </div>
             <div
               class="spectrum-Table-headCell"
               role="columnheader"
-              aria-sort="none"
+              aria-sort={sortDirection}
               tabindex="0"
             >
-              <button type="submit" name="sGeneral" value={sortSecondaryValue}>
+              <button 
+                type="submit" 
+                name="sGeneral" 
+                value={sortSecondaryValue}
+                class="spectrum-Button spectrum-Button--outline spectrum-Button--primary spectrum-Button--sizeM"
+                >
                 <span class="spectrum-Table-columnTitle"
                   >Assistant General
                 </span>
               </button>
             </div>
             <div
+              id="EvAnsRank"
               class="spectrum-Table-headCell"
               role="columnheader"
-              aria-sort="none"
+              aria-sort={sortDirection}
               tabindex="0"
             >
-              <button type="submit" name="EvAnsRank" value={sortEvAnsRankValue}>
-                <span class="spectrum-Table-columnTitle">Score</span>
+              <button 
+                type="submit" 
+                name="EvAnsRank" 
+                value={sortEvAnsRankValue}
+                class="spectrum-Button spectrum-Button--outline spectrum-Button--primary spectrum-Button--sizeM"
+                >
+                <span class="spectrum-Table-columnTitle">EvAns Score</span>
+              </button>
+            </div>
+            <div
+              id="AttackRank"
+              class="spectrum-Table-headCell"
+              role="columnheader"
+              aria-sort={sortDirection}
+              tabindex="0"
+            >
+              <button 
+                type="submit" 
+                name="AttackRank" 
+                value={sortAttackRankValue}
+                class="spectrum-Button spectrum-Button--outline spectrum-Button--primary spectrum-Button--sizeM"
+                >
+                <span class="spectrum-Table-columnTitle">TKRTips Attack Score</span>
               </button>
             </div>
           </div>
@@ -360,4 +482,13 @@ let pairArray = [...pairs].sort(sortPairFunction);
     </form>
   </div>
 </div>
-<style></style>
+<style>
+  
+  div#EvAnsRank,
+  div#AttackRank {
+    width: 6em;
+  }
+  .spectrum-Table-columnTitle {
+    text-wrap: wrap;
+  }
+</style>

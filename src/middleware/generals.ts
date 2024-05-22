@@ -24,6 +24,7 @@ import {
 } from "@schemas/index";
 
 import { EvAnsScoreComputer } from "./EvAnsRanking/EvAnsScoreComputer";
+import {ScoreComputer as AttackScoreComputer} from './AttackRanking/ScoreComputer';
 
 const DEBUG = false;
 
@@ -77,7 +78,7 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
         }
        } else {
         if (DEBUG) {
-          console.log(`${name} GeneralBuffs continuing to call EvAnsScoreComputer`);
+          console.log(`${name} GeneralBuffs continuing to call ScoreComputers`);
         }
       }
 
@@ -94,17 +95,19 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
         beast: BP.beast,
       };
 
-      const rankScore = EvAnsScoreComputer(generalUseCase.enum.Attack, eg, display,  _BP);
+      const EvAnsRankScore = EvAnsScoreComputer(generalUseCase.enum.Attack, eg, display,  _BP);
+      const AttackRank = AttackScoreComputer(generalUseCase.enum.Attack, eg, display,  _BP);
       if (DEBUG) {
-        console.log(`in GeneralBuffs, got rankScore: ${rankScore} for ${name}`);
+        console.log(`in GeneralBuffs, got rankScore: ${EvAnsRankScore} for ${name}`);
       }
       const hashKey = InvestmentOptions2Key(_BP);
       eg.computedBuffs.set(hashKey, {
-        EvAns: rankScore,
+        EvAns: EvAnsRankScore,
+        AttackRank: AttackRank,
       });
       if (DEBUG) {
         console.log(`hashKey: ${hashKey}`);
-        console.log(`${eg.general.name}: rankScore: ${rankScore}`);
+        console.log(`${eg.general.name}: rankScore: ${EvAnsRankScore}`);
         console.log(
           `computedBuffs: ${JSON.stringify(Array.from(eg.computedBuffs))}`
         );
