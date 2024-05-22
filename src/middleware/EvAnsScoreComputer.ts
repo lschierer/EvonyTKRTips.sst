@@ -521,205 +521,110 @@ const GroundAttackPvPBSS = z
         return -11;
       }
       const ascending_score = eg.general.ascending.reduce((accumulator, ab, index) => {
-        if(DEBUG_BSS){
+        if (DEBUG_BSS) {
           console.log(`${gc.name}: Ascending ${index}`)
         }
-        if(eg.general.stars === undefined ||
+        if (eg.general.stars === undefined ||
           eg.general.stars === null ||
           !eg.general.stars.localeCompare(AscendingLevels.enum[0])
         ) {
           return 0
         } else {
-          if(DEBUG_BSS) {
+          if (DEBUG_BSS) {
             console.log(`${index} starting detection`)
           }
-          if(ab.buff !== undefined &&
+          if (ab.buff !== undefined &&
             ab.buff !== null) {
-              const v = Buff.safeParse(ab.buff);
-              if (v.success) { 
-                const actual = v.data;
-                if (
-                  !eg.general.stars.localeCompare(AscendingLevels.enum[10]) &&
-                  !ab.level.localeCompare(AscendingLevels.enum[10])) {  
-                  const tbscore = GroundPvPBuff(
-                    `Star ${index} ${ab.level}`,
-                    eg.general.name,
-                    actual
-                  );
-                  if (DEBUG_BSS) {
-                    console.log(`accumulating ${tbscore}`);
-                  }
-                  return tbscore;
-                } else if ((
-                  !eg.general.stars.localeCompare(AscendingLevels.enum[10]) ||
-                  !eg.general.stars.localeCompare(AscendingLevels.enum[9])) &&
-                  !ab.level.localeCompare(AscendingLevels.enum[9])) {  
-                  const tbscore = GroundPvPBuff(
-                    `Star ${index} ${ab.level}`,
-                    eg.general.name,
-                    actual
-                  );
-                  if (DEBUG_BSS) {
-                    console.log(`accumulating ${tbscore}`);
-                  }
-                  return tbscore;
-                } else if ((
-                  !eg.general.stars.localeCompare(AscendingLevels.enum[10]) ||
-                  !eg.general.stars.localeCompare(AscendingLevels.enum[9]) ||
-                  !eg.general.stars.localeCompare(AscendingLevels.enum[8])) &&
-                  !ab.level.localeCompare(AscendingLevels.enum[8])) {  
-                  const tbscore = GroundPvPBuff(
-                    `Star ${index} ${ab.level}`,
-                    eg.general.name,
-                    actual
-                  );
-                  if (DEBUG_BSS) {
-                    console.log(`accumulating ${tbscore}`);
-                  }
-                  return tbscore;
-                }
-              }
-            }
-          
-          }
-        }
-      }, 0)
-      eg.general.ascending.map((ab, index) => {
-        if (DEBUG_BSS) {
-          console.log(`${gc.name}: Ascending ${index}`);
-        }
-        if (
-          eg.general.stars === undefined ||
-          eg.general.stars === null ||
-          !eg.general.stars.localeCompare(AscendingLevels.enum[0])
-        ) {
-          //general is not assencded.
-          if (DEBUG_BSS) {
-            console.log(`${gc.name} is not ascended in map`);
-          }
-        } else {
-          if (DEBUG_BSS) {
-            console.log(`${gc.name}: Asending ${index} starting detection`);
-          }
-           else if (
-            (!eg.general.stars.localeCompare(AscendingLevels.enum[10]) ||
-              !eg.general.stars.localeCompare(AscendingLevels.enum[9])) &&
-            !ab.level.localeCompare(AscendingLevels.enum[9])
-          ) {
-            const v = z.array(Buff).safeParse(ab.buff);
+            const v = Buff.safeParse(ab.buff);
             if (v.success) {
-              const barray = v.data;
-              for (const actual of barray) {
-                const gname = eg.general.name;
-                const oldscore = BSS_Score;
+              const actual = v.data;
+              if (
+                !eg.general.stars.localeCompare(AscendingLevels.enum[10]) &&
+                !ab.level.localeCompare(AscendingLevels.enum[10])) {
                 const tbscore = GroundPvPBuff(
                   `Star ${index} ${ab.level}`,
-                  gname,
+                  eg.general.name,
                   actual
                 );
-                BSS_Score += tbscore;
                 if (DEBUG_BSS) {
-                  console.log(
-                    `oldscore: ${oldscore} tbscore: ${tbscore} score: ${BSS_Score}`
-                  );
+                  console.log(`accumulating ${tbscore}`);
                 }
-              }
-            } else {
-              console.log(`not a buff array`);
-            }
-          } else if (
-            (!eg.general.stars.localeCompare(AscendingLevels.enum[10]) ||
-              !eg.general.stars.localeCompare(AscendingLevels.enum[9]) ||
-              !eg.general.stars.localeCompare(AscendingLevels.enum[8])) &&
-            !ab.level.localeCompare(AscendingLevels.enum[8])
-          ) {
-            const v = z.array(Buff).safeParse(ab.buff);
-            if (v.success) {
-              const barray = v.data;
-              for (const actual of barray) {
-                const gname = eg.general.name;
-                const oldscore = BSS_Score;
+                return tbscore;
+              } else if ((
+                !eg.general.stars.localeCompare(AscendingLevels.enum[10]) ||
+                !eg.general.stars.localeCompare(AscendingLevels.enum[9])) &&
+                !ab.level.localeCompare(AscendingLevels.enum[9])) {
                 const tbscore = GroundPvPBuff(
                   `Star ${index} ${ab.level}`,
-                  gname,
+                  eg.general.name,
                   actual
                 );
-                BSS_Score += tbscore;
                 if (DEBUG_BSS) {
-                  console.log(
-                    `oldscore: ${oldscore} tbscore: ${tbscore} score: ${BSS_Score}`
-                  );
+                  console.log(`accumulating ${tbscore}`);
                 }
-              }
-            } else {
-              console.log(`not a buff array`);
-            }
-          } else if (
-            (!eg.general.stars.localeCompare(AscendingLevels.enum[10]) ||
-              !eg.general.stars.localeCompare(AscendingLevels.enum[9]) ||
-              !eg.general.stars.localeCompare(AscendingLevels.enum[8]) ||
-              !eg.general.stars.localeCompare(AscendingLevels.enum[7])) &&
-            !ab.level.localeCompare(AscendingLevels.enum[7])
-          ) {
-            const v = z.array(Buff).safeParse(ab.buff);
-            if (v.success) {
-              const barray = v.data;
-              for (const actual of barray) {
-                const gname = eg.general.name;
-                const oldscore = BSS_Score;
+                return tbscore;
+              } else if ((
+                !eg.general.stars.localeCompare(AscendingLevels.enum[10]) ||
+                !eg.general.stars.localeCompare(AscendingLevels.enum[9]) ||
+                !eg.general.stars.localeCompare(AscendingLevels.enum[8])) &&
+                !ab.level.localeCompare(AscendingLevels.enum[8])) {
                 const tbscore = GroundPvPBuff(
                   `Star ${index} ${ab.level}`,
-                  gname,
+                  eg.general.name,
                   actual
                 );
-                BSS_Score += tbscore;
                 if (DEBUG_BSS) {
-                  console.log(
-                    `oldscore: ${oldscore} tbscore: ${tbscore} score: ${BSS_Score}`
-                  );
+                  console.log(`accumulating ${tbscore}`);
                 }
-              }
-            } else {
-              console.log(`not a buff array`);
-            }
-          } else if (
-            (!eg.general.stars.localeCompare(AscendingLevels.enum[10]) ||
-              !eg.general.stars.localeCompare(AscendingLevels.enum[9]) ||
-              !eg.general.stars.localeCompare(AscendingLevels.enum[8]) ||
-              !eg.general.stars.localeCompare(AscendingLevels.enum[7]) ||
-              !eg.general.stars.localeCompare(AscendingLevels.enum[6])) &&
-            !ab.level.localeCompare(AscendingLevels.enum[6])
-          ) {
-            const v = z.array(Buff).safeParse(ab.buff);
-            if (v.success) {
-              const barray = v.data;
-              for (const actual of barray) {
-                const gname = eg.general.name;
-                const oldscore = BSS_Score;
+                return tbscore;
+              } else if ((
+                !eg.general.stars.localeCompare(AscendingLevels.enum[10]) ||
+                !eg.general.stars.localeCompare(AscendingLevels.enum[9]) ||
+                !eg.general.stars.localeCompare(AscendingLevels.enum[8]) ||
+                !eg.general.stars.localeCompare(AscendingLevels.enum[7])) &&
+                !ab.level.localeCompare(AscendingLevels.enum[7])) {
                 const tbscore = GroundPvPBuff(
                   `Star ${index} ${ab.level}`,
-                  gname,
+                  eg.general.name,
                   actual
                 );
-                BSS_Score += tbscore;
                 if (DEBUG_BSS) {
-                  console.log(
-                    `oldscore: ${oldscore} tbscore: ${tbscore} score: ${BSS_Score}`
-                  );
+                  console.log(`accumulating ${tbscore}`);
                 }
+                return tbscore;
+              } else if ((
+                !eg.general.stars.localeCompare(AscendingLevels.enum[10]) ||
+                !eg.general.stars.localeCompare(AscendingLevels.enum[9]) ||
+                !eg.general.stars.localeCompare(AscendingLevels.enum[8]) ||
+                !eg.general.stars.localeCompare(AscendingLevels.enum[7]) ||
+                !eg.general.stars.localeCompare(AscendingLevels.enum[6])) &&
+                !ab.level.localeCompare(AscendingLevels.enum[6])) {
+                const tbscore = GroundPvPBuff(
+                  `Star ${index} ${ab.level}`,
+                  eg.general.name,
+                  actual
+                );
+                if (DEBUG_BSS) {
+                  console.log(`accumulating ${tbscore}`);
+                }
+                return tbscore;
+              } else {
+                console.log(`${gc.name} Star ${index} ${ab.level} did not match anywhere deciding`)
+                console.log(JSON.stringify(ab.buff))
+                return 0
               }
-            } else {
-              console.log(`not a buff array`);
             }
           } else {
-            console.log(`matched nothing`);
-            console.log(`stars: ${eg.general.stars}`);
-            console.log(`buff Level: ${ab.level}`);
+            return 0;
           }
+          return 0;
         }
-      });
+      }, 0)
+      if (DEBUG) {
+        console.log(`${gc.name}: total ascending score: ${ascending_score} `)
+      }
+      BSS_Score += ascending_score;
     }
-
     if (
       eg.books !== undefined &&
       Array.isArray(eg.books) &&
