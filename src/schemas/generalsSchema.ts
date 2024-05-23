@@ -103,13 +103,6 @@ export type GeneralElementType = z.infer<typeof GeneralElement>;
 export const GeneralArray = z.array(GeneralElement);
 export type GeneralArrayType = z.infer<typeof GeneralArray>;
 
-export const GeneralPair = z.object({
-    primary: z.string(),
-    secondary: z.string(),
-});
-
-export type GeneralPairType = z.infer<typeof GeneralPair>;
-
 export const CovenantAttributeCategory = z.enum([
   "War Covenant",
   "Cooperation Covenant",
@@ -158,3 +151,10 @@ export type ExtendedGeneralType = z.infer<typeof ExtendedGeneral>;
 
 export const ExtendedGeneralSet = z.set(ExtendedGeneral);
 export type ExtendedGeneralSetType = z.infer<typeof ExtendedGeneralSet>;
+
+export const GeneralPair = z.object({
+  primary: z.string(),
+  secondary: z.string(),
+});
+
+export type GeneralPairType = z.infer<typeof GeneralPair>;
