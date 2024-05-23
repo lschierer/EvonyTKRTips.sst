@@ -129,8 +129,7 @@ export const GroundPvPBuff = z
           } else if (!tb.attribute.localeCompare(Attribute.enum.Rally_Capacity)) {
             if (tb.value !== undefined && tb.value !== null) {
               if (!tb.value.unit.localeCompare(UnitSchema.enum.percentage)) {
-                const multiplier = AttributeMultipliers["Rally Owner PvP"]?.Offensive
-                  .RallyCapacity.get(generalSpecialists.enum.Ground) ?? 0;
+                const multiplier = 0;
                 const additional = tb.value.number * multiplier;
                 if (DEBUG_GBUFF) {
                   console.log(
@@ -143,8 +142,7 @@ export const GroundPvPBuff = z
           } else if (!tb.attribute.localeCompare(Attribute.enum.Defense)) {
             if (tb.value !== undefined && tb.value !== null) {
               if (!tb.value.unit.localeCompare(UnitSchema.enum.percentage)) {
-                const multiplier = AttributeMultipliers["Rally Owner PvP"]?.Toughness
-                  .AllTroopDefense.get(generalSpecialists.enum.Ground) ?? 0;
+                const multiplier =  0;
                 const additional = tb.value.number * multiplier;
                 if (DEBUG_GBUFF) {
                   console.log(
@@ -157,8 +155,7 @@ export const GroundPvPBuff = z
           } else if (!tb.attribute.localeCompare(Attribute.enum.HP)) {
             if (tb.value !== undefined && tb.value !== null) {
               if (!tb.value.unit.localeCompare(UnitSchema.enum.percentage)) {
-                const multiplier = AttributeMultipliers["Rally Owner PvP"]?.Toughness
-                  .AllTroopHP.get(generalSpecialists.enum.Ground) ?? 0;
+                const multiplier = 0;
                 const additional = tb.value.number * multiplier;
                 if (DEBUG_GBUFF) {
                   console.log(
@@ -181,8 +178,7 @@ export const GroundPvPBuff = z
                       Condition.enum.brings_dragon_or_beast_to_attack
                     ) ||
                     tb.condition.includes(Condition.enum.dragon_to_the_attack)) {
-                    const multiplier = AttributeMultipliers["Rally Owner PvP"]
-                      ?.Preservation.Death2WoundedWhenAttacking.get(generalSpecialists.enum.Ground) ?? 0;
+                    const multiplier = 0;
                     const additional = tb.value.number * multiplier;
                     if (DEBUG_GBUFF) {
                       console.log(
@@ -207,8 +203,7 @@ export const GroundPvPBuff = z
           } else if (!tb.attribute.localeCompare(Attribute.enum.Death_to_Soul)) {
             if (tb.value !== undefined && tb.value !== null) {
               if (!tb.value.unit.localeCompare(UnitSchema.enum.percentage)) {
-                const multiplier = AttributeMultipliers["Rally Owner PvP"]?.Preservation
-                  .Death2Souls.get(generalSpecialists.enum.Ground) ?? 0;
+                const multiplier = 0;
                 const additional = tb.value.number * multiplier;
                 if (DEBUG_GBUFF) {
                   console.log(
@@ -218,12 +213,13 @@ export const GroundPvPBuff = z
                 score = score + additional;
               }
             }
-          } else if ( //while this sometimes has conditions, they all apply to attackng PvP. 
+          } else if (  
             !tb.attribute.localeCompare(Attribute.enum.Wounded_to_Death)) {
+              //while this sometimes has conditions, they all apply to attackng PvP.
             if (tb.value !== undefined && tb.value !== null) {
               if (!tb.value.unit.localeCompare(UnitSchema.enum.percentage)) {
                 const multiplier = AttributeMultipliers["Rally Owner PvP"]?.Debilitation
-                  .Wounded2Death.get(generalSpecialists.enum.Ground) ?? 0;
+                  .Wounded2Death.get(generalSpecialists.enum.Ground) ?? 0.1;
                 const additional = tb.value.number * multiplier;
                 if (DEBUG_GBUFF) {
                   console.log(
@@ -259,8 +255,7 @@ export const GroundPvPBuff = z
           } else if (!tb.attribute.localeCompare(Attribute.enum.Defense)) {
             if (tb.value !== undefined && tb.value !== null) {
               if (!tb.value.unit.localeCompare(UnitSchema.enum.percentage)) {
-                const multiplier = AttributeMultipliers["Rally Owner PvP"]?.Toughness
-                  .GroundDefense.get(generalSpecialists.enum.Ground) ?? 0;
+                const multiplier = 0;
                 const additional = tb.value.number * multiplier;
                 if (DEBUG_GBUFF) {
                   console.log(
@@ -273,8 +268,7 @@ export const GroundPvPBuff = z
           } else if (!tb.attribute.localeCompare(Attribute.enum.HP)) {
             if (tb.value !== undefined && tb.value !== null) {
               if (!tb.value.unit.localeCompare(UnitSchema.enum.percentage)) {
-                const multiplier = AttributeMultipliers["Rally Owner PvP"]?.Toughness
-                  .GroundHP.get(generalSpecialists.enum.Ground) ?? 0;
+                const multiplier =  0;
                 const additional = tb.value.number * multiplier;
                 if (DEBUG_GBUFF) {
                   console.log(
@@ -308,8 +302,7 @@ export const GroundPvPBuff = z
           } else if (!tb.attribute.localeCompare(Attribute.enum.Defense)) {
             if (tb.value !== undefined && tb.value !== null) {
               if (!tb.value.unit.localeCompare(UnitSchema.enum.percentage)) {
-                const multiplier = AttributeMultipliers["Rally Owner PvP"]?.Toughness
-                  .RangedDefense.get(generalSpecialists.enum.Ground) ?? 0;
+                const multiplier = 0;
                 const additional = tb.value.number * multiplier;
                 if (DEBUG_GBUFF) {
                   console.log(
@@ -322,8 +315,7 @@ export const GroundPvPBuff = z
           } else if (!tb.attribute.localeCompare(Attribute.enum.HP)) {
             if (tb.value !== undefined && tb.value !== null) {
               if (!tb.value.unit.localeCompare(UnitSchema.enum.percentage)) {
-                const multiplier = AttributeMultipliers["Rally Owner PvP"]?.Toughness
-                  .RangedHP.get(generalSpecialists.enum.Ground) ?? 0;
+                const multiplier = 0;
                 const additional = tb.value.number * multiplier;
                 if (DEBUG_GBUFF) {
                   console.log(
@@ -357,8 +349,7 @@ export const GroundPvPBuff = z
           } else if (!tb.attribute.localeCompare(Attribute.enum.Defense)) {
             if (tb.value !== undefined && tb.value !== null) {
               if (!tb.value.unit.localeCompare(UnitSchema.enum.percentage)) {
-                const multiplier = AttributeMultipliers["Rally Owner PvP"]?.Toughness
-                  .SiegeDefense.get(generalSpecialists.enum.Ground) ?? 0;
+                const multiplier = 0;
                 const additional = tb.value.number * multiplier;
                 if (DEBUG_GBUFF) {
                   console.log(
@@ -371,8 +362,7 @@ export const GroundPvPBuff = z
           } else if (!tb.attribute.localeCompare(Attribute.enum.HP)) {
             if (tb.value !== undefined && tb.value !== null) {
               if (!tb.value.unit.localeCompare(UnitSchema.enum.percentage)) {
-                const multiplier = AttributeMultipliers["Rally Owner PvP"]?.Toughness
-                  .SiegeHP.get(generalSpecialists.enum.Ground) ?? 0;
+                const multiplier = 0;
                 const additional = tb.value.number * multiplier;
                 if (DEBUG_GBUFF) {
                   console.log(
