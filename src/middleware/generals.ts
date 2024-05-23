@@ -301,7 +301,10 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
         books: new Array<
           BookType | specialSkillBookType | standardSkillBookType
         >(),
-        computedBuffs: new Map<string, { EvAns: number }>(),
+        computedBuffs: new Map<string, { 
+          EvAns: number,
+          AttackRank: number
+        }>(),
         status: ExtendedGeneralStatus.enum.created,
       };
       const test = ExtendedGeneral.safeParse(toAdd);
