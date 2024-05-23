@@ -47,7 +47,7 @@ import {
   generalUseCase,
 } from "@schemas/index";
 
-const DEBUG = false;
+const DEBUG = true;
 
 import { BookIcon } from "@spectrum-web-components/icons-workflow";
 
@@ -142,16 +142,21 @@ if (dataV.success) {
     console.log(
       `I have a problem initializing the middleware ${iterationBreaker}`
     );
-    delay(60 * iterationBreaker++ );
+    await delay(60 * iterationBreaker++ );
   }
 
   Egeneral = Astro.locals.ExtendedGenerals.find((element) => {
     return !pageGE.general.name.localeCompare(element.general.name)
   })
-  
   iterationBreaker = 0;
-  await Astro.locals.enrichGeneral(Egeneral.general.name);
-  
+  while(ExtendedGeneralStatus.enum.complete.localeCompare(Egeneral.status)) {
+    if(DEBUG) {
+      console.log(`${Egeneral.general.name} is not complete for General.astro`)
+      console.log(`status is ${Egeneral.status}`)
+      console.log(iterationBreaker++)
+    }
+    await delay(60 * iterationBreaker)
+  }
   const general = Egeneral!.general;
   Astro.locals.GeneralBuffs(general.name, Display.enum.summary, {
     special1: qualityColor.enum.Gold,

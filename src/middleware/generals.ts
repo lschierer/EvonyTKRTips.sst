@@ -124,11 +124,11 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
     .args(z.string())
     .returns(z.promise(z.boolean()))
     .implement(async (gn) => {
-      if (DEBUG) console.log(`starating to enrich ${gn}`);
+      if (DEBUG) console.log(`starting to enrich ${gn}`);
       const success = true;
       const entry: ExtendedGeneralType | null =
         locals.ExtendedGenerals.find((element) => {
-          return gn.localeCompare(element.general.name)
+          return !gn.localeCompare(element.general.name)
         }) ?? null;
 
       if (entry === undefined || entry === null) {
@@ -168,6 +168,9 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
                     );
                     return false;
                   } else {
+                    if(DEBUG) {
+                      console.log(`pushing speciality: ${v.data.name}`)
+                    }
                     entry.specialities.push(v.data);
                   }
                 }
@@ -358,10 +361,6 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
 
     if (locals.addEG2EGS === undefined) {
       locals.addEG2EGS = addEG2EGS;
-    }
-
-    if (locals.enrichGeneral === undefined) {
-      locals.enrichGeneral = enrichGeneral;
     }
 
     if (locals.GeneralBuffs === undefined) {

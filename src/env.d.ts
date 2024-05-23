@@ -7,7 +7,6 @@ declare namespace App {
   interface Locals {
     ExtendedGenerals: Array<ExtendedGeneralType>,
     addEG2EGS: function (GeneralClass): void,
-    enrichGeneral: function (string): Promise<boolean>,
     GeneralBuffs: function (string, Display, BuffParams): boolean,
     InvestmentOptions2Key: function(BuffParamsType): string,
   }

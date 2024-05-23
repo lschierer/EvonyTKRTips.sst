@@ -141,23 +141,35 @@ const sortPairsByEvAnsRank = (
     return !b.secondary.localeCompare(element.general.name)
   });
 
+  const assistInvest: BuffParamsType = {
+    special1: InvestmentLevel.special1,
+    special2: InvestmentLevel.special2,
+    special3: InvestmentLevel.special3,
+    special4: InvestmentLevel.special4,
+    special5: InvestmentLevel.special5,
+    stars: AscendingLevels.enum[0],
+    dragon: InvestmentLevel.dragon,
+    beast: InvestmentLevel.beast
+  }
+
+  const pKey = Astro.locals.InvestmentOptions2Key(InvestmentLevel);
+  const sKey = Astro.locals.InvestmentOptions2Key(assistInvest)
+
+  if(DEBUG){
+    console.log(`pKey: ${pKey}`)
+    console.log(`sKey: ${sKey}`)
+  }
+
   const apr =
-    Aprimary.computedBuffs.get(
-      Astro.locals.InvestmentOptions2Key(InvestmentLevel)
-    )?.EvAns ?? -1;
+    Aprimary.computedBuffs.get(pKey)?.EvAns ?? -1;
   const asr =
-    Asecondary.computedBuffs.get(
-      Astro.locals.InvestmentOptions2Key(InvestmentLevel)
-    )?.EvAns ?? -2;
+    Asecondary.computedBuffs.get(sKey)?.EvAns ?? -2;
 
   const bpr =
-    Bprimary.computedBuffs.get(
-      Astro.locals.InvestmentOptions2Key(InvestmentLevel)
-    )?.EvAns ?? -3;
+    Bprimary.computedBuffs.get(pKey)?.EvAns ?? -3;
   const bsr =
-    Bsecondary.computedBuffs.get(
-      Astro.locals.InvestmentOptions2Key(InvestmentLevel)
-    )?.EvAns ?? -4;
+    Bsecondary.computedBuffs.get(sKey)?.EvAns ?? -4;
+    
 
   const apt = apr + asr;
   const bpt = bpr + bsr;
@@ -197,45 +209,55 @@ const sortPairsAttackRank = (a: GeneralPairType, b: GeneralPairType): number => 
 
   const assistInvest: BuffParamsType = {
     special1: InvestmentLevel.special1,
-    special2: InvestmentLevel.special1,
-    special3: InvestmentLevel.special1,
-    special4: InvestmentLevel.special1,
-    special5: InvestmentLevel.special1,
+    special2: InvestmentLevel.special2,
+    special3: InvestmentLevel.special3,
+    special4: InvestmentLevel.special4,
+    special5: InvestmentLevel.special5,
     stars: AscendingLevels.enum[0],
     dragon: InvestmentLevel.dragon,
     beast: InvestmentLevel.beast
   }
 
+  const pKey = Astro.locals.InvestmentOptions2Key(InvestmentLevel);
+  const sKey = Astro.locals.InvestmentOptions2Key(assistInvest)
+
+  if(DEBUG){
+    console.log(`pKey: ${pKey}`)
+    console.log(`sKey: ${sKey}`)
+  }
+
   const apr =
-    Aprimary.computedBuffs.get(
-      Astro.locals.InvestmentOptions2Key(InvestmentLevel)
-    )?.AttackRank ?? -1;
+    Aprimary.computedBuffs.get(pKey)?.AttackRank ?? -1;
   const asr =
-    Asecondary.computedBuffs.get(
-      Astro.locals.InvestmentOptions2Key(assistInvest)
-    )?.AttackRank ?? -2;
+    Asecondary.computedBuffs.get(sKey)?.AttackRank ?? -2;
 
   const bpr =
-    Bprimary.computedBuffs.get(
-      Astro.locals.InvestmentOptions2Key(InvestmentLevel)
-    )?.AttackRank ?? -3;
+    Bprimary.computedBuffs.get(pKey)?.AttackRank ?? -3;
   const bsr =
-    Bsecondary.computedBuffs.get(
-      Astro.locals.InvestmentOptions2Key(assistInvest)
-    )?.AttackRank ?? -4;
+    Bsecondary.computedBuffs.get(sKey)?.AttackRank ?? -4;
 
   const apt = apr + asr;
   const bpt = bpr + bsr;
   if (DEBUG) {
     console.log(
-      `a.primary computed buffs: ${JSON.stringify(Array.from(Aprimary.computedBuffs))}`
+      `a.p computed buffs: ${JSON.stringify(Array.from(Aprimary.computedBuffs))}`
+    );
+    console.log(
+      `a.s computed buffs: ${JSON.stringify(Array.from(Asecondary.computedBuffs))}`
     );
     console.log(
       `a.primary: ${a.primary}: ${apr}\ta.secondary: ${a.secondary}: ${asr}\ta: ${apt}`
     );
     console.log(
+      `b.p computed buffs: ${JSON.stringify(Array.from(Bprimary.computedBuffs))}`
+    );
+    console.log(
+      `b.s computed buffs: ${JSON.stringify(Array.from(Bsecondary.computedBuffs))}`
+    );
+    console.log(
       `b.primary: ${b.primary}: ${bpr}\tb.secondary: ${b.secondary}: ${bsr}\tb: ${bpt}`
     );
+    console.log('')
   }
   if (apt === bpt) {
     return 0;
