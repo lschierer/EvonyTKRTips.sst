@@ -38,7 +38,13 @@ const { name, InvestmentLevel } = Astro.props;
 
 const myUrl = Astro.url;
 
-const sortByOptions = z.enum(["primary", "secondary", "EvAnsRank", "AttackRank"]);
+const sortByOptions = z.enum([
+  "primary", 
+  "secondary", 
+  "EvAnsRank", 
+  "AttackRank",
+  "DefenseRank",
+]);
 type sortByOptionsType = z.infer<typeof sortByOptions>;
 
 const sortDirectionOptions = z.enum(["ascending", "descending"]);
@@ -60,6 +66,10 @@ let sortEvAnsRankValue: sortDirectionType =
 
 let sortAttackRankInput: boolean | sortDirectionType | null = false;
 let sortAttackRankValue: sortDirectionType =
+  sortDirectionOptions.enum.descending;
+
+let sortDefenseRankInput: boolean | sortDirectionType | null = false;
+let sortDefenseRankValue: sortDirectionType =
   sortDirectionOptions.enum.descending;
 
 if (DEBUG) {
@@ -268,6 +278,81 @@ const sortPairsAttackRank = (a: GeneralPairType, b: GeneralPairType): number => 
   }
 }
 
+const sortPairsDefenseRank = (a: GeneralPairType, b: GeneralPairType): number => {
+  const Aprimary: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find((element) => {
+    return !a.primary.localeCompare(element.general.name)
+  })
+  const Asecondary: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find((element) => {
+    return !a.secondary.localeCompare(element.general.name)
+  });
+  const Bprimary: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find((element) => {
+    return !b.primary.localeCompare(element.general.name)
+  });
+  const Bsecondary: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find((element) => {
+    return !b.secondary.localeCompare(element.general.name)
+  });
+
+  const assistInvest: BuffParamsType = {
+    special1: InvestmentLevel.special1,
+    special2: InvestmentLevel.special2,
+    special3: InvestmentLevel.special3,
+    special4: InvestmentLevel.special4,
+    special5: InvestmentLevel.special5,
+    stars: AscendingLevels.enum[0],
+    dragon: InvestmentLevel.dragon,
+    beast: InvestmentLevel.beast
+  }
+
+  const pKey = Astro.locals.InvestmentOptions2Key(InvestmentLevel);
+  const sKey = Astro.locals.InvestmentOptions2Key(assistInvest)
+
+  if(DEBUG){
+    console.log(`pKey: ${pKey}`)
+    console.log(`sKey: ${sKey}`)
+  }
+
+  const apr =
+    Aprimary.computedBuffs.get(pKey)?.DefenseRank ?? -1;
+  const asr =
+    Asecondary.computedBuffs.get(sKey)?.DefenseRank ?? -2;
+
+  const bpr =
+    Bprimary.computedBuffs.get(pKey)?.DefenseRank ?? -3;
+  const bsr =
+    Bsecondary.computedBuffs.get(sKey)?.DefenseRank ?? -4;
+
+  const apt = apr + asr;
+  const bpt = bpr + bsr;
+  if (DEBUG) {
+    console.log(
+      `a.p computed buffs: ${JSON.stringify(Array.from(Aprimary.computedBuffs))}`
+    );
+    console.log(
+      `a.s computed buffs: ${JSON.stringify(Array.from(Asecondary.computedBuffs))}`
+    );
+    console.log(
+      `a.primary: ${a.primary}: ${apr}\ta.secondary: ${a.secondary}: ${asr}\ta: ${apt}`
+    );
+    console.log(
+      `b.p computed buffs: ${JSON.stringify(Array.from(Bprimary.computedBuffs))}`
+    );
+    console.log(
+      `b.s computed buffs: ${JSON.stringify(Array.from(Bsecondary.computedBuffs))}`
+    );
+    console.log(
+      `b.primary: ${b.primary}: ${bpr}\tb.secondary: ${b.secondary}: ${bsr}\tb: ${bpt}`
+    );
+    console.log('')
+  }
+  if (apt === bpt) {
+    return 0;
+  } else if (apt < bpt) {
+    return -1;
+  } else {
+    return 1;
+  }
+}
+
 const sortPairSelector: Record<
   sortByOptionsType,
   (a: GeneralPairType, b: GeneralPairType) => number
@@ -276,6 +361,7 @@ const sortPairSelector: Record<
   [sortByOptions.enum.secondary]: sortPairsBySecondary,
   [sortByOptions.enum.EvAnsRank]: sortPairsByEvAnsRank,
   [sortByOptions.enum.AttackRank]: sortPairsAttackRank,
+  [sortByOptions.enum.DefenseRank]: sortPairsDefenseRank,
 };
 
 const sortPairFunction = (a: GeneralPairType, b: GeneralPairType) => {

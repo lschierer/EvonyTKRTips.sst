@@ -354,24 +354,24 @@ export const AttributeMultipliers:AttributeMultipliersSchemaType = {
     },
     AttackingAttackDebuff: {
       ReduceAllAttack: new Map([
-        [generalSpecialists.enum.Ground, 0],
+        [generalSpecialists.enum.Ground, 0.6],
       ]),
       ReduceEnemyMountedAttack: new Map([
-        [generalSpecialists.enum.Ground, 0],
+        [generalSpecialists.enum.Ground, 0.5],
       ]),
       ReduceEnemyRangedAttack: new Map([
-        [generalSpecialists.enum.Ground, 0],
+        [generalSpecialists.enum.Ground, 0.5],
       ]),
       ReduceEnemySiegeAttack: new Map([
-        [generalSpecialists.enum.Ground, 0],
+        [generalSpecialists.enum.Ground, 0.5],
       ]),
       ReduceEnemyGroundAttack: new Map([
-        [generalSpecialists.enum.Ground, 0],
+        [generalSpecialists.enum.Ground, 0.5],
       ]),
     },
     AttackingToughnessDebuff: {
       ReduceEnemyAllHP: new Map([
-        [generalSpecialists.enum.Ground, 0.5],
+        [generalSpecialists.enum.Ground, 0.6],
       ]),
       ReduceEnemyRangedHP: new Map([
         [generalSpecialists.enum.Ground, 0.5],
@@ -723,13 +723,13 @@ export const AttributeMultipliers:AttributeMultipliersSchemaType = {
     },
     Preservation: {
       Death2Wounded: new Map([
-        [generalSpecialists.enum.Ground, 0.5],
+        [generalSpecialists.enum.Ground, 0.4],
       ]),
       Death2WoundedWhenAttacking: new Map([
-        [generalSpecialists.enum.Ground, 0.5],
+        [generalSpecialists.enum.Ground, 0.4],
       ]),
       Death2Souls: new Map([
-        [generalSpecialists.enum.Ground, 0.5],
+        [generalSpecialists.enum.Ground, 0.4],
       ]),
     },
     AttackingAttackDebuff: {

@@ -106,6 +106,7 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
       eg.computedBuffs.set(hashKey, {
         EvAns: EvAnsRankScore,
         AttackRank: AttackRank,
+        DefenseRank: 0,
       });
       if (DEBUG) {
         console.log(`hashKey: ${hashKey}`);
@@ -323,7 +324,8 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
         >(),
         computedBuffs: new Map<string, { 
           EvAns: number,
-          AttackRank: number
+          AttackRank: number,
+          DefenseRank: number,
         }>(),
         status: ExtendedGeneralStatus.enum.created,
       };

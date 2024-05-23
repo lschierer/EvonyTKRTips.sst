@@ -143,6 +143,7 @@ export const ExtendedGeneral = z.object({
   computedBuffs: z.map(z.string(),z.object({
     EvAns: z.number(),
     AttackRank: z.number(),
+    DefenseRank: z.number(),
   })),
   status: ExtendedGeneralStatus.default(ExtendedGeneralStatus.enum.created),
 })
