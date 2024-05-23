@@ -26,7 +26,7 @@ import {
 import { EvAnsScoreComputer } from "./EvAnsRanking/EvAnsScoreComputer";
 import {ScoreComputer as AttackScoreComputer} from './AttackRanking/ScoreComputer';
 
-const DEBUG = true;
+const DEBUG = false;
 
 
 
