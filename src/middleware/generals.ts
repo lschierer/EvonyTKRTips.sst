@@ -26,7 +26,7 @@ import {
 import { EvAnsScoreComputer } from "./EvAnsRanking/EvAnsScoreComputer";
 import {ScoreComputer as AttackScoreComputer} from './AttackRanking/ScoreComputer';
 
-const DEBUG = false;
+const DEBUG = true;
 
 
 
@@ -60,11 +60,13 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
     .returns(z.boolean())
     .implement((name, display, BP: BuffParamsType) => {
       if (DEBUG) console.log(`EvAnsBuff starting for ${name}`);
-      const eg: ExtendedGeneralType = locals.ExtendedGeneralMap.get(name);
+      const eg: ExtendedGeneralType = locals.ExtendedGenerals.find((element) => {
+        return !name.localeCompare(element.general.name)
+      });
 
       if (!eg.status.localeCompare(ExtendedGeneralStatus.enum.complete)) {
         if (DEBUG) {
-          console.log(`${name} status is ${eg.status}`);
+          console.log(`${eg.general.name} status is ${eg.status}`);
         }
         return true;
       } else if(
@@ -72,13 +74,13 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
         !eg.status.localeCompare(ExtendedGeneralStatus.enum.fetching)
       ){
         if(DEBUG) {
-          console.log(`${name} status is ${eg.status}`)
+          console.log(`${eg.general.name} status is ${eg.status}`)
           console.log(`called early`)
           return false
         }
        } else {
         if (DEBUG) {
-          console.log(`${name} GeneralBuffs continuing to call ScoreComputers`);
+          console.log(`${eg.general.name} GeneralBuffs continuing to call ScoreComputers`);
         }
       }
 
@@ -98,7 +100,7 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
       const EvAnsRankScore = EvAnsScoreComputer(generalUseCase.enum.Attack, eg, display,  _BP);
       const AttackRank = AttackScoreComputer(generalUseCase.enum.Attack, eg, display,  _BP);
       if (DEBUG) {
-        console.log(`in GeneralBuffs, got rankScore: ${EvAnsRankScore} for ${name}`);
+        console.log(`in GeneralBuffs, got scores: ${EvAnsRankScore} ${AttackRank} for ${name}`);
       }
       const hashKey = InvestmentOptions2Key(_BP);
       eg.computedBuffs.set(hashKey, {
@@ -107,7 +109,7 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
       });
       if (DEBUG) {
         console.log(`hashKey: ${hashKey}`);
-        console.log(`${eg.general.name}: rankScore: ${EvAnsRankScore}`);
+        console.log(`${eg.general.name}: Scores: ${EvAnsRankScore} ${AttackRank}`);
         console.log(
           `computedBuffs: ${JSON.stringify(Array.from(eg.computedBuffs))}`
         );
@@ -125,7 +127,9 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
       if (DEBUG) console.log(`starating to enrich ${gn}`);
       const success = true;
       const entry: ExtendedGeneralType | null =
-        locals.ExtendedGeneralMap.get(gn) ?? null;
+        locals.ExtendedGenerals.find((element) => {
+          return gn.localeCompare(element.general.name)
+        }) ?? null;
 
       if (entry === undefined || entry === null) {
         console.log(`failed to find general ${gn}`);
@@ -227,7 +231,9 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
             });
           }
           entry.status = ExtendedGeneralStatus.enum.processing;
-
+          if(DEBUG) {
+            console.log(`calling as primary`)
+          }
           const pbs = GeneralBuffs(gn, Display.enum.primary, {
             special1: qualityColor.enum.Gold,
             special2: qualityColor.enum.Gold,
@@ -241,6 +247,9 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
           if (!pbs) {
             console.log(`${gn}: failed to get GeneralBuffs as primary`);
             return false;
+          }
+          if(DEBUG) {
+            console.log(`calling as secondary`)
           }
           const abs = GeneralBuffs(gn, Display.enum.assistant, {
             special1: qualityColor.enum.Gold,
@@ -256,6 +265,9 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
             console.log(`${gn}: failed to get GeneralBuffs as assistant`);
             return false;
           }
+          if(DEBUG) {
+            console.log(`calling as summary`)
+          }
           const sbs = GeneralBuffs(gn, Display.enum.summary, {
             special1: qualityColor.enum.Gold,
             special2: qualityColor.enum.Gold,
@@ -270,6 +282,9 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
             console.log(`${gn}: failed to get GeneralBuffs as summary`);
             return false;
           }
+        }
+        if(DEBUG) {
+          console.log(`setting complete`)
         }
         entry.status = ExtendedGeneralStatus.enum.complete;
         if (DEBUG) {
@@ -292,8 +307,10 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
         console.log(
           `middleware generals addEG2EGS running for ${general.name}`
         );
-      if (locals.ExtendedGeneralMap.size > 0) {
-        if (locals.ExtendedGeneralMap.has(general.name)) return;
+      if (locals.ExtendedGenerals.length > 0) {
+        if (locals.ExtendedGenerals.some((element) => {
+          return !general.name.localeCompare(element.general.name)
+        })) return;
       }
       const toAdd: ExtendedGeneralType = {
         general: general,
@@ -314,13 +331,15 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
             `addEG2EGS built a valid ExtendedGeneral for ${general.name}`
           );
         if (DEBUG)
-          console.log(`addEG2EGS: map size: ${locals.ExtendedGeneralMap.size}`);
-        if (!locals.ExtendedGeneralMap.has(test.data.general.name)) {
-          locals.ExtendedGeneralMap.set(test.data.general.name, test.data);
+          console.log(`addEG2EGS: map size: ${locals.ExtendedGenerals.length}`);
+        if (!locals.ExtendedGenerals.some((element) => {
+          return !test.data.general.name.localeCompare(element.general.name)
+        })) {
+          locals.ExtendedGenerals.push(test.data);
         }
         if (DEBUG)
           console.log(
-            `addEG2EGS: map size: ${locals.ExtendedGeneralMap.size} about to enrich.`
+            `addEG2EGS: map size: ${locals.ExtendedGenerals.length} about to enrich.`
           );
         void enrichGeneral(general.name);
       } else {
@@ -333,8 +352,8 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
     });
 
   const HandlerLogic = (locals: App.Locals) => {
-    if (locals.ExtendedGeneralMap === undefined) {
-      locals.ExtendedGeneralMap = new Map<string,ExtendedGeneralType>();
+    if (locals.ExtendedGenerals === undefined) {
+      locals.ExtendedGenerals = new Array<ExtendedGeneralType>();
     }
 
     if (locals.addEG2EGS === undefined) {

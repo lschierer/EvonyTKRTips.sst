@@ -32,7 +32,7 @@ interface Props {
   class?: string;
 }
 
-const DEBUG = false;
+const DEBUG = true;
 
 const { name, InvestmentLevel } = Astro.props;
 
@@ -63,13 +63,13 @@ let sortAttackRankValue: sortDirectionType =
   sortDirectionOptions.enum.descending;
 
 if (DEBUG) {
-  console.log(`# locals Generals: ${Astro.locals.ExtendedGeneralMap.size}`);
+  console.log(`# locals Generals: ${Astro.locals.ExtendedGenerals.length}`);
 }
 
 const pairs = Array<GeneralPairType>();
 
-if (Astro.locals.ExtendedGeneralMap.size > 0) {
-  for await (const eg1 of Astro.locals.ExtendedGeneralMap.values()) {
+if (Astro.locals.ExtendedGenerals.length > 0) {
+  for await (const eg1 of Astro.locals.ExtendedGenerals) {
     if (eg1 === undefined || eg1 === null) {
       continue;
     } else if (eg1.general === undefined || eg1.general === null) {
@@ -128,18 +128,18 @@ const sortPairsByEvAnsRank = (
   a: GeneralPairType,
   b: GeneralPairType
 ): number => {
-  const Aprimary: ExtendedGeneralType = Astro.locals.ExtendedGeneralMap.get(
-    a.primary
-  );
-  const Asecondary: ExtendedGeneralType = Astro.locals.ExtendedGeneralMap.get(
-    a.secondary
-  );
-  const Bprimary: ExtendedGeneralType = Astro.locals.ExtendedGeneralMap.get(
-    b.primary
-  );
-  const Bsecondary: ExtendedGeneralType = Astro.locals.ExtendedGeneralMap.get(
-    b.secondary
-  );
+  const Aprimary: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find((element) => {
+    return !a.primary.localeCompare(element.general.name)
+  })
+  const Asecondary: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find((element) => {
+    return !a.secondary.localeCompare(element.general.name)
+  });
+  const Bprimary: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find((element) => {
+    return !b.primary.localeCompare(element.general.name)
+  });
+  const Bsecondary: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find((element) => {
+    return !b.secondary.localeCompare(element.general.name)
+  });
 
   const apr =
     Aprimary.computedBuffs.get(
@@ -182,18 +182,18 @@ const sortPairsByEvAnsRank = (
 };
 
 const sortPairsAttackRank = (a: GeneralPairType, b: GeneralPairType): number => {
-  const Aprimary: ExtendedGeneralType = Astro.locals.ExtendedGeneralMap.get(
-    a.primary
-  );
-  const Asecondary: ExtendedGeneralType = Astro.locals.ExtendedGeneralMap.get(
-    a.secondary
-  );
-  const Bprimary: ExtendedGeneralType = Astro.locals.ExtendedGeneralMap.get(
-    b.primary
-  );
-  const Bsecondary: ExtendedGeneralType = Astro.locals.ExtendedGeneralMap.get(
-    b.secondary
-  );
+  const Aprimary: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find((element) => {
+    return !a.primary.localeCompare(element.general.name)
+  })
+  const Asecondary: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find((element) => {
+    return !a.secondary.localeCompare(element.general.name)
+  });
+  const Bprimary: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find((element) => {
+    return !b.primary.localeCompare(element.general.name)
+  });
+  const Bsecondary: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find((element) => {
+    return !b.secondary.localeCompare(element.general.name)
+  });
 
   const assistInvest: BuffParamsType = {
     special1: InvestmentLevel.special1,
@@ -277,14 +277,12 @@ const sortPairFunction = (a: GeneralPairType, b: GeneralPairType) => {
 if (Astro.request.method === "POST") {
   try {
     if (DEBUG) console.log(`executing POST try block`);
-    await Promise.all([
-        ...Astro.locals.ExtendedGeneralMap.values(),
-      ].map(async (g: ExtendedGeneralType) => {
+    await Promise.all(Astro.locals.ExtendedGenerals.map(async (g: ExtendedGeneralType) => {
         if (DEBUG) {
           console.log(`${g.general.name}: ${g.status}`);
         }
         let iterationCount = 0;
-        while(g.status.localeCompare(ExtendedGeneralStatus.enum.complete)) {
+        while(g.status.localeCompare(ExtendedGeneralStatus.enum.complete) && iterationCount < 3) {
           await delay(10 * ++iterationCount).then(() => {
             if(DEBUG) {
               console.log(`${g.general.name} status ${g.status} ${iterationCount}`)

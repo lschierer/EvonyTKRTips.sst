@@ -27,20 +27,35 @@ interface Props {
   InvestmentLevel: BuffParamsType;
 }
 
-const DEBUG = false;
+const DEBUG = true;
 
 const iterationLimit = 3;
 
 const { index, primary, secondary, InvestmentLevel } = Astro.props;
-
-const pGeneral: ExtendedGeneralType = Astro.locals.ExtendedGeneralMap.get(primary) ;
-const sGeneral: ExtendedGeneralType = Astro.locals.ExtendedGeneralMap.get(secondary);
 
 interface DisplayPair {
   primary: ExtendedGeneralType,
   secondary: ExtendedGeneralType,
   EvAnsRanking: number,
   AttackRanking: number,
+}
+
+let pEvAnsRank = -9;
+let pAttackRanking = -9;
+let iterationBreaker = 0;
+let pInComplete = true
+
+
+const pGeneral: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find((element) => {
+  return !primary.localeCompare(element.general.name)
+})
+const sGeneral: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find((element) => { return !secondary.localeCompare(element.general.name)})
+
+if(pGeneral === undefined || sGeneral === undefined) {
+  console.log(`major problem in gridRow for ${primary} ${secondary}`)
+  return;
+} else if (DEBUG) {
+  console.log(`both generals found: ${pGeneral.general.name} ${sGeneral.general.name}`)
 }
 
 const pair: DisplayPair = {
@@ -50,28 +65,8 @@ const pair: DisplayPair = {
   AttackRanking: 0,
 }
 
-if(pGeneral === undefined || sGeneral === undefined) {
-  console.log(`major problem in gridRow for ${primary} ${secondary}`)
-  return;
-}
-
-let pEvAnsRank = -9;
-let pAttackRanking = -9;
-let iterationBreaker = 0;
-let pInComplete = true
-
 do {
   await delay(1 + iterationBreaker*100).then(() => {
-    Astro.locals.GeneralBuffs(pGeneral.general.name, Display.enum.primary, {
-      special1: InvestmentLevel.special1,
-      special2: InvestmentLevel.special2,
-      special3: InvestmentLevel.special3,
-      special4: InvestmentLevel.special4,
-      special5: InvestmentLevel.special5,
-      stars: InvestmentLevel.stars,
-      dragon: InvestmentLevel.dragon,
-      beast: InvestmentLevel.beast
-    });
     pEvAnsRank = pGeneral.computedBuffs.get(Astro.locals.InvestmentOptions2Key({
       special1: InvestmentLevel.special1,
       special2: InvestmentLevel.special2,
