@@ -56,7 +56,11 @@ if (generalObjects !== null && generalObjects !== undefined) {
   for (const v of generalIterator) {
     const validation = GeneralElement.safeParse(v.data);
     if (validation.success) {
-      if (validation.data.general.score_as === generalClass) {
+      if(generalClass.localeCompare(ClassEnum.enum.all)){
+        if (validation.data.general.score_as === generalClass) {
+          allGenerals.push(validation.data);
+        }
+      } else {
         allGenerals.push(validation.data);
       }
     } else {

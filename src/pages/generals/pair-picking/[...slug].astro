@@ -2,18 +2,25 @@
 export const prerender = false;
 
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import type { CollectionEntry } from 'astro:content';
 import { getEntry } from "astro:content";
 
 const DEBUG = false;
 
-const { slug } = Astro.params;
+let { slug } = Astro.params;
 if (slug === undefined) {
   console.log(`slug was undefined`)
   console.log(JSON.stringify(Astro.params))
-  return Astro.redirect("/404");
+  slug = 'generals/pair-picking'
 }
+console.log(`slug is ${slug}`)
+let entry: CollectionEntry<'docs'> | undefined = undefined;
 
-const entry = await getEntry("docs", `generals/pair-picking/${slug}`);
+if(!slug.localeCompare('generals/pair-picking')) {
+  entry = await getEntry('docs', 'generals/pair-picking')
+ } else {
+  entry = await getEntry("docs", `generals/pair-picking/${slug}`);
+ }
 
 if (entry === undefined) {
   console.log(`${slug} was not found`)
