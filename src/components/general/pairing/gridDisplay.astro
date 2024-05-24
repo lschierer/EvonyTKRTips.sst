@@ -25,6 +25,7 @@ AscendingLevels,
 } from "@schemas/index";
 
 import GridRow from "./gridRow.astro";
+import { sequence } from "astro:middleware";
 
 interface Props {
   name: string;
@@ -78,48 +79,57 @@ if (DEBUG) {
 
 const pairs = Array<GeneralPairType>();
 
-if (Astro.locals.ExtendedGenerals.length > 0) {
-  for await (const eg1 of Astro.locals.ExtendedGenerals) {
-    if (eg1 === undefined || eg1 === null) {
-      continue;
-    } else if (eg1.general === undefined || eg1.general === null) {
-      continue;
-    }
-    if (DEBUG) console.log(`eg1 is ${eg1.general.name}`);
-    const pairsData = new Array<GeneralPairType>();
-
-    const pairUrl = new URL(
-      `/generalPairs/${eg1.general.name}-${eg1.general.score_as}.json`,
-      Astro.url
-    );
-
-    if (DEBUG) {
-      console.log(`about to fetch ${pairUrl.toString()}`);
-    }
-    const response = await fetch(pairUrl);
-    if (response?.ok) {
-      const jr: GeneralPairType[] = await response.json();
-      const jrv = z.array(GeneralPair).safeParse(jr);
-      if (jrv.success) {
-        pairsData.push(...jrv.data);
-      } else {
-        console.log(`pair type validation failed: ${jrv.error.message}`);
-        console.log(JSON.stringify(jr));
+if (
+  Array.isArray(Astro.locals.ExtendedGenerals) && 
+  Astro.locals.ExtendedGenerals.length > 0) {
+    Astro.locals.ExtendedGenerals.forEach(async (eg1, index) => {
+      if(eg1 !== undefined && eg1 !== null ) {
+        while(ExtendedGeneralStatus.enum.complete.localeCompare(eg1.status)) {
+          await delay(10 * (Astro.locals.ExtendedGenerals.length - index))
+        }
       }
-    } else {
-      console.log(`responce for ${pairUrl.toString()} was not ok`);
-    }
-
-    if (pairsData.length > 0) {
-      if (DEBUG) {
-        console.log(`pairsdata: ${pairsData.length}`);
-      }
-      pairsData.forEach((pi) => {
-        pairs.push(pi);
-      });
-    }
-  }
+    })
 }
+if(Array.isArray(Astro.locals.CachedPairs) &&
+  Astro.locals.CachedPairs.length > 0) {
+    Astro.locals.CachedPairs.forEach((thisPair: GeneralPairType) => {
+      if(thisPair.EvAnsRanking === 0) {
+        let ep = 0;
+        let es = 0;
+        const primary: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find((g) => {
+          if(!(thisPair.primary as string).localeCompare((g as ExtendedGeneralType).general.name)) {
+            return true;
+          }
+          return false;
+        })
+        if(primary !== undefined) {
+          ep = primary.computedBuffs.get(Astro.locals.InvestmentOptions2Key(InvestmentLevel))?.EvAns ?? -1;
+        }
+        const secondary: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find((g) => {
+          if(!(thisPair.secondary as string).localeCompare((g as ExtendedGeneralType).general.name)) {
+            return true;
+          }
+          return false;
+        })
+        if(secondary !== undefined) {
+          const assistLevel: BuffParamsType = {
+            special1: InvestmentLevel.special1,
+            special2: InvestmentLevel.special2,
+            special3: InvestmentLevel.special3,
+            special4: InvestmentLevel.special4,
+            special5: InvestmentLevel.special5,
+            stars: AscendingLevels.enum[0],
+            dragon: InvestmentLevel.dragon,
+            beast: InvestmentLevel.beast,
+          }
+          const sKey = Astro.locals.InvestmentOptions2Key(assistLevel)
+          es = secondary.computedBuffs.get(sKey)?.EvAns ?? -1;
+        }
+        thisPair.EvAnsRanking = ep + es;
+      }
+      pairs.push(thisPair)
+    })
+  }
 
 const sortPairsByPrimary = (a: GeneralPairType, b: GeneralPairType): number => {
   return a.primary.localeCompare(b.primary, undefined, { sensitivity: "base" });

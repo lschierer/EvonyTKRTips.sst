@@ -6,7 +6,8 @@ import {
   type BuffParamsType
 } from "@schemas/index";
 import { GroundPvPBuff } from "./PvPBuff";
-import { DEBUG_BSS } from "../ScoreComputer";
+
+const DEBUG_BSS = true;
 
 export const GroundAttackPvPBSS = z
   .function()
