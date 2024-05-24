@@ -25,6 +25,7 @@ import {
 
 import { EvAnsScoreComputer } from "./EvAnsRanking/EvAnsScoreComputer";
 import {ScoreComputer as AttackScoreComputer} from './AttackRanking/ScoreComputer';
+import {ScoreComputer as DefenseScoreComputer} from './DefenseRanking/ScoreComputer';
 
 const DEBUG = false;
 
@@ -99,6 +100,7 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
 
       const EvAnsRankScore = EvAnsScoreComputer(generalUseCase.enum.Attack, eg, display,  _BP);
       const AttackRank = AttackScoreComputer(generalUseCase.enum.Attack, eg, display,  _BP);
+      const DefenseRank = DefenseScoreComputer(generalUseCase.enum.Attack, eg, display,  _BP);
       if (DEBUG) {
         console.log(`in GeneralBuffs, got scores: ${EvAnsRankScore} ${AttackRank} for ${name}`);
       }
@@ -106,7 +108,7 @@ export const DisplayGeneralsMW = defineMiddleware(({ locals, url }, next) => {
       eg.computedBuffs.set(hashKey, {
         EvAns: EvAnsRankScore,
         AttackRank: AttackRank,
-        DefenseRank: 0,
+        DefenseRank: DefenseRank,
       });
       if (DEBUG) {
         console.log(`hashKey: ${hashKey}`);

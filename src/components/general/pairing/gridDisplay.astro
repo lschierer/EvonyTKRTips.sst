@@ -473,6 +473,23 @@ if (Astro.request.method === "POST") {
           }
         }
       }
+      if (sortDefenseRankInput === false) {
+        //not previously sorted by EvAnsRank
+        const v = sortDirectionOptions.safeParse(data.get("AttackRank"));
+        if (v.success) {
+          if (DEBUG) {
+            console.log(`sortAttackRankInput was false, is now ${v.data}`);
+          }
+          sortDefenseRankInput = true;
+          sortBy = sortByOptions.enum.DefenseRank;
+          sortDirection = v.data;
+          if (sortDirection === sortDirectionOptions.enum.ascending) {
+            sortAttackRankValue = sortDirectionOptions.enum.descending;
+          } else {
+            sortAttackRankValue = sortDirectionOptions.enum.ascending;
+          }
+        }
+      }
     } else {
       if (DEBUG)
         console.log(
@@ -566,6 +583,22 @@ let pairArray = [...pairs].sort(sortPairFunction);
                 class="spectrum-Button spectrum-Button--outline spectrum-Button--primary spectrum-Button--sizeM"
                 >
                 <span class="spectrum-Table-columnTitle">TKRTips Attack Score</span>
+              </button>
+            </div>
+            <div
+              id="DefenseRank"
+              class="spectrum-Table-headCell"
+              role="columnheader"
+              aria-sort={sortDirection}
+              tabindex="0"
+            >
+              <button 
+                type="submit" 
+                name="DefenseRank" 
+                value={sortAttackRankValue}
+                class="spectrum-Button spectrum-Button--outline spectrum-Button--primary spectrum-Button--sizeM"
+                >
+                <span class="spectrum-Table-columnTitle">TKRTips Defense Score</span>
               </button>
             </div>
           </div>
