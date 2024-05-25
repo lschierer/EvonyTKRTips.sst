@@ -2,7 +2,7 @@ import {
   type APIRoute,
   type InferGetStaticParamsType,
   type InferGetStaticPropsType,
-  type getStaticPaths,
+  type GetStaticPaths,
 } from 'astro';
 import { getCollection, getEntry, type CollectionEntry  } from 'astro:content';
 
@@ -14,7 +14,7 @@ export const getStaticPaths = (async () => {
   return specialityObjects.map(entry => ({
     params: {id: entry.id,}, props: { entry },
   }));
-}) satisfies getStaticPaths;
+}) satisfies GetStaticPaths;
 
 type Params = InferGetStaticParamsType<typeof getStaticPaths>; // eslint-disable-line
 type Props = InferGetStaticPropsType<typeof getStaticPaths>; // eslint-disable-line
