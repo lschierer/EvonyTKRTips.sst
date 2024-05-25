@@ -63,7 +63,7 @@ export const DisplayGeneralsMW = defineMiddleware(
       .implement((name, display, BP: BuffParamsType) => {
         if (DEBUG) console.log(`EvAnsBuff starting for ${name}`);
         const eg: ExtendedGeneralType = locals.ExtendedGenerals.find(
-          (element) => {
+          (element: ExtendedGeneralType) => {
             return !name.localeCompare(element.general.name);
           }
         );
