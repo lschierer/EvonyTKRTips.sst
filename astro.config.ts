@@ -4,14 +4,17 @@ import starlightLinksValidator from 'starlight-links-validator';
 import lit from "@astrojs/lit";
 import { sidebar } from './src/sidebar.ts';
 
-import node from "@astrojs/node";
+import aws from "astro-sst";
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://evonytkrtips.net',
   output: "hybrid",
-  adapter: node({
-    mode: "standalone"
+  adapter: aws({
+    responseMode: "stream",
+    serverRoutes: [
+      'generals/pair-picking/*',
+    ],
   }),
   compressHTML: false,
   integrations: [lit(), starlight({
