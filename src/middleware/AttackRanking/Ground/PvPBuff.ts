@@ -13,7 +13,9 @@ import {
   AttributeMultipliersSchema,
   type AttributeMultipliersSchemaType,
 } from "@lib/TKRTipsAttributeRanking";
-import { DEBUG_GBUFF, DEBUG } from "../ScoreComputer";
+
+const DEBUG_GBUFF = false;
+const DEBUG = false;
 
 export const GroundPvPBuff = z
   .function()

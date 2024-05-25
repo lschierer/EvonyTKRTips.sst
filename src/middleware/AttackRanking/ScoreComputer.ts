@@ -26,12 +26,7 @@ import { GroundAttackPvP34SS } from "./Ground/AttackPvP34SS";
  */
 
 export const DEBUG = false;
-export const DEBUG_GBUFF = false;
-const DEBUG_BAS = false;
-export const DEBUG_BSS = false;
-export const DEBUG_AES = false;
-export const DEBUG_34SS = false;
-
+export const DEBUG_BAS = false;
 
 
 const BasicGround = z

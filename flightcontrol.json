@@ -1,0 +1,49 @@
+{
+  "$schema": "https://app.flightcontrol.dev/schema.json",
+  "environments": [
+    {
+      "id": "production",
+      "name": "Production",
+      "region": "us-east-2",
+      "source": {
+        "branch": "generals_db2",
+        "pr": false,
+        "trigger": "push"
+      },
+      "services": [
+        {
+          "id": "astro-ssr-app",
+          "name": "Astro SSR App",
+          "target": {
+            "type": "ecs-ec2",
+            "clusterInstanceSize": "t2.small",
+            "clusterMinInstances": 1,
+            "clusterMaxInstances": 5
+          },
+          "buildType": "nixpacks",
+          "cpu": 1,
+          "gpu": 0,
+          "memory": 1.75,
+          "containerInsights": false,
+          "minInstances": 1,
+          "maxInstances": 1,
+          "versionHistoryCount": 10,
+          "basePath": ".",
+          "startCommand": "node ./dist/server/entry.mjs",
+          "envVariables": {},
+          "autoscaling": {
+            "cpuThreshold": 70,
+            "memoryThreshold": 80,
+            "cooldownTimerSecs": 300,
+            "requestsPerTarget": 500
+          },
+          "includeEnvVariablesInBuild": true,
+          "type": "web",
+          "healthCheckPath": "/",
+          "enableCloudfrontSwr": false,
+          "port": 8080
+        }
+      ]
+    }
+  ]
+}

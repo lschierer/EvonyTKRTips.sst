@@ -156,6 +156,8 @@ export type ExtendedGeneralSetType = z.infer<typeof ExtendedGeneralSet>;
 export const GeneralPair = z.object({
   primary: z.string(),
   secondary: z.string(),
+  EvAnsRanking: z.number(),
+  AttackRanking: z.number(),
 });
 
 export type GeneralPairType = z.infer<typeof GeneralPair>;

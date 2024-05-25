@@ -4,11 +4,11 @@ import { DisplayGeneralsMW } from "./generals";
 
 const DEBUG = false;
 
-const defaultHandler = defineMiddleware((context, next) => {
+const defaultHandler = defineMiddleware(async (context, next) => {
     if(DEBUG) console.log(`toplevel Middleware running`)
     const thisRoute = context.url.pathname;
     
     return next();
 });
 
-export const onRequest = sequence(DisplayGeneralsMW, defaultHandler);
+export const onRequest = await sequence(DisplayGeneralsMW, defaultHandler);
