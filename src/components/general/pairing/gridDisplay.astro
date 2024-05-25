@@ -15,13 +15,15 @@ import "@spectrum-css/ui-icons/dist/medium/Arrow100.svg";
 
 import { delay } from "nanodelay";
 
+import  {AgGrid} from './ag-grid'
+
 import {
   type BuffParamsType,
   GeneralPair,
   type GeneralPairType,
   type ExtendedGeneralType,
   ExtendedGeneralStatus,
-AscendingLevels,
+  AscendingLevels,
 } from "@schemas/index";
 
 import GridRow from "./gridRow.astro";
@@ -40,9 +42,9 @@ const { name, InvestmentLevel } = Astro.props;
 const myUrl = Astro.url;
 
 const sortByOptions = z.enum([
-  "primary", 
-  "secondary", 
-  "EvAnsRank", 
+  "primary",
+  "secondary",
+  "EvAnsRank",
   "AttackRank",
   "DefenseRank",
 ]);
@@ -80,43 +82,59 @@ if (DEBUG) {
 const pairs = Array<GeneralPairType>();
 
 if (
-  Array.isArray(Astro.locals.ExtendedGenerals) && 
-  Astro.locals.ExtendedGenerals.length > 0) {
-    Astro.locals.ExtendedGenerals.forEach(async (eg1, index) => {
-      if(eg1 !== undefined && eg1 !== null ) {
-        while(ExtendedGeneralStatus.enum.complete.localeCompare(eg1.status)) {
-          await delay(10 * (Astro.locals.ExtendedGenerals.length - index))
-        }
+  Array.isArray(Astro.locals.ExtendedGenerals) &&
+  Astro.locals.ExtendedGenerals.length > 0
+) {
+  Astro.locals.ExtendedGenerals.forEach(async (eg1, index) => {
+    if (eg1 !== undefined && eg1 !== null) {
+      while (ExtendedGeneralStatus.enum.complete.localeCompare(eg1.status)) {
+        await delay(10 * (Astro.locals.ExtendedGenerals.length - index));
       }
-    })
+    }
+  });
 }
-if(Array.isArray(Astro.locals.CachedPairs) &&
-  Astro.locals.CachedPairs.length > 0) {
-    Astro.locals.CachedPairs.forEach((thisPair: GeneralPairType, index) => {
-      if(thisPair.primary === undefined || thisPair.secondary === undefined) {
-        Astro.locals.CachedPairs.splice(index, 1)
-        console.log(`removed index ${index}`)
-        return;
-      }
-      if(thisPair.EvAnsRanking === 0) {
+if (
+  Array.isArray(Astro.locals.CachedPairs) &&
+  Astro.locals.CachedPairs.length > 0
+) {
+  Astro.locals.CachedPairs.forEach((thisPair: GeneralPairType, index) => {
+    if (thisPair.primary === undefined || thisPair.secondary === undefined) {
+      Astro.locals.CachedPairs.splice(index, 1);
+      console.log(`removed index ${index}`);
+    } else {
+      if (thisPair.EvAnsRanking === 0) {
         let ep = 0;
         let es = 0;
-        const primary: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find((g) => {
-          if(!(thisPair.primary as string).localeCompare((g as ExtendedGeneralType).general.name)) {
-            return true;
-          }
-          return false;
-        })
-        if(primary !== undefined) {
-          ep = primary.computedBuffs.get(Astro.locals.InvestmentOptions2Key(InvestmentLevel))?.EvAns ?? -1;
+        const primary: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find(
+          (g) => {
+            if (
+              !thisPair.primary.localeCompare(
+                (g as ExtendedGeneralType).general.name,
+              )
+            ) {
+              return true;
+            }
+            return false;
+          },
+        );
+        if (primary !== undefined) {
+          ep =
+            primary.computedBuffs.get(
+              Astro.locals.InvestmentOptions2Key(InvestmentLevel),
+            )?.EvAns ?? -1;
         }
-        const secondary: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find((g) => {
-          if(!(thisPair.secondary as string).localeCompare((g as ExtendedGeneralType).general.name)) {
-            return true;
-          }
-          return false;
-        })
-        if(secondary !== undefined) {
+        const secondary: ExtendedGeneralType =
+          Astro.locals.ExtendedGenerals.find((g) => {
+            if (
+              !thisPair.secondary.localeCompare(
+                (g as ExtendedGeneralType).general.name,
+              )
+            ) {
+              return true;
+            }
+            return false;
+          });
+        if (secondary !== undefined) {
           const assistLevel: BuffParamsType = {
             special1: InvestmentLevel.special1,
             special2: InvestmentLevel.special2,
@@ -126,33 +144,36 @@ if(Array.isArray(Astro.locals.CachedPairs) &&
             stars: AscendingLevels.enum[0],
             dragon: InvestmentLevel.dragon,
             beast: InvestmentLevel.beast,
-          }
-          const sKey = Astro.locals.InvestmentOptions2Key(assistLevel)
+          };
+          const sKey = Astro.locals.InvestmentOptions2Key(assistLevel);
           es = secondary.computedBuffs.get(sKey)?.EvAns ?? -1;
         }
         thisPair.EvAnsRanking = ep + es;
       }
-      pairs.push(thisPair)
-    })
-  }
+      pairs.push(thisPair);
+    }
+  });
+}
 
 const sortPairsByPrimary = (a: GeneralPairType, b: GeneralPairType): number => {
-  if(a === undefined || a.primary === undefined){
-    if(b === undefined || b.primary === undefined) {
-      return 0
+  if (a?.primary === undefined) {
+    if (b?.primary === undefined) {
+      return 0;
     } else {
-      return -1
+      return -1;
     }
-  } else if (b === undefined || b.primary === undefined) {
-    return 1
+  } else if (b?.primary === undefined) {
+    return 1;
   } else {
-    return a.primary.localeCompare(b.primary, undefined, { sensitivity: "base" });
+    return a.primary.localeCompare(b.primary, undefined, {
+      sensitivity: "base",
+    });
   }
 };
 
 const sortPairsBySecondary = (
   a: GeneralPairType,
-  b: GeneralPairType
+  b: GeneralPairType,
 ): number => {
   return a.secondary.localeCompare(b.secondary, undefined, {
     sensitivity: "base",
@@ -161,20 +182,28 @@ const sortPairsBySecondary = (
 
 const sortPairsByEvAnsRank = (
   a: GeneralPairType,
-  b: GeneralPairType
+  b: GeneralPairType,
 ): number => {
-  const Aprimary: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find((element) => {
-    return !a.primary.localeCompare(element.general.name)
-  })
-  const Asecondary: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find((element) => {
-    return !a.secondary.localeCompare(element.general.name)
-  });
-  const Bprimary: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find((element) => {
-    return !b.primary.localeCompare(element.general.name)
-  });
-  const Bsecondary: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find((element) => {
-    return !b.secondary.localeCompare(element.general.name)
-  });
+  const Aprimary: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find(
+    (element) => {
+      return !a.primary.localeCompare(element.general.name);
+    },
+  );
+  const Asecondary: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find(
+    (element) => {
+      return !a.secondary.localeCompare(element.general.name);
+    },
+  );
+  const Bprimary: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find(
+    (element) => {
+      return !b.primary.localeCompare(element.general.name);
+    },
+  );
+  const Bsecondary: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find(
+    (element) => {
+      return !b.secondary.localeCompare(element.general.name);
+    },
+  );
 
   const assistInvest: BuffParamsType = {
     special1: InvestmentLevel.special1,
@@ -184,39 +213,34 @@ const sortPairsByEvAnsRank = (
     special5: InvestmentLevel.special5,
     stars: AscendingLevels.enum[0],
     dragon: InvestmentLevel.dragon,
-    beast: InvestmentLevel.beast
-  }
+    beast: InvestmentLevel.beast,
+  };
 
   const pKey = Astro.locals.InvestmentOptions2Key(InvestmentLevel);
-  const sKey = Astro.locals.InvestmentOptions2Key(assistInvest)
+  const sKey = Astro.locals.InvestmentOptions2Key(assistInvest);
 
-  if(DEBUG){
-    console.log(`pKey: ${pKey}`)
-    console.log(`sKey: ${sKey}`)
+  if (DEBUG) {
+    console.log(`pKey: ${pKey}`);
+    console.log(`sKey: ${sKey}`);
   }
 
-  const apr =
-    Aprimary.computedBuffs.get(pKey)?.EvAns ?? -1;
-  const asr =
-    Asecondary.computedBuffs.get(sKey)?.EvAns ?? -2;
+  const apr = Aprimary.computedBuffs.get(pKey)?.EvAns ?? -1;
+  const asr = Asecondary.computedBuffs.get(sKey)?.EvAns ?? -2;
 
-  const bpr =
-    Bprimary.computedBuffs.get(pKey)?.EvAns ?? -3;
-  const bsr =
-    Bsecondary.computedBuffs.get(sKey)?.EvAns ?? -4;
-    
+  const bpr = Bprimary.computedBuffs.get(pKey)?.EvAns ?? -3;
+  const bsr = Bsecondary.computedBuffs.get(sKey)?.EvAns ?? -4;
 
   const apt = apr + asr;
   const bpt = bpr + bsr;
   if (DEBUG) {
     console.log(
-      `a.primary computed buffs: ${JSON.stringify(Array.from(Aprimary.computedBuffs))}`
+      `a.primary computed buffs: ${JSON.stringify(Array.from(Aprimary.computedBuffs))}`,
     );
     console.log(
-      `a.primary: ${a.primary}: ${apr}\ta.secondary: ${a.secondary}: ${asr}\ta: ${apt}`
+      `a.primary: ${a.primary}: ${apr}\ta.secondary: ${a.secondary}: ${asr}\ta: ${apt}`,
     );
     console.log(
-      `b.primary: ${b.primary}: ${bpr}\tb.secondary: ${b.secondary}: ${bsr}\tb: ${bpt}`
+      `b.primary: ${b.primary}: ${bpr}\tb.secondary: ${b.secondary}: ${bsr}\tb: ${bpt}`,
     );
   }
   if (apt === bpt) {
@@ -228,19 +252,30 @@ const sortPairsByEvAnsRank = (
   }
 };
 
-const sortPairsAttackRank = (a: GeneralPairType, b: GeneralPairType): number => {
-  const Aprimary: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find((element) => {
-    return !a.primary.localeCompare(element.general.name)
-  })
-  const Asecondary: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find((element) => {
-    return !a.secondary.localeCompare(element.general.name)
-  });
-  const Bprimary: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find((element) => {
-    return !b.primary.localeCompare(element.general.name)
-  });
-  const Bsecondary: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find((element) => {
-    return !b.secondary.localeCompare(element.general.name)
-  });
+const sortPairsAttackRank = (
+  a: GeneralPairType,
+  b: GeneralPairType,
+): number => {
+  const Aprimary: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find(
+    (element) => {
+      return !a.primary.localeCompare(element.general.name);
+    },
+  );
+  const Asecondary: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find(
+    (element) => {
+      return !a.secondary.localeCompare(element.general.name);
+    },
+  );
+  const Bprimary: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find(
+    (element) => {
+      return !b.primary.localeCompare(element.general.name);
+    },
+  );
+  const Bsecondary: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find(
+    (element) => {
+      return !b.secondary.localeCompare(element.general.name);
+    },
+  );
 
   const assistInvest: BuffParamsType = {
     special1: InvestmentLevel.special1,
@@ -250,49 +285,45 @@ const sortPairsAttackRank = (a: GeneralPairType, b: GeneralPairType): number => 
     special5: InvestmentLevel.special5,
     stars: AscendingLevels.enum[0],
     dragon: InvestmentLevel.dragon,
-    beast: InvestmentLevel.beast
-  }
+    beast: InvestmentLevel.beast,
+  };
 
   const pKey = Astro.locals.InvestmentOptions2Key(InvestmentLevel);
-  const sKey = Astro.locals.InvestmentOptions2Key(assistInvest)
+  const sKey = Astro.locals.InvestmentOptions2Key(assistInvest);
 
-  if(DEBUG){
-    console.log(`pKey: ${pKey}`)
-    console.log(`sKey: ${sKey}`)
+  if (DEBUG) {
+    console.log(`pKey: ${pKey}`);
+    console.log(`sKey: ${sKey}`);
   }
 
-  const apr =
-    Aprimary.computedBuffs.get(pKey)?.AttackRank ?? -1;
-  const asr =
-    Asecondary.computedBuffs.get(sKey)?.AttackRank ?? -2;
+  const apr = Aprimary.computedBuffs.get(pKey)?.AttackRank ?? -1;
+  const asr = Asecondary.computedBuffs.get(sKey)?.AttackRank ?? -2;
 
-  const bpr =
-    Bprimary.computedBuffs.get(pKey)?.AttackRank ?? -3;
-  const bsr =
-    Bsecondary.computedBuffs.get(sKey)?.AttackRank ?? -4;
+  const bpr = Bprimary.computedBuffs.get(pKey)?.AttackRank ?? -3;
+  const bsr = Bsecondary.computedBuffs.get(sKey)?.AttackRank ?? -4;
 
   const apt = apr + asr;
   const bpt = bpr + bsr;
   if (DEBUG) {
     console.log(
-      `a.p computed buffs: ${JSON.stringify(Array.from(Aprimary.computedBuffs))}`
+      `a.p computed buffs: ${JSON.stringify(Array.from(Aprimary.computedBuffs))}`,
     );
     console.log(
-      `a.s computed buffs: ${JSON.stringify(Array.from(Asecondary.computedBuffs))}`
+      `a.s computed buffs: ${JSON.stringify(Array.from(Asecondary.computedBuffs))}`,
     );
     console.log(
-      `a.primary: ${a.primary}: ${apr}\ta.secondary: ${a.secondary}: ${asr}\ta: ${apt}`
+      `a.primary: ${a.primary}: ${apr}\ta.secondary: ${a.secondary}: ${asr}\ta: ${apt}`,
     );
     console.log(
-      `b.p computed buffs: ${JSON.stringify(Array.from(Bprimary.computedBuffs))}`
+      `b.p computed buffs: ${JSON.stringify(Array.from(Bprimary.computedBuffs))}`,
     );
     console.log(
-      `b.s computed buffs: ${JSON.stringify(Array.from(Bsecondary.computedBuffs))}`
+      `b.s computed buffs: ${JSON.stringify(Array.from(Bsecondary.computedBuffs))}`,
     );
     console.log(
-      `b.primary: ${b.primary}: ${bpr}\tb.secondary: ${b.secondary}: ${bsr}\tb: ${bpt}`
+      `b.primary: ${b.primary}: ${bpr}\tb.secondary: ${b.secondary}: ${bsr}\tb: ${bpt}`,
     );
-    console.log('')
+    console.log("");
   }
   if (apt === bpt) {
     return 0;
@@ -301,21 +332,32 @@ const sortPairsAttackRank = (a: GeneralPairType, b: GeneralPairType): number => 
   } else {
     return 1;
   }
-}
+};
 
-const sortPairsDefenseRank = (a: GeneralPairType, b: GeneralPairType): number => {
-  const Aprimary: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find((element) => {
-    return !a.primary.localeCompare(element.general.name)
-  })
-  const Asecondary: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find((element) => {
-    return !a.secondary.localeCompare(element.general.name)
-  });
-  const Bprimary: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find((element) => {
-    return !b.primary.localeCompare(element.general.name)
-  });
-  const Bsecondary: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find((element) => {
-    return !b.secondary.localeCompare(element.general.name)
-  });
+const sortPairsDefenseRank = (
+  a: GeneralPairType,
+  b: GeneralPairType,
+): number => {
+  const Aprimary: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find(
+    (element) => {
+      return !a.primary.localeCompare(element.general.name);
+    },
+  );
+  const Asecondary: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find(
+    (element) => {
+      return !a.secondary.localeCompare(element.general.name);
+    },
+  );
+  const Bprimary: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find(
+    (element) => {
+      return !b.primary.localeCompare(element.general.name);
+    },
+  );
+  const Bsecondary: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find(
+    (element) => {
+      return !b.secondary.localeCompare(element.general.name);
+    },
+  );
 
   const assistInvest: BuffParamsType = {
     special1: InvestmentLevel.special1,
@@ -325,49 +367,45 @@ const sortPairsDefenseRank = (a: GeneralPairType, b: GeneralPairType): number =>
     special5: InvestmentLevel.special5,
     stars: AscendingLevels.enum[0],
     dragon: InvestmentLevel.dragon,
-    beast: InvestmentLevel.beast
-  }
+    beast: InvestmentLevel.beast,
+  };
 
   const pKey = Astro.locals.InvestmentOptions2Key(InvestmentLevel);
-  const sKey = Astro.locals.InvestmentOptions2Key(assistInvest)
+  const sKey = Astro.locals.InvestmentOptions2Key(assistInvest);
 
-  if(DEBUG){
-    console.log(`pKey: ${pKey}`)
-    console.log(`sKey: ${sKey}`)
+  if (DEBUG) {
+    console.log(`pKey: ${pKey}`);
+    console.log(`sKey: ${sKey}`);
   }
 
-  const apr =
-    Aprimary.computedBuffs.get(pKey)?.DefenseRank ?? -1;
-  const asr =
-    Asecondary.computedBuffs.get(sKey)?.DefenseRank ?? -2;
+  const apr = Aprimary.computedBuffs.get(pKey)?.DefenseRank ?? -1;
+  const asr = Asecondary.computedBuffs.get(sKey)?.DefenseRank ?? -2;
 
-  const bpr =
-    Bprimary.computedBuffs.get(pKey)?.DefenseRank ?? -3;
-  const bsr =
-    Bsecondary.computedBuffs.get(sKey)?.DefenseRank ?? -4;
+  const bpr = Bprimary.computedBuffs.get(pKey)?.DefenseRank ?? -3;
+  const bsr = Bsecondary.computedBuffs.get(sKey)?.DefenseRank ?? -4;
 
   const apt = apr + asr;
   const bpt = bpr + bsr;
   if (DEBUG) {
     console.log(
-      `a.p computed buffs: ${JSON.stringify(Array.from(Aprimary.computedBuffs))}`
+      `a.p computed buffs: ${JSON.stringify(Array.from(Aprimary.computedBuffs))}`,
     );
     console.log(
-      `a.s computed buffs: ${JSON.stringify(Array.from(Asecondary.computedBuffs))}`
+      `a.s computed buffs: ${JSON.stringify(Array.from(Asecondary.computedBuffs))}`,
     );
     console.log(
-      `a.primary: ${a.primary}: ${apr}\ta.secondary: ${a.secondary}: ${asr}\ta: ${apt}`
+      `a.primary: ${a.primary}: ${apr}\ta.secondary: ${a.secondary}: ${asr}\ta: ${apt}`,
     );
     console.log(
-      `b.p computed buffs: ${JSON.stringify(Array.from(Bprimary.computedBuffs))}`
+      `b.p computed buffs: ${JSON.stringify(Array.from(Bprimary.computedBuffs))}`,
     );
     console.log(
-      `b.s computed buffs: ${JSON.stringify(Array.from(Bsecondary.computedBuffs))}`
+      `b.s computed buffs: ${JSON.stringify(Array.from(Bsecondary.computedBuffs))}`,
     );
     console.log(
-      `b.primary: ${b.primary}: ${bpr}\tb.secondary: ${b.secondary}: ${bsr}\tb: ${bpt}`
+      `b.primary: ${b.primary}: ${bpr}\tb.secondary: ${b.secondary}: ${bsr}\tb: ${bpt}`,
     );
-    console.log('')
+    console.log("");
   }
   if (apt === bpt) {
     return 0;
@@ -376,7 +414,7 @@ const sortPairsDefenseRank = (a: GeneralPairType, b: GeneralPairType): number =>
   } else {
     return 1;
   }
-}
+};
 
 const sortPairSelector: Record<
   sortByOptionsType,
@@ -410,19 +448,26 @@ const sortPairFunction = (a: GeneralPairType, b: GeneralPairType) => {
 if (Astro.request.method === "POST") {
   try {
     if (DEBUG) console.log(`executing POST try block`);
-    await Promise.all(Astro.locals.ExtendedGenerals.map(async (g: ExtendedGeneralType) => {
+    await Promise.all(
+      Astro.locals.ExtendedGenerals.map(async (g: ExtendedGeneralType) => {
         if (DEBUG) {
           console.log(`${g.general.name}: ${g.status}`);
         }
         let iterationCount = 0;
-        while(g.status.localeCompare(ExtendedGeneralStatus.enum.complete) && iterationCount < 3) {
+        while (
+          g.status.localeCompare(ExtendedGeneralStatus.enum.complete) &&
+          iterationCount < 3
+        ) {
           await delay(10 * ++iterationCount).then(() => {
-            if(DEBUG) {
-              console.log(`${g.general.name} status ${g.status} ${iterationCount}`)
+            if (DEBUG) {
+              console.log(
+                `${g.general.name} status ${g.status} ${iterationCount}`,
+              );
             }
-          })
+          });
         }
-     }))
+      }),
+    );
     const data = await Astro.request.formData();
     if (sortPrimaryInput === false) {
       //not prievously sorted by primary
@@ -518,7 +563,7 @@ if (Astro.request.method === "POST") {
     } else {
       if (DEBUG)
         console.log(
-          `values are ${sortPrimaryInput}  ${sortSecondaryInput} ${sortEvAnsRankInput} ${sortAttackRankInput}`
+          `values are ${sortPrimaryInput}  ${sortSecondaryInput} ${sortEvAnsRankInput} ${sortAttackRankInput}`,
         );
     }
   } catch (error) {
@@ -534,6 +579,12 @@ let pairArray = [...pairs].sort(sortPairFunction);
 ---
 
 <div class="spectrum spectrum--medium">
+  <AgGrid
+    tableName={name}
+    InvestmentLevel={InvestmentLevel}
+    DisplayPairs={pairArray}
+    client:only="lit"></AgGrid>
+
   <div
     id={name}
     class="spectrum-Table-scroller spectrum-Table spectrum-Table--sizeM spectrum-Table--emphasized"
@@ -552,9 +603,9 @@ let pairArray = [...pairs].sort(sortPairFunction);
               aria-sort={sortDirection}
               tabindex="0"
             >
-              <button 
-                type="submit" 
-                name="pGeneral" 
+              <button
+                type="submit"
+                name="pGeneral"
                 value={sortPrimaryValue}
                 class="spectrum-Button spectrum-Button--outline spectrum-Button--primary spectrum-Button--sizeM"
               >
@@ -567,12 +618,12 @@ let pairArray = [...pairs].sort(sortPairFunction);
               aria-sort={sortDirection}
               tabindex="0"
             >
-              <button 
-                type="submit" 
-                name="sGeneral" 
+              <button
+                type="submit"
+                name="sGeneral"
                 value={sortSecondaryValue}
                 class="spectrum-Button spectrum-Button--outline spectrum-Button--primary spectrum-Button--sizeM"
-                >
+              >
                 <span class="spectrum-Table-columnTitle"
                   >Assistant General
                 </span>
@@ -585,12 +636,12 @@ let pairArray = [...pairs].sort(sortPairFunction);
               aria-sort={sortDirection}
               tabindex="0"
             >
-              <button 
-                type="submit" 
-                name="EvAnsRank" 
+              <button
+                type="submit"
+                name="EvAnsRank"
                 value={sortEvAnsRankValue}
                 class="spectrum-Button spectrum-Button--outline spectrum-Button--primary spectrum-Button--sizeM"
-                >
+              >
                 <span class="spectrum-Table-columnTitle">EvAns Score</span>
               </button>
             </div>
@@ -601,13 +652,15 @@ let pairArray = [...pairs].sort(sortPairFunction);
               aria-sort={sortDirection}
               tabindex="0"
             >
-              <button 
-                type="submit" 
-                name="AttackRank" 
+              <button
+                type="submit"
+                name="AttackRank"
                 value={sortAttackRankValue}
                 class="spectrum-Button spectrum-Button--outline spectrum-Button--primary spectrum-Button--sizeM"
+              >
+                <span class="spectrum-Table-columnTitle"
+                  >TKRTips Attack Score</span
                 >
-                <span class="spectrum-Table-columnTitle">TKRTips Attack Score</span>
               </button>
             </div>
             <div
@@ -617,13 +670,15 @@ let pairArray = [...pairs].sort(sortPairFunction);
               aria-sort={sortDirection}
               tabindex="0"
             >
-              <button 
-                type="submit" 
-                name="DefenseRank" 
+              <button
+                type="submit"
+                name="DefenseRank"
                 value={sortAttackRankValue}
                 class="spectrum-Button spectrum-Button--outline spectrum-Button--primary spectrum-Button--sizeM"
+              >
+                <span class="spectrum-Table-columnTitle"
+                  >TKRTips Defense Score</span
                 >
-                <span class="spectrum-Table-columnTitle">TKRTips Defense Score</span>
               </button>
             </div>
           </div>
@@ -647,7 +702,6 @@ let pairArray = [...pairs].sort(sortPairFunction);
   </div>
 </div>
 <style>
-  
   div#EvAnsRank,
   div#AttackRank {
     width: 6em;

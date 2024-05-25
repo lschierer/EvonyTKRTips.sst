@@ -80,7 +80,41 @@ export class AgGrid extends SizedMixin(SpectrumElement, {
     }
   }
 
+  protected firstUpdated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+    super.firstUpdated(_changedProperties)
+    if(this.tableDivRef.value !== undefined) {
+      this.gridElement = this.tableDivRef.value;
+      if(this.gridElement !== undefined && this.gridElement !== null ) {
+        createGrid(this.gridElement, this.gridOptions)
+      }
+    }
+  }
   
+  public static override get styles(): CSSResultArray {
+    const localStyle = css``;
+    if(super.styles !== undefined && Array.isArray(super.styles)) {
+      return [...super.styles,localStyle]
+    } else {
+      return [localStyle]
+    }
+  }
   
-  
+  protected override render() {
+    const mainDivClasses = {
+      ["ag-theme-quartz"]: true,
+      ["spectrum"]: "",
+      ["spectrum--medium"]: "",
+    };
+
+    return html`
+      <div
+        id=${this.tableName}
+        class=${classMap(mainDivClasses)}
+        ${ref(this.tableDivRef)}
+      >
+        ${when((this.tableDivRef.value === undefined), () => html`Pending Table Load`, () => nothing) }
+      </div>
+    `
+  }
+
 }
