@@ -92,7 +92,12 @@ if (
 }
 if(Array.isArray(Astro.locals.CachedPairs) &&
   Astro.locals.CachedPairs.length > 0) {
-    Astro.locals.CachedPairs.forEach((thisPair: GeneralPairType) => {
+    Astro.locals.CachedPairs.forEach((thisPair: GeneralPairType, index) => {
+      if(thisPair.primary === undefined || thisPair.secondary === undefined) {
+        Astro.locals.CachedPairs.splice(index, 1)
+        console.log(`removed index ${index}`)
+        return;
+      }
       if(thisPair.EvAnsRanking === 0) {
         let ep = 0;
         let es = 0;
@@ -132,7 +137,17 @@ if(Array.isArray(Astro.locals.CachedPairs) &&
   }
 
 const sortPairsByPrimary = (a: GeneralPairType, b: GeneralPairType): number => {
-  return a.primary.localeCompare(b.primary, undefined, { sensitivity: "base" });
+  if(a === undefined || a.primary === undefined){
+    if(b === undefined || b.primary === undefined) {
+      return 0
+    } else {
+      return -1
+    }
+  } else if (b === undefined || b.primary === undefined) {
+    return 1
+  } else {
+    return a.primary.localeCompare(b.primary, undefined, { sensitivity: "base" });
+  }
 };
 
 const sortPairsBySecondary = (
