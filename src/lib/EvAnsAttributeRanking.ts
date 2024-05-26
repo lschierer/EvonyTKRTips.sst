@@ -7,45 +7,6 @@ import {
   type PvPAttributeMultipliers as PvPAttributeMultipliersType,
 } from '../schemas/EvAns.zod'
 
-export const GroundScoreWeightings: ScoreWeightingsType = {
-  [b.ActivationSituations.enum["Solo PvP"]]: {
-    GroundOffense: 0.64,
-    GroundToughness: 0.34,
-    RangedOffense: 0,
-    RangedToughness: 0,
-    MountedOffense: 0,
-    MountedToughness: 0,
-    SiegeOffense: 0,
-    SiegeToughness: 0,
-    EnemyDebuffs: 0.01,
-    default: 0.01,
-  },
-  [b.ActivationSituations.enum['Rally Owner PvP']]: {
-    GroundOffense: 0.64,
-    GroundToughness: 0.34,
-    RangedOffense: 0,
-    RangedToughness: 0,
-    MountedOffense: 0,
-    MountedToughness: 0,
-    SiegeOffense: 0,
-    SiegeToughness: 0,
-    EnemyDebuffs: 0.01,
-    default: 0.01,
-  },
-  [b.ActivationSituations.enum["Reinforcement of Others"]]: {
-    GroundOffense: 0.63,
-    GroundToughness: 0.35,
-    RangedOffense: 0,
-    RangedToughness: 0,
-    MountedOffense: 0,
-    MountedToughness: 0,
-    SiegeOffense: 0,
-    SiegeToughness: 0,
-    EnemyDebuffs: 0.01,
-    default: 0.01,
-  }
-};
-
 export const GroundPvPAttributeMultipliers: PvPAttributeMultipliersType = {
   [b.ActivationSituations.enum["Solo PvP"]]: {
     Offensive: {
