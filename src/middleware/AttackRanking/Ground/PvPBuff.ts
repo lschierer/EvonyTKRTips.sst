@@ -88,7 +88,7 @@ export const GroundPvPBuff = z
             }
           } else if (!Attribute.enum.Death_to_Soul.localeCompare(tb.attribute)) {
             if (!UnitSchema.enum.percentage.localeCompare(tb.value.unit)) {
-              const multiplier = GroundPvPAttributeMultipliers["Rally Owner PvP"]?.Preservation.Death2Souls ?? 0;
+              const multiplier = 0;
               const additional = tb.value.number * multiplier;
               if (DEBUG_GBUFF) {
                 console.log(
@@ -100,7 +100,7 @@ export const GroundPvPBuff = z
           } else if (!Attribute.enum.Death_to_Wounded.localeCompare(tb.attribute)) {
             //I do not need to worry about the "when attacking" condition you sometimes see - both apply the same for this file
             if (!UnitSchema.enum.percentage.localeCompare(tb.value.unit)) {
-              const multiplier = GroundPvPAttributeMultipliers["Rally Owner PvP"]?.Preservation.Death2Wounded ?? 0;
+              const multiplier = 0;
               const additional = tb.value.number * multiplier;
               if (DEBUG_GBUFF) {
                 console.log(
@@ -127,7 +127,7 @@ export const GroundPvPBuff = z
                 if(DEBUG_GBUFF){
                   console.log(`GroundPvPBuff: ${buffName} from ${generalName} matched percentage`)
                 }
-                const multiplier = GroundPvPAttributeMultipliers["Rally Owner PvP"]?.AttackingAttackDebuff.ReduceAllAttack ?? 0;
+                const multiplier = 0;
                 const additional = tb.value.number * multiplier;
                 if (DEBUG_GBUFF) {
                   console.log(
@@ -170,7 +170,7 @@ export const GroundPvPBuff = z
             } else {
               //I think all other conditions that matter have been checked
               if (!UnitSchema.enum.percentage.localeCompare(tb.value.unit)) {
-                const multiplier = GroundPvPAttributeMultipliers["Rally Owner PvP"]?.Toughness.AllTroopDefense ?? 0;
+                const multiplier = 0;
                 const additional = tb.value.number * multiplier;
                 if (DEBUG_GBUFF) {
                   console.log(
@@ -201,7 +201,7 @@ export const GroundPvPBuff = z
             } else {
               //I think all other conditions that matter have been checked
               if (!UnitSchema.enum.percentage.localeCompare(tb.value.unit)) {
-                const multiplier = GroundPvPAttributeMultipliers["Rally Owner PvP"]?.Toughness.AllTroopHP ?? 0;
+                const multiplier = 0;
                 const additional = tb.value.number * multiplier;
                 if (DEBUG_GBUFF) {
                   console.log(
@@ -232,13 +232,13 @@ export const GroundPvPBuff = z
               if (!UnitSchema.enum.percentage.localeCompare(tb.value.unit)) {
                 let multiplier = 0;
                 if (!ClassEnum.enum.Ground.localeCompare(tb.class)) {
-                  multiplier = GroundPvPAttributeMultipliers["Rally Owner PvP"]?.AttackingAttackDebuff.ReduceEnemyGroundAttack ?? 0;
+                  multiplier = 0;
                 } else if (!ClassEnum.enum.Archers.localeCompare(tb.class)) {
-                  multiplier = GroundPvPAttributeMultipliers["Rally Owner PvP"]?.AttackingAttackDebuff.ReduceEnemyRangedAttack ?? 0;
+                  multiplier = 0;
                 } else if (!ClassEnum.enum.Mounted.localeCompare(tb.class)) {
-                  multiplier = GroundPvPAttributeMultipliers["Rally Owner PvP"]?.AttackingAttackDebuff.ReduceEnemyMountedAttack ?? 0;
+                  multiplier = 0;
                 } else if (!ClassEnum.enum.Siege.localeCompare(tb.class)) {
-                  multiplier = GroundPvPAttributeMultipliers["Rally Owner PvP"]?.AttackingAttackDebuff.ReduceEnemySiegeAttack ?? 0;
+                  multiplier = 0;
                 }
                 const additional = tb.value.number * multiplier;
                 if (DEBUG_GBUFF) {
@@ -306,13 +306,13 @@ export const GroundPvPBuff = z
                 }
                 let multiplier = 0;
                 if (!ClassEnum.enum.Ground.localeCompare(tb.class)) {
-                  multiplier = GroundPvPAttributeMultipliers["Rally Owner PvP"]?.Toughness.GroundDefense ?? 0;
+                  multiplier = 0;
                 } else if (!ClassEnum.enum.Archers.localeCompare(tb.class)) {
-                  multiplier = GroundPvPAttributeMultipliers["Rally Owner PvP"]?.Toughness.RangedDefense ?? 0;
+                  multiplier = 0;
                 } else if (!ClassEnum.enum.Mounted.localeCompare(tb.class)) {
-                  multiplier = GroundPvPAttributeMultipliers["Rally Owner PvP"]?.Toughness.MountedDefense ?? 0;
+                  multiplier = 0;
                 } else if (!ClassEnum.enum.Siege.localeCompare(tb.class)) {
-                  multiplier = GroundPvPAttributeMultipliers["Rally Owner PvP"]?.Toughness.SiegeDefense ?? 0;
+                  multiplier = 0;
                 }
                 const additional = tb.value.number * multiplier;
                 if (DEBUG_GBUFF) {
@@ -355,13 +355,13 @@ export const GroundPvPBuff = z
               if (!UnitSchema.enum.percentage.localeCompare(tb.value.unit)) {
                 let multiplier = 0;
                 if (!ClassEnum.enum.Ground.localeCompare(tb.class)) {
-                  multiplier = GroundPvPAttributeMultipliers["Rally Owner PvP"]?.Toughness.GroundHP ?? 0;
+                  multiplier = 0;
                 } else if (!ClassEnum.enum.Archers.localeCompare(tb.class)) {
-                  multiplier = GroundPvPAttributeMultipliers["Rally Owner PvP"]?.Toughness.RangedHP ?? 0;
+                  multiplier = 0;
                 } else if (!ClassEnum.enum.Mounted.localeCompare(tb.class)) {
-                  multiplier = GroundPvPAttributeMultipliers["Rally Owner PvP"]?.Toughness.MountedHP ?? 0;
+                  multiplier = 0;
                 } else if (!ClassEnum.enum.Siege.localeCompare(tb.class)) {
-                  multiplier = GroundPvPAttributeMultipliers["Rally Owner PvP"]?.Toughness.SiegeHP ?? 0;
+                  multiplier = 0;
                 }
                 const additional = tb.value.number * multiplier;
                 if (DEBUG_GBUFF) {

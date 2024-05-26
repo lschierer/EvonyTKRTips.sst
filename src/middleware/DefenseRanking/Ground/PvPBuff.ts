@@ -76,7 +76,7 @@ export const GroundPvPBuff = z
         } else {
           if (!Attribute.enum.March_Size_Capacity.localeCompare(tb.attribute)) {
             if (!UnitSchema.enum.percentage.localeCompare(tb.value.unit)) {
-              const multiplier = GroundPvPAttributeMultipliers["Rally Owner PvP"]?.Offensive.MarchSizeIncrease ?? 0;
+              const multiplier = 0;
               const additional = tb.value.number * multiplier;
               if (DEBUG_GBUFF) {
                 console.log(`multiplier is ${multiplier}`)
@@ -139,7 +139,7 @@ export const GroundPvPBuff = z
             } else {
               //I think all other conditions that matter have been checked
               if (!UnitSchema.enum.percentage.localeCompare(tb.value.unit)) {
-                const multiplier = GroundPvPAttributeMultipliers["Rally Owner PvP"]?.Offensive.AllTroopAttack ?? 0;
+                const multiplier = 0;
                 const additional = tb.value.number * multiplier;
                 if (DEBUG_GBUFF) {
                   console.log(
@@ -158,7 +158,7 @@ export const GroundPvPBuff = z
               tb.condition.includes(Condition.enum.Reduces_Enemy_with_a_Dragon)
             )) {
               if (!UnitSchema.enum.percentage.localeCompare(tb.value.unit)) {
-                const multiplier = GroundPvPAttributeMultipliers["Rally Owner PvP"]?.AttackingToughnessDebuff.ReduceEnemyAllDefense ?? 0;
+                const multiplier = 0;
                 const additional = tb.value.number * multiplier;
                 if (DEBUG_GBUFF) {
                   console.log(
@@ -189,7 +189,7 @@ export const GroundPvPBuff = z
               tb.condition.includes(Condition.enum.Reduces_Enemy_with_a_Dragon)
             )) {
               if (!UnitSchema.enum.percentage.localeCompare(tb.value.unit)) {
-                const multiplier = GroundPvPAttributeMultipliers["Rally Owner PvP"]?.AttackingToughnessDebuff.ReduceEnemyAllHP ?? 0;
+                const multiplier = 0;
                 const additional = tb.value.number * multiplier;
                 if (DEBUG_GBUFF) {
                   console.log(
@@ -253,13 +253,13 @@ export const GroundPvPBuff = z
               if (!UnitSchema.enum.percentage.localeCompare(tb.value.unit)) {
                 let multiplier = 0;
                 if (!ClassEnum.enum.Ground.localeCompare(tb.class)) {
-                  multiplier = GroundPvPAttributeMultipliers["Rally Owner PvP"]?.Offensive.GroundAttack ?? 0;
+                  multiplier = 0;
                 } else if (!ClassEnum.enum.Archers.localeCompare(tb.class)) {
-                  multiplier = GroundPvPAttributeMultipliers["Rally Owner PvP"]?.Offensive.RangedAttack ?? 0;
+                  multiplier = 0;
                 } else if (!ClassEnum.enum.Mounted.localeCompare(tb.class)) {
-                  multiplier = GroundPvPAttributeMultipliers["Rally Owner PvP"]?.Offensive.MountedAttack ?? 0;
+                  multiplier = 0;
                 } else if (!ClassEnum.enum.Siege.localeCompare(tb.class)) {
-                  multiplier = GroundPvPAttributeMultipliers["Rally Owner PvP"]?.Offensive.SiegeAttack ?? 0;
+                  multiplier = 0;
                 }
                 const additional = tb.value.number * multiplier;
                 if (DEBUG_GBUFF) {
@@ -282,13 +282,13 @@ export const GroundPvPBuff = z
               if (!UnitSchema.enum.percentage.localeCompare(tb.value.unit)) {
                 let multiplier = 0;
                 if (!ClassEnum.enum.Ground.localeCompare(tb.class)) {
-                  multiplier = GroundPvPAttributeMultipliers["Rally Owner PvP"]?.AttackingToughnessDebuff.ReduceEnemyGroundDefense ?? 0;
+                  multiplier = 0;
                 } else if (!ClassEnum.enum.Archers.localeCompare(tb.class)) {
-                  multiplier = GroundPvPAttributeMultipliers["Rally Owner PvP"]?.AttackingToughnessDebuff.ReduceEnemyRangedDefense ?? 0;
+                  multiplier = 0;
                 } else if (!ClassEnum.enum.Mounted.localeCompare(tb.class)) {
-                  multiplier = GroundPvPAttributeMultipliers["Rally Owner PvP"]?.AttackingToughnessDebuff.ReduceEnemyMountedDefense ?? 0;
+                  multiplier = 0;
                 } else if (!ClassEnum.enum.Siege.localeCompare(tb.class)) {
-                  multiplier = GroundPvPAttributeMultipliers["Rally Owner PvP"]?.AttackingToughnessDebuff.ReduceEnemySiegeDefense ?? 0;
+                  multiplier = 0;
                 }
                 const additional = tb.value.number * multiplier;
                 if (DEBUG_GBUFF) {
@@ -334,13 +334,13 @@ export const GroundPvPBuff = z
               if (!UnitSchema.enum.percentage.localeCompare(tb.value.unit)) {
                 let multiplier = 0;
                 if (!ClassEnum.enum.Ground.localeCompare(tb.class)) {
-                  multiplier = GroundPvPAttributeMultipliers["Rally Owner PvP"]?.AttackingToughnessDebuff.ReduceEnemyGroundHP ?? 0;
+                  multiplier = 0;
                 } else if (!ClassEnum.enum.Archers.localeCompare(tb.class)) {
-                  multiplier = GroundPvPAttributeMultipliers["Rally Owner PvP"]?.AttackingToughnessDebuff.ReduceEnemyRangedHP ?? 0;
+                  multiplier = 0;
                 } else if (!ClassEnum.enum.Mounted.localeCompare(tb.class)) {
-                  multiplier = GroundPvPAttributeMultipliers["Rally Owner PvP"]?.AttackingToughnessDebuff.ReduceEnemyMountedHP ?? 0;
+                  multiplier = 0;
                 } else if (!ClassEnum.enum.Siege.localeCompare(tb.class)) {
-                  multiplier = GroundPvPAttributeMultipliers["Rally Owner PvP"]?.AttackingToughnessDebuff.ReduceEnemySiegeHP ?? 0;
+                  multiplier = 0;
                 }
                 const additional = tb.value.number * multiplier;
                 if (DEBUG_GBUFF) {
@@ -377,14 +377,14 @@ export const GroundPvPBuff = z
             let multiplier = 0;
             if (!ClassEnum.enum.Archers.localeCompare(tb.class)) {
               if (!UnitSchema.enum.percentage.localeCompare(tb.value.unit)) {
-                multiplier = GroundPvPAttributeMultipliers["Rally Owner PvP"]?.Offensive.RangedRangeBonus ?? 0;
+                multiplier = 0;
 
               }
             } else if (!ClassEnum.enum.Siege.localeCompare(tb.class)) {
               if (!UnitSchema.enum.percentage.localeCompare(tb.value.unit)) {
-                multiplier = GroundPvPAttributeMultipliers['Rally Owner PvP']?.Offensive.SiegeRangeBonusPercent ?? 0;
+                multiplier = 0;
               } else {
-                multiplier = GroundPvPAttributeMultipliers['Rally Owner PvP']?.Offensive.SiegeRangeBonusFlat ?? 0;
+                multiplier = 0;
               }
             }
             const additional = tb.value.number * multiplier

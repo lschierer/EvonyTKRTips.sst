@@ -115,6 +115,11 @@ export const DisplayGeneralsMW = defineMiddleware(
           display,
           _BP
         );
+        const DefenseRank = DefenseScoreComputer(
+          generalUseCase.enum.Attack,
+          eg,
+          display,
+          _BP)
         if (DEBUG) {
           console.log(
             `in GeneralBuffs, got scores: ${EvAnsRankScore} ${AttackRank} for ${name}`
@@ -124,7 +129,7 @@ export const DisplayGeneralsMW = defineMiddleware(
         eg.computedBuffs.set(hashKey, {
           EvAns: EvAnsRankScore,
           AttackRank: AttackRank,
-          DefenseRank: 0,
+          DefenseRank: DefenseRank,
         });
         if (DEBUG) {
           console.log(`hashKey: ${hashKey}`);

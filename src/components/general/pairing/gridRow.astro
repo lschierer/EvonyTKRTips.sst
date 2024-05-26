@@ -96,6 +96,7 @@ pEvAnsRank =
       beast: InvestmentLevel.beast,
     })
   )?.EvAns ?? -6;
+  
 pAttackRanking =
   pGeneral.computedBuffs.get(
     Astro.locals.InvestmentOptions2Key({
@@ -153,6 +154,7 @@ sEvAnsRank =
       beast: InvestmentLevel.beast,
     })
   )?.EvAns ?? -6;
+
 sAttackRanking =
   sGeneral.computedBuffs.get(
     Astro.locals.InvestmentOptions2Key({
@@ -179,7 +181,7 @@ sDefenseRanking =
       dragon: InvestmentLevel.dragon,
       beast: InvestmentLevel.beast,
     })
-  )?.AttackRank ?? -6;
+  )?.DefenseRank ?? -6;
 
 pair.EvAnsRanking = pEvAnsRank + sEvAnsRank;
 if (DEBUG) {
