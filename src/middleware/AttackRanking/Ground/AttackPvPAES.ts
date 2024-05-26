@@ -4,7 +4,9 @@ import {
   type BuffParamsType, AscendingLevels
 } from "@schemas/index";
 import { GroundPvPBuff } from "./PvPBuff";
-import { DEBUG_AES, DEBUG } from "../EvAnsScoreComputer";
+
+const DEBUG_AES = false;
+const DEBUG = false;
 
 export const GroundAttackPvPAES = z
   .function()
@@ -20,10 +22,11 @@ export const GroundAttackPvPAES = z
         console.log(`${eg.general.name} is not ascended`);
         return -11;
       }
+      
       const ascending_score = eg.general.ascending.reduce((accumulator, ab, index) => {
         if (DEBUG_AES) {
           console.log('');
-          console.log(`${gc.name}: Ascending ${index}`);
+          console.log(`${gc.name}: Ascending ${index} ${ab.level}`);
           console.log(`accumulator currently ${accumulator}`);
         }
         if (!eg.general.stars?.localeCompare(AscendingLevels.enum[0])) {

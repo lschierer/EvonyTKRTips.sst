@@ -1,5 +1,6 @@
 import { z } from "astro:content";
 import {
+  AscendingLevels,
   Display,
   generalUseCase,
   generalSpecialists,
@@ -14,9 +15,9 @@ import {
 } from "@schemas/index";
 
 import { GroundPvPAttributeMultipliers } from "@lib/EvAnsAttributeRanking";
-import { GroundAttackPvPBSS } from "./Ground/AttackPvPBSS";
-import { GroundAttackPvPAES } from "./Ground/AttackPvPAES";
-import { GroundAttackPvP34SS } from "./Ground/AttackPvP34SS";
+import { GroundAttackPvPBSS } from "./Ground/PvPBSS";
+import { GroundAttackPvPAES } from "./Ground/PvPAES";
+import { GroundAttackPvP34SS } from "./Ground/PvP34SS";
 
 /*******************
  * this is derived by reverse engineering the formula from
@@ -27,37 +28,56 @@ import { GroundAttackPvP34SS } from "./Ground/AttackPvP34SS";
  */
 
 export const DEBUG = false;
-export const DEBUG_GBUFF = false;
+
 const DEBUG_BAS = false;
-export const DEBUG_BSS = false;
-export const DEBUG_AES = false;
-export const DEBUG_34SS = false;
 
 
 
-const EvAnsBasicGround = z
+const BasicGround = z
   .function()
   .args(ExtendedGeneral)
   .returns(z.number())
   .implement((eg: ExtendedGeneralType) => {
     const gc = eg.general;
 
+    let AES_adjustment = 0;
+    switch(eg.general.stars) {
+      case AscendingLevels.enum[0]: 
+        break;
+      case AscendingLevels.enum[6]:
+        AES_adjustment = 10;
+        break;
+      case AscendingLevels.enum[7]:
+        AES_adjustment = 20;
+        break;
+      case AscendingLevels.enum[8]:
+        AES_adjustment = 30;
+        break;
+      case AscendingLevels.enum[9]:
+        AES_adjustment = 40;
+        break;
+      case AscendingLevels.enum[10]:
+        AES_adjustment = 50;
+        break;
+      default:
+        console.log(`this should not happen!!!`)
+    }
     const BasicAttack =
-      (500 + gc.attack + 45 * gc.attack_increment) < 900
-        ? (500+ gc.attack + 45 * gc.attack_increment) * 0.1
-        : 90 + (500 + gc.attack + 45 * gc.attack_increment - 900) * 0.2;
+      (500 +AES_adjustment + gc.attack + 45 * gc.attack_increment) < 900
+        ? (500 +AES_adjustment + gc.attack + 45 * gc.attack_increment) * 0.1
+        : 90 + (500 +AES_adjustment + gc.attack + 45 * gc.attack_increment - 900) * 0.2;
     const BasicDefense =
-      (500 + gc.defense + 45 * gc.defense_increment) < 900
-        ? (500 + gc.defense + 45 * gc.defense_increment) * 0.1
-        : 90 + (500 + gc.defense + 45 * gc.defense_increment - 900) * 0.2;
+      (500 +AES_adjustment + gc.defense + 45 * gc.defense_increment) < 900
+        ? (500 +AES_adjustment + gc.defense + 45 * gc.defense_increment) * 0.1
+        : 90 + (500 +AES_adjustment + gc.defense + 45 * gc.defense_increment - 900) * 0.2;
     const BasicLeaderShip =
-      (500 + gc.leadership + 45 * gc.leadership_increment) < 900
-        ? (500 + gc.leadership + 45 * gc.leadership_increment) * 0.1
-        : 90 + (500 + gc.leadership + 45 * gc.leadership_increment - 900) * 0.2;
+      (500 +AES_adjustment + gc.leadership + 45 * gc.leadership_increment) < 900
+        ? (500 +AES_adjustment + gc.leadership + 45 * gc.leadership_increment) * 0.1
+        : 90 + (500 +AES_adjustment + gc.leadership + 45 * gc.leadership_increment - 900) * 0.2;
     const BasicPolitics =
-      (500 + gc.politics + 45 * gc.politics_increment) < 900
-        ? (500 + gc.politics + 45 * gc.politics_increment) * 0.1
-        : 90 + (500 + gc.politics + 45 * gc.politics_increment - 900) * 0.2;
+      (500 +AES_adjustment + gc.politics + 45 * gc.politics_increment) < 900
+        ? (500 +AES_adjustment + gc.politics + 45 * gc.politics_increment) * 0.1
+        : 90 + (500 +AES_adjustment + gc.politics + 45 * gc.politics_increment - 900) * 0.2;
  
     const attackMultiplier = GroundPvPAttributeMultipliers[ActivationSituations.enum["Rally Owner PvP"]]?.Offensive.AllTroopAttack ?? 1;
     const defenseMultiplier = GroundPvPAttributeMultipliers[ActivationSituations.enum["Rally Owner PvP"]]?.Toughness.AllTroopDefense ?? 1;
@@ -79,16 +99,16 @@ const EvAnsBasicGround = z
     return Math.floor(BAS);
   });
 
-const EvAnsGroundPvPAttack = z
+const GroundPvPAttack = z
   .function()
   .args(ExtendedGeneral, Display, BuffParams)
   .returns(z.number())
   .implement((eg: ExtendedGeneralType, display: DisplayType, bp: BuffParamsType) => {
     if (DEBUG) {
-      console.log(`${eg.general.name}: EvAnsGroundPvPAttack starting`);
+      console.log(`${eg.general.name}: GroundPvPAttack starting`);
     }
 
-    const BAS = EvAnsBasicGround(eg);
+    const BAS = BasicGround(eg);
     const BSS = GroundAttackPvPBSS(eg, bp);
     const AES = GroundAttackPvPAES(eg, bp);
     const specialities = GroundAttackPvP34SS(eg, bp);
@@ -129,7 +149,7 @@ const useCaseSelector: Record<
     [generalSpecialists.enum.Archers]: () => {
       return -7;
     },
-    [generalSpecialists.enum.Ground]: EvAnsGroundPvPAttack,
+    [generalSpecialists.enum.Ground]: GroundPvPAttack,
     [generalSpecialists.enum.Mounted]: () => {
       return -7;
     },
@@ -286,7 +306,7 @@ const useCaseSelector: Record<
   },
 };
 
-export const EvAnsScoreComputer = z
+export const ScoreComputer = z
   .function()
   .args(generalUseCase, ExtendedGeneral, Display, BuffParams)
   .returns(z.number())
