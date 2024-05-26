@@ -6,19 +6,22 @@ import type { ComponentProps } from "astro/types";
 
 import { ulid } from "ulidx";
 
-import GridDisplay from "./gridDisplay.astro";
-type GridDisplayProps = ComponentProps<typeof GridDisplay>;
+import {delay} from 'nanodelay';
+
+import { DisplayGrid} from './display-grid';
+
 
 import {
   AscendingLevels,
-  GeneralArray,
-  type GeneralArrayType,
   GeneralElement,
   type GeneralElementType,
   ClassEnum,
   qualityColor,
   type BuffParamsType,
 type ClassEnumType,
+type ExtendedGeneralType,
+ExtendedGeneralStatus,
+type GeneralPairType,
 } from "@schemas/index";
 
 const DEBUG = false;
@@ -31,9 +34,7 @@ const {generalClass} = Astro.props;
 
 const table_name = `${Astro.url.pathname}-${ulid()}`
 
-let allGeneralsJson = "";
 let allGenerals = new Array<GeneralElementType>();
-let generalsPromise = false;
 
 //while no general can *have* both, I can evaluate generals assuming I will give them whichever that particular one needs.
 let MyInvestmentLevel: BuffParamsType = {
@@ -67,37 +68,83 @@ if (generalObjects !== null && generalObjects !== undefined) {
       console.error(`bad validation ${validation.error.message}`);
     }
   }
-  allGeneralsJson = JSON.stringify(allGenerals);
-  allGenerals.map((g) => {
+  await Promise.all(allGenerals.map(async (g) => {
     if (DEBUG) console.log(`adding ${g.general.name}`)
     Astro.locals.addEG2EGS(g.general);
+    const eg: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find((thisG: ExtendedGeneralType) => {
+      if(!thisG.general.name.localeCompare(g.general.name)) {
+        return true;
+      }
+      return false;
+    })
+    if(eg !== undefined) {
+      let generalIsProcessing = true;
+      do{
+        if(!ExtendedGeneralStatus.enum.complete.localeCompare(eg.status)){
+          generalIsProcessing = false;
+        } else {
+          await delay(10)
+        }
+      } while(generalIsProcessing)
+    }
+  }));
+  if(Array.isArray(Astro.locals.CachedPairs) && Astro.locals.CachedPairs.length > 0) {
+    Astro.locals.CachedPairs.forEach((pair: GeneralPairType)=> {
+      const egP = Astro.locals.ExtendedGenerals.find((thisg: ExtendedGeneralType) => {
+        if(!thisg.general.name.localeCompare(pair.primary)) {
+          return true;
+        }
+        return false;
+      })
+      const egS = Astro.locals.ExtendedGenerals.find((thisg: ExtendedGeneralType) => {
+        if(!thisg.general.name.localeCompare(pair.secondary)) {
+          return true;
+        }
+        return false;
+      })
+      const pKey = Astro.locals.InvestmentOptions2Key(MyInvestmentLevel);
+      const pEvAnsRanking = egP.computedBuffs.get(pKey).EvAns 
+      const pAttackRanking = egP.computedBuffs.get(pKey).AttackRank
+      const pDefenseRanking = egP.computedBuffs.get(pKey).DefenseRank
+
+      const sInvestment: BuffParamsType = {
+        special1: MyInvestmentLevel.special1,
+        special2: MyInvestmentLevel.special2,
+        special3: MyInvestmentLevel.special3,
+        special4: MyInvestmentLevel.special4,
+        special5: MyInvestmentLevel.special5,
+        stars: AscendingLevels.enum[0],
+        dragon: MyInvestmentLevel.dragon,
+        beast: MyInvestmentLevel.beast
+      }
+      const sKey = Astro.locals.InvestmentOptions2Key(sInvestment)
+      const sEvAnsRanking = egS.computedBuffs.get(sKey).EvAns 
+      const sAttackRanking = egS.computedBuffs.get(sKey).AttackRank
+      const sDefenseRanking = egS.computedBuffs.get(sKey).DefenseRank
+
+      pair.EvAnsRanking = (pEvAnsRanking + sEvAnsRanking)
+      pair.AttackRanking = (pAttackRanking + sAttackRanking)
+      pair.DefenseRanking = (pDefenseRanking + sDefenseRanking)
+
+    })
     
-  });
+  }
 }
 
-let aresult:
-  | { success: true; data: GeneralArrayType }
-  | { success: false; error: z.ZodError } = GeneralArray.safeParse(
-  JSON.parse(allGeneralsJson)
-);
-if (aresult.success ) {
-  if (DEBUG) console.log(`validation passed`);
-  if(! (aresult.data !== undefined && aresult.data !== null && aresult.data.length > 1)) {
-    console.error(`but I have no data`);
-  }
-} else {
-  console.error(aresult.error);
-}
+
 
 ---
 
 <div class="table-container">
-  <GridDisplay 
-    name={table_name} 
+  <DisplayGrid
+    tableName={table_name}
     InvestmentLevel={MyInvestmentLevel}
-  ></GridDisplay>
-</div>
+    DisplayPairs={Astro.locals.CachedPairs}
+    client:only="lit"
+  >
 
+  </DisplayGrid>
+  
 <style>
   .table-container {
     display: block;
