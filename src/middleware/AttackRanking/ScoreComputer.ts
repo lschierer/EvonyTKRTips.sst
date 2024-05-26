@@ -13,6 +13,7 @@ import {
   ActivationSituations,
 } from "@schemas/index";
 
+import { GroundPvPAttributeMultipliers } from "@lib/EvAnsAttributeRanking";
 import { GroundAttackPvPBSS } from "./Ground/AttackPvPBSS";
 import { GroundAttackPvPAES } from "./Ground/AttackPvPAES";
 import { GroundAttackPvP34SS } from "./Ground/AttackPvP34SS";
@@ -26,10 +27,15 @@ import { GroundAttackPvP34SS } from "./Ground/AttackPvP34SS";
  */
 
 export const DEBUG = false;
-export const DEBUG_BAS = false;
+export const DEBUG_GBUFF = false;
+const DEBUG_BAS = false;
+export const DEBUG_BSS = false;
+export const DEBUG_AES = false;
+export const DEBUG_34SS = false;
 
 
-const BasicGround = z
+
+const EvAnsBasicGround = z
   .function()
   .args(ExtendedGeneral)
   .returns(z.number())
@@ -53,10 +59,10 @@ const BasicGround = z
         ? (500 + gc.politics + 45 * gc.politics_increment) * 0.1
         : 90 + (500 + gc.politics + 45 * gc.politics_increment - 900) * 0.2;
  
-    const attackMultiplier = 1
-    const defenseMultiplier = 1
-    const HPMultipler = 1
-    const PoliticsMultipler = 1
+    const attackMultiplier = GroundPvPAttributeMultipliers[ActivationSituations.enum["Rally Owner PvP"]]?.Offensive.AllTroopAttack ?? 1;
+    const defenseMultiplier = GroundPvPAttributeMultipliers[ActivationSituations.enum["Rally Owner PvP"]]?.Toughness.AllTroopDefense ?? 1;
+    const HPMultipler = GroundPvPAttributeMultipliers[ActivationSituations.enum["Rally Owner PvP"]]?.Toughness.AllTroopHP ?? 1;
+    const PoliticsMultipler = GroundPvPAttributeMultipliers[ActivationSituations.enum["Rally Owner PvP"]]?.Preservation.Death2Wounded ?? 1;
 
     const BAS = BasicAttack * attackMultiplier +
       BasicDefense * defenseMultiplier +
@@ -73,7 +79,7 @@ const BasicGround = z
     return Math.floor(BAS);
   });
 
-const GroundPvPAttack = z
+const EvAnsGroundPvPAttack = z
   .function()
   .args(ExtendedGeneral, Display, BuffParams)
   .returns(z.number())
@@ -82,7 +88,7 @@ const GroundPvPAttack = z
       console.log(`${eg.general.name}: EvAnsGroundPvPAttack starting`);
     }
 
-    const BAS = BasicGround(eg);
+    const BAS = EvAnsBasicGround(eg);
     const BSS = GroundAttackPvPBSS(eg, bp);
     const AES = GroundAttackPvPAES(eg, bp);
     const specialities = GroundAttackPvP34SS(eg, bp);
@@ -123,7 +129,7 @@ const useCaseSelector: Record<
     [generalSpecialists.enum.Archers]: () => {
       return -7;
     },
-    [generalSpecialists.enum.Ground]: GroundPvPAttack,
+    [generalSpecialists.enum.Ground]: EvAnsGroundPvPAttack,
     [generalSpecialists.enum.Mounted]: () => {
       return -7;
     },
@@ -280,7 +286,7 @@ const useCaseSelector: Record<
   },
 };
 
-export const ScoreComputer = z
+export const EvAnsScoreComputer = z
   .function()
   .args(generalUseCase, ExtendedGeneral, Display, BuffParams)
   .returns(z.number())

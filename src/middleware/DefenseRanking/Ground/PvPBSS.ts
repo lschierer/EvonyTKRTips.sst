@@ -6,9 +6,10 @@ import {
   type BuffParamsType
 } from "@schemas/index";
 import { GroundPvPBuff } from "./PvPBuff";
-import { DEBUG_BSS } from "../ScoreComputer";
 
-export const GroundPvPBSS = z
+const DEBUG_BSS = false;
+
+export const GroundAttackPvPBSS = z
   .function()
   .args(ExtendedGeneral, BuffParams)
   .returns(z.number())

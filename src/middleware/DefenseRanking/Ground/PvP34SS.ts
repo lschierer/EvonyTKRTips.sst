@@ -8,9 +8,9 @@ import {
   qualityColor
 } from "@schemas/index";
 import { GroundPvPBuff } from "./PvPBuff";
-import { DEBUG_34SS } from "../ScoreComputer";
+import { DEBUG_34SS } from "../EvAnsScoreComputer";
 
-export const GroundPvP34SS = z
+export const GroundAttackPvP34SS = z
   .function()
   .args(ExtendedGeneral, BuffParams)
   .returns(z.number())
