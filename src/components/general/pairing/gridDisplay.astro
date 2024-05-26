@@ -15,8 +15,6 @@ import "@spectrum-css/ui-icons/dist/medium/Arrow100.svg";
 
 import { delay } from "nanodelay";
 
-import  {AgGrid} from './ag-grid'
-
 import {
   type BuffParamsType,
   GeneralPair,
@@ -579,11 +577,7 @@ let pairArray = [...pairs].sort(sortPairFunction);
 ---
 
 <div class="spectrum spectrum--medium">
-  <AgGrid
-    tableName={name}
-    InvestmentLevel={InvestmentLevel}
-    DisplayPairs={pairArray}
-    client:only="lit"></AgGrid>
+  
 
   <div
     id={name}
