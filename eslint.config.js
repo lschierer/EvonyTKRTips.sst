@@ -15,6 +15,7 @@ export default tseslint.config(
       "dist/**/*.mjs",
       "eslint.config.js",
       "node_modules/**/*.js",
+      ".nx/**/*.js",
       "src/env.d.ts",
       "src/sst-env.d.ts",
       "src/**/*.js",
@@ -27,6 +28,7 @@ export default tseslint.config(
       "src/**/*.js",
       "sst.config.ts",
       ".sst/**/*.js",
+      ".sst/**/*.mjs",
       ".sst/**/*.ts"
     ],
   },
