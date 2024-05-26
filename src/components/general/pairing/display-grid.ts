@@ -13,7 +13,8 @@ import {
   type qualityColorType,
 } from "@schemas/index"
 
-import { type GridOptions, createGrid, GridApi } from "ag-grid-community"
+import { Grid } from "gridjs";
+import "gridjs/dist/theme/mermaid.css";
 
 const DEBUG = true
 
@@ -33,8 +34,8 @@ import {
 } from "@spectrum-web-components/base"
 
 
-@customElement('ag-grid')
-export class AgGrid extends SizedMixin(SpectrumElement, {
+@customElement('display-grid')
+export class DisplayGrid extends SizedMixin(SpectrumElement, {
   noDefaultSize: true
 }) {
 
@@ -47,15 +48,11 @@ export class AgGrid extends SizedMixin(SpectrumElement, {
   @property({type: Object})
   public DisplayPairs: GeneralPairType[] = new Array<GeneralPairType>()
 
-  @state()
-  private gridOptions: GridOptions<GeneralPairType> = {}
-
-  @state()
-  private gridElement:  HTMLElement | null | undefined = null
-
   private tableDivRef: Ref<HTMLElement> = createRef()
 
   private MutationObserver: MutationObserver
+
+  private grid: Grid | null = null; 
  
   handleMutation(): void {
     return
@@ -83,10 +80,32 @@ export class AgGrid extends SizedMixin(SpectrumElement, {
   protected firstUpdated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
     super.firstUpdated(_changedProperties)
     if(this.tableDivRef.value !== undefined) {
-      this.gridElement = this.tableDivRef.value;
-      if(this.gridElement !== undefined && this.gridElement !== null ) {
-        createGrid(this.gridElement, this.gridOptions)
-      }
+      this.grid = new Grid({
+        columns: [{
+          name: 'Primary',
+          id: 'primary',
+          sort: true,
+        },{
+          name: 'Secondary',
+          id: 'secondary',
+          sort: true,
+        },{
+          name: 'EvAns Ranking',
+          id: 'EvAnsRanking',
+          sort: true,
+        },{
+          name: 'Adjusted Attack Ranking',
+          id: 'AttackRanking',
+          sort: true,
+        },{
+          name: 'Adjusted Defense Ranking',
+          id: 'DefenseRanking',
+          sort: true,
+        },
+      ],
+      data: this.DisplayPairs,
+      })
+      this.requestUpdate();
     }
   }
   
@@ -101,19 +120,27 @@ export class AgGrid extends SizedMixin(SpectrumElement, {
   
   protected override render() {
     const mainDivClasses = {
-      ["ag-theme-quartz"]: true,
       ["spectrum"]: "",
       ["spectrum--medium"]: "",
     };
-
+    if(this.grid !== null && this.tableDivRef.value !== undefined) {
+      this.grid.render(this.tableDivRef.value)
+    } else {console.log(`cannot render grid`)}
     return html`
       <div
         id=${this.tableName}
         class=${classMap(mainDivClasses)}
         ${ref(this.tableDivRef)}
-      >
-        ${when((this.tableDivRef.value === undefined), () => html`Pending Table Load`, () => nothing) }
-      </div>
+      ></div>
+      <ol>
+        ${this.DisplayPairs.map((pair) => html`
+        <li><dl>
+          <dt><span class="spectrum-Body spectrum-Body--sizeM"><strong>Primary:</strong>${pair.primary}</span></dt>
+          <dd><span class="spectrum-Body spectrum-Body--sizeM"><strong>Secondary:</strong>${pair.secondary}</span></dd>
+        </dl></li>
+        ` 
+        )}
+      </ol>
     `
   }
 

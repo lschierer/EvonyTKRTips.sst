@@ -342,6 +342,19 @@ export const DisplayGeneralsMW = defineMiddleware(
             if (!primary.general.name.localeCompare(secondary.general.name)) {
               return;
             }
+            if(Array.isArray(locals.CachedPairs) && locals.CachedPairs.length > 0) {
+              let preset: GeneralPairType = locals.CachedPairs.find((pair: GeneralPairType) => {
+                if(!pair.primary.localeCompare(primary.general.name)) {
+                  if(!pair.secondary.localeCompare(secondary.general.name)) {
+                    return true;
+                  }
+                }
+                return false;
+              })
+              if(preset !== undefined) {
+                return;
+              }
+            }
             if (locals.ConflictData.length > 0) {
               const relConflicts = locals.ConflictData.some((cDatum) => {
                 const c = Object.values(cDatum.conflicts).flat();
@@ -377,6 +390,7 @@ export const DisplayGeneralsMW = defineMiddleware(
                     secondary: pPair[1].general.name,
                     EvAnsRanking: 0,
                     AttackRanking: 0,
+                    DefenseRanking: 0,
                   }
                   locals.CachedPairs.push(newPair);
                 }
@@ -406,6 +420,7 @@ export const DisplayGeneralsMW = defineMiddleware(
                   secondary: secondary.general.name,
                   EvAnsRanking: 0,
                   AttackRanking: 0,
+                  DefenseRanking: 0,
                 }
                 locals.CachedPairs.push(newPair);
               

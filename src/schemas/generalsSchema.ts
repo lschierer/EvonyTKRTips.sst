@@ -158,6 +158,7 @@ export const GeneralPair = z.object({
   secondary: z.string(),
   EvAnsRanking: z.number(),
   AttackRanking: z.number(),
+  DefenseRanking: z.number(),
 });
 
 export type GeneralPairType = z.infer<typeof GeneralPair>;
