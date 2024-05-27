@@ -11,13 +11,12 @@ import {
   ExtendedGeneral,
   BuffParams,
   type BuffParamsType,
-  ActivationSituations,
 } from "@schemas/index";
 
-import { GroundPvPAttackAttributeMultipliers } from "@lib/EvAnsAttributeRanking";
-import { GroundAttackPvPBSS } from "./Ground/PvPBSS";
-import { GroundAttackPvPAES } from "./Ground/PvPAES";
-import { GroundAttackPvP34SS } from "./Ground/PvP34SS";
+import {GroundPvPDefense} from './Ground/PvPBase'
+import { ArchersPvPDefense } from "./Archers/PvPBase";
+import { MountedPvPDefense} from './Mounted/PvPBase';
+import { SiegePvPDefense } from "./Siege/PvPBase";
 
 /*******************
  * this is derived by reverse engineering the formula from
@@ -29,115 +28,6 @@ import { GroundAttackPvP34SS } from "./Ground/PvP34SS";
 
 export const DEBUG = false;
 
-const DEBUG_BAS = false;
-
-
-
-const BasicGround = z
-  .function()
-  .args(ExtendedGeneral)
-  .returns(z.number())
-  .implement((eg: ExtendedGeneralType) => {
-    const gc = eg.general;
-
-    let AES_adjustment = 0;
-    switch(eg.general.stars) {
-      case AscendingLevels.enum[0]: 
-        break;
-      case AscendingLevels.enum[6]:
-        AES_adjustment = 10;
-        break;
-      case AscendingLevels.enum[7]:
-        AES_adjustment = 20;
-        break;
-      case AscendingLevels.enum[8]:
-        AES_adjustment = 30;
-        break;
-      case AscendingLevels.enum[9]:
-        AES_adjustment = 40;
-        break;
-      case AscendingLevels.enum[10]:
-        AES_adjustment = 50;
-        break;
-      default:
-        console.log(`this should not happen!!!`)
-    }
-    const BasicAttack =
-      (500 +AES_adjustment + gc.attack + 45 * gc.attack_increment) < 900
-        ? (500 +AES_adjustment + gc.attack + 45 * gc.attack_increment) * 0.1
-        : 90 + (500 +AES_adjustment + gc.attack + 45 * gc.attack_increment - 900) * 0.2;
-    const BasicDefense =
-      (500 +AES_adjustment + gc.defense + 45 * gc.defense_increment) < 900
-        ? (500 +AES_adjustment + gc.defense + 45 * gc.defense_increment) * 0.1
-        : 90 + (500 +AES_adjustment + gc.defense + 45 * gc.defense_increment - 900) * 0.2;
-    const BasicLeaderShip =
-      (500 +AES_adjustment + gc.leadership + 45 * gc.leadership_increment) < 900
-        ? (500 +AES_adjustment + gc.leadership + 45 * gc.leadership_increment) * 0.1
-        : 90 + (500 +AES_adjustment + gc.leadership + 45 * gc.leadership_increment - 900) * 0.2;
-    const BasicPolitics =
-      (500 +AES_adjustment + gc.politics + 45 * gc.politics_increment) < 900
-        ? (500 +AES_adjustment + gc.politics + 45 * gc.politics_increment) * 0.1
-        : 90 + (500 +AES_adjustment + gc.politics + 45 * gc.politics_increment - 900) * 0.2;
- 
-    const attackMultiplier = GroundPvPAttackAttributeMultipliers?.Offensive.AllTroopAttack ?? 1;
-    const defenseMultiplier = GroundPvPAttackAttributeMultipliers?.Toughness.AllTroopDefense ?? 1;
-    const HPMultipler = GroundPvPAttackAttributeMultipliers?.Toughness.AllTroopHP ?? 1;
-    const PoliticsMultipler = GroundPvPAttackAttributeMultipliers?.Preservation.Death2Wounded ?? 1;
-
-    const BAS = BasicAttack * attackMultiplier +
-      BasicDefense * defenseMultiplier +
-      BasicLeaderShip * HPMultipler +
-      BasicPolitics * PoliticsMultipler;
-
-    if (DEBUG_BAS) {
-      console.log(`BasicAttack: ${BasicAttack} for ${eg.general.name}`);
-      console.log(`BasicDefense: ${BasicDefense} for ${eg.general.name}`);
-      console.log(`BasicLeaderShip: ${BasicLeaderShip} for ${eg.general.name}`);
-      console.log(`BasicPolitics: ${BasicPolitics} for ${eg.general.name}`);
-      console.log(`BAS: ${BAS} for: ${eg.general.name}`);
-    }
-    return Math.floor(BAS);
-  });
-
-const GroundPvPAttack = z
-  .function()
-  .args(ExtendedGeneral, Display, BuffParams)
-  .returns(z.number())
-  .implement((eg: ExtendedGeneralType, display: DisplayType, bp: BuffParamsType) => {
-    if (DEBUG) {
-      console.log(`${eg.general.name}: GroundPvPAttack starting`);
-    }
-
-    const BAS = BasicGround(eg);
-    const BSS = GroundAttackPvPBSS(eg, bp);
-    const AES = GroundAttackPvPAES(eg, bp);
-    const specialities = GroundAttackPvP34SS(eg, bp);
-
-    let TLGS = BSS + specialities ;
-    if(DEBUG) {
-      console.log(`TLGS with BSS and specialities`)
-      console.log(`${eg.general.name}: ${TLGS}`)
-    }
-    if(display.localeCompare(Display.enum.assistant)) {
-      TLGS += BAS 
-      if(DEBUG) {
-        console.log(`TLGS with BAS`)
-        console.log(`${eg.general.name}: ${TLGS}`)
-      }
-      TLGS += AES;
-      if(DEBUG) {
-        console.log(`TLGS with AES`)
-        console.log(`${eg.general.name}: ${TLGS}`)
-      }
-    }
-    if (DEBUG) {
-      console.log(
-        `for ${eg.general.name} BAS: ${BAS} BSS: ${BSS} AES: ${AES} specialities: ${specialities} TLGS: ${TLGS}`
-      );
-    }
-    return TLGS ?? -11;
-  });
-
 const useCaseSelector: Record<
   generalUseCaseType,
   Record<
@@ -146,16 +36,10 @@ const useCaseSelector: Record<
   >
 > = {
   [generalUseCase.enum.Attack]: {
-    [generalSpecialists.enum.Archers]: () => {
-      return -7;
-    },
-    [generalSpecialists.enum.Ground]: GroundPvPAttack,
-    [generalSpecialists.enum.Mounted]: () => {
-      return -7;
-    },
-    [generalSpecialists.enum.Siege]: () => {
-      return -7;
-    },
+    [generalSpecialists.enum.Archers]: ArchersPvPDefense,
+    [generalSpecialists.enum.Ground]: GroundPvPDefense,
+    [generalSpecialists.enum.Mounted]: MountedPvPDefense,
+    [generalSpecialists.enum.Siege]: SiegePvPDefense,
     [generalSpecialists.enum.Wall]: () => {
       return -1;
     },
