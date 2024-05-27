@@ -10,12 +10,13 @@ import {
   ExtendedGeneral,
   BuffParams,
   type BuffParamsType,
-  ActivationSituations,
-  AscendingLevels,
+
 } from "@schemas/index";
 
 import {EvAnsGroundPvPAttack} from './Ground/AttackPvPBase';
 import {EvAnsArchersPvPAttack} from './Archers/AttackPvPBase';
+import {EvAnsMountedPvPAttack} from './Mounted/AttackPvPBase';
+import {EvAnsSiegePvPAttack} from './Siege/AttackPvPBase';
 
 /*******************
  * this is derived by reverse engineering the formula from
@@ -43,12 +44,8 @@ const useCaseSelector: Record<
   [generalUseCase.enum.Attack]: {
     [generalSpecialists.enum.Archers]: EvAnsArchersPvPAttack,
     [generalSpecialists.enum.Ground]: EvAnsGroundPvPAttack,
-    [generalSpecialists.enum.Mounted]: () => {
-      return -7;
-    },
-    [generalSpecialists.enum.Siege]: () => {
-      return -7;
-    },
+    [generalSpecialists.enum.Mounted]: EvAnsMountedPvPAttack,
+    [generalSpecialists.enum.Siege]: EvAnsSiegePvPAttack,
     [generalSpecialists.enum.Wall]: () => {
       return -1;
     },
