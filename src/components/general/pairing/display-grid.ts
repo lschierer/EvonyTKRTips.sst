@@ -17,8 +17,8 @@ import {
   createGrid,
 } from 'ag-grid-community';
 import { ClientSideRowModelModule } from "@ag-grid-community/client-side-row-model";
-import "@ag-grid-community/styles/ag-grid.css";
-import "@ag-grid-community/styles/ag-theme-quartz.css";
+import BaseAGCSSImport from  "@ag-grid-community/styles/ag-grid.css?inline";
+import QuartzImport from "@ag-grid-community/styles/ag-theme-quartz.css?inline";
 
 ModuleRegistry.registerModules([ClientSideRowModelModule]);
 
@@ -139,18 +139,21 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
   }
 
   public static override get styles(): CSSResultArray {
+    const AGBaseCSS = unsafeCSS(BaseAGCSSImport)
+    const QuartzCSS = unsafeCSS(QuartzImport)
     const localStyle = css``;
     if(super.styles !== undefined && Array.isArray(super.styles)) {
-      return [...super.styles,localStyle]
+      return [...super.styles, AGBaseCSS, QuartzCSS,localStyle]
     } else {
-      return [localStyle]
+      return [AGBaseCSS, QuartzCSS,localStyle]
     }
   }
   
   renderGrid(gridDiv?: Element) {
     if(gridDiv !== null && gridDiv !== undefined) {
-      this.grid = createGrid(this.querySelector(`#agdiv`)!,
-      this.gridOptions,)
+      console.log(`gridDiv is ${gridDiv.localName}`)
+      this.grid = createGrid((gridDiv as HTMLElement),this.gridOptions,)
+      
     }
   }
 
@@ -159,6 +162,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
     return html`
       <div
         id='agdiv'
+        class="ag-theme-quartz" style="height: 500px"
         ${ref(this.renderGrid)}
       ></div>
       <ol>
