@@ -287,6 +287,9 @@ importers:
       yq:
         specifier: ^0.0.1
         version: 0.0.1
+      zod:
+        specifier: ^3.23.8
+        version: 3.23.8
     devDependencies:
       '@astrojs/check':
         specifier: ^0.7.0
