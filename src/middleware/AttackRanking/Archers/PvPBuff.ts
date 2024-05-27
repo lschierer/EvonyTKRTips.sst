@@ -8,7 +8,7 @@ import {
   type BuffParamsType
 } from "@schemas/index";
 
-import { GroundPvPAttackAttributeMultipliers } from "@lib/EvAnsAttributeRanking";
+import { RangedPvPAttackAttributeMultipliers } from "@lib/EvAnsAttributeRanking";
 
 const DEBUG_GBUFF = false
 const DEBUG = false
@@ -77,7 +77,7 @@ export const PvPBuff = z
         } else {
           if (!Attribute.enum.March_Size_Capacity.localeCompare(tb.attribute)) {
             if (!UnitSchema.enum.percentage.localeCompare(tb.value.unit)) {
-              const multiplier = GroundPvPAttackAttributeMultipliers?.Offensive.MarchSizeIncrease ?? 0;
+              const multiplier = RangedPvPAttackAttributeMultipliers?.Offensive.MarchSizeIncrease ?? 0;
               const additional = tb.value.number * multiplier;
               if (DEBUG_GBUFF) {
                 console.log(`multiplier is ${multiplier}`)
@@ -140,7 +140,7 @@ export const PvPBuff = z
             } else {
               //I think all other conditions that matter have been checked
               if (!UnitSchema.enum.percentage.localeCompare(tb.value.unit)) {
-                const multiplier = GroundPvPAttackAttributeMultipliers?.Offensive.AllTroopAttack ?? 0;
+                const multiplier = RangedPvPAttackAttributeMultipliers?.Offensive.AllTroopAttack ?? 0;
                 const additional = tb.value.number * multiplier;
                 if (DEBUG_GBUFF) {
                   console.log(
@@ -159,7 +159,7 @@ export const PvPBuff = z
               tb.condition.includes(Condition.enum.Reduces_Enemy_with_a_Dragon)
             )) {
               if (!UnitSchema.enum.percentage.localeCompare(tb.value.unit)) {
-                const multiplier = GroundPvPAttackAttributeMultipliers?.AttackingToughnessDebuff.ReduceEnemyAllDefense ?? 0;
+                const multiplier = RangedPvPAttackAttributeMultipliers?.AttackingToughnessDebuff.ReduceEnemyAllDefense ?? 0;
                 const additional = tb.value.number * multiplier;
                 if (DEBUG_GBUFF) {
                   console.log(
@@ -190,7 +190,7 @@ export const PvPBuff = z
               tb.condition.includes(Condition.enum.Reduces_Enemy_with_a_Dragon)
             )) {
               if (!UnitSchema.enum.percentage.localeCompare(tb.value.unit)) {
-                const multiplier = GroundPvPAttackAttributeMultipliers?.AttackingToughnessDebuff.ReduceEnemyAllHP ?? 0;
+                const multiplier = RangedPvPAttackAttributeMultipliers?.AttackingToughnessDebuff.ReduceEnemyAllHP ?? 0;
                 const additional = tb.value.number * multiplier;
                 if (DEBUG_GBUFF) {
                   console.log(
@@ -254,13 +254,13 @@ export const PvPBuff = z
               if (!UnitSchema.enum.percentage.localeCompare(tb.value.unit)) {
                 let multiplier = 0;
                 if (!ClassEnum.enum.Ground.localeCompare(tb.class)) {
-                  multiplier = GroundPvPAttackAttributeMultipliers?.Offensive.GroundAttack ?? 0;
+                  multiplier = RangedPvPAttackAttributeMultipliers?.Offensive.GroundAttack ?? 0;
                 } else if (!ClassEnum.enum.Archers.localeCompare(tb.class)) {
-                  multiplier = GroundPvPAttackAttributeMultipliers?.Offensive.RangedAttack ?? 0;
+                  multiplier = RangedPvPAttackAttributeMultipliers?.Offensive.RangedAttack ?? 0;
                 } else if (!ClassEnum.enum.Mounted.localeCompare(tb.class)) {
-                  multiplier = GroundPvPAttackAttributeMultipliers?.Offensive.MountedAttack ?? 0;
+                  multiplier = RangedPvPAttackAttributeMultipliers?.Offensive.MountedAttack ?? 0;
                 } else if (!ClassEnum.enum.Siege.localeCompare(tb.class)) {
-                  multiplier = GroundPvPAttackAttributeMultipliers?.Offensive.SiegeAttack ?? 0;
+                  multiplier = RangedPvPAttackAttributeMultipliers?.Offensive.SiegeAttack ?? 0;
                 }
                 const additional = tb.value.number * multiplier;
                 if (DEBUG_GBUFF) {
@@ -283,13 +283,13 @@ export const PvPBuff = z
               if (!UnitSchema.enum.percentage.localeCompare(tb.value.unit)) {
                 let multiplier = 0;
                 if (!ClassEnum.enum.Ground.localeCompare(tb.class)) {
-                  multiplier = GroundPvPAttackAttributeMultipliers?.AttackingToughnessDebuff.ReduceEnemyGroundDefense ?? 0;
+                  multiplier = RangedPvPAttackAttributeMultipliers?.AttackingToughnessDebuff.ReduceEnemyGroundDefense ?? 0;
                 } else if (!ClassEnum.enum.Archers.localeCompare(tb.class)) {
-                  multiplier = GroundPvPAttackAttributeMultipliers?.AttackingToughnessDebuff.ReduceEnemyRangedDefense ?? 0;
+                  multiplier = RangedPvPAttackAttributeMultipliers?.AttackingToughnessDebuff.ReduceEnemyRangedDefense ?? 0;
                 } else if (!ClassEnum.enum.Mounted.localeCompare(tb.class)) {
-                  multiplier = GroundPvPAttackAttributeMultipliers?.AttackingToughnessDebuff.ReduceEnemyMountedDefense ?? 0;
+                  multiplier = RangedPvPAttackAttributeMultipliers?.AttackingToughnessDebuff.ReduceEnemyMountedDefense ?? 0;
                 } else if (!ClassEnum.enum.Siege.localeCompare(tb.class)) {
-                  multiplier = GroundPvPAttackAttributeMultipliers?.AttackingToughnessDebuff.ReduceEnemySiegeDefense ?? 0;
+                  multiplier = RangedPvPAttackAttributeMultipliers?.AttackingToughnessDebuff.ReduceEnemySiegeDefense ?? 0;
                 }
                 const additional = tb.value.number * multiplier;
                 if (DEBUG_GBUFF) {
@@ -335,13 +335,13 @@ export const PvPBuff = z
               if (!UnitSchema.enum.percentage.localeCompare(tb.value.unit)) {
                 let multiplier = 0;
                 if (!ClassEnum.enum.Ground.localeCompare(tb.class)) {
-                  multiplier = GroundPvPAttackAttributeMultipliers?.AttackingToughnessDebuff.ReduceEnemyGroundHP ?? 0;
+                  multiplier = RangedPvPAttackAttributeMultipliers?.AttackingToughnessDebuff.ReduceEnemyGroundHP ?? 0;
                 } else if (!ClassEnum.enum.Archers.localeCompare(tb.class)) {
-                  multiplier = GroundPvPAttackAttributeMultipliers?.AttackingToughnessDebuff.ReduceEnemyRangedHP ?? 0;
+                  multiplier = RangedPvPAttackAttributeMultipliers?.AttackingToughnessDebuff.ReduceEnemyRangedHP ?? 0;
                 } else if (!ClassEnum.enum.Mounted.localeCompare(tb.class)) {
-                  multiplier = GroundPvPAttackAttributeMultipliers?.AttackingToughnessDebuff.ReduceEnemyMountedHP ?? 0;
+                  multiplier = RangedPvPAttackAttributeMultipliers?.AttackingToughnessDebuff.ReduceEnemyMountedHP ?? 0;
                 } else if (!ClassEnum.enum.Siege.localeCompare(tb.class)) {
-                  multiplier = GroundPvPAttackAttributeMultipliers?.AttackingToughnessDebuff.ReduceEnemySiegeHP ?? 0;
+                  multiplier = RangedPvPAttackAttributeMultipliers?.AttackingToughnessDebuff.ReduceEnemySiegeHP ?? 0;
                 }
                 const additional = tb.value.number * multiplier;
                 if (DEBUG_GBUFF) {
@@ -378,14 +378,14 @@ export const PvPBuff = z
             let multiplier = 0;
             if (!ClassEnum.enum.Archers.localeCompare(tb.class)) {
               if (!UnitSchema.enum.percentage.localeCompare(tb.value.unit)) {
-                multiplier = GroundPvPAttackAttributeMultipliers?.Offensive.RangedRangeBonus ?? 0;
+                multiplier = RangedPvPAttackAttributeMultipliers?.Offensive.RangedRangeBonus ?? 0;
 
               }
             } else if (!ClassEnum.enum.Siege.localeCompare(tb.class)) {
               if (!UnitSchema.enum.percentage.localeCompare(tb.value.unit)) {
-                multiplier = GroundPvPAttackAttributeMultipliers?.Offensive.SiegeRangeBonusPercent ?? 0;
+                multiplier = RangedPvPAttackAttributeMultipliers?.Offensive.SiegeRangeBonusPercent ?? 0;
               } else {
-                multiplier = GroundPvPAttackAttributeMultipliers?.Offensive.SiegeRangeBonusFlat ?? 0;
+                multiplier = RangedPvPAttackAttributeMultipliers?.Offensive.SiegeRangeBonusFlat ?? 0;
               }
             }
             const additional = tb.value.number * multiplier

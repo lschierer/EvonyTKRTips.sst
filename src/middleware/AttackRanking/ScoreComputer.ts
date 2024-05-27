@@ -13,6 +13,9 @@ import {
 } from "@schemas/index";
 
 import {GroundPvPAttack} from './Ground/AttackPvPBase'
+import {ArchersPvPAttack} from './Archers/AttackPvPBase'
+import { MountedPvPAttack } from "./Mounted/AttackPvPBase";
+import { SiegePvPAttack } from "./Siege/AttackPvPBase";
 
 /*******************
  * this is derived by reverse engineering the formula from
@@ -32,16 +35,10 @@ const useCaseSelector: Record<
   >
 > = {
   [generalUseCase.enum.Attack]: {
-    [generalSpecialists.enum.Archers]: () => {
-      return -7;
-    },
+    [generalSpecialists.enum.Archers]: ArchersPvPAttack,
     [generalSpecialists.enum.Ground]: GroundPvPAttack,
-    [generalSpecialists.enum.Mounted]: () => {
-      return -7;
-    },
-    [generalSpecialists.enum.Siege]: () => {
-      return -7;
-    },
+    [generalSpecialists.enum.Mounted]: MountedPvPAttack,
+    [generalSpecialists.enum.Siege]: SiegePvPAttack,
     [generalSpecialists.enum.Wall]: () => {
       return -1;
     },
