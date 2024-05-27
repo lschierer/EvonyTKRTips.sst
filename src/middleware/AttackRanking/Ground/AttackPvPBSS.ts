@@ -9,7 +9,7 @@ import { GroundPvPBuff } from "./PvPBuff";
 
 const DEBUG_BSS = false;
 
-export const GroundAttackPvPBSS = z
+export const AttackPvPBSS = z
   .function()
   .args(ExtendedGeneral, BuffParams)
   .returns(z.number())

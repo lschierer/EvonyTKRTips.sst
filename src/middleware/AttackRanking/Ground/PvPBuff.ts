@@ -383,9 +383,9 @@ export const GroundPvPBuff = z
               }
             } else if (!ClassEnum.enum.Siege.localeCompare(tb.class)) {
               if (!UnitSchema.enum.percentage.localeCompare(tb.value.unit)) {
-                multiplier = GroundPvPAttributeMultipliers['Rally Owner PvP']?.Offensive.SiegeRangeBonusPercent ?? 0;
+                multiplier = GroundPvPAttackAttributeMultipliers?.Offensive.SiegeRangeBonusPercent ?? 0;
               } else {
-                multiplier = GroundPvPAttributeMultipliers['Rally Owner PvP']?.Offensive.SiegeRangeBonusFlat ?? 0;
+                multiplier = GroundPvPAttackAttributeMultipliers?.Offensive.SiegeRangeBonusFlat ?? 0;
               }
             }
             const additional = tb.value.number * multiplier
