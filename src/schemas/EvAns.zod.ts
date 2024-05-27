@@ -26,9 +26,7 @@ export const ScoreWeightings = z.record(
 
 export type ScoreWeightings = z.output<typeof ScoreWeightings>;
 
-export const PvPAttributeMultipliers = z.record(
-  ActivationSituations,
-  z.object({
+export const PvPAttributeMultipliers = z.object({
     Offensive: z.object({
       AllTroopAttack: z.number(),
       GroundAttack: z.number(),
@@ -58,6 +56,7 @@ export const PvPAttributeMultipliers = z.record(
       Death2Wounded: z.number(),
       Death2WoundedWhenAttacking: z.number(),
       Death2Souls: z.number(),
+      Death2SoulsinMainCity: z.number(),
     }),
     AttackingAttackDebuff: z.object({
       ReduceAllAttack: z.number(),
@@ -102,8 +101,7 @@ export const PvPAttributeMultipliers = z.record(
       InCityWounded2Death: z.number(),
       Wounded2DeathWhenAttacking: z.number(),
     }),
-  })
-);
+  });
 
 export type PvPAttributeMultipliers = z.output<
   typeof PvPAttributeMultipliers

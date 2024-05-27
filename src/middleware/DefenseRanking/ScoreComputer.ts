@@ -14,7 +14,7 @@ import {
   ActivationSituations,
 } from "@schemas/index";
 
-import { GroundPvPAttributeMultipliers } from "@lib/EvAnsAttributeRanking";
+import { GroundPvPAttackAttributeMultipliers } from "@lib/EvAnsAttributeRanking";
 import { GroundAttackPvPBSS } from "./Ground/PvPBSS";
 import { GroundAttackPvPAES } from "./Ground/PvPAES";
 import { GroundAttackPvP34SS } from "./Ground/PvP34SS";
@@ -79,10 +79,10 @@ const BasicGround = z
         ? (500 +AES_adjustment + gc.politics + 45 * gc.politics_increment) * 0.1
         : 90 + (500 +AES_adjustment + gc.politics + 45 * gc.politics_increment - 900) * 0.2;
  
-    const attackMultiplier = GroundPvPAttributeMultipliers[ActivationSituations.enum["Rally Owner PvP"]]?.Offensive.AllTroopAttack ?? 1;
-    const defenseMultiplier = GroundPvPAttributeMultipliers[ActivationSituations.enum["Rally Owner PvP"]]?.Toughness.AllTroopDefense ?? 1;
-    const HPMultipler = GroundPvPAttributeMultipliers[ActivationSituations.enum["Rally Owner PvP"]]?.Toughness.AllTroopHP ?? 1;
-    const PoliticsMultipler = GroundPvPAttributeMultipliers[ActivationSituations.enum["Rally Owner PvP"]]?.Preservation.Death2Wounded ?? 1;
+    const attackMultiplier = GroundPvPAttackAttributeMultipliers?.Offensive.AllTroopAttack ?? 1;
+    const defenseMultiplier = GroundPvPAttackAttributeMultipliers?.Toughness.AllTroopDefense ?? 1;
+    const HPMultipler = GroundPvPAttackAttributeMultipliers?.Toughness.AllTroopHP ?? 1;
+    const PoliticsMultipler = GroundPvPAttackAttributeMultipliers?.Preservation.Death2Wounded ?? 1;
 
     const BAS = BasicAttack * attackMultiplier +
       BasicDefense * defenseMultiplier +

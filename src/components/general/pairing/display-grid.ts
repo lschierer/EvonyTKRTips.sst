@@ -33,6 +33,12 @@ import {
   type PropertyValueMap,
 } from "@spectrum-web-components/base"
 
+import '@spectrum-css/tokens/dist/index.css';
+import '@spectrum-css/typography/dist/index.css'
+import '@spectrum-css/icon/dist/index.css';
+import '@spectrum-css/table/dist/index.css'
+
+
 
 @customElement('display-grid')
 export class DisplayGrid extends SizedMixin(SpectrumElement, {
@@ -84,26 +90,36 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
         columns: [{
           name: 'Primary',
           id: 'primary',
-          sort: true,
         },{
           name: 'Secondary',
           id: 'secondary',
-          sort: true,
         },{
           name: 'EvAns Ranking',
           id: 'EvAnsRanking',
-          sort: true,
+        
         },{
           name: 'Adjusted Attack Ranking',
           id: 'AttackRanking',
-          sort: true,
+        
         },{
           name: 'Adjusted Defense Ranking',
           id: 'DefenseRanking',
-          sort: true,
+        
         },
       ],
+      sort: true,
       data: this.DisplayPairs,
+      className: {
+        container: 'spectrum spectrum--medium spectrum-Table-scroller',
+        table: 'spectrum-Table spectrum-Table--sizeM spectrum-Table--emphasized ',
+        thead: 'spectrum-Table-head',
+        th: 'spectrum-Table-headCell',
+        tbody: 'spectrum-Table-body',
+        td: 'spectrum-Table-cell',
+        tr: 'spectrum-Table-row',
+        sort: 'spectrum-Icon spectrum-UIIcon-ArrowDown100 spectrum-Table-sortedIcon',
+
+      }
       })
       this.requestUpdate();
     }
@@ -119,17 +135,13 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
   }
   
   protected override render() {
-    const mainDivClasses = {
-      ["spectrum"]: "",
-      ["spectrum--medium"]: "",
-    };
+    
     if(this.grid !== null && this.tableDivRef.value !== undefined) {
       this.grid.render(this.tableDivRef.value)
     } else {console.log(`cannot render grid`)}
     return html`
       <div
         id=${this.tableName}
-        class=${classMap(mainDivClasses)}
         ${ref(this.tableDivRef)}
       ></div>
       <ol>
