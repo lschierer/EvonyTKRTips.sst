@@ -1,20 +1,26 @@
-import { z } from "astro:content"
 
 import { delay } from "nanodelay"
 
 import {
   AscendingLevels,
+  type GeneralPairType as GeneralPairSchemaType,
   type BuffParamsType,
-  GeneralPair,
-  type GeneralPairType,
-  type ExtendedGeneralType,
-  ExtendedGeneralStatus,
   qualityColor,
-  type qualityColorType,
 } from "@schemas/index"
 
-import { Grid } from "gridjs";
-import "gridjs/dist/theme/mermaid.css";
+import { 
+  type ColDef,
+  type ColGroupDef,
+  GridApi,
+  type GridOptions,
+  ModuleRegistry,
+  createGrid,
+} from 'ag-grid-community';
+import { ClientSideRowModelModule } from "@ag-grid-community/client-side-row-model";
+import "@ag-grid-community/styles/ag-grid.css";
+import "@ag-grid-community/styles/ag-theme-quartz.css";
+
+ModuleRegistry.registerModules([ClientSideRowModelModule]);
 
 const DEBUG = true
 
@@ -30,6 +36,7 @@ import {
   type CSSResultArray,
   html,
   css,
+  unsafeCSS,
   type PropertyValueMap,
 } from "@spectrum-web-components/base"
 
@@ -38,7 +45,20 @@ import '@spectrum-css/typography/dist/index.css'
 import '@spectrum-css/icon/dist/index.css';
 import '@spectrum-css/table/dist/index.css'
 
+interface GeneralPairType {
+  primary: string;
+  secondary: string;
+  EvAnsRanking: number;
+  AttackRanking: number;
+  DefenseRanking: number;
+}
 
+interface IRow {
+  make: string;
+  model: string;
+  price: number;
+  electric: boolean;
+}
 
 @customElement('display-grid')
 export class DisplayGrid extends SizedMixin(SpectrumElement, {
@@ -52,14 +72,15 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
   public InvestmentLevel: BuffParamsType
 
   @property({type: Object})
-  public DisplayPairs: GeneralPairType[] = new Array<GeneralPairType>()
+  public DisplayPairs: GeneralPairSchemaType[] = new Array<GeneralPairSchemaType>()
 
-  private tableDivRef: Ref<HTMLElement> = createRef()
+  //private tableDivRef: Ref<HTMLElement> = createRef()
 
   private MutationObserver: MutationObserver
 
-  private grid: Grid | null = null; 
- 
+  private gridOptions: GridOptions<IRow> = {};
+
+  private grid: GridApi<IRow> | null = null;
   handleMutation(): void {
     return
   }
@@ -67,8 +88,32 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
   constructor() {
     super()
 
+
     this.MutationObserver = new MutationObserver(() => {
       this.handleMutation()
+
+      this.gridOptions = {
+        // Data to be displayed
+        rowData: [
+          { make: "Tesla", model: "Model Y", price: 64950, electric: true },
+          { make: "Ford", model: "F-Series", price: 33850, electric: false },
+          { make: "Toyota", model: "Corolla", price: 29600, electric: false },
+          { make: "Mercedes", model: "EQA", price: 48890, electric: true },
+          { make: "Fiat", model: "500", price: 15774, electric: false },
+          { make: "Nissan", model: "Juke", price: 20675, electric: false },
+        ],
+        // Columns to be displayed (Should match rowData properties)
+        columnDefs: [
+          { field: "make" },
+          { field: "model" },
+          { field: "price" },
+          { field: "electric" },
+        ],
+        defaultColDef: {
+          flex: 1,
+        },
+      };
+
     })
 
     this.InvestmentLevel = {
@@ -85,46 +130,14 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
 
   protected firstUpdated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
     super.firstUpdated(_changedProperties)
-    if(this.tableDivRef.value !== undefined) {
-      this.grid = new Grid({
-        columns: [{
-          name: 'Primary',
-          id: 'primary',
-        },{
-          name: 'Secondary',
-          id: 'secondary',
-        },{
-          name: 'EvAns Ranking',
-          id: 'EvAnsRanking',
-        
-        },{
-          name: 'Adjusted Attack Ranking',
-          id: 'AttackRanking',
-        
-        },{
-          name: 'Adjusted Defense Ranking',
-          id: 'DefenseRanking',
-        
-        },
-      ],
-      sort: true,
-      data: this.DisplayPairs,
-      className: {
-        container: 'spectrum spectrum--medium spectrum-Table-scroller',
-        table: 'spectrum-Table spectrum-Table--sizeM spectrum-Table--emphasized ',
-        thead: 'spectrum-Table-head',
-        th: 'spectrum-Table-headCell',
-        tbody: 'spectrum-Table-body',
-        td: 'spectrum-Table-cell',
-        tr: 'spectrum-Table-row',
-        sort: 'spectrum-Icon spectrum-UIIcon-ArrowDown100 spectrum-Table-sortedIcon',
-
-      }
-      })
-      this.requestUpdate();
-    }
+    
   }
   
+  protected willUpdate(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+    super.willUpdate(_changedProperties)
+    
+  }
+
   public static override get styles(): CSSResultArray {
     const localStyle = css``;
     if(super.styles !== undefined && Array.isArray(super.styles)) {
@@ -134,15 +147,19 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
     }
   }
   
+  renderGrid(gridDiv?: Element) {
+    if(gridDiv !== null && gridDiv !== undefined) {
+      this.grid = createGrid(this.querySelector(`#agdiv`)!,
+      this.gridOptions,)
+    }
+  }
+
   protected override render() {
     
-    if(this.grid !== null && this.tableDivRef.value !== undefined) {
-      this.grid.render(this.tableDivRef.value)
-    } else {console.log(`cannot render grid`)}
     return html`
       <div
-        id=${this.tableName}
-        ${ref(this.tableDivRef)}
+        id='agdiv'
+        ${ref(this.renderGrid)}
       ></div>
       <ol>
         ${this.DisplayPairs.map((pair) => html`

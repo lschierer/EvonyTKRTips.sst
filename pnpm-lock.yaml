@@ -11,6 +11,15 @@ importers:
       '@adobe/spectrum-css-workflow-icons':
         specifier: ^2.0.0
         version: 2.0.0
+      '@ag-grid-community/client-side-row-model':
+        specifier: ^31.3.2
+        version: 31.3.2
+      '@ag-grid-community/csv-export':
+        specifier: ^31.3.2
+        version: 31.3.2
+      '@ag-grid-community/styles':
+        specifier: ^31.3.2
+        version: 31.3.2
       '@astrojs/lit':
         specifier: ^4.0.1
         version: 4.0.1(@webcomponents/template-shadowroot@0.2.1)(lit@3.1.3)
@@ -382,6 +391,18 @@ packages:
 
   '@adobe/spectrum-css-workflow-icons@2.0.0':
     resolution: {integrity: sha512-sioQc0V6zDRvoyVHwyHPRco9hp+Wril0URFp62GjJFg+Xh9uHfK3De99Zfbyt2yAcHgx9rCX2zVluC/sIgPnyw==}
+
+  '@ag-grid-community/client-side-row-model@31.3.2':
+    resolution: {integrity: sha512-XFzq4BvPPEjf5HtC1VpruBESqvsJYfIcY1EC5CaY1hqV1NRp1JVImFrMdoxUuw9NsoucGneDT/DOj42WHweFIg==}
+
+  '@ag-grid-community/core@31.3.2':
+    resolution: {integrity: sha512-iab+xIPCvjzGkIBgo12IQNa9/ZGI4BmjsQz65+aipNXISbtGketkN5iO4OFQgafgf0f9JZVFOZ3EzCnMiVWLiQ==}
+
+  '@ag-grid-community/csv-export@31.3.2':
+    resolution: {integrity: sha512-AjQAvW84SXzGSzoSgmpSDCPrqYHZNRRDEVFi47N0iW44AxelCIVSjFRF8nkUky6On6bQ+Mv8+6JNtVmjki5p6w==}
+
+  '@ag-grid-community/styles@31.3.2':
+    resolution: {integrity: sha512-FP1FxUGKHCUdu081eptYg1g5FdDHjluTt2w6Jm5/KmC2XISUzdhhxJATsNM4Nu0h6fwxhQICsJl0xsTvXG/rxw==}
 
   '@alcalzone/ansi-tokenize@0.1.3':
     resolution: {integrity: sha512-3yWxPTq3UQ/FY9p1ErPxIyfT64elWaMvM9lIHnaqpyft63tkxodF5aUElYHrdisWve5cETkh1+KBw1yJuW0aRw==}
@@ -6584,6 +6605,22 @@ packages:
 snapshots:
 
   '@adobe/spectrum-css-workflow-icons@2.0.0': {}
+
+  '@ag-grid-community/client-side-row-model@31.3.2':
+    dependencies:
+      '@ag-grid-community/core': 31.3.2
+      tslib: 2.6.2
+
+  '@ag-grid-community/core@31.3.2':
+    dependencies:
+      tslib: 2.6.2
+
+  '@ag-grid-community/csv-export@31.3.2':
+    dependencies:
+      '@ag-grid-community/core': 31.3.2
+      tslib: 2.6.2
+
+  '@ag-grid-community/styles@31.3.2': {}
 
   '@alcalzone/ansi-tokenize@0.1.3':
     dependencies:
