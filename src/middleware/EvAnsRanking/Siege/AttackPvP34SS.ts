@@ -62,7 +62,8 @@ import {
  } from "@schemas/bookSchemas";
 
 import { PvPBuff } from "./PvPBuff";
-import { DEBUG_34SS } from "../EvAnsScoreComputer";
+
+const DEBUG_34SS = false;
 
 export const AttackPvP34SS = z
   .function()
