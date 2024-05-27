@@ -486,7 +486,9 @@ export const DisplayGeneralsMW = defineMiddleware(
             console.log(
               `addEG2EGS: map size: ${locals.ExtendedGenerals.length} about to enrich.`
             );
-          void enrichGeneral(general.name);
+          void enrichGeneral(general.name).catch((error) => {
+            console.error(`error from enrichGeneral in addEG2EGS`, error)
+          });
           void pairGenerals();
         } else {
           console.log(
