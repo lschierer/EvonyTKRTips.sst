@@ -43,8 +43,8 @@ import { addValue, formInit, getValue, formValues } from '../../formValueStore';
 
 import * as b from "@schemas/baseSchemas";
 
-import { GeneralElement, } from '@schemas/index';
-import type { ZodError } from "zod";
+import { GeneralElement, } from '@schemas/generalsSchema';
+import { z } from "astro:content";
 
 
 export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
@@ -53,7 +53,7 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
 
   private resultDiv: Ref<HTMLElement> = createRef();
 
-  private validationError: ZodError | null = null;
+  private validationError: z.ZodError | null = null;
 
   @state()
   private resultClassList = { 'not-content': true, valid: false, invalid: false }

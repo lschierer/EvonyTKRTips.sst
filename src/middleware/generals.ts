@@ -4,26 +4,70 @@ import { getCollection, getEntry, z } from "astro:content";
 import { BaseN } from "js-combinatorics";
 
 import {
+  ActivationSituations,
+  type ActivationSituationsType,
   AscendingLevels,
-  Book,
+  Attribute,
+  Buff,
+  type BuffType,
   BuffParams,
   type BuffParamsType,
+  ClassEnum,
+  type ClassEnumType,
+  Condition,
+  type ConditionType,
+  type levelsType,
+  qualityColor,
+  type qualityColorType,
+  syslogSeverity,
+  UnitSchema,
+  
+} from "@schemas/baseSchemas";
+
+import {
+  ConflictArray, 
+  ConflictDatum,   
+  type bookConflictsType,
+  type ConflictDatumType,
+ } from '@schemas/conflictSchemas'
+
+ import {
+  Note,
   Display,
+  type DisplayType,
+  type NoteType,
+  GeneralArray,
+  GeneralClass,
+  type GeneralClassType,
+  GeneralElement,
+  type GeneralArrayType,
+  type GeneralElementType,
+  generalSpecialists,
+  generalUseCase,
+  type generalUseCaseType,
+  type generalSpecialistsType,
+ } from '@schemas/generalsSchema'
+
+ import {
+  Speciality,
+  type SpecialityType,
+ } from '@schemas/specialitySchema'
+
+ import { 
   ExtendedGeneral,
   type ExtendedGeneralType,
   ExtendedGeneralStatus,
-  GeneralClass,
-  generalUseCase,
-  qualityColor,
-  Speciality,
-  type specialSkillBookType,
-  type SpecialityType,
-  type BookType,
-  type standardSkillBookType,
-  type ConflictDatumType,
   type GeneralPairType,
-  ConflictDatum,
-} from "@schemas/index";
+  } from "@schemas/ExtendedGeneral";
+
+import { 
+  Book,
+  type BookType,
+  specialSkillBook,
+  standardSkillBook,
+  type specialSkillBookType,
+  type standardSkillBookType,
+ } from "@schemas/bookSchemas";
 
 import { EvAnsScoreComputer } from "./EvAnsRanking/EvAnsScoreComputer";
 import {ScoreComputer as AttackScoreComputer} from './AttackRanking/ScoreComputer';

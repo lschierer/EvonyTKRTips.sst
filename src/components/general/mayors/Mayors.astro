@@ -3,7 +3,7 @@
 import { getCollection, type CollectionEntry } from "astro:content";
 import type { HTMLAttributes} from 'astro/types'
 
-import { z, type ZodError } from "zod";
+import { z  } from "astro:content";
 
 import {TableContainer} from './tableContainer'
 
@@ -11,23 +11,43 @@ import { Debug } from 'astro:components';
 
 
 import {
-  Book, 
-  type BookType,
-  ConflictArray,
-  type ConflictArrayType,
-  generalSpecialists,
-  type generalSpecialistsType,
-  GeneralArray,
-  type GeneralArrayType,
-  ConflictDatum,
-  GeneralElement,
-  type GeneralElementType,
-  ClassEnum,
-  generalUseCase,
-  type standardSkillBookType,
+  AscendingLevels,
+  type BuffType,
+  Condition,
+  qualityColor,
+  syslogSeverity,
+} from "@schemas/baseSchemas";
+
+import {
+  ConflictArray, 
+  ConflictDatum,   
+  type bookConflictsType,
   type ConflictDatumType,
-  standardSkillBook
-} from "@schemas/index";
+ } from '@schemas/conflictSchemas'
+
+ import {
+  Note,
+  Display,
+  type NoteType,
+  GeneralArray,
+  GeneralElement,
+  type GeneralArrayType,
+  type GeneralElementType,
+  generalSpecialists
+ } from '@schemas/generalsSchema'
+
+ import { 
+  type ExtendedGeneralType,
+  ExtendedGeneralStatus,
+  } from "@schemas/ExtendedGeneral";
+
+import { 
+  type BookType,
+  specialSkillBook,
+  standardSkillBook,
+  type specialSkillBookType,
+  type standardSkillBookType,
+ } from "@schemas/bookSchemas";
 
 const dataUrl = new URL("/generals/all.json", Astro.url);
 const conflictData = new URL("/generalConflictData/conflicts.json", Astro.url);
@@ -55,7 +75,7 @@ let allGenerals: GeneralArrayType | null = null;
 let allGeneralsString: string | null = null;
 let result:
   | { success: true; data: GeneralArrayType }
-  | { success: false; error: ZodError } = GeneralArray.safeParse(
+  | { success: false; error: z.ZodError } = GeneralArray.safeParse(
   JSON.parse(allGeneralsJson)
 );
 if (result.success) {

@@ -1,13 +1,11 @@
 import {  defineCollection } from 'astro:content';
 import { docsSchema, i18nSchema } from '@astrojs/starlight/schema';
-import {
-  Covenant,
-  artTreasureSchema,
-  BlazonSetSechma,
-  GeneralElement,
-  ConflictDatum,
-  Speciality,
-} from '../schemas/index';
+import { Covenant } from '@schemas/generalsSchema';
+import { Speciality } from '@schemas/specialitySchema';
+import { artTreasureSchema } from '@schemas/treasureSchemas';
+import { BlazonSetSechma } from '@schemas/blazonSchemas';
+import { GeneralElement } from '@schemas/generalsSchema';
+import { ConflictDatum } from '@schemas/conflictSchemas';
 
 export const collections = {
   covenants: defineCollection({type: 'data', schema: Covenant}),

@@ -12,40 +12,38 @@ import { delay } from "nanodelay";
 
 import {
   AscendingLevels,
-  Book,
-  type BookType,
-  type bookConflictsType,
-  type Buff,
   type BuffType,
-  BuffParams,
-  type BuffParamsType,
-  buffUnion,
   Condition,
-  ConflictArray,
-  ConflictDatum,
+  qualityColor,
+  syslogSeverity,
+} from "@schemas/baseSchemas";
+
+import {
+  ConflictArray, 
+  ConflictDatum,   
+  type bookConflictsType,
   type ConflictDatumType,
+ } from '@schemas/conflictSchemas'
+
+ import {
+  Note,
   Display,
-  ExtendedGeneral,
-  type ExtendedGeneralType,
-  ExtendedGeneralStatus,
-  GeneralClass,
-  type GeneralClassType,
+  type NoteType,
   GeneralElement,
   type GeneralElementType,
-  Note,
-  type NoteType,
-  Speciality,
-  type SpecialityType,
-  qualityColor,
+ } from '@schemas/generalsSchema'
+
+ import { 
+  type ExtendedGeneralType,
+  ExtendedGeneralStatus,
+  } from "@schemas/ExtendedGeneral";
+
+import { 
+  type BookType,
   specialSkillBook,
   type specialSkillBookType,
-  standardSkillBook,
   type standardSkillBookType,
-  syslogSeverity,
-  type syslogSeverityType,
-  dragon,
-  generalUseCase,
-} from "@schemas/index";
+ } from "@schemas/bookSchemas";
 
 const DEBUG = false;
 

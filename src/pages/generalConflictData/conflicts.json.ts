@@ -5,7 +5,7 @@ import { getCollection,  type CollectionEntry  } from 'astro:content';
 
 import {
   ConflictDatum
-} from "@schemas/index";
+} from "@schemas/conflictSchemas";
 
 
 export const GET: APIRoute = async () => {

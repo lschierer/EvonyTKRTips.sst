@@ -3,6 +3,7 @@ import starlight from '@astrojs/starlight';
 import starlightLinksValidator from 'starlight-links-validator';
 import lit from "@astrojs/lit";
 import { sidebar } from './src/sidebar.ts';
+import circleDependency from 'vite-plugin-circular-dependency'
 
 import aws from "astro-sst";
 
@@ -65,7 +66,16 @@ export default defineConfig({
     build: {
       minify: false,
       cssMinify: false
-    }
+    },
+    plugins: [
+      circleDependency({
+        outputFilePath: './circular-deps.txt',
+        circleImportThrowErr: true,
+        include: [
+          /\.[jt]sx?$/, /\.astro\??/
+        ]
+      })
+    ]
   },
   // Process images with sharp: https://docs.astro.build/en/guides/assets/#using-sharp
   image: {

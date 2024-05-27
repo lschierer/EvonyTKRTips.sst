@@ -1,16 +1,67 @@
 import { z } from "astro:content";
+
 import {
-  Display,
-  generalUseCase,
-  generalSpecialists,
-  type DisplayType,
-  type ExtendedGeneralType,
-  type generalUseCaseType,
-  type generalSpecialistsType,
-  ExtendedGeneral,
+  ActivationSituations,
+  type ActivationSituationsType,
+  AscendingLevels,
+  Attribute,
+  Buff,
+  type BuffType,
   BuffParams,
   type BuffParamsType,
-} from "@schemas/index";
+  ClassEnum,
+  type ClassEnumType,
+  Condition,
+  type ConditionType,
+  type levelsType,
+  qualityColor,
+  type qualityColorType,
+  syslogSeverity,
+  UnitSchema,
+} from "@schemas/baseSchemas";
+
+import {
+  ConflictArray, 
+  ConflictDatum,   
+  type bookConflictsType,
+  type ConflictDatumType,
+ } from '@schemas/conflictSchemas'
+
+ import {
+  Note,
+  Display,
+  type DisplayType,
+  type NoteType,
+  GeneralArray,
+  type GeneralClassType,
+  GeneralElement,
+  type GeneralArrayType,
+  type GeneralElementType,
+  generalSpecialists,
+  generalUseCase,
+  type generalUseCaseType,
+  type generalSpecialistsType,
+ } from '@schemas/generalsSchema'
+
+ import {
+  Speciality,
+  type SpecialityType,
+ } from '@schemas/specialitySchema'
+
+ import { 
+  ExtendedGeneral,
+  type ExtendedGeneralType,
+  ExtendedGeneralStatus,
+  type GeneralPairType,
+  } from "@schemas/ExtendedGeneral";
+
+import { 
+  type BookType,
+  specialSkillBook,
+  standardSkillBook,
+  type specialSkillBookType,
+  type standardSkillBookType,
+ } from "@schemas/bookSchemas";
 
 import {GroundPvPAttack} from './Ground/AttackPvPBase'
 import {ArchersPvPAttack} from './Archers/AttackPvPBase'

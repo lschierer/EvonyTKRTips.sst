@@ -3,16 +3,66 @@ const DEBUG_BAS = false;
 
 import { z } from "astro:content";
 
+import {
+  ActivationSituations,
+  type ActivationSituationsType,
+  AscendingLevels,
+  Attribute,
+  Buff,
+  type BuffType,
+  BuffParams,
+  type BuffParamsType,
+  ClassEnum,
+  type ClassEnumType,
+  Condition,
+  type ConditionType,
+  type levelsType,
+  qualityColor,
+  type qualityColorType,
+  syslogSeverity,
+  UnitSchema,
+} from "@schemas/baseSchemas";
 
 import {
-  AscendingLevels,
-  BuffParams,
+  ConflictArray, 
+  ConflictDatum,   
+  type bookConflictsType,
+  type ConflictDatumType,
+ } from '@schemas/conflictSchemas'
+
+ import {
+  Note,
   Display,
-  ExtendedGeneral,
-  type BuffParamsType,
   type DisplayType,
+  type NoteType,
+  GeneralArray,
+  type GeneralClassType,
+  GeneralElement,
+  type GeneralArrayType,
+  type GeneralElementType,
+  generalSpecialists,
+  type generalUseCaseType,
+ } from '@schemas/generalsSchema'
+
+ import {
+  Speciality,
+  type SpecialityType,
+ } from '@schemas/specialitySchema'
+
+ import { 
+  ExtendedGeneral,
   type ExtendedGeneralType,
-} from '@schemas/index'
+  ExtendedGeneralStatus,
+  type GeneralPairType,
+  } from "@schemas/ExtendedGeneral";
+
+import { 
+  type BookType,
+  specialSkillBook,
+  standardSkillBook,
+  type specialSkillBookType,
+  type standardSkillBookType,
+ } from "@schemas/bookSchemas";
 
 import { SiegePvPAttackAttributeMultipliers } from "@lib/EvAnsAttributeRanking";
 import { AttackPvPBSS } from "./AttackPvPBSS";

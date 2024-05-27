@@ -1,12 +1,66 @@
 import { z } from "astro:content";
+
 import {
-  type ExtendedGeneralType, ExtendedGeneral,
-  Speciality,
-  type SpecialityType,
+  ActivationSituations,
+  type ActivationSituationsType,
+  AscendingLevels,
+  Attribute,
+  Buff,
+  type BuffType,
   BuffParams,
   type BuffParamsType,
-  qualityColor
-} from "@schemas/index";
+  ClassEnum,
+  type ClassEnumType,
+  Condition,
+  type ConditionType,
+  type levelsType,
+  qualityColor,
+  type qualityColorType,
+  syslogSeverity,
+  UnitSchema,
+} from "@schemas/baseSchemas";
+
+import {
+  ConflictArray, 
+  ConflictDatum,   
+  type bookConflictsType,
+  type ConflictDatumType,
+ } from '@schemas/conflictSchemas'
+
+ import {
+  Note,
+  Display,
+  type DisplayType,
+  type NoteType,
+  GeneralArray,
+  type GeneralClassType,
+  GeneralElement,
+  type GeneralArrayType,
+  type GeneralElementType,
+  generalSpecialists,
+  type generalUseCaseType,
+ } from '@schemas/generalsSchema'
+
+ import {
+  Speciality,
+  type SpecialityType,
+ } from '@schemas/specialitySchema'
+
+ import { 
+  ExtendedGeneral,
+  type ExtendedGeneralType,
+  ExtendedGeneralStatus,
+  type GeneralPairType,
+  } from "@schemas/ExtendedGeneral";
+
+import { 
+  type BookType,
+  specialSkillBook,
+  standardSkillBook,
+  type specialSkillBookType,
+  type standardSkillBookType,
+ } from "@schemas/bookSchemas";
+
 import { PvPBuff } from "./PvPBuff";
 
 const DEBUG_34SS = false;

@@ -10,7 +10,7 @@ import { getCollection,  type CollectionEntry  } from 'astro:content';
 
 import {
   ConflictDatum
-} from "@schemas/index";
+} from "@schemas/conflictSchemas";
 
 export const getStaticPaths = (async () => {
   const generalObjects: CollectionEntry<'generals'>[]  = await getCollection('generals');

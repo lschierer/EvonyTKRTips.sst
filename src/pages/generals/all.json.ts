@@ -6,7 +6,7 @@ import { getCollection,  type CollectionEntry  } from 'astro:content';
 import {
   GeneralElement,
   type GeneralElementType,
-} from "@schemas/index";
+} from "@schemas/generalsSchema";
 
 
 export const GET: APIRoute = async () => {

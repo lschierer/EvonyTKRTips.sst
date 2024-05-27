@@ -24,22 +24,48 @@ import {
 } from "./contexts";
 
 import {
-  ClassEnum,
-  GeneralArray,
-  GeneralClass,
-  generalUseCase,
-  levels,
-  qualityColor,
-  standardSkillBook,
+  AscendingLevels,
+  type BuffType,
   type ClassEnumType,
+  Condition,
+  type levelsType,
+  qualityColor,
+  type qualityColorType,
+  syslogSeverity,
+} from "@schemas/baseSchemas";
+
+import {
+  ConflictArray, 
+  ConflictDatum,   
+  type bookConflictsType,
+  type ConflictDatumType,
+ } from '@schemas/conflictSchemas'
+
+ import {
+  Note,
+  Display,
+  type NoteType,
+  GeneralArray,
   type GeneralClassType,
+  GeneralElement,
   type GeneralArrayType,
   type GeneralElementType,
+  generalSpecialists,
   type generalUseCaseType,
-  type levelsType,
-  type qualityColorType,
+ } from '@schemas/generalsSchema'
+
+ import { 
+  type ExtendedGeneralType,
+  ExtendedGeneralStatus,
+  } from "@schemas/ExtendedGeneral";
+
+import { 
+  type BookType,
+  specialSkillBook,
+  standardSkillBook,
+  type specialSkillBookType,
   type standardSkillBookType,
-} from "@schemas/index";
+ } from "@schemas/bookSchemas";
 
 import {
   Table,
