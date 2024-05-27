@@ -1,5 +1,7 @@
 import { defineMiddleware } from "astro:middleware";
-import { getCollection, getEntry, z } from "astro:content";
+import { getCollection, getEntry,  } from "astro:content";
+
+import {z} from 'zod';
 
 import { BaseN } from "js-combinatorics";
 

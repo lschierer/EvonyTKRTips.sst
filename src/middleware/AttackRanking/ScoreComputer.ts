@@ -1,4 +1,4 @@
-import { z } from "astro:content";
+import {z} from 'zod';
 
 import {
   ActivationSituations,
@@ -76,7 +76,7 @@ import { SiegePvPAttack } from "./Siege/AttackPvPBase";
  * https://evonyguidewiki.com/en/general-cultivate-en/#Relationship_between_Stats_value_Buff_value
  */
 
-export const DEBUG = true;
+export const DEBUG = false;
 
 export const ScoreComputer = z
   .function()

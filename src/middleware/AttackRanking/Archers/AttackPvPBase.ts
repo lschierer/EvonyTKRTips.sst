@@ -1,7 +1,7 @@
 const DEBUG = false;
 const DEBUG_BAS = false;
 
-import { z } from "astro:content";
+import {z} from 'zod';
 
 
 import {

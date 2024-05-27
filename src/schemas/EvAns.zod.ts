@@ -1,6 +1,6 @@
 //import { z.number, z.object, z.output, z.record } from "astro:content";
 
-import { z } from "astro:content"
+import {z} from 'zod';
 
 import {
     ActivationSituations
