@@ -28,7 +28,10 @@ export const GET: APIRoute = async ({ params }) => {
   if(id !== undefined && id !== null) {
     const collectionArray:CollectionEntry<'generalConflictData'>[]  = await 
     getCollection('generalConflictData', ({data}) => {
-      const c =  Object.values(data.conflicts).flat();
+      const c =  Object.values(data.members).flat();
+      if(Array.isArray(data.others)) {
+        c.push(...Object.values(data.others).flat());
+      }
       if(c.includes(id)) {
         return true;
       }

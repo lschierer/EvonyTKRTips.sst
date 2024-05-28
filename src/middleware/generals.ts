@@ -402,8 +402,11 @@ export const DisplayGeneralsMW = defineMiddleware(
               }
             }
             if (locals.ConflictData.length > 0) {
-              const relConflicts = locals.ConflictData.some((cDatum) => {
-                const c = Object.values(cDatum.conflicts).flat();
+              const relConflicts = locals.ConflictData.some((cDatum: ConflictDatumType) => {
+                const c =  Object.values(cDatum.members).flat();
+                if(Array.isArray(cDatum.others)) {
+                  c.push(...Object.values(cDatum.others).flat());
+                }
                 if (c.includes(primary.general.name)) {
                   if (c.includes(secondary.general.name)) {
                     return true;
