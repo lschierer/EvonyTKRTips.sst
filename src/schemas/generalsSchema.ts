@@ -52,18 +52,18 @@ export const totalBuffs = z.object({
 export type totalBuffsType = z.infer<typeof totalBuffs>;
 
 export const GeneralClass = z.object({
-    "name": z.string(),
-    "display": Display.optional(),
-    "leadership": z.number(),
-    "leadership_increment": z.number(),
-    "attack": z.number(),
-    "attack_increment": z.number(),
-    "defense": z.number(),
-    "defense_increment": z.number(),
-    "politics": z.number(),
-    "politics_increment": z.number(),
-    "level": b.levels,
-    "stars": b.levels.refine((l) => {
+    name: z.string(),
+    display: Display.optional(),
+    leadership: z.number(),
+    leadership_increment: z.number(),
+    attack: z.number(),
+    attack_increment: z.number(),
+    defense: z.number(),
+    defense_increment: z.number(),
+    politics: z.number(),
+    politics_increment: z.number(),
+    level: b.levels,
+    stars: b.levels.refine((l) => {
         if(l !== null && l !== undefined ) {
           switch (l) {
             case '0':
@@ -84,17 +84,17 @@ export const GeneralClass = z.object({
         }
         return false;
       }).nullish(),
-    "score_as": generalSpecialists,
-    "specialities": z.array(z.string()).nullish(),
-    "books": z.array(z.string()).nullish(),
-    "ascending": z.array(Ascending).nullish(),
-    "note": z.array(Note).nullish(),
-    "totalBuffs": totalBuffs.nullish(),
+    score_as: generalSpecialists,
+    specialities: z.array(z.string()).nullish(),
+    books: z.array(z.string()).nullish(),
+    ascending: z.array(Ascending).nullish(),
+    note: z.array(Note).nullish(),
+    totalBuffs: totalBuffs.nullish(),
 });
 export type GeneralClassType = z.infer<typeof GeneralClass>;
 
 export const GeneralElement = z.object({
-    "general": GeneralClass,
+    general: GeneralClass,
 });
 export type GeneralElementType = z.infer<typeof GeneralElement>;
 
