@@ -8,8 +8,8 @@ export function Web({ stack }: StackContext) {
   const site = new AstroSite(stack, "Site", {
     path: './',
     warm: 1,
-    timeout: "20 seconds",
-    memorySize: "2048 MB",
+    timeout: "45 seconds",
+    memorySize: "8192 MB",
     buildCommand: "pnpm run build",
     cdk: {
       distribution: {
