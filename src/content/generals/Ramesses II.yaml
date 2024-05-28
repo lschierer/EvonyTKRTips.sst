@@ -36,14 +36,16 @@ general:
     - level: '7'
       buff:
         - attribute: Death_to_Wounded
-          condition: leading_the_army_to_attack
+          condition:
+          - leading_the_army_to_attack
           value:
             number: 10
             unit: percentage
     - level: '8'
       buff:
         - attribute: Rally_Capacity
-          condition: When_Rallying
+          condition:
+          - When_Rallying
           value:
             number: 8
             unit: percentage

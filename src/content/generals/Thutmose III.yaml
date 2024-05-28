@@ -24,13 +24,15 @@ general:
     - level: '6'
       buff:
         - attribute: Defense
-          condition: Marching
+          condition:
+          - Marching
           class: Ground
           value:
             number: 15
             unit: percentage
         - attribute: HP
-          condition: Marching
+          condition:
+          - Marching
           class: Ground
           value:
             number: 15
@@ -38,7 +40,8 @@ general:
     - level: '7'
       buff:
         - attribute: Death_to_Wounded
-          condition: leading_the_army_to_attack
+          condition:
+          - leading_the_army_to_attack
           value:
             number: 10
             unit: percentage
@@ -51,13 +54,15 @@ general:
     - level: '9'
       buff:
         - attribute: Attack
-          condition: Marching
+          condition:
+          - Marching
           class: Archers
           value:
             number: 15
             unit: percentage
         - attribute: HP
-          condition: Marching
+          condition:
+          - Marching
           class: Ground
           value:
             number: 15
@@ -65,19 +70,22 @@ general:
     - level: '10'
       buff:
         - attribute: Attack
-          condition: Marching
+          condition:
+          - Marching
           class: Archers
           value:
             number: 20
             unit: percentage
         - attribute: Defense
-          condition: Marching
+          condition:
+          - Marching
           class: Archers
           value:
             number: 15
             unit: percentage
         - attribute: HP
-          condition: Marching
+          condition:
+          - Marching
           class: Archers
           value:
             number: 15

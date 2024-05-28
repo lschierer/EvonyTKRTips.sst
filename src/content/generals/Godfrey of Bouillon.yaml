@@ -36,7 +36,8 @@ general:
     - level: '7'
       buff:
         - attribute: Death_to_Wounded
-          condition: Marching
+          condition:
+          - Marching
           value:
             number: 8
             unit: percentage

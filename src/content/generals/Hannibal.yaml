@@ -19,25 +19,29 @@ general:
     - level: '6'
       buff:
         - attribute: Attack
-          condition: Marching
+          condition:
+          - Marching
           class: Mounted
           value:
             number: 10
             unit: percentage
         - attribute: Attack
-          condition: Marching
+          condition:
+          - Marching
           class: Ground
           value:
             number: 10
             unit: percentage
         - attribute: Defense
-          condition: Marching
+          condition:
+          - Marching
           class: Mounted
           value:
             number: 10
             unit: percentage
         - attribute: Defense
-          condition: Marching
+          condition:
+          - Marching
           class: Ground
           value:
             number: 10
@@ -45,39 +49,45 @@ general:
     - level: '7'
       buff:
         - attribute: Death_to_Wounded
-          condition: leading_the_army_to_attack
+          condition:
+          - leading_the_army_to_attack
           value:
             number: 10
             unit: percentage
     - level: '8'
       buff:
         - attribute: Rally_Capacity
-          condition: When_Rallying
+          condition:
+          - When_Rallying
           value:
             number: 8
             unit: percentage
     - level: '9'
       buff:
         - attribute: Attack
-          condition: Marching
+          condition:
+          - Marching
           class: Mounted
           value:
             number: 10
             unit: percentage
         - attribute: Attack
-          condition: Marching
+          condition:
+          - Marching
           class: Ground
           value:
             number: 10
             unit: percentage
         - attribute: HP
-          condition: Marching
+          condition:
+          - Marching
           class: Mounted
           value:
             number: 10
             unit: percentage
         - attribute: HP
-          condition: Marching
+          condition:
+          - Marching
           class: Ground
           value:
             number: 10
@@ -85,37 +95,43 @@ general:
     - level: '10'
       buff:
         - attribute: Attack
-          condition: Marching
+          condition:
+          - Marching
           class: Mounted
           value:
             number: 15
             unit: percentage
         - attribute: Attack
-          condition: Marching
+          condition:
+          - Marching
           class: Ground
           value:
             number: 15
             unit: percentage
         - attribute: Defense
-          condition: Marching
+          condition:
+          - Marching
           class: Mounted
           value:
             number: 20
             unit: percentage
         - attribute: Defense
-          condition: Marching
+          condition:
+          - Marching
           class: Ground
           value:
             number: 20
             unit: percentage
         - attribute: HP
-          condition: Marching
+          condition:
+          - Marching
           class: Mounted
           value:
             number: 20
             unit: percentage
         - attribute: HP
-          condition: Marching
+          condition:
+          - Marching
           class: Ground
           value:
             number: 20

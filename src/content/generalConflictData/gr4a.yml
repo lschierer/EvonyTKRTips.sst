@@ -9,7 +9,8 @@ books:
     level: '1'
     buff:
     - attribute: HP
-      condition: When_Not_Mine
+      condition:
+      - When not mine
       class: Ground
       value:
         number: 10
@@ -18,7 +19,8 @@ books:
     level: '2'
     buff:
     - attribute: HP
-      condition: When_Not_Mine
+      condition:
+      - When not mine
       class: Ground
       value:
         number: 15
@@ -27,7 +29,8 @@ books:
     level: '3'
     buff:
     - attribute: HP
-      condition: When_Not_Mine
+      condition:
+      - When not mine
       class: Ground
       value:
         number: 20
@@ -36,7 +39,8 @@ books:
     level: '4'
     buff:
     - attribute: HP
-      condition: When_Not_Mine
+      condition:
+      - When not mine
       class: Ground
       value:
         number: 25

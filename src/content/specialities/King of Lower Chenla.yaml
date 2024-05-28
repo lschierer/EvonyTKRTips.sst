@@ -9,25 +9,29 @@ attribute:
           number: 4
           unit: percentage
       - attribute: HP
-        condition: Attacking
+        condition:
+        - Attacking
         class: Mounted
         value:
           number: 1
           unit: percentage
       - attribute: HP
-        condition: Attacking
+        condition:
+        - Attacking
         class: Ground
         value:
           number: 1
           unit: percentage
       - attribute: Defense
-        condition: Attacking
+        condition:
+        - Attacking
         class: Mounted
         value:
           number: 2
           unit: percentage
       - attribute: Defense
-        condition: Attacking
+        condition:
+        - Attacking
         class: Ground
         value:
           number: 2
@@ -40,25 +44,29 @@ attribute:
           number: 4
           unit: percentage
       - attribute: HP
-        condition: Attacking
+        condition:
+        - Attacking
         class: Mounted
         value:
           number: 1
           unit: percentage
       - attribute: HP
-        condition: Attacking
+        condition:
+        - Attacking
         class: Ground
         value:
           number: 1
           unit: percentage
       - attribute: Defense
-        condition: Attacking
+        condition:
+        - Attacking
         class: Mounted
         value:
           number: 2
           unit: percentage
       - attribute: Defense
-        condition: Attacking
+        condition:
+        - Attacking
         class: Ground
         value:
           number: 2
@@ -71,25 +79,29 @@ attribute:
           number: 8
           unit: percentage
       - attribute: HP
-        condition: Attacking
+        condition:
+        - Attacking
         class: Mounted
         value:
           number: 2
           unit: percentage
       - attribute: HP
-        condition: Attacking
+        condition:
+        - Attacking
         class: Ground
         value:
           number: 2
           unit: percentage
       - attribute: Defense
-        condition: Attacking
+        condition:
+        - Attacking
         class: Mounted
         value:
           number: 4
           unit: percentage
       - attribute: Defense
-        condition: Attacking
+        condition:
+        - Attacking
         class: Ground
         value:
           number: 4
@@ -102,25 +114,29 @@ attribute:
           number: 8
           unit: percentage
       - attribute: HP
-        condition: Attacking
+        condition:
+        - Attacking
         class: Mounted
         value:
           number: 2
           unit: percentage
       - attribute: HP
-        condition: Attacking
+        condition:
+        - Attacking
         class: Ground
         value:
           number: 2
           unit: percentage
       - attribute: Defense
-        condition: Attacking
+        condition:
+        - Attacking
         class: Mounted
         value:
           number: 4
           unit: percentage
       - attribute: Defense
-        condition: Attacking
+        condition:
+        - Attacking
         class: Ground
         value:
           number: 4
@@ -133,25 +149,29 @@ attribute:
           number: 16
           unit: percentage
       - attribute: HP
-        condition: Attacking
+        condition:
+        - Attacking
         class: Mounted
         value:
           number: 4
           unit: percentage
       - attribute: HP
-        condition: Attacking
+        condition:
+        - Attacking
         class: Ground
         value:
           number: 4
           unit: percentage
       - attribute: Defense
-        condition: Attacking
+        condition:
+        - Attacking
         class: Mounted
         value:
           number: 8
           unit: percentage
       - attribute: Defense
-        condition: Attacking
+        condition:
+        - Attacking
         class: Ground
         value:
           number: 8

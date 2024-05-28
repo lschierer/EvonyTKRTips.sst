@@ -19,13 +19,15 @@ general:
     - level: '6'
       buff:
         - attribute: Attack
-          condition: Marching
+          condition:
+          - Marching
           class: Archers
           value:
             number: 5
             unit: percentage
         - attribute: Defense
-          condition: Marching
+          condition:
+          - Marching
           class: Archers
           value:
             number: 10
@@ -33,7 +35,8 @@ general:
     - level: '7'
       buff:
         - attribute: Wounded_to_Death
-          condition: Enemy_In_City
+          condition:
+          - Enemy_In_City
           value:
             number: 8
             unit: percentage
@@ -46,19 +49,22 @@ general:
     - level: '9'
       buff:
         - attribute: Attack
-          condition: Marching
+          condition:
+          - Marching
           class: Mounted
           value:
             number: 5
             unit: percentage
         - attribute: Attack
-          condition: Marching
+          condition:
+          - Marching
           class: Mounted
           value:
             number: 5
             unit: percentage
         - attribute: Defense
-          condition: Marching
+          condition:
+          - Marching
           class: Archers
           value:
             number: 30
@@ -66,19 +72,22 @@ general:
     - level: '10'
       buff:
         - attribute: Attack
-          condition: Marching
+          condition:
+          - Marching
           class: Mounted
           value:
             number: 8
             unit: percentage
         - attribute: Attack
-          condition: Marching
+          condition:
+          - Marching
           class: Archers
           value:
             number: 5
             unit: percentage
         - attribute: Attack
-          condition: dragon_to_the_attack
+          condition:
+          - dragon_to_the_attack
           class: Archers
           value:
             number: 20

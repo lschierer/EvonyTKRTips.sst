@@ -4,25 +4,29 @@ attribute:
   - level: 'Green'
     buff:
       - attribute: Attack
-        condition: Attacking
+        condition:
+        - Attacking
         class: Mounted
         value:
           number: 2
           unit: percentage
       - attribute: Attack
-        condition: Attacking
+        condition:
+        - Attacking
         class: Ground
         value:
           number: 2
           unit: percentage
       - attribute: Defense
-        condition: Attacking
+        condition:
+        - Attacking
         class: Mounted
         value:
           number: 2
           unit: percentage
       - attribute: Defense
-        condition: Attacking
+        condition:
+        - Attacking
         class: Ground
         value:
           number: 2
@@ -30,25 +34,29 @@ attribute:
   - level: 'Blue'
     buff:
       - attribute: Attack
-        condition: Attacking
+        condition:
+        - Attacking
         class: Mounted
         value:
           number: 2
           unit: percentage
       - attribute: Attack
-        condition: Attacking
+        condition:
+        - Attacking
         class: Ground
         value:
           number: 2
           unit: percentage
       - attribute: Defense
-        condition: Attacking
+        condition:
+        - Attacking
         class: Mounted
         value:
           number: 2
           unit: percentage
       - attribute: Defense
-        condition: Attacking
+        condition:
+        - Attacking
         class: Ground
         value:
           number: 2
@@ -56,25 +64,29 @@ attribute:
   - level: 'Purple'
     buff:
       - attribute: Attack
-        condition: Attacking
+        condition:
+        - Attacking
         class: Mounted
         value:
           number: 4
           unit: percentage
       - attribute: Attack
-        condition: Attacking
+        condition:
+        - Attacking
         class: Ground
         value:
           number: 4
           unit: percentage
       - attribute: Defense
-        condition: Attacking
+        condition:
+        - Attacking
         class: Mounted
         value:
           number: 4
           unit: percentage
       - attribute: Defense
-        condition: Attacking
+        condition:
+        - Attacking
         class: Ground
         value:
           number: 4
@@ -82,25 +94,29 @@ attribute:
   - level: 'Orange'
     buff:
       - attribute: Attack
-        condition: Attacking
+        condition:
+        - Attacking
         class: Mounted
         value:
           number: 4
           unit: percentage
       - attribute: Attack
-        condition: Attacking
+        condition:
+        - Attacking
         class: Ground
         value:
           number: 4
           unit: percentage
       - attribute: Defense
-        condition: Attacking
+        condition:
+        - Attacking
         class: Mounted
         value:
           number: 4
           unit: percentage
       - attribute: Defense
-        condition: Attacking
+        condition:
+        - Attacking
         class: Ground
         value:
           number: 4
@@ -108,25 +124,29 @@ attribute:
   - level: 'Gold'
     buff:
       - attribute: Attack
-        condition: Attacking
+        condition:
+        - Attacking
         class: Mounted
         value:
           number: 8
           unit: percentage
       - attribute: Attack
-        condition: Attacking
+        condition:
+        - Attacking
         class: Ground
         value:
           number: 8
           unit: percentage
       - attribute: Defense
-        condition: Attacking
+        condition:
+        - Attacking
         class: Mounted
         value:
           number: 8
           unit: percentage
       - attribute: Defense
-        condition: Attacking
+        condition:
+        - Attacking
         class: Ground
         value:
           number: 8

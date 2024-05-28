@@ -41,14 +41,16 @@ general:
     - level: '7'
       buff:
         - attribute: Wounded_to_Death
-          condition: Enemy_In_City
+          condition:
+          - Enemy_In_City
           value:
             number: 10
             unit: percentage
     - level: '8'
       buff:
         - attribute: Rally_Capacity
-          condition: When_Rallying
+          condition:
+          - When_Rallying
           value:
             number: 8
             unit: percentage
@@ -87,7 +89,8 @@ general:
             number: 10
             unit: percentage
         - attribute: Attack
-          condition: dragon_to_the_attack
+          condition:
+          - dragon_to_the_attack
           class: Siege
           value:
             number: 10

@@ -19,19 +19,22 @@ general:
     - level: '6'
       buff:
         - attribute: Attack
-          condition: Marching
+          condition:
+          - Marching
           class: Archers
           value:
             number: 10
             unit: percentage
         - attribute: Defense
-          condition: Marching
+          condition:
+          - Marching
           class: Archers
           value:
             number: 15
             unit: percentage
         - attribute: Defense
-          condition: Marching
+          condition:
+          - Marching
           class: Siege
           value:
             number: 15
@@ -39,7 +42,8 @@ general:
     - level: '7'
       buff:
         - attribute: Death_to_Wounded
-          condition: Marching
+          condition:
+          - Marching
           value:
             number: 8
             unit: percentage
@@ -50,7 +54,8 @@ general:
             number: 10
             unit: percentage
         - attribute: HP
-          condition: Attacking
+          condition:
+          - Attacking
           class: Archers
           value:
             number: 20
@@ -58,19 +63,22 @@ general:
     - level: '9'
       buff:
         - attribute: Attack
-          condition: Attacking
+          condition:
+          - Attacking
           class: Archers
           value:
             number: 15
             unit: percentage
         - attribute: Attack
-          condition: Attacking
+          condition:
+          - Attacking
           class: Siege
           value:
             number: 15
             unit: percentage
         - attribute: HP
-          condition: Attacking
+          condition:
+          - Attacking
           class: Archers
           value:
             number: 25
@@ -78,13 +86,15 @@ general:
     - level: '10'
       buff:
         - attribute: Attack
-          condition: Marching
+          condition:
+          - Marching
           class: Archers
           value:
             number: 25
             unit: percentage
         - attribute: Defense
-          condition: Marching
+          condition:
+          - Marching
           class: Archers
           value:
             number: 35

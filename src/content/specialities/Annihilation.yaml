@@ -8,13 +8,15 @@ attribute:
           number: 1
           unit: percentage
       - attribute: Attack
-        condition: Attacking
+        condition:
+        - Attacking
         class: Mounted
         value:
           number: 1
           unit: percentage
       - attribute: Attack
-        condition: Attacking
+        condition:
+        - Attacking
         class: Ground
         value:
           number: 1
@@ -26,13 +28,15 @@ attribute:
           number: 1
           unit: percentage
       - attribute: Attack
-        condition: Attacking
+        condition:
+        - Attacking
         class: Mounted
         value:
           number: 1
           unit: percentage
       - attribute: Attack
-        condition: Attacking
+        condition:
+        - Attacking
         class: Ground
         value:
           number: 1
@@ -44,13 +48,15 @@ attribute:
           number: 1
           unit: percentage
       - attribute: Attack
-        condition: Attacking
+        condition:
+        - Attacking
         class: Mounted
         value:
           number: 2
           unit: percentage
       - attribute: Attack
-        condition: Attacking
+        condition:
+        - Attacking
         class: Ground
         value:
           number: 2
@@ -62,13 +68,15 @@ attribute:
           number: 1
           unit: percentage
       - attribute: Attack
-        condition: Attacking
+        condition:
+        - Attacking
         class: Mounted
         value:
           number: 2
           unit: percentage
       - attribute: Attack
-        condition: Attacking
+        condition:
+        - Attacking
         class: Ground
         value:
           number: 2
@@ -80,13 +88,15 @@ attribute:
           number: 2
           unit: percentage
       - attribute: Attack
-        condition: Attacking
+        condition:
+        - Attacking
         class: Mounted
         value:
           number: 4
           unit: percentage
       - attribute: Attack
-        condition: Attacking
+        condition:
+        - Attacking
         class: Ground
         value:
           number: 4

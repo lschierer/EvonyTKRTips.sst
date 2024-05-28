@@ -4,25 +4,29 @@ attribute:
   - level: 'Green'
     buff:
       - attribute: Attack
-        condition: dragon_to_the_attack
+        condition:
+        - dragon_to_the_attack
         class: Mounted
         value:
           number: 4
           unit: percentage
       - attribute: Defense
-        condition: dragon_to_the_attack
+        condition:
+        - dragon_to_the_attack
         class: Mounted
         value:
           number: 3
           unit: percentage
       - attribute: Attack
-        condition: Reduces_Enemy_with_a_Dragon
+        condition:
+        - Reduces_Enemy_with_a_Dragon
         class: Archers
         value:
           number: -1
           unit: percentage
       - attribute: Attack
-        condition: Reduces_Enemy_with_a_Dragon
+        condition:
+        - Reduces_Enemy_with_a_Dragon
         class: Siege
         value:
           number: -1
@@ -30,25 +34,29 @@ attribute:
   - level: 'Blue'
     buff:
       - attribute: Attack
-        condition: dragon_to_the_attack
+        condition:
+        - dragon_to_the_attack
         class: Mounted
         value:
           number: 4
           unit: percentage
       - attribute: Defense
-        condition: dragon_to_the_attack
+        condition:
+        - dragon_to_the_attack
         class: Mounted
         value:
           number: 3
           unit: percentage
       - attribute: Attack
-        condition: Reduces_Enemy_with_a_Dragon
+        condition:
+        - Reduces_Enemy_with_a_Dragon
         class: Archers
         value:
           number: -2
           unit: percentage
       - attribute: Attack
-        condition: Reduces_Enemy_with_a_Dragon
+        condition:
+        - Reduces_Enemy_with_a_Dragon
         class: Siege
         value:
           number: -2
@@ -56,25 +64,29 @@ attribute:
   - level: 'Purple'
     buff:
       - attribute: Attack
-        condition: dragon_to_the_attack
+        condition:
+        - dragon_to_the_attack
         class: Mounted
         value:
           number: 8
           unit: percentage
       - attribute: Defense
-        condition: dragon_to_the_attack
+        condition:
+        - dragon_to_the_attack
         class: Mounted
         value:
           number: 6
           unit: percentage
       - attribute: Attack
-        condition: Reduces_Enemy_with_a_Dragon
+        condition:
+        - Reduces_Enemy_with_a_Dragon
         class: Archers
         value:
           number: -3
           unit: percentage
       - attribute: Attack
-        condition: Reduces_Enemy_with_a_Dragon
+        condition:
+        - Reduces_Enemy_with_a_Dragon
         class: Siege
         value:
           number: -3
@@ -82,25 +94,29 @@ attribute:
   - level: 'Orange'
     buff:
       - attribute: Attack
-        condition: dragon_to_the_attack
+        condition:
+        - dragon_to_the_attack
         class: Mounted
         value:
           number: 8
           unit: percentage
       - attribute: Defense
-        condition: dragon_to_the_attack
+        condition:
+        - dragon_to_the_attack
         class: Mounted
         value:
           number: 6
           unit: percentage
       - attribute: Attack
-        condition: Reduces_Enemy_with_a_Dragon
+        condition:
+        - Reduces_Enemy_with_a_Dragon
         class: Archers
         value:
           number: -3
           unit: percentage
       - attribute: Attack
-        condition: Reduces_Enemy_with_a_Dragon
+        condition:
+        - Reduces_Enemy_with_a_Dragon
         class: Siege
         value:
           number: -3
@@ -108,25 +124,29 @@ attribute:
   - level: 'Gold'
     buff:
       - attribute: Attack
-        condition: dragon_to_the_attack
+        condition:
+        - dragon_to_the_attack
         class: Mounted
         value:
           number: 16
           unit: percentage
       - attribute: Defense
-        condition: dragon_to_the_attack
+        condition:
+        - dragon_to_the_attack
         class: Mounted
         value:
           number: 12
           unit: percentage
       - attribute: Attack
-        condition: Reduces_Enemy_with_a_Dragon
+        condition:
+        - Reduces_Enemy_with_a_Dragon
         class: Archers
         value:
           number: -6
           unit: percentage
       - attribute: Attack
-        condition: Reduces_Enemy_with_a_Dragon
+        condition:
+        - Reduces_Enemy_with_a_Dragon
         class: Siege
         value:
           number: -6

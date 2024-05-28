@@ -5,7 +5,8 @@ attribute:
     buff:
       - attribute: Attack
         class: Mounted
-        condition: dragon_to_the_attack
+        condition:
+        - dragon_to_the_attack
         value:
           number: 5
           unit: percentage
@@ -13,7 +14,8 @@ attribute:
     buff:
       - attribute: Attack
         class: Mounted
-        condition: dragon_to_the_attack
+        condition:
+        - dragon_to_the_attack
         value:
           number: 5
           unit: percentage
@@ -21,7 +23,8 @@ attribute:
     buff:
       - attribute: Attack
         class: Mounted
-        condition: dragon_to_the_attack
+        condition:
+        - dragon_to_the_attack
         value:
           number: 9
           unit: percentage
@@ -29,7 +32,8 @@ attribute:
     buff:
       - attribute: Attack
         class: Mounted
-        condition: dragon_to_the_attack
+        condition:
+        - dragon_to_the_attack
         value:
           number: 9
           unit: percentage
@@ -37,7 +41,8 @@ attribute:
     buff:
       - attribute: Attack
         class: Mounted
-        condition: dragon_to_the_attack
+        condition:
+        - dragon_to_the_attack
         value:
           number: 18
           unit: percentage

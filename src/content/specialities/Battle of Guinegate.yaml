@@ -9,7 +9,8 @@ attribute:
           number: 3
           unit: percentage
       - attribute: Defense
-        condition: Reduces_Enemy_in_Attack
+        condition:
+        - Reduces_Enemy_in_Attack
         class: Archers
         value:
           number: 3
@@ -22,7 +23,8 @@ attribute:
           number: 3
           unit: percentage
       - attribute: Defense
-        condition: Reduces_Enemy_in_Attack
+        condition:
+        - Reduces_Enemy_in_Attack
         class: Archers
         value:
           number: 3
@@ -35,7 +37,8 @@ attribute:
           number: 6
           unit: percentage
       - attribute: Defense
-        condition: Reduces_Enemy_in_Attack
+        condition:
+        - Reduces_Enemy_in_Attack
         class: Archers
         value:
           number: 6
@@ -48,7 +51,8 @@ attribute:
           number: 6
           unit: percentage
       - attribute: Defense
-        condition: Reduces_Enemy_in_Attack
+        condition:
+        - Reduces_Enemy_in_Attack
         class: Archers
         value:
           number: 6
@@ -61,7 +65,8 @@ attribute:
           number: 12
           unit: percentage
       - attribute: Defense
-        condition: Reduces_Enemy_in_Attack
+        condition:
+        - Reduces_Enemy_in_Attack
         class: Archers
         value:
           number: 12

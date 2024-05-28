@@ -76,7 +76,7 @@ export const ActivationSituations = z.enum([
 export type ActivationSituationsType = z.infer<typeof ActivationSituations>;
 
 export const Condition = z.enum([
-  'When_Not_Mine',
+  'When not mine',
   'Attacking',
   'Marching',
   'When_Rallying',
@@ -178,12 +178,9 @@ export const ValueSchema = z.object({
 });
 export type Value = z.infer<typeof ValueSchema>;
 
-export const BuffAdverbArray = z.array(Condition);
-export type BuffAdverbArrayType = z.infer<typeof BuffAdverbArray>;
-
 export const Buff = z.object({
   'attribute': Attribute.optional(),
-  'condition': z.union([Condition,BuffAdverbArray]).optional(),
+  'condition': z.array(Condition).optional(),
   'class': ClassEnum.nullish(),
   'value': ValueSchema.nullish(),
 });

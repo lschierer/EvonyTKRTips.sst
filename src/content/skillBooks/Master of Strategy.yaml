@@ -12,7 +12,8 @@ buff:
       number: 15
       unit: percentage
   - attribute: Attack
-    condition: leading_the_army_to_attack
+    condition:
+    - leading_the_army_to_attack
     class: Mounted
     value:
       number: 20

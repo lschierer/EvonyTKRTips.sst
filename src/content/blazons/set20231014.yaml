@@ -10,20 +10,23 @@ set:
       set: Soul
       level: '15'
       buff:
-        - condition: Against Monsters
-          attribute: Attack
+        - attribute: Attack 
+          condition: 
+          - Against Monsters
           class: Mounted
           value:
             number: 14.5
             unit: percentage
-        - condition: Against Monsters
-          attribute: Attack
+        - attribute: Attack
+          condition: 
+          - Against Monsters
           class: Mounted
           value:
             number: 14.5
             unit: percentage
-        - condition: Defending
-          attribute: Attack
+        - attribute: Attack
+          condition: 
+          - Defending
           class: Mounted
           value:
             number: 13.4
@@ -39,20 +42,23 @@ set:
       set: Soul
       level: '15'
       buff:
-        - condition: Against Monsters
-          attribute: Attack
+        - attribute: Attack
+          condition: 
+          - Against Monsters
           class: Mounted
           value:
             number: 14.5
             unit: percentage
-        - condition: Against Monsters
-          attribute: Attack
+        - attribute: Attack
+          condition: 
+          - Against Monsters
           class: Mounted
           value:
             number: 14.5
             unit: percentage
-        - condition: Marching
-          attribute: Attack
+        - attribute: Attack
+          condition: 
+          - Marching
           class: Mounted
           value:
             number: 12.2

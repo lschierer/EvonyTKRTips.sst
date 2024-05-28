@@ -10,7 +10,8 @@ books:
     level: '1'
     buff:
     - attribute: March_Size_Capacity
-      condition: When_Not_Mine
+      condition:
+      - When not mine
       value:
         number: 3
         unit: percentage
@@ -18,7 +19,8 @@ books:
     level: '2'
     buff:
     - attribute: March_Size_Capacity
-      condition: When_Not_Mine
+      condition:
+      - When not mine
       value:
         number: 6
         unit: percentage
@@ -26,7 +28,8 @@ books:
     level: '3'
     buff:
     - attribute: March_Size_Capacity
-      condition: When_Not_Mine
+      condition:
+      - When not mine
       value:
         number: 9
         unit: percentage
@@ -34,7 +37,8 @@ books:
     level: '4'
     buff:
     - attribute: March_Size_Capacity
-      condition: When_Not_Mine
+      condition:
+      - When not mine
       value:
         number: 12
         unit: percentage

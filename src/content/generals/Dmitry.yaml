@@ -24,13 +24,15 @@ general:
     - level: '6'
       buff:
         - attribute: Attack
-          condition: Reinforcing
+          condition:
+          - Reinforcing
           class: Archers
           value:
             number: 15
             unit: percentage
         - attribute: Defense
-          condition: Reinforcing
+          condition:
+          - Reinforcing
           class: Ground
           value:
             number: 10
@@ -38,13 +40,15 @@ general:
     - level: '7'
       buff:
         - attribute: Defense
-          condition: Reinforcing
+          condition:
+          - Reinforcing
           class: Ground
           value:
             number: 15
             unit: percentage
         - attribute: HP
-          condition: Reinforcing
+          condition:
+          - Reinforcing
           class: Ground
           value:
             number: 15
@@ -58,13 +62,15 @@ general:
     - level: '9'
       buff:
         - attribute: Attack
-          condition: Reinforcing
+          condition:
+          - Reinforcing
           class: Archers
           value:
             number: 10
             unit: percentage
         - attribute: HP
-          condition: Reinforcing
+          condition:
+          - Reinforcing
           class: Ground
           value:
             number: 20
@@ -72,19 +78,22 @@ general:
     - level: '10'
       buff:
         - attribute: Attack
-          condition: Reinforcing
+          condition:
+          - Reinforcing
           class: Archers
           value:
             number: 15
             unit: percentage
         - attribute: Defense
-          condition: Reinforcing
+          condition:
+          - Reinforcing
           class: Ground
           value:
             number: 15
             unit: percentage
         - attribute: HP
-          condition: Reinforcing
+          condition:
+          - Reinforcing
           class: Ground
           value:
             number: 15

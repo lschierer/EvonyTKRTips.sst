@@ -24,19 +24,22 @@ general:
     - level: '6'
       buff:
         - attribute: Attack
-          condition: Marching
+          condition:
+          - Marching
           class: Siege
           value:
             number: 5
             unit: percentage
         - attribute: Defense
-          condition: Marching
+          condition:
+          - Marching
           class: Siege
           value:
             number: 20
             unit: percentage
         - attribute: Defense
-          condition: Marching
+          condition:
+          - Marching
           class: Archers
           value:
             number: 20
@@ -44,7 +47,8 @@ general:
     - level: '7'
       buff:
         - attribute: Wounded_to_Death
-          condition: Enemy_In_City
+          condition:
+          - Enemy_In_City
           value:
             number: 10
             unit: percentage
@@ -57,19 +61,22 @@ general:
     - level: '9'
       buff:
         - attribute: Attack
-          condition: Marching
+          condition:
+          - Marching
           class: Siege
           value:
             number: 10
             unit: percentage
         - attribute: HP
-          condition: Marching
+          condition:
+          - Marching
           class: Archers
           value:
             number: 20
             unit: percentage
         - attribute: HP
-          condition: Marching
+          condition:
+          - Marching
           class: Siege
           value:
             number: 20
@@ -77,19 +84,22 @@ general:
     - level: '10'
       buff:
         - attribute: Attack
-          condition: Marching
+          condition:
+          - Marching
           class: Siege
           value:
             number: 15
             unit: percentage
         - attribute: Defense
-          condition: Marching
+          condition:
+          - Marching
           class: Siege
           value:
             number: 20
             unit: percentage
         - attribute: HP
-          condition: Marching
+          condition:
+          - Marching
           class: Siege
           value:
             number: 20

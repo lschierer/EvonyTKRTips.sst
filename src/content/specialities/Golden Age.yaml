@@ -9,7 +9,8 @@ attribute:
           number: 2
           unit: percentage
       - attribute: Attack
-        condition: Enemy
+        condition:
+        - Enemy
         class: Archers
         value:
           number: -2
@@ -22,7 +23,8 @@ attribute:
           number: 2
           unit: percentage
       - attribute: Attack
-        condition: Enemy
+        condition:
+        - Enemy
         class: Archers
         value:
           number: -3
@@ -35,7 +37,8 @@ attribute:
           number: 4
           unit: percentage
       - attribute: Attack
-        condition: Enemy
+        condition:
+        - Enemy
         class: Archers
         value:
           number: -5
@@ -48,7 +51,8 @@ attribute:
           number: 4
           unit: percentage
       - attribute: Attack
-        condition: Enemy
+        condition:
+        - Enemy
         class: Archers
         value:
           number: -5
@@ -61,7 +65,8 @@ attribute:
           number: 8
           unit: percentage
       - attribute: Attack
-        condition: Enemy
+        condition:
+        - Enemy
         class: Archers
         value:
           number: -10

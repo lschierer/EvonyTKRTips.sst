@@ -9,7 +9,8 @@ attribute:
           number: 3
           unit: percentage
       - attribute: Rally_Capacity
-        condition: When_Rallying
+        condition:
+        - When_Rallying
         value:
           number: 1
           unit: percentage
@@ -21,7 +22,8 @@ attribute:
           number: 3
           unit: percentage
       - attribute: Rally_Capacity
-        condition: When_Rallying
+        condition:
+        - When_Rallying
         value:
           number: 1
           unit: percentage
@@ -33,7 +35,8 @@ attribute:
           number: 6
           unit: percentage
       - attribute: Rally_Capacity
-        condition: When_Rallying
+        condition:
+        - When_Rallying
         value:
           number: 1
           unit: percentage
@@ -45,7 +48,8 @@ attribute:
           number: 6
           unit: percentage
       - attribute: Rally_Capacity
-        condition: When_Rallying
+        condition:
+        - When_Rallying
         value:
           number: 1
           unit: percentage
@@ -57,7 +61,8 @@ attribute:
           number: 12
           unit: percentage
       - attribute: Rally_Capacity
-        condition: When_Rallying
+        condition:
+        - When_Rallying
         value:
           number: 1
           unit: percentage

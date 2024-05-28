@@ -24,13 +24,15 @@ general:
     - level: '6'
       buff:
         - attribute: HP
-          condition: When_Defending_Outside_The_Main_City
+          condition:
+          - When_Defending_Outside_The_Main_City
           class: Ground
           value:
             number: 20
             unit: percentage
         - attribute: Attack
-          condition: When_Defending_Outside_The_Main_City
+          condition:
+          - When_Defending_Outside_The_Main_City
           class: Ground
           value:
             number: 10
@@ -38,18 +40,21 @@ general:
     - level: '7'
       buff:
         - attribute: Death_to_Wounded
-          condition: When_Defending_Outside_The_Main_City
+          condition:
+          - When_Defending_Outside_The_Main_City
           value:
             number: 8
             unit: percentage
         - attribute: Attack
-          condition: When_Defending_Outside_The_Main_City
+          condition:
+          - When_Defending_Outside_The_Main_City
           class: Ground
           value:
             number: 10
             unit: percentage
         - attribute: Attack
-          condition: When_Defending_Outside_The_Main_City
+          condition:
+          - When_Defending_Outside_The_Main_City
           class: Mounted
           value:
             number: 10
@@ -61,13 +66,15 @@ general:
             number: 12
             unit: percentage
         - attribute: Attack
-          condition: When_Defending_Outside_The_Main_City
+          condition:
+          - When_Defending_Outside_The_Main_City
           class: Ground
           value:
             number: 10
             unit: percentage
         - attribute: Attack
-          condition: When_Defending_Outside_The_Main_City
+          condition:
+          - When_Defending_Outside_The_Main_City
           class: Mounted
           value:
             number: 10
@@ -80,13 +87,15 @@ general:
             number: 30
             unit: percentage
         - attribute: Attack
-          condition: When_Defending_Outside_The_Main_City
+          condition:
+          - When_Defending_Outside_The_Main_City
           class: Ground
           value:
             number: 15
             unit: percentage
         - attribute: Attack
-          condition: When_Defending_Outside_The_Main_City
+          condition:
+          - When_Defending_Outside_The_Main_City
           class: Mounted
           value:
             number: 15
@@ -99,13 +108,15 @@ general:
             number: 50
             unit: percentage
         - attribute: Attack
-          condition: When_Defending_Outside_The_Main_City
+          condition:
+          - When_Defending_Outside_The_Main_City
           class: Ground
           value:
             number: 35
             unit: percentage
         - attribute: Defense
-          condition: When_Defending_Outside_The_Main_City
+          condition:
+          - When_Defending_Outside_The_Main_City
           class: Ground
           value:
             number: 35

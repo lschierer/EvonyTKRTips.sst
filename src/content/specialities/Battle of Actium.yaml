@@ -4,19 +4,22 @@ attribute:
   - level: 'Green'
     buff:
       - attribute: Attack
-        condition: Marching
+        condition:
+        - Marching
         class: Archers
         value:
           number: 4
           unit: percentage
       - attribute: Defense
-        condition: Attacking
+        condition:
+        - Attacking
         class: Siege
         value:
           number: 4
           unit: percentage
       - attribute: Defense
-        condition: Attacking
+        condition:
+        - Attacking
         class: Archers
         value:
           number: 4
@@ -24,19 +27,22 @@ attribute:
   - level: 'Blue'
     buff:
       - attribute: Attack
-        condition: Marching
+        condition:
+        - Marching
         class: Archers
         value:
           number: 4
           unit: percentage
       - attribute: Defense
-        condition: Attacking
+        condition:
+        - Attacking
         class: Siege
         value:
           number: 4
           unit: percentage
       - attribute: Defense
-        condition: Attacking
+        condition:
+        - Attacking
         class: Archers
         value:
           number: 4
@@ -44,19 +50,22 @@ attribute:
   - level: 'Purple'
     buff:
       - attribute: Attack
-        condition: Marching
+        condition:
+        - Marching
         class: Archers
         value:
           number: 8
           unit: percentage
       - attribute: Defense
-        condition: Attacking
+        condition:
+        - Attacking
         class: Siege
         value:
           number: 8
           unit: percentage
       - attribute: Defense
-        condition: Attacking
+        condition:
+        - Attacking
         class: Archers
         value:
           number: 8
@@ -64,19 +73,22 @@ attribute:
   - level: 'Orange'
     buff:
       - attribute: Attack
-        condition: Marching
+        condition:
+        - Marching
         class: Archers
         value:
           number: 8
           unit: percentage
       - attribute: Defense
-        condition: Attacking
+        condition:
+        - Attacking
         class: Siege
         value:
           number: 8
           unit: percentage
       - attribute: Defense
-        condition: Attacking
+        condition:
+        - Attacking
         class: Archers
         value:
           number: 8
@@ -84,19 +96,22 @@ attribute:
   - level: 'Gold'
     buff:
       - attribute: Attack
-        condition: Marching
+        condition:
+        - Marching
         class: Archers
         value:
           number: 16
           unit: percentage
       - attribute: Defense
-        condition: Attacking
+        condition:
+        - Attacking
         class: Siege
         value:
           number: 16
           unit: percentage
       - attribute: Defense
-        condition: Attacking
+        condition:
+        - Attacking
         class: Archers
         value:
           number: 16

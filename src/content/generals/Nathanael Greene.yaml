@@ -19,60 +19,70 @@ general:
     - level: '6'
       buff:
         - attribute: Attack
-          condition: Against Monsters
+          condition:
+          - Against Monsters
           value:
             number: 5
             unit: percentage
         - attribute: Defense
-          condition: Against Monsters
+          condition:
+          - Against Monsters
           value:
             number: 10
             unit: percentage
     - level: '7'
       buff:
         - attribute: Defense
-          condition: Reduces_Monster
+          condition:
+          - Reduces_Monster
           value:
             number: -10
             unit: percentage
         - attribute: HP
-          condition: Against Monsters
+          condition:
+          - Against Monsters
           value:
             number: 15
             unit: percentage
     - level: '8'
       buff:
         - attribute: Attack
-          condition: Reduces_Monster
+          condition:
+          - Reduces_Monster
           value:
             number: 10
             unit: percentage
         - attribute: Defense
-          condition: Against Monsters
+          condition:
+          - Against Monsters
           value:
             number: 15
             unit: percentage
     - level: '9'
       buff:
         - attribute: Attack
-          condition: Against Monsters
+          condition:
+          - Against Monsters
           value:
             number: 5
             unit: percentage
         - attribute: HP
-          condition: Against Monsters
+          condition:
+          - Against Monsters
           value:
             number: 15
             unit: percentage
     - level: '10'
       buff:
         - attribute: Attack
-          condition: Against Monsters
+          condition:
+          - Against Monsters
           value:
             number: 10
             unit: percentage
         - attribute: Defense
-          condition: Against Monsters
+          condition:
+          - Against Monsters
           value:
             number: 10
             unit: percentage

@@ -15,7 +15,8 @@ books:
     level: '1'
     buff:
     - attribute: Attack
-      condition: When_Not_Mine
+      condition:
+      - When not mine
       class: Archers
       value:
         number: 10
@@ -24,7 +25,8 @@ books:
     level: '2'
     buff:
     - attribute: Attack
-      condition: When_Not_Mine
+      condition:
+      - When not mine
       class: Archers
       value:
         number: 15
@@ -33,7 +35,8 @@ books:
     level: '3'
     buff:
     - attribute: Attack
-      condition: When_Not_Mine
+      condition:
+      - When not mine
       class: Archers
       value:
         number: 20
@@ -42,7 +45,8 @@ books:
     level: '4'
     buff:
     - attribute: Attack
-      condition: When_Not_Mine
+      condition:
+      - When not mine
       class: Archers
       value:
         number: 25

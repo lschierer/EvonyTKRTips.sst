@@ -24,19 +24,22 @@ general:
     - level: '6'
       buff:
         - attribute: Attack
-          condition: Marching
+          condition:
+          - Marching
           class: Siege
           value:
             number: 10
             unit: percentage
         - attribute: HP
-          condition: Marching
+          condition:
+          - Marching
           class: Archers
           value:
             number: 10
             unit: percentage
         - attribute: HP
-          condition: Marching
+          condition:
+          - Marching
           class: Siege
           value:
             number: 10
@@ -44,51 +47,59 @@ general:
     - level: '7'
       buff:
         - attribute: Wounded_to_Death
-          condition: Enemy_In_City
+          condition:
+          - Enemy_In_City
           value:
             number: 10
             unit: percentage
     - level: '8'
       buff:
         - attribute: HP
-          condition: Attacking
+          condition:
+          - Attacking
           class: Archers
           value:
             number: 10
             unit: percentage
         - attribute: HP
-          condition: Attacking
+          condition:
+          - Attacking
           class: Siege
           value:
             number: 10
             unit: percentage
         - attribute: March_Size_Capacity
-          condition: Attacking
+          condition:
+          - Attacking
           value:
             number: 10
             unit: percentage
     - level: '9'
       buff:
         - attribute: Attack
-          condition: Marching
+          condition:
+          - Marching
           class: Archers
           value:
             number: 10
             unit: percentage
         - attribute: Attack
-          condition: Marching
+          condition:
+          - Marching
           class: Siege
           value:
             number: 10
             unit: percentage
         - attribute: HP
-          condition: Attacking
+          condition:
+          - Attacking
           class: Archers
           value:
             number: 20
             unit: percentage
         - attribute: HP
-          condition: Attacking
+          condition:
+          - Attacking
           class: Siege
           value:
             number: 20
@@ -96,13 +107,15 @@ general:
     - level: '10'
       buff:
         - attribute: Attack
-          condition: Marching
+          condition:
+          - Marching
           class: Siege
           value:
             number: 20
             unit: percentage
         - attribute: Defense
-          condition: Marching
+          condition:
+          - Marching
           class: Siege
           value:
             number: 20

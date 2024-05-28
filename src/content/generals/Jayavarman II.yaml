@@ -36,20 +36,23 @@ general:
     - level: '7'
       buff:
         - attribute: Death_to_Wounded
-          condition: Marching
+          condition:
+          - Marching
           value:
             number: 8
             unit: percentage
     - level: '8'
       buff:
         - attribute: Attack
-          condition: Marching
+          condition:
+          - Marching
           class: Mounted
           value:
             number: 8
             unit: percentage
         - attribute: HP
-          condition: Marching
+          condition:
+          - Marching
           class: Mounted
           value:
             number: 5
@@ -79,19 +82,22 @@ general:
     - level: '10'
       buff:
         - attribute: Attack
-          condition: Marching
+          condition:
+          - Marching
           class: Mounted
           value:
             number: 25
             unit: percentage
         - attribute: Defense
-          condition: Marching
+          condition:
+          - Marching
           class: Mounted
           value:
             number: 15
             unit: percentage
         - attribute: HP
-          condition: Marching
+          condition:
+          - Marching
           class: Mounted
           value:
             number: 15

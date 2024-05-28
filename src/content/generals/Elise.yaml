@@ -19,19 +19,22 @@ general:
     - level: '6'
       buff:
         - attribute: HP
-          condition: Marching
+          condition:
+          - Marching
           class: Ground
           value:
             number: 10
             unit: percentage
         - attribute: HP
-          condition: Marching
+          condition:
+          - Marching
           class: Mounted
           value:
             number: 10
             unit: percentage
         - attribute: Attack
-          condition: dragon_to_the_attack
+          condition:
+          - dragon_to_the_attack
           class: Ground
           value:
             number: 15
@@ -39,7 +42,8 @@ general:
     - level: '7'
       buff:
         - attribute: Wounded_to_Death
-          condition: Enemy_In_City
+          condition:
+          - Enemy_In_City
           value:
             number: 10
             unit: percentage
@@ -51,7 +55,8 @@ general:
       buff:
         - attribute: Defense
           class: Ground
-          condition: Marching
+          condition:
+          - Marching
           value:
             number: 60
             unit: percentage
@@ -59,24 +64,28 @@ general:
       buff:
         - attribute: HP
           class: Mounted
-          condition: leading_the_army_to_attack
+          condition:
+          - leading_the_army_to_attack
           value:
             number: 10
             unit: percentage
         - attribute: HP
           class: Ground
-          condition: leading_the_army_to_attack
+          condition:
+          - leading_the_army_to_attack
           value:
             number: 10
             unit: percentage
         - attribute: Defense
           class: Ground
-          condition: leading_the_army_to_attack
+          condition:
+          - leading_the_army_to_attack
           value:
             number: 10
             unit: percentage
         - attribute: Attack
-          condition: dragon_to_the_attack
+          condition:
+          - dragon_to_the_attack
           class: Ground
           value:
             number: 20

@@ -4,19 +4,22 @@ attribute:
   - level: 'Green'
     buff:
       - attribute: Attack
-        condition: Marching
+        condition:
+        - Marching
         class: Mounted
         value:
           number: 2
           unit: percentage
       - attribute: Attack
-        condition: Marching
+        condition:
+        - Marching
         class: Mounted
         value:
           number: 2
           unit: percentage
       - attribute: HP
-        condition: Marching
+        condition:
+        - Marching
         class: Ground
         value:
           number: 3
@@ -24,19 +27,22 @@ attribute:
   - level: 'Blue'
     buff:
       - attribute: Attack
-        condition: Marching
+        condition:
+        - Marching
         class: Ground
         value:
           number: 2
           unit: percentage
       - attribute: Attack
-        condition: Marching
+        condition:
+        - Marching
         class: Mounted
         value:
           number: 2
           unit: percentage
       - attribute: HP
-        condition: Marching
+        condition:
+        - Marching
         class: Ground
         value:
           number: 3
@@ -44,19 +50,22 @@ attribute:
   - level: 'Purple'
     buff:
       - attribute: Attack
-        condition: Marching
+        condition:
+        - Marching
         class: Ground
         value:
           number: 4
           unit: percentage
       - attribute: Attack
-        condition: Marching
+        condition:
+        - Marching
         class: Mounted
         value:
           number: 4
           unit: percentage
       - attribute: HP
-        condition: Marching
+        condition:
+        - Marching
         class: Ground
         value:
           number: 6
@@ -64,19 +73,22 @@ attribute:
   - level: 'Orange'
     buff:
       - attribute: Attack
-        condition: Marching
+        condition:
+        - Marching
         class: Ground
         value:
           number: 4
           unit: percentage
       - attribute: Attack
-        condition: Marching
+        condition:
+        - Marching
         class: Mounted
         value:
           number: 4
           unit: percentage
       - attribute: HP
-        condition: Marching
+        condition:
+        - Marching
         class: Ground
         value:
           number: 6
@@ -84,19 +96,22 @@ attribute:
   - level: 'Gold'
     buff:
       - attribute: Attack
-        condition: Marching
+        condition:
+        - Marching
         class: Ground
         value:
           number: 8
           unit: percentage
       - attribute: Attack
-        condition: Marching
+        condition:
+        - Marching
         class: Mounted
         value:
           number: 8
           unit: percentage
       - attribute: HP
-        condition: Marching
+        condition:
+        - Marching
         class: Ground
         value:
           number: 12

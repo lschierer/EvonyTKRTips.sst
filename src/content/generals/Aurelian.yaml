@@ -23,25 +23,29 @@ general:
   ascending:
     - level: '6'
       buff:
-        - condition: Marching
+        - condition:
+          - Marching
           attribute: Defense
           class: Ground
           value:
             number: 10
             unit: percentage
-        - condition: Marching
+        - condition:
+          - Marching
           attribute: Defense
           class: Mounted
           value:
             number: 10
             unit: percentage
-        - condition: Marching
+        - condition:
+          - Marching
           attribute: HP
           class: Ground
           value:
             number: 10
             unit: percentage
-        - condition: Marching
+        - condition:
+          - Marching
           attribute: HP
           class: Mounted
           value:
@@ -49,45 +53,52 @@ general:
             unit: percentage
     - level: '7'
       buff:
-        - condition: Enemy_In_City
+        - condition:
+          - Enemy_In_City
           attribute: Wounded_to_Death
           value:
             number: 10
             unit: percentage
     - level: '8'
       buff:
-        - condition: Attacking
+        - condition:
+          - Attacking
           attribute: Defense
           class: Ground
           value:
             number: 10
             unit: percentage
-        - condition: Attacking
+        - condition:
+          - Attacking
           attribute: HP
           class: Ground
           value:
             number: 10
             unit: percentage
-        - condition: Attacking
+        - condition:
+          - Attacking
           attribute: March_Size_Capacity
           value:
             number: 8
             unit: percentage
     - level: '9'
       buff:
-        - condition: Marching
+        - condition:
+          - Marching
           class: Ground
           attribute: Attack
           value:
             number: 15
             unit: percentage
-        - condition: Marching
+        - condition:
+          - Marching
           class: Ground
           attribute: Defense
           value:
             number: 25
             unit: percentage
-        - condition: Marching
+        - condition:
+          - Marching
           class: Mounted
           attribute: Defense
           value:
@@ -95,7 +106,8 @@ general:
             unit: percentage
     - level: '10'
       buff:
-        - condition: Marching
+        - condition:
+          - Marching
           class: Ground
           attribute: Attack
           value:

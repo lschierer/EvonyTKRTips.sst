@@ -2,19 +2,22 @@
 name: The White Emperor
 buff:
   - attribute: Attack
-    condition: leading_the_army_to_attack
+    condition:
+    - leading_the_army_to_attack
     class: Mounted
     value:
       number: 30
       unit: percentage
   - attribute: Defense
-    condition: leading_the_army_to_attack
+    condition:
+    - leading_the_army_to_attack
     class: Mounted
     value:
       number: 30
       unit: percentage
   - attribute: Attack
-    condition: Enemy
+    condition:
+    - Enemy
     class: Archers
     value:
       number: 20

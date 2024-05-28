@@ -10,7 +10,8 @@ attribute:
           unit: percentage
       - attribute: Attack
         class: Archers
-        condition: Reduces_Enemy
+        condition:
+        - Reduces_Enemy
         value:
           number: -2
           unit: percentage
@@ -23,7 +24,8 @@ attribute:
           unit: percentage
       - attribute: Attack
         class: Archers
-        condition: Reduces_Enemy
+        condition:
+        - Reduces_Enemy
         value:
           number: -2
           unit: percentage
@@ -36,7 +38,8 @@ attribute:
           unit: percentage
       - attribute: Attack
         class: Archers
-        condition: Reduces_Enemy
+        condition:
+        - Reduces_Enemy
         value:
           number: -4
           unit: percentage
@@ -49,7 +52,8 @@ attribute:
           unit: percentage
       - attribute: Attack
         class: Archers
-        condition: Reduces_Enemy
+        condition:
+        - Reduces_Enemy
         value:
           number: -4
           unit: percentage
@@ -62,7 +66,8 @@ attribute:
           unit: percentage
       - attribute: Attack
         class: Archers
-        condition: Reduces_Enemy
+        condition:
+        - Reduces_Enemy
         value:
           number: -8
           unit: percentage
