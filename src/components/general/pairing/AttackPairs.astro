@@ -104,7 +104,7 @@ if (generalObjects !== null && generalObjects !== undefined) {
   }
   await Promise.all(allGenerals.map(async (g) => {
     if (DEBUG) console.log(`adding ${g.general.name}`)
-    Astro.locals.addEG2EGS(g.general);
+    await Astro.locals.addEG2EGS(g.general)
     const eg: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find((thisG: ExtendedGeneralType) => {
       if(!thisG.general.name.localeCompare(g.general.name)) {
         return true;

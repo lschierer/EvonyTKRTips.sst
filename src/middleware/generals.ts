@@ -348,8 +348,11 @@ export const DisplayGeneralsMW = defineMiddleware(
         }
       });
 
-    const pairGenerals = () => {
+    const pairGenerals = async () => {
         if (locals.ExtendedGenerals.length > 0) {
+          if(Array.isArray(locals.ConflictData) && locals.ConflictData.length === 0) {
+            await inializeConflicts();
+          }
           const generalBaseN = new BaseN(locals.ExtendedGenerals, 2);
           [...generalBaseN].forEach((pPair) => {
             const primary = pPair[0];
@@ -454,8 +457,8 @@ export const DisplayGeneralsMW = defineMiddleware(
     const addEG2EGS = z
       .function()
       .args(GeneralClass)
-      .returns(z.void())
-      .implement((general) => {
+      .returns(z.promise(z.void()))
+      .implement(async (general) => {
         if (DEBUG)
           console.log(
             `middleware generals addEG2EGS running for ${general.name}`
@@ -510,7 +513,7 @@ export const DisplayGeneralsMW = defineMiddleware(
           void enrichGeneral(general.name).catch((error) => {
             console.error(`error from enrichGeneral in addEG2EGS`, error)
           });
-          void pairGenerals();
+          await pairGenerals();
         } else {
           console.log(
             `addEG2EGS built an invalid ExtendedGeneral for ${general.name}`
@@ -520,15 +523,8 @@ export const DisplayGeneralsMW = defineMiddleware(
         return;
       });
 
-    const HandlerLogic = async (locals: App.Locals) => {
-      if (locals.ExtendedGenerals === undefined) {
-        locals.ExtendedGenerals = new Array<ExtendedGeneralType>();
-      }
-
-      if (locals.ConflictData === undefined) {
-        locals.ConflictData = new Array<ConflictDatumType>();
-
-        const ConflictCollection: CollectionEntry<'generalConflictData'>[] = await getCollection("generalConflictData");
+    const inializeConflicts = async () => {
+      const ConflictCollection: CollectionEntry<'generalConflictData'>[] = await getCollection("generalConflictData");
         if (ConflictCollection !== undefined && ConflictCollection !== null) {
           await Promise.all(ConflictCollection.map(async ({data}) => {
             const v1 = await ConflictDatum.spa(data);
@@ -540,6 +536,15 @@ export const DisplayGeneralsMW = defineMiddleware(
             console.log(`conflictData is ${locals.ConflictData.length}`);
           }
         }
+    }
+
+    const HandlerLogic = async (locals: App.Locals) => {
+      if (locals.ExtendedGenerals === undefined) {
+        locals.ExtendedGenerals = new Array<ExtendedGeneralType>();
+      }
+
+      if (locals.ConflictData === undefined) {
+        locals.ConflictData = new Array<ConflictDatumType>();
       }
 
       if (locals.CachedPairs === undefined) {

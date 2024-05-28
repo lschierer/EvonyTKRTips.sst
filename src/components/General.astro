@@ -124,7 +124,7 @@ if (entry === undefined || entry === null) {
 const dataV = GeneralElement.safeParse(data);
 if (dataV.success) {
   const pageGE = dataV.data;
-  Astro.locals.addEG2EGS(pageGE.general)
+  await Astro.locals.addEG2EGS(pageGE.general)
   
   
   let iterationBreaker = 0;
