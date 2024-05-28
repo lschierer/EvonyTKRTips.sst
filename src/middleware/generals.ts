@@ -1,5 +1,5 @@
 import { defineMiddleware } from "astro:middleware";
-import { getCollection, getEntry,  } from "astro:content";
+import { getCollection, getEntry, type CollectionEntry,  } from "astro:content";
 
 import {z} from 'zod';
 
@@ -528,14 +528,14 @@ export const DisplayGeneralsMW = defineMiddleware(
       if (locals.ConflictData === undefined) {
         locals.ConflictData = new Array<ConflictDatumType>();
 
-        const ConflictCollection = await getCollection("generalConflictData");
+        const ConflictCollection: CollectionEntry<'generalConflictData'>[] = await getCollection("generalConflictData");
         if (ConflictCollection !== undefined && ConflictCollection !== null) {
-          ConflictCollection.forEach((ccEntry) => {
-            const v1 = ConflictDatum.safeParse(ccEntry.data);
+          await Promise.all(ConflictCollection.map(async ({data}) => {
+            const v1 = await ConflictDatum.spa(data);
             if (v1.success) {
               locals.ConflictData.push(v1.data);
             }
-          });
+          }));
           if (DEBUG) {
             console.log(`conflictData is ${locals.ConflictData.length}`);
           }
