@@ -1,6 +1,6 @@
-import {z} from 'zod';
+import {z as zod} from 'zod';
 
-export const statusLights = z.enum ([
+export const statusLights = zod.enum ([
 'positive',
 'negative',
 'notice',
@@ -16,4 +16,4 @@ export const statusLights = z.enum ([
 'purple',
 ])
 
-export type statusLightsType = z.infer<typeof statusLights>;
+export type statusLightsType = zod.infer<typeof statusLights>;

@@ -1,8 +1,8 @@
-import {z} from 'zod';
+import {z as zod} from 'zod';
 
 import * as b from './baseSchemas';
 
-export const blazonTypes = z.enum([
+export const blazonTypes = zod.enum([
     'Earth',
     'Wind',
     'Fire',
@@ -11,7 +11,7 @@ export const blazonTypes = z.enum([
     'Shadow',
 ]);
 
-export const blazonSet =z.enum([
+export const blazonSet =zod.enum([
     'Justice',
     'Valor',
     'Honor',
@@ -22,19 +22,19 @@ export const blazonSet =z.enum([
     'Humility',
 ]);
 
-export const BlazonSchema = z.object({
-    blazon: z.object({
+export const BlazonSchema = zod.object({
+    blazon: zod.object({
         type: blazonTypes,
         set: blazonSet,
         level: b.levels,
-        buff: z.union([b.Buff, z.array(b.Buff)])
+        buff: zod.union([b.Buff, zod.array(b.Buff)])
     })
 })
 
-export type Blazon = z.infer<typeof BlazonSchema>;
+export type Blazon = zod.infer<typeof BlazonSchema>;
 
-export const BlazonSetSechma = z.object({
-    set: z.object({
+export const BlazonSetSechma = zod.object({
+    set: zod.object({
         earth: BlazonSchema.refine((b: Blazon) => b.blazon.type === 'Earth').nullish(),
         wind: BlazonSchema.refine((b: Blazon) => b.blazon.type === 'Wind').nullish(),
         fire: BlazonSchema.refine((b: Blazon) => b.blazon.type === 'Fire').nullish(),
@@ -43,4 +43,4 @@ export const BlazonSetSechma = z.object({
         shadow: BlazonSchema.refine((b: Blazon) => b.blazon.type === 'Shadow').nullish()
     })
 })
-export type BlazonSet = z.infer<typeof BlazonSetSechma>;
+export type BlazonSet = zod.infer<typeof BlazonSetSechma>;

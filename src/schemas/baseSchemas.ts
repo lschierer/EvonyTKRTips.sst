@@ -1,6 +1,6 @@
-import {z} from 'zod';
+import {z as zod} from 'zod';
 
-export const levels = z.enum([
+export const levels = zod.enum([
   '0',
   '1',
   '2',
@@ -48,9 +48,9 @@ export const levels = z.enum([
   '44',
   '45',
 ]);
-export type levelsType = z.infer<typeof levels>;
+export type levelsType = zod.infer<typeof levels>;
 
-export const AscendingLevels = z.enum([
+export const AscendingLevels = zod.enum([
   '0',
   '6',
   '7',
@@ -58,9 +58,9 @@ export const AscendingLevels = z.enum([
   '9',
   '10',
 ])
-export type AscendingLevelsType = z.infer<typeof AscendingLevels>;
+export type AscendingLevelsType = zod.infer<typeof AscendingLevels>;
 
-export const ActivationSituations = z.enum([
+export const ActivationSituations = zod.enum([
   'Solo PvP',
   'Rally Owner PvP',
   'Rally Participant PvP',
@@ -73,9 +73,9 @@ export const ActivationSituations = z.enum([
   'Rally Owner Monster',
   'Rally Participant Monster'
 ])
-export type ActivationSituationsType = z.infer<typeof ActivationSituations>;
+export type ActivationSituationsType = zod.infer<typeof ActivationSituations>;
 
-export const Condition = z.enum([
+export const Condition = zod.enum([
   'When not mine',
   'Attacking',
   'Marching',
@@ -102,9 +102,9 @@ export const Condition = z.enum([
   'Reduces_Monster',
   'In_Main_City',
 ]);
-export type ConditionType = z.infer<typeof Condition>;
+export type ConditionType = zod.infer<typeof Condition>;
 
-export const syslogSeverity = z.enum([
+export const syslogSeverity = zod.enum([
   'emerg',
   'alert',
   'crit',
@@ -115,9 +115,9 @@ export const syslogSeverity = z.enum([
   'debug',
 ])
 
-export type syslogSeverityType = z.infer<typeof syslogSeverity>;
+export type syslogSeverityType = zod.infer<typeof syslogSeverity>;
 
-export const Attribute = z.enum([
+export const Attribute = zod.enum([
  'Attack',
  'Defense',
  'HP',
@@ -143,10 +143,10 @@ export const Attribute = z.enum([
  'Monster_Attack',
  'Double Items Drop Rate',
 ]);
-export type AttributeType = z.infer<typeof Attribute>;
+export type AttributeType = zod.infer<typeof Attribute>;
 
 
-export const qualityColor = z.enum([
+export const qualityColor = zod.enum([
 'Disabled',
 'Green',
 'Blue',
@@ -155,50 +155,50 @@ export const qualityColor = z.enum([
 'Gold',
 ]);
 
-export type qualityColorType = z.infer<typeof qualityColor>;
+export type qualityColorType = zod.infer<typeof qualityColor>;
 
-export const UnitSchema = z.enum([
+export const UnitSchema = zod.enum([
   'percentage',
   'flat',
 ]);
-export type Unit = z.infer<typeof UnitSchema>;
+export type Unit = zod.infer<typeof UnitSchema>;
 
-export const ClassEnum = z.enum([
+export const ClassEnum = zod.enum([
   'Archers',
   'Ground',
   'Mounted',
   'Siege',
   'all',
 ]);
-export type ClassEnumType = z.infer<typeof ClassEnum>;
+export type ClassEnumType = zod.infer<typeof ClassEnum>;
 
-export const ValueSchema = z.object({
-  'number': z.number(),
+export const ValueSchema = zod.object({
+  'number': zod.number(),
   'unit': UnitSchema,
 });
-export type Value = z.infer<typeof ValueSchema>;
+export type Value = zod.infer<typeof ValueSchema>;
 
-export const Buff = z.object({
+export const Buff = zod.object({
   'attribute': Attribute.optional(),
-  'condition': z.array(Condition).optional(),
+  'condition': zod.array(Condition).optional(),
   'class': ClassEnum.nullish(),
   'value': ValueSchema.nullish(),
 });
-export type BuffType = z.infer<typeof Buff>;
+export type BuffType = zod.infer<typeof Buff>;
 
-export const buffUnion = z.array(Buff);
+export const buffUnion = zod.array(Buff);
 
 
-export const BuffParams = z.object({
+export const BuffParams = zod.object({
   special1: qualityColor.default(qualityColor.enum.Disabled), //0
   special2: qualityColor.default(qualityColor.enum.Disabled), //1
   special3: qualityColor.default(qualityColor.enum.Disabled), //2
   special4: qualityColor.default(qualityColor.enum.Disabled), //3
   special5: qualityColor.default(qualityColor.enum.Disabled), //4
   stars: AscendingLevels.default(AscendingLevels.enum[0]),    //5
-  dragon: z.boolean().default(false),                         //6
-  beast: z.boolean().default(false),                          //7
+  dragon: zod.boolean().default(false),                         //6
+  beast: zod.boolean().default(false),                          //7
 })
-export type BuffParamsType = z.infer<typeof BuffParams>;
+export type BuffParamsType = zod.infer<typeof BuffParams>;
 
 

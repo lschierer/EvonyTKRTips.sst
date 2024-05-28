@@ -1,6 +1,6 @@
-import {z} from 'zod';
+import {z as zod} from 'zod';
 
-export const Tier = z.enum([
+export const Tier = zod.enum([
   't1',
   't2',
   't3',
@@ -18,4 +18,4 @@ export const Tier = z.enum([
   't15',
   't16',
 ]);
-export type TierType = z.infer<typeof Tier>;
+export type TierType = zod.infer<typeof Tier>;

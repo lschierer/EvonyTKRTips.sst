@@ -1,18 +1,18 @@
-import {z} from 'zod';
+import {z as zod} from 'zod';
 
 import * as b from './baseSchemas';
 
 
-export const Book = z.object({
-  "name": z.string(),
-  "level": z.string().optional(),
-  "buff": z.array(b.Buff).nonempty(),
+export const Book = zod.object({
+  "name": zod.string(),
+  "level": zod.string().optional(),
+  "buff": zod.array(b.Buff).nonempty(),
 });
-export type BookType = z.infer<typeof Book>;
+export type BookType = zod.infer<typeof Book>;
 
 export const standardSkillBook = Book.required();
-export type standardSkillBookType = z.infer<typeof standardSkillBook>;
+export type standardSkillBookType = zod.infer<typeof standardSkillBook>;
 
 export const specialSkillBook = Book.omit({"level": true});
-export type specialSkillBookType = z.infer<typeof specialSkillBook>;
+export type specialSkillBookType = zod.infer<typeof specialSkillBook>;
 

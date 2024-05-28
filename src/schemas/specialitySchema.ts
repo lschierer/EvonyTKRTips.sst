@@ -1,17 +1,17 @@
-import {z} from 'zod';
+import {z as zod} from 'zod';
 
 import * as b from './baseSchemas';
 
 
-export const SpecialityLevel = z.object({
+export const SpecialityLevel = zod.object({
   "level": b.qualityColor,
-  "buff": z.array(b.Buff).nonempty(),
+  "buff": zod.array(b.Buff).nonempty(),
 });
-export type SpecialityLevelType = z.infer<typeof SpecialityLevel>;
+export type SpecialityLevelType = zod.infer<typeof SpecialityLevel>;
 
-export const Speciality = z.object({
-  "name": z.string(),
-  "attribute": z.array(SpecialityLevel).nonempty(),
+export const Speciality = zod.object({
+  "name": zod.string(),
+  "attribute": zod.array(SpecialityLevel).nonempty(),
 });
-export type SpecialityType = z.infer<typeof Speciality>;
+export type SpecialityType = zod.infer<typeof Speciality>;
 

@@ -1,33 +1,33 @@
-import {z} from 'zod';
+import {z as zod} from 'zod';
 
 
 import { standardSkillBook } from "./bookSchemas";
 
 
-export const bookConflicts = z.object({
-    books: z.array(standardSkillBook)
+export const bookConflicts = zod.object({
+    books: zod.array(standardSkillBook)
 })
-export type bookConflictsType = z.infer<typeof bookConflicts>;
+export type bookConflictsType = zod.infer<typeof bookConflicts>;
 
-const nameConflictUlid = z.string().ulid();
-type nameConflictUlidType = z.infer<typeof nameConflictUlid>;
+const nameConflictUlid = zod.string().ulid();
+type nameConflictUlidType = zod.infer<typeof nameConflictUlid>;
 
-const nameConflicts = z.object({
-    nameConflictUlidType:  z.array(z.string())
+const nameConflicts = zod.object({
+    nameConflictUlidType:  zod.array(zod.string())
 });
-export type nameConflictsTypes = z.infer<typeof nameConflicts>;
+export type nameConflictsTypes = zod.infer<typeof nameConflicts>;
 
-const otherConflicts = z.record(z.literal('other'), z.array(z.string()));
-export type otherConflictType = z.infer<typeof otherConflicts>;
+const otherConflicts = zod.record(zod.literal('other'), zod.array(zod.string()));
+export type otherConflictType = zod.infer<typeof otherConflicts>;
 
-export const ConflictDatum = z.object({
-    name: z.string(),
-    members: z.array(z.string()),
-    others: z.array(z.string()).optional(),
-    books: z.array(standardSkillBook).optional()
+export const ConflictDatum = zod.object({
+    name: zod.string(),
+    members: zod.array(zod.string()),
+    others: zod.array(zod.string()).optional(),
+    books: zod.array(standardSkillBook).optional()
 });
-export type ConflictDatumType = z.infer<typeof ConflictDatum>;
+export type ConflictDatumType = zod.infer<typeof ConflictDatum>;
 
-export const ConflictArray = z.array(ConflictDatum);
+export const ConflictArray = zod.array(ConflictDatum);
 
-export type ConflictArrayType = z.infer<typeof ConflictArray>;
+export type ConflictArrayType = zod.infer<typeof ConflictArray>;

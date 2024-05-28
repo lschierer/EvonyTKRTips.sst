@@ -1,18 +1,18 @@
-import {z} from 'zod';
+import {z as zod} from 'zod';
 
 import * as b from './baseSchemas';
 
 
-export const generalRole = z.enum(['primary','secondary']);
-export type generalRoleType = z.infer<typeof generalRole>;
-export  const generalSpecialists = z.enum([
+export const generalRole = zod.enum(['primary','secondary']);
+export type generalRoleType = zod.infer<typeof generalRole>;
+export  const generalSpecialists = zod.enum([
   ...b.ClassEnum.options,
   "Wall",
   "Mayor"
 ]);
-export type generalSpecialistsType = z.infer<typeof generalSpecialists>;
+export type generalSpecialistsType = zod.infer<typeof generalSpecialists>;
 
-export const generalUseCase = z.enum([
+export const generalUseCase = zod.enum([
     "all",
     "Monsters",
     "Attack",
@@ -22,46 +22,46 @@ export const generalUseCase = z.enum([
     "Mayor"
   ]);
 
-export type generalUseCaseType = z.infer<typeof generalUseCase>;
+export type generalUseCaseType = zod.infer<typeof generalUseCase>;
 
-export const Display = z.enum([
+export const Display = zod.enum([
   "primary",
   "assistant",
   "summary",
 ]);
-export type DisplayType = z.infer<typeof Display>;
+export type DisplayType = zod.infer<typeof Display>;
 
-export const Note = z.object({
-    "text": z.string(),
+export const Note = zod.object({
+    "text": zod.string(),
     "severity": b.syslogSeverity,
 });
-export type NoteType = z.infer<typeof Note>;
+export type NoteType = zod.infer<typeof Note>;
 
-export const Ascending = z.object({
+export const Ascending = zod.object({
     "level": b.AscendingLevels,
-    "buff": z.array(b.Buff),
+    "buff": zod.array(b.Buff),
 });
-export type AscendingType = z.infer<typeof Ascending>;
+export type AscendingType = zod.infer<typeof Ascending>;
 
-export const totalBuffs = z.object({
-    attack: z.number(),
-    defense: z.number(),
-    hp: z.number(),
-    march: z.number(),
+export const totalBuffs = zod.object({
+    attack: zod.number(),
+    defense: zod.number(),
+    hp: zod.number(),
+    march: zod.number(),
 });
-export type totalBuffsType = z.infer<typeof totalBuffs>;
+export type totalBuffsType = zod.infer<typeof totalBuffs>;
 
-export const GeneralClass = z.object({
-    name: z.string(),
+export const GeneralClass = zod.object({
+    name: zod.string(),
     display: Display.optional(),
-    leadership: z.number(),
-    leadership_increment: z.number(),
-    attack: z.number(),
-    attack_increment: z.number(),
-    defense: z.number(),
-    defense_increment: z.number(),
-    politics: z.number(),
-    politics_increment: z.number(),
+    leadership: zod.number(),
+    leadership_increment: zod.number(),
+    attack: zod.number(),
+    attack_increment: zod.number(),
+    defense: zod.number(),
+    defense_increment: zod.number(),
+    politics: zod.number(),
+    politics_increment: zod.number(),
     level: b.levels,
     stars: b.levels.refine((l) => {
         if(l !== null && l !== undefined ) {
@@ -85,23 +85,23 @@ export const GeneralClass = z.object({
         return false;
       }).nullish(),
     score_as: generalSpecialists,
-    specialities: z.array(z.string()).nullish(),
-    books: z.array(z.string()).nullish(),
-    ascending: z.array(Ascending).nullish(),
-    note: z.array(Note).nullish(),
+    specialities: zod.array(zod.string()).nullish(),
+    books: zod.array(zod.string()).nullish(),
+    ascending: zod.array(Ascending).nullish(),
+    note: zod.array(Note).nullish(),
     totalBuffs: totalBuffs.nullish(),
 });
-export type GeneralClassType = z.infer<typeof GeneralClass>;
+export type GeneralClassType = zod.infer<typeof GeneralClass>;
 
-export const GeneralElement = z.object({
+export const GeneralElement = zod.object({
     general: GeneralClass,
 });
-export type GeneralElementType = z.infer<typeof GeneralElement>;
+export type GeneralElementType = zod.infer<typeof GeneralElement>;
 
-export const GeneralArray = z.array(GeneralElement);
-export type GeneralArrayType = z.infer<typeof GeneralArray>;
+export const GeneralArray = zod.array(GeneralElement);
+export type GeneralArrayType = zod.infer<typeof GeneralArray>;
 
-export const CovenantAttributeCategory = z.enum([
+export const CovenantAttributeCategory = zod.enum([
   "War Covenant",
   "Cooperation Covenant",
   "Peace Covenant",
@@ -110,19 +110,19 @@ export const CovenantAttributeCategory = z.enum([
   "Civilization Covenant",
 ])
 
-export type CovenantAttributeCategoryType = z.infer<typeof CovenantAttributeCategory>;
+export type CovenantAttributeCategoryType = zod.infer<typeof CovenantAttributeCategory>;
 
-export const CovenantAttribute = z.object({
+export const CovenantAttribute = zod.object({
   "category": CovenantAttributeCategory,
-  "type": z.enum(['personal','passive']),
-  "buff": z.array(b.Buff),
+  "type": zod.enum(['personal','passive']),
+  "buff": zod.array(b.Buff),
 });
 
-export type CovenantAttributeType = z.infer<typeof CovenantAttribute>;
+export type CovenantAttributeType = zod.infer<typeof CovenantAttribute>;
 
-export const Covenant = z.object({
-  "name": z.string(),
-  "generals": z.string().array(),
-  "attributes": z.array(CovenantAttribute).optional(),
+export const Covenant = zod.object({
+  "name": zod.string(),
+  "generals": zod.string().array(),
+  "attributes": zod.array(CovenantAttribute).optional(),
 })
 

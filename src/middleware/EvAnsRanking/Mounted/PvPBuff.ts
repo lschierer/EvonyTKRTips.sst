@@ -11,21 +11,6 @@ import {
   UnitSchema,
 } from "@schemas/baseSchemas";
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import { MountedPvPAttackAttributeMultipliers } from "@lib/EvAnsAttributeRanking";
 
 const DEBUG_GBUFF = false
@@ -56,7 +41,7 @@ export const PvPBuff = z
           tb.condition.includes(Condition.enum.When_Defending_Outside_The_Main_City) ||
           tb.condition.includes(Condition.enum.When_City_Mayor) ||
           tb.condition.includes(Condition.enum.When_City_Mayor_for_this_SubCity) ||
-          tb.condition.includes(Condition.enum.When_Not_Mine) ||
+          tb.condition.includes(Condition.enum['When not mine']) ||
           tb.condition.includes(Condition.enum.When_an_officer)) {
           //none of These apply to PvP attacking
           if (DEBUG) {

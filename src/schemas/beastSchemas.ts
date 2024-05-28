@@ -1,20 +1,20 @@
-import {z} from 'zod';
+import {z as zod} from 'zod';
 
 import * as b from './baseSchemas';
 
-export const beast = z.object({
-    name: z.string(),
+export const beast = zod.object({
+    name: zod.string(),
     quality: b.qualityColor,
-    level: z.number().refine((n) => (n > 0 && n <= 20))
+    level: zod.number().refine((n) => (n > 0 && n <= 20))
 })
-export const dragon = z.object({
-    name: z.string(),
+export const dragon = zod.object({
+    name: zod.string(),
     level: b.levels,
-    refines: z.array(b.buffUnion).optional(),
-    talents: z.array(z.object({
-        name: z.string(),
-        level: z.number(),
-        grants: z.union([b.buffUnion, z.array(b.buffUnion)])
+    refines: zod.array(b.buffUnion).optional(),
+    talents: zod.array(zod.object({
+        name: zod.string(),
+        level: zod.number(),
+        grants: zod.union([b.buffUnion, zod.array(b.buffUnion)])
     })).optional()
 })
 

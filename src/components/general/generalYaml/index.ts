@@ -26,6 +26,8 @@ import '@spectrum-web-components/status-light/sp-status-light.js';
 import '@spectrum-web-components/table/elements.js';
 import '@spectrum-web-components/textfield/sp-textfield.js';
 import '@spectrum-web-components/tooltip/sp-tooltip.js';
+import { Picker } from '@spectrum-web-components/picker'
+import { Button } from '@spectrum-web-components/button'
 import { Checkbox } from '@spectrum-web-components/checkbox';
 import { NumberField } from '@spectrum-web-components/number-field';
 
@@ -172,7 +174,7 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
         }
       } else {
         addValue((target as Element).id, (target as Textfield).value);
-        if (((target as Textfield).value !== '') && (target.value !== false)) {
+        if (((target as Textfield).value !== '') ) {
           this.buffEventPending[(target as Element).id] = true;
         } else {
           this.buffEventPending[(target as Element).id] = false;

@@ -1,14 +1,14 @@
-import {z} from 'zod';
+import {z as zod} from 'zod';
 
 import * as b from './baseSchemas';
 
-export const artTreasureSchema = z.object({
-    art: z.object({
-        name: z.string(),
+export const artTreasureSchema = zod.object({
+    art: zod.object({
+        name: zod.string(),
         level: b.levels,
-        buff: z.union([b.Buff, z.array(b.Buff)])
+        buff: zod.union([b.Buff, zod.array(b.Buff)])
     })
 })
 
-export type artTreasure = z.infer<typeof artTreasureSchema>;
+export type artTreasure = zod.infer<typeof artTreasureSchema>;
 
