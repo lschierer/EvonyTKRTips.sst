@@ -1,47 +1,26 @@
 ---
 export const prerender = false;
 
-import { getCollection, type CollectionEntry, z } from "astro:content";
+import { getCollection, type CollectionEntry, } from "astro:content";
 import type { ComponentProps } from "astro/types";
 
-import { ulid } from "ulidx";
 
 import {delay} from 'nanodelay';
 
-import { DisplayGrid} from './display-grid';
+//import { DisplayGrid} from './display-grid';
 
 
 import {
   AscendingLevels,
-  type BuffType,
   type BuffParamsType,
   ClassEnum,
   type ClassEnumType,
-  Condition,
-  type levelsType,
   qualityColor,
-  type qualityColorType,
-  syslogSeverity,
-} from "@schemas/baseSchemas";
-
-import {
-  ConflictArray, 
-  ConflictDatum,   
-  type bookConflictsType,
-  type ConflictDatumType,
- } from '@schemas/conflictSchemas'
+ } from "@schemas/baseSchemas";
 
  import {
-  Note,
-  Display,
-  type NoteType,
-  GeneralArray,
-  type GeneralClassType,
   GeneralElement,
-  type GeneralArrayType,
   type GeneralElementType,
-  generalSpecialists,
-  type generalUseCaseType,
  } from '@schemas/generalsSchema'
 
  import { 
@@ -49,14 +28,6 @@ import {
   ExtendedGeneralStatus,
   type GeneralPairType,
   } from "@schemas/ExtendedGeneral";
-
-import { 
-  type BookType,
-  specialSkillBook,
-  standardSkillBook,
-  type specialSkillBookType,
-  type standardSkillBookType,
- } from "@schemas/bookSchemas";
 
 const DEBUG = false;
 
@@ -66,7 +37,7 @@ interface Props {
 
 const {generalClass} = Astro.props;
 
-const table_name = `${Astro.url.pathname}-${ulid()}`
+//const table_name = `${Astro.url.pathname}-${ulid()}`
 
 let allGenerals = new Array<GeneralElementType>();
 
