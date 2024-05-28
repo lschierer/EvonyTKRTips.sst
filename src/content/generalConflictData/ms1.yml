@@ -1,8 +1,8 @@
-conflicts:
-  01HGKYRN4Y9B5JHDXSPJ7CTDR5:
+name: 01HGKYRN4Y9B5JHDXSPJ7CTDR5
+members:
     - King Arthur
     - Genghis Khan
-  other:
+others:
     - George A. Custer
     - Barbarossa
     - Alessandra

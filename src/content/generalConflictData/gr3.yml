@@ -1,11 +1,11 @@
-conflicts:
-  01HFAN5ZMCSHAWD028MCRBCV8F:
+name: 01HFAN5ZMCSHAWD028MCRBCV8F
+members:
     - Turenne
     - Soult
     - Epaminondas
     - Oda Nobunaga
     - Frigg
-  other:
+others:
     - Sweyn Forkbeard
 books:
   - name: Ground Attack Increase

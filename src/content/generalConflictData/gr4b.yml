@@ -1,8 +1,8 @@
-conflicts: 
-  01HP2TR3PTFK066SAASGKZ3QZP:
+name:  01HP2TR3PTFK066SAASGKZ3QZP
+members:
     - Peter the Great
     - Miyamoto Muashi
-  other:
+others:
     - Trajan
     - Robert the Bruce
 books:

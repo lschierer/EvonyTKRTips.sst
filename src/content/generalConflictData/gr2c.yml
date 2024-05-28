@@ -1,7 +1,7 @@
-conflicts:
-  01HP2TFCH5K86KJJ3JABRJR1PA:
+name: 01HP2TFCH5K86KJJ3JABRJR1PA
+members:
     - Basil II
-  other:
+others:
     - Hannibal
     - Yue Fei
     - El Cid

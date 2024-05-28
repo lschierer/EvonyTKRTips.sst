@@ -1,8 +1,8 @@
-conflicts:
-  01HPNDW5NNX2YBJW5B8X2YA2CR:
+name: 01HPNDW5NNX2YBJW5B8X2YA2CR
+members:
     - Napoleon Prime
     - Roland
-  other:
+others:
     - Lysander
     - Gaius Octavius
     - Bertrand du Guesclin

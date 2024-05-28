@@ -1,10 +1,10 @@
-conflicts:
-  01HFAMX07D2KBABPP6DJ14QVWM:
+name: 01HFAMX07D2KBABPP6DJ14QVWM
+members:
     - Aurelian
     - Elise
     - Maeda Toshiie
     - Guan Yu
-  other:
+others:
     - Ludwig
     - Lu Xun
     - Scipio Africanus

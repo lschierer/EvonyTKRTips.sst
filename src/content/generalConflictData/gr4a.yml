@@ -1,7 +1,7 @@
-conflicts:
-  01HGMDZ3RKQCZ65ZNJFZT2GMK4:
+name: 01HGMDZ3RKQCZ65ZNJFZT2GMK4
+members:
     - Robert the Bruce
-  other:
+others:
     - Trajan
     - Takeda Shingen
 books:

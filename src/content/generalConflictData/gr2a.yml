@@ -1,7 +1,7 @@
-conflicts:
-  01HFAN0M66WN8QNZKMHPECEMPN:
+name: 01HFAN0M66WN8QNZKMHPECEMPN
+members:
     - Yue Fei
-  other:
+others:
     - Ludwig
     - Lu Xun
     - Scipio Africanus

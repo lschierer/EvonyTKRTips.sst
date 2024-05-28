@@ -1,7 +1,7 @@
-conflicts:
-  01HGKYPY04W83DD3DJJHVWQJD4:
+name: 01HGKYPY04W83DD3DJJHVWQJD4
+members:
     - El Cid
-  other:
+others:
     - Hannibal
     - Basil II
     - Poligenus

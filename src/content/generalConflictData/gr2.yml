@@ -1,7 +1,7 @@
-conflicts:
-  01HFAMYSW1A3MYZV7CV3MR3N86:
+name: 01HFAMYSW1A3MYZV7CV3MR3N86
+members:
     - Hannibal
-  other:
+others:
     - Basil II
     - Yue Fei
     - El Cid

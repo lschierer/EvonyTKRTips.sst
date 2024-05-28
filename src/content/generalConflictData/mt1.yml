@@ -1,11 +1,11 @@
-conflicts:
-  01HNP2VSPGA7AWKN10M2ABCR3G:
+name: 01HNP2VSPGA7AWKN10M2ABCR3G
+members:
     - Jayavarman II
     - Lysander
     - Gaius Octavius
     - Bertrand du Guesclin
     - Cyrus the Great
-  other:
+others:
     - George A. Custer
     - Barbarossa
     - Mordred

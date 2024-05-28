@@ -1,7 +1,7 @@
-conflicts:
-  01HXJ2PVV0BG123FRJ13G4XHWW:
-    - Scipio Africanus
-  other:
+name: 01HXJ2PVV0BG123FRJ13G4XHWW
+members: 
+  - Scipio Africanus
+others:
     - Ludwig
     - Aurelian
     - Elise

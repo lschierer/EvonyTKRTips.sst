@@ -1,7 +1,7 @@
-conflicts:
-  01HHE548WJ1PFH2B0W9SBN6QYR:
+name: 01HHE548WJ1PFH2B0W9SBN6QYR
+members:
     - Kleos
-  other:
+others:
     - Zucca
     - Petronas
     - John Churchill

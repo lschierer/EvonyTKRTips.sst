@@ -1,7 +1,7 @@
-conflicts:
-  01HGKYRNMJ9FH4NNQRZYWRF7CP:
+name: 01HGKYRNMJ9FH4NNQRZYWRF7CP
+members: 
     - El Cid
-  other:
+others:
     - Basil II
     - Hannibal
     - Yue Fei

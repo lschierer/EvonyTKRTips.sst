@@ -22,8 +22,10 @@ const otherConflicts = z.record(z.literal('other'), z.array(z.string()));
 export type otherConflictType = z.infer<typeof otherConflicts>;
 
 export const ConflictDatum = z.object({
-    "conflicts": z.record(z.string(), z.array(z.string())),
-    "books": z.array(standardSkillBook).optional(),
+    name: z.string(),
+    members: z.array(z.string()),
+    others: z.array(z.string()).optional(),
+    books: z.array(standardSkillBook).optional()
 });
 export type ConflictDatumType = z.infer<typeof ConflictDatum>;
 

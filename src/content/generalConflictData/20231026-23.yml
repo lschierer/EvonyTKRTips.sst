@@ -1,7 +1,7 @@
-conflicts:
-  01HGKYRJVY8JXVQNHCTGA5HYMD:
+name: 01HGKYRJVY8JXVQNHCTGA5HYMD
+members: 
     - Yue Fei
-  other:
+others:
     - Ludwig
     - Aurelian
     - Elise

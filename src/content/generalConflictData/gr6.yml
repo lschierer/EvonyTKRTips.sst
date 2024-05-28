@@ -1,7 +1,7 @@
-conflicts:
-  01HP34D6PR00VY31NQ79JWE4P1:
+name: 01HP34D6PR00VY31NQ79JWE4P1
+members:
     - Alessandra
-  other:
+others:
     - Suchet
     - Genghis Khan
     - King Arthur

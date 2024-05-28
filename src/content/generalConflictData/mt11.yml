@@ -1,8 +1,8 @@
-conflicts:
-  01HWNHKX7YWD90XKDGHGTXYP9E:
+name: 01HWNHKX7YWD90XKDGHGTXYP9E
+members:
     - Biabars
     - Cleopatra
-  other:
+others:
     - Theodora
 books:
   - name: Luck

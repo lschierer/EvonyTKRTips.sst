@@ -1,7 +1,7 @@
-conflicts:
-  01HGMDRGS3DCNQVMEHVN9GFG2P:
+name: 01HGMDRGS3DCNQVMEHVN9GFG2P
+members:
     - Trajan
-  other:
+others:
     - Robert the Bruce
     - Pyrrhus
     - Freyja

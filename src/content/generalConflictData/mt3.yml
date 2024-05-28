@@ -1,5 +1,5 @@
-conflicts:
-  01HGKYREYA79MNMCQ2B6MBV3N0:
+name: 01HGKYREYA79MNMCQ2B6MBV3N0
+members:
     - André Masséna
     - Laudon
     - Prince Eugene
@@ -9,7 +9,7 @@ conflicts:
     - Washington
     - Robert Guiscard
     - Xiang Yu
-  other:
+others:
     - Ii Naomasa
     - Honda Tadakatsu
     - Khalid

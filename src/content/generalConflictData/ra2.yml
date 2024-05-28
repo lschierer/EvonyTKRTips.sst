@@ -1,11 +1,11 @@
-conflicts:
-  01HES969S8E146GSF5ES358GWD:
+name: 01HES969S8E146GSF5ES358GWD
+members:
     - Elektra
     - Elektra (Dragon God)
     - Idunn
     - Idunn (Siege)
     - Vladimir the Great
-  other:
+others:
     - Antara
     - Edward the Black Prince
     - Harold III

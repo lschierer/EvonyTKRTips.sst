@@ -1,7 +1,7 @@
-conflicts:
-  01HKZV3MTX26HP9BCP5JT6HHVR:
+name: 01HKZV3MTX26HP9BCP5JT6HHVR
+members:
     - Sweyn Forkbeard
-  other:
+others:
     - Turenne
     - Soult
     - Epaminondas

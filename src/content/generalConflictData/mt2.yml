@@ -1,8 +1,8 @@
-conflicts:
-  01HGKYRCTHPN4ANGBP7G4R3QZX:
+name: 01HGKYRCTHPN4ANGBP7G4R3QZX
+members:
     - Zhao Yun
     - Yue Fei
-  other:
+others:
     - El Cid
     - Hannibal
     - Poligenus

@@ -1,7 +1,7 @@
-conflicts:
-  01HGKYRDEFYMQF984BMKHSND79:
+name: 01HGKYRDEFYMQF984BMKHSND79
+members:
     - Hannibal
-  other:
+others:
     - Lysander
     - Gaius Octavius
     - Bertrand du Guesclin

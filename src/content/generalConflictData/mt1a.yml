@@ -1,8 +1,8 @@
-conflicts:
-  01HPNDFH9P4Z5KEKM3JZH78Z7T:
+name: 01HPNDFH9P4Z5KEKM3JZH78Z7T
+members:
     - George A. Custer
     - Barbarossa
-  other:
+others:
     - Lysander
     - Gaius Octavius
     - Bertrand du Guesclin

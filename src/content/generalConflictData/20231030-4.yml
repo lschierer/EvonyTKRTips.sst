@@ -1,7 +1,7 @@
-conflicts:
-  01HGKXXRT5ARNCK525NRWQXQNR:
+name: 01HGKXXRT5ARNCK525NRWQXQNR
+members:
     - Kleos
-  other:
+others:
     - Zucca
     - Petronas
     - John Churchill

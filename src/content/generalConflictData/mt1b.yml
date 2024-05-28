@@ -1,7 +1,7 @@
-conflicts:
-  01HPNDQ4D8BADN1GWD6EAWRK7B:
+name: 01HPNDQ4D8BADN1GWD6EAWRK7B
+members:
     - Mordred
-  other:
+others:
     - Lysander
     - Gaius Octavius
     - Bertrand du Guesclin

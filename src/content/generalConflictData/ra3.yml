@@ -1,12 +1,12 @@
-conflicts:
-  01HGKZACGC0AYAHS0Y64XGRNK8:
+name: 01HGKZACGC0AYAHS0Y64XGRNK8
+members:
     - Antara
     - Harold III
     - Henry V
     - Jumong
     - Minamoto no Yoshitsune
     - Subutai
-  other:
+others:
     - Elektra
     - Elektra (Dragon God)
     - Vladimir the Great

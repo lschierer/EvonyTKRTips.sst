@@ -1,7 +1,7 @@
-conflicts:
-  01HGKZ0XGTEWDNKZGG6M7EKVZ5:
+name: 01HGKZ0XGTEWDNKZGG6M7EKVZ5
+members:
     - Raimondo
-  other:
+others:
     - Zucca
     - Petronas
     - John Churchill

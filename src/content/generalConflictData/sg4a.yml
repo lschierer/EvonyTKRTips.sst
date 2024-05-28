@@ -1,7 +1,7 @@
-conflicts:
-  01HPAJZZ5Q573K488SA2H9ZJQW:
+name: 01HPAJZZ5Q573K488SA2H9ZJQW
+members:
     - Isabella I
-  other:
+others:
     - Ulysses S. Grant
 books:
   - name: March Size Increase
