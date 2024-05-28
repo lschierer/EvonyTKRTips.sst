@@ -14,6 +14,7 @@ import {
   AscendingLevels,
   type BuffType,
   Condition,
+  type ConditionType,
   qualityColor,
   syslogSeverity,
 } from "@schemas/baseSchemas";
@@ -92,10 +93,6 @@ let starsLimit = 0;
 let starsHtml = " ";
 let level = 1;
 const intrinsic = ["leadership", "attack", "defense", "politics"];
-let conflictData: bookConflictsType[] = new Array<bookConflictsType>();
-let collectionArray:
-  | CollectionEntry<"generalConflictData">[]
-  | ConflictDatumType[];
 
 let data;
 
@@ -226,100 +223,92 @@ if (dataV.success) {
     }
   }
 
-  collectionArray = await getCollection("generalConflictData");
-  if (collectionArray !== null && collectionArray !== undefined) {
-    collectionArray = collectionArray.map((ca) => {
-      return ca.data;
-    });
-    const valid = ConflictArray.safeParse(collectionArray);
-    if (valid.success) {
-      for (let i = 0; i < valid.data.length; i++) {
-        let o1 = valid.data[i];
-        let valid2 = ConflictDatum.safeParse(o1);
-        if (valid2.success) {
-          let data: ConflictDatumType | undefined;
-          const o2: ConflictDatumType = valid2.data;
-          const o2Keys = Object.keys(o2);
-          const keyIndex = o2Keys.indexOf("conflicts");
-          if (keyIndex >= 0 && o2.conflicts) {
-            let conflicts = o2.conflicts;
-            for (const key in conflicts) {
-              if (key.localeCompare("other")) {
-                const items = conflicts[key];
-                const gc = new Set<string>();
-                items.forEach((g) => {
-                  gc.add(g);
-                });
-                if ([...gc].includes(general.name)) {
-                  if (
-                    valid2.data.books !== null &&
-                    valid2.data.books !== undefined
-                  ) {
-                    const books = { books: valid2.data.books };
-                    conflictData.push(books);
+  if(Array.isArray(Astro.locals.ConflictData) && Astro.locals.ConflictData.length > 0){
+    
+    const relevantConflicts = Astro.locals.ConflictData.filter((cDatum: ConflictDatumType) => {
+      if(cDatum !== undefined && cDatum !== null ) {
+        const c: string[] = cDatum.members.flat();
+        if(Array.isArray(cDatum.others)) {
+          c.push(...cDatum.others.flat())
+        }
+        if(c.includes(general.name) && 
+          Array.isArray(cDatum.books )){
+          return true
+        }
+      }
+      return false;
+      })
+      if(Array.isArray(relevantConflicts) && relevantConflicts.length > 0) {
+        usageNotes = relevantConflicts.reduce((accumulator: string, r: ConflictDatumType) => {
+          if(r === undefined || !Array.isArray(r.books)) {
+            return accumulator
+          } else {
+            const ConflictingBooks: Array<standardSkillBookType> = r.books;
+            let condition = "all the time.";
+            let warning = false;
+            if(!Array.isArray(ConflictingBooks) || ConflictingBooks.length === 0) {
+              return accumulator
+            } else {
+              return ConflictingBooks.reduce((a2: string, cBook: standardSkillBookType) => {
+                if(cBook === undefined || cBook === null)  {
+                  return a2
+                } else {
+                  if(!Array.isArray(cBook.buff) || cBook.buff.length === 0) {
+                    return a2
+                  } else {
+                    return cBook.buff.reduce((a3: string, bb: BuffType) => {
+                      if(bb === undefined || bb == null ) {
+                        return a3
+                      } else {
+                        let printableCondintion = 'all the time'
+                        let warning = false;
+                        if(Array.isArray(bb.condition) && bb.condition.length > 0) {
+                          if(bb.condition.includes(Condition.enum["When not mine"])) {
+                            printableCondintion = "when the book is on my paired general.";
+                            warning = true;
+                            return `
+                            <aside class='starlight-aside ${severity[syslogSeverity.enum.warning]()}'>
+                              <p class="starlight-aside__title">
+                                General Conflict Notice
+                              </p>
+                              ${general.name} conflicts with the ${cBook.name} level ${cBook.level} skill book if the book is on the other general of the pair.
+                            </aside>
+                            `
+                          } else {
+                            let returnable ='';
+                            bb.condition.forEach((bc, index)=> {
+                              returnable = `${returnable} when ${(bc as string).replaceAll('_', ' ')}`
+                              if(Array.isArray(bb.condition) && index < (bb.condition?.length - 1)) {
+                                returnable = `${returnable}, and`
+                              }
+                            })
+                            return `
+                            <aside class='starlight-aside ${severity[syslogSeverity.enum.alert]()}'>
+                              <p class="starlight-aside__title">
+                                General Conflict Notice
+                              </p>
+                              ${general.name} conflicts with the ${cBook.name} level ${cBook.level} skill book ${returnable}.
+                              This conflict is affects all pairs, no matter where the skill book is placed within the pair. 
+                            </aside>
+                            `
+                            }
+                          }
+                        }
+                        return a3
+                      }, '')
                   }
                 }
-              }
+                return a2
+              }, "")
             }
           }
-        }
+          return accumulator
+        }, "")
+         
       }
-    }
   }
-  if (conflictData.length >= 1) {
-    conflictData = [conflictData].flat(1);
-    const result = conflictData.map((c) => {
-      if (
-        c !== null &&
-        c !== undefined &&
-        c.books !== null &&
-        c.books !== undefined
-      ) {
-        return c.books.map((book: standardSkillBookType) => {
-          let condition = "all the time.";
-          let warning = false;
-          for (let i = 0; i < book.buff.length; i++) {
-            const keys = Object.keys(book.buff[i]);
-            if (
-              book.buff[i].condition !== null &&
-              book.buff[i].condition !== undefined
-            ) {
-              if (book.buff[i].condition === Condition.enum.When_Not_Mine) {
-                condition = "when the book is on my paired general.";
-                warning = true;
-              } else {
-                condition = book.buff[i].condition as string;
-              }
-            } else {
-              condition = "all the time.";
-            }
-          }
-          return `
-                    <aside class='starlight-aside ${
-                      warning
-                        ? severity[syslogSeverity.enum.warning]()
-                        : severity[syslogSeverity.enum.alert]()
-                    }'
-                        >
-                        <p class="starlight-aside__title">
-                            General Conflict Notice
-                        </p>
-                        This general has conflicts with the ${book.name} level ${book.level} skill book.
-                        ${condition === Condition.enum.When_Not_Mine ? "This conflict is in effect when the book is on my assistant" : "This conflict is in effect all the time"} 
-                        
-                    </aside>
-                    `;
-        });
-      }
-    });
-    if (result !== undefined) {
-      result.forEach((r) => {
-        if (r !== undefined) {
-          r.forEach((r2) => (usageNotes = usageNotes.concat(r2)));
-        }
-      });
-    }
-  }
+
+  
 
   
 
@@ -370,9 +359,11 @@ const general = (Egeneral! !== undefined) ? Egeneral.general : null;
                 <span class="spectrum-Heading spectrum-Heading--sizeXXS">{book.name}</span>
                 {Array.isArray((book as specialSkillBookType).buff) && (
                   <ul class="non-content" id={book.name.toLocaleLowerCase().replace(/\s+/g, '_')}>
-                      {book.buff.map((b) => (
+                      {book.buff.map((b: BuffType) => (
                         <li >
-                            {b.condition ? (b.condition as string).replaceAll(/_/g, ' ') : ''} 
+                            {b.condition ? (b.condition.map((c: ConditionType) => {
+                              return (c as string).replaceAll(/_/g, ' ')
+                            })) : ''} 
                             {(b.class === undefined || b.class === null) ? '' : b.class !== 'all' ? b.class : 'all troops '} 
                             {b.attribute ? b.attribute.replaceAll(/_/g, ' ') : ''} 
                             {(b.value && b.value.number < 0) ? '-' : '+'}{b.value!.number}{b.value!.unit ? '%' : ''}
@@ -398,7 +389,9 @@ const general = (Egeneral! !== undefined) ? Egeneral.general : null;
                 <ul class="non-content">
                     {a.buff.map((b: BuffType) => (
                     <li class="non-content">
-                        {b.condition ? (b.condition as string).replaceAll(/_/g, ' '): ''} 
+                        {b.condition ? (b.condition.map((c: ConditionType) => {
+                              return (c as string).replaceAll(/_/g, ' ')
+                            })): ''} 
                         {(b.class === undefined || b.class === null) ? '' : b.class !== 'all' ? b.class : 'all troops '} 
                         {b.attribute? b.attribute.replaceAll(/_/g, ' ') : ''} 
                         {(b.value && b.value.number < 0) ? '-' : '+'}{b.value!.number}{b.value!.unit ? '%' : ''}
@@ -414,14 +407,14 @@ const general = (Egeneral! !== undefined) ? Egeneral.general : null;
   {general.specialities && (
     <span class="label spectrum-Heading spectrum-Heading--sizeXS">Specialities</span>
     <div class="Specialities non-content">
-        {Egeneral?.specialities.map((gs, index) => (
+        {Egeneral?.specialities.map((gs , index: number) => (
             <div class={"SpecialityName" + index + " non-content"}>
                 <span class="label spectrum-Heading spectrum-Heading--sizeXXS"> 
                     {gs.name}
                 </span>
             </div>
         ))}
-        {Egeneral?.specialities.map((gs, index) => (
+        {Egeneral?.specialities.map((gs, index: number) => (
             <div class={"Speciality" + index + " non-content"}>
                 {Array.isArray(gs.attribute) && gs.attribute.map((s) => (
                     <div class={"non-content " + s.level} >
@@ -434,7 +427,9 @@ const general = (Egeneral! !== undefined) ? Egeneral.general : null;
                                 {s.buff.map((b: BuffType) => (
                                     <>
                                         <li >
-                                            {b.condition ? (b.condition as string).replaceAll(/_/g, ' ') : ''} 
+                                            {b.condition ? (b.condition.map((c: ConditionType) => {
+                                              return (c as string).replaceAll(/_/g, ' ')
+                                            })) : ''} 
                                             {b.class !== 'all' ? b.class : 'all troops '} 
                                             {b.attribute ? b.attribute.replaceAll(/_/g, ' ') : ''} 
                                             {(b.value && b.value.number < 0) ? '-' : '+'}{b.value!.number}{b.value!.unit ? '%' : ''}
