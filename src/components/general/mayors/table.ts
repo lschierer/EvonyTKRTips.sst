@@ -1,70 +1,32 @@
-import { LitElement, html, css, type CSSResultGroup, type CSSResultArray, getCompatibleStyle, type PropertyValues, nothing } from "lit";
+import { html, css, type CSSResultGroup, type CSSResultArray, nothing } from "lit";
 import { customElement, property, state } from 'lit/decorators.js';
-import {when} from 'lit/directives/when.js';
-import {ifDefined} from 'lit/directives/if-defined.js';
 import { ref, createRef, type Ref } from 'lit/directives/ref.js';
 import { consume } from '@lit/context';
 
 const DEBUG = true;
 
-import {
-  AscendingLevels,
-  type BuffType,
-  type ClassEnumType,
-  Condition,
-  type levelsType,
-  qualityColor,
-  type qualityColorType,
-  syslogSeverity,
-} from "@schemas/baseSchemas";
+
+
+
+
+
 
 import {
-  ConflictArray, 
-  ConflictDatum,   
-  type bookConflictsType,
-  type ConflictDatumType,
- } from '@schemas/conflictSchemas'
-
- import {
-  Note,
-  Display,
-  type NoteType,
-  GeneralArray,
-  type GeneralClassType,
-  GeneralElement,
   type GeneralArrayType,
-  type GeneralElementType,
-  generalSpecialists,
-  type generalUseCaseType,
  } from '@schemas/generalsSchema'
 
- import { 
-  type ExtendedGeneralType,
-  ExtendedGeneralStatus,
-  } from "@schemas/ExtendedGeneral";
+ 
 
-import { 
-  type BookType,
-  specialSkillBook,
-  standardSkillBook,
-  type specialSkillBookType,
-  type standardSkillBookType,
- } from "@schemas/bookSchemas";
 
-import {
-  type generalTypeAndUse, 
-  type generalInvestment,  
+
+
+
+import {  
   generalsContext,
 } from "./contexts"
 
 import {
-  Table,
-  type TableBody,
-  type TableCell,
-  type TableCheckboxCell,
-  type TableHead,
-  type TableHeadCell,
-  type TableRow
+  Table
 } from '@spectrum-web-components/table';
 import { SpectrumElement, type PropertyValueMap } from "@spectrum-web-components/base";
 import '@spectrum-web-components/table/elements.js';

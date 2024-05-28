@@ -2,13 +2,7 @@ import { LitElement, html, css, type PropertyValues} from "lit";
 import {customElement, property, state} from 'lit/decorators.js';
 
 import type {
-    Table,
-    TableBody,
-    TableCell,
-    TableCheckboxCell,
-    TableHead,
-    TableHeadCell,
-    TableRow
+    Table
 } from '@spectrum-web-components/table';
 import '@spectrum-web-components/table/elements.js';
 

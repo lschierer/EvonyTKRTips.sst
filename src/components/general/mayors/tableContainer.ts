@@ -1,61 +1,34 @@
-import { LitElement, html, type PropertyValues, type PropertyValueMap, nothing } from "lit";
-import { customElement, property, state } from 'lit/decorators.js';
+import { LitElement, html, type PropertyValueMap, nothing } from "lit";
+import { customElement, property } from 'lit/decorators.js';
 import {when} from 'lit/directives/when.js';
 
-import { provide, createContext, ContextProvider } from '@lit/context';
+import { provide } from '@lit/context';
 
-import {
-  type generalTypeAndUse, 
+import { 
   type generalInvestment, 
   generalsContext,
 } from "./contexts"
 
 import {
-  AscendingLevels,
-  type BuffType,
-  type ClassEnumType,
-  Condition,
-  type levelsType,
   qualityColor,
-  type qualityColorType,
-  syslogSeverity,
 } from "@schemas/baseSchemas";
 
-import {
-  ConflictArray, 
-  ConflictDatum,   
-  type bookConflictsType,
-  type ConflictDatumType,
- } from '@schemas/conflictSchemas'
 
- import {
-  Note,
-  Display,
-  type NoteType,
+
+
+import {
   GeneralArray,
-  type GeneralClassType,
-  GeneralElement,
   type GeneralArrayType,
   type GeneralElementType,
-  generalSpecialists,
-  type generalUseCaseType,
  } from '@schemas/generalsSchema'
 
- import { 
-  type ExtendedGeneralType,
-  ExtendedGeneralStatus,
-  } from "@schemas/ExtendedGeneral";
-
-import { 
-  type BookType,
-  specialSkillBook,
-  standardSkillBook,
-  type specialSkillBookType,
-  type standardSkillBookType,
- } from "@schemas/bookSchemas";
+ 
 
 
-import { GeneralTable } from './table';
+
+
+
+
 
 @customElement("table-container")
 export class TableContainer extends LitElement {

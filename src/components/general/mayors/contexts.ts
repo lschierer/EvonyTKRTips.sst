@@ -1,45 +1,23 @@
-import { provide, createContext, ContextProvider } from '@lit/context';
+import { createContext } from '@lit/context';
 
 import {
-  AscendingLevels,
-  type BuffType,
   type ClassEnumType,
-  Condition,
   type levelsType,
-  qualityColor,
   type qualityColorType,
-  syslogSeverity,
 } from "@schemas/baseSchemas";
 
-import {
-  ConflictArray, 
-  ConflictDatum,   
-  type bookConflictsType,
-  type ConflictDatumType,
- } from '@schemas/conflictSchemas'
 
- import {
-  Note,
-  Display,
-  type NoteType,
-  GeneralArray,
-  GeneralElement,
+
+
+import {
   type GeneralArrayType,
-  type GeneralElementType,
-  generalSpecialists,
   type generalUseCaseType,
  } from '@schemas/generalsSchema'
 
- import { 
-  type ExtendedGeneralType,
-  ExtendedGeneralStatus,
-  } from "@schemas/ExtendedGeneral";
+ 
 
-import { 
-  type BookType,
-  specialSkillBook,
-  standardSkillBook,
-  type specialSkillBookType,
+
+import {
   type standardSkillBookType,
  } from "@schemas/bookSchemas";
 

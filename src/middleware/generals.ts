@@ -6,48 +6,22 @@ import {z} from 'zod';
 import { BaseN } from "js-combinatorics";
 
 import {
-  ActivationSituations,
-  type ActivationSituationsType,
   AscendingLevels,
-  Attribute,
-  Buff,
-  type BuffType,
   BuffParams,
   type BuffParamsType,
-  ClassEnum,
-  type ClassEnumType,
-  Condition,
-  type ConditionType,
-  type levelsType,
   qualityColor,
-  type qualityColorType,
-  syslogSeverity,
-  UnitSchema,
   
 } from "@schemas/baseSchemas";
 
-import {
-  ConflictArray, 
-  ConflictDatum,   
-  type bookConflictsType,
+import { 
+  ConflictDatum,
   type ConflictDatumType,
  } from '@schemas/conflictSchemas'
 
  import {
-  Note,
   Display,
-  type DisplayType,
-  type NoteType,
-  GeneralArray,
   GeneralClass,
-  type GeneralClassType,
-  GeneralElement,
-  type GeneralArrayType,
-  type GeneralElementType,
-  generalSpecialists,
   generalUseCase,
-  type generalUseCaseType,
-  type generalSpecialistsType,
  } from '@schemas/generalsSchema'
 
  import {
@@ -65,8 +39,6 @@ import {
 import { 
   Book,
   type BookType,
-  specialSkillBook,
-  standardSkillBook,
   type specialSkillBookType,
   type standardSkillBookType,
  } from "@schemas/bookSchemas";
@@ -389,7 +361,7 @@ export const DisplayGeneralsMW = defineMiddleware(
               return;
             }
             if(Array.isArray(locals.CachedPairs) && locals.CachedPairs.length > 0) {
-              let preset: GeneralPairType = locals.CachedPairs.find((pair: GeneralPairType) => {
+              const preset: GeneralPairType = locals.CachedPairs.find((pair: GeneralPairType) => {
                 if(!pair.primary.localeCompare(primary.general.name)) {
                   if(!pair.secondary.localeCompare(secondary.general.name)) {
                     return true;

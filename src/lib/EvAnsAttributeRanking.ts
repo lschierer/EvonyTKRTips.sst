@@ -1,10 +1,7 @@
 //based on https://www.evonyanswers.com/post/evony-answers-attribute-methodology-explanation
-import {z} from 'zod';
 
-import * as b from "../schemas/baseSchemas";
 
 import {
-  type ScoreWeightings as ScoreWeightingsType,
   type PvPAttributeMultipliers as PvPAttributeMultipliersType,
 } from '../schemas/EvAns.zod'
 

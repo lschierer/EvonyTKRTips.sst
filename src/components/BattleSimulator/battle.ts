@@ -1,7 +1,5 @@
-import { css, html, type CSSResultArray, type PropertyValueMap, type TemplateResult, nothing } from "lit";
-import { property, state } from 'lit/decorators.js';
-import { classMap } from 'lit/directives/class-map.js';
-import { createRef, ref, type Ref } from 'lit/directives/ref.js';
+import { css, html, type CSSResultArray, type PropertyValueMap } from "lit";
+import { state } from 'lit/decorators.js';
 
 import { withStores } from "@nanostores/lit";
 
@@ -24,8 +22,6 @@ import '@spectrum-web-components/switch/sp-switch.js';
 import '@spectrum-web-components/textfield/sp-textfield.js';
 import '@spectrum-web-components/tooltip/sp-tooltip.js';
 import { NumberField } from '@spectrum-web-components/number-field';
-import { Picker } from '@spectrum-web-components/picker';
-import { Switch } from '@spectrum-web-components/switch';
 
 
 
@@ -33,9 +29,7 @@ import { Switch } from '@spectrum-web-components/switch';
 import { addValue, getValue, formValues } from '../formValueStore';
 
 import { Tier, type TierType } from "@schemas/troopsSchemas.ts"
-import { statusLights, type statusLightsType } from "@schemas/statusLightsSchema.ts";
 
-import * as b from "@schemas/baseSchemas";
 
 
 import { EvonySiege } from "./siege";

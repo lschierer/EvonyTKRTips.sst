@@ -1,52 +1,21 @@
 import {
     ActivationSituations,
     type ActivationSituationsType,
-    AscendingLevels,
-    type BuffType,
-    type BuffParamsType,
-    ClassEnum,
-    type ClassEnumType,
     Condition,
     type ConditionType,
-    type levelsType,
-    qualityColor,
-    type qualityColorType,
-    syslogSeverity,
   } from "@schemas/baseSchemas";
   
-  import {
-    ConflictArray, 
-    ConflictDatum,   
-    type bookConflictsType,
-    type ConflictDatumType,
-   } from '@schemas/conflictSchemas'
   
-   import {
-    Note,
-    Display,
-    type NoteType,
-    GeneralArray,
-    type GeneralClassType,
-    GeneralElement,
-    type GeneralArrayType,
-    type GeneralElementType,
-    generalSpecialists,
-    type generalUseCaseType,
-   } from '@schemas/generalsSchema'
-  
-   import { 
-    type ExtendedGeneralType,
-    ExtendedGeneralStatus,
-    type GeneralPairType,
-    } from "@schemas/ExtendedGeneral";
-  
-  import { 
-    type BookType,
-    specialSkillBook,
-    standardSkillBook,
-    type specialSkillBookType,
-    type standardSkillBookType,
-   } from "@schemas/bookSchemas";
+
+
+
+
+
+
+
+
+
+
 
 type BuffEffectiveMap = Record<ActivationSituationsType, (condition: ConditionType) => boolean>;
 

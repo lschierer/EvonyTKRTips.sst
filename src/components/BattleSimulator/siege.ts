@@ -1,7 +1,5 @@
-import { css, html, type CSSResultArray, type PropertyValueMap, type TemplateResult, nothing } from "lit";
-import { property, state } from 'lit/decorators.js';
-import { classMap } from 'lit/directives/class-map.js';
-import { createRef, ref, type Ref } from 'lit/directives/ref.js';
+import { css, html, type CSSResultArray, type PropertyValueMap } from "lit";
+import { property } from 'lit/decorators.js';
 
 import { withStores } from "@nanostores/lit";
 
@@ -9,10 +7,9 @@ const DEBUG = true;
 
 import { SpectrumElement } from '@spectrum-web-components/base';
 
-import {addValue, formValues } from '../formValueStore';
+import { formValues } from '../formValueStore';
 
 import {Tier, type TierType} from "@schemas/troopsSchemas.ts" 
-import { statusLights, type statusLightsType } from "@schemas/statusLightsSchema.ts";
 
 import * as b from "@schemas/baseSchemas";
 

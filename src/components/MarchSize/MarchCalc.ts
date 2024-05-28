@@ -1,7 +1,5 @@
-import { css, html, type CSSResultArray, type PropertyValueMap, type TemplateResult, nothing } from "lit";
+import { css, html, type CSSResultArray, type PropertyValueMap, nothing } from "lit";
 import { state } from 'lit/decorators.js';
-import { classMap } from 'lit/directives/class-map.js';
-import { createRef, ref, type Ref } from 'lit/directives/ref.js';
 
 import { withStores } from "@nanostores/lit";
 

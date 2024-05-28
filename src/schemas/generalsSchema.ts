@@ -2,8 +2,6 @@ import {z} from 'zod';
 
 import * as b from './baseSchemas';
 
-import {Book, specialSkillBook, standardSkillBook, } from './bookSchemas';
-import { Speciality } from "./specialitySchema";
 
 export const generalRole = z.enum(['primary','secondary']);
 export type generalRoleType = z.infer<typeof generalRole>;

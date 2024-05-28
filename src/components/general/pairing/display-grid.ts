@@ -1,56 +1,25 @@
 
-import { delay } from "nanodelay"
 
 import {
   AscendingLevels,
-  type BuffType,
   type BuffParamsType,
-  ClassEnum,
-  type ClassEnumType,
-  Condition,
-  type levelsType,
   qualityColor,
-  type qualityColorType,
-  syslogSeverity,
 } from "@schemas/baseSchemas";
 
+
+
+
+
+
+
 import {
-  ConflictArray, 
-  ConflictDatum,   
-  type bookConflictsType,
-  type ConflictDatumType,
- } from '@schemas/conflictSchemas'
-
- import {
-  Note,
-  Display,
-  type NoteType,
-  GeneralArray,
-  type GeneralClassType,
-  GeneralElement,
-  type GeneralArrayType,
-  type GeneralElementType,
-  generalSpecialists,
-  type generalUseCaseType,
- } from '@schemas/generalsSchema'
-
- import { 
-  type ExtendedGeneralType,
-  ExtendedGeneralStatus,
   type GeneralPairType as GeneralPairSchemaType,
   } from "@schemas/ExtendedGeneral";
 
-import { 
-  type BookType,
-  specialSkillBook,
-  standardSkillBook,
-  type specialSkillBookType,
-  type standardSkillBookType,
- } from "@schemas/bookSchemas";
 
-import { 
-  type ColDef,
-  type ColGroupDef,
+
+
+import {
   GridApi,
   type GridOptions,
   ModuleRegistry,
@@ -64,11 +33,8 @@ ModuleRegistry.registerModules([ClientSideRowModelModule]);
 
 const DEBUG = true
 
-import { nothing } from 'lit'
-import { customElement, property, state } from "lit/decorators.js"
-import { classMap } from "lit/directives/class-map.js"
-import { ref, type Ref, createRef } from "lit/directives/ref.js"
-import {when} from 'lit/directives/when.js'
+import { customElement, property } from "lit/decorators.js"
+import { ref } from "lit/directives/ref.js"
 
 import {
   SizedMixin,

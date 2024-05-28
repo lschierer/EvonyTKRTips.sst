@@ -1,43 +1,18 @@
 import {z} from 'zod';
 
 import {
-  ActivationSituations,
-  type ActivationSituationsType,
-  AscendingLevels,
-  type BuffType,
   BuffParams,
   type BuffParamsType,
-  ClassEnum,
-  type ClassEnumType,
-  Condition,
-  type ConditionType,
-  type levelsType,
   qualityColor,
-  type qualityColorType,
-  syslogSeverity,
 } from "@schemas/baseSchemas";
 
+
+
+
+
+
+
 import {
-  ConflictArray, 
-  ConflictDatum,   
-  type bookConflictsType,
-  type ConflictDatumType,
- } from '@schemas/conflictSchemas'
-
- import {
-  Note,
-  Display,
-  type NoteType,
-  GeneralArray,
-  type GeneralClassType,
-  GeneralElement,
-  type GeneralArrayType,
-  type GeneralElementType,
-  generalSpecialists,
-  type generalUseCaseType,
- } from '@schemas/generalsSchema'
-
- import {
   Speciality,
   type SpecialityType,
  } from '@schemas/specialitySchema'
@@ -45,17 +20,10 @@ import {
  import { 
   ExtendedGeneral,
   type ExtendedGeneralType,
-  ExtendedGeneralStatus,
-  type GeneralPairType,
   } from "@schemas/ExtendedGeneral";
 
-import { 
-  type BookType,
-  specialSkillBook,
-  standardSkillBook,
-  type specialSkillBookType,
-  type standardSkillBookType,
- } from "@schemas/bookSchemas";
+
+
 
 import { PvPBuff } from "./PvPBuff";
 

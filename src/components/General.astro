@@ -243,7 +243,7 @@ if (dataV.success) {
           if(r === undefined || !Array.isArray(r.books)) {
             return accumulator
           } else {
-            const ConflictingBooks: Array<standardSkillBookType> = r.books;
+            const ConflictingBooks: standardSkillBookType[] = r.books;
             let condition = "all the time.";
             let warning = false;
             if(!Array.isArray(ConflictingBooks) || ConflictingBooks.length === 0) {

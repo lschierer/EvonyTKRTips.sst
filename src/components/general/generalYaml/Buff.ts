@@ -1,39 +1,31 @@
-import { type ReactiveController, type ReactiveControllerHost, html, css, type PropertyValues, type CSSResultArray, type PropertyValueMap} from "lit";
-import {customElement, property, state} from 'lit/decorators.js';
-import {ref, createRef,  type Ref} from 'lit/directives/ref.js';
+import { type ReactiveController, type ReactiveControllerHost, html} from "lit";
 import { StoreController } from "@nanostores/lit";
 
 const DEBUG = false;
 
 
-import { SpectrumElement } from '@spectrum-web-components/base';
 
 import '@spectrum-web-components/button/sp-button.js';
 import '@spectrum-web-components/card/sp-card.js';
 import '@spectrum-web-components/checkbox/sp-checkbox.js';
 import '@spectrum-web-components/table/elements.js';
-import { FieldGroup } from '@spectrum-web-components/field-group';
 import '@spectrum-web-components/field-group/sp-field-group.js';
 import '@spectrum-web-components/field-label/sp-field-label.js';
 import '@spectrum-web-components/help-text/sp-help-text.js';
 import '@spectrum-web-components/menu/sp-menu-group.js';
 import '@spectrum-web-components/menu/sp-menu-item.js';
 import '@spectrum-web-components/menu/sp-menu-divider.js';
-import { NumberField } from '@spectrum-web-components/number-field';
 import '@spectrum-web-components/number-field/sp-number-field.js';
 import '@spectrum-web-components/picker/sp-picker.js';
-import { Picker } from '@spectrum-web-components/picker';
 import '@spectrum-web-components/split-view/sp-split-view.js';
 import '@spectrum-web-components/status-light/sp-status-light.js';
-import { Textfield } from '@spectrum-web-components/textfield';
 import '@spectrum-web-components/textfield/sp-textfield.js';
 import '@spectrum-web-components/tooltip/sp-tooltip.js';
 import '@spectrum-web-components/switch/sp-switch.js';
 
 
-import { parse, stringify } from 'yaml'
 
-import {addValue, getValue, formValues } from '../../formValueStore';
+import { getValue, formValues } from '../../formValueStore';
 
 
 import * as b from '@schemas/baseSchemas.ts'

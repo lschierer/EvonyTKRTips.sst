@@ -1,4 +1,3 @@
-import {  atom } from 'nanostores'
 import { persistentAtom } from '@nanostores/persistent'
 import { logger } from '@nanostores/logger'
 

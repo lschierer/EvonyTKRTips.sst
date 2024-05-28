@@ -1,67 +1,31 @@
 import {z} from 'zod';
 
 import {
-  ActivationSituations,
-  type ActivationSituationsType,
-  AscendingLevels,
-  Attribute,
-  Buff,
-  type BuffType,
   BuffParams,
   type BuffParamsType,
-  ClassEnum,
-  type ClassEnumType,
-  Condition,
-  type ConditionType,
-  type levelsType,
-  qualityColor,
-  type qualityColorType,
-  syslogSeverity,
-  UnitSchema,
 } from "@schemas/baseSchemas";
 
-import {
-  ConflictArray, 
-  ConflictDatum,   
-  type bookConflictsType,
-  type ConflictDatumType,
- } from '@schemas/conflictSchemas'
 
- import {
-  Note,
+
+
+import {
   Display,
   type DisplayType,
-  type NoteType,
-  GeneralArray,
-  type GeneralClassType,
-  GeneralElement,
-  type GeneralArrayType,
-  type GeneralElementType,
   generalSpecialists,
   generalUseCase,
   type generalUseCaseType,
-  type generalSpecialistsType,
  } from '@schemas/generalsSchema'
 
- import {
-  Speciality,
-  type SpecialityType,
- } from '@schemas/specialitySchema'
+ 
 
- import { 
-  ExtendedGeneral,
-  type ExtendedGeneralType,
-  ExtendedGeneralStatus,
-  type GeneralPairType,
-  } from "@schemas/ExtendedGeneral";
 
 import { 
-  type BookType,
-  specialSkillBook,
-  standardSkillBook,
-  type specialSkillBookType,
-  type standardSkillBookType,
- } from "@schemas/bookSchemas";
+  ExtendedGeneral,
+  type ExtendedGeneralType,
+  } from "@schemas/ExtendedGeneral";
+
+
+
 
 import {GroundPvPDefense} from './Ground/PvPBase'
 import { ArchersPvPDefense } from "./Archers/PvPBase";

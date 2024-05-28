@@ -1,4 +1,3 @@
-import { setTimeout } from 'timers/promises'
 
 /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
 export function isEmpty(obj: Record<string, any>): boolean {
