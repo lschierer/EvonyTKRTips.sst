@@ -9,7 +9,6 @@ declare namespace App {
     ConflictData: Array<ConflictDatumType>,
     CachedPairs: Array<GeneralPairType>,
     addEG2EGS: function (GeneralClass): void,
-    GeneralBuffs: function (string, Display, BuffParams): boolean,
-    InvestmentOptions2Key: function(BuffParamsType): string,
+    pairGenerals: function(void): void,
   }
 }

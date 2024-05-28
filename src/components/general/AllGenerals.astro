@@ -1,0 +1,89 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import type { ComponentProps } from "astro/types";
+
+import { delay } from 'nanodelay'
+
+import {
+  GeneralElement,
+  type GeneralElementType,
+} from "@schemas/generalsSchema";
+
+import {
+  ExtendedGeneral,
+  ExtendedGeneralStatus,
+  type ExtendedGeneralType,
+} from "@schemas/ExtendedGeneral";
+
+const DEBUG = true;
+
+const generalObjects: CollectionEntry<"generals">[] =
+  await getCollection("generals");
+
+if (generalObjects !== null && generalObjects !== undefined) {
+  let generalIterator = generalObjects.values();
+
+  await Promise.all(
+    generalObjects.map(async ({ data }) => {
+      const validation = GeneralElement.safeParse(data);
+      if (validation.success) {
+        const validG = validation.data;
+        if (
+          Array.isArray(Astro.locals.ExtendedGenerals) &&
+          Astro.locals.ExtendedGenerals.length > 0
+        ) {
+          const found = Astro.locals.ExtendedGenerals.find(
+            (thisG: ExtendedGeneralType) => {
+              if (!validG.general.name.localeCompare(thisG.general.name)) {
+                if (DEBUG) {
+                  console.log(`looking for ${validG.general.name}`);
+                  console.log(`found: ${thisG.general.name}`);
+                }
+                return true;
+              }
+              return false;
+            }
+          );
+          if (found !== undefined && found !== null) {
+            const v1 = ExtendedGeneral.safeParse(found);
+            if (v1.success) {
+              if (DEBUG) {
+                console.log(`looking for ${validG.general.name}`);
+                console.log(`found: ${found.general.name}`);
+              }
+              return false;
+            } else {
+              console.log(
+                `find returned invalid Extended General in AllGenerals.astro`
+              );
+              console.log(v1.error.message);
+              console.log(JSON.stringify(found));
+            }
+          }
+        }
+        await Astro.locals.addEG2EGS(validG.general);
+        return true;
+      } else {
+        console.error(`bad validation ${validation.error.message}`);
+        return false;
+      }
+    })
+  );
+  
+}
+---
+
+{
+  DEBUG && (
+    <ol>
+      {Astro.locals.ExtendedGenerals.map((thisG: ExtendedGeneralType) => (
+        <li>
+          <dl>
+            <dt>{thisG.general.name}</dt>
+            <dd>${JSON.stringify(thisG)}</dd>
+          </dl>
+        </li>
+      ))}
+    </ol>
+  )
+}
