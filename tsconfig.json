@@ -14,7 +14,10 @@
     "verbatimModuleSyntax": true,
     "plugins": [
       {
-        "name": "@astrojs/ts-plugin"
+        "name": "@astrojs/ts-plugin",
+      },
+      {
+        "name": "ts-lit-plugin",
       }
     ],
     "paths": {
