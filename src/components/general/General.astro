@@ -8,6 +8,8 @@ import {
 } from "astro:content";
 import "iconify-icon";
 
+import { DetailView } from "./DetailView";
+
 import { delay } from "nanodelay";
 
 import {
@@ -88,9 +90,7 @@ let generalName = "";
 let attack = 0;
 let defense = 0;
 let hp = 0;
-let starsNum = 0;
-let starsLimit = 0;
-let starsHtml = " ";
+
 let level = 1;
 const intrinsic = ["leadership", "attack", "defense", "politics"];
 
@@ -153,46 +153,8 @@ if (dataV.success) {
     await delay(60 * iterationBreaker)
   }
   const general = Egeneral!.general;
-  Astro.locals.GeneralBuffs(general.name, Display.enum.summary, {
-    special1: qualityColor.enum.Gold,
-    special2: qualityColor.enum.Gold,
-    special3: qualityColor.enum.Gold,
-    special4: qualityColor.enum.Gold,
-    special5: qualityColor.enum.Disabled,
-    stars: AscendingLevels.enum[10],
-    dragon: true,
-    beast: true,
-  })
-  EvAnsRank = Egeneral.computedBuffs.get(Astro.locals.InvestmentOptions2Key({
-    special1: qualityColor.enum.Gold,
-    special2: qualityColor.enum.Gold,
-    special3: qualityColor.enum.Gold,
-    special4: qualityColor.enum.Gold,
-    special5: qualityColor.enum.Disabled,
-    stars: AscendingLevels.enum[10],
-    dragon: true,
-    beast: true,
-  }))?.EvAns ?? -6;
-  if(DEBUG) {console.log(`got EvAnsRank ${EvAnsRank}`)}
-
-  if (DEBUG) console.log(`created general ${Egeneral!.general.name}`);
   
   
-
-  starsNum = +(general.stars ? general.stars : 0);
-  starsLimit = starsNum <= 5 ? starsNum : 5;
-  for (let i = 0; i < starsLimit; i++) {
-    if (starsNum >= 6 && i < starsNum - 5) {
-      starsHtml = starsHtml.concat(
-        '<iconify-icon style="color: var(--spectrum-red-900)" icon="mdi:star"></iconify-icon>'
-      );
-    } else {
-      starsHtml = starsHtml.concat(
-        '<iconify-icon style="color: var(--spectrum-yellow-300)" icon="mdi:star"></iconify-icon>'
-      );
-    }
-  }
-
   generalName = general.name.toLocaleLowerCase().replace(/\s+/g, "_");
 
   attack = general.attack + general.attack_increment * 45;
@@ -327,15 +289,10 @@ const general = (Egeneral! !== undefined) ? Egeneral.general : null;
 <div class="not-content UsageNotes">
     <Fragment set:html={usageNotes} />
 </div>
-<div class="GeneralDetails not-content" id={generalName}>
-    <span class="center spectrum-Heading spectrum-Heading--sizeS">Level: {level}</span>
+<div></div>
     
-    {(starsHtml !== undefined && starsHtml !== null) && (
-        <div class=" not-content Stars">
-            <Fragment set:html={starsHtml} />
-        </div>
-        <br/>
-    )}
+    
+    
     <div class="IntrinsicAttributes">
       {intrinsic.map((ia) => ((ia !== undefined) &&
         <div class={ia}>

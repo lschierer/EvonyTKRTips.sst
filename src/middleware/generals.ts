@@ -1,7 +1,7 @@
 import { defineMiddleware } from "astro:middleware";
-import { getCollection, getEntry, type CollectionEntry,  } from "astro:content";
+import { getCollection, getEntry, type CollectionEntry, } from "astro:content";
 
-import {z} from 'zod';
+import { z } from 'zod';
 
 
 import {
@@ -9,38 +9,36 @@ import {
   BuffParams,
   type BuffParamsType,
   qualityColor,
-  
+
 } from "@schemas/baseSchemas";
 
-import { 
+import {
   ConflictDatum,
   type ConflictDatumType,
- } from '@schemas/conflictSchemas'
+} from '@schemas/conflictSchemas'
 
- import {
+import {
   Display,
   GeneralClass,
+  type GeneralClassType,
   generalUseCase,
- } from '@schemas/generalsSchema'
+} from '@schemas/generalsSchema'
 
- import {
+import {
   Speciality,
   type SpecialityType,
- } from '@schemas/specialitySchema'
+} from '@schemas/specialitySchema'
 
- import { 
-  ExtendedGeneral,
-  type ExtendedGeneralType,
-  ExtendedGeneralStatus,
+import {
   type GeneralPairType,
-  } from "@schemas/ExtendedGeneral";
+} from "@schemas/ExtendedGeneral";
 
-import { 
+import {
   Book,
   type BookType,
   type specialSkillBookType,
   type standardSkillBookType,
- } from "@schemas/bookSchemas";
+} from "@schemas/bookSchemas";
 
 
 const DEBUG = true;
@@ -61,78 +59,58 @@ export const DisplayGeneralsMW = defineMiddleware(
       }
     });
 
-    
+
     const addEG2EGS = z
       .function()
       .args(GeneralClass)
-      .returns(z.promise(z.boolean()))
-      .implement(async (general) => {
-        if (DEBUG)
+      .returns(z.boolean())
+      .implement( (general) => {
+        if (DEBUG) {
           console.log(
             `middleware generals addEG2EGS running for ${general.name}`
           );
-        if (locals.ExtendedGenerals.length > 0) {
-          if (
-            locals.ExtendedGenerals.some((element) => {
-              return !general.name.localeCompare(element.general.name);
-            })
-          )
-            return false;
         }
-        const valid = GeneralClass.safeParse(general)
-        if(valid.success) {
-          const toAdd: ExtendedGeneralType = {
-            general: valid.data,
-            specialities: new Array<SpecialityType>(),
-            books: new Array<
-              BookType | specialSkillBookType | standardSkillBookType
-            >(),
-          };
-          const test = ExtendedGeneral.safeParse(toAdd);
-          if (test.success) {
-            if (DEBUG)
-              console.log(
-                `addEG2EGS built a valid ExtendedGeneral for ${general.name}`
-              );
-            if (DEBUG)
+        if (locals.ExtendedGenerals.length > 0) {
+          const allDone = locals.ExtendedGenerals.some((element) => {
+            if (!general.name.localeCompare(element.general.name)) {
+              return true
+            }
+            return false
+          })
+          if (allDone) {
+            return false
+          }
+        } else {
+          const valid = GeneralClass.safeParse(general)
+          if (valid.success) {
+            //double checking because I seem to be hitting race conditions. 
+            const present = locals.ExtendedGenerals.some((element: GeneralClassType) => {
+              return !element.name.localeCompare(valid.data.name);
+            })
+            if (!present) {
+              locals.ExtendedGenerals.push(valid.data);
+              if (DEBUG)
+                console.log(
+                  `addEG2EGS built a valid GeneralClassType for ${general.name}`
+                );
               console.log(
                 `addEG2EGS: map size: ${locals.ExtendedGenerals.length}`
               );
-            if (
-              !locals.ExtendedGenerals.some((element) => {
-                return !test.data.general.name.localeCompare(
-                  element.general.name
-                );
-              })
-            ) {
-              locals.ExtendedGenerals.push(test.data);
+              return true;
             }
-            if (DEBUG)
-              console.log(
-                `addEG2EGS: map size: ${locals.ExtendedGenerals.length}.`
-              );
           } else {
-            console.log(
-              `addEG2EGS built an invalid ExtendedGeneral for ${general.name}`
-            );
+            console.log(`addEG2EGS recieved an invalid GeneralClass object`)
+            return false
           }
-        } else {
-          console.log(`addEG2EGS recieved an invalid GeneralClass object`)
         }
-        
-        return true;
+        return false;
       });
 
-    const inializeConflicts = async () => {
-      const ConflictCollection: CollectionEntry<'generalConflictData'>[] = await getCollection("generalConflictData");
-        if (ConflictCollection !== undefined && ConflictCollection !== null) {
-          
-        }
-    }
+  
 
     const HandlerLogic = async (locals: App.Locals) => {
       if (locals.ExtendedGenerals === undefined) {
-        locals.ExtendedGenerals = new Array<ExtendedGeneralType>();
+        locals.ExtendedGenerals = new Array<GeneralClassType>();
       }
 
       if (locals.ConflictData === undefined) {

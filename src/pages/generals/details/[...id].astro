@@ -1,9 +1,15 @@
 ---
 export const prerender = true;
+import type { ComponentProps } from 'astro/types';
+import type { InferGetStaticParamsType, InferGetStaticPropsType, GetStaticPaths } from 'astro';
 
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
-import General from "@components/General.astro"
-import type { InferGetStaticParamsType, InferGetStaticPropsType, GetStaticPaths } from 'astro';
+import General from "@components/general/General.astro"
+import AllGenerals from "@components/general/AllGenerals.astro"
+import AllConflicts from "@components/general/AllConflicts.astro"
+
+type GeneralType = ComponentProps<typeof General>;
+
 
 const DEBUG = false;
 
@@ -33,8 +39,11 @@ if (entry === undefined) {
 }
 
 
+
 ---
 <StarlightPage frontmatter={{title: `Details for ${id}`,tableOfContents: true,}}>
+    <AllGenerals></AllGenerals>
+    <AllConflicts></AllConflicts>
     <General generalEntry={id}/>
     <slot/>
 </StarlightPage>
