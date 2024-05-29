@@ -34,6 +34,7 @@ import {
   type NoteType,
   GeneralElement,
   type GeneralElementType,
+type GeneralClassType,
  } from '@schemas/generalsSchema'
 
  import { 
@@ -52,32 +53,7 @@ const DEBUG = false;
 
 import { BookIcon } from "@spectrum-web-components/icons-workflow";
 
-const severity = {
-  [syslogSeverity.enum.emerg]: () => {
-    return "starlight-aside--danger";
-  },
-  [syslogSeverity.enum.alert]: () => {
-    return "starlight-aside--danger";
-  },
-  [syslogSeverity.enum.crit]: () => {
-    return "starlight-aside--danger";
-  },
-  [syslogSeverity.enum.err]: () => {
-    return "starlight-aside--caution";
-  },
-  [syslogSeverity.enum.warning]: () => {
-    return "starlight-aside--caution";
-  },
-  [syslogSeverity.enum.notice]: () => {
-    return "starlight-aside--caution";
-  },
-  [syslogSeverity.enum.info]: () => {
-    return "starlight-aside--caution";
-  },
-  [syslogSeverity.enum.debug]: () => {
-    return "note";
-  },
-};
+
 
 interface Props {
   generalEntry: string;
@@ -96,7 +72,7 @@ const intrinsic = ["leadership", "attack", "defense", "politics"];
 
 let data;
 
-let pageGE: GeneralElementType;
+let pageG: GeneralClassType | null = null;
 let Egeneral: ExtendedGeneralType;
 //end globals
 
@@ -110,306 +86,21 @@ if (
   return Astro.redirect("/404");
 }
 
-const entry: CollectionEntry<"generals"> | undefined = await getEntry(
-  "generals",
-  generalEntry
-);
-
-if (entry === undefined || entry === null) {
-  return Astro.redirect("/404");
-} else {
-  data = entry.data;
-}
-
-const dataV = GeneralElement.safeParse(data);
-if (dataV.success) {
-  const pageGE = dataV.data;
-  await Astro.locals.addEG2EGS(pageGE.general)
-  
-  
-  let iterationBreaker = 0;
-  while (
-    iterationBreaker < 60 &&
-    ( Astro.locals.ExtendedGenerals === undefined ||
-      Astro.locals.ExtendedGenerals.length === 0
-    )
-  ) {
-    console.log(
-      `I have a problem initializing the middleware ${iterationBreaker}`
-    );
-    await delay(60 * iterationBreaker++ );
-  }
-
-  Egeneral = Astro.locals.ExtendedGenerals.find((element) => {
-    return !pageGE.general.name.localeCompare(element.general.name)
+if(Array.isArray(Astro.locals.CachedGenerals)) {
+  pageG = Astro.locals.CachedGenerals.find((thisG: GeneralClassType) => {
+    if(!generalEntry.localeCompare(thisG.name)) {
+      return true
+    }
+    return false
   })
-  iterationBreaker = 0;
-  while(ExtendedGeneralStatus.enum.complete.localeCompare(Egeneral.status)) {
-    if(DEBUG) {
-      console.log(`${Egeneral.general.name} is not complete for General.astro`)
-      console.log(`status is ${Egeneral.status}`)
-      console.log(iterationBreaker++)
-    }
-    await delay(60 * iterationBreaker)
-  }
-  const general = Egeneral!.general;
-  
-  
-  generalName = general.name.toLocaleLowerCase().replace(/\s+/g, "_");
-
-  attack = general.attack + general.attack_increment * 45;
-  defense = general.defense + general.defense_increment * 45;
-  hp = general.leadership + general.leadership_increment * 45;
-  level = general.display === "summary" ? +general.level * 45 : +general.level;
-  const notes = z.array(Note).safeParse(general.note);
-  if (notes.success) {
-    const mydata: NoteType[] = notes.data;
-    if (
-      notes.data !== undefined &&
-      notes.data !== null &&
-      notes.data.length >= 1
-    ) {
-      const result = mydata.map((note) => {
-        return `
-                    <aside class='starlight-aside ${severity[note.severity]()}' >
-                        <p class="starlight-aside__title">
-                            General Usage Note
-                        </p>
-                        ${note.text}
-                    </aside>
-                    `;
-      });
-      if (result !== null && result !== undefined) {
-        result.forEach((r) => (usageNotes = usageNotes.concat(r)));
-      }
-    }
-  }
-
-  if(Array.isArray(Astro.locals.ConflictData) && Astro.locals.ConflictData.length > 0){
-    
-    const relevantConflicts = Astro.locals.ConflictData.filter((cDatum: ConflictDatumType) => {
-      if(cDatum !== undefined && cDatum !== null ) {
-        const c: string[] = cDatum.members.flat();
-        if(Array.isArray(cDatum.others)) {
-          c.push(...cDatum.others.flat())
-        }
-        if(c.includes(general.name) && 
-          Array.isArray(cDatum.books )){
-          return true
-        }
-      }
-      return false;
-      })
-      if(Array.isArray(relevantConflicts) && relevantConflicts.length > 0) {
-        usageNotes = relevantConflicts.reduce((accumulator: string, r: ConflictDatumType) => {
-          if(r === undefined || !Array.isArray(r.books)) {
-            return accumulator
-          } else {
-            const ConflictingBooks: standardSkillBookType[] = r.books;
-            let condition = "all the time.";
-            let warning = false;
-            if(!Array.isArray(ConflictingBooks) || ConflictingBooks.length === 0) {
-              return accumulator
-            } else {
-              return ConflictingBooks.reduce((a2: string, cBook: standardSkillBookType) => {
-                if(cBook === undefined || cBook === null)  {
-                  return a2
-                } else {
-                  if(!Array.isArray(cBook.buff) || cBook.buff.length === 0) {
-                    return a2
-                  } else {
-                    return cBook.buff.reduce((a3: string, bb: BuffType) => {
-                      if(bb === undefined || bb == null ) {
-                        return a3
-                      } else {
-                        let printableCondintion = 'all the time'
-                        let warning = false;
-                        if(Array.isArray(bb.condition) && bb.condition.length > 0) {
-                          if(bb.condition.includes(Condition.enum["When not mine"])) {
-                            printableCondintion = "when the book is on my paired general.";
-                            warning = true;
-                            return `
-                            <aside class='starlight-aside ${severity[syslogSeverity.enum.warning]()}'>
-                              <p class="starlight-aside__title">
-                                General Conflict Notice
-                              </p>
-                              ${general.name} conflicts with the ${cBook.name} level ${cBook.level} skill book if the book is on the other general of the pair.
-                            </aside>
-                            `
-                          } else {
-                            let returnable ='';
-                            bb.condition.forEach((bc, index)=> {
-                              returnable = `${returnable} when ${(bc as string).replaceAll('_', ' ')}`
-                              if(Array.isArray(bb.condition) && index < (bb.condition?.length - 1)) {
-                                returnable = `${returnable}, and`
-                              }
-                            })
-                            return `
-                            <aside class='starlight-aside ${severity[syslogSeverity.enum.alert]()}'>
-                              <p class="starlight-aside__title">
-                                General Conflict Notice
-                              </p>
-                              ${general.name} conflicts with the ${cBook.name} level ${cBook.level} skill book ${returnable}.
-                              This conflict is affects all pairs, no matter where the skill book is placed within the pair. 
-                            </aside>
-                            `
-                            }
-                          }
-                        }
-                        return a3
-                      }, '')
-                  }
-                }
-                return a2
-              }, "")
-            }
-          }
-          return accumulator
-        }, "")
-         
-      }
-  }
-
-  
-
-  
-
-  const generalSpecialsCount =
-    Egeneral! !== undefined ? Egeneral.specialities.length : 0;
-
-  
-
-  
 }
-const general = (Egeneral! !== undefined) ? Egeneral.general : null;
-
+  
+  
 ---
 
-{(Egeneral! !== undefined && Egeneral !== null && general !== null ) && (
-<div class="not-content UsageNotes">
-    <Fragment set:html={usageNotes} />
-</div>
-<div></div>
-    
-    
-    
-    <div class="IntrinsicAttributes">
-      {intrinsic.map((ia) => ((ia !== undefined) &&
-        <div class={ia}>
-          <span class="label spectrum-Body spectrum-Body--sizeM">{ia[0].toUpperCase() + ia.slice(1)}</span><br/>
-          <span class="label spectrum-Body spectrum-Body--sizeS">Base:</span> {general[ia as keyof typeof general]}<br/>
-          <span class="label spectrum-Body spectrum-Body--sizeS">Growth Rate:</span> {general[(ia + '_increment') as keyof typeof general]}<br/>
-          <span class="label spectrum-Body spectrum-Body--sizeS">Max:</span> {((general[(ia as keyof typeof general)] as number) + ((general[((ia + '_increment') as keyof typeof general)] as number) * 45)).toFixed(2)}<br/>
-        </div>
-      ))}
-    </div>
-    <div class="EvAnsRanking">
-        Evony Answers Rank: {EvAnsRank}
-    </div>
-    <br/>
-    {general.books && (
-    <div class="SkillBooks non-content" style="margin: 1px;">
-        <span class="spectrum-Heading spectrum-Heading--sizeXS">Special Skill:</span>
-        {Egeneral?.books.map((book: BookType) => (
-          (specialSkillBook.safeParse(book)).success && (
-            <>
-                <span class="spectrum-Heading spectrum-Heading--sizeXXS">{book.name}</span>
-                {Array.isArray((book as specialSkillBookType).buff) && (
-                  <ul class="non-content" id={book.name.toLocaleLowerCase().replace(/\s+/g, '_')}>
-                      {book.buff.map((b: BuffType) => (
-                        <li >
-                            {b.condition ? (b.condition.map((c: ConditionType) => {
-                              return (c as string).replaceAll(/_/g, ' ')
-                            })) : ''} 
-                            {(b.class === undefined || b.class === null) ? '' : b.class !== 'all' ? b.class : 'all troops '} 
-                            {b.attribute ? b.attribute.replaceAll(/_/g, ' ') : ''} 
-                            {(b.value && b.value.number < 0) ? '-' : '+'}{b.value!.number}{b.value!.unit ? '%' : ''}
-                        </li>
-                      ))}
-                  </ul>
-                )}
-            </>
-          )
-        ))}
-    </div>
-  )}
-  <br/>
-  {(starsNum && general.ascending) && (
-    <span class="label spectrum-Heading spectrum-Heading--sizeXS">Ascending Attributes</span>
-    <div class="Ascending non-content">
-    {general.ascending.map((a) => (
-        <>
-            <div class="ascendingAttribute non-content">
-                <span class="spectrum-Heading spectrum-Heading--sizeXXS center">
-                    {+a.level - 5}{+a.level >= 9 ? 'th' : +a.level === 8 ? 'rd' : (+a.level) === 7 ? "nd" : 'st'} Star
-                </span><br/>
-                <ul class="non-content">
-                    {a.buff.map((b: BuffType) => (
-                    <li class="non-content">
-                        {b.condition ? (b.condition.map((c: ConditionType) => {
-                              return (c as string).replaceAll(/_/g, ' ')
-                            })): ''} 
-                        {(b.class === undefined || b.class === null) ? '' : b.class !== 'all' ? b.class : 'all troops '} 
-                        {b.attribute? b.attribute.replaceAll(/_/g, ' ') : ''} 
-                        {(b.value && b.value.number < 0) ? '-' : '+'}{b.value!.number}{b.value!.unit ? '%' : ''}
-                    </li>
-                    ))}
-                </ul>
-            </div>
-        </>
-    ))}
-    </div>
-  )}
-  <br/>
-  {general.specialities && (
-    <span class="label spectrum-Heading spectrum-Heading--sizeXS">Specialities</span>
-    <div class="Specialities non-content">
-        {Egeneral?.specialities.map((gs , index: number) => (
-            <div class={"SpecialityName" + index + " non-content"}>
-                <span class="label spectrum-Heading spectrum-Heading--sizeXXS"> 
-                    {gs.name}
-                </span>
-            </div>
-        ))}
-        {Egeneral?.specialities.map((gs, index: number) => (
-            <div class={"Speciality" + index + " non-content"}>
-                {Array.isArray(gs.attribute) && gs.attribute.map((s) => (
-                    <div class={"non-content " + s.level} >
-                        <span class="label spectrum-Body spectrum-Body--sizeM">
-                            {s.level} Level:
-                        </span>
-                        <div class={"non-content " + s.level}  >
-                        
-                            <ul >
-                                {s.buff.map((b: BuffType) => (
-                                    <>
-                                        <li >
-                                            {b.condition ? (b.condition.map((c: ConditionType) => {
-                                              return (c as string).replaceAll(/_/g, ' ')
-                                            })) : ''} 
-                                            {b.class !== 'all' ? b.class : 'all troops '} 
-                                            {b.attribute ? b.attribute.replaceAll(/_/g, ' ') : ''} 
-                                            {(b.value && b.value.number < 0) ? '-' : '+'}{b.value!.number}{b.value!.unit ? '%' : ''}
-                                        </li>
-                                    </>
-                                ))}
-                            </ul>
-                        </div>
-                    </div>
-                 ))}
-                
-            </div>
-            /*Array.isArray(gs.attribute) && (
-                
-                    {gs.attribute.map((s) => (
-                      
-                    ))}
-                </div>
-            */
-        ))}
-    </div>
-  )}
-</div>
+{(pageG !== null && pageG !== undefined)  ? (<DetailView general={pageG} client:only="lit"></DetailView>) : (<span>General Not Found</span>)}
+
+
 <style >
     div.GeneralDetails {
         display: flex;
@@ -508,6 +199,3 @@ const general = (Egeneral! !== undefined) ? Egeneral.general : null;
     }
 
 </style>
-
-  
-)}

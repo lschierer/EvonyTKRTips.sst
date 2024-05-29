@@ -77,7 +77,7 @@ if (generalObjects !== null && generalObjects !== undefined) {
   await Promise.all(allGenerals.map(async (g) => {
     if (DEBUG) console.log(`adding ${g.general.name}`)
     await Astro.locals.addEG2EGS(g.general)
-    const eg: ExtendedGeneralType = Astro.locals.ExtendedGenerals.find((thisG: ExtendedGeneralType) => {
+    const eg: ExtendedGeneralType = Astro.locals.CachedGenerals.find((thisG: ExtendedGeneralType) => {
       if(!thisG.general.name.localeCompare(g.general.name)) {
         return true;
       }
@@ -96,13 +96,13 @@ if (generalObjects !== null && generalObjects !== undefined) {
   }));
   if(Array.isArray(Astro.locals.CachedPairs) && Astro.locals.CachedPairs.length > 0) {
     Astro.locals.CachedPairs.forEach((pair: GeneralPairType)=> {
-      const egP = Astro.locals.ExtendedGenerals.find((thisg: ExtendedGeneralType) => {
+      const egP = Astro.locals.CachedGenerals.find((thisg: ExtendedGeneralType) => {
         if(!thisg.general.name.localeCompare(pair.primary)) {
           return true;
         }
         return false;
       })
-      const egS = Astro.locals.ExtendedGenerals.find((thisg: ExtendedGeneralType) => {
+      const egS = Astro.locals.CachedGenerals.find((thisg: ExtendedGeneralType) => {
         if(!thisg.general.name.localeCompare(pair.secondary)) {
           return true;
         }

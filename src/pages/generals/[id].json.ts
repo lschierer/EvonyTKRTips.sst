@@ -1,3 +1,4 @@
+import { GeneralClass, type GeneralClassType } from '@schemas/generalsSchema';
 import {
   type APIRoute,
   type InferGetStaticParamsType,
@@ -17,7 +18,7 @@ export async function getStaticPaths() {
 type Params = InferGetStaticParamsType<typeof getStaticPaths>; // eslint-disable-line
 type Props = InferGetStaticPropsType<typeof getStaticPaths>; // eslint-disable-line
 
-export const GET: APIRoute = async ({ params }) => {
+export const GET: APIRoute = async ({ params, locals }) => {
   let id: string = params.id ? params.id : '';
   if(id !== '') {
     if(id.includes('/')){
@@ -27,14 +28,48 @@ export const GET: APIRoute = async ({ params }) => {
       }
     }
     console.log(`id is ${id}, params were ${JSON.stringify(params)}`)
-    const entry = await getEntry('generals',id);
-    if(entry !== null && entry !== undefined) {
-      return new Response(
-        JSON.stringify(entry.data)
-      )
+    if(Array.isArray(locals.CachedGenerals) && locals.CachedGenerals.length > 0) {
+      const found = locals.CachedGenerals.find((thisG: GeneralClassType) => {
+        if(!id.localeCompare(thisG.name)) {
+          return true;
+        }
+        return false
+      })
+      if(found !== null && found !== undefined) {
+        const v1 = GeneralClass.safeParse(found)
+        if(found.success) {
+          return new Response(
+            JSON.stringify(v1.data),
+            {
+              status: 200,
+              headers: {
+                "Content-Type": "application/json"
+              }
+            }
+          )
+        }
+      }
+    } else {
+      const entry = await getEntry('generals',id);
+      if(entry !== null && entry !== undefined) {
+        const v1 = GeneralClass.safeParse(entry.data.general)
+        return new Response(
+          JSON.stringify(v1.data),
+          {
+            status: 200,
+            headers: {
+              "Content-Type": "application/json"
+            }
+          }
+        )
+      }
     }
   }
-  return new Response(JSON.stringify(''))
+  return new Response(null, {
+    status: 404,
+    statusText: 'Not found'
+  });
+  
 }
 
 

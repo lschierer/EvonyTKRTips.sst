@@ -4,16 +4,15 @@ import type { ComponentProps } from 'astro/types';
 import type { InferGetStaticParamsType, InferGetStaticPropsType, GetStaticPaths } from 'astro';
 
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
-import General from "@components/general/General.astro"
+import { DetailView } from "@components/general/DetailView.ts";
 import AllGenerals from "@components/general/AllGenerals.astro"
 import AllConflicts from "@components/general/AllConflicts.astro"
-
-type GeneralType = ComponentProps<typeof General>;
-
 
 const DEBUG = false;
 
 import { getEntry, getCollection } from "astro:content";
+import type { CollectionEntry } from 'astro:content';
+import type { GeneralClassType } from '@schemas/generalsSchema';
 
 export const  getStaticPaths = (async () =>  {
   const blogEntries = await getCollection('generals');
@@ -31,19 +30,12 @@ if (id === undefined) {
   throw new Error("Id is required");
 }
 
-const entry = await getEntry("generals", id);
-
-if (entry === undefined) {
-  if (DEBUG) console.log(`${id} was not found`)
-  return Astro.redirect("/404");
-}
-
 
 
 ---
-<StarlightPage frontmatter={{title: `Details for ${id}`,tableOfContents: true,}}>
+<StarlightPage frontmatter={{title: `Details for ${id}`,tableOfContents: false,}}>
     <AllGenerals></AllGenerals>
     <AllConflicts></AllConflicts>
-    <General generalEntry={id}/>
+    <DetailView generalId={id} client:only="lit"></DetailView>
     <slot/>
 </StarlightPage>

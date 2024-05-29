@@ -70,9 +70,9 @@ export const DisplayGeneralsMW = defineMiddleware(
             `middleware generals addEG2EGS running for ${general.name}`
           );
         }
-        if (locals.ExtendedGenerals.length > 0) {
-          const allDone = locals.ExtendedGenerals.some((element) => {
-            if (!general.name.localeCompare(element.general.name)) {
+        if (Array.isArray(locals.CachedGenerals) && locals.CachedGenerals.length > 0) {
+          const allDone = locals.CachedGenerals.some((element) => {
+            if (!general.name.localeCompare(element.name)) {
               return true
             }
             return false
@@ -84,17 +84,17 @@ export const DisplayGeneralsMW = defineMiddleware(
           const valid = GeneralClass.safeParse(general)
           if (valid.success) {
             //double checking because I seem to be hitting race conditions. 
-            const present = locals.ExtendedGenerals.some((element: GeneralClassType) => {
+            const present = locals.CachedGenerals.some((element: GeneralClassType) => {
               return !element.name.localeCompare(valid.data.name);
             })
             if (!present) {
-              locals.ExtendedGenerals.push(valid.data);
+              locals.CachedGenerals.push(valid.data);
               if (DEBUG)
                 console.log(
                   `addEG2EGS built a valid GeneralClassType for ${general.name}`
                 );
               console.log(
-                `addEG2EGS: map size: ${locals.ExtendedGenerals.length}`
+                `addEG2EGS: map size: ${locals.CachedGenerals.length}`
               );
               return true;
             }
@@ -109,8 +109,8 @@ export const DisplayGeneralsMW = defineMiddleware(
   
 
     const HandlerLogic = async (locals: App.Locals) => {
-      if (locals.ExtendedGenerals === undefined) {
-        locals.ExtendedGenerals = new Array<GeneralClassType>();
+      if (locals.CachedGenerals === undefined) {
+        locals.CachedGenerals = new Array<GeneralClassType>();
       }
 
       if (locals.ConflictData === undefined) {

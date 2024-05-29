@@ -47,6 +47,7 @@ import {
   GeneralClass,
   type GeneralClassType,
   generalUseCase,
+  GeneralElement,
 } from '@schemas/generalsSchema'
 
 import {
@@ -69,17 +70,10 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
   noDefaultSize: true,
 }) {
 
-  @property({
-    type: Object,
-    converter: {
-      fromAttribute: (value ) => {
-        return GeneralClass.parse(value)
-      },
-      toAttribute: (value: GeneralClassType) => {
-        return JSON.stringify(value);
-      }
-    }
-  })
+  @property({type: String})
+  public generalId: string = '';
+
+  @state()
   public general: GeneralClassType | null = null;
   
   @property({
@@ -130,12 +124,19 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
       return
     } else {
       this.status = ExtendedGeneralStatus.enum.fetching;
+      const currentPage = `${document.location.protocol}//${document.location.host}`
       this.general.specialities.map(async (sn) => {
-        const sURL = new URL(`${sn}.json`,import.meta.url)
+        
+        const sURL = new URL(`/specialities/${sn}.json`,currentPage)
         if(DEBUG) {
           console.log(`GridGeneral: sURL: ${sURL.toString()}`)
         }
-          const data = await fetch(sURL).then((response) => response.json)
+          const data = await fetch(sURL).then((response) => {
+            if(response.ok) return response.json();
+            else throw new Error('Status code error :' + response.status)
+          }).catch((error) => {
+            console.error(JSON.stringify(error))
+          })
           const v1 = Speciality.safeParse(data)
           if(v1.success && this._eg !== null ){
             const sd = this._eg.specialities.some((ts) => {
@@ -145,7 +146,7 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
               return false;
             })
             if(sd) {
-              return
+              return false
             } else {
               this._eg.specialities.push(v1.data)
               this.requestUpdate('_eg');
@@ -153,6 +154,7 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
           } else {
             //the general could not have been null, I already tested for that
             console.log(`invalid special detected for ${this.general?.name}`)
+            console.log(JSON.stringify(data))
           }
       })
     }
@@ -167,12 +169,18 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
       return
     } else {
       this.status = ExtendedGeneralStatus.enum.fetching;
+      const currentPage = `${document.location.protocol}//${document.location.host}`
       this.general.books.map(async (bn) => {
-        const bURL = new URL(`${bn}.json`, import.meta.url)
+        const bURL = new URL(`/books/${bn}.json`, currentPage)
         if(DEBUG) {
           console.log(`GridGeneral: bURL: ${bURL.toString()}`)
         }
-        const data = await fetch(bURL).then((responce) => responce.json)
+        const data = await fetch(bURL).then((response) => {
+          if(response.ok) return response.json();
+          else throw new Error('Status code error :' + response.status)
+        }).catch((error) => {
+          console.error(JSON.stringify(error))
+        })
         const v2 = specialSkillBook.safeParse(data)
         if(v2.success && this._eg !== null) {
           const bd = this._eg.books.some((tb) => {
@@ -192,6 +200,29 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
           console.log(`invalid book detected for ${this.general?.name}`)
         }
       })
+    }
+  }
+
+  private getGeneral = async () => {
+    this.status = ExtendedGeneralStatus.enum.fetching;
+    const currentPage = `${document.location.protocol}//${document.location.host}`
+    if(this.generalId.length > 0) {
+      const gURL = new URL(`/generals/${this.generalId}.json`,currentPage)
+      const data = await fetch(gURL).then((response) => {
+        if(response.ok) return response.json();
+        else throw new Error('Status code error :' + response.status);
+      }).catch((error) => {
+        console.error(JSON.stringify(error))
+      })
+      const v3 = GeneralClass.safeParse(data)
+      if(v3.success){
+        this.general = v3.data
+        this.requestUpdate('general');
+      } else {
+        if(DEBUG) {
+          console.log(`retrieved invalid general for ${this.generalId} from ${gURL.toString()}`)
+        }
+      }
     }
   }
 
@@ -247,7 +278,12 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
 
   protected async willUpdate(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): Promise<void> {
     super.willUpdate(_changedProperties)
-
+    if(_changedProperties.has('generalId')){
+      await Promise.all([
+        this.getGeneral(),
+        delay(10)
+      ])
+    }
     if(_changedProperties.has('general')){
       if(this.general !== null) {
         const v = GeneralClass.safeParse(this.general)

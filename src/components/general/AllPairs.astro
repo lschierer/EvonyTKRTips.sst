@@ -46,7 +46,7 @@ let sDefenseRanking = 0;
 let CallPairs = true;
 
 await Promise.all(
-  Astro.locals.ExtendedGenerals.map(async (thisG: ExtendedGeneralType) => {
+  Astro.locals.CachedGenerals.map(async (thisG: ExtendedGeneralType) => {
     let IsIncomplete = true;
 
     do {
@@ -92,14 +92,14 @@ await Promise.all(
   })
 );
 if (CallPairs) {
-  if (Astro.locals.ExtendedGenerals.length > 0) {
+  if (Astro.locals.CachedGenerals.length > 0) {
     if (
       Array.isArray(Astro.locals.ConflictData) &&
       Astro.locals.ConflictData.length === 0
     ) {
       await delay(15);
     }
-    const generalBaseN = new BaseN(Astro.locals.ExtendedGenerals, 2);
+    const generalBaseN = new BaseN(Astro.locals.CachedGenerals, 2);
     [...generalBaseN].forEach((pPair) => {
       const primary = pPair[0];
       const secondary = pPair[1];

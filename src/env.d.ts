@@ -5,7 +5,7 @@
 
 declare namespace App {
   interface Locals {
-    ExtendedGenerals: Array<GeneralClassType>,
+    CachedGenerals: Array<GeneralClassType>,
     ConflictData: Array<ConflictDatumType>,
     CachedPairs: Array<GeneralPairType>,
     addEG2EGS: function (GeneralClass): void,
