@@ -19,8 +19,8 @@ general:
   specialities:
     - Ranged Troop Assault
     - Siege
-    - Ranged Troop Assault
-    - Ranged Troop Assault
+    - War God
+    - Old Knight
   ascending:
     - level: '6'
       buff:
