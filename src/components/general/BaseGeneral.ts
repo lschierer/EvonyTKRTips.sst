@@ -1,5 +1,4 @@
 import { customElement, property, state } from "lit/decorators.js";
-import { ref } from "lit/directives/ref.js";
 
 import { z } from 'zod'
 
@@ -9,10 +8,9 @@ import {
   SizedMixin,
   SpectrumElement,
   type CSSResultArray,
-  html,
   css,
   unsafeCSS,
-  type PropertyValueMap,
+  type PropertyValues,
 } from "@spectrum-web-components/base";
 
 import SpectrumTokens from "@spectrum-css/tokens/dist/index.css?inline";
@@ -21,10 +19,8 @@ import SpectrumIcon from "@spectrum-css/icon/dist/index.css?inline";
 import SpectrumTable from "@spectrum-css/table/dist/index.css?inline";
 
 import {
-  AscendingLevels,
   BuffParams,
   type BuffParamsType,
-  qualityColor,
 } from "@schemas/baseSchemas";
 
 import {
@@ -33,9 +29,7 @@ import {
 } from "@schemas/specialitySchema";
 
 import {
-  Book,
   specialSkillBook,
-  standardSkillBook,
   type BookType,
   type specialSkillBookType,
   type standardSkillBookType,
@@ -47,15 +41,12 @@ import {
   GeneralClass,
   type GeneralClassType,
   generalUseCase,
-  GeneralElement,
 } from '@schemas/generalsSchema'
 
 import {
-  ExtendedGeneral,
   type ExtendedGeneralType,
   ExtendedGeneralStatus,
   type ExtendedGeneralStatusType,
-  RankInstance,
   type RankInstanceType,
 } from "@schemas/ExtendedGeneral";
 
@@ -71,7 +62,7 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
 }) {
 
   @property({type: String})
-  public generalId: string = '';
+  public generalId = '';
 
   @state()
   public general: GeneralClassType | null = null;
@@ -88,7 +79,10 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
   })
   public status: ExtendedGeneralStatusType = ExtendedGeneralStatus.enum.created;
 
-  @state()
+  @property({
+    type: Object,
+    attribute: false
+  })
   protected _eg: ExtendedGeneralType | null = null;
 
   private MutationObserver: MutationObserver;
@@ -125,12 +119,13 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
     } else {
       this.status = ExtendedGeneralStatus.enum.fetching;
       const currentPage = `${document.location.protocol}//${document.location.host}`
-      this.general.specialities.map(async (sn) => {
+      await Promise.all(this.general.specialities.map(async (sn) => {
         
         const sURL = new URL(`/specialities/${sn}.json`,currentPage)
         if(DEBUG) {
           console.log(`GridGeneral: sURL: ${sURL.toString()}`)
         }
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           const data = await fetch(sURL).then((response) => {
             if(response.ok) return response.json();
             else throw new Error('Status code error :' + response.status)
@@ -156,12 +151,13 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
             console.log(`invalid special detected for ${this.general?.name}`)
             console.log(JSON.stringify(data))
           }
-      })
+      }))
     }
   }
 
 
-  private getBooks = async () => {
+
+  private getBooks =  () => {
     if(this.general === null || 
       this._eg === null || 
       this._eg === undefined ||
@@ -170,11 +166,12 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
     } else {
       this.status = ExtendedGeneralStatus.enum.fetching;
       const currentPage = `${document.location.protocol}//${document.location.host}`
-      this.general.books.map(async (bn) => {
+      void this.general.books.map(async (bn) => {
         const bURL = new URL(`/books/${bn}.json`, currentPage)
         if(DEBUG) {
           console.log(`GridGeneral: bURL: ${bURL.toString()}`)
         }
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const data = await fetch(bURL).then((response) => {
           if(response.ok) return response.json();
           else throw new Error('Status code error :' + response.status)
@@ -208,6 +205,7 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
     const currentPage = `${document.location.protocol}//${document.location.host}`
     if(this.generalId.length > 0) {
       const gURL = new URL(`/generals/${this.generalId}.json`,currentPage)
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const data = await fetch(gURL).then((response) => {
         if(response.ok) return response.json();
         else throw new Error('Status code error :' + response.status);
@@ -217,6 +215,7 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
       const v3 = GeneralClass.safeParse(data)
       if(v3.success){
         this.general = v3.data
+        this.dispatchEvent(new CustomEvent('GeneralSet', {composed: false, bubbles: true}))
         this.requestUpdate('general');
       } else {
         if(DEBUG) {
@@ -275,14 +274,16 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
       return true;
     }
   });
-
-  protected async willUpdate(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): Promise<void> {
+ 
+  protected async willUpdate(_changedProperties: PropertyValues  ): Promise<void> {
     super.willUpdate(_changedProperties)
+    if(DEBUG) {console.log(`BaseGeneral willUpdate started`)}
     if(_changedProperties.has('generalId')){
       await Promise.all([
         this.getGeneral(),
         delay(10)
       ])
+      this.requestUpdate('_eg');
     }
     if(_changedProperties.has('general')){
       if(this.general !== null) {

@@ -1,20 +1,15 @@
 import { customElement, property, state } from "lit/decorators.js";
-import { ref } from "lit/directives/ref.js";
-import {unsafeHTML} from 'lit/directives/unsafe-html.js';
-import {nothing} from 'lit'
-
-import { z } from 'zod'
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { type PropertyValues} from 'lit'
 
 import { delay } from 'nanodelay'
 
 import {
   SizedMixin,
-  SpectrumElement,
   type CSSResultArray,
   html,
   css,
   unsafeCSS,
-  type PropertyValueMap,
   type TemplateResult
 } from "@spectrum-web-components/base";
 
@@ -26,26 +21,11 @@ import "iconify-icon";
 
 import {
   AscendingLevels,
-  BuffParams,
   type BuffParamsType,
   qualityColor,
   type BuffType,
   UnitSchema,
 } from "@schemas/baseSchemas";
-
-import {
-  Speciality,
-  type SpecialityType,
-} from "@schemas/specialitySchema";
-
-import {
-  Book,
-  specialSkillBook,
-  standardSkillBook,
-  type BookType,
-  type specialSkillBookType,
-  type standardSkillBookType,
-} from "@schemas/bookSchemas";
 
 
 import {
@@ -56,12 +36,7 @@ import {
 } from '@schemas/generalsSchema'
 
 import {
-  ExtendedGeneral,
-  type ExtendedGeneralType,
   ExtendedGeneralStatus,
-  type ExtendedGeneralStatusType,
-  RankInstance,
-  type RankInstanceType,
 } from "@schemas/ExtendedGeneral";
 
 import { BaseGeneral } from "./BaseGeneral";
@@ -92,7 +67,7 @@ export class DetailView extends SizedMixin(BaseGeneral, {
     beast: true,
   }
   
-  protected async willUpdate(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): Promise<void> {
+  protected async willUpdate(_changedProperties: PropertyValues): Promise<void> {
     await super.willUpdate(_changedProperties)
     if(_changedProperties.has('_eg')) {
       let InComplete = true;
@@ -272,7 +247,7 @@ export class DetailView extends SizedMixin(BaseGeneral, {
   }
 
   private renderBasicStats() {
-    let stats = html`
+    return html`
     <span class="label spectrum-Heading spectrum-Heading--sizeM">Basic Statistics</span><br/>
     <div class="IntrinsicAttributes">
       <div class="Leadership">
@@ -304,7 +279,6 @@ export class DetailView extends SizedMixin(BaseGeneral, {
       </div>
     </div>
     `
-    return stats;
   }
 
   private renderBooks() {
@@ -478,7 +452,7 @@ export class DetailView extends SizedMixin(BaseGeneral, {
 
   protected override render(): TemplateResult {
     return html`
-    <div class="GeneralDetails not-content" id=${this.general?.name}>
+    <div class="GeneralDetails not-content" id=${ifDefined(this.general?.name.replaceAll(' ', ''))}>
       <div class="not-content Stars">
         ${this.renderStars()}
       </div>
