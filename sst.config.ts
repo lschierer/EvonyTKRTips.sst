@@ -16,13 +16,14 @@ export default $config({
           region: "us-east-2"
         }
       },
-      domain: {
-        name: input?.stage === 'production' ? "evonytkrtips.net" : `${input?.stage}.evonytkrtips.net`,
-        aliases: input?.stage === 'production' ? ["www.evonytkrtips.net"] : [`www.${input?.stage}.evonytkrtips.net`],
-      },
     };
   },
   async run() {
-    new sst.aws.Astro("EvonyTKRTips");
+    new sst.aws.Astro("EvonyTKRTips",{
+      domain: {
+        name: $app.stage === 'production' ? "evonytkrtips.net" : `${$app?.stage}.evonytkrtips.net`,
+        aliases: $app?.stage === 'production' ? ["www.evonytkrtips.net"] : [`www.${$app?.stage}.evonytkrtips.net`],
+      },
+    });
   },
 });
