@@ -7,7 +7,9 @@ import {
 } from 'ag-grid-community';
 import { ClientSideRowModelModule } from "@ag-grid-community/client-side-row-model";
 import BaseAGCSSImport from  "@ag-grid-community/styles/ag-grid.css?inline";
-import QuartzImport from "@ag-grid-community/styles/ag-theme-quartz.css?inline";
+import AlpineImport from "@ag-grid-community/styles/ag-theme-alpine.css?inline";
+import MaterialFontImport from '@ag-grid-community/styles/agGridMaterialFont.css?inline'
+import MaterialImport from '@ag-grid-community/styles/ag-theme-material.css?inline'
 
 ModuleRegistry.registerModules([ClientSideRowModelModule]);
 
@@ -247,12 +249,26 @@ export class DisplayGrid extends SizedMixin( SpectrumElement, {
 
   public static override get styles(): CSSResultArray {
     const AGBaseCSS = unsafeCSS(BaseAGCSSImport)
-    const QuartzCSS = unsafeCSS(QuartzImport)
-    const localStyle = css``;
+    const AlpineCSS = unsafeCSS(AlpineImport)
+    const MaterialFontCss = unsafeCSS(MaterialFontImport)
+    const MaterialCSS = unsafeCSS(MaterialImport)
+    const localStyle = css`
+    .ag-theme-alpine, .ag-theme-alpine-dark {
+      --ag-icon-font-family: agGridAlpine;
+    }
+    `;
     if(super.styles !== undefined && Array.isArray(super.styles)) {
-      return [...super.styles, AGBaseCSS, QuartzCSS,localStyle]
+      return [
+        ...super.styles, 
+        AGBaseCSS, 
+        AlpineCSS,
+        localStyle]
     } else {
-      return [AGBaseCSS, QuartzCSS,localStyle]
+      return [
+        AGBaseCSS, 
+        AlpineCSS,
+        localStyle
+      ]
     }
   }
   
@@ -279,7 +295,7 @@ export class DisplayGrid extends SizedMixin( SpectrumElement, {
       DisplayGrid
       <div
         id='agdiv'
-        class="ag-theme-quartz" style="height: 500px;"
+        class="ag-theme-alpine" style="height: 500px;"
         ${ref(this.renderGrid)}
       ></div>
       
