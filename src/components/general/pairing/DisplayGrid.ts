@@ -157,20 +157,13 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
   protected override render() {
     
     return html`
+      DisplayGrid
       <div
         id='agdiv'
         class="ag-theme-quartz" style="height: 500px"
         ${ref(this.renderGrid)}
       ></div>
-      <ol>
-        ${this.DisplayPairs.map((pair) => html`
-        <li><dl>
-          <dt><span class="spectrum-Body spectrum-Body--sizeM"><strong>Primary:</strong>${pair.primary}</span></dt>
-          <dd><span class="spectrum-Body spectrum-Body--sizeM"><strong>Secondary:</strong>${pair.secondary}</span></dd>
-        </dl></li>
-        ` 
-        )}
-      </ol>
+      
     `
   }
 
