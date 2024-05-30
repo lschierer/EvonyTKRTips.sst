@@ -21,6 +21,7 @@ import {
 
  import {
   GeneralElement,
+  type GeneralClassType,
   type GeneralElementType,
  } from '@schemas/generalsSchema'
 
@@ -54,88 +55,7 @@ let MyInvestmentLevel: BuffParamsType = {
   beast: true,
 };
 
-const generalObjects: CollectionEntry<"generals">[] =
-  await getCollection("generals");
-
-if (generalObjects !== null && generalObjects !== undefined) {
-  let generalIterator = generalObjects.values();
-
-  for (const v of generalIterator) {
-    const validation = GeneralElement.safeParse(v.data);
-    if (validation.success) {
-      if(generalClass.localeCompare(ClassEnum.enum.all)){
-        if (validation.data.general.score_as === generalClass) {
-          allGenerals.push(validation.data);
-        }
-      } else {
-        allGenerals.push(validation.data);
-      }
-    } else {
-      console.error(`bad validation ${validation.error.message}`);
-    }
-  }
-  await Promise.all(allGenerals.map(async (g) => {
-    if (DEBUG) console.log(`adding ${g.general.name}`)
-    await Astro.locals.addEG2EGS(g.general)
-    const eg: ExtendedGeneralType = Astro.locals.CachedGenerals.find((thisG: ExtendedGeneralType) => {
-      if(!thisG.general.name.localeCompare(g.general.name)) {
-        return true;
-      }
-      return false;
-    })
-    if(eg !== undefined) {
-      let generalIsProcessing = true;
-      do{
-        if(!ExtendedGeneralStatus.enum.complete.localeCompare(eg.status)){
-          generalIsProcessing = false;
-        } else {
-          await delay(10)
-        }
-      } while(generalIsProcessing)
-    }
-  }));
-  if(Array.isArray(Astro.locals.CachedPairs) && Astro.locals.CachedPairs.length > 0) {
-    Astro.locals.CachedPairs.forEach((pair: GeneralPairType)=> {
-      const egP = Astro.locals.CachedGenerals.find((thisg: ExtendedGeneralType) => {
-        if(!thisg.general.name.localeCompare(pair.primary)) {
-          return true;
-        }
-        return false;
-      })
-      const egS = Astro.locals.CachedGenerals.find((thisg: ExtendedGeneralType) => {
-        if(!thisg.general.name.localeCompare(pair.secondary)) {
-          return true;
-        }
-        return false;
-      })
-      const pKey = Astro.locals.InvestmentOptions2Key(MyInvestmentLevel);
-      const pEvAnsRanking = egP.computedBuffs.get(pKey).EvAns 
-      const pAttackRanking = egP.computedBuffs.get(pKey).AttackRank
-      const pDefenseRanking = egP.computedBuffs.get(pKey).DefenseRank
-
-      const sInvestment: BuffParamsType = {
-        special1: MyInvestmentLevel.special1,
-        special2: MyInvestmentLevel.special2,
-        special3: MyInvestmentLevel.special3,
-        special4: MyInvestmentLevel.special4,
-        special5: MyInvestmentLevel.special5,
-        stars: AscendingLevels.enum[0],
-        dragon: MyInvestmentLevel.dragon,
-        beast: MyInvestmentLevel.beast
-      }
-      const sKey = Astro.locals.InvestmentOptions2Key(sInvestment)
-      const sEvAnsRanking = egS.computedBuffs.get(sKey).EvAns 
-      const sAttackRanking = egS.computedBuffs.get(sKey).AttackRank
-      const sDefenseRanking = egS.computedBuffs.get(sKey).DefenseRank
-
-      pair.EvAnsRanking = (pEvAnsRanking + sEvAnsRanking)
-      pair.AttackRanking = (pAttackRanking + sAttackRanking)
-      pair.DefenseRanking = (pDefenseRanking + sDefenseRanking)
-
-    })
-    
-  }
-}
+  
 
 
 
