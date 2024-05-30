@@ -3,11 +3,12 @@ import { delay } from "nanodelay";
 
 import { BaseN } from "js-combinatorics";
 
-import { 
+import {
   GeneralClass,
   type GeneralClassType,
   Display,
-   type generalSpecialistsType 
+  type generalSpecialistsType,
+  generalSpecialists,
 } from "@schemas/generalsSchema";
 
 import { type ConflictDatumType } from "@schemas/conflictSchemas";
@@ -19,27 +20,89 @@ interface Props {
   TargetClass: generalSpecialistsType;
 }
 
-  if (Astro.locals.CachedGenerals.length > 0) {
-    if (
-      Array.isArray(Astro.locals.ConflictData) &&
-      Astro.locals.ConflictData.length === 0
-    ) {
-      await delay(15);
+const { TargetClass } = Astro.props;
+
+if (Astro.locals.CachedGenerals.length > 0) {
+  if (
+    Array.isArray(Astro.locals.ConflictData) &&
+    Astro.locals.ConflictData.length === 0
+  ) {
+    await delay(15);
+  }
+  const generalBaseN = new BaseN(Astro.locals.CachedGenerals, 2);
+  [...generalBaseN].forEach((pPair: Array<GeneralClassType>) => {
+    const primary = pPair[0];
+    const secondary = pPair[1];
+    if (primary === undefined || secondary === undefined) {
+      return;
     }
-    const generalBaseN = new BaseN(Astro.locals.CachedGenerals, 2);
-    [...generalBaseN].forEach((pPair: Array<GeneralClassType>) => {
-      const primary = pPair[0];
-      const secondary = pPair[1];
-      if (primary === undefined || secondary === undefined) {
+    if (!primary.name.localeCompare(secondary.name)) {
+      return;
+    }
+    if (TargetClass.localeCompare(generalSpecialists.enum.all)) {
+      if (primary.score_as.localeCompare(TargetClass)) {
+        if (DEBUG) {
+          console.log(`${primary.name} does not match ${TargetClass}`);
+        }
         return;
       }
-      if (!primary.name.localeCompare(secondary.name)) {
+      if (secondary.score_as.localeCompare(TargetClass)) {
+        if (DEBUG) {
+          console.log(`${secondary.name} does not match ${TargetClass}`);
+        }
         return;
       }
-      if (
-        Array.isArray(Astro.locals.CachedPairs) &&
-        Astro.locals.CachedPairs.length > 0
-      ) {
+    }
+    if (DEBUG) {
+      console.log(`considering pair ${primary.name} ${secondary.name}`);
+    }
+    if (
+      Array.isArray(Astro.locals.CachedPairs) &&
+      Astro.locals.CachedPairs.length > 0
+    ) {
+      if (DEBUG) {
+        console.log(`CP is populated, test if present`);
+      }
+      const present = Astro.locals.CachedPairs.some((pair: GeneralPairType) => {
+        if (!pair.primary.name.localeCompare(primary.name)) {
+          if (!pair.secondary.name.localeCompare(secondary.name)) {
+            return true;
+          }
+        }
+        return false;
+      });
+      if (present) {
+        if (DEBUG) {
+          console.log(`rejecting pair ${primary.name} ${secondary.name}`);
+        }
+        return;
+      }
+    }
+    if (DEBUG) {
+      console.log(`past first present check`);
+    }
+    if (Astro.locals.ConflictData.length > 0) {
+      if (DEBUG) {
+        console.log(`checking conflicts`);
+      }
+      const relConflicts = Astro.locals.ConflictData.some(
+        (cDatum: ConflictDatumType) => {
+          const c = Object.values(cDatum.members).flat();
+          if (Array.isArray(cDatum.others)) {
+            c.push(...Object.values(cDatum.others).flat());
+          }
+          if (c.includes(primary.name)) {
+            if (c.includes(secondary.name)) {
+              return true;
+            }
+          }
+          return false;
+        }
+      );
+      if (!relConflicts) {
+        if (DEBUG) {
+          console.log(`no conflicts`);
+        }
         const present = Astro.locals.CachedPairs.some(
           (pair: GeneralPairType) => {
             if (!pair.primary.name.localeCompare(primary.name)) {
@@ -48,84 +111,49 @@ interface Props {
               }
             }
             return false;
-          });
-        if (present) {
-          return;
-        }
-      }
-      if (Astro.locals.ConflictData.length > 0) {
-        const relConflicts = Astro.locals.ConflictData.some(
-          (cDatum: ConflictDatumType) => {
-            const c = Object.values(cDatum.members).flat();
-            if (Array.isArray(cDatum.others)) {
-              c.push(...Object.values(cDatum.others).flat());
-            }
-            if (c.includes(primary.name)) {
-              if (c.includes(secondary.name)) {
-                return true;
-              }
-            }
-            return false;
           }
         );
-        if (!relConflicts) {
-          if (
-            !Astro.locals.CachedPairs.some((thisPair: GeneralPairType) => {
-              if (thisPair?.primary?.name !== undefined) {
-                if (
-                  thisPair.primary.name.localeCompare(
-                    primary.name
-                  )
-                ) {
-                  if (
-                    thisPair.secondary.name.localeCompare(
-                      secondary.name
-                    )
-                  ) {
-                    return true;
-                  }
-                }
-              }
-              return false;
-            })
-          ) {
-            const newPair: GeneralPairType = {
-              primary: primary,
-              secondary: secondary,
-            }  
-            Astro.locals.CachedPairs.push(newPair);
+        if (!present) {
+          if (DEBUG) {
+            console.log(`still not present after conflicts`);
           }
-        }
-      } else {
-        if (
-          !Astro.locals.CachedPairs.some((thisPair) => {
-            if (thisPair !== undefined && thisPair !== null) {
-              if (
-                thisPair.primary.general.name.localeCompare(
-                  primary.name
-                )
-              ) {
-                if (
-                  thisPair.secondary.general.name.localeCompare(
-                    secondary.name
-                  )
-                ) {
-                  return true;
-                }
-              }
-            }
-          })
-        ) {
           const newPair: GeneralPairType = {
             primary: primary,
             secondary: secondary,
           };
           Astro.locals.CachedPairs.push(newPair);
+          if (DEBUG) {
+            console.log(`${Astro.locals.CachedPairs.length} pairs`);
+          }
+        }
+      } else {
+        if (DEBUG) {
+          console.log(`conflicts, rejecting`);
         }
       }
-    });
-  }
-
+    } else {
+      const present = Astro.locals.CachedPairs.some((pair: GeneralPairType) => {
+        if (!pair.primary.name.localeCompare(primary.name)) {
+          if (!pair.secondary.name.localeCompare(secondary.name)) {
+            return true;
+          }
+        }
+        return false;
+      });
+      if (!present) {
+        const newPair: GeneralPairType = {
+          primary: primary,
+          secondary: secondary,
+        };
+        Astro.locals.CachedPairs.push(newPair);
+      } else {
+        if (DEBUG) {
+          console.log(`rejecting pair ${primary.name} ${secondary.name}`);
+        }
+      }
+    }
+  });
+}
 ---
 
 {
