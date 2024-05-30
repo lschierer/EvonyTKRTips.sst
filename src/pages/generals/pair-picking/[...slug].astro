@@ -4,9 +4,12 @@ export const prerender = false;
 import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
 import type { CollectionEntry } from "astro:content";
 import { getEntry, getCollection } from "astro:content";
+import type { ComponentProps } from 'astro/types';
+
 
 import AllGenerals from "@components/general/AllGenerals.astro"
 import AllConflicts from "@components/general/AllConflicts.astro"
+
 
 
 const DEBUG = false;
@@ -30,6 +33,7 @@ if (entry === undefined) {
   console.log(`${slug} was not found`);
   return Astro.redirect("/404");
 }
+
 
 
 const { Content } = await entry.render();

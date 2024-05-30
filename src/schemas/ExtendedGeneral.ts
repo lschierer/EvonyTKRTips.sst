@@ -28,9 +28,8 @@ export const ExtendedGeneral = zod.object({
 export type ExtendedGeneralType = zod.infer<typeof ExtendedGeneral>;
 
 export const GeneralPair = zod.object({
-  primary: zod.string(),
-  secondary: zod.string(),
-  rankings: RankInstance,
+  primary: GeneralClass,
+  secondary: GeneralClass,
 });
 
 export type GeneralPairType = zod.infer<typeof GeneralPair>;

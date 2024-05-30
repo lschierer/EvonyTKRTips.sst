@@ -1,17 +1,16 @@
 ---
 export const prerender = false;
 
-import { getCollection, type CollectionEntry, } from "astro:content";
-import type { ComponentProps } from "astro/types";
+import type { ComponentProps } from 'astro/types';
 
 import {ulid} from 'ulidx'
-
-import {GridGeneral} from './GridGeneral'
 
 import {delay} from 'nanodelay';
 
 import { DisplayGrid } from './DisplayGrid';
-
+import {GridGeneral} from './GridGeneral'
+import AllPairs from '@components/general/AllPairs.astro'
+type AllPairsPropsType = ComponentProps<typeof AllPairs>;
 
 import {
   AscendingLevels,
@@ -57,20 +56,23 @@ let MyInvestmentLevel: BuffParamsType = {
   beast: true,
 };
 
-  
+const DisplayGenerals = new Array<GridGeneral>();
 
+const AllPairsProps: AllPairsPropsType = {
+  TargetClass: generalClass
+}
 
+const DisplayGridProps = {
+  tableName: table_name,
+  InvestmentLevel: MyInvestmentLevel,
+  RawPairs: Astro.locals.CachedPairs,
+}
 
 ---
 
 <div class="table-container non-content">
-  test
-  <DisplayGrid
-    tableName={table_name}
-    InvestmentLevel={MyInvestmentLevel}
-    DisplayPairs={Astro.locals.CachedPairs}
-    client:only="lit"
-  ></DisplayGrid>
+  <AllPairs {...AllPairsProps}></AllPairs>
+  <DisplayGrid {...DisplayGridProps} client:only="lit"></DisplayGrid>
   
 <style>
   .table-container {

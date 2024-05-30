@@ -6,7 +6,7 @@ import { delay } from "nanodelay";
 
 import { ConflictDatum, type ConflictDatumType } from "@schemas/conflictSchemas";
 
-const DEBUG = true;
+const DEBUG = false;
 
 const ConflictEntries: CollectionEntry<"generalConflictData">[] =
   await getCollection("generalConflictData");

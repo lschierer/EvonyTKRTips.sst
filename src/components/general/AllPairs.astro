@@ -3,95 +3,24 @@ import { delay } from "nanodelay";
 
 import { BaseN } from "js-combinatorics";
 
-import {
-  ExtendedGeneral,
-  ExtendedGeneralStatus,
-  type ExtendedGeneralType,
-  type GeneralPairType,
-} from "@schemas/ExtendedGeneral";
 import { AscendingLevels, type BuffParamsType } from "@schemas/baseSchemas";
 
-import { Display, type generalSpecialistsType } from "@schemas/generalsSchema";
+import { 
+  GeneralClass,
+  type GeneralClassType,
+  Display,
+   type generalSpecialistsType 
+} from "@schemas/generalsSchema";
 
 import { type ConflictDatumType } from "@schemas/conflictSchemas";
+import type { GeneralPairType } from "@schemas/ExtendedGeneral";
 
 const DEBUG = true;
 
 interface Props {
-  InvestmentTarget: BuffParamsType;
   TargetClass: generalSpecialistsType;
 }
 
-const { InvestmentTarget, TargetClass } = Astro.props;
-const pKey = Astro.locals.InvestmentOptions2Key(InvestmentTarget);
-const sInvestmentTarget: BuffParamsType = {
-  special1: InvestmentTarget.special1,
-  special2: InvestmentTarget.special2,
-  special3: InvestmentTarget.special3,
-  special4: InvestmentTarget.special4,
-  special5: InvestmentTarget.special5,
-  stars: AscendingLevels.enum[0],
-  dragon: InvestmentTarget.dragon,
-  beast: InvestmentTarget.beast,
-};
-const sKey = Astro.locals.InvestmentOptions2Key(sInvestmentTarget);
-
-let pEvAnsRanking = 0;
-let pAttackRanking = 0;
-let pDefenseRanking = 0;
-let sEvAnsRanking = 0;
-let sAttackRanking = 0;
-let sDefenseRanking = 0;
-
-let CallPairs = true;
-
-await Promise.all(
-  Astro.locals.CachedGenerals.map(async (thisG: ExtendedGeneralType) => {
-    let IsIncomplete = true;
-
-    do {
-      if (thisG !== undefined && thisG !== null) {
-        if (!ExtendedGeneralStatus.enum.complete.localeCompare(thisG.status)) {
-          IsIncomplete = false;
-
-          const pSuccess = await Astro.locals.GeneralBuffs(
-            thisG.general.name,
-            Display.enum.primary,
-            InvestmentTarget
-          );
-
-          const sSuccess = await Astro.locals.GeneralBuffs(
-            thisG.general.name,
-            Display.enum.assistant,
-            sInvestmentTarget
-          );
-
-          if (DEBUG) {
-            console.log(
-              `AllPairs called GeneralBuffs: pSuccess: ${pSuccess}, sSuccess: ${sSuccess}`
-            );
-          }
-          if (!pSuccess || !sSuccess) {
-            CallPairs = false;
-            console.log(
-              `cannot call pairs: ${thisG.general.name} was not successfully buffed`
-            );
-          } 
-        } else {
-          if (DEBUG) {
-            console.log(`${thisG.general.name} is in status ${thisG.status}`);
-          }
-          await delay(10);
-        }
-      } else {
-        if (DEBUG) {
-          console.log(`undefined general in Astro.locals.ExtendedGenerals`);
-        }
-      }
-    } while (IsIncomplete);
-  })
-);
-if (CallPairs) {
   if (Astro.locals.CachedGenerals.length > 0) {
     if (
       Array.isArray(Astro.locals.ConflictData) &&
@@ -100,39 +29,32 @@ if (CallPairs) {
       await delay(15);
     }
     const generalBaseN = new BaseN(Astro.locals.CachedGenerals, 2);
-    [...generalBaseN].forEach((pPair) => {
+    [...generalBaseN].forEach((pPair: Array<GeneralClassType>) => {
       const primary = pPair[0];
       const secondary = pPair[1];
       if (primary === undefined || secondary === undefined) {
         return;
       }
-      if (!primary.general.name.localeCompare(secondary.general.name)) {
+      if (!primary.name.localeCompare(secondary.name)) {
         return;
       }
       if (
         Array.isArray(Astro.locals.CachedPairs) &&
         Astro.locals.CachedPairs.length > 0
       ) {
-        const preset: GeneralPairType = Astro.locals.CachedPairs.find(
+        const present = Astro.locals.CachedPairs.some(
           (pair: GeneralPairType) => {
-            if (!pair.primary.localeCompare(primary.general.name)) {
-              if (!pair.secondary.localeCompare(secondary.general.name)) {
+            if (!pair.primary.name.localeCompare(primary.name)) {
+              if (!pair.secondary.name.localeCompare(secondary.name)) {
                 return true;
               }
             }
             return false;
-          }
-        );
-        if (preset !== undefined) {
+          });
+        if (present) {
           return;
         }
       }
-      pEvAnsRanking = primary.computedBuffs.get(pKey)?.EvAns ?? -7;
-      pAttackRanking = primary.computedBuffs.get(pKey)?.AttackRank ?? -7;
-      pDefenseRanking = primary.computedBuffs.get(pKey)?.DefenseRank ?? -7;
-      sEvAnsRanking = secondary.computedBuffs.get(sKey)?.EvAns ?? -7;
-      sAttackRanking = secondary.computedBuffs.get(sKey)?.AttackRank ?? -7;
-      sDefenseRanking = secondary.computedBuffs.get(sKey)?.DefenseRank ?? -7;
       if (Astro.locals.ConflictData.length > 0) {
         const relConflicts = Astro.locals.ConflictData.some(
           (cDatum: ConflictDatumType) => {
@@ -140,8 +62,8 @@ if (CallPairs) {
             if (Array.isArray(cDatum.others)) {
               c.push(...Object.values(cDatum.others).flat());
             }
-            if (c.includes(primary.general.name)) {
-              if (c.includes(secondary.general.name)) {
+            if (c.includes(primary.name)) {
+              if (c.includes(secondary.name)) {
                 return true;
               }
             }
@@ -150,16 +72,16 @@ if (CallPairs) {
         );
         if (!relConflicts) {
           if (
-            !Astro.locals.CachedPairs.some((thisPair) => {
-              if (thisPair?.primary?.general?.name !== undefined) {
+            !Astro.locals.CachedPairs.some((thisPair: GeneralPairType) => {
+              if (thisPair?.primary?.name !== undefined) {
                 if (
-                  thisPair.primary.general.name.localeCompare(
-                    primary.general.name
+                  thisPair.primary.name.localeCompare(
+                    primary.name
                   )
                 ) {
                   if (
-                    thisPair.secondary.general.name.localeCompare(
-                      pPair[1].general.name
+                    thisPair.secondary.name.localeCompare(
+                      secondary.name
                     )
                   ) {
                     return true;
@@ -170,12 +92,9 @@ if (CallPairs) {
             })
           ) {
             const newPair: GeneralPairType = {
-              primary: pPair[0].general.name,
-              secondary: pPair[1].general.name,
-              EvAnsRanking: pEvAnsRanking + sEvAnsRanking,
-              AttackRanking: pAttackRanking + sAttackRanking,
-              DefenseRanking: pDefenseRanking + sDefenseRanking,
-            };
+              primary: primary,
+              secondary: secondary,
+            }  
             Astro.locals.CachedPairs.push(newPair);
           }
         }
@@ -185,12 +104,12 @@ if (CallPairs) {
             if (thisPair !== undefined && thisPair !== null) {
               if (
                 thisPair.primary.general.name.localeCompare(
-                  primary.general.name
+                  primary.name
                 )
               ) {
                 if (
                   thisPair.secondary.general.name.localeCompare(
-                    secondary.general.name
+                    secondary.name
                   )
                 ) {
                   return true;
@@ -200,18 +119,15 @@ if (CallPairs) {
           })
         ) {
           const newPair: GeneralPairType = {
-            primary: primary.general.name,
-            secondary: secondary.general.name,
-            EvAnsRanking: pEvAnsRanking + sEvAnsRanking,
-            AttackRanking: pAttackRanking + sAttackRanking,
-            DefenseRanking: pDefenseRanking + sDefenseRanking,
+            primary: primary,
+            secondary: secondary,
           };
           Astro.locals.CachedPairs.push(newPair);
         }
       }
     });
   }
-}
+
 ---
 
 {
@@ -220,11 +136,8 @@ if (CallPairs) {
       {Astro.locals.CachedPairs.map((thisPair: GeneralPairType) => (
         <li>
           <ul>
-            <li>Primary: {thisPair.primary}</li>
-            <li>Secondary: {thisPair.secondary}</li>
-            <li>EvAns Ranking: {thisPair.EvAnsRanking}</li>
-            <li>Attack Ranking: {thisPair.AttackRanking}</li>
-            <li>Toughness Ranking: {thisPair.DefenseRanking}</li>
+            <li>Primary: {thisPair.primary.name}</li>
+            <li>Secondary: {thisPair.secondary.name}</li>
           </ul>
         </li>
       ))}
