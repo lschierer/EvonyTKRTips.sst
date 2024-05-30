@@ -243,10 +243,6 @@ export class DetailView extends SizedMixin(BaseGeneral, {
     }
   }
 
-
-
-  
-
   private renderStars() {
     let starsNum = 0;
     let starsLimit = 0;

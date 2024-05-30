@@ -14,22 +14,11 @@ import {
   levels,
 } from "@schemas/baseSchemas";
 
-
-
-
 import {
   GeneralArray,
   type GeneralArrayType,
   type GeneralElementType,
  } from '@schemas/generalsSchema'
-
- 
-
-
-
-
-
-
 
 @customElement("table-container")
 export class TableContainer extends LitElement {
