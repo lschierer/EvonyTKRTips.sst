@@ -30,4 +30,4 @@ pre-build: install
     # ${PNPM} tsc -p tsconfig.node.json
 
 deploy: build
-    ${SST} deploy --stage dev --verbose
+    ${SST} deploy --stage generals-db2 --verbose

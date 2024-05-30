@@ -13,9 +13,6 @@ export default defineConfig({
   output: "hybrid",
   adapter: aws({
     responseMode: "stream",
-    serverRoutes: [
-      'generals/pair-picking/*',
-    ],
   }),
   compressHTML: false,
   integrations: [lit(), starlight({
