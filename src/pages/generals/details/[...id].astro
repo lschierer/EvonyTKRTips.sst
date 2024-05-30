@@ -11,8 +11,6 @@ import AllConflicts from "@components/general/AllConflicts.astro"
 const DEBUG = false;
 
 import { getEntry, getCollection } from "astro:content";
-import type { CollectionEntry } from 'astro:content';
-import type { GeneralClassType } from '@schemas/generalsSchema';
 
 export const  getStaticPaths = (async () =>  {
   const blogEntries = await getCollection('generals');
