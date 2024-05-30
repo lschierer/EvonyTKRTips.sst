@@ -1,5 +1,5 @@
 import {z} from 'zod';
-import { ulid } from 'ulid'
+import { ulid } from 'ulidx'
 
 import {
     bookConflicts,
