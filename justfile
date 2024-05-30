@@ -1,9 +1,11 @@
 tmpdir  := `mktemp`
 export PATH := "./node_modules/.bin:" + env_var('PATH')
 export NODE_OPTIONS := '--max_old_space_size=10240'
+export AWS_PROFILE := 'home'
 set dotenv-load
 
 export PNPM := `which pnpm`
+export SST := `which sst`
 
 install:
     ${PNPM} install
@@ -26,3 +28,6 @@ build: install pre-build
 
 pre-build: install
     # ${PNPM} tsc -p tsconfig.node.json
+
+deploy: build
+    ${SST} deploy --stage dev --verbose
