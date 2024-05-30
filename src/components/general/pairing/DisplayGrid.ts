@@ -2,16 +2,11 @@
 import {
   GridApi,
   type GridOptions,
-  ModuleRegistry,
   createGrid,
 } from 'ag-grid-community';
-import { ClientSideRowModelModule } from "@ag-grid-community/client-side-row-model";
-import BaseAGCSSImport from  "@ag-grid-community/styles/ag-grid.css?inline";
-import AlpineImport from "@ag-grid-community/styles/ag-theme-alpine.css?inline";
-import MaterialFontImport from '@ag-grid-community/styles/agGridMaterialFont.css?inline'
-import MaterialImport from '@ag-grid-community/styles/ag-theme-material.css?inline'
+import BaseAGCSSImport from  "ag-grid-community/styles/ag-grid.css?inline";
+import AlpineImport from "ag-grid-community/styles/ag-theme-alpine.css?inline";
 
-ModuleRegistry.registerModules([ClientSideRowModelModule]);
 
 import {delay} from 'nanodelay'
 
@@ -250,8 +245,6 @@ export class DisplayGrid extends SizedMixin( SpectrumElement, {
   public static override get styles(): CSSResultArray {
     const AGBaseCSS = unsafeCSS(BaseAGCSSImport)
     const AlpineCSS = unsafeCSS(AlpineImport)
-    const MaterialFontCss = unsafeCSS(MaterialFontImport)
-    const MaterialCSS = unsafeCSS(MaterialImport)
     const localStyle = css`
     .ag-theme-alpine, .ag-theme-alpine-dark {
       --ag-icon-font-family: agGridAlpine;
