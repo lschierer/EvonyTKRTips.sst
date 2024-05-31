@@ -37,33 +37,12 @@ export default tseslint.config(
   ...tseslint.configs.recommendedTypeChecked,
   ...tseslint.configs.stylisticTypeChecked,
   ...eslintPluginAstro.configs['flat/recommended'],
-	eslintConfigPrettier,
   {
     languageOptions: {
       parserOptions: {
-        project: './tsconfig.eslint.json',
+        project: './tsconfig.json',
         tsconfigRootDir: import.meta.dirname,
       },
     },
   },
-  {
-    files: ["**/*.ts"],
-    plugins: {
-      "unused-imports": unusedImports,
-    },
-    rules: {
-      "@typescript-eslint/no-unused-vars": "off",
-      "unused-imports/no-unused-imports": "error",
-      "unused-imports/no-unused-vars": [
-          "warn",
-          {
-              "vars": "all",
-              "varsIgnorePattern": "^_",
-              "args": "after-used",
-              "argsIgnorePattern": "^_",
-          },
-      ]
-    }
-  }
-  
 );
