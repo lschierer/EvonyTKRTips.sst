@@ -4,15 +4,17 @@ import {
   type InferGetStaticPropsType,
   type GetStaticPaths,
 } from 'astro';
-import { getCollection, getEntry, type CollectionEntry  } from 'astro:content';
+import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
 
 export const prerender = true;
 const DEBUG = false;
 
 export const getStaticPaths = (async () => {
-  const specialityObjects: CollectionEntry<'specialities'>[]  = await getCollection('specialities');
-  return specialityObjects.map(entry => ({
-    params: {id: entry.id,}, props: { entry },
+  const specialityObjects: CollectionEntry<'specialities'>[] =
+    await getCollection('specialities');
+  return specialityObjects.map((entry) => ({
+    params: { id: entry.id },
+    props: { entry },
   }));
 }) satisfies GetStaticPaths;
 
@@ -21,22 +23,19 @@ type Props = InferGetStaticPropsType<typeof getStaticPaths>; // eslint-disable-l
 
 export const GET: APIRoute = async ({ params }) => {
   let id: string = params.id ? params.id : '';
-  if(id !== '') {
-    if(id.includes('/')){
-      const temp = id.split('/').pop() ;
-      if(temp !== undefined) {
+  if (id !== '') {
+    if (id.includes('/')) {
+      const temp = id.split('/').pop();
+      if (temp !== undefined) {
         id = temp;
       }
     }
-    if (DEBUG) console.log(`id is ${id}, params were ${JSON.stringify(params)}`)
-    const entry = await getEntry('specialities',id);
-    if(entry !== null && entry !== undefined) {
-      return new Response(
-        JSON.stringify(entry.data)
-      )
+    if (DEBUG)
+      console.log(`id is ${id}, params were ${JSON.stringify(params)}`);
+    const entry = await getEntry('specialities', id);
+    if (entry !== null && entry !== undefined) {
+      return new Response(JSON.stringify(entry.data));
     }
   }
-  return new Response(JSON.stringify(''))
-}
-
-
+  return new Response(JSON.stringify(''));
+};

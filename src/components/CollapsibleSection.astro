@@ -25,13 +25,12 @@ const inputId = `${title}-collapsible`;
 </div>
 
 <style>
-
   li {
     padding-left: 2rem;
     padding-inline-start: 2rem;
   }
 
-  input[type="checkbox"] {
+  input[type='checkbox'] {
     display: none;
   }
 
@@ -52,7 +51,7 @@ const inputId = `${title}-collapsible`;
     transition: all 0.25s ease-out;
   }
   .lbl-toggle::before {
-    content: " ";
+    content: ' ';
     display: inline-block;
 
     border-top: 5px solid transparent;
@@ -100,7 +99,7 @@ const inputId = `${title}-collapsible`;
         let myLabels = document.getElementById(localId);
         if (myLabels !== null) {
           Array.from([myLabels as HTMLElement].flat()).forEach((label) => {
-            label.addEventListener("keydown", (e) => {
+            label.addEventListener('keydown', (e) => {
               // 32 === spacebar
               // 13 === enter
               if (e.which === 32 || e.which === 13) {
@@ -113,5 +112,5 @@ const inputId = `${title}-collapsible`;
       }
     }
   }
-  customElements.define("collapsible-toggle", CollapsibleToggle);
+  customElements.define('collapsible-toggle', CollapsibleToggle);
 </script>

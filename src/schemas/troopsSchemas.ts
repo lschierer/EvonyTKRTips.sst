@@ -1,4 +1,4 @@
-import {z as zod} from 'zod';
+import { z as zod } from 'zod';
 
 export const Tier = zod.enum([
   't1',

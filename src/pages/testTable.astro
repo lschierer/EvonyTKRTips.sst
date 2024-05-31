@@ -1,62 +1,75 @@
 ---
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 
-import "@spectrum-css/vars/dist/spectrum-global.css";
-import "@spectrum-css/vars/dist/spectrum-medium.css";
-import "@spectrum-css/page/dist/index.css";
-import "@spectrum-css/table/dist/index.css";
+import '@spectrum-css/vars/dist/spectrum-global.css';
+import '@spectrum-css/vars/dist/spectrum-medium.css';
+import '@spectrum-css/page/dist/index.css';
+import '@spectrum-css/table/dist/index.css';
 import '@spectrum-css/icon/dist/index.css';
-import '@spectrum-css/ui-icons/dist/medium/Arrow100.svg'
-
+import '@spectrum-css/ui-icons/dist/medium/Arrow100.svg';
 ---
 
-
-<StarlightPage frontmatter={{ title: 'My custom page' }} >
-    <div class="spectrum-Table-scroller spectrum-Table spectrum-Table--sizeM spectrum-Table--emphasized" style="height: 200px">
-        <div class="spectrum-Table-main" role="table">
-          <div class="spectrum-Table-head" role="rowgroup">
-            <div role="row">
-              <div class="spectrum-Table-headCell is-sortable is-sorted-desc" role="columnheader" aria-sort="descending" tabindex="0">
-                <span class="spectrum-Table-columnTitle">Column title</span>
-              </div>
-              <div class="spectrum-Table-headCell is-sortable" role="columnheader" aria-sort="none" tabindex="0">
-                <span class="spectrum-Table-columnTitle">Column title</span>
-              </div>
-              <div class="spectrum-Table-headCell" role="columnheader">Column title</div>
-            </div>
+<StarlightPage frontmatter={{ title: 'My custom page' }}>
+  <div
+    class="spectrum-Table-scroller spectrum-Table spectrum-Table--sizeM spectrum-Table--emphasized"
+    style="height: 200px"
+  >
+    <div class="spectrum-Table-main" role="table">
+      <div class="spectrum-Table-head" role="rowgroup">
+        <div role="row">
+          <div
+            class="spectrum-Table-headCell is-sortable is-sorted-desc"
+            role="columnheader"
+            aria-sort="descending"
+            tabindex="0"
+          >
+            <span class="spectrum-Table-columnTitle">Column title</span>
           </div>
-          <div class="spectrum-Table-body" role="rowgroup">
-            <div class="spectrum-Table-row" role="row">
-              <div class="spectrum-Table-cell" role="cell">Row Item 1</div>
-              <div class="spectrum-Table-cell" role="cell">Row Item Alpha</div>
-              <div class="spectrum-Table-cell" role="cell">Row Item Alpha</div>
-            </div>
-            <div class="spectrum-Table-row" role="row">
-              <div class="spectrum-Table-cell" role="cell">Row Item Bravo</div>
-              <div class="spectrum-Table-cell" role="cell">Row Item Bravo</div>
-              <div class="spectrum-Table-cell" role="cell">Row Item Bravo</div>
-            </div>
-            <div class="spectrum-Table-row" role="row">
-              <div class="spectrum-Table-cell" role="cell">Row Item Charlie</div>
-              <div class="spectrum-Table-cell" role="cell">Row Item Charlie</div>
-              <div class="spectrum-Table-cell" role="cell">Row Item Charlie</div>
-            </div>
-            <div class="spectrum-Table-row" role="row">
-              <div class="spectrum-Table-cell" role="cell">Row Item Delta</div>
-              <div class="spectrum-Table-cell" role="cell">Row Item Delta</div>
-              <div class="spectrum-Table-cell" role="cell">Row Item Delta</div>
-            </div>
-            <div class="spectrum-Table-row" role="row">
-              <div class="spectrum-Table-cell" role="cell">Row Item Echo</div>
-              <div class="spectrum-Table-cell" role="cell">Row Item Echo</div>
-              <div class="spectrum-Table-cell" role="cell">Row Item Echo</div>
-            </div>
-            <div class="spectrum-Table-row" role="row">
-              <div class="spectrum-Table-cell" role="cell">Row Item Foxtrot</div>
-              <div class="spectrum-Table-cell" role="cell">Row Item Foxtrot</div>
-              <div class="spectrum-Table-cell" role="cell">Row Item Foxtrot</div>
-            </div>
+          <div
+            class="spectrum-Table-headCell is-sortable"
+            role="columnheader"
+            aria-sort="none"
+            tabindex="0"
+          >
+            <span class="spectrum-Table-columnTitle">Column title</span>
+          </div>
+          <div class="spectrum-Table-headCell" role="columnheader">
+            Column title
           </div>
         </div>
       </div>
+      <div class="spectrum-Table-body" role="rowgroup">
+        <div class="spectrum-Table-row" role="row">
+          <div class="spectrum-Table-cell" role="cell">Row Item 1</div>
+          <div class="spectrum-Table-cell" role="cell">Row Item Alpha</div>
+          <div class="spectrum-Table-cell" role="cell">Row Item Alpha</div>
+        </div>
+        <div class="spectrum-Table-row" role="row">
+          <div class="spectrum-Table-cell" role="cell">Row Item Bravo</div>
+          <div class="spectrum-Table-cell" role="cell">Row Item Bravo</div>
+          <div class="spectrum-Table-cell" role="cell">Row Item Bravo</div>
+        </div>
+        <div class="spectrum-Table-row" role="row">
+          <div class="spectrum-Table-cell" role="cell">Row Item Charlie</div>
+          <div class="spectrum-Table-cell" role="cell">Row Item Charlie</div>
+          <div class="spectrum-Table-cell" role="cell">Row Item Charlie</div>
+        </div>
+        <div class="spectrum-Table-row" role="row">
+          <div class="spectrum-Table-cell" role="cell">Row Item Delta</div>
+          <div class="spectrum-Table-cell" role="cell">Row Item Delta</div>
+          <div class="spectrum-Table-cell" role="cell">Row Item Delta</div>
+        </div>
+        <div class="spectrum-Table-row" role="row">
+          <div class="spectrum-Table-cell" role="cell">Row Item Echo</div>
+          <div class="spectrum-Table-cell" role="cell">Row Item Echo</div>
+          <div class="spectrum-Table-cell" role="cell">Row Item Echo</div>
+        </div>
+        <div class="spectrum-Table-row" role="row">
+          <div class="spectrum-Table-cell" role="cell">Row Item Foxtrot</div>
+          <div class="spectrum-Table-cell" role="cell">Row Item Foxtrot</div>
+          <div class="spectrum-Table-cell" role="cell">Row Item Foxtrot</div>
+        </div>
+      </div>
+    </div>
+  </div>
 </StarlightPage>

@@ -1,9 +1,11 @@
-import { type ReactiveController, type ReactiveControllerHost, html} from "lit";
-import { StoreController } from "@nanostores/lit";
+import {
+  type ReactiveController,
+  type ReactiveControllerHost,
+  html,
+} from 'lit';
+import { StoreController } from '@nanostores/lit';
 
 const DEBUG = false;
-
-
 
 import '@spectrum-web-components/button/sp-button.js';
 import '@spectrum-web-components/card/sp-card.js';
@@ -23,12 +25,9 @@ import '@spectrum-web-components/textfield/sp-textfield.js';
 import '@spectrum-web-components/tooltip/sp-tooltip.js';
 import '@spectrum-web-components/switch/sp-switch.js';
 
-
-
 import { getValue, formValues } from '../../formValueStore';
 
-
-import * as b from '@schemas/baseSchemas.ts'
+import * as b from '@schemas/baseSchemas.ts';
 
 type GeneralYaml = /*unresolved*/ any;
 
@@ -40,43 +39,66 @@ export class GeneralBuffController implements ReactiveController {
   constructor(host: ReactiveControllerHost, timeout = 1000) {
     this.host = host;
     this.host.addController(this);
-    this.formValuesController  = new StoreController(this.host,formValues);
-
+    this.formValuesController = new StoreController(this.host, formValues);
   }
 
-  hostConnected() {
-  }
+  hostConnected() {}
 
-  hostDisconnected(): void {
-    
-  }
+  hostDisconnected(): void {}
 
-  
   render(level: string, sindex: string, side: 'left' | 'right', rkey?: string) {
     let fieldLabel = sindex + '_' + level;
-    console.log(`fieldLable is ${fieldLabel}`)
+    console.log(`fieldLable is ${fieldLabel}`);
     if (side === 'left') {
       return html`
-        <sp-field-label for=${fieldLabel.concat('_condition')} required>Adjective</sp-field-label>
-        <sp-picker id=${fieldLabel.concat('_condition')} size="s" value="always" label="When does this take effect" @change=${(this.host as GeneralYaml).sformHandler}>
-          ${b.Condition.options.flatMap((c)=> {
+        <sp-field-label for=${fieldLabel.concat('_condition')} required
+          >Adjective</sp-field-label
+        >
+        <sp-picker
+          id=${fieldLabel.concat('_condition')}
+          size="s"
+          value="always"
+          label="When does this take effect"
+          @change=${(this.host as GeneralYaml).sformHandler}
+        >
+          ${b.Condition.options.flatMap((c) => {
             return html`
-            <sp-menu-item value="${c}">${c.replaceAll('_',' ')}</sp-menu-item>
-            `
+              <sp-menu-item value="${c}"
+                >${c.replaceAll('_', ' ')}</sp-menu-item
+              >
+            `;
           })}
         </sp-picker>
 
-        <sp-field-label for=${fieldLabel.concat('_attribute')} required>Attribute</sp-field-label>
-        <sp-picker id=${fieldLabel.concat('_attribute')} size="s" value="always" label="When does this take effect" @change=${(this.host as GeneralYaml).sformHandler}>
+        <sp-field-label for=${fieldLabel.concat('_attribute')} required
+          >Attribute</sp-field-label
+        >
+        <sp-picker
+          id=${fieldLabel.concat('_attribute')}
+          size="s"
+          value="always"
+          label="When does this take effect"
+          @change=${(this.host as GeneralYaml).sformHandler}
+        >
           ${b.Attribute.options.flatMap((a) => {
             return html`
-              <sp-menu-item value="${a}">${a.replaceAll('_',' ')}</sp-menu-item>
-            `
+              <sp-menu-item value="${a}"
+                >${a.replaceAll('_', ' ')}</sp-menu-item
+              >
+            `;
           })}
         </sp-picker>
 
-        <sp-field-label for=${fieldLabel.concat('_class')} >Troop Class</sp-field-label>
-        <sp-picker id=${fieldLabel.concat('_class')} size="s" value="all" label="When does this take effect" @change=${(this.host as GeneralYaml).sformHandler}>
+        <sp-field-label for=${fieldLabel.concat('_class')}
+          >Troop Class</sp-field-label
+        >
+        <sp-picker
+          id=${fieldLabel.concat('_class')}
+          size="s"
+          value="all"
+          label="When does this take effect"
+          @change=${(this.host as GeneralYaml).sformHandler}
+        >
           <sp-menu-item value="Archers">Archers</sp-menu-item>
           <sp-menu-item value="Ground">Ground Troops</sp-menu-item>
           <sp-menu-item value="Mounted">Mounted Troops</sp-menu-item>
@@ -85,93 +107,114 @@ export class GeneralBuffController implements ReactiveController {
           <sp-menu-item value="none">Not Applicable</sp-menu-item>
         </sp-picker>
 
-        <sp-field-label  for=${fieldLabel.concat('_value')} >Buff Value/Amount</sp-field-label>
-        <sp-field-group class="not-content valueFieldGroup" horizontal id="${fieldLabel.concat('_value')}">
+        <sp-field-label for=${fieldLabel.concat('_value')}
+          >Buff Value/Amount</sp-field-label
+        >
+        <sp-field-group
+          class="not-content valueFieldGroup"
+          horizontal
+          id="${fieldLabel.concat('_value')}"
+        >
           <sp-number-field
-                id=${fieldLabel.concat('_valueN')}
-                value="0"
-                format-options='{
+            id=${fieldLabel.concat('_valueN')}
+            value="0"
+            format-options='{
                   "signDisplay": "exceptZero",
                   "minimumFractionDigits": 1,
                   "maximumFractionDigits": 2
                 }'
-                @change=${(this.host as GeneralYaml).sformHandler}
-              ></sp-number-field>
-          <sp-checkbox size="m" 
-            id=${fieldLabel.concat('_valueU')} 
-            checked 
             @change=${(this.host as GeneralYaml).sformHandler}
-            >Value is a percentage</sp-checkbox>
+          ></sp-number-field>
+          <sp-checkbox
+            size="m"
+            id=${fieldLabel.concat('_valueU')}
+            checked
+            @change=${(this.host as GeneralYaml).sformHandler}
+            >Value is a percentage</sp-checkbox
+          >
         </sp-field-group>
-        `  
-    } else {  
-      console.log(`buff render right`)
+      `;
+    } else {
+      console.log(`buff render right`);
       let exportable = '';
-      console.log(`buff render right; exportable is \n${exportable}`)
-      if(rkey !== undefined && rkey !== null) {
+      console.log(`buff render right; exportable is \n${exportable}`);
+      if (rkey !== undefined && rkey !== null) {
         let initialBlanks = '    ';
-        if(!rkey.localeCompare('b1numattrs')){
-          initialBlanks = `${initialBlanks}  `
+        if (!rkey.localeCompare('b1numattrs')) {
+          initialBlanks = `${initialBlanks}  `;
         } else {
-          initialBlanks = `${initialBlanks}    `
+          initialBlanks = `${initialBlanks}    `;
         }
-        console.log(`rkey is ${rkey}`)
-        if(getValue(rkey)) {
-          if(level.localeCompare('special')) {
-            exportable = `${initialBlanks}- level: '${level}'`
-            exportable = `${exportable}\n${initialBlanks}  buff:`
+        console.log(`rkey is ${rkey}`);
+        if (getValue(rkey)) {
+          if (level.localeCompare('special')) {
+            exportable = `${initialBlanks}- level: '${level}'`;
+            exportable = `${exportable}\n${initialBlanks}  buff:`;
           } else {
-            exportable = `${initialBlanks}buff:`
+            exportable = `${initialBlanks}buff:`;
           }
-          
         }
-        for(let i = 0; i < (getValue(rkey) as number); i++) {
+        for (let i = 0; i < (getValue(rkey) as number); i++) {
           fieldLabel = sindex + i.toString() + '_' + level;
-          console.log(`new label is ${fieldLabel}`)
-          const attribute: number | string |boolean |null| undefined = getValue(fieldLabel.concat('_attribute')) 
-          if(attribute === undefined || attribute === null) {
-            console.log(`${exportable}\n${initialBlanks}- attribute: value pending`)
+          console.log(`new label is ${fieldLabel}`);
+          const attribute: number | string | boolean | null | undefined =
+            getValue(fieldLabel.concat('_attribute'));
+          if (attribute === undefined || attribute === null) {
+            console.log(
+              `${exportable}\n${initialBlanks}- attribute: value pending`
+            );
           } else {
-            exportable = `${exportable}\n${initialBlanks}  - attribute: ${attribute}`
+            exportable = `${exportable}\n${initialBlanks}  - attribute: ${attribute}`;
           }
-          
+
           const condition_label = fieldLabel.concat('_condition');
-          const condition: number | string |boolean |null| undefined = getValue(condition_label) 
-          if(condition === undefined || condition === null) {
-            console.log(`${exportable}\n${initialBlanks}  condition: value pending`)
+          const condition: number | string | boolean | null | undefined =
+            getValue(condition_label);
+          if (condition === undefined || condition === null) {
+            console.log(
+              `${exportable}\n${initialBlanks}  condition: value pending`
+            );
           } else {
-            if(condition.toLocaleString().localeCompare('always')){
-              exportable = `${exportable}\n${initialBlanks}    condition: ${condition}`
+            if (condition.toLocaleString().localeCompare('always')) {
+              exportable = `${exportable}\n${initialBlanks}    condition: ${condition}`;
             }
-            
           }
-  
-          const tclass: number | string |boolean |null| undefined = getValue(fieldLabel.concat('_class')) 
-          if(tclass === undefined || tclass === null) {
-            console.log(`${exportable}\n${initialBlanks}  class: value pending`);
-          } else if((tclass !== 'all') && (tclass !== 'none')) {
-            exportable = `${exportable}\n${initialBlanks}    class: ${tclass}`
+
+          const tclass: number | string | boolean | null | undefined = getValue(
+            fieldLabel.concat('_class')
+          );
+          if (tclass === undefined || tclass === null) {
+            console.log(
+              `${exportable}\n${initialBlanks}  class: value pending`
+            );
+          } else if (tclass !== 'all' && tclass !== 'none') {
+            exportable = `${exportable}\n${initialBlanks}    class: ${tclass}`;
           }
-  
-          const tvalue: number | string |boolean |null| undefined = getValue(fieldLabel.concat('_valueN')) 
-          if(tvalue === undefined || tvalue === null) {
-            console.log(`${exportable}\n${initialBlanks}  value: value pending`)
-          } else  {
-            exportable = `${exportable}\n${initialBlanks}    value:`
-            exportable = `${exportable}\n${initialBlanks}      number: ${tvalue}`
-            let tcheck: number | string |boolean |null| undefined = getValue(fieldLabel.concat('_valueU'))
-            if(tcheck === undefined || tcheck === 'percentage') {
+
+          const tvalue: number | string | boolean | null | undefined = getValue(
+            fieldLabel.concat('_valueN')
+          );
+          if (tvalue === undefined || tvalue === null) {
+            console.log(
+              `${exportable}\n${initialBlanks}  value: value pending`
+            );
+          } else {
+            exportable = `${exportable}\n${initialBlanks}    value:`;
+            exportable = `${exportable}\n${initialBlanks}      number: ${tvalue}`;
+            let tcheck: number | string | boolean | null | undefined = getValue(
+              fieldLabel.concat('_valueU')
+            );
+            if (tcheck === undefined || tcheck === 'percentage') {
               tcheck = 'percentage';
             }
-            exportable = `${exportable}\n${initialBlanks}      unit: ${tcheck}`
+            exportable = `${exportable}\n${initialBlanks}      unit: ${tcheck}`;
           }
         }
       } else {
-        console.error(`no rkey for render right`)
+        console.error(`no rkey for render right`);
       }
-      
+
       return html`${exportable}`;
     }
   }
-
 }

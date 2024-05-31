@@ -1,34 +1,34 @@
 ---
-import type { ComponentProps } from "astro/types";
-import AllGenerals from "@components/general/AllGenerals.astro"
-import AllConflicts from "@components/general/AllConflicts.astro"
-import AllPairs from "@components/general/AllPairs.astro"
-type AllPairsProps = ComponentProps<typeof AllPairs>
+import type { ComponentProps } from 'astro/types';
+import AllGenerals from '@components/general/AllGenerals.astro';
+import AllConflicts from '@components/general/AllConflicts.astro';
+import AllPairs from '@components/general/AllPairs.astro';
+type AllPairsProps = ComponentProps<typeof AllPairs>;
 
 import {
-AscendingLevels,
-    qualityColor,
-    type BuffParamsType
-} from "@schemas/baseSchemas"
-import { generalSpecialists } from "@schemas/generalsSchema";
+  AscendingLevels,
+  qualityColor,
+  type BuffParamsType,
+} from '@schemas/baseSchemas';
+import { generalSpecialists } from '@schemas/generalsSchema';
 
 const desiredInvestment: BuffParamsType = {
-    special1: qualityColor.enum.Gold,
-    special2: qualityColor.enum.Gold,
-    special3: qualityColor.enum.Gold,
-    special4: qualityColor.enum.Gold,
-    special5: qualityColor.enum.Gold,
-    stars: AscendingLevels.enum[10],
-    dragon: true,
-    beast: true
-}
+  special1: qualityColor.enum.Gold,
+  special2: qualityColor.enum.Gold,
+  special3: qualityColor.enum.Gold,
+  special4: qualityColor.enum.Gold,
+  special5: qualityColor.enum.Gold,
+  stars: AscendingLevels.enum[10],
+  dragon: true,
+  beast: true,
+};
 
 const desiredPairs: AllPairsProps = {
-    InvestmentTarget: desiredInvestment,
-    TargetClass: generalSpecialists.enum.Archers,
-}
-
+  InvestmentTarget: desiredInvestment,
+  TargetClass: generalSpecialists.enum.Archers,
+};
 ---
-<AllConflicts></AllConflicts>
-<AllGenerals></AllGenerals>
-<AllPairs {...desiredPairs}></AllPairs>
+
+<AllConflicts />
+<AllGenerals />
+<AllPairs {...desiredPairs} />

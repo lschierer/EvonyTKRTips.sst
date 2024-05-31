@@ -1,13 +1,6 @@
-import {z} from 'zod';
+import { z } from 'zod';
 
-import {
-  BuffParams,
-  type BuffParamsType,
-  
-} from "@schemas/baseSchemas";
-
-
-
+import { BuffParams, type BuffParamsType } from '@schemas/baseSchemas';
 
 import {
   Display,
@@ -15,23 +8,17 @@ import {
   generalSpecialists,
   generalUseCase,
   type generalUseCaseType,
- } from '@schemas/generalsSchema'
+} from '@schemas/generalsSchema';
 
- 
-
-
-import { 
+import {
   ExtendedGeneral,
   type ExtendedGeneralType,
-  } from "@schemas/ExtendedGeneral";
+} from '@schemas/ExtendedGeneral';
 
-
-
-
-import {EvAnsGroundPvPAttack} from './Ground/AttackPvPBase';
-import {EvAnsArchersPvPAttack} from './Archers/AttackPvPBase';
-import {EvAnsMountedPvPAttack} from './Mounted/AttackPvPBase';
-import {EvAnsSiegePvPAttack} from './Siege/AttackPvPBase';
+import { EvAnsGroundPvPAttack } from './Ground/AttackPvPBase';
+import { EvAnsArchersPvPAttack } from './Archers/AttackPvPBase';
+import { EvAnsMountedPvPAttack } from './Mounted/AttackPvPBase';
+import { EvAnsSiegePvPAttack } from './Siege/AttackPvPBase';
 
 /*******************
  * this is derived by reverse engineering the formula from
@@ -54,27 +41,30 @@ export const EvAnsScoreComputer = z
       display: DisplayType,
       bp: BuffParamsType
     ) => {
-      if(!UseCase.localeCompare(generalUseCase.enum.Attack)){
-        if(DEBUG) {
-          console.log(`called for Attack use case`)
+      if (!UseCase.localeCompare(generalUseCase.enum.Attack)) {
+        if (DEBUG) {
+          console.log(`called for Attack use case`);
         }
-        if(generalSpecialists.enum.Archers.localeCompare(eg.general.score_as)){
-          return EvAnsArchersPvPAttack(eg, display, bp)
+        if (
+          generalSpecialists.enum.Archers.localeCompare(eg.general.score_as)
+        ) {
+          return EvAnsArchersPvPAttack(eg, display, bp);
         }
-        if(generalSpecialists.enum.Ground.localeCompare(eg.general.score_as)) {
-          return EvAnsGroundPvPAttack(eg, display, bp)
+        if (generalSpecialists.enum.Ground.localeCompare(eg.general.score_as)) {
+          return EvAnsGroundPvPAttack(eg, display, bp);
         }
-        if(generalSpecialists.enum.Mounted.localeCompare(eg.general.score_as)) {
-          return EvAnsMountedPvPAttack(eg, display, bp)
+        if (
+          generalSpecialists.enum.Mounted.localeCompare(eg.general.score_as)
+        ) {
+          return EvAnsMountedPvPAttack(eg, display, bp);
         }
-        if(generalSpecialists.enum.Siege.localeCompare(eg.general.score_as)) {
-          return EvAnsSiegePvPAttack(eg, display, bp)
+        if (generalSpecialists.enum.Siege.localeCompare(eg.general.score_as)) {
+          return EvAnsSiegePvPAttack(eg, display, bp);
         }
-        
       } else {
-        console.log(`not called for Attack use case`)
+        console.log(`not called for Attack use case`);
       }
-      console.log(`${eg.general.name} did not match any scoring function`)
+      console.log(`${eg.general.name} did not match any scoring function`);
       return -7;
     }
   );

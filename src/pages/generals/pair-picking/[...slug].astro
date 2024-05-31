@@ -1,16 +1,13 @@
 ---
 export const prerender = false;
 
-import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
-import type { CollectionEntry } from "astro:content";
-import { getEntry, getCollection } from "astro:content";
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import type { CollectionEntry } from 'astro:content';
+import { getEntry, getCollection } from 'astro:content';
 import type { ComponentProps } from 'astro/types';
 
-
-import AllGenerals from "@components/general/AllGenerals.astro"
-import AllConflicts from "@components/general/AllConflicts.astro"
-
-
+import AllGenerals from '@components/general/AllGenerals.astro';
+import AllConflicts from '@components/general/AllConflicts.astro';
 
 const DEBUG = false;
 
@@ -18,23 +15,21 @@ let { slug } = Astro.params;
 if (slug === undefined) {
   console.log(`slug was undefined`);
   console.log(JSON.stringify(Astro.params));
-  slug = "generals/pair-picking";
+  slug = 'generals/pair-picking';
 }
 console.log(`slug is ${slug}`);
-let entry: CollectionEntry<"docs"> | undefined = undefined;
+let entry: CollectionEntry<'docs'> | undefined = undefined;
 
-if (!slug.localeCompare("generals/pair-picking")) {
-  entry = await getEntry("docs", "generals/pair-picking");
+if (!slug.localeCompare('generals/pair-picking')) {
+  entry = await getEntry('docs', 'generals/pair-picking');
 } else {
-  entry = await getEntry("docs", `generals/pair-picking/${slug}`);
+  entry = await getEntry('docs', `generals/pair-picking/${slug}`);
 }
 
 if (entry === undefined) {
   console.log(`${slug} was not found`);
-  return Astro.redirect("/404");
+  return Astro.redirect('/404');
 }
-
-
 
 const { Content } = await entry.render();
 ---
@@ -47,7 +42,7 @@ const { Content } = await entry.render();
   }}
 >
   {DEBUG && `Dynamic Template`}
-  <AllGenerals></AllGenerals>
-  <AllConflicts></AllConflicts>
+  <AllGenerals />
+  <AllConflicts />
   <Content />
 </StarlightPage>

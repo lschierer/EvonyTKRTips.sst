@@ -1,20 +1,18 @@
 ---
-import {CompareMayors} from './mayors';
+import { CompareMayors } from './mayors';
 
 export interface Props {
   csv: string;
-
 }
 
 const { csv } = Astro.props;
 const re = /\.\w{3}$/;
-const tableName = csv.replace(re,'');
-const cvsName = "../../../public/CSVs/".concat(csv).replace(/public\//,'');
+const tableName = csv.replace(re, '');
+const cvsName = '../../../public/CSVs/'.concat(csv).replace(/public\//, '');
 const csvUrl = new URL(cvsName, Astro.url);
-
 ---
-<script >
-</script>
+
+<script></script>
 <CompareMayors dataurl={csvUrl} client:only="lit">
-    <slot></slot>
+  <slot />
 </CompareMayors>

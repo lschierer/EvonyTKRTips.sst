@@ -12,7 +12,6 @@ governing permissions and limitations under the License.
 
 // import our stylesheets
 
-
 // import the components we'll use in this page
 
 import '@spectrum-web-components/button/sp-button.js';
@@ -27,7 +26,4 @@ import '@spectrum-web-components/menu/sp-menu-item.js';
 import '@spectrum-web-components/split-view/sp-split-view.js';
 import '@spectrum-web-components/tooltip/sp-tooltip.js';
 
-
-
 //include my components
-

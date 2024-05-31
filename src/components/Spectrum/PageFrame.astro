@@ -3,32 +3,28 @@ import '@lit-labs/ssr-client/lit-element-hydrate-support.js';
 import type { Props } from '@astrojs/starlight/props';
 import { type Theme } from '@spectrum-web-components/theme';
 
-import { ElementResolutionController, elementResolverUpdatedSymbol } from '@spectrum-web-components/reactive-controllers/src/ElementResolution.js';
+import {
+  ElementResolutionController,
+  elementResolverUpdatedSymbol,
+} from '@spectrum-web-components/reactive-controllers/src/ElementResolution.js';
 
 import Default from '@astrojs/starlight/components/PageFrame.astro';
 
-import "node_modules/@spectrum-css/tokens/dist/index.css";
-import "node_modules/@spectrum-css/typography/dist/index.css";
-import "node_modules/@spectrum-css/icon/dist/index.css";
-
+import 'node_modules/@spectrum-css/tokens/dist/index.css';
+import 'node_modules/@spectrum-css/typography/dist/index.css';
+import 'node_modules/@spectrum-css/icon/dist/index.css';
 ---
 
 <script>
-    import '@spectrum-web-components/theme/sp-theme.js';
-    import '@spectrum-web-components/theme/src/themes.js';
-    
+  import '@spectrum-web-components/theme/sp-theme.js';
+  import '@spectrum-web-components/theme/src/themes.js';
 </script>
-    <div class="spectrum spectrum--medium ">
-        <sp-theme
-            theme="spectrum"
-            scale="medium"
-        >
-            <Default class=".header" {...Astro.props}>
-                <slot name="header" slot="header"/>
-                <slot name="sidebar" slot="sidebar"/>
-                <slot />
-            </Default>
-        </sp-theme>
-    </div>
-
-
+<div class="spectrum spectrum--medium">
+  <sp-theme theme="spectrum" scale="medium">
+    <Default class=".header" {...Astro.props}>
+      <slot name="header" slot="header" />
+      <slot name="sidebar" slot="sidebar" />
+      <slot />
+    </Default>
+  </sp-theme>
+</div>

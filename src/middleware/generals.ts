@@ -1,49 +1,41 @@
-import { defineMiddleware } from "astro:middleware";
-import { getCollection, getEntry, type CollectionEntry, } from "astro:content";
+import { defineMiddleware } from 'astro:middleware';
+import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
 
 import { z } from 'zod';
-
 
 import {
   AscendingLevels,
   BuffParams,
   type BuffParamsType,
   qualityColor,
-
-} from "@schemas/baseSchemas";
+} from '@schemas/baseSchemas';
 
 import {
   ConflictDatum,
   type ConflictDatumType,
-} from '@schemas/conflictSchemas'
+} from '@schemas/conflictSchemas';
 
 import {
   Display,
   GeneralClass,
   type GeneralClassType,
   generalUseCase,
-} from '@schemas/generalsSchema'
+} from '@schemas/generalsSchema';
 
-import {
-  Speciality,
-  type SpecialityType,
-} from '@schemas/specialitySchema'
+import { Speciality, type SpecialityType } from '@schemas/specialitySchema';
 
-import {
-  type GeneralPairType,
-} from "@schemas/ExtendedGeneral";
+import { type GeneralPairType } from '@schemas/ExtendedGeneral';
 
 import {
   Book,
   type BookType,
   type specialSkillBookType,
   type standardSkillBookType,
-} from "@schemas/bookSchemas";
-
+} from '@schemas/bookSchemas';
 
 const DEBUG = true;
 
-export const DisplayGeneralsMWRoutes = ["/generals/"];
+export const DisplayGeneralsMWRoutes = ['/generals/'];
 
 export const DisplayGeneralsMW = defineMiddleware(
   async ({ locals, url }, next) => {
@@ -59,34 +51,38 @@ export const DisplayGeneralsMW = defineMiddleware(
       }
     });
 
-
     const addEG2EGS = z
       .function()
       .args(GeneralClass)
       .returns(z.boolean())
-      .implement( (general) => {
+      .implement((general) => {
         if (DEBUG) {
           console.log(
             `middleware generals addEG2EGS running for ${general.name}`
           );
         }
-        if (Array.isArray(locals.CachedGenerals) && locals.CachedGenerals.length > 0) {
+        if (
+          Array.isArray(locals.CachedGenerals) &&
+          locals.CachedGenerals.length > 0
+        ) {
           const allDone = locals.CachedGenerals.some((element) => {
             if (!general.name.localeCompare(element.name)) {
-              return true
+              return true;
             }
-            return false
-          })
+            return false;
+          });
           if (allDone) {
-            return false
+            return false;
           }
         } else {
-          const valid = GeneralClass.safeParse(general)
+          const valid = GeneralClass.safeParse(general);
           if (valid.success) {
-            //double checking because I seem to be hitting race conditions. 
-            const present = locals.CachedGenerals.some((element: GeneralClassType) => {
-              return !element.name.localeCompare(valid.data.name);
-            })
+            //double checking because I seem to be hitting race conditions.
+            const present = locals.CachedGenerals.some(
+              (element: GeneralClassType) => {
+                return !element.name.localeCompare(valid.data.name);
+              }
+            );
             if (!present) {
               locals.CachedGenerals.push(valid.data);
               if (DEBUG)
@@ -99,14 +95,12 @@ export const DisplayGeneralsMW = defineMiddleware(
               return true;
             }
           } else {
-            console.log(`addEG2EGS recieved an invalid GeneralClass object`)
-            return false
+            console.log(`addEG2EGS recieved an invalid GeneralClass object`);
+            return false;
           }
         }
         return false;
       });
-
-  
 
     const HandlerLogic = async (locals: App.Locals) => {
       if (locals.CachedGenerals === undefined) {

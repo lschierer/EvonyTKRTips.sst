@@ -1,4 +1,4 @@
-import {z as zod} from 'zod';
+import { z as zod } from 'zod';
 
 export const levels = zod.enum([
   '0',
@@ -50,14 +50,7 @@ export const levels = zod.enum([
 ]);
 export type levelsType = zod.infer<typeof levels>;
 
-export const AscendingLevels = zod.enum([
-  '0',
-  '6',
-  '7',
-  '8',
-  '9',
-  '10',
-])
+export const AscendingLevels = zod.enum(['0', '6', '7', '8', '9', '10']);
 export type AscendingLevelsType = zod.infer<typeof AscendingLevels>;
 
 export const ActivationSituations = zod.enum([
@@ -71,8 +64,8 @@ export const ActivationSituations = zod.enum([
   'Reinforcement of Others',
   'Solo Monster',
   'Rally Owner Monster',
-  'Rally Participant Monster'
-])
+  'Rally Participant Monster',
+]);
 export type ActivationSituationsType = zod.infer<typeof ActivationSituations>;
 
 export const Condition = zod.enum([
@@ -81,7 +74,7 @@ export const Condition = zod.enum([
   'Marching',
   'When_Rallying',
   'leading_the_army_to_attack',
-  "When_Defending_Outside_The_Main_City",
+  'When_Defending_Outside_The_Main_City',
   'brings_a_dragon',
   'dragon_to_the_attack',
   'brings_dragon_or_beast_to_attack',
@@ -113,54 +106,50 @@ export const syslogSeverity = zod.enum([
   'notice',
   'info',
   'debug',
-])
+]);
 
 export type syslogSeverityType = zod.infer<typeof syslogSeverity>;
 
 export const Attribute = zod.enum([
- 'Attack',
- 'Defense',
- 'HP',
- 'Leadership',
- 'Politics',
- 'Range',
- 'Training_Speed',
- 'Marching_Speed',
- 'Marching_Speed_to_Monsters',
- 'March_Size_Capacity',
- 'March_Time',
- 'Rally_Capacity',
- 'Attack_Speed',
- 'Wounded_to_Death',
- 'Death_to_Wounded',
- 'Death_to_Soul',
- 'Load',
- 'Double_Items_Drop_Rate',
- 'Healing_Speed',
- 'Stamina_cost',
- 'SubCity_Training_Speed',
- 'SubCity_Troop_Capacity',
- 'Monster_Attack',
- 'Double Items Drop Rate',
+  'Attack',
+  'Defense',
+  'HP',
+  'Leadership',
+  'Politics',
+  'Range',
+  'Training_Speed',
+  'Marching_Speed',
+  'Marching_Speed_to_Monsters',
+  'March_Size_Capacity',
+  'March_Time',
+  'Rally_Capacity',
+  'Attack_Speed',
+  'Wounded_to_Death',
+  'Death_to_Wounded',
+  'Death_to_Soul',
+  'Load',
+  'Double_Items_Drop_Rate',
+  'Healing_Speed',
+  'Stamina_cost',
+  'SubCity_Training_Speed',
+  'SubCity_Troop_Capacity',
+  'Monster_Attack',
+  'Double Items Drop Rate',
 ]);
 export type AttributeType = zod.infer<typeof Attribute>;
 
-
 export const qualityColor = zod.enum([
-'Disabled',
-'Green',
-'Blue',
-'Purple',
-'Orange',
-'Gold',
+  'Disabled',
+  'Green',
+  'Blue',
+  'Purple',
+  'Orange',
+  'Gold',
 ]);
 
 export type qualityColorType = zod.infer<typeof qualityColor>;
 
-export const UnitSchema = zod.enum([
-  'percentage',
-  'flat',
-]);
+export const UnitSchema = zod.enum(['percentage', 'flat']);
 export type Unit = zod.infer<typeof UnitSchema>;
 
 export const ClassEnum = zod.enum([
@@ -173,21 +162,20 @@ export const ClassEnum = zod.enum([
 export type ClassEnumType = zod.infer<typeof ClassEnum>;
 
 export const ValueSchema = zod.object({
-  'number': zod.number(),
-  'unit': UnitSchema,
+  number: zod.number(),
+  unit: UnitSchema,
 });
 export type Value = zod.infer<typeof ValueSchema>;
 
 export const Buff = zod.object({
-  'attribute': Attribute.optional(),
-  'condition': zod.array(Condition).optional(),
-  'class': ClassEnum.nullish(),
-  'value': ValueSchema.nullish(),
+  attribute: Attribute.optional(),
+  condition: zod.array(Condition).optional(),
+  class: ClassEnum.nullish(),
+  value: ValueSchema.nullish(),
 });
 export type BuffType = zod.infer<typeof Buff>;
 
 export const buffUnion = zod.array(Buff);
-
 
 export const BuffParams = zod.object({
   special1: qualityColor.default(qualityColor.enum.Disabled), //0
@@ -195,10 +183,8 @@ export const BuffParams = zod.object({
   special3: qualityColor.default(qualityColor.enum.Disabled), //2
   special4: qualityColor.default(qualityColor.enum.Disabled), //3
   special5: qualityColor.default(qualityColor.enum.Disabled), //4
-  stars: AscendingLevels.default(AscendingLevels.enum[0]),  //5
-  dragon: zod.boolean().default(false),             //6
-  beast: zod.boolean().default(false),              //7
-})
+  stars: AscendingLevels.default(AscendingLevels.enum[0]), //5
+  dragon: zod.boolean().default(false), //6
+  beast: zod.boolean().default(false), //7
+});
 export type BuffParamsType = zod.infer<typeof BuffParams>;
-
-

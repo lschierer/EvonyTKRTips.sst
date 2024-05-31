@@ -1,27 +1,34 @@
 ---
 import { Debug } from 'astro:components';
-import {getEntry} from "astro:content";
+import { getEntry } from 'astro:content';
 import {
-    type artTreasure,
-    type buff,
-    BuffAttributes,
-    BuffAdverbs,
+  type artTreasure,
+  type buff,
+  BuffAttributes,
+  BuffAdverbs,
 } from '@schemas/evonySchemas';
 
 const { artId } = Astro.props;
-if(artId === null || artId === undefined || artId.length <= 0) {
-    return Astro.redirect("/404");
+if (artId === null || artId === undefined || artId.length <= 0) {
+  return Astro.redirect('/404');
 }
 const entry = await getEntry('art', artId);
 if (entry === undefined) {
-    return Astro.redirect("/404");
+  return Astro.redirect('/404');
 }
 const data = entry.data;
 const art: artTreasure = data.art;
 ---
+
 <h5>{art.name} Level {art.level}</h5>
 <ul>
-    {art.buff.map((b: buff) => (
-            <li>{b.condition} {b.class} {b.attribute} {(b.value.number < 0) ? '-' : '+'}{b.value.number}{b.value.unit ? '%': ''}</li>
-                    ))}
+  {
+    art.buff.map((b: buff) => (
+      <li>
+        {b.condition} {b.class} {b.attribute} {b.value.number < 0 ? '-' : '+'}
+        {b.value.number}
+        {b.value.unit ? '%' : ''}
+      </li>
+    ))
+  }
 </ul>

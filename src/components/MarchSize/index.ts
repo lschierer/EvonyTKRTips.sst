@@ -1,2 +1,1 @@
-export * from './MarchCalc.js'
-
+export * from './MarchCalc.js';

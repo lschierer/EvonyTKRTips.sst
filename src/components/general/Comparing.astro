@@ -1,7 +1,7 @@
 ---
-import {ComparingTable} from "./ComparingTable";
+import { ComparingTable } from './ComparingTable';
 
-const dataUrl = new URL('/generals/all.json', Astro.url)
+const dataUrl = new URL('/generals/all.json', Astro.url);
 ---
 
-<ComparingTable dataurl={dataUrl} client:only="lit"></ComparingTable>
+<ComparingTable dataurl={dataUrl} client:only="lit" />

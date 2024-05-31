@@ -1,15 +1,18 @@
 ---
-import { getCollection, type CollectionEntry } from "astro:content";
-import type { ComponentProps } from "astro/types";
+import { getCollection, type CollectionEntry } from 'astro:content';
+import type { ComponentProps } from 'astro/types';
 
-import { delay } from "nanodelay";
+import { delay } from 'nanodelay';
 
-import { ConflictDatum, type ConflictDatumType } from "@schemas/conflictSchemas";
+import {
+  ConflictDatum,
+  type ConflictDatumType,
+} from '@schemas/conflictSchemas';
 
 const DEBUG = false;
 
-const ConflictEntries: CollectionEntry<"generalConflictData">[] =
-  await getCollection("generalConflictData");
+const ConflictEntries: CollectionEntry<'generalConflictData'>[] =
+  await getCollection('generalConflictData');
 
 if (ConflictEntries !== undefined && ConflictEntries !== null) {
   await Promise.all(
@@ -26,15 +29,17 @@ if (ConflictEntries !== undefined && ConflictEntries !== null) {
 }
 ---
 
-{DEBUG && (
-  <ol>
-    {Astro.locals.ConflictData.map((datum: ConflictDatumType) => (
-      <li>
-        <dl>
-          <dt>{datum.name}</dt>
-          <dd>{JSON.stringify(datum)}</dd>
-        </dl>
-      </li>
-    ))}
-  </ol>
-)}
+{
+  DEBUG && (
+    <ol>
+      {Astro.locals.ConflictData.map((datum: ConflictDatumType) => (
+        <li>
+          <dl>
+            <dt>{datum.name}</dt>
+            <dd>{JSON.stringify(datum)}</dd>
+          </dl>
+        </li>
+      ))}
+    </ol>
+  )
+}

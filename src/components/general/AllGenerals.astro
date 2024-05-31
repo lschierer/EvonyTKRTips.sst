@@ -1,41 +1,40 @@
 ---
-import { getCollection, type CollectionEntry } from "astro:content";
-import type { ComponentProps } from "astro/types";
+import { getCollection, type CollectionEntry } from 'astro:content';
+import type { ComponentProps } from 'astro/types';
 
-import { delay } from 'nanodelay'
+import { delay } from 'nanodelay';
 
 import {
   GeneralElement,
   GeneralClass,
   type GeneralClassType,
   type GeneralElementType,
-} from "@schemas/generalsSchema";
+} from '@schemas/generalsSchema';
 
 import {
   ExtendedGeneral,
   ExtendedGeneralStatus,
   type ExtendedGeneralType,
-} from "@schemas/ExtendedGeneral";
+} from '@schemas/ExtendedGeneral';
 
 const DEBUG = false;
 
-const generalObjects: CollectionEntry<"generals">[] =
-  await getCollection("generals");
+const generalObjects: CollectionEntry<'generals'>[] =
+  await getCollection('generals');
 
-if(generalObjects !== undefined && generalObjects !== null) {
+if (generalObjects !== undefined && generalObjects !== null) {
   await Promise.all(
-    generalObjects.map(async({data})=> {
+    generalObjects.map(async ({ data }) => {
       const v1 = await GeneralElement.spa(data);
-      if(v1.success){
-        Astro.locals.CachedGenerals.push(v1.data.general)
+      if (v1.success) {
+        Astro.locals.CachedGenerals.push(v1.data.general);
       }
     })
-  )
-  if(DEBUG) {
-    console.log(`CachedGenerals is ${Astro.locals.CachedGenerals.length}`)
+  );
+  if (DEBUG) {
+    console.log(`CachedGenerals is ${Astro.locals.CachedGenerals.length}`);
   }
 }
-
 ---
 
 {

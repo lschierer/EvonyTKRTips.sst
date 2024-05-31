@@ -1,4 +1,4 @@
-import {z} from 'zod';
+import { z } from 'zod';
 
 import {
   AscendingLevels,
@@ -6,29 +6,17 @@ import {
   type BuffType,
   BuffParams,
   type BuffParamsType,
-} from "@schemas/baseSchemas";
+} from '@schemas/baseSchemas';
 
-
-
-
-
-
-
-
-
-
-import { 
+import {
   ExtendedGeneral,
   type ExtendedGeneralType,
-  } from "@schemas/ExtendedGeneral";
+} from '@schemas/ExtendedGeneral';
 
-
-
-
-import { PvPBuff } from "./PvPBuff";
+import { PvPBuff } from './PvPBuff';
 
 const DEBUG_AES = false;
-const DEBUG = false
+const DEBUG = false;
 
 export const GroundAttackPvPAES = z
   .function()
@@ -44,125 +32,178 @@ export const GroundAttackPvPAES = z
         console.log(`${eg.general.name} is not ascended`);
         return -11;
       }
-      const ascending_score = eg.general.ascending.reduce((accumulator, ab, index) => {
-        if (DEBUG_AES) {
-          console.log('');
-          console.log(`${gc.name}: Ascending ${index}`);
-          console.log(`accumulator currently ${accumulator}`);
-        }
-        if (!eg.general.stars?.localeCompare(AscendingLevels.enum[0])) {
-          return accumulator;
-        } else {
+      const ascending_score = eg.general.ascending.reduce(
+        (accumulator, ab, index) => {
           if (DEBUG_AES) {
-            console.log(`${index} starting detection`);
+            console.log('');
+            console.log(`${gc.name}: Ascending ${index}`);
+            console.log(`accumulator currently ${accumulator}`);
           }
-          if (ab.buff !== undefined &&
-            ab.buff !== null) {
-            if (DEBUG_AES) {
-              console.log(`${gc.name} Star ${index} pass null check`);
-            }
-            const v = z.array(Buff).safeParse(ab.buff);
-            if (v.success) {
-              const barray = v.data;
-              if (DEBUG_AES) {
-                console.log('--Array--');
-                console.log(JSON.stringify(barray));
-                console.log('--Array--');
-              }
-              const array_total = barray.reduce((accumulator, actual: BuffType) => {
-                if (DEBUG_AES) {
-                  console.log(JSON.stringify(actual));
-                }
-                if (eg.general.stars === undefined || eg.general.stars === null) {
-                  return accumulator;
-                }
-                if (!eg.general.stars.localeCompare(AscendingLevels.enum[10]) &&
-                  !ab.level.localeCompare(AscendingLevels.enum[10])) {
-                  const tbscore = PvPBuff(
-                    `Star ${index} ${ab.level}`,
-                    eg.general.name,
-                    actual, bp
-                  );
-                  if (DEBUG_AES) {
-                    console.log(`accumulating ${tbscore}`);
-                  }
-                  return tbscore + accumulator;
-                } else if ((
-                  !eg.general.stars.localeCompare(AscendingLevels.enum[10]) ||
-                  !eg.general.stars.localeCompare(AscendingLevels.enum[9])) &&
-                  !ab.level.localeCompare(AscendingLevels.enum[9])) {
-                  const tbscore = PvPBuff(
-                    `Star ${index} ${ab.level}`,
-                    eg.general.name,
-                    actual, bp
-                  );
-                  if (DEBUG_AES) {
-                    console.log(`accumulating ${tbscore}`);
-                  }
-                  return tbscore + accumulator;
-                } else if ((
-                  !eg.general.stars.localeCompare(AscendingLevels.enum[10]) ||
-                  !eg.general.stars.localeCompare(AscendingLevels.enum[9]) ||
-                  !eg.general.stars.localeCompare(AscendingLevels.enum[8])) &&
-                  !ab.level.localeCompare(AscendingLevels.enum[8])) {
-                  const tbscore = PvPBuff(
-                    `Star ${index} ${ab.level}`,
-                    eg.general.name,
-                    actual, bp
-                  );
-                  if (DEBUG_AES) {
-                    console.log(`accumulating ${tbscore}`);
-                  }
-                  return tbscore + accumulator;
-                } else if ((
-                  !eg.general.stars.localeCompare(AscendingLevels.enum[10]) ||
-                  !eg.general.stars.localeCompare(AscendingLevels.enum[9]) ||
-                  !eg.general.stars.localeCompare(AscendingLevels.enum[8]) ||
-                  !eg.general.stars.localeCompare(AscendingLevels.enum[7])) &&
-                  !ab.level.localeCompare(AscendingLevels.enum[7])) {
-                  const tbscore = PvPBuff(
-                    `Star ${index} ${ab.level}`,
-                    eg.general.name,
-                    actual, bp
-                  );
-                  if (DEBUG_AES) {
-                    console.log(`accumulating ${tbscore}`);
-                  }
-                  return tbscore;
-                } else if ((
-                  !eg.general.stars.localeCompare(AscendingLevels.enum[10]) ||
-                  !eg.general.stars.localeCompare(AscendingLevels.enum[9]) ||
-                  !eg.general.stars.localeCompare(AscendingLevels.enum[8]) ||
-                  !eg.general.stars.localeCompare(AscendingLevels.enum[7]) ||
-                  !eg.general.stars.localeCompare(AscendingLevels.enum[6])) &&
-                  !ab.level.localeCompare(AscendingLevels.enum[6])) {
-                  const tbscore = PvPBuff(
-                    `Star ${index} ${ab.level}`,
-                    eg.general.name,
-                    actual, bp
-                  );
-                  if (DEBUG_AES) {
-                    console.log(`accumulating ${tbscore}`);
-                  }
-                  return tbscore + accumulator;
-                } else {
-                  console.log(`${gc.name} Star ${index} ${ab.level} did not match anywhere deciding`);
-                  console.log(JSON.stringify(ab.buff));
-                  return accumulator;
-                }
-              }, 0);
-              return accumulator + array_total;
-            } else {
-              console.log(`${gc.name} error parsing ${index}`);
-            }
+          if (!eg.general.stars?.localeCompare(AscendingLevels.enum[0])) {
+            return accumulator;
           } else {
-            console.log(`${gc.name} has a null or undefined buff ${JSON.stringify(ab)}`);
+            if (DEBUG_AES) {
+              console.log(`${index} starting detection`);
+            }
+            if (ab.buff !== undefined && ab.buff !== null) {
+              if (DEBUG_AES) {
+                console.log(`${gc.name} Star ${index} pass null check`);
+              }
+              const v = z.array(Buff).safeParse(ab.buff);
+              if (v.success) {
+                const barray = v.data;
+                if (DEBUG_AES) {
+                  console.log('--Array--');
+                  console.log(JSON.stringify(barray));
+                  console.log('--Array--');
+                }
+                const array_total = barray.reduce(
+                  (accumulator, actual: BuffType) => {
+                    if (DEBUG_AES) {
+                      console.log(JSON.stringify(actual));
+                    }
+                    if (
+                      eg.general.stars === undefined ||
+                      eg.general.stars === null
+                    ) {
+                      return accumulator;
+                    }
+                    if (
+                      !eg.general.stars.localeCompare(
+                        AscendingLevels.enum[10]
+                      ) &&
+                      !ab.level.localeCompare(AscendingLevels.enum[10])
+                    ) {
+                      const tbscore = PvPBuff(
+                        `Star ${index} ${ab.level}`,
+                        eg.general.name,
+                        actual,
+                        bp
+                      );
+                      if (DEBUG_AES) {
+                        console.log(`accumulating ${tbscore}`);
+                      }
+                      return tbscore + accumulator;
+                    } else if (
+                      (!eg.general.stars.localeCompare(
+                        AscendingLevels.enum[10]
+                      ) ||
+                        !eg.general.stars.localeCompare(
+                          AscendingLevels.enum[9]
+                        )) &&
+                      !ab.level.localeCompare(AscendingLevels.enum[9])
+                    ) {
+                      const tbscore = PvPBuff(
+                        `Star ${index} ${ab.level}`,
+                        eg.general.name,
+                        actual,
+                        bp
+                      );
+                      if (DEBUG_AES) {
+                        console.log(`accumulating ${tbscore}`);
+                      }
+                      return tbscore + accumulator;
+                    } else if (
+                      (!eg.general.stars.localeCompare(
+                        AscendingLevels.enum[10]
+                      ) ||
+                        !eg.general.stars.localeCompare(
+                          AscendingLevels.enum[9]
+                        ) ||
+                        !eg.general.stars.localeCompare(
+                          AscendingLevels.enum[8]
+                        )) &&
+                      !ab.level.localeCompare(AscendingLevels.enum[8])
+                    ) {
+                      const tbscore = PvPBuff(
+                        `Star ${index} ${ab.level}`,
+                        eg.general.name,
+                        actual,
+                        bp
+                      );
+                      if (DEBUG_AES) {
+                        console.log(`accumulating ${tbscore}`);
+                      }
+                      return tbscore + accumulator;
+                    } else if (
+                      (!eg.general.stars.localeCompare(
+                        AscendingLevels.enum[10]
+                      ) ||
+                        !eg.general.stars.localeCompare(
+                          AscendingLevels.enum[9]
+                        ) ||
+                        !eg.general.stars.localeCompare(
+                          AscendingLevels.enum[8]
+                        ) ||
+                        !eg.general.stars.localeCompare(
+                          AscendingLevels.enum[7]
+                        )) &&
+                      !ab.level.localeCompare(AscendingLevels.enum[7])
+                    ) {
+                      const tbscore = PvPBuff(
+                        `Star ${index} ${ab.level}`,
+                        eg.general.name,
+                        actual,
+                        bp
+                      );
+                      if (DEBUG_AES) {
+                        console.log(`accumulating ${tbscore}`);
+                      }
+                      return tbscore;
+                    } else if (
+                      (!eg.general.stars.localeCompare(
+                        AscendingLevels.enum[10]
+                      ) ||
+                        !eg.general.stars.localeCompare(
+                          AscendingLevels.enum[9]
+                        ) ||
+                        !eg.general.stars.localeCompare(
+                          AscendingLevels.enum[8]
+                        ) ||
+                        !eg.general.stars.localeCompare(
+                          AscendingLevels.enum[7]
+                        ) ||
+                        !eg.general.stars.localeCompare(
+                          AscendingLevels.enum[6]
+                        )) &&
+                      !ab.level.localeCompare(AscendingLevels.enum[6])
+                    ) {
+                      const tbscore = PvPBuff(
+                        `Star ${index} ${ab.level}`,
+                        eg.general.name,
+                        actual,
+                        bp
+                      );
+                      if (DEBUG_AES) {
+                        console.log(`accumulating ${tbscore}`);
+                      }
+                      return tbscore + accumulator;
+                    } else {
+                      console.log(
+                        `${gc.name} Star ${index} ${ab.level} did not match anywhere deciding`
+                      );
+                      console.log(JSON.stringify(ab.buff));
+                      return accumulator;
+                    }
+                  },
+                  0
+                );
+                return accumulator + array_total;
+              } else {
+                console.log(`${gc.name} error parsing ${index}`);
+              }
+            } else {
+              console.log(
+                `${gc.name} has a null or undefined buff ${JSON.stringify(ab)}`
+              );
+              return accumulator;
+            }
+            console.log(`${gc.name} reached final Ascending return 0`);
             return accumulator;
           }
-          console.log(`${gc.name} reached final Ascending return 0`);
-          return accumulator;
-        }
-      }, 0);
+        },
+        0
+      );
       if (DEBUG) {
         console.log(`${gc.name}: total ascending score: ${ascending_score} `);
         console.log('');

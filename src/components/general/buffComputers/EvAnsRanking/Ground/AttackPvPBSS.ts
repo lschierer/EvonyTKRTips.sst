@@ -1,30 +1,18 @@
-import {z} from 'zod';
+import { z } from 'zod';
+
+import { BuffParams, type BuffParamsType } from '@schemas/baseSchemas';
 
 import {
-  BuffParams,
-  type BuffParamsType,
-} from "@schemas/baseSchemas";
-
-
-
-
-
-
-
-
-
-
-import { 
   ExtendedGeneral,
   type ExtendedGeneralType,
-  } from "@schemas/ExtendedGeneral";
+} from '@schemas/ExtendedGeneral';
 
 import {
   specialSkillBook,
   type specialSkillBookType,
- } from "@schemas/bookSchemas";
+} from '@schemas/bookSchemas';
 
-import { GroundPvPBuff } from "./PvPBuff";
+import { GroundPvPBuff } from './PvPBuff';
 
 const DEBUG_BSS = false;
 
@@ -36,9 +24,11 @@ export const GroundAttackPvPBSS = z
     const gc = eg.general;
     let BSS_Score = 0;
 
-    if (eg.books !== undefined &&
+    if (
+      eg.books !== undefined &&
       Array.isArray(eg.books) &&
-      eg.books.length > 0) {
+      eg.books.length > 0
+    ) {
       const book_score = eg.books.reduce((accumulator, book) => {
         if (book === undefined) {
           return accumulator;
@@ -58,7 +48,9 @@ export const GroundAttackPvPBSS = z
               const tbscore = GroundPvPBuff(bisb.name, gc.name, tb, bp);
               if (DEBUG_BSS) {
                 console.log(JSON.stringify(tb));
-                console.log(`${eg.general.name}: ${book.name}: accumulating ${tbscore}`);
+                console.log(
+                  `${eg.general.name}: ${book.name}: accumulating ${tbscore}`
+                );
               }
               return tbscore + a2;
             }, 0);

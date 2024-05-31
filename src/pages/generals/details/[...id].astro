@@ -1,21 +1,26 @@
 ---
 export const prerender = true;
 import type { ComponentProps } from 'astro/types';
-import type { InferGetStaticParamsType, InferGetStaticPropsType, GetStaticPaths } from 'astro';
+import type {
+  InferGetStaticParamsType,
+  InferGetStaticPropsType,
+  GetStaticPaths,
+} from 'astro';
 
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
-import { DetailView } from "@components/general/DetailView.ts";
-import AllGenerals from "@components/general/AllGenerals.astro"
-import AllConflicts from "@components/general/AllConflicts.astro"
+import { DetailView } from '@components/general/DetailView.ts';
+import AllGenerals from '@components/general/AllGenerals.astro';
+import AllConflicts from '@components/general/AllConflicts.astro';
 
 const DEBUG = false;
 
-import { getEntry, getCollection } from "astro:content";
+import { getEntry, getCollection } from 'astro:content';
 
-export const  getStaticPaths = (async () =>  {
+export const getStaticPaths = (async () => {
   const blogEntries = await getCollection('generals');
-  return blogEntries.map(entry => ({
-    params: { id: entry.id }, props: { entry },
+  return blogEntries.map((entry) => ({
+    params: { id: entry.id },
+    props: { entry },
   }));
 }) satisfies GetStaticPaths;
 
@@ -24,16 +29,16 @@ type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
 const { id }: Params = Astro.params;
 if (id === undefined) {
-  if (DEBUG) console.log(`id was undefined`)
-  throw new Error("Id is required");
+  if (DEBUG) console.log(`id was undefined`);
+  throw new Error('Id is required');
 }
-
-
-
 ---
-<StarlightPage frontmatter={{title: `Details for ${id}`,tableOfContents: false,}}>
-    <AllGenerals></AllGenerals>
-    <AllConflicts></AllConflicts>
-    <DetailView generalId={id} client:only="lit"></DetailView>
-    <slot/>
+
+<StarlightPage
+  frontmatter={{ title: `Details for ${id}`, tableOfContents: false }}
+>
+  <AllGenerals />
+  <AllConflicts />
+  <DetailView generalId={id} client:only="lit" />
+  <slot />
 </StarlightPage>

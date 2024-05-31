@@ -1,67 +1,64 @@
 ---
-import StarlightSidebar from '@astrojs/starlight/components/Sidebar.astro'
-import type { Props,  } from '@astrojs/starlight/props'
+import StarlightSidebar from '@astrojs/starlight/components/Sidebar.astro';
+import type { Props } from '@astrojs/starlight/props';
 
 import { getCollection } from 'astro:content';
 import type { SidebarEntry, Group } from '@astrojs/starlight/utils/navigation';
 
-const DEBUG=false;
+const DEBUG = false;
 
-const { Props } = Astro.props ;
+const { Props } = Astro.props;
 
-const sidebar: Props['sidebar'] = Astro.props.sidebar; 
-
+const sidebar: Props['sidebar'] = Astro.props.sidebar;
 
 const generals = await getCollection('generals');
 
-if(generals !== undefined && Array.isArray(generals) && generals.length > 0) {
-    if (DEBUG) console.log(`${generals.length} generals`)
-    const generalsBar = []; 
-    for (const g of generals) {
-        if(g !== undefined && g !== null) {
-            const isCurrent = Astro.params.id ? (!Astro.params.id.localeCompare(g.id)) : false;
-            generalsBar.push({
-                type: 'link',
-                label: `Details for ${g.id}`,
-                href: `/generals/details/${g.id}`,
-                isCurrent: isCurrent,
-                attrs: {},
-            });
-        }
+if (generals !== undefined && Array.isArray(generals) && generals.length > 0) {
+  if (DEBUG) console.log(`${generals.length} generals`);
+  const generalsBar = [];
+  for (const g of generals) {
+    if (g !== undefined && g !== null) {
+      const isCurrent = Astro.params.id
+        ? !Astro.params.id.localeCompare(g.id)
+        : false;
+      generalsBar.push({
+        type: 'link',
+        label: `Details for ${g.id}`,
+        href: `/generals/details/${g.id}`,
+        isCurrent: isCurrent,
+        attrs: {},
+      });
     }
-    if (DEBUG) console.log(`${generalsBar.length} general entries`)
-    for(const Tentry of sidebar) {
-        if(! Tentry.label.localeCompare('Generals')) {
-            const detailsBar = (Tentry as Group).entries;
-            if (DEBUG) console.log(`found Generals as Tentry`)
-            if (DEBUG) console.log(`entries is ${JSON.stringify(detailsBar)}`)
-            const Tindex = sidebar.indexOf(Tentry);
-            for (const SEntry of (detailsBar as SidebarEntry[])) {
-                if( ! (SEntry).label.localeCompare('Details on Specific Generals')) {
-                    if (DEBUG) console.log(`found Details as SEntry`)
-                    const Sindex = detailsBar.indexOf(SEntry);
-                    if (DEBUG) console.log(`index is ${Sindex}`)
-                    detailsBar.splice(Sindex, 1, {
-                        label: 'Details on Specific Generals',
-                        collapsed: true,
-                        type: 'group',
-                        entries: [...generalsBar],
-                    })
-                } else {
-                    if (DEBUG) console.log(`SEntry rejected ${SEntry.label}`)
-                }
-            }
+  }
+  if (DEBUG) console.log(`${generalsBar.length} general entries`);
+  for (const Tentry of sidebar) {
+    if (!Tentry.label.localeCompare('Generals')) {
+      const detailsBar = (Tentry as Group).entries;
+      if (DEBUG) console.log(`found Generals as Tentry`);
+      if (DEBUG) console.log(`entries is ${JSON.stringify(detailsBar)}`);
+      const Tindex = sidebar.indexOf(Tentry);
+      for (const SEntry of detailsBar as SidebarEntry[]) {
+        if (!SEntry.label.localeCompare('Details on Specific Generals')) {
+          if (DEBUG) console.log(`found Details as SEntry`);
+          const Sindex = detailsBar.indexOf(SEntry);
+          if (DEBUG) console.log(`index is ${Sindex}`);
+          detailsBar.splice(Sindex, 1, {
+            label: 'Details on Specific Generals',
+            collapsed: true,
+            type: 'group',
+            entries: [...generalsBar],
+          });
         } else {
-            if (DEBUG) console.log(`rejected ${Tentry.label}`)
+          if (DEBUG) console.log(`SEntry rejected ${SEntry.label}`);
         }
+      }
+    } else {
+      if (DEBUG) console.log(`rejected ${Tentry.label}`);
     }
-
+  }
 } else {
-    if (DEBUG) console.log(`no generals`)
+  if (DEBUG) console.log(`no generals`);
 }
-
 ---
 
-
-<StarlightSidebar {...Astro.props} sidebar={ Astro.props.sidebar} />
-
+<StarlightSidebar {...Astro.props} sidebar={Astro.props.sidebar} />

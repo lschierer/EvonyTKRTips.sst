@@ -1,3 +1,2 @@
-export * from './siege'
-export * from './battle'
-
+export * from './siege';
+export * from './battle';

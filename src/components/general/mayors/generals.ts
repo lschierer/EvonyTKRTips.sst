@@ -1,37 +1,13 @@
-import {
-  html,
-  type PropertyValueMap,
-} from "lit";
-import { customElement, property, state } from "lit/decorators.js";
+import { html, type PropertyValueMap } from 'lit';
+import { customElement, property, state } from 'lit/decorators.js';
 
+import { type GeneralClassType } from '@schemas/generalsSchema';
 
+import { SpectrumElement } from '@spectrum-web-components/base';
+import '@spectrum-web-components/table/elements.js';
 
-
-
-
-
-
-
-
-
-import {
-  type GeneralClassType,
- } from '@schemas/generalsSchema'
-
- 
-
-
-
-
-
-
-
-import { SpectrumElement } from "@spectrum-web-components/base";
-import "@spectrum-web-components/table/elements.js";
-
-@customElement("table-general")
+@customElement('table-general')
 export class TableGeneral extends SpectrumElement {
-  
   @property({ type: Object })
   public thisGeneral: GeneralClassType | null = null;
 
@@ -60,43 +36,40 @@ export class TableGeneral extends SpectrumElement {
     _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>
   ): void {
     super.willUpdate(_changedProperties);
-    if(_changedProperties.has('thisGeneral')) {
-
+    if (_changedProperties.has('thisGeneral')) {
     }
   }
 
   render() {
-    if(this.thisGeneral !== null) {
+    if (this.thisGeneral !== null) {
       return html`
-        <sp-table-cell role='gridcell' id="primeName">
+        <sp-table-cell role="gridcell" id="primeName">
           <div class="cellDiv not-content">
-            <div class="name not-content">
-              ${this.thisGeneral.name}
-            </div>
+            <div class="name not-content">${this.thisGeneral.name}</div>
           </div>
         </sp-table-cell>
-        <sp-table-cell role='gridcell' class="buff">
+        <sp-table-cell role="gridcell" class="buff">
           ${this.attackDebuff}
         </sp-table-cell>
-        <sp-table-cell role='gridcell' class="buff">
+        <sp-table-cell role="gridcell" class="buff">
           ${this.SDebuff}
         </sp-table-cell>
-        <sp-table-cell role='gridcell' class="buff">
+        <sp-table-cell role="gridcell" class="buff">
           ${this.HPDebuff}
         </sp-table-cell>
-        <sp-table-cell role='gridcell' class="buff">
+        <sp-table-cell role="gridcell" class="buff">
           ${this.defenseDebuff}
         </sp-table-cell>
-        <sp-table-cell role='gridcell' class="buff">
+        <sp-table-cell role="gridcell" class="buff">
           ${this.W2DDebuff}
         </sp-table-cell>
-        <sp-table-cell role='gridcell' class="buff">
+        <sp-table-cell role="gridcell" class="buff">
           ${this.SCTSDebuff}
         </sp-table-cell>
-        <sp-table-cell role='gridcell' class="buff">
+        <sp-table-cell role="gridcell" class="buff">
           ${this.SCTCDebuff}
         </sp-table-cell>
-      `
+      `;
     }
   }
 }

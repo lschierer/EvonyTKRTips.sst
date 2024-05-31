@@ -1,18 +1,15 @@
 ---
 const { message = 'Welcome, world!' } = Astro.props;
-
 ---
 
-<debug-slug data-message={message} ></debug-slug>
-        <script>
-          
-          class AstroDebugSlug extends HTMLElement {
-            constructor() {
-              super();
-              const message = this.dataset.message;
-              console.log(`slug is ${message}`);
-            }
-          }
-            customElements.define('debug-slug', AstroDebugSlug);
-          
-        </script>
+<debug-slug data-message={message}></debug-slug>
+<script>
+  class AstroDebugSlug extends HTMLElement {
+    constructor() {
+      super();
+      const message = this.dataset.message;
+      console.log(`slug is ${message}`);
+    }
+  }
+  customElements.define('debug-slug', AstroDebugSlug);
+</script>

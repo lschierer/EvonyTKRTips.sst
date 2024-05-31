@@ -1,14 +1,12 @@
 ---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import type { HTMLAttributes } from 'astro/types';
 
-import { getCollection, type CollectionEntry } from "astro:content";
-import type { HTMLAttributes} from 'astro/types'
+import { z } from 'astro:content';
 
-import { z  } from "astro:content";
-
-import {TableContainer} from './tableContainer'
+import { TableContainer } from './tableContainer';
 
 import { Debug } from 'astro:components';
-
 
 import {
   AscendingLevels,
@@ -16,16 +14,16 @@ import {
   Condition,
   qualityColor,
   syslogSeverity,
-} from "@schemas/baseSchemas";
+} from '@schemas/baseSchemas';
 
 import {
-  ConflictArray, 
-  ConflictDatum,   
+  ConflictArray,
+  ConflictDatum,
   type bookConflictsType,
   type ConflictDatumType,
- } from '@schemas/conflictSchemas'
+} from '@schemas/conflictSchemas';
 
- import {
+import {
   Note,
   Display,
   type NoteType,
@@ -33,28 +31,28 @@ import {
   GeneralElement,
   type GeneralArrayType,
   type GeneralElementType,
-  generalSpecialists
- } from '@schemas/generalsSchema'
+  generalSpecialists,
+} from '@schemas/generalsSchema';
 
- import { 
+import {
   type ExtendedGeneralType,
   ExtendedGeneralStatus,
-  } from "@schemas/ExtendedGeneral";
+} from '@schemas/ExtendedGeneral';
 
-import { 
+import {
   type BookType,
   specialSkillBook,
   standardSkillBook,
   type specialSkillBookType,
   type standardSkillBookType,
- } from "@schemas/bookSchemas";
+} from '@schemas/bookSchemas';
 
-const dataUrl = new URL("/generals/all.json", Astro.url);
-const conflictData = new URL("/generalConflictData/conflicts.json", Astro.url);
+const dataUrl = new URL('/generals/all.json', Astro.url);
+const conflictData = new URL('/generalConflictData/conflicts.json', Astro.url);
 
-let allGeneralsJson = "";
-const generalObjects: CollectionEntry<"generals">[] =
-  await getCollection("generals");
+let allGeneralsJson = '';
+const generalObjects: CollectionEntry<'generals'>[] =
+  await getCollection('generals');
 if (generalObjects !== null && generalObjects !== undefined) {
   let generalIterator = generalObjects.values();
   let allGenerals = new Array<GeneralElementType>();
@@ -89,9 +87,9 @@ if (result.success) {
   console.error(result.error);
 }
 
-let allConflictJson = "";
-const collectionArray: CollectionEntry<"generalConflictData">[] =
-  await getCollection("generalConflictData");
+let allConflictJson = '';
+const collectionArray: CollectionEntry<'generalConflictData'>[] =
+  await getCollection('generalConflictData');
 if (collectionArray !== null && collectionArray !== undefined) {
   let result = collectionArray.map((ca) => {
     const validation = ConflictDatum.safeParse(ca.data);
@@ -112,41 +110,49 @@ if (result2.success) {
     result2.data.map((datum: ConflictDatumType) => {
       let conflicts = datum.conflicts;
       let match = false;
-      if(conflicts !== null && conflicts !== undefined) {
+      if (conflicts !== null && conflicts !== undefined) {
         for (const key in conflicts) {
-          if(key.localeCompare('other')) {
+          if (key.localeCompare('other')) {
             const items = conflicts[key];
-            if(items !== undefined && Array.isArray(items) && items.length > 0) {
+            if (
+              items !== undefined &&
+              Array.isArray(items) &&
+              items.length > 0
+            ) {
               let tg = allGenerals?.filter((g) => {
                 return items.includes(g.general.name);
-              })
-              if(tg !== null && tg !== undefined) {
-                match = true;      
+              });
+              if (tg !== null && tg !== undefined) {
+                match = true;
               }
             }
           }
         }
       }
-      if(match === true) {
+      if (match === true) {
         let result3 = standardSkillBook.array().safeParse(datum.books);
-        if(result3.success) {
+        if (result3.success) {
           let books = result3.data;
-          if(books !== null && books !== undefined) {
+          if (books !== null && books !== undefined) {
             for (const key in conflicts) {
               if (key.localeCompare('other')) {
                 const items = conflicts[key];
-                if(items !== undefined && Array.isArray(items) && items.length > 0) {
+                if (
+                  items !== undefined &&
+                  Array.isArray(items) &&
+                  items.length > 0
+                ) {
                   items.forEach((g: string) => {
                     Returnable.set(g, books);
-                  })
+                  });
                 }
               }
             }
           }
         }
       }
-    })
-    allConflictData = JSON.stringify(Returnable)
+    });
+    allConflictData = JSON.stringify(Returnable);
   }
 } else {
   console.error(result2.error);
@@ -154,7 +160,8 @@ if (result2.success) {
 }
 ---
 
-{(allGeneralsString !== null) && <TableContainer allGenerals={allGeneralsString} client:only="lit" ></TableContainer> }
-
-
-
+{
+  allGeneralsString !== null && (
+    <TableContainer allGenerals={allGeneralsString} client:only="lit" />
+  )
+}
