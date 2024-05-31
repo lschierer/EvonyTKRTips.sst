@@ -70,6 +70,9 @@ export class DetailView extends SizedMixin(BaseGeneral, {
   protected async willUpdate(_changedProperties: PropertyValues): Promise<void> {
     await super.willUpdate(_changedProperties)
     if(_changedProperties.has('_eg')) {
+      if(DEBUG) {
+        console.log(`DetailView willUpdate _eg`)
+      }
       let InComplete = true;
       do {
         if(!this.status.localeCompare(ExtendedGeneralStatus.enum.complete)) {

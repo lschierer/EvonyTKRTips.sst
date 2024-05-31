@@ -1,72 +1,30 @@
-import { customElement, property, state } from "lit/decorators.js";
-import { ref } from "lit/directives/ref.js";
-
-import { z } from 'zod'
+import { customElement, property,  } from "lit/decorators.js";
 
 import { delay } from 'nanodelay'
 
 import {
   SizedMixin,
-  SpectrumElement,
   type CSSResultArray,
   html,
   css,
-  unsafeCSS,
-  type PropertyValueMap,
+  type PropertyValues,
 } from "@spectrum-web-components/base";
 
-import SpectrumTokens from "@spectrum-css/tokens/dist/index.css?inline";
-import SpectrumTypography from "@spectrum-css/typography/dist/index.css?inline";
-import SpectrumIcon from "@spectrum-css/icon/dist/index.css?inline";
-import SpectrumTable from "@spectrum-css/table/dist/index.css?inline";
-
 import {
-  AscendingLevels,
-  BuffParams,
   type BuffParamsType,
-  qualityColor,
 } from "@schemas/baseSchemas";
 
 import {
-  Speciality,
-  type SpecialityType,
-} from "@schemas/specialitySchema";
-
-import {
-  Book,
-  specialSkillBook,
-  standardSkillBook,
-  type BookType,
-  type specialSkillBookType,
-  type standardSkillBookType,
-} from "@schemas/bookSchemas";
-
-
-import {
   Display,
-  GeneralClass,
-  type GeneralClassType,
-  generalUseCase,
 } from '@schemas/generalsSchema'
 
 import {
-  ExtendedGeneral,
-  type ExtendedGeneralType,
   ExtendedGeneralStatus,
-  type ExtendedGeneralStatusType,
-  RankInstance,
-  type RankInstanceType,
 } from "@schemas/ExtendedGeneral";
 
 import { BaseGeneral } from "../BaseGeneral";
 
 const DEBUG = true;
-
-interface Props {
-  general: GeneralClassType,
-  status: ExtendedGeneralStatusType,
-  computedBuffs?: Map<string, RankInstanceType>,
-}
 
 @customElement("grid-general")
 export class GridGeneral extends SizedMixin(BaseGeneral, {
@@ -97,10 +55,18 @@ export class GridGeneral extends SizedMixin(BaseGeneral, {
   constructor() {
     super();
 
+    this.addEventListener('GeneralSet', () => void this.recomputeBuffs())
+
   }
 
   private recomputeBuffs = async () => {
     let InComplete = true;
+    if(DEBUG) {
+      console.log(`GridGeneral recomputeBuffs`)
+    }
+    if(this._eg === null || this._eg === undefined) {
+      return;
+    }
     do {
       if (this.InvestmentLevel !== null && !this.status.localeCompare(ExtendedGeneralStatus.enum.complete)) {
         InComplete = false;
@@ -109,6 +75,7 @@ export class GridGeneral extends SizedMixin(BaseGeneral, {
           this.EvAnsRanking = this.computedBuffs.get(BaseGeneral.InvestmentOptions2Key(this.InvestmentLevel))?.EvAnsRanking ?? -7;
           this.AttackRanking = this.computedBuffs.get(BaseGeneral.InvestmentOptions2Key(this.InvestmentLevel))?.AttackRanking ?? -7;
           this.ToughnessRanking = this.computedBuffs.get(BaseGeneral.InvestmentOptions2Key(this.InvestmentLevel))?.ToughnessRanking ?? -7;
+          this.requestUpdate('EvAnsRanking');
         }
       } else {
         await delay(10);
@@ -116,13 +83,15 @@ export class GridGeneral extends SizedMixin(BaseGeneral, {
     } while (InComplete)
   }
 
-  protected async willUpdate(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): Promise<void> {
-    super.willUpdate(_changedProperties)
-    if(_changedProperties.has('_eg')){
-      if(this.InvestmentLevel !== null){
-        await this.recomputeBuffs();
-      }
-    }
+  //the following code schedules the update to occur after the next frame paints
+  protected override async scheduleUpdate(): Promise<void> {
+    await new Promise((resolve) => setTimeout(resolve));
+    super.scheduleUpdate();
+  }
+
+  protected async willUpdate(_changedProperties: PropertyValues): Promise<void> {
+    await super.willUpdate(_changedProperties)
+    if(DEBUG) {console.log(`GridGeneral willUpdate started ${this.generalId ?? ''}`)}
     if(_changedProperties.has('InvestmentLevel')){
       if(this._eg !== null && this._eg !== undefined){
         await this.recomputeBuffs();
@@ -144,5 +113,25 @@ export class GridGeneral extends SizedMixin(BaseGeneral, {
     }
   }
 
+  render(){
+    let returnable = html``;
+    if(this.general !== null && this.general !== undefined) {
+      returnable = html`
+        ${this.general.name}
+      `
+    } else if(this.generalId !== null && this.generalId !== undefined) {
+      if(DEBUG) {
+        //console.log(`returning ID, not name`)
+      }
+      returnable = html`
+        ${this.generalId}
+      `
+    }else {
+      returnable = html`
+        No General Name String Available
+      `
+    }
+      
+    return returnable  }
 
 }
