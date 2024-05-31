@@ -1,5 +1,9 @@
 conflicts:
-  01HES90861A1V9J8PHZE9KA32N:
+  01HZ82GMECTRA0GS8FV74E8EXC:
+    - Mihai
+  other:
+    - Simeon the Great
+    - Gunther
     - Marcus Agrippa
     - Douglas
     - Douglas (Odyssey)
@@ -12,7 +16,4 @@ conflicts:
     - Thutmose III
     - Gnarr
     - Mehmed II
-  other:
-    - Simeon the Great
-    - Gunther
-    - Mihai
+    - Merlin
