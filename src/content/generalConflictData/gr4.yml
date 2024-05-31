@@ -1,48 +1,48 @@
 name: 01HGMDRGS3DCNQVMEHVN9GFG2P
 members:
-    - Trajan
+- Trajan
 others:
-    - Robert the Bruce
-    - Pyrrhus
-    - Freyja
+- Robert the Bruce
+- Pyrrhus
+- Freyja
 books:
-  - name: Ground HP Increase
-    level: '1'
-    buff:
-    - attribute: HP
-      condition:
-      - When not mine
-      class: Ground
-      value:
-        number: 10
-        unit: percentage
-  - name: Ground HP Increase
-    level: '2'
-    buff:
-    - attribute: HP
-      condition:
-      - When not mine
-      class: Ground
-      value:
-        number: 15
-        unit: percentage
-  - name: Ground HP Increase
-    level: '3'
-    buff:
-    - attribute: HP
-      condition:
-      - When not mine
-      class: Ground
-      value:
-        number: 20
-        unit: percentage
-  - name: Ground HP Increase
-    level: '4'
-    buff:
-    - attribute: HP
-      condition:
-      - When not mine
-      class: Ground
-      value:
-        number: 25
-        unit: percentage
+- name: Ground HP Increase
+  level: '1'
+  buff:
+  - attribute: HP
+    condition:
+    - When not mine
+    class: Ground
+    value:
+      number: 10
+      unit: percentage
+- name: Ground HP Increase
+  level: '2'
+  buff:
+  - attribute: HP
+    condition:
+    - When not mine
+    class: Ground
+    value:
+      number: 15
+      unit: percentage
+- name: Ground HP Increase
+  level: '3'
+  buff:
+  - attribute: HP
+    condition:
+    - When not mine
+    class: Ground
+    value:
+      number: 20
+      unit: percentage
+- name: Ground HP Increase
+  level: '4'
+  buff:
+  - attribute: HP
+    condition:
+    - When not mine
+    class: Ground
+    value:
+      number: 25
+      unit: percentage

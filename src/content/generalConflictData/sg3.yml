@@ -1,87 +1,87 @@
 name: 01HHE55GYM266T9M3AN0VFSFZN
 members:
-    - Mu Guiying
-    - Raimondo
-    - Raimondo (Odyssey)
-    - Surena
-    - Emperor Qin Shihuang
+- Mu Guiying
+- Raimondo
+- Raimondo (Odyssey)
+- Surena
+- Emperor Qin Shihuang
 others:
-    - Septimius Serverus
-    - William Wallace
-    - Khalid
-    - My Guiying
+- Septimius Serverus
+- William Wallace
+- Khalid
+- My Guiying
 books:
-  - name: Siege Attack
-    level: '1'
-    buff:
-      - attribute: Attack
-        class: Siege
-        value:
-          number: 10
-          unit: percentage
-  - name: Siege Attack
-    level: '2'
-    buff:
-      - attribute: Attack
-        class: Siege
-        value:
-          number: 15
-          unit: percentage
-  - name: Siege Attack
-    level: '3'
-    buff:
-      - attribute: Attack
-        class: Siege
-        value:
-          number: 20
-          unit: percentage
-  - name: Siege Attack
-    level: '4'
-    buff:
-      - attribute: Attack
-        class: Siege
-        value:
-          number: 25
-          unit: percentage
-  - name: Siege HP
-    level: '1'
-    buff:
-      - attribute: HP
-        condition:
-        - When not mine
-        class: Siege
-        value:
-          number: 10
-          unit: percentage
-  - name: Siege HP
+- name: Siege Attack
+  level: '1'
+  buff:
+  - attribute: Attack
+    class: Siege
+    value:
+      number: 10
+      unit: percentage
+- name: Siege Attack
+  level: '2'
+  buff:
+  - attribute: Attack
+    class: Siege
+    value:
+      number: 15
+      unit: percentage
+- name: Siege Attack
+  level: '3'
+  buff:
+  - attribute: Attack
+    class: Siege
+    value:
+      number: 20
+      unit: percentage
+- name: Siege Attack
+  level: '4'
+  buff:
+  - attribute: Attack
+    class: Siege
+    value:
+      number: 25
+      unit: percentage
+- name: Siege HP
+  level: '1'
+  buff:
+  - attribute: HP
     condition:
-      - When not mine
-    level: '2'
-    buff:
-      - attribute: HP
-        class: Siege
-        condition:
-        - When not mine
-        value:
-          number: 15
-          unit: percentage
-  - name: Siege HP
-    level: '3'
-    buff:
-      - attribute: HP
-        condition:
-        - When not mine
-        class: Siege
-        value:
-          number: 20
-          unit: percentage
-  - name: Siege HP
-    level: '4'
-    buff:
-      - attribute: HP
-        condition:
-        - When not mine
-        class: Siege
-        value:
-          number: 25
-          unit: percentage
+    - When not mine
+    class: Siege
+    value:
+      number: 10
+      unit: percentage
+- name: Siege HP
+  condition:
+  - When not mine
+  level: '2'
+  buff:
+  - attribute: HP
+    class: Siege
+    condition:
+    - When not mine
+    value:
+      number: 15
+      unit: percentage
+- name: Siege HP
+  level: '3'
+  buff:
+  - attribute: HP
+    condition:
+    - When not mine
+    class: Siege
+    value:
+      number: 20
+      unit: percentage
+- name: Siege HP
+  level: '4'
+  buff:
+  - attribute: HP
+    condition:
+    - When not mine
+    class: Siege
+    value:
+      number: 25
+      unit: percentage

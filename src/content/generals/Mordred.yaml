@@ -14,101 +14,101 @@ general:
   politics_increment: 8.53
   level: '1'
   books:
-    - Knight of Treachery
+  - Knight of Treachery
   ascending:
-    - level: '6'
-      buff:
-        - attribute: Attack
-          condition:
-          - Marching
-          class: Mounted
-          value:
-            number: 5
-            unit: percentage
-        - attribute: HP
-          condition:
-          - Marching
-          class: Ground
-          value:
-            number: 10
-            unit: percentage
-        - attribute: HP
-          condition:
-          - Marching
-          class: Mounted
-          value:
-            number: 10
-            unit: percentage
-    - level: '7'
-      buff:
-        - attribute: Wounded_to_Death
-          condition:
-          - Enemy_In_City
-          value:
-            number: 10
-            unit: percentage
-    - level: '8'
-      buff:
-        - attribute: Attack
-          condition:
-          - Marching
-          class: Mounted
-          value:
-            number: 10
-            unit: percentage
-        - attribute: Attack
-          condition:
-          - Marching
-          class: Ground
-          value:
-            number: 10
-            unit: percentage
-        - attribute: Rally_Capacity
-          condition:
-          - When_Rallying
-          value:
-            number: 5
-            unit: percentage
-    - level: '9'
-      buff:
-        - attribute: Defense
-          condition:
-          - Marching
-          class: Mounted
-          value:
-            number: 10
-            unit: percentage
-        - attribute: HP
-          class: Mounted
-          condition:
-          - Marching
-          value:
-            number: 20
-            unit: percentage
-        - attribute: HP
-          class: Ground
-          condition:
-          - Marching
-          value:
-            number: 20
-            unit: percentage
-    - level: '10'
-      buff:
-        - attribute: Attack
-          class: Mounted
-          condition:
-          - Marching
-          value:
-            number: 20
-            unit: percentage
-        - attribute: Rally_Capacity
-          condition:
-          - When_Rallying
-          value:
-            number: 5
-            unit: percentage
+  - level: '6'
+    buff:
+    - attribute: Attack
+      condition:
+      - Marching
+      class: Mounted
+      value:
+        number: 5
+        unit: percentage
+    - attribute: HP
+      condition:
+      - Marching
+      class: Ground
+      value:
+        number: 10
+        unit: percentage
+    - attribute: HP
+      condition:
+      - Marching
+      class: Mounted
+      value:
+        number: 10
+        unit: percentage
+  - level: '7'
+    buff:
+    - attribute: Wounded_to_Death
+      condition:
+      - Enemy_In_City
+      value:
+        number: 10
+        unit: percentage
+  - level: '8'
+    buff:
+    - attribute: Attack
+      condition:
+      - Marching
+      class: Mounted
+      value:
+        number: 10
+        unit: percentage
+    - attribute: Attack
+      condition:
+      - Marching
+      class: Ground
+      value:
+        number: 10
+        unit: percentage
+    - attribute: Rally_Capacity
+      condition:
+      - When_Rallying
+      value:
+        number: 5
+        unit: percentage
+  - level: '9'
+    buff:
+    - attribute: Defense
+      condition:
+      - Marching
+      class: Mounted
+      value:
+        number: 10
+        unit: percentage
+    - attribute: HP
+      class: Mounted
+      condition:
+      - Marching
+      value:
+        number: 20
+        unit: percentage
+    - attribute: HP
+      class: Ground
+      condition:
+      - Marching
+      value:
+        number: 20
+        unit: percentage
+  - level: '10'
+    buff:
+    - attribute: Attack
+      class: Mounted
+      condition:
+      - Marching
+      value:
+        number: 20
+        unit: percentage
+    - attribute: Rally_Capacity
+      condition:
+      - When_Rallying
+      value:
+        number: 5
+        unit: percentage
   specialities:
-    - Mounted Troop Formation
-    - Formation
-    - Mounted Troop Ares
-    - Battle of Camlann
+  - Mounted Troop Formation
+  - Formation
+  - Mounted Troop Ares
+  - Battle of Camlann

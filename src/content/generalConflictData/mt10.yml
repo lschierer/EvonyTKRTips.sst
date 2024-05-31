@@ -1,45 +1,45 @@
 name: 01HWNH7J07W3MBNAMQS2V6A1F7
 members:
-    - Aethelflaed
-    - Caesar
+- Aethelflaed
+- Caesar
 books:
-  - name: Monster Mounted Attack Increase
-    level: '1'
-    buff:
-      - attribute: Attack
-        condition:
-        - Against Monsters
-        class: Mounted
-        value:
-          number: 15
-          unit: percentage
-  - name: Monster Mounted Attack Increase
-    level: '2'
-    buff:
-      - attribute: Attack
-        condition:
-        - Against Monsters
-        class: Mounted
-        value:
-          number: 25
-          unit: percentage
-  - name: Monster Mounted Attack Increase
-    level: '3'
-    buff:
-      - attribute: Attack
-        condition:
-        - Against Monsters
-        class: Mounted
-        value:
-          number: 35
-          unit: percentage
-  - name: Monster Mounted Attack Increase
-    level: '4'
-    buff:
-      - attribute: Attack
-        condition:
-        - Against Monsters
-        class: Mounted
-        value:
-          number: 45
-          unit: percentage
+- name: Monster Mounted Attack Increase
+  level: '1'
+  buff:
+  - attribute: Attack
+    condition:
+    - Against Monsters
+    class: Mounted
+    value:
+      number: 15
+      unit: percentage
+- name: Monster Mounted Attack Increase
+  level: '2'
+  buff:
+  - attribute: Attack
+    condition:
+    - Against Monsters
+    class: Mounted
+    value:
+      number: 25
+      unit: percentage
+- name: Monster Mounted Attack Increase
+  level: '3'
+  buff:
+  - attribute: Attack
+    condition:
+    - Against Monsters
+    class: Mounted
+    value:
+      number: 35
+      unit: percentage
+- name: Monster Mounted Attack Increase
+  level: '4'
+  buff:
+  - attribute: Attack
+    condition:
+    - Against Monsters
+    class: Mounted
+    value:
+      number: 45
+      unit: percentage

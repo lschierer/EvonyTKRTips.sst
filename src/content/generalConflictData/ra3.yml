@@ -1,20 +1,20 @@
 name: 01HGKZACGC0AYAHS0Y64XGRNK8
 members:
-    - Antara
-    - Harold III
-    - Henry V
-    - Jumong
-    - Minamoto no Yoshitsune
-    - Subutai
+- Antara
+- Harold III
+- Henry V
+- Jumong
+- Minamoto no Yoshitsune
+- Subutai
 others:
-    - Elektra
-    - Elektra (Dragon God)
-    - Vladimir the Great
-    - Winfield Scott
-    - Louis IX
-    - Li Shimin
-    - Idunn
-    - Idunn (Siege)
+- Elektra
+- Elektra (Dragon God)
+- Vladimir the Great
+- Winfield Scott
+- Louis IX
+- Li Shimin
+- Idunn
+- Idunn (Siege)
 books:
 - name: Ranged Attack Increase
   level: '1'

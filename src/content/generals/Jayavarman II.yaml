@@ -14,91 +14,91 @@ general:
   level: '1'
   score_as: Mounted
   books:
-    - Khmer King
+  - Khmer King
   specialities:
-    - Mounted Troop Defense
-    - Strike
-    - Mounted Troop Ares
-    - King of Lower Chenla
+  - Mounted Troop Defense
+  - Strike
+  - Mounted Troop Ares
+  - King of Lower Chenla
   ascending:
-    - level: '6'
-      buff:
-        - attribute: Attack
-          class: Mounted
-          value:
-            number: 5
-            unit: percentage
-        - attribute: HP
-          class: Mounted
-          value:
-            number: 15
-            unit: percentage
-    - level: '7'
-      buff:
-        - attribute: Death_to_Wounded
-          condition:
-          - Marching
-          value:
-            number: 8
-            unit: percentage
-    - level: '8'
-      buff:
-        - attribute: Attack
-          condition:
-          - Marching
-          class: Mounted
-          value:
-            number: 8
-            unit: percentage
-        - attribute: HP
-          condition:
-          - Marching
-          class: Mounted
-          value:
-            number: 5
-            unit: percentage
-    - level: '9'
-      buff:
-        - attribute: Defense
-          class: Ground
-          value:
-            number: 20
-            unit: percentage
-        - attribute: Defense
-          class: Mounted
-          value:
-            number: 20
-            unit: percentage
-        - attribute: HP
-          class: Ground
-          value:
-            number: 30
-            unit: percentage
-        - attribute: HP
-          class: Mounted
-          value:
-            number: 30
-            unit: percentage
-    - level: '10'
-      buff:
-        - attribute: Attack
-          condition:
-          - Marching
-          class: Mounted
-          value:
-            number: 25
-            unit: percentage
-        - attribute: Defense
-          condition:
-          - Marching
-          class: Mounted
-          value:
-            number: 15
-            unit: percentage
-        - attribute: HP
-          condition:
-          - Marching
-          class: Mounted
-          value:
-            number: 15
-            unit: percentage
+  - level: '6'
+    buff:
+    - attribute: Attack
+      class: Mounted
+      value:
+        number: 5
+        unit: percentage
+    - attribute: HP
+      class: Mounted
+      value:
+        number: 15
+        unit: percentage
+  - level: '7'
+    buff:
+    - attribute: Death_to_Wounded
+      condition:
+      - Marching
+      value:
+        number: 8
+        unit: percentage
+  - level: '8'
+    buff:
+    - attribute: Attack
+      condition:
+      - Marching
+      class: Mounted
+      value:
+        number: 8
+        unit: percentage
+    - attribute: HP
+      condition:
+      - Marching
+      class: Mounted
+      value:
+        number: 5
+        unit: percentage
+  - level: '9'
+    buff:
+    - attribute: Defense
+      class: Ground
+      value:
+        number: 20
+        unit: percentage
+    - attribute: Defense
+      class: Mounted
+      value:
+        number: 20
+        unit: percentage
+    - attribute: HP
+      class: Ground
+      value:
+        number: 30
+        unit: percentage
+    - attribute: HP
+      class: Mounted
+      value:
+        number: 30
+        unit: percentage
+  - level: '10'
+    buff:
+    - attribute: Attack
+      condition:
+      - Marching
+      class: Mounted
+      value:
+        number: 25
+        unit: percentage
+    - attribute: Defense
+      condition:
+      - Marching
+      class: Mounted
+      value:
+        number: 15
+        unit: percentage
+    - attribute: HP
+      condition:
+      - Marching
+      class: Mounted
+      value:
+        number: 15
+        unit: percentage

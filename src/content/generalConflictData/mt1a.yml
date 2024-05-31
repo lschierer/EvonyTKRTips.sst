@@ -1,53 +1,53 @@
 name: 01HPNDFH9P4Z5KEKM3JZH78Z7T
 members:
-    - George A. Custer
-    - Barbarossa
+- George A. Custer
+- Barbarossa
 others:
-    - Lysander
-    - Gaius Octavius
-    - Bertrand du Guesclin
-    - Cyrus the Great
-    - Mordred
-    - Hannibal
-    - King Arthur
-    - Genghis Khan
-    - Jayavarman II
-    - Napoleon (Prime)
-    - Roland
+- Lysander
+- Gaius Octavius
+- Bertrand du Guesclin
+- Cyrus the Great
+- Mordred
+- Hannibal
+- King Arthur
+- Genghis Khan
+- Jayavarman II
+- Napoleon (Prime)
+- Roland
 books:
-  - name: March Size Increase
-    level: '1'
-    buff:
-    - attribute: March_Size_Capacity
-      condition:
-      - When not mine
-      value:
-        number: 3
-        unit: percentage
-  - name: March Size Increase
-    level: '2'
-    buff:
-    - attribute: March_Size_Capacity
-      condition:
-      - When not mine
-      value:
-        number: 6
-        unit: percentage
-  - name: March Size Increase
-    level: '3'
-    buff:
-    - attribute: March_Size_Capacity
-      condition:
-      - When not mine
-      value:
-        number: 9
-        unit: percentage
-  - name: March Size Increase
-    level: '4'
-    buff:
-    - attribute: March_Size_Capacity
-      condition:
-      - When not mine
-      value:
-        number: 12
-        unit: percentage
+- name: March Size Increase
+  level: '1'
+  buff:
+  - attribute: March_Size_Capacity
+    condition:
+    - When not mine
+    value:
+      number: 3
+      unit: percentage
+- name: March Size Increase
+  level: '2'
+  buff:
+  - attribute: March_Size_Capacity
+    condition:
+    - When not mine
+    value:
+      number: 6
+      unit: percentage
+- name: March Size Increase
+  level: '3'
+  buff:
+  - attribute: March_Size_Capacity
+    condition:
+    - When not mine
+    value:
+      number: 9
+      unit: percentage
+- name: March Size Increase
+  level: '4'
+  buff:
+  - attribute: March_Size_Capacity
+    condition:
+    - When not mine
+    value:
+      number: 12
+      unit: percentage

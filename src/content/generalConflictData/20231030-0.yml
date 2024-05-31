@@ -1,17 +1,17 @@
 name: 01HGKZ0XGTEWDNKZGG6M7EKVZ5
 members:
-    - Raimondo
+- Raimondo
 others:
-    - Zucca
-    - Petronas
-    - John Churchill
-    - Philip II
-    - Septimus Severus
+- Zucca
+- Petronas
+- John Churchill
+- Philip II
+- Septimus Severus
 books:
 - name: Siege Attack Increase
   level: '1'
   buff:
-  - attribute: Attack    
+  - attribute: Attack
     class: Siege
     value:
       number: 10

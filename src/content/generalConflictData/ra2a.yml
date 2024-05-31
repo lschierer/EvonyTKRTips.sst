@@ -1,53 +1,53 @@
 name: 01HKVDKZTWXMEVWN2TEGJ5B3KE
 members:
-    - Winfield Scott
+- Winfield Scott
 others:
-    - Elektra
-    - Elektra (Dragon God)
-    - Vladimir the Great
-    - Idunn
-    - Idunn (Siege)
-    - Li Shimin
-    - Louis IX
-    - Prince Rhaeger
+- Elektra
+- Elektra (Dragon God)
+- Vladimir the Great
+- Idunn
+- Idunn (Siege)
+- Li Shimin
+- Louis IX
+- Prince Rhaeger
 books:
-  - name: Ranged Attack Increase
-    level: '1'
-    buff:
-    - attribute: Attack
-      condition:
-      - When not mine
-      class: Archers
-      value:
-        number: 10
-        unit: percentage
-  - name: Ranged Attack Increase
-    level: '2'
-    buff:
-    - attribute: Attack
-      condition:
-      - When not mine
-      class: Archers
-      value:
-        number: 15
-        unit: percentage
-  - name: Ranged Attack Increase
-    level: '3'
-    buff:
-    - attribute: Attack
-      condition:
-      - When not mine
-      class: Archers
-      value:
-        number: 20
-        unit: percentage
-  - name: Ranged Attack Increase
-    level: '4'
-    buff:
-    - attribute: Attack
-      condition:
-      - When not mine
-      class: Archers
-      value:
-        number: 25
-        unit: percentage
+- name: Ranged Attack Increase
+  level: '1'
+  buff:
+  - attribute: Attack
+    condition:
+    - When not mine
+    class: Archers
+    value:
+      number: 10
+      unit: percentage
+- name: Ranged Attack Increase
+  level: '2'
+  buff:
+  - attribute: Attack
+    condition:
+    - When not mine
+    class: Archers
+    value:
+      number: 15
+      unit: percentage
+- name: Ranged Attack Increase
+  level: '3'
+  buff:
+  - attribute: Attack
+    condition:
+    - When not mine
+    class: Archers
+    value:
+      number: 20
+      unit: percentage
+- name: Ranged Attack Increase
+  level: '4'
+  buff:
+  - attribute: Attack
+    condition:
+    - When not mine
+    class: Archers
+    value:
+      number: 25
+      unit: percentage

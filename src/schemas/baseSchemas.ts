@@ -195,9 +195,9 @@ export const BuffParams = zod.object({
   special3: qualityColor.default(qualityColor.enum.Disabled), //2
   special4: qualityColor.default(qualityColor.enum.Disabled), //3
   special5: qualityColor.default(qualityColor.enum.Disabled), //4
-  stars: AscendingLevels.default(AscendingLevels.enum[0]),    //5
-  dragon: zod.boolean().default(false),                         //6
-  beast: zod.boolean().default(false),                          //7
+  stars: AscendingLevels.default(AscendingLevels.enum[0]),  //5
+  dragon: zod.boolean().default(false),             //6
+  beast: zod.boolean().default(false),              //7
 })
 export type BuffParamsType = zod.infer<typeof BuffParams>;
 

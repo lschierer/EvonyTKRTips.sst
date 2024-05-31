@@ -14,93 +14,93 @@ general:
   politics: 107
   politics_increment: 8.62
   books:
-    - Battle of Xiaoting
+  - Battle of Xiaoting
   specialities:
-    - Ground Troop Defense
-    - Formation
-    - Ground Troop Ares
-    - Chief Controller of Eastern Wu
+  - Ground Troop Defense
+  - Formation
+  - Ground Troop Ares
+  - Chief Controller of Eastern Wu
   ascending:
-    - level: '6'
-      buff:
-        - attribute: Attack
-          class: Ground
-          condition:
-          - Marching
-          value:
-            number: 15
-            unit: percentage
-        - attribute: HP
-          class: Ground
-          condition:
-          - Marching
-          value:
-            number: 10
-            unit: percentage
-        - attribute: HP
-          class: Mounted
-          condition:
-          - Marching
-          value:
-            number: 10
-            unit: percentage
-    - level: '7'
-      buff:
-        - attribute: Death_to_Wounded
-          condition:
-          - Marching
-          value:
-            number: 10
-            unit: percentage
-    - level: '8'
-      buff:
-        - attribute: March_Size_Capacity
-          value:
-            number: 14
-            unit: percentage
-    - level: '9'
-      buff:
-        - attribute: Attack
-          class: Ground
-          condition:
-          - Marching
-          value:
-            number: 10
-            unit: percentage
-        - attribute: Attack
-          class: Mounted
-          condition:
-          - Marching
-          value:
-            number: 10
-            unit: percentage
-        - attribute: Defense
-          class: Ground
-          condition:
-          - Marching
-          value:
-            number: 25
-            unit: percentage
-        - attribute: Defense
-          class: Mounted
-          condition:
-          - Marching
-          value:
-            number: 25
-            unit: percentage
-    - level: '10'
-      buff:
-        - attribute: Attack
-          class: Ground
-          condition:
-          - Attacking
-          value:
-            number: 25
-            unit: percentage
-        - attribute: Defense
-          class: Ground
-          condition:
-          - Attacking
-          value:
-            number: 30
-            unit: percentage
+  - level: '6'
+    buff:
+    - attribute: Attack
+      class: Ground
+      condition:
+      - Marching
+      value:
+        number: 15
+        unit: percentage
+    - attribute: HP
+      class: Ground
+      condition:
+      - Marching
+      value:
+        number: 10
+        unit: percentage
+    - attribute: HP
+      class: Mounted
+      condition:
+      - Marching
+      value:
+        number: 10
+        unit: percentage
+  - level: '7'
+    buff:
+    - attribute: Death_to_Wounded
+      condition:
+      - Marching
+      value:
+        number: 10
+        unit: percentage
+  - level: '8'
+    buff:
+    - attribute: March_Size_Capacity
+      value:
+        number: 14
+        unit: percentage
+  - level: '9'
+    buff:
+    - attribute: Attack
+      class: Ground
+      condition:
+      - Marching
+      value:
+        number: 10
+        unit: percentage
+    - attribute: Attack
+      class: Mounted
+      condition:
+      - Marching
+      value:
+        number: 10
+        unit: percentage
+    - attribute: Defense
+      class: Ground
+      condition:
+      - Marching
+      value:
+        number: 25
+        unit: percentage
+    - attribute: Defense
+      class: Mounted
+      condition:
+      - Marching
+      value:
+        number: 25
+        unit: percentage
+  - level: '10'
+    buff:
+    - attribute: Attack
+      class: Ground
+      condition:
+      - Attacking
+      value:
+        number: 25
+        unit: percentage
+    - attribute: Defense
+      class: Ground
+      condition:
+      - Attacking
+      value:
+        number: 30
+        unit: percentage
