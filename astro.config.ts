@@ -12,7 +12,7 @@ export default defineConfig({
   site: 'https://evonytkrtips.net',
   output: "hybrid",
   adapter: aws({
-    responseMode: "stream",
+    //responseMode: "stream",
   }),
   devToolbar: {
     enabled: false
