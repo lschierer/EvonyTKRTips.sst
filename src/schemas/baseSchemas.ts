@@ -158,7 +158,7 @@ export type BuffAdverbArrayType = z.infer<typeof BuffAdverbArray>;
 
 export const Buff = z.object({
   'attribute': AttributeSchema.optional(),
-  'condition': z.union([Condition,BuffAdverbArray]).optional(),
+  'condition': Condition.optional(),
   'class': ClassEnum.nullish(),
   'value': ValueSchema.nullish(),
 });
