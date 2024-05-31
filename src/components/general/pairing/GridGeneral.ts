@@ -16,6 +16,7 @@ import {
 
 import {
   Display,
+  type DisplayType,
 } from '@schemas/generalsSchema'
 
 import {
@@ -30,6 +31,9 @@ const DEBUG = true;
 export class GridGeneral extends SizedMixin(BaseGeneral, {
   noDefaultSize: true,
 }) {
+
+  @property({type: String})
+  public DisplayPref: DisplayType = Display.enum.summary;
 
   @property({
     type: Number,
@@ -90,11 +94,14 @@ export class GridGeneral extends SizedMixin(BaseGeneral, {
     }
     do {
       if (this.InvestmentLevel !== null && !this.status.localeCompare(ExtendedGeneralStatus.enum.complete)) {
-        const result = this.GeneralBuffs(Display.enum.summary, this.InvestmentLevel)
+        const result = this.GeneralBuffs(this.DisplayPref, this.InvestmentLevel)
         if (result) {
           this.EvAnsRanking = this.computedBuffs.get(BaseGeneral.InvestmentOptions2Key(this.InvestmentLevel))?.EvAnsRanking ?? -7;
           this.AttackRanking = this.computedBuffs.get(BaseGeneral.InvestmentOptions2Key(this.InvestmentLevel))?.AttackRanking ?? -7;
           this.ToughnessRanking = this.computedBuffs.get(BaseGeneral.InvestmentOptions2Key(this.InvestmentLevel))?.ToughnessRanking ?? -7;
+          this.dispatchEvent(new CustomEvent('RanksAvailable',{bubble: true, composed: true, detail: {
+            generalId: this.generalId
+            }}))
           InComplete = false;
         }
       } else {
