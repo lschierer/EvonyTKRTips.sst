@@ -55,29 +55,52 @@ export class GridGeneral extends SizedMixin(BaseGeneral, {
   constructor() {
     super();
 
-    this.addEventListener('GeneralSet', () => void this.recomputeBuffs())
+    this.addEventListener('GeneralComplete', async () => {
+      if(DEBUG) {
+        console.log(`GridGeneral GeneralSet listener ${this.generalId}`)
+      }
+      await this.recomputeBuffs()
+    })
 
   }
 
   private recomputeBuffs = async () => {
     let InComplete = true;
     if(DEBUG) {
-      console.log(`GridGeneral recomputeBuffs`)
+      console.log(`GridGeneral recomputeBuffs ${this.generalId}`)
     }
-    if(this._eg === null || this._eg === undefined) {
+    if(this.InvestmentLevel === null) {
+      if(DEBUG) {
+        console.log(`GridGeneral recomputeBuffs ${this.generalId} InvestmentLevel null`)
+      }
       return;
+    }
+    if(this._eg === null ||
+      this._eg === undefined ||
+      this.status.localeCompare(ExtendedGeneralStatus.enum.complete)
+    ) {
+      if(DEBUG) {
+        console.log(`GridGeneral recomputeBuffs ${this.generalId} not ready to recompute`)
+        console.log(`GridGeneral recomputeBuffs status: ${this.status}`)
+      }
+      return;
+    }
+    if(DEBUG) {
+      console.log(`GridGeneral recomputeBuffs ${this.generalId} ready to recompute`)
     }
     do {
       if (this.InvestmentLevel !== null && !this.status.localeCompare(ExtendedGeneralStatus.enum.complete)) {
-        InComplete = false;
         const result = this.GeneralBuffs(Display.enum.summary, this.InvestmentLevel)
         if (result) {
           this.EvAnsRanking = this.computedBuffs.get(BaseGeneral.InvestmentOptions2Key(this.InvestmentLevel))?.EvAnsRanking ?? -7;
           this.AttackRanking = this.computedBuffs.get(BaseGeneral.InvestmentOptions2Key(this.InvestmentLevel))?.AttackRanking ?? -7;
           this.ToughnessRanking = this.computedBuffs.get(BaseGeneral.InvestmentOptions2Key(this.InvestmentLevel))?.ToughnessRanking ?? -7;
-          this.requestUpdate('EvAnsRanking');
+          InComplete = false;
         }
       } else {
+        if(DEBUG) {
+          console.log(`GridGeneral recomputeBuffs investment: ${this.InvestmentLevel}`)
+        }
         await delay(10);
       }
     } while (InComplete)
@@ -94,7 +117,9 @@ export class GridGeneral extends SizedMixin(BaseGeneral, {
     if(DEBUG) {console.log(`GridGeneral willUpdate started ${this.generalId ?? ''}`)}
     if(_changedProperties.has('InvestmentLevel')){
       if(this._eg !== null && this._eg !== undefined){
-        await this.recomputeBuffs();
+        if(!this.status.localeCompare(ExtendedGeneralStatus.enum.complete)) {
+          await this.recomputeBuffs();
+        }
       }
     }
   }

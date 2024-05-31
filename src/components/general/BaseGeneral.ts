@@ -107,13 +107,19 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
   private specialitiesDone = false;
 
   private internalEvents(event: Event) {
+    if(DEBUG) {
+      console.log(`BaseGeneral internalEvents ${this.generalId} ${event.type}`)
+    }
     if (event.type === 'SpecialsComplete') {
       this.specialitiesDone = true;
     }
-    if (event.type === 'BooksDone') {
+    if (event.type === 'BooksComplete') {
       this.booksDone = true;
     }
     if (this.booksDone && this.specialitiesDone) {
+      if(DEBUG) {
+        console.log(`BaseGeneral internalEvents calling requestUpdate ${this.booksDone} ${this.specialitiesDone}`)
+      }
       this.requestUpdate('_eg');
     }
   }
@@ -129,11 +135,14 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
     });
 
   private getSpecialities = async () => {
+    if(DEBUG) {
+      console.log(`BaseGeneral getSpecialities for ${this.generalId}`)
+    }
     if (this.general === null ||
       this._eg === null ||
       this._eg === undefined ||
       !Array.isArray(this.general.specialities)) {
-      return
+      return false
     } else {
       this.status = ExtendedGeneralStatus.enum.fetching;
       const currentPage = `${document.location.protocol}//${document.location.host}`
@@ -141,7 +150,7 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
 
         const sURL = new URL(`/specialities/${sn}.json`, currentPage)
         if (DEBUG) {
-          console.log(`GridGeneral: sURL: ${sURL.toString()}`)
+          console.log(`BaseGeneral: sURL: ${sURL.toString()}`)
         }
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const data = await fetch(sURL).then((response) => {
@@ -149,44 +158,44 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
           else throw new Error('Status code error :' + response.status)
         }).catch((error) => {
           console.error(JSON.stringify(error))
+          return false;
         })
         const v1 = Speciality.safeParse(data)
         if (v1.success && this._eg !== null) {
           const sd = this._eg.specialities.some((ts) => {
-            if (!ts.name.localeCompare(v1.data.name)) {
-              return true;
-            }
-            return false;
+            return !ts.name.localeCompare(v1.data.name);
           })
           if (sd) {
             return false
           } else {
             this._eg.specialities.push(v1.data)
-            this.dispatchEvent(new CustomEvent('SpecialsComplete', {bubbles: true, composed: false}));
           }
         } else {
           //the general could not have been null, I already tested for that
           console.log(`invalid special detected for ${this.general?.name}`)
           console.log(JSON.stringify(data))
+          return false;
         }
       }))
+      this.dispatchEvent(new CustomEvent('SpecialsComplete', {bubbles: false, composed: false}));
+      return true;
     }
   }
 
 
-  private getBooks = () => {
+  private getBooks = async () => {
     if (this.general === null ||
       this._eg === null ||
       this._eg === undefined ||
       !Array.isArray(this.general.books)) {
-      return
+      return false
     } else {
       this.status = ExtendedGeneralStatus.enum.fetching;
       const currentPage = `${document.location.protocol}//${document.location.host}`
       void this.general.books.map(async (bn) => {
         const bURL = new URL(`/books/${bn}.json`, currentPage)
         if (DEBUG) {
-          console.log(`GridGeneral: bURL: ${bURL.toString()}`)
+          console.log(`BaseGeneral: bURL: ${bURL.toString()}`)
         }
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const data = await fetch(bURL).then((response) => {
@@ -194,30 +203,37 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
           else throw new Error('Status code error :' + response.status)
         }).catch((error) => {
           console.error(JSON.stringify(error))
+          return false;
         })
         const v2 = specialSkillBook.safeParse(data)
         if (v2.success && this._eg !== null) {
           const bd = this._eg.books.some((tb) => {
-            if (!tb.name.localeCompare(v2.data.name)) {
-              return true;
-            }
-            return false;
+            return !tb.name.localeCompare(v2.data.name);
+
           })
           if (bd) {
             return
           } else {
             this._eg.books.push(v2.data)
-            this.dispatchEvent(new CustomEvent('BooksComplete', {bubbles: true, composed: false}));
           }
         } else {
           // the general could not have been null, I already tested for that
           console.log(`invalid book detected for ${this.general?.name}`)
+          return false;
         }
       })
+      this.dispatchEvent(new CustomEvent('BooksComplete', {bubbles: false, composed: false}));
+      return true;
     }
   }
 
   private getGeneral = async () => {
+    //do not fetch again if I already am.
+    if(!this.status.localeCompare(ExtendedGeneralStatus.enum.complete) ||
+      !this.status.localeCompare(ExtendedGeneralStatus.enum.fetching)
+    ) {
+      return;
+    }
     this.status = ExtendedGeneralStatus.enum.fetching;
     const currentPage = `${document.location.protocol}//${document.location.host}`
     if (this.generalId.length > 0) {
@@ -248,7 +264,11 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
     .args(Display, BuffParams)
     .returns(z.boolean())
     .implement((display, BP: BuffParamsType) => {
-      if (this.general === null || this._eg === null) {
+      if (
+        this.general === null ||
+        this._eg === null ||
+        this.status.localeCompare(ExtendedGeneralStatus.enum.complete)
+      ) {
         return false;
       } else {
         if (DEBUG) console.log(`EvAnsBuff starting for ${this.general.name}`);
@@ -294,11 +314,11 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
 
   protected async firstUpdated (_changedProperties: PropertyValues): Promise<void> {
     super.firstUpdated(_changedProperties)
-    if (_changedProperties.has('generalId')) {
+    if(this.generalId.length > 0 && this.general === null) {
       if (DEBUG) {
         console.log(`BaseGeneral firstUpdated generalId prop for ${this.generalId ?? ''}`)
       }
-      if (!this.status.localeCompare(ExtendedGeneralStatus.enum.created)) {
+      if (!this.status.localeCompare(ExtendedGeneralStatus.enum.processing)) {
         if (this.general === null) {
           if (DEBUG) {
             console.log(`BaseGeneral firstUpdated generalId needs to getGeneral for ${this.generalId ?? ''}`)
@@ -307,6 +327,10 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
             this.getGeneral(),
             delay(10)
           ])
+        }
+      }else {
+        if(DEBUG) {
+          console.log(`BaseGeneral firstUpdated ${this.generalId} status ${this.status}`)
         }
       }
     }
@@ -320,7 +344,7 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
 
     if (_changedProperties.has('general')) {
       if (DEBUG) {
-        console.log(`BaseGeneral willupdate general prop for ${this.generalId ?? ''}`)
+        console.log(`BaseGeneral willUpdate general prop for ${this.generalId ?? ''}`)
       }
       if (this.general !== null) {
         const v = GeneralClass.safeParse(this.general)
@@ -356,6 +380,7 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
         this._eg.specialities.length === this.general.specialities.length
       ) {
         this.status = ExtendedGeneralStatus.enum.complete
+        this.dispatchEvent(new CustomEvent('GeneralComplete', {composed: false, bubbles: true}))
       } else {
         this.status = ExtendedGeneralStatus.enum.processing
       }
