@@ -95,57 +95,57 @@ export class DetailView extends SizedMixin(BaseGeneral, {
       div.GeneralDetails {
         display: flex;
         flex-direction: column;
-
+        
         & ul {
-          margin: 0px;
-          padding-top: 0px;
+          margin: 0;
+          padding-top: 0;
           padding-left: 1rem;
-
+          
           & li {
-            padding-top: 0px;
-            padding-bottom: 0px;
-            margin-top: 0px;
-            margin-bottom: 0px;
+            padding-top: 0;
+            padding-bottom: 0;
+            margin-top: 0;
+            margin-bottom: 0;
             margin-left: 0.5rem;
           }
         }
-
+        
         :is(div) {
           align-content: center;
           justify-content: center;
           margin: 0.1px;
         }
-
+        
         & .spectrum-Heading {
           color: var(--sl-color-text-accent);
         }
-
+        
         & .center {
           align-self: center;
         }
-
+        
         & .label {
           color: var(--sl-color-text-accent);
         }
-
+        
         & .Stars {
           display: flex;
           flex-direction: row;
           justify-content: center;
         }
-
+        
         & .IntrinsicAttributes {
           columns: 4;
           text-wrap: wrap;
         }
-
+        
         & .Books {
           margin: 1px;
           display: grid;
           grid-template-columns: repeat(4, 1fr);
           column-gap: 2px;
           align-items: start;
-
+          
           & [class^="Book"] {
             grid-column-end: span 1;
             display: flex;
@@ -153,54 +153,54 @@ export class DetailView extends SizedMixin(BaseGeneral, {
             justify-content: space-between;
           }
         }
-
+        
         & .Specialities {
           margin: 1px;
           display: grid;
           grid-template-columns: repeat(4, 1fr);
           column-gap: 2px;
           align-items: start;
-
+          
           & [class^="Speciality"] {
             grid-column-end: span 1;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
           }
-
+          
           & .Green {
             background-color: var(--spectrum-celery-400);
           }
-
+          
           & .Blue {
             background-color: var(--spectrum-blue-400);
           }
-
+          
           & .Purple {
             background-color: var(--spectrum-purple-400);
           }
-
+          
           & .Orange {
             background-color: var(--spectrum-orange-400);
           }
-
+          
           & .Gold {
             background-color: var(--spectrum-yellow-400);
           }
         }
-
+        
         & .AscendingAttributes {
           margin: 1px;
           display: grid;
           grid-template-columns: repeat(5, 1fr);
           column-gap: 2px;
           align-items: start;
-  
+          
           & [class^="AscendingAttribute"] {
-              grid-column-end: span 1;
-              display: flex;
-              flex-direction: column;
-              justify-content: space-between;
+            grid-column-end: span 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
           }
         }
       }
