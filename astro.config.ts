@@ -14,6 +14,13 @@ export default defineConfig({
   adapter: aws({
     responseMode: "stream",
   }),
+  devToolbar: {
+    enabled: false
+  },
+  prefetch: {
+    prefetchAll: false,
+    defaultStrategy: 'tap',
+  },
   compressHTML: false,
   integrations: [lit(), starlight({
     title: 'Evony TKR Tips',
