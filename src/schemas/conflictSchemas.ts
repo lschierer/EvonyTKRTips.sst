@@ -1,15 +1,13 @@
 import {z as zod} from 'zod';
 
-
 import { standardSkillBook } from "./bookSchemas";
-
 
 export const bookConflicts = zod.object({
     books: zod.array(standardSkillBook)
 })
 export type bookConflictsType = zod.infer<typeof bookConflicts>;
 
-const nameConflictUlid = zod.string().ulid();
+export const nameConflictUlid = zod.string().ulid();
 type nameConflictUlidType = zod.infer<typeof nameConflictUlid>;
 
 const nameConflicts = zod.object({
@@ -21,7 +19,7 @@ const otherConflicts = zod.record(zod.literal('other'), zod.array(zod.string()))
 export type otherConflictType = zod.infer<typeof otherConflicts>;
 
 export const ConflictDatum = zod.object({
-    name: zod.string(),
+    name: nameConflictUlid,
     members: zod.array(zod.string()),
     others: zod.array(zod.string()).optional(),
     books: zod.array(standardSkillBook).optional()

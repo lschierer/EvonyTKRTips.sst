@@ -4,7 +4,7 @@ import { Covenant } from '@schemas/generalsSchema';
 import { Speciality } from '@schemas/specialitySchema';
 import { Book } from '@schemas/bookSchemas';
 import { artTreasureSchema } from '@schemas/treasureSchemas';
-import { BlazonSetSechma } from '@schemas/blazonSchemas';
+import { BlazonSetSchema } from '@schemas/blazonSchemas';
 import { GeneralElement } from '@schemas/generalsSchema';
 import { ConflictDatum } from '@schemas/conflictSchemas';
 
@@ -15,7 +15,7 @@ export const collections = {
   skillbooks: defineCollection({type: 'data', schema: Book}),
   i18n: defineCollection({ type: 'data', schema: i18nSchema() }),
   art: defineCollection({type: 'data', schema: artTreasureSchema}),
-  blazons: defineCollection({type: 'data', schema: BlazonSetSechma}),
+  blazons: defineCollection({type: 'data', schema: BlazonSetSchema}),
   generals: defineCollection({type: 'data', schema: GeneralElement}),
   generalConflictData: defineCollection(({type: 'data', schema: ConflictDatum})),
 };
