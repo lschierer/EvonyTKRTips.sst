@@ -121,8 +121,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       }
       this._DisplayPairs = [...newRows]
       this._DisplayPairs.forEach((dp) => {
-        dp.GeneralBuffs(this.InvestmentLevel, generalRole.enum.primary);
-        dp.GeneralBuffs(this.InvestmentLevel, generalRole.enum.secondary);
+        dp.BuffsForInvestment(this.InvestmentLevel);
       });
       if(this.grid !== null && this.grid !== undefined) {
         this.grid.setGridOption('rowData', this._DisplayPairs);
@@ -226,7 +225,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
         console.log(`willUpdate called for RawPairs`);
       }
       if (Array.isArray(this.RawPairs) && this.RawPairs.length > 0) {
-        this.getData();
+        await this.getData();
       } else {
         console.log(`DisplayGrid willUpdate called for RawPairs but no data`);
       }
@@ -271,6 +270,9 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       console.log(`gridDiv is ${gridDiv.localName}`);
       this.grid = createGrid(gridDiv as HTMLElement, this.gridOptions);
       if (Array.isArray(this._DisplayPairs) && this._DisplayPairs.length > 0) {
+        this._DisplayPairs.forEach((dp) => {
+          dp.BuffsForInvestment(this.InvestmentLevel);
+        });
         this.grid.setGridOption('rowData', this._DisplayPairs);
       } else {
         if (DEBUG) {

@@ -283,31 +283,46 @@ export class GridPair {
       return JSON.stringify(BP).replace(GridPair.InvestmentOptionsRE, '');
     });
 
+  public BuffsForInvestment(BP: BuffParamsType){
+    this.GeneralBuffs(Display.enum.primary, this.InvestmentLevel);
+    this.GeneralBuffs(Display.enum.assistant, this.InvestmentLevel);
+  }
+
   //from https://www.evonyanswers.com/post/evony-answers-attribute-methodology-explanation
-  public GeneralBuffs = z
+  private GeneralBuffs = z
     .function()
-    .args(BuffParams, generalRole)
+    .args(Display, BuffParams )
     .returns(z.boolean())
-    .implement((BP: BuffParamsType, forG: generalRoleType) => {
+    .implement((display: DisplayType, BP: BuffParamsType) => {
       let general: GeneralClassType;
       let eg: ExtendedGeneralType;
-      let display: DisplayType;
-      if (!forG.localeCompare(generalRole.enum.primary)) {
+      let nBP: BuffParamsType;
+
+      if (!Display.enum.primary.localeCompare(Display.enum.primary)) {
         general = this._primary;
-        display = Display.enum.primary;
         eg = {
           general: this._primary,
           specialities: this.pSpecialities,
           books: this.pBooks,
         };
+        nBP = BP;
       } else {
         general = this._secondary;
-        display = Display.enum.assistant;
         eg = {
           general: this._secondary,
           specialities: this.sSpecialities,
           books: this.sBooks,
         };
+        nBP = {
+          special1: BP.special1,
+          special2: BP.special2,
+          special3: BP.special3,
+          special4: BP.special4,
+          special5: BP.special5,
+          stars: AscendingLevels.enum['0'],
+          dragon: BP.dragon,
+          beast: BP.beast
+        }
       }
       if (general === null) {
         return false;
@@ -316,39 +331,40 @@ export class GridPair {
         if (DEBUG) console.log(`EvAnsBuff starting for ${general.name}`);
         //figure out my state engine here
 
-        const EvAnsRankScore = EvAnsScoreComputer(
+        const EvAnsRanking = EvAnsScoreComputer(
           generalUseCase.enum.Attack,
           eg,
           display,
-          BP,
+          nBP,
         );
 
-        const AttackRank = AttackScoreComputer(
+        const AttackRanking = AttackScoreComputer(
           generalUseCase.enum.Attack,
           eg,
           display,
-          BP,
+          nBP,
         );
-        const ToughnessRank = ToughnessScoreComputer(
+
+        const ToughnessRanking = ToughnessScoreComputer(
           generalUseCase.enum.Attack,
           eg,
           display,
-          BP,
+          nBP,
         );
 
         const hashKey = GridPair.InvestmentOptions2Key(BP);
-        if (!forG.localeCompare(generalRole.enum.primary)) {
-          this.pEvAnsRanking = EvAnsRankScore;
-          this.pAttackRanking = AttackRank;
-          this.pToughnessRanking = ToughnessRank;
+        if (!Display.enum.primary.localeCompare(Display.enum.primary)) {
+          this.pEvAnsRanking = EvAnsRanking;
+          this.pAttackRanking = AttackRanking;
+          this.pToughnessRanking = ToughnessRanking;
         } else {
-          this.sEvAnsRanking = EvAnsRankScore;
-          this.sAttackRanking = AttackRank;
-          this.sToughnessRanking = ToughnessRank;
+          this.sEvAnsRanking = EvAnsRanking;
+          this.sAttackRanking = AttackRanking;
+          this.sToughnessRanking = ToughnessRanking;
         }
         if (DEBUG) {
           console.log(
-            `in GeneralBuffs, got scores: ${EvAnsRankScore} ${AttackRank} for ${general.name}`,
+            `in GeneralBuffs, got scores: ${EvAnsRanking} ${AttackRanking} ${ToughnessRanking} for ${general.name}`,
           );
         }
       }
