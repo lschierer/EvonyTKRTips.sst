@@ -1,3 +1,7 @@
+import { fromFetch } from "rxjs/fetch";
+import { BehaviorSubject, from, map, concatMap, switchMap, throwError } from "rxjs";
+import { z } from "zod";
+
 import {
   AscendingLevels,
   BuffParams,
@@ -49,18 +53,25 @@ export class GridPair {
 
   }
 
-  private _primary: GeneralClassType;
+  private _primary: BehaviorSubject<GeneralClassType>;
 
   get primary(): GeneralClassType {
-    return this._primary;
+    return this._primary.getValue();
   }
 
   set primary(g:GeneralClassType) {
     const v = GeneralClass.safeParse(g)
     if(v.success) {
-      this._primary = v.data;
-      if(this._primaryId.localeCompare((this._primary.name))) {
-        this._primaryId = this._primary.name;
+      this._primary = new BehaviorSubject<GeneralClassType>(v.data);
+      if(DEBUG) {
+        console.log(`GridPair set primary; _primary.getValue().name: ${this._primary.getValue().name}`)
+      }
+      if(this._primaryId.localeCompare((this._primary.getValue().name))) {
+        this._primaryId = this._primary.getValue().name;
+      }
+      if(DEBUG){
+        console.log(`GridPair set primary; _primary.getValue().name: ${this._primary.getValue().name}`)
+        console.log(`GridPair set primary; _primaryId: ${this._primaryId}`)
       }
     }
   }
@@ -76,18 +87,18 @@ export class GridPair {
 
   }
 
-  private _secondary: GeneralClassType;
+  private _secondary: BehaviorSubject<GeneralClassType>;
 
   get secondary(): GeneralClassType {
-    return this._secondary;
+    return this._secondary.getValue();
   }
 
   set secondary(g: GeneralClassType) {
     const v = GeneralClass.safeParse(g)
     if (v.success) {
-      this._secondary = v.data;
+      this._secondary = new BehaviorSubject<GeneralClassType>(v.data);
       if(this._secondaryId.localeCompare((this._secondary.name))) {
-        this._secondaryId = this._secondary.name;
+        this._secondaryId = this._secondary.getValue().name;
       }
     }
   }

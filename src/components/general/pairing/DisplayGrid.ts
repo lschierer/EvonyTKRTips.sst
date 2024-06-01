@@ -1,5 +1,5 @@
 import { fromFetch } from "rxjs/fetch";
-import { from, map, concatMap, switchMap, throwError } from "rxjs";
+import { BehaviorSubject , from, map, concatMap, switchMap, throwError } from "rxjs";
 import { z } from "zod";
 
 import {
@@ -176,7 +176,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
         this.RawPairs.forEach((pair) => {
           const dp = new GridPair(pair.primary, pair.secondary);
           if(dp !== null && dp !== undefined) {
-            if(!dp.primaryId.localeCompare((pair.primary.name))){
+            if(!pair.primary.name.localeCompare(dp.primaryId)){
               //if that works, the set appears to have worked
               this._DisplayPairs.push(dp);
             }
