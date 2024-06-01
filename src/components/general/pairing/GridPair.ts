@@ -24,6 +24,8 @@ import {
   Display,
   GeneralClass,
   type GeneralClassType,
+  generalRole,
+  type generalRoleType,
   generalUseCase,
 } from '@schemas/generalsSchema';
 
@@ -53,28 +55,31 @@ export class GridPair {
 
   }
 
-  private _primary: BehaviorSubject<GeneralClassType>;
+  // @ts-ignore
+  private _primary: GeneralClassType;
 
   get primary(): GeneralClassType {
-    return this._primary.getValue();
+    return this._primary;
   }
 
   set primary(g:GeneralClassType) {
     const v = GeneralClass.safeParse(g)
     if(v.success) {
-      this._primary = new BehaviorSubject<GeneralClassType>(v.data);
+      this._primary = v.data;
       if(DEBUG) {
-        console.log(`GridPair set primary; _primary.getValue().name: ${this._primary.getValue().name}`)
+        console.log(`GridPair set primary; _primary.getValue().name: ${this._primary.name}`)
       }
-      if(this._primaryId.localeCompare((this._primary.getValue().name))) {
-        this._primaryId = this._primary.getValue().name;
+      if(this._primaryId.localeCompare((this._primary.name))) {
+        this._primaryId = this._primary.name;
       }
       if(DEBUG){
-        console.log(`GridPair set primary; _primary.getValue().name: ${this._primary.getValue().name}`)
+        console.log(`GridPair set primary; _primary.getValue().name: ${this._primary.name}`)
         console.log(`GridPair set primary; _primaryId: ${this._primaryId}`)
       }
     }
   }
+
+  private pSpecialities: SpecialityType[];
 
   private _secondaryId = '';
 
@@ -87,21 +92,26 @@ export class GridPair {
 
   }
 
-  private _secondary: BehaviorSubject<GeneralClassType>;
+  // @ts-ignore
+  private _secondary: GeneralClassType;
 
   get secondary(): GeneralClassType {
-    return this._secondary.getValue();
+    return this._secondary;
   }
 
   set secondary(g: GeneralClassType) {
     const v = GeneralClass.safeParse(g)
     if (v.success) {
-      this._secondary = new BehaviorSubject<GeneralClassType>(v.data);
+      this._secondary = v.data;
       if(this._secondaryId.localeCompare((this._secondary.name))) {
-        this._secondaryId = this._secondary.getValue().name;
+        this._secondaryId = this._secondary.name;
       }
     }
   }
+
+  private sSpecialities: SpecialityType[];
+
+  public ApiUrl: URL;
 
   private _EvAnsRanking = 0;
 
@@ -121,8 +131,10 @@ export class GridPair {
     return this._ToughnessRanking;
   }
 
+  // @ts-ignore
   private pInvestment: BuffParamsType;
 
+  // @ts-ignore
   private sInvestment: BuffParamsType;
 
   set InvestmentLevel(level: BuffParamsType) {
@@ -146,9 +158,53 @@ export class GridPair {
     return this.pInvestment;
   }
 
-  constructor(p: GeneralClassType, s: GeneralClassType){
+  private async getSkillBooks(forG: generalRoleType) {
+    let general: GeneralClassType;
+    let sArray: SpecialityType[];
+    if(!forG.localeCompare(generalRole.enum.primary)){
+      general = this._primary;
+      sArray = this.pSpecialities;
+    } else {
+      general = this._secondary;
+      sArray = this.sSpecialities;
+    }
+    if(Array.isArray(general.specialities)){
+      general.specialities.map(async (sn) => {
+        const sURL = new URL(`/specialities/${sn}.json`, this.ApiUrl);
+        const data = await fetch(sURL)
+          .then((response) => {
+            if (response.ok) return response.json();
+            else throw new Error('Status code error :' + response.status);
+          })
+          .catch((error) => {
+            console.error(JSON.stringify(error));
+            return false;
+          });
+        const v1 = Speciality.safeParse(data);
+        if (v1.success ) {
+          const sd = sArray.some((ts: SpecialityType) => {
+            return !ts.name.localeCompare(v1.data.name);
+          });
+          if (sd) {
+            return false;
+          } else {
+            sArray.push(v1.data);
+          }
+        } else {
+          //the general could not have been null, I already tested for that
+          console.log(`invalid special detected for ${general.name}`);
+          console.log(JSON.stringify(data));
+          return false;
+        }
+      })
+    }
+  }
+
+  constructor(p: GeneralClassType, s: GeneralClassType, u: string) {
     this.primary = p;
+    this.pSpecialities = new Array<SpecialityType>()
     this.secondary = s;
+    this.sSpecialities = new Array<SpecialityType>()
     this.InvestmentLevel = {
       special1: qualityColor.enum.Disabled,
       special2: qualityColor.enum.Disabled,
@@ -159,6 +215,10 @@ export class GridPair {
       dragon: false,
       beast: false,
     }
+    this.ApiUrl = new URL('/',u);
+    if(DEBUG) {
+      console.log(`base URL initialized to ${this.ApiUrl}`)
+    }
+    this.getSkillBooks(generalRole.enum.primary);
   }
-
 }

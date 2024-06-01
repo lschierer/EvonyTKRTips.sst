@@ -99,25 +99,25 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       // Columns to be displayed (Should match rowData properties)
       columnDefs: [
         {
-          valueGetter: p => p.data.primaryId,
+          valueGetter: p => p.data!.primaryId,
           headerName: 'Primary',
           filter: true,
         },
         {
-          valueGetter: p => p.data.secondaryId,
+          valueGetter: p => p.data!.secondaryId,
           headerName: 'Secondary',
           filter: true,
         },
         {
-          valueGetter: p => p.data.EvAnsRanking,
+          valueGetter: p => p.data!.EvAnsRanking,
           headerName: 'EvAns Ranking',
         },
         {
-          valueGetter: p => p.data.AttackRanking,
+          valueGetter: p => p.data!.AttackRanking,
           headerName: 'Adjusted Attack Score',
         },
         {
-          valueGetter: p => p.data.ToughnessRanking,
+          valueGetter: p => p.data!.ToughnessRanking,
           headerName: 'Adjusted Toughness Score',
         },
       ],
@@ -173,15 +173,37 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
         console.log(`willUpdate called for RawPairs`);
       }
       if (Array.isArray(this.RawPairs) && this.RawPairs.length > 0) {
-        this.RawPairs.forEach((pair) => {
-          const dp = new GridPair(pair.primary, pair.secondary);
+        const currentPage = `${document.location.protocol}//${document.location.host}`;
+        await Promise.all(this.RawPairs.map(async (pair, index) => {
+          const testIndex1 = (index % 10 === 0);
+          const testIndex2 = (index % 3 === 0);
+          if(testIndex1){
+            await delay(10000).then(() => {
+              if(DEBUG){
+                console.log(`DispalyGrid willUpdate RawPairs index ${index} delay1`)
+              }
+            });
+          }else if (testIndex2){
+            await delay(3000).then(() => {
+              if (DEBUG) {
+                console.log(`DispalyGrid willUpdate RawPairs index ${index} delay2`)
+              }
+            });
+          } else {
+            await delay(30).then(() => {
+              if (DEBUG) {
+                console.log(`DispalyGrid willUpdate RawPairs index ${index} noDelay`)
+              }
+            });
+          }
+          const dp = new GridPair(pair.primary, pair.secondary, currentPage);
           if(dp !== null && dp !== undefined) {
             if(!pair.primary.name.localeCompare(dp.primaryId)){
               //if that works, the set appears to have worked
               this._DisplayPairs.push(dp);
             }
           }
-        })
+        }))
         this.requestUpdate('_DisplayPairs');
         if (this.grid !== null && this.grid !== undefined) {
           if (DEBUG) {

@@ -114,7 +114,7 @@ export class GridGeneral extends SizedMixin(BaseGeneral, {
             )?.ToughnessRanking ?? -7;
           this.dispatchEvent(
             new CustomEvent('RanksAvailable', {
-              bubble: true,
+              bubbles: true,
               composed: true,
               detail: {
                 generalId: this.generalId,

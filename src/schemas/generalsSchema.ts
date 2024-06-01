@@ -38,14 +38,6 @@ export const Ascending = zod.object({
 });
 export type AscendingType = zod.infer<typeof Ascending>;
 
-export const totalBuffs = zod.object({
-  attack: zod.number(),
-  defense: zod.number(),
-  hp: zod.number(),
-  march: zod.number(),
-});
-export type totalBuffsType = zod.infer<typeof totalBuffs>;
-
 export const GeneralClass = zod.object({
   name: zod.string(),
   display: Display.optional(),
@@ -86,7 +78,6 @@ export const GeneralClass = zod.object({
   books: zod.array(zod.string()).nullish(),
   ascending: zod.array(Ascending).nullish(),
   note: zod.array(Note).nullish(),
-  totalBuffs: totalBuffs.nullish(),
 });
 export type GeneralClassType = zod.infer<typeof GeneralClass>;
 

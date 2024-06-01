@@ -138,7 +138,7 @@ export class DetailView extends SizedMixin(BaseGeneral, {
 
         & .IntrinsicAttributes {
           columns: 4;
-          text-wrap: wrap;
+          white-space: pre-line;
         }
 
         & .Books {
