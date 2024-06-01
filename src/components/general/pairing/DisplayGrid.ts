@@ -6,6 +6,7 @@ import {
   GridApi,
   type GridOptions,
   createGrid,
+  type GridReadyEvent,
   type ValueGetterParams,
   ModuleRegistry,
 } from 'ag-grid-community';
@@ -83,10 +84,55 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
 
   private gridOptions: GridOptions<GridPair> = {};
 
-  private grid: GridApi<GridPair> | null = null;
+  // @ts-ignore
+  private grid: GridApi<GridPair>;
 
   handleMutation(): void {
     return;
+  }
+
+  private async getData() {
+    const currentPage = `${document.location.protocol}//${document.location.host}`;
+    const newRows: GridPair[] = new Array<GridPair>();
+    await Promise.all(
+      this.RawPairs.map(async (pair, index) => {
+
+        const delayValue = Math.floor((Math.random() * 80000));
+        await delay(delayValue).then(async () => {
+          if (DEBUG) {
+            console.log(`DisplayGrid getData RawPairs index ${index} ${delayValue} ${pair.primary.name} ${pair.secondary.name}`);
+          }
+          const dp = new GridPair(pair.primary, pair.secondary, currentPage);
+          dp.index = index;
+          if (!pair.primary.name.localeCompare(dp.primaryId)) {
+            //if that works, the set appears to have worked
+            await dp.getSkillBooks(generalRole.enum.primary);
+            await dp.getSpecialities(generalRole.enum.primary);
+            await delay(10);
+            await dp.getSkillBooks(generalRole.enum.secondary);
+            await dp.getSpecialities(generalRole.enum.secondary);
+            newRows.push(dp);
+          }
+        });
+    }));
+    if (newRows.length > 0 && this.grid !== null && this.grid !== undefined) {
+      if (DEBUG) {
+        console.log(`setting rowData from getData on RawPairs`);
+      }
+      this._DisplayPairs = [...newRows]
+      this._DisplayPairs.forEach((dp) => {
+        dp.GeneralBuffs(this.InvestmentLevel, generalRole.enum.primary);
+        dp.GeneralBuffs(this.InvestmentLevel, generalRole.enum.secondary);
+      });
+      if(this.grid !== null && this.grid !== undefined) {
+        this.grid.setGridOption('rowData', this._DisplayPairs);
+        this.requestUpdate('grid');
+      }
+    } else {
+      if (DEBUG) {
+        console.log(`getData for RawPairs, grid was null`);
+      }
+    }
   }
 
   constructor() {
@@ -126,6 +172,10 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       ],
       defaultColDef: {
         flex: 1,
+      },
+      onGridReady: (params) => {
+        this.getData();
+        params.api.setGridOption('rowData', this._DisplayPairs);
       },
     };
 
@@ -176,60 +226,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
         console.log(`willUpdate called for RawPairs`);
       }
       if (Array.isArray(this.RawPairs) && this.RawPairs.length > 0) {
-        const currentPage = `${document.location.protocol}//${document.location.host}`;
-        await Promise.all(this.RawPairs.map(async (pair, index) => {
-          const testIndex1 = (index % 13 === 0);
-          const testIndex2 = (index % 11 === 0);
-          const testIndex3 = (index % 7 === 0);
-          const testIndex4 = (index % 5 === 0);
-          const testIndex5 = (index % 3 === 0);
-          const testIndex6 = (index % 2 === 0);
-          let delayValue = 0;
-          if (testIndex1) {
-            delayValue = 30000;
-          } else if (testIndex2) {
-            delayValue = 40000;
-          } else if (testIndex3) {
-            delayValue = Math.floor(Math.random() * 50000);
-          } else if (testIndex4) {
-            delayValue = Math.floor(Math.random() * 60000);
-          } else if (testIndex5) {
-            delayValue = Math.floor(Math.random() * 70000);
-          } else if (testIndex6) {
-            delayValue = Math.floor(Math.random() * 90000);
-          }
-          await delay(delayValue).then(async () => {
-            if (DEBUG) {
-              console.log(`DisplayGrid willUpdate RawPairs index ${index} ${delayValue} ${pair.primary.name} ${pair.secondary.name}`);
-            }
-            const dp = new GridPair(pair.primary, pair.secondary, currentPage);
-            dp.index = index;
-            if (dp !== null && dp !== undefined) {
-              if (!pair.primary.name.localeCompare(dp.primaryId)) {
-                //if that works, the set appears to have worked
-                await dp.getSkillBooks(generalRole.enum.primary);
-                await dp.getSpecialities(generalRole.enum.primary);
-                await delay(10);
-                await dp.getSkillBooks(generalRole.enum.secondary);
-                await dp.getSpecialities(generalRole.enum.secondary);
-                this._DisplayPairs.push(dp);
-                this.requestUpdate('_DisplayPairs');
-              }
-            }
-          });
-        }));
-        if (this.grid !== null && this.grid !== undefined) {
-          if (DEBUG) {
-            console.log(`setting rowData from willUpdate on RawPairs`);
-            console.log(`${this._DisplayPairs.length} pairs ready`);
-          }
-          this.grid.setGridOption('rowData', this._DisplayPairs);
-          this.requestUpdate('grid');
-        } else {
-          if (DEBUG) {
-            console.log(`willUpdate for RawPairs, grid was null`);
-          }
-        }
+        this.getData();
       } else {
         console.log(`DisplayGrid willUpdate called for RawPairs but no data`);
       }

@@ -23,6 +23,7 @@ import {
 
 import {
   Display,
+  type DisplayType,
   GeneralClass,
   type GeneralClassType,
   generalRole,
@@ -69,20 +70,19 @@ export class GridPair {
     const v = GeneralClass.safeParse(g);
     if (v.success) {
       this._primary = v.data;
-      if (DEBUG) {
-        console.log(`GridPair set primary; _primary.getValue().name: ${this._primary.name}`);
-      }
       if (this._primaryId.localeCompare((this._primary.name))) {
         this._primaryId = this._primary.name;
       }
       if (DEBUG) {
-        console.log(`GridPair set primary; _primary.getValue().name: ${this._primary.name}`);
+        console.log(`GridPair set primary; _primary.name: ${this._primary.name}`);
         console.log(`GridPair set primary; _primaryId: ${this._primaryId}`);
       }
     }
   }
 
+  // @ts-ignore
   private pBooks: BookType[];
+  // @ts-ignore
   private pSpecialities: SpecialityType[];
 
 
@@ -114,27 +114,38 @@ export class GridPair {
     }
   }
 
+  // @ts-ignore
   private sBooks: BookType[];
+  // @ts-ignore
   private sSpecialities: SpecialityType[];
 
-  public ApiUrl: URL;
+  public ApiUrl: URL = new URL('http://localhost/');
 
-  private _EvAnsRanking = 0;
+  private pEvAnsRanking = 0;
+  private sEvAnsRanking = 0;
 
   get EvAnsRanking(): number {
-    return this._EvAnsRanking;
+    const value = (this.pEvAnsRanking + this.sEvAnsRanking);
+    if(DEBUG) {
+      console.log(`EvAnsRanking for ${this.primaryId} ${this.pEvAnsRanking} `)
+      console.log(`EvAnsRanking for ${this.secondaryId} ${this.sEvAnsRanking} `)
+      console.log(`EvAnsRanking ${this.primaryId} ${this.secondaryId} ${value}`)
+    }
+    return value
   }
 
-  private _AttackRanking = 0;
+  private pAttackRanking = 0;
+  private sAttackRanking = 0;
 
   get AttackRanking(): number {
-    return this._AttackRanking;
+    return (this.pAttackRanking + this.sAttackRanking);
   }
 
-  private _ToughnessRanking = 0;
+  private pToughnessRanking = 0;
+  private sToughnessRanking = 0;
 
   get ToughnessRanking(): number {
-    return this._ToughnessRanking;
+    return (this.pToughnessRanking + this.sToughnessRanking);
   }
 
   // @ts-ignore
@@ -164,7 +175,7 @@ export class GridPair {
     return this.pInvestment;
   }
 
-  public async getSkillBooks(forG: generalRoleType){
+  public async getSkillBooks(forG: generalRoleType) {
     let general: GeneralClassType;
     let bArray: BookType[];
     if (!forG.localeCompare(generalRole.enum.primary)) {
@@ -174,7 +185,7 @@ export class GridPair {
       general = this._secondary;
       bArray = this.sBooks;
     }
-    if(Array.isArray(general.books)){
+    if (Array.isArray(general.books)) {
       general.books.map(async (gb) => {
         const bUrl = new URL(`/books/${gb}.json`, this.ApiUrl);
         const data = await fetch(bUrl)
@@ -187,11 +198,11 @@ export class GridPair {
             return false;
           });
         const v1 = Book.safeParse(data);
-        if(v1.success){
+        if (v1.success) {
           const bd = bArray.some((tb: BookType) => {
             return !tb.name.localeCompare(v1.data.name);
           });
-          if(bd) {
+          if (bd) {
             return false;
           } else {
             bArray.push(v1.data);
@@ -202,10 +213,10 @@ export class GridPair {
           console.log(JSON.stringify(data));
           return false;
         }
-      })
+      });
     }
-    if(bArray.length > 0){
-      if (!forG.localeCompare(generalRole.enum.primary)){
+    if (bArray.length > 0) {
+      if (!forG.localeCompare(generalRole.enum.primary)) {
         this.pBooks = [...bArray];
       } else {
         this.sBooks = [...bArray];
@@ -262,6 +273,89 @@ export class GridPair {
     }
   }
 
+  static InvestmentOptionsRE = /[[\]'",]/g;
+
+  static InvestmentOptions2Key = z
+    .function()
+    .args(BuffParams)
+    .returns(z.string())
+    .implement((BP: BuffParamsType) => {
+      return JSON.stringify(BP).replace(GridPair.InvestmentOptionsRE, '');
+    });
+
+  //from https://www.evonyanswers.com/post/evony-answers-attribute-methodology-explanation
+  public GeneralBuffs = z
+    .function()
+    .args(BuffParams, generalRole)
+    .returns(z.boolean())
+    .implement((BP: BuffParamsType, forG: generalRoleType) => {
+      let general: GeneralClassType;
+      let eg: ExtendedGeneralType;
+      let display: DisplayType;
+      if (!forG.localeCompare(generalRole.enum.primary)) {
+        general = this._primary;
+        display = Display.enum.primary;
+        eg = {
+          general: this._primary,
+          specialities: this.pSpecialities,
+          books: this.pBooks,
+        };
+      } else {
+        general = this._secondary;
+        display = Display.enum.assistant;
+        eg = {
+          general: this._secondary,
+          specialities: this.sSpecialities,
+          books: this.sBooks,
+        };
+      }
+      if (general === null) {
+        return false;
+      } else {
+
+        if (DEBUG) console.log(`EvAnsBuff starting for ${general.name}`);
+        //figure out my state engine here
+
+        const EvAnsRankScore = EvAnsScoreComputer(
+          generalUseCase.enum.Attack,
+          eg,
+          display,
+          BP,
+        );
+
+        const AttackRank = AttackScoreComputer(
+          generalUseCase.enum.Attack,
+          eg,
+          display,
+          BP,
+        );
+        const ToughnessRank = ToughnessScoreComputer(
+          generalUseCase.enum.Attack,
+          eg,
+          display,
+          BP,
+        );
+
+        const hashKey = GridPair.InvestmentOptions2Key(BP);
+        if (!forG.localeCompare(generalRole.enum.primary)) {
+          this.pEvAnsRanking = EvAnsRankScore;
+          this.pAttackRanking = AttackRank;
+          this.pToughnessRanking = ToughnessRank;
+        } else {
+          this.sEvAnsRanking = EvAnsRankScore;
+          this.sAttackRanking = AttackRank;
+          this.sToughnessRanking = ToughnessRank;
+        }
+        if (DEBUG) {
+          console.log(
+            `in GeneralBuffs, got scores: ${EvAnsRankScore} ${AttackRank} for ${general.name}`,
+          );
+        }
+      }
+
+      return true;
+    });
+
   constructor(p: GeneralClassType, s: GeneralClassType, u: string) {
     this.primary = p;
     this.pBooks = new Array<BookType>();
@@ -282,6 +376,7 @@ export class GridPair {
       beast: false,
     };
     this.ApiUrl = new URL('/', u);
+
     if (DEBUG) {
       console.log(`base URL initialized to ${this.ApiUrl}`);
     }
