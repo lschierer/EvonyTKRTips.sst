@@ -1,10 +1,12 @@
 {
   "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
+    "sourceMap": true,
     "strict": true,
     "baseUrl": ".",
-    "module": "ES2022",
+    "module": "esnext",
     "moduleResolution": "bundler",
+    "esModuleInterop": true,
     "jsx": "preserve",
     "resolveJsonModule": true,
     "experimentalDecorators": true,
