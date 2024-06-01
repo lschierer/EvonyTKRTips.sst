@@ -1,6 +1,6 @@
-import { fromFetch } from "rxjs/fetch";
-import { BehaviorSubject , from, map, concatMap, switchMap, throwError } from "rxjs";
-import { z } from "zod";
+import { fromFetch } from 'rxjs/fetch';
+import { BehaviorSubject, from, map, concatMap, switchMap, throwError } from 'rxjs';
+import { z } from 'zod';
 
 import {
   GridApi,
@@ -12,6 +12,7 @@ import {
 import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
 import BaseAGCSSImport from 'ag-grid-community/styles/ag-grid.css?inline';
 import AlpineImport from 'ag-grid-community/styles/ag-theme-alpine.css?inline';
+
 ModuleRegistry.registerModules([ClientSideRowModelModule]);
 
 import { delay } from 'nanodelay';
@@ -48,11 +49,13 @@ import {
   Display,
   GeneralClass,
   type GeneralClassType,
+  generalRole,
+  type generalRoleType,
 } from '@schemas/generalsSchema';
 
-import { type GeneralPairType  } from '@schemas/ExtendedGeneral';
+import { type GeneralPairType } from '@schemas/ExtendedGeneral';
 
-import {GridPair} from './GridPair';
+import { GridPair } from './GridPair';
 
 @customElement('display-grid')
 export class DisplayGrid extends SizedMixin(SpectrumElement, {
@@ -175,36 +178,46 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       if (Array.isArray(this.RawPairs) && this.RawPairs.length > 0) {
         const currentPage = `${document.location.protocol}//${document.location.host}`;
         await Promise.all(this.RawPairs.map(async (pair, index) => {
-          const testIndex1 = (index % 10 === 0);
-          const testIndex2 = (index % 3 === 0);
-          if(testIndex1){
-            await delay(10000).then(() => {
-              if(DEBUG){
-                console.log(`DispalyGrid willUpdate RawPairs index ${index} delay1`)
-              }
-            });
-          }else if (testIndex2){
-            await delay(3000).then(() => {
-              if (DEBUG) {
-                console.log(`DispalyGrid willUpdate RawPairs index ${index} delay2`)
-              }
-            });
-          } else {
-            await delay(30).then(() => {
-              if (DEBUG) {
-                console.log(`DispalyGrid willUpdate RawPairs index ${index} noDelay`)
-              }
-            });
+          const testIndex1 = (index % 13 === 0);
+          const testIndex2 = (index % 11 === 0);
+          const testIndex3 = (index % 7 === 0);
+          const testIndex4 = (index % 5 === 0);
+          const testIndex5 = (index % 3 === 0);
+          const testIndex6 = (index % 2 === 0);
+          let delayValue = 0;
+          if (testIndex1) {
+            delayValue = 30000;
+          } else if (testIndex2) {
+            delayValue = 40000;
+          } else if (testIndex3) {
+            delayValue = Math.floor(Math.random() * 50000);
+          } else if (testIndex4) {
+            delayValue = Math.floor(Math.random() * 60000);
+          } else if (testIndex5) {
+            delayValue = Math.floor(Math.random() * 70000);
+          } else if (testIndex6) {
+            delayValue = Math.floor(Math.random() * 90000);
           }
-          const dp = new GridPair(pair.primary, pair.secondary, currentPage);
-          if(dp !== null && dp !== undefined) {
-            if(!pair.primary.name.localeCompare(dp.primaryId)){
-              //if that works, the set appears to have worked
-              this._DisplayPairs.push(dp);
+          await delay(delayValue).then(async () => {
+            if (DEBUG) {
+              console.log(`DisplayGrid willUpdate RawPairs index ${index} ${delayValue} ${pair.primary.name} ${pair.secondary.name}`);
             }
-          }
-        }))
-        this.requestUpdate('_DisplayPairs');
+            const dp = new GridPair(pair.primary, pair.secondary, currentPage);
+            dp.index = index;
+            if (dp !== null && dp !== undefined) {
+              if (!pair.primary.name.localeCompare(dp.primaryId)) {
+                //if that works, the set appears to have worked
+                await dp.getSkillBooks(generalRole.enum.primary);
+                await dp.getSpecialities(generalRole.enum.primary);
+                await delay(10);
+                await dp.getSkillBooks(generalRole.enum.secondary);
+                await dp.getSpecialities(generalRole.enum.secondary);
+                this._DisplayPairs.push(dp);
+                this.requestUpdate('_DisplayPairs');
+              }
+            }
+          });
+        }));
         if (this.grid !== null && this.grid !== undefined) {
           if (DEBUG) {
             console.log(`setting rowData from willUpdate on RawPairs`);
@@ -244,7 +257,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       .ag-theme-alpine-dark {
         --ag-icon-font-family: agGridAlpine;
       }
-
+      
       .hidden {
         display: block;
       }
