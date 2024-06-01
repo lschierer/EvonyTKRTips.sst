@@ -17,8 +17,8 @@ const DEBUG = false;
 import { getEntry, getCollection } from 'astro:content';
 
 export const getStaticPaths = (async () => {
-  const blogEntries = await getCollection('generals');
-  return blogEntries.map((entry) => ({
+  const generalEntries = await getCollection('generals');
+  return generalEntries.map((entry) => ({
     params: { id: entry.id },
     props: { entry },
   }));

@@ -30,7 +30,7 @@ import {
 } from '@schemas/bookSchemas';
 
 import {
-  Display,
+  Display, type DisplayType,
   GeneralClass,
   type GeneralClassType,
   generalUseCase,
@@ -281,7 +281,7 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
     .function()
     .args(Display, BuffParams)
     .returns(z.boolean())
-    .implement((display, BP: BuffParamsType) => {
+    .implement((display: DisplayType, BP: BuffParamsType) => {
       if (
         this.general === null ||
         this._eg === null ||
@@ -322,7 +322,7 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
 
         if (DEBUG) {
           console.log(
-            `in GeneralBuffs, got scores: ${EvAnsRankScore} ${AttackRank} for ${this.general.name}`
+            `in GeneralBuffs, got scores: ${EvAnsRankScore} ${AttackRank} for ${this.general.name} ${display}`
           );
           console.log(`${hashKey}: ${JSON.stringify(this.computedBuffs)}`);
         }
