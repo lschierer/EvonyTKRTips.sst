@@ -1,3 +1,7 @@
+import { fromFetch } from "rxjs/fetch";
+import { from, map, concatMap, switchMap, throwError } from "rxjs";
+import { z } from "zod";
+
 import {
   GridApi,
   type GridOptions,
@@ -46,10 +50,9 @@ import {
   type GeneralClassType,
 } from '@schemas/generalsSchema';
 
-import { type GeneralPairType as GeneralPairSchemaType } from '@schemas/ExtendedGeneral';
+import { type GeneralPairType  } from '@schemas/ExtendedGeneral';
 
-import { GridPair } from './GridPair';
-import type { GridGeneral } from '@components/general/pairing/GridGeneral.ts';
+import {GridPair} from './GridPair';
 
 @customElement('display-grid')
 export class DisplayGrid extends SizedMixin(SpectrumElement, {
@@ -65,14 +68,15 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
   private sInvestment: BuffParamsType;
 
   @property({ type: Object })
-  public RawPairs: GeneralPairSchemaType[] = new Array<GeneralPairSchemaType>();
+  public RawPairs: GeneralPairType[] = new Array<GeneralPairType>();
 
-  @state()
-  private _DisplayPairs: Array<DisplayPair> = new Array<DisplayPair>();
 
   //private tableDivRef: Ref<HTMLElement> = createRef()
 
   private MutationObserver: MutationObserver;
+
+  @state()
+  private _DisplayPairs: GridPair[] = new Array<GridPair>();
 
   private gridOptions: GridOptions<GridPair> = {};
 
@@ -81,38 +85,6 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
   handleMutation(): void {
     return;
   }
-
-  private getPrimaryName: string = (params: ValueGetterParams) => {
-    const gg: GridGeneral = params.data.primary;
-    if (gg !== null && gg !== undefined) {
-      const gc: GeneralClassType = gg.general;
-      if (gc !== null && gc !== undefined) {
-        return gc.name;
-      } else if (gg.generalId !== null && gg.generalId !== undefined) {
-        return gg.generalId;
-      } else {
-        return 'Unset Name';
-      }
-    } else {
-      return 'Uninitialized General';
-    }
-  };
-
-  private getSecondaryName: string = (params: ValueGetterParams) => {
-    const gg: GridGeneral = params.data.secondary;
-    if (gg !== null && gg !== undefined) {
-      const gc: GeneralClassType = gg.general;
-      if (gc !== null && gc !== undefined) {
-        return gc.name;
-      } else if (gg.generalId !== null && gg.generalId !== undefined) {
-        return gg.generalId;
-      } else {
-        return 'Unset Name';
-      }
-    } else {
-      return 'Uninitialized General';
-    }
-  };
 
   constructor() {
     super();
@@ -127,25 +99,25 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       // Columns to be displayed (Should match rowData properties)
       columnDefs: [
         {
-          valueGetter: this.getPrimaryName,
+          valueGetter: p => p.data.primaryId,
           headerName: 'Primary',
           filter: true,
         },
         {
-          valueGetter: this.getSecondaryName,
+          valueGetter: p => p.data.secondaryId,
           headerName: 'Secondary',
           filter: true,
         },
         {
-          valueGetter: (p) => p.data.EvAnsRanking ?? -11,
+          valueGetter: p => p.data.EvAnsRanking,
           headerName: 'EvAns Ranking',
         },
         {
-          valueGetter: (p) => p.data.AttackRanking ?? -11,
+          valueGetter: p => p.data.AttackRanking,
           headerName: 'Adjusted Attack Score',
         },
         {
-          valueGetter: (p) => p.data.ToughnessRanking ?? -11,
+          valueGetter: p => p.data.ToughnessRanking,
           headerName: 'Adjusted Toughness Score',
         },
       ],
@@ -201,6 +173,15 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
         console.log(`willUpdate called for RawPairs`);
       }
       if (Array.isArray(this.RawPairs) && this.RawPairs.length > 0) {
+        this.RawPairs.forEach((pair) => {
+          const dp = new GridPair(pair.primary, pair.secondary);
+          if(dp !== null && dp !== undefined) {
+            if(!dp.primaryId.localeCompare((pair.primary.name))){
+              //if that works, the set appears to have worked
+              this._DisplayPairs.push(dp);
+            }
+          }
+        })
         this.requestUpdate('_DisplayPairs');
         if (this.grid !== null && this.grid !== undefined) {
           if (DEBUG) {
@@ -232,25 +213,6 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       }
     }
   }
-
-  private registerDP = (dp?: GridPair) => {
-    if (dp !== null && dp !== undefined) {
-      const present = this._DisplayPairs.some((test) => {
-        if (!test.primaryId.localeCompare(dp.primaryId)) {
-          if (!test.secondaryId.localeCompare(dp.secondaryId)) {
-            return true;
-          }
-        }
-        return false;
-      });
-      if (!present) {
-        this._DisplayPairs.push(dp);
-        if (DEBUG) {
-          console.log(`DisplayGrid registerDP `, this._DisplayPairs.length);
-        }
-      }
-    }
-  };
 
   public static override get styles(): CSSResultArray {
     const AGBaseCSS = unsafeCSS(BaseAGCSSImport);
@@ -286,26 +248,6 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
     }
   }
 
-  private rawPairIndex = 0;
-  private async *renderRawPairs(count: number) {
-    for (let i = 0; i < count; i++) {
-      if (this.rawPairIndex < this.RawPairs.length) {
-        const rp = this.RawPairs[this.rawPairIndex];
-        this.rawPairIndex++;
-        yield html`
-          <grid-pair
-            primaryId=${rp.primary.name}
-            secondaryId=${rp.secondary.name}
-            InvestmentLevel=${this.InvestmentLevel}
-            ${ref(this.registerDP)}
-          ></grid-pair>
-        `;
-        await new Promise((r) => setTimeout(r, 1000));
-      } else {
-        break;
-      }
-    }
-  }
 
   protected override render() {
     if (DEBUG) {
@@ -313,17 +255,8 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       console.log(`${this._DisplayPairs.length} pairs ready`);
     }
 
-    const gridItems = [];
-    for (let i = 0; i < this.RawPairs.length; i += 10) {
-      gridItems.push(html`
-        ${asyncAppend(this.renderRawPairs(10), (v) => html`${v}`)}
-      `);
-    }
-
     return html`
-      <div class="hidden non-content">
-        <dl>${gridItems}</dl>
-      </div>
+      
       <div
         id="agdiv"
         class="ag-theme-alpine"

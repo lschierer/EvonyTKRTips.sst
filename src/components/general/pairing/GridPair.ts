@@ -1,116 +1,153 @@
-import { customElement, property, state } from 'lit/decorators.js';
-import { ref, createRef, type Ref } from 'lit/directives/ref.js';
+import {
+  AscendingLevels,
+  BuffParams,
+  type BuffParamsType, qualityColor,
+} from '@schemas/baseSchemas';
 
 import {
-  SizedMixin,
-  html,
-  type PropertyValues,
-  SpectrumElement,
-} from '@spectrum-web-components/base';
+  Speciality,
+  type SpecialityType,
+} from '@schemas/specialitySchema';
 
-import { AscendingLevels, type BuffParamsType } from '@schemas/baseSchemas';
+import {
+  specialSkillBook,
+  type BookType,
+  type specialSkillBookType,
+  type standardSkillBookType,
+} from '@schemas/bookSchemas';
 
-import { Display } from '@schemas/generalsSchema';
+import {
+  Display,
+  GeneralClass,
+  type GeneralClassType,
+  generalUseCase,
+} from '@schemas/generalsSchema';
+
+import {
+  type ExtendedGeneralType,
+  ExtendedGeneralStatus,
+  type ExtendedGeneralStatusType,
+  type RankInstanceType,
+} from '@schemas/ExtendedGeneral';
+
+import { EvAnsScoreComputer } from '../buffComputers/EvAnsRanking/EvAnsScoreComputer';
+import { ScoreComputer as AttackScoreComputer } from '../buffComputers/AttackRanking/ScoreComputer';
+import { ScoreComputer as ToughnessScoreComputer } from '../buffComputers/ToughnessRanking/ScoreComputer';
 
 const DEBUG = true;
 
-import { GridGeneral } from './GridGeneral';
+export class GridPair {
 
-@customElement('grid-pair')
-export class GridPair extends SizedMixin(SpectrumElement, {
-  noDefaultSize: true,
-}) {
-  @property({ type: String })
-  public primaryId = '';
-  private primaryREf: Ref<GridGeneral> = createRef();
-  @property({
-    type: Object,
-    reflect: true,
-  })
-  public primary: GridGeneral | undefined = this.primaryREf.value;
+  private _primaryId = '';
 
-  @property({ type: String })
-  public secondaryId = '';
-  private secondaryRef: Ref<GridGeneral> = createRef();
-  @property({
-    type: Object,
-    reflect: true,
-  })
-  public secondary: GridGeneral | null = null;
-
-  @property({
-    type: Number,
-    reflect: true,
-  })
-  public EvAnsRanking = 0;
-
-  @property({
-    type: Number,
-    reflect: true,
-  })
-  public AttackRanking = 0;
-
-  @property({
-    type: Number,
-    reflect: true,
-  })
-  public ToughnessRanking = 0;
-
-  @property({ type: Object })
-  public InvestmentLevel: BuffParamsType | null = null;
-
-  @state()
-  private sInvestment: BuffParamsType | null = null;
-
-  protected override firstUpdated(_changedProperties: PropertyValues) {
-    this.primary = this.primaryREf.value!;
-    this.secondary = this.secondaryRef.value!;
+  get primaryId(): string {
+    return this._primaryId;
   }
 
-  protected override willUpdate(_changedProperties: PropertyValues) {
-    if (_changedProperties.has('InvestmentLevel')) {
-      if (this.InvestmentLevel !== null) {
-        (this.sInvestment as BuffParamsType) = {
-          special1: this.InvestmentLevel.special1,
-          special2: this.InvestmentLevel.special2,
-          special3: this.InvestmentLevel.special3,
-          special4: this.InvestmentLevel.special4,
-          special5: this.InvestmentLevel.special5,
-          stars: AscendingLevels.enum['0'],
-          dragon: this.InvestmentLevel.dragon,
-          beast: this.InvestmentLevel.beast,
-        };
+  set primaryId(pId: string) {
+    this._primaryId = pId;
+
+  }
+
+  private _primary: GeneralClassType;
+
+  get primary(): GeneralClassType {
+    return this._primary;
+  }
+
+  set primary(g:GeneralClassType) {
+    const v = GeneralClass.safeParse(g)
+    if(v.success) {
+      this._primary = v.data;
+      if(this._primaryId.localeCompare((this._primary.name))) {
+        this._primaryId = this._primary.name;
       }
     }
   }
 
-  protected override render(): TemplateResult {
-    if (this.primaryId.length > 0 && this.secondaryId.length > 0) {
-      return html`
-        <dt>
-          <strong>Primary:</strong>
-          <grid-general
-            generalId=${this.primaryId}
-            DisplayPref=${Display.enum.primary}
-            InvestmentLevel=${this.InvestmentLevel}
-            ${ref(this.primaryREf)}
-          ></grid-general>
-        </dt>
-        <dd>
-          <strong>Secondary:</strong>
-          <grid-general
-            generalId=${this.secondaryId}
-            DisplayPref=${Display.enum.secondary}
-            InvestmentLevel=${this.sInvestment}
-            ${ref(this.secondaryRef)}
-          ></grid-general>
-        </dd>
-        <dd><strong>EvAns Ranking:</strong> ${this.EvAnsRanking}</dd>
-        <dd><strong>Attack Ranking:</strong> ${this.AttackRanking}</dd>
-        <dd><strong>Toughness Ranking:</strong> ${this.ToughnessRanking}</dd>
-      `;
-    } else {
-      return html` Pending General Ids`;
+  private _secondaryId = '';
+
+  get secondaryId(): string {
+    return this._secondaryId;
+  }
+
+  set secondaryId(sId: string) {
+    this._secondaryId = sId;
+
+  }
+
+  private _secondary: GeneralClassType;
+
+  get secondary(): GeneralClassType {
+    return this._secondary;
+  }
+
+  set secondary(g: GeneralClassType) {
+    const v = GeneralClass.safeParse(g)
+    if (v.success) {
+      this._secondary = v.data;
+      if(this._secondaryId.localeCompare((this._secondary.name))) {
+        this._secondaryId = this._secondary.name;
+      }
     }
   }
+
+  private _EvAnsRanking = 0;
+
+  get EvAnsRanking(): number {
+    return this._EvAnsRanking;
+  }
+
+  private _AttackRanking = 0;
+
+  get AttackRanking(): number {
+    return this._AttackRanking;
+  }
+
+  private _ToughnessRanking = 0;
+
+  get ToughnessRanking(): number {
+    return this._ToughnessRanking;
+  }
+
+  private pInvestment: BuffParamsType;
+
+  private sInvestment: BuffParamsType;
+
+  set InvestmentLevel(level: BuffParamsType) {
+    const v = BuffParams.safeParse(level)
+    if(v.success) {
+      this.pInvestment = v.data;
+      this.sInvestment = {
+        special1: v.data.special1,
+        special2: v.data.special2,
+        special3: v.data.special3,
+        special4: v.data.special4,
+        special5: v.data.special5,
+        stars: AscendingLevels.enum['0'],
+        dragon: v.data.dragon,
+        beast: v.data.beast,
+      }
+    }
+  }
+
+  get InvestmentLevel(): BuffParamsType {
+    return this.pInvestment;
+  }
+
+  constructor(p: GeneralClassType, s: GeneralClassType){
+    this.primary = p;
+    this.secondary = s;
+    this.InvestmentLevel = {
+      special1: qualityColor.enum.Disabled,
+      special2: qualityColor.enum.Disabled,
+      special3: qualityColor.enum.Disabled,
+      special4: qualityColor.enum.Disabled,
+      special5: qualityColor.enum.Disabled,
+      stars: AscendingLevels.enum['0'],
+      dragon: false,
+      beast: false,
+    }
+  }
+
 }
