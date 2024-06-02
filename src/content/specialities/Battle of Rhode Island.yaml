@@ -12,7 +12,7 @@ attribute:
     condition:
     - Reduces_Enemy
     value:
-      number: -1
+      number: 1
       unit: percentage
 - level: Blue
   buff:
@@ -25,7 +25,7 @@ attribute:
     condition:
     - Reduces_Enemy
     value:
-      number: -1
+      number: 1
       unit: percentage
 - level: Purple
   buff:
@@ -38,7 +38,7 @@ attribute:
     condition:
     - Reduces_Enemy
     value:
-      number: -2
+      number: 2
       unit: percentage
 - level: Orange
   buff:
@@ -51,7 +51,7 @@ attribute:
     condition:
     - Reduces_Enemy
     value:
-      number: -2
+      number: 2
       unit: percentage
 - level: Gold
   buff:
@@ -64,5 +64,5 @@ attribute:
     condition:
     - Reduces_Enemy
     value:
-      number: -4
+      number: 4
       unit: percentage

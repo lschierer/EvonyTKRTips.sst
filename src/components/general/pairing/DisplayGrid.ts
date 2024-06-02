@@ -49,7 +49,6 @@ import {
 import {
   Display,
   GeneralClass,
-  type GeneralClassType,
   generalRole,
   type generalRoleType,
 } from '@schemas/generalsSchema';
@@ -107,10 +106,8 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
           if (!pair.primary.name.localeCompare(dp.primaryId)) {
             //if that works, the set appears to have worked
             await dp.getSkillBooks(generalRole.enum.primary);
-            await dp.getSpecialities(generalRole.enum.primary);
             await delay(10);
             await dp.getSkillBooks(generalRole.enum.secondary);
-            await dp.getSpecialities(generalRole.enum.secondary);
             newRows.push(dp);
           }
         });
@@ -184,9 +181,9 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       special3: qualityColor.enum.Gold,
       special4: qualityColor.enum.Gold,
       special5: qualityColor.enum.Gold,
-      stars: AscendingLevels.enum[0],
-      dragon: false,
-      beast: false,
+      stars: AscendingLevels.enum[10],
+      dragon: true,
+      beast: true,
     };
 
     this.sInvestment = {
@@ -196,8 +193,8 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       special4: qualityColor.enum.Gold,
       special5: qualityColor.enum.Gold,
       stars: AscendingLevels.enum[0],
-      dragon: false,
-      beast: false,
+      dragon: true,
+      beast: true,
     };
   }
 

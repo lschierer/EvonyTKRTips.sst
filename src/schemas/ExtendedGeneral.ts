@@ -1,4 +1,4 @@
-import { z as zod } from 'zod';
+import { reference, z as zod } from 'astro:content';
 
 import { GeneralClass } from './generalsSchema';
 import { Speciality } from './specialitySchema';
@@ -19,17 +19,16 @@ export const RankInstance = zod.object({
 });
 export type RankInstanceType = zod.infer<typeof RankInstance>;
 
-export const ExtendedGeneral = zod.object({
-  general: GeneralClass,
+export const ExtendedGeneral = GeneralClass.extend({
   specialities: zod.array(Speciality),
-  books: zod.array(Book),
-});
+  books: zod.array(Book)
+})
 
 export type ExtendedGeneralType = zod.infer<typeof ExtendedGeneral>;
 
 export const GeneralPair = zod.object({
-  primary: GeneralClass,
-  secondary: GeneralClass,
+  primary: ExtendedGeneral,
+  secondary: ExtendedGeneral,
 });
 
 export type GeneralPairType = zod.infer<typeof GeneralPair>;

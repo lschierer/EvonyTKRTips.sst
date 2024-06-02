@@ -23,7 +23,7 @@ export const generalUseCase = zod.enum([
 
 export type generalUseCaseType = zod.infer<typeof generalUseCase>;
 
-export const Display = zod.enum(['primary', 'assistant', 'summary']);
+export const Display = zod.enum(['primary', 'secondary', 'summary']);
 export type DisplayType = zod.infer<typeof Display>;
 
 export const Note = zod.object({

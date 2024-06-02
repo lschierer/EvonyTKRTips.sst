@@ -24,7 +24,10 @@ import {
 
 import { Speciality, type SpecialityType } from '@schemas/specialitySchema';
 
-import { type GeneralPairType } from '@schemas/ExtendedGeneral';
+import {
+  type GeneralPairType,
+  type ExtendedGeneralType,
+} from '@schemas/ExtendedGeneral';
 
 import {
   Book,
@@ -79,7 +82,7 @@ export const DisplayGeneralsMW = defineMiddleware(
           if (valid.success) {
             //double checking because I seem to be hitting race conditions.
             const present = locals.CachedGenerals.some(
-              (element: GeneralClassType) => {
+              (element: ExtendedGeneralType) => {
                 return !element.name.localeCompare(valid.data.name);
               }
             );
@@ -87,7 +90,7 @@ export const DisplayGeneralsMW = defineMiddleware(
               locals.CachedGenerals.push(valid.data);
               if (DEBUG)
                 console.log(
-                  `addEG2EGS built a valid GeneralClassType for ${general.name}`
+                  `addEG2EGS built a valid ExtendedGeneralType for ${general.name}`
                 );
               console.log(
                 `addEG2EGS: map size: ${locals.CachedGenerals.length}`
@@ -104,7 +107,7 @@ export const DisplayGeneralsMW = defineMiddleware(
 
     const HandlerLogic = async (locals: App.Locals) => {
       if (locals.CachedGenerals === undefined) {
-        locals.CachedGenerals = new Array<GeneralClassType>();
+        locals.CachedGenerals = new Array<ExtendedGeneralType>();
       }
 
       if (locals.ConflictData === undefined) {

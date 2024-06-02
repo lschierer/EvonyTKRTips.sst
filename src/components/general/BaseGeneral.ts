@@ -20,14 +20,7 @@ import SpectrumTable from '@spectrum-css/table/dist/index.css?inline';
 
 import { BuffParams, type BuffParamsType } from '@schemas/baseSchemas';
 
-import { Speciality, type SpecialityType } from '@schemas/specialitySchema';
 
-import {
-  specialSkillBook,
-  type BookType,
-  type specialSkillBookType,
-  type standardSkillBookType,
-} from '@schemas/bookSchemas';
 
 import {
   Display, type DisplayType,
@@ -40,12 +33,12 @@ import {
   type ExtendedGeneralType,
   ExtendedGeneralStatus,
   type ExtendedGeneralStatusType,
-  type RankInstanceType,
+  type RankInstanceType, ExtendedGeneral,
 } from '@schemas/ExtendedGeneral';
 
-import { EvAnsScoreComputer } from './buffComputers/EvAnsRanking/EvAnsScoreComputer';
-import { ScoreComputer as AttackScoreComputer } from './buffComputers/AttackRanking/ScoreComputer';
-import { ScoreComputer as ToughnessScoreComputer } from './buffComputers/ToughnessRanking/ScoreComputer';
+import { EvAnsScoreComputer } from '@components/general/buffComputers/EvAnsRanking/EvAnsScoreComputer';
+import { ScoreComputer as AttackScoreComputer } from '@components/general/buffComputers/AttackRanking/ScoreComputer';
+import { ScoreComputer as ToughnessScoreComputer } from '@components/general/buffComputers/ToughnessRanking/ScoreComputer';
 
 const DEBUG = true;
 
@@ -57,7 +50,7 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
   public generalId = '';
 
   @state()
-  public general: GeneralClassType | null = null;
+  public general: ExtendedGeneralType | null = null;
 
   @property({
     type: Object,
@@ -73,12 +66,6 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
     reflect: true,
   })
   public status: ExtendedGeneralStatusType = ExtendedGeneralStatus.enum.created;
-
-  @property({
-    type: Object,
-    attribute: false,
-  })
-  protected _eg: ExtendedGeneralType | null = null;
 
   private MutationObserver: MutationObserver;
 
@@ -120,7 +107,7 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
           `BaseGeneral internalEvents calling requestUpdate ${this.booksDone} ${this.specialitiesDone}`
         );
       }
-      this.requestUpdate('_eg');
+      this.requestUpdate('general');
     }
   }
 
@@ -134,108 +121,8 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
       return JSON.stringify(BP).replace(BaseGeneral.InvestmentOptionsRE, '');
     });
 
-  private getSpecialities = async () => {
-    if (DEBUG) {
-      console.log(`BaseGeneral getSpecialities for ${this.generalId}`);
-    }
-    if (
-      this.general === null ||
-      this._eg === null ||
-      this._eg === undefined ||
-      !Array.isArray(this.general.specialities)
-    ) {
-      return false;
-    } else {
-      this.status = ExtendedGeneralStatus.enum.fetching;
-      const currentPage = `${document.location.protocol}//${document.location.host}`;
-      await Promise.all(
-        this.general.specialities.map(async (sn) => {
-          const sURL = new URL(`/specialities/${sn}.json`, currentPage);
-          if (DEBUG) {
-            console.log(`BaseGeneral: sURL: ${sURL.toString()}`);
-          }
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          const data = await fetch(sURL)
-            .then((response) => {
-              if (response.ok) return response.json();
-              else throw new Error('Status code error :' + response.status);
-            })
-            .catch((error) => {
-              console.error(JSON.stringify(error));
-              return false;
-            });
-          const v1 = Speciality.safeParse(data);
-          if (v1.success && this._eg !== null) {
-            const sd = this._eg.specialities.some((ts) => {
-              return !ts.name.localeCompare(v1.data.name);
-            });
-            if (sd) {
-              return false;
-            } else {
-              this._eg.specialities.push(v1.data);
-            }
-          } else {
-            //the general could not have been null, I already tested for that
-            console.log(`invalid special detected for ${this.general?.name}`);
-            console.log(JSON.stringify(data));
-            return false;
-          }
-        })
-      );
-      this.dispatchEvent(
-        new CustomEvent('SpecialsComplete', { bubbles: false, composed: false })
-      );
-      return true;
-    }
-  };
-
   private getBooks = async () => {
-    if (
-      this.general === null ||
-      this._eg === null ||
-      this._eg === undefined ||
-      !Array.isArray(this.general.books)
-    ) {
-      return false;
-    } else {
-      this.status = ExtendedGeneralStatus.enum.fetching;
-      const currentPage = `${document.location.protocol}//${document.location.host}`;
-      void this.general.books.map(async (bn) => {
-        const bURL = new URL(`/books/${bn}.json`, currentPage);
-        if (DEBUG) {
-          console.log(`BaseGeneral: bURL: ${bURL.toString()}`);
-        }
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        const data = await fetch(bURL)
-          .then((response) => {
-            if (response.ok) return response.json();
-            else throw new Error('Status code error :' + response.status);
-          })
-          .catch((error) => {
-            console.error(JSON.stringify(error));
-            return false;
-          });
-        const v2 = specialSkillBook.safeParse(data);
-        if (v2.success && this._eg !== null) {
-          const bd = this._eg.books.some((tb) => {
-            return !tb.name.localeCompare(v2.data.name);
-          });
-          if (bd) {
-            return;
-          } else {
-            this._eg.books.push(v2.data);
-          }
-        } else {
-          // the general could not have been null, I already tested for that
-          console.log(`invalid book detected for ${this.general?.name}`);
-          return false;
-        }
-      });
-      this.dispatchEvent(
-        new CustomEvent('BooksComplete', { bubbles: false, composed: false })
-      );
-      return true;
-    }
+    //this needs to eventually handle books not built in.
   };
 
   private getGeneral = async () => {
@@ -259,7 +146,7 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
         .catch((error) => {
           console.error(JSON.stringify(error));
         });
-      const v3 = GeneralClass.safeParse(data);
+      const v3 = ExtendedGeneral.safeParse(data);
       if (v3.success) {
         this.general = v3.data;
         this.dispatchEvent(
@@ -284,7 +171,6 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
     .implement((display: DisplayType, BP: BuffParamsType) => {
       if (
         this.general === null ||
-        this._eg === null ||
         this.status.localeCompare(ExtendedGeneralStatus.enum.complete)
       ) {
         return false;
@@ -294,20 +180,20 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
 
         const EvAnsRankScore = EvAnsScoreComputer(
           generalUseCase.enum.Attack,
-          this._eg,
+          this.general,
           display,
           BP
         );
 
         const AttackRank = AttackScoreComputer(
           generalUseCase.enum.Attack,
-          this._eg,
+          this.general,
           display,
           BP
         );
         const ToughnessRank = ToughnessScoreComputer(
           generalUseCase.enum.Attack,
-          this._eg,
+          this.general,
           display,
           BP
         );
@@ -340,7 +226,6 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
           `BaseGeneral firstUpdated generalId prop for ${this.generalId ?? ''}`
         );
       }
-      if (!this.status.localeCompare(ExtendedGeneralStatus.enum.processing)) {
         if (this.general === null) {
           if (DEBUG) {
             console.log(
@@ -355,7 +240,7 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
             `BaseGeneral firstUpdated ${this.generalId} status ${this.status}`
           );
         }
-      }
+
     }
   }
 
@@ -366,7 +251,6 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
     if (DEBUG) {
       console.log(`BaseGeneral willUpdate started ${this.generalId ?? ''}`);
     }
-
     if (_changedProperties.has('general')) {
       if (DEBUG) {
         console.log(
@@ -374,49 +258,15 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
         );
       }
       if (this.general !== null) {
-        const v = GeneralClass.safeParse(this.general);
+        const v = ExtendedGeneral.safeParse(this.general);
         if (!v.success) {
           console.error(`General must be a valid general`);
         } else {
-          this._eg = {
-            general: this.general,
-            specialities: new Array<SpecialityType>(),
-            books: new Array<
-              BookType | specialSkillBookType | standardSkillBookType
-            >(),
-          };
-          await Promise.all([
-            this.getSpecialities(),
-            this.getBooks(),
-            delay(10),
-          ]);
+          this.status = ExtendedGeneralStatus.enum.complete;
+          this.dispatchEvent(
+            new CustomEvent('GeneralComplete', { composed: false, bubbles: true })
+          );
         }
-      }
-    }
-    if (_changedProperties.has('_eg')) {
-      if (DEBUG) {
-        console.log(
-          `BaseGeneral willupdate _eg prop for ${this.generalId ?? ''}`
-        );
-      }
-      if (
-        this.general !== null &&
-        this.general !== undefined &&
-        Array.isArray(this.general.books) &&
-        Array.isArray(this.general.specialities) &&
-        Array.isArray(this._eg?.books) &&
-        this._eg.books.length > 0 &&
-        this._eg.books.length === this.general.books.length &&
-        Array.isArray(this._eg.specialities) &&
-        this._eg.specialities.length > 0 &&
-        this._eg.specialities.length === this.general.specialities.length
-      ) {
-        this.status = ExtendedGeneralStatus.enum.complete;
-        this.dispatchEvent(
-          new CustomEvent('GeneralComplete', { composed: false, bubbles: true })
-        );
-      } else {
-        this.status = ExtendedGeneralStatus.enum.processing;
       }
     }
   }

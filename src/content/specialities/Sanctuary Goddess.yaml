@@ -29,14 +29,14 @@ attribute:
     - Enemy
     class: Archers
     value:
-      number: -2
+      number: 2
       unit: percentage
   - attribute: HP
     condition:
     - Enemy
     class: Siege
     value:
-      number: -2
+      number: 2
       unit: percentage
 - level: 'Blue'
   buff:
@@ -66,14 +66,14 @@ attribute:
     - Enemy
     class: Archers
     value:
-      number: -3
+      number: 3
       unit: percentage
   - attribute: HP
     condition:
     - Enemy
     class: Siege
     value:
-      number: -3
+      number: 3
       unit: percentage
 - level: 'Purple'
   buff:
@@ -103,14 +103,14 @@ attribute:
     - Enemy
     class: Archers
     value:
-      number: -5
+      number: 5
       unit: percentage
   - attribute: HP
     condition:
     - Enemy
     class: Siege
     value:
-      number: -5
+      number: 5
       unit: percentage
 - level: 'Orange'
   buff:
@@ -140,14 +140,14 @@ attribute:
     - Enemy
     class: Archers
     value:
-      number: -5
+      number: 5
       unit: percentage
   - attribute: HP
     condition:
     - Enemy
     class: Siege
     value:
-      number: -5
+      number: 5
       unit: percentage
 - level: 'Gold'
   buff:
@@ -177,12 +177,12 @@ attribute:
     - Enemy
     class: Archers
     value:
-      number: -10
+      number: 10
       unit: percentage
   - attribute: HP
     condition:
     - Enemy
     class: Siege
     value:
-      number: -10
+      number: 10
       unit: percentage

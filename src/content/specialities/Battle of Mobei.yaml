@@ -5,7 +5,7 @@ attribute:
   buff:
   - attribute: March_Time
     value:
-      number: -1
+      number: 1
       unit: percentage
   - attribute: Attack
     condition:
@@ -18,7 +18,7 @@ attribute:
   buff:
   - attribute: March_Time
     value:
-      number: -1
+      number: 1
       unit: percentage
   - attribute: Attack
     condition:
@@ -31,7 +31,7 @@ attribute:
   buff:
   - attribute: March_Time
     value:
-      number: -2
+      number: 2
       unit: percentage
   - attribute: Attack
     condition:
@@ -44,7 +44,7 @@ attribute:
   buff:
   - attribute: March_Time
     value:
-      number: -2
+      number: 2
       unit: percentage
   - attribute: Attack
     condition:
@@ -57,7 +57,7 @@ attribute:
   buff:
   - attribute: March_Time
     value:
-      number: -4
+      number: 4
       unit: percentage
   - attribute: Attack
     condition:

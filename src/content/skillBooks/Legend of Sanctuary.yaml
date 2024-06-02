@@ -13,12 +13,12 @@ buff:
   - Enemy
   class: Archers
   value:
-    number: -20
+    number: 20
     unit: percentage
 - attribute: HP
   condition:
   - Enemy
   class: Siege
   value:
-    number: -20
+    number: 20
     unit: percentage

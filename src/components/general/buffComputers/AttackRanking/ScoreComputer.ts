@@ -46,25 +46,25 @@ export const ScoreComputer = z
           console.log(`called for Attack use case`);
         }
         if (
-          generalSpecialists.enum.Archers.localeCompare(eg.general.score_as)
+          generalSpecialists.enum.Archers.localeCompare(eg.score_as)
         ) {
           return ArchersPvPAttack(eg, display, bp);
         }
-        if (generalSpecialists.enum.Ground.localeCompare(eg.general.score_as)) {
+        if (generalSpecialists.enum.Ground.localeCompare(eg.score_as)) {
           return GroundPvPAttack(eg, display, bp);
         }
         if (
-          generalSpecialists.enum.Mounted.localeCompare(eg.general.score_as)
+          generalSpecialists.enum.Mounted.localeCompare(eg.score_as)
         ) {
           return MountedPvPAttack(eg, display, bp);
         }
-        if (generalSpecialists.enum.Siege.localeCompare(eg.general.score_as)) {
+        if (generalSpecialists.enum.Siege.localeCompare(eg.score_as)) {
           return SiegePvPAttack(eg, display, bp);
         }
       } else {
         console.log(`not called for Attack use case`);
       }
-      console.log(`${eg.general.name} did not match any scoring function`);
+      console.log(`${eg.name} did not match any scoring function`);
       return -7;
     }
   );

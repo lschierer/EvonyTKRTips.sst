@@ -65,9 +65,9 @@ export class DetailView extends SizedMixin(BaseGeneral, {
     _changedProperties: PropertyValues
   ): Promise<void> {
     await super.willUpdate(_changedProperties);
-    if (_changedProperties.has('_eg')) {
+    if (_changedProperties.has('general')) {
       if (DEBUG) {
-        console.log(`DetailView willUpdate _eg`);
+        console.log(`DetailView willUpdate general`);
       }
       let InComplete = true;
       do {
@@ -255,7 +255,54 @@ export class DetailView extends SizedMixin(BaseGeneral, {
   }
 
   private renderBasicStats() {
+    let debugHTML = html``;
+    if(DEBUG) {
+      debugHTML = html`
+        Summary EvAns: ${this.computedBuffs.get(
+          BaseGeneral.InvestmentOptions2Key(DetailView.InvestmentLevel)
+        )?.EvAnsRanking}<br/>
+        Summary Attack: ${this.computedBuffs.get(
+          BaseGeneral.InvestmentOptions2Key(DetailView.InvestmentLevel)
+        )?.AttackRanking}<br />
+        Summary Tough: ${this.computedBuffs.get(
+          BaseGeneral.InvestmentOptions2Key(DetailView.InvestmentLevel)
+        )?.ToughnessRanking}<br />
+      `
+      this.GeneralBuffs(
+        Display.enum.primary,
+        DetailView.InvestmentLevel
+      );
+      debugHTML = html`
+        ${debugHTML}<br/>
+        Primary EvAns: ${this.computedBuffs.get(
+          BaseGeneral.InvestmentOptions2Key(DetailView.InvestmentLevel)
+        )?.EvAnsRanking}<br />
+        Primary Attack: ${this.computedBuffs.get(
+          BaseGeneral.InvestmentOptions2Key(DetailView.InvestmentLevel)
+        )?.AttackRanking}<br />
+        Primary Tough: ${this.computedBuffs.get(
+          BaseGeneral.InvestmentOptions2Key(DetailView.InvestmentLevel)
+        )?.ToughnessRanking}<br />
+      `
+      this.GeneralBuffs(
+        Display.enum.secondary,
+        DetailView.InvestmentLevel
+      );
+      debugHTML = html`
+        ${debugHTML}<br />
+        Assistant EvAns: ${this.computedBuffs.get(
+          BaseGeneral.InvestmentOptions2Key(DetailView.InvestmentLevel)
+        )?.EvAnsRanking}<br />
+        Assistant Attack: ${this.computedBuffs.get(
+          BaseGeneral.InvestmentOptions2Key(DetailView.InvestmentLevel)
+        )?.AttackRanking}<br />
+        Assistant Tough: ${this.computedBuffs.get(
+          BaseGeneral.InvestmentOptions2Key(DetailView.InvestmentLevel)
+        )?.ToughnessRanking}<br />
+      `
+    }
     return html`
+      ${(DEBUG) ? html`${debugHTML}` : html``}
       <span class="label spectrum-Heading spectrum-Heading--sizeM"
         >Basic Statistics</span
       ><br />
@@ -380,7 +427,7 @@ export class DetailView extends SizedMixin(BaseGeneral, {
   }
 
   private renderBooks() {
-    if (!Array.isArray(this._eg?.books) || this._eg.books.length === 0) {
+    if (!Array.isArray(this.general?.books) || this.general.books.length === 0) {
       if (DEBUG) {
         console.log(`renderBooks called with no books`);
       }
@@ -388,11 +435,11 @@ export class DetailView extends SizedMixin(BaseGeneral, {
     } else {
       if (DEBUG) {
         console.log(
-          `renderBooks for ${this.general?.name}; ${this._eg.books.length} Books`
+          `renderBooks for ${this.general?.name}; ${this.general.books.length} Books`
         );
       }
 
-      const a1 = this._eg.books.map((gb, index) => {
+      const a1 = this.general.books.map((gb, index) => {
         const a3 = gb.buff.map((b: BuffType) => {
           return html`
             <li>
@@ -428,8 +475,8 @@ export class DetailView extends SizedMixin(BaseGeneral, {
 
   private renderSpecialities() {
     if (
-      !Array.isArray(this._eg?.specialities) ||
-      this._eg.specialities.length === 0
+      !Array.isArray(this.general?.specialities) ||
+      this.general.specialities.length === 0
     ) {
       if (DEBUG) {
         console.log(`renderSpecialities called with no specialities`);
@@ -438,11 +485,11 @@ export class DetailView extends SizedMixin(BaseGeneral, {
     } else {
       if (DEBUG) {
         console.log(
-          `renderSpecialities for ${this.general?.name}; ${this._eg.specialities.length} Specialities`
+          `renderSpecialities for ${this.general?.name}; ${this.general.specialities.length} Specialities`
         );
       }
 
-      const a1 = this._eg.specialities.map((gs, index) => {
+      const a1 = this.general.specialities.map((gs, index) => {
         return html`
           <div class=${`SpecialityName${index} non-content`}>
             <span class="label spectrum-Heading spectrum-Heading--sizeXXS">
@@ -451,7 +498,7 @@ export class DetailView extends SizedMixin(BaseGeneral, {
           </div>
         `;
       });
-      const a2 = this._eg.specialities.map((gs, index) => {
+      const a2 = this.general.specialities.map((gs, index) => {
         const a3 = gs.attribute.map((s) => {
           const a4 = s.buff.map((b: BuffType) => {
             return html`
@@ -484,7 +531,7 @@ export class DetailView extends SizedMixin(BaseGeneral, {
           <div class=${`Speciality${index}  non-content`}>${a3}</div>
         `;
       });
-      if (this._eg.specialities.length === 4) {
+      if (this.general.specialities.length === 4) {
         return html` <div class="Specialities non-content">${a1} ${a2}</div> `;
       } else {
         return html`
@@ -501,63 +548,73 @@ export class DetailView extends SizedMixin(BaseGeneral, {
 
   private renderAscending() {
     if (
-      !Array.isArray(this._eg?.general.ascending) ||
-      this._eg.general.ascending.length === 0
+      this.general === null || this.general === undefined ||
+      (this.general && (
+      !Array.isArray(this.general.ascending) ||
+      this.general.ascending.length === 0))
     ) {
       if (DEBUG) {
         console.log(`renderAscending called with no ascending attributes`);
+        console.log(JSON.stringify((this.general)))
       }
       return html``;
     } else {
-      if (DEBUG) {
-        console.log(
-          `renderAscending for ${this.general?.name}; ${this._eg.general.ascending.length} Ascending Attributes`
-        );
-      }
+      if(this.general.ascending === null || this.general.ascending === undefined) {
+        return html``;
+      } else {
+        if (DEBUG) {
+          console.log(
+            `renderAscending for ${this.general?.name}; ${this.general.ascending?.length ?? 0} Ascending Attributes`
+          );
+        }
 
-      const a1 = this._eg.general.ascending.map((gaa, index) => {
-        return html`
+        const a1 = this.general.ascending.map((gaa, index) => {
+          return html`
           <div class=${`AscendingAttributeName${index} non-content`}>
             <span class="label spectrum-Heading spectrum-Heading--sizeXXS">
               ${index + 1} Star
             </span>
           </div>
         `;
-      });
-      const a2 = this._eg.general.ascending.map((gaa, index) => {
-        const a4 = gaa.buff.map((b: BuffType) => {
-          return html`
+        });
+        const a2 = this.general.ascending.map((gaa, index) => {
+          const a4 = gaa.buff.map((b: BuffType) => {
+            return html`
             <li>
               ${b.condition ? b.condition.join(' ').replaceAll(/_/g, ' ') : ''}
               ${b.class !== 'all' ? b.class : 'all troops '}
               ${b.attribute ? b.attribute.replaceAll(/_/g, ' ') : ''}
               ${b.value!.number}${!b.value!.unit.localeCompare(
-                UnitSchema.enum.percentage
-              )
-                ? '%'
-                : ''}
+              UnitSchema.enum.percentage
+            )
+              ? '%'
+              : ''}
             </li>
           `;
-        });
+          });
 
-        return html`
+          return html`
           <div class=${`AscendingAttribute${index}  non-content`}>
             <ul>
               ${a4}
             </ul>
           </div>
         `;
-      });
-      return html`
+        });
+        return html`
         <span class="label spectrum-Heading spectrum-Heading--sizeM"
           >Ascending Attributes</span
         >
         <div class="AscendingAttributes non-content">${a1} ${a2}</div>
       `;
+      }
     }
   }
 
   protected override render(): TemplateResult {
+    if(this.general === null || this.general === undefined) {
+      return html`no general present`
+    }
     return html`
       <div
         class="GeneralDetails not-content"

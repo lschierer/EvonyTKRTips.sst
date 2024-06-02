@@ -12,7 +12,10 @@ import {
 } from '@schemas/generalsSchema';
 
 import { type ConflictDatumType } from '@schemas/conflictSchemas';
-import type { GeneralPairType } from '@schemas/ExtendedGeneral';
+import  {
+    type ExtendedGeneralType,
+    type GeneralPairType
+} from '@schemas/ExtendedGeneral';
 
 const DEBUG = false;
 
@@ -30,7 +33,7 @@ if (Astro.locals.CachedGenerals.length > 0) {
     await delay(15);
   }
   const generalBaseN = new BaseN(Astro.locals.CachedGenerals, 2);
-  [...generalBaseN].forEach((pPair: Array<GeneralClassType>) => {
+  [...generalBaseN].forEach((pPair: Array<ExtendedGeneralType>) => {
     const primary = pPair[0];
     const secondary = pPair[1];
     if (primary === undefined || secondary === undefined) {

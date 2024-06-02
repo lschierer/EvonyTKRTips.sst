@@ -1,5 +1,5 @@
 ---
-import { getCollection, type CollectionEntry } from 'astro:content';
+import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
 import type { ComponentProps } from 'astro/types';
 
 import { delay } from 'nanodelay';
@@ -16,6 +16,8 @@ import {
   ExtendedGeneralStatus,
   type ExtendedGeneralType,
 } from '@schemas/ExtendedGeneral';
+import { SpecialityType } from '../../schemas/specialitySchema';
+import { BookType } from '../../schemas/bookSchemas';
 
 const DEBUG = false;
 
@@ -24,12 +26,45 @@ const generalObjects: CollectionEntry<'generals'>[] =
 
 if (generalObjects !== undefined && generalObjects !== null) {
   await Promise.all(
-    generalObjects.map(async ({ data }) => {
-      const v1 = await GeneralElement.spa(data);
-      if (v1.success) {
-        Astro.locals.CachedGenerals.push(v1.data.general);
-      }
-    })
+    generalObjects.map(async (element: GeneralElementType) => {
+      const gc: GeneralClassType = element.data.general;
+      const eg: ExtendedGeneralType = {
+        name: gc.name,
+        leadership: gc.leadership,
+        attack: gc.attack,
+        defense: gc.defense,
+        politics: gc.politics,
+        leadership_increment: gc.leadership_increment,
+        attack_increment: gc.attack_increment,
+        defense_increment: gc.defense_increment,
+        politics_increment: gc.politics_increment,
+        level: gc.level,
+        stars: gc.stars,
+        score_as: gc.score_as,
+        ascending: gc.ascending,
+        note: gc.note,
+        specialities: new Array<SpecialityType>(),
+        books: new Array<BookType>(),
+      };
+
+      gc.books && await Promise.all(gc.books.map(async (gb) => {
+        const gbe: CollectionEntry<'skillBooks'> | undefined = await getEntry('skillBooks', gb);
+        if (gbe !== null && gbe !== undefined) {
+          const _book: BookType = gbe.data;
+          eg.books.push(_book);
+        }
+      }));
+
+      gc.specialities && gc.specialities.map(async (gs) => {
+        const gse: CollectionEntry<'specialities'> | undefined = await getEntry('specialities', gs);
+        if(gse !== null && gse !== undefined) {
+          eg.specialities.push(gse.data);
+        }
+      })
+
+      Astro.locals.CachedGenerals.push(eg);
+
+    }),
   );
   if (DEBUG) {
     console.log(`CachedGenerals is ${Astro.locals.CachedGenerals.length}`);
@@ -39,15 +74,15 @@ if (generalObjects !== undefined && generalObjects !== null) {
 
 {
   DEBUG && (
-    <ol>
-      {Astro.locals.CachedGenerals.map((thisG: GeneralClassType) => (
-        <li>
-          <dl>
-            <dt>{thisG.name}</dt>
-            <dd>${JSON.stringify(thisG)}</dd>
-          </dl>
-        </li>
-      ))}
-    </ol>
-  )
-}
+  <ol>
+    {Astro.locals.CachedGenerals.map((thisG: ExtendedGeneralType) => (
+      <li>
+        <dl>
+          <dt>{thisG.name}</dt>
+          <dd>${JSON.stringify(thisG)}</dd>
+        </dl>
+      </li>
+    ))}
+  </ol>
+    )
+  }

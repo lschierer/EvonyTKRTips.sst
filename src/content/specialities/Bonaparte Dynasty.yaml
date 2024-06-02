@@ -22,14 +22,14 @@ attribute:
     - Reduces_Enemy_with_a_Dragon
     class: Archers
     value:
-      number: -1
+      number: 1
       unit: percentage
   - attribute: Attack
     condition:
     - Reduces_Enemy_with_a_Dragon
     class: Siege
     value:
-      number: -1
+      number: 1
       unit: percentage
 - level: 'Blue'
   buff:
@@ -52,14 +52,14 @@ attribute:
     - Reduces_Enemy_with_a_Dragon
     class: Archers
     value:
-      number: -2
+      number: 2
       unit: percentage
   - attribute: Attack
     condition:
     - Reduces_Enemy_with_a_Dragon
     class: Siege
     value:
-      number: -2
+      number: 2
       unit: percentage
 - level: 'Purple'
   buff:
@@ -82,14 +82,14 @@ attribute:
     - Reduces_Enemy_with_a_Dragon
     class: Archers
     value:
-      number: -3
+      number: 3
       unit: percentage
   - attribute: Attack
     condition:
     - Reduces_Enemy_with_a_Dragon
     class: Siege
     value:
-      number: -3
+      number: 3
       unit: percentage
 - level: 'Orange'
   buff:
@@ -112,14 +112,14 @@ attribute:
     - Reduces_Enemy_with_a_Dragon
     class: Archers
     value:
-      number: -3
+      number: 3
       unit: percentage
   - attribute: Attack
     condition:
     - Reduces_Enemy_with_a_Dragon
     class: Siege
     value:
-      number: -3
+      number: 3
       unit: percentage
 - level: 'Gold'
   buff:
@@ -142,12 +142,12 @@ attribute:
     - Reduces_Enemy_with_a_Dragon
     class: Archers
     value:
-      number: -6
+      number: 6
       unit: percentage
   - attribute: Attack
     condition:
     - Reduces_Enemy_with_a_Dragon
     class: Siege
     value:
-      number: -6
+      number: 6
       unit: percentage

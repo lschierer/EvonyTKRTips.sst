@@ -1,4 +1,5 @@
 ---
+
 import type { ComponentProps } from 'astro/types';
 
 import { ulid } from 'ulidx';
@@ -6,7 +7,6 @@ import { ulid } from 'ulidx';
 import { delay } from 'nanodelay';
 
 import { DisplayGrid } from './DisplayGrid';
-import { GridGeneral } from './GridGeneral';
 import AllPairs from '@components/general/AllPairs.astro';
 type AllPairsPropsType = ComponentProps<typeof AllPairs>;
 
@@ -22,6 +22,7 @@ import {
   GeneralElement,
   type GeneralClassType,
   type GeneralElementType,
+  type generalSpecialistsType,
 } from '@schemas/generalsSchema';
 
 import {
@@ -29,11 +30,13 @@ import {
   ExtendedGeneralStatus,
   type GeneralPairType,
 } from '@schemas/ExtendedGeneral';
+import { generalSpecialists } from '../../../schemas/generalsSchema';
 
 const DEBUG = false;
 
+
 interface Props {
-  generalClass: ClassEnumType;
+  generalClass: generalSpecialistsType;
 }
 
 const { generalClass } = Astro.props;
@@ -54,11 +57,10 @@ let MyInvestmentLevel: BuffParamsType = {
   beast: true,
 };
 
-const DisplayGenerals = new Array<GridGeneral>();
-
+// @ts-ignore
 const AllPairsProps: AllPairsPropsType = {
-  TargetClass: generalClass,
-};
+  TargetClass: generalClass
+}
 
 const DisplayGridProps = {
   tableName: table_name,

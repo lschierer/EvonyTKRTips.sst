@@ -26,5 +26,5 @@ buff:
   condition:
   - Against Monsters
   value:
-    number: -20
+    number: 20
     unit: percentage

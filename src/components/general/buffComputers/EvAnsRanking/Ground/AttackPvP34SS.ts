@@ -22,7 +22,6 @@ export const GroundAttackPvP34SS = z
   .args(ExtendedGeneral, BuffParams)
   .returns(z.number())
   .implement((eg: ExtendedGeneralType, bp: BuffParamsType) => {
-    const gc = eg.general;
     let BSS_Score = 0;
 
     if (
@@ -45,7 +44,7 @@ export const GroundAttackPvP34SS = z
             const v = Speciality.safeParse(special);
             if (v.error) {
               console.log(
-                `${eg.general.name}: invalid speciality: ${special.name}`
+                `${eg.name}: invalid speciality: ${special.name}`
               );
               return a1;
             } else {
@@ -87,7 +86,7 @@ export const GroundAttackPvP34SS = z
                       } else {
                         const sb_total = GroundPvPBuff(
                           specialB.name,
-                          gc.name,
+                          eg.name,
                           sb,
                           bp
                         );
@@ -139,7 +138,7 @@ export const GroundAttackPvP34SS = z
                       } else {
                         const sb_total = GroundPvPBuff(
                           specialB.name,
-                          gc.name,
+                          eg.name,
                           sb,
                           bp
                         );
@@ -190,7 +189,7 @@ export const GroundAttackPvP34SS = z
                       } else {
                         const sb_total = GroundPvPBuff(
                           specialB.name,
-                          gc.name,
+                          eg.name,
                           sb,
                           bp
                         );
@@ -246,7 +245,7 @@ export const GroundAttackPvP34SS = z
                       } else {
                         const sb_total = GroundPvPBuff(
                           specialB.name,
-                          gc.name,
+                          eg.name,
                           sb,
                           bp
                         );
@@ -287,7 +286,7 @@ export const GroundAttackPvP34SS = z
                       } else {
                         const sb_total = GroundPvPBuff(
                           specialB.name,
-                          gc.name,
+                          eg.name,
                           sb,
                           bp
                         );
@@ -317,7 +316,7 @@ export const GroundAttackPvP34SS = z
 
       if (DEBUG_34SS) {
         console.log(
-          `${eg.general.name}: specialities total: ${specialities_total}`
+          `${eg.name}: specialities total: ${specialities_total}`
         );
         console.log('');
       }

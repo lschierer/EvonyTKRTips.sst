@@ -9,23 +9,9 @@ import {
 } from '@schemas/baseSchemas';
 
 import {
-  Speciality,
-  type SpecialityType,
-} from '@schemas/specialitySchema';
-
-import {
-  specialSkillBook,
-  Book,
-  type BookType,
-  type specialSkillBookType,
-  type standardSkillBookType,
-} from '@schemas/bookSchemas';
-
-import {
   Display,
   type DisplayType,
-  GeneralClass,
-  type GeneralClassType,
+
   generalRole,
   type generalRoleType,
   generalUseCase,
@@ -35,7 +21,7 @@ import {
   type ExtendedGeneralType,
   ExtendedGeneralStatus,
   type ExtendedGeneralStatusType,
-  type RankInstanceType,
+  type RankInstanceType, ExtendedGeneral,
 } from '@schemas/ExtendedGeneral';
 
 import { EvAnsScoreComputer } from '../buffComputers/EvAnsRanking/EvAnsScoreComputer';
@@ -60,14 +46,14 @@ export class GridPair {
   }
 
   // @ts-ignore
-  private _primary: GeneralClassType;
+  private _primary: ExtendedGeneralType;
 
-  get primary(): GeneralClassType {
+  get primary(): ExtendedGeneralType {
     return this._primary;
   }
 
-  set primary(g: GeneralClassType) {
-    const v = GeneralClass.safeParse(g);
+  set primary(g: ExtendedGeneralType) {
+    const v = ExtendedGeneral.safeParse(g);
     if (v.success) {
       this._primary = v.data;
       if (this._primaryId.localeCompare((this._primary.name))) {
@@ -79,12 +65,6 @@ export class GridPair {
       }
     }
   }
-
-  // @ts-ignore
-  private pBooks: BookType[];
-  // @ts-ignore
-  private pSpecialities: SpecialityType[];
-
 
   private _secondaryId = '';
 
@@ -98,14 +78,14 @@ export class GridPair {
   }
 
   // @ts-ignore
-  private _secondary: GeneralClassType;
+  private _secondary: ExtendedGeneralType;
 
-  get secondary(): GeneralClassType {
+  get secondary(): ExtendedGeneralType {
     return this._secondary;
   }
 
-  set secondary(g: GeneralClassType) {
-    const v = GeneralClass.safeParse(g);
+  set secondary(g: ExtendedGeneralType) {
+    const v = ExtendedGeneral.safeParse(g);
     if (v.success) {
       this._secondary = v.data;
       if (this._secondaryId.localeCompare((this._secondary.name))) {
@@ -113,11 +93,6 @@ export class GridPair {
       }
     }
   }
-
-  // @ts-ignore
-  private sBooks: BookType[];
-  // @ts-ignore
-  private sSpecialities: SpecialityType[];
 
   public ApiUrl: URL = new URL('http://localhost/');
 
@@ -176,101 +151,7 @@ export class GridPair {
   }
 
   public async getSkillBooks(forG: generalRoleType) {
-    let general: GeneralClassType;
-    let bArray: BookType[];
-    if (!forG.localeCompare(generalRole.enum.primary)) {
-      general = this._primary;
-      bArray = this.pBooks;
-    } else {
-      general = this._secondary;
-      bArray = this.sBooks;
-    }
-    if (Array.isArray(general.books)) {
-      general.books.map(async (gb) => {
-        const bUrl = new URL(`/books/${gb}.json`, this.ApiUrl);
-        const data = await fetch(bUrl)
-          .then((response) => {
-            if (response.ok) return response.json();
-            else throw new Error('Status code error :' + response.status);
-          })
-          .catch((error) => {
-            console.error(JSON.stringify(error));
-            return false;
-          });
-        const v1 = Book.safeParse(data);
-        if (v1.success) {
-          const bd = bArray.some((tb: BookType) => {
-            return !tb.name.localeCompare(v1.data.name);
-          });
-          if (bd) {
-            return false;
-          } else {
-            bArray.push(v1.data);
-          }
-        } else {
-          //the general could not have been null, I already tested for that
-          console.log(`invalid book detected for ${general.name} `, this.index);
-          console.log(JSON.stringify(data));
-          return false;
-        }
-      });
-    }
-    if (bArray.length > 0) {
-      if (!forG.localeCompare(generalRole.enum.primary)) {
-        this.pBooks = [...bArray];
-      } else {
-        this.sBooks = [...bArray];
-      }
-    }
-  }
-
-  public async getSpecialities(forG: generalRoleType) {
-    let general: GeneralClassType;
-    let sArray: SpecialityType[];
-    if (!forG.localeCompare(generalRole.enum.primary)) {
-      general = this._primary;
-      sArray = this.pSpecialities;
-    } else {
-      general = this._secondary;
-      sArray = this.sSpecialities;
-    }
-    if (Array.isArray(general.specialities)) {
-      general.specialities.map(async (sn) => {
-        const sURL = new URL(`/specialities/${sn}.json`, this.ApiUrl);
-        const data = await fetch(sURL)
-          .then((response) => {
-            if (response.ok) return response.json();
-            else throw new Error('Status code error :' + response.status);
-          })
-          .catch((error) => {
-            console.error(JSON.stringify(error));
-            return false;
-          });
-        const v1 = Speciality.safeParse(data);
-        if (v1.success) {
-          const sd = sArray.some((ts: SpecialityType) => {
-            return !ts.name.localeCompare(v1.data.name);
-          });
-          if (sd) {
-            return false;
-          } else {
-            sArray.push(v1.data);
-          }
-        } else {
-          //the general could not have been null, I already tested for that
-          console.log(`invalid special detected for ${general.name} `, this.index);
-          console.log(JSON.stringify(data));
-          return false;
-        }
-      });
-    }
-    if (sArray.length > 0) {
-      if (!forG.localeCompare(generalRole.enum.primary)) {
-        this.pSpecialities = [...sArray];
-      } else {
-        this.sSpecialities = [...sArray];
-      }
-    }
+    //this will eventually need to handle skill books that are not built in
   }
 
   static InvestmentOptionsRE = /[[\]'",]/g;
@@ -285,7 +166,7 @@ export class GridPair {
 
   public BuffsForInvestment(BP: BuffParamsType){
     this.GeneralBuffs(Display.enum.primary, this.InvestmentLevel);
-    this.GeneralBuffs(Display.enum.assistant, this.InvestmentLevel);
+    this.GeneralBuffs(Display.enum.secondary, this.InvestmentLevel);
   }
 
   //from https://www.evonyanswers.com/post/evony-answers-attribute-methodology-explanation
@@ -294,25 +175,17 @@ export class GridPair {
     .args(Display, BuffParams )
     .returns(z.boolean())
     .implement((display: DisplayType, BP: BuffParamsType) => {
-      let general: GeneralClassType;
+      let general: ExtendedGeneralType;
       let eg: ExtendedGeneralType;
       let nBP: BuffParamsType;
 
       if (!Display.enum.primary.localeCompare(Display.enum.primary)) {
         general = this._primary;
-        eg = {
-          general: this._primary,
-          specialities: this.pSpecialities,
-          books: this.pBooks,
-        };
+
         nBP = BP;
       } else {
         general = this._secondary;
-        eg = {
-          general: this._secondary,
-          specialities: this.sSpecialities,
-          books: this.sBooks,
-        };
+
         nBP = {
           special1: BP.special1,
           special2: BP.special2,
@@ -333,21 +206,21 @@ export class GridPair {
 
         const EvAnsRanking = EvAnsScoreComputer(
           generalUseCase.enum.Attack,
-          eg,
+          general,
           display,
           nBP,
         );
 
         const AttackRanking = AttackScoreComputer(
           generalUseCase.enum.Attack,
-          eg,
+          general,
           display,
           nBP,
         );
 
         const ToughnessRanking = ToughnessScoreComputer(
           generalUseCase.enum.Attack,
-          eg,
+          general,
           display,
           nBP,
         );
@@ -372,14 +245,10 @@ export class GridPair {
       return true;
     });
 
-  constructor(p: GeneralClassType, s: GeneralClassType, u: string) {
+  constructor(p: ExtendedGeneralType, s: ExtendedGeneralType, u: string) {
     this.primary = p;
-    this.pBooks = new Array<BookType>();
-    this.pSpecialities = new Array<SpecialityType>();
 
     this.secondary = s;
-    this.sBooks = new Array<BookType>();
-    this.sSpecialities = new Array<SpecialityType>();
 
     this.InvestmentLevel = {
       special1: qualityColor.enum.Disabled,

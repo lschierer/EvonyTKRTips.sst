@@ -21,7 +21,6 @@ export const GroundAttackPvPBSS = z
   .args(ExtendedGeneral, BuffParams)
   .returns(z.number())
   .implement((eg: ExtendedGeneralType, bp: BuffParamsType) => {
-    const gc = eg.general;
     let BSS_Score = 0;
 
     if (
@@ -35,7 +34,7 @@ export const GroundAttackPvPBSS = z
         } else {
           const v = specialSkillBook.safeParse(book);
           if (v.error) {
-            console.log(`${eg.general.name} invalid book: ${book.name}`);
+            console.log(`${eg.name} invalid book: ${book.name}`);
             return accumulator;
           } else {
             const bisb: specialSkillBookType = v.data;
@@ -45,11 +44,11 @@ export const GroundAttackPvPBSS = z
                 console.log(JSON.stringify(tb));
                 console.log(`--- end tb ---`);
               }
-              const tbscore = GroundPvPBuff(bisb.name, gc.name, tb, bp);
+              const tbscore = GroundPvPBuff(bisb.name, eg.name, tb, bp);
               if (DEBUG_BSS) {
                 console.log(JSON.stringify(tb));
                 console.log(
-                  `${eg.general.name}: ${book.name}: accumulating ${tbscore}`
+                  `${eg.name}: ${book.name}: accumulating ${tbscore}`
                 );
               }
               return tbscore + a2;
@@ -60,7 +59,7 @@ export const GroundAttackPvPBSS = z
         return accumulator;
       }, 0);
       if (DEBUG_BSS) {
-        console.log(`${eg.general.name} total book buff: ${book_score}`);
+        console.log(`${eg.name} total book buff: ${book_score}`);
         console.log('');
       }
       BSS_Score += Math.floor(book_score);

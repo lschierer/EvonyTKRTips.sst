@@ -26,9 +26,8 @@ const EvAnsBasic = z
   .args(ExtendedGeneral)
   .returns(z.number())
   .implement((eg: ExtendedGeneralType) => {
-    const gc = eg.general;
     let AES_adjustment = 0;
-    switch (eg.general.stars) {
+    switch (eg.stars) {
       case AscendingLevels.enum[0]:
         break;
       case AscendingLevels.enum[6]:
@@ -50,44 +49,44 @@ const EvAnsBasic = z
         console.log(`this should not happen!!!`);
     }
     const BasicAttack =
-      500 + AES_adjustment + gc.attack + 45 * gc.attack_increment < 900
-        ? (500 + AES_adjustment + gc.attack + 45 * gc.attack_increment) * 0.1
+      500 + AES_adjustment + eg.attack + 45 * eg.attack_increment < 900
+        ? (500 + AES_adjustment + eg.attack + 45 * eg.attack_increment) * 0.1
         : 90 +
-          (500 + AES_adjustment + gc.attack + 45 * gc.attack_increment - 900) *
+          (500 + AES_adjustment + eg.attack + 45 * eg.attack_increment - 900) *
             0.2;
     const BasicDefense =
-      500 + AES_adjustment + gc.defense + 45 * gc.defense_increment < 900
-        ? (500 + AES_adjustment + gc.defense + 45 * gc.defense_increment) * 0.1
+      500 + AES_adjustment + eg.defense + 45 * eg.defense_increment < 900
+        ? (500 + AES_adjustment + eg.defense + 45 * eg.defense_increment) * 0.1
         : 90 +
           (500 +
             AES_adjustment +
-            gc.defense +
-            45 * gc.defense_increment -
+            eg.defense +
+            45 * eg.defense_increment -
             900) *
             0.2;
     const BasicLeaderShip =
-      500 + AES_adjustment + gc.leadership + 45 * gc.leadership_increment < 900
+      500 + AES_adjustment + eg.leadership + 45 * eg.leadership_increment < 900
         ? (500 +
             AES_adjustment +
-            gc.leadership +
-            45 * gc.leadership_increment) *
+            eg.leadership +
+            45 * eg.leadership_increment) *
           0.1
         : 90 +
           (500 +
             AES_adjustment +
-            gc.leadership +
-            45 * gc.leadership_increment -
+            eg.leadership +
+            45 * eg.leadership_increment -
             900) *
             0.2;
     const BasicPolitics =
-      500 + AES_adjustment + gc.politics + 45 * gc.politics_increment < 900
-        ? (500 + AES_adjustment + gc.politics + 45 * gc.politics_increment) *
+      500 + AES_adjustment + eg.politics + 45 * eg.politics_increment < 900
+        ? (500 + AES_adjustment + eg.politics + 45 * eg.politics_increment) *
           0.1
         : 90 +
           (500 +
             AES_adjustment +
-            gc.politics +
-            45 * gc.politics_increment -
+            eg.politics +
+            45 * eg.politics_increment -
             900) *
             0.2;
 
@@ -107,11 +106,11 @@ const EvAnsBasic = z
       BasicPolitics * PoliticsMultipler;
 
     if (DEBUG_BAS) {
-      console.log(`BasicAttack: ${BasicAttack} for ${eg.general.name}`);
-      console.log(`BasicDefense: ${BasicDefense} for ${eg.general.name}`);
-      console.log(`BasicLeaderShip: ${BasicLeaderShip} for ${eg.general.name}`);
-      console.log(`BasicPolitics: ${BasicPolitics} for ${eg.general.name}`);
-      console.log(`BAS: ${BAS} for: ${eg.general.name}`);
+      console.log(`BasicAttack: ${BasicAttack} for ${eg.name}`);
+      console.log(`BasicDefense: ${BasicDefense} for ${eg.name}`);
+      console.log(`BasicLeaderShip: ${BasicLeaderShip} for ${eg.name}`);
+      console.log(`BasicPolitics: ${BasicPolitics} for ${eg.name}`);
+      console.log(`BAS: ${BAS} for: ${eg.name}`);
     }
     return Math.floor(BAS);
   });
@@ -123,7 +122,7 @@ export const EvAnsMountedPvPAttack = z
   .implement(
     (eg: ExtendedGeneralType, display: DisplayType, bp: BuffParamsType) => {
       if (DEBUG) {
-        console.log(`${eg.general.name}: EvAnsGroundPvPAttack starting`);
+        console.log(`${eg.name}: EvAnsMountedPvPAttack starting`);
       }
 
       const BAS = EvAnsBasic(eg);
@@ -134,23 +133,23 @@ export const EvAnsMountedPvPAttack = z
       let TLGS = BSS + specialities;
       if (DEBUG) {
         console.log(`TLGS with BSS and specialities`);
-        console.log(`${eg.general.name}: ${TLGS}`);
+        console.log(`${eg.name}: ${TLGS}`);
       }
-      if (display.localeCompare(Display.enum.assistant)) {
+      if (display.localeCompare(Display.enum.secondary)) {
         TLGS += BAS;
         if (DEBUG) {
           console.log(`TLGS with BAS`);
-          console.log(`${eg.general.name}: ${TLGS}`);
+          console.log(`${eg.name}: ${TLGS}`);
         }
         TLGS += AES;
         if (DEBUG) {
           console.log(`TLGS with AES`);
-          console.log(`${eg.general.name}: ${TLGS}`);
+          console.log(`${eg.name}: ${TLGS}`);
         }
       }
       if (DEBUG) {
         console.log(
-          `for ${eg.general.name} BAS: ${BAS} BSS: ${BSS} AES: ${AES} specialities: ${specialities} TLGS: ${TLGS}`
+          `for ${eg.name} BAS: ${BAS} BSS: ${BSS} AES: ${AES} specialities: ${specialities} TLGS: ${TLGS}`
         );
       }
       return TLGS;
