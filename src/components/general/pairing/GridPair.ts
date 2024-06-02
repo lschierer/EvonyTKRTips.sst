@@ -102,9 +102,9 @@ export class GridPair {
   get EvAnsRanking(): number {
     const value = (this.pEvAnsRanking + this.sEvAnsRanking);
     if(DEBUG) {
-      console.log(`EvAnsRanking for ${this.primaryId} ${this.pEvAnsRanking} `)
-      console.log(`EvAnsRanking for ${this.secondaryId} ${this.sEvAnsRanking} `)
-      console.log(`EvAnsRanking ${this.primaryId} ${this.secondaryId} ${value}`)
+      console.log(`pEvAnsRanking for ${this.primaryId} ${this.pEvAnsRanking} `)
+      console.log(`sEvAnsRanking for ${this.secondaryId} ${this.sEvAnsRanking} `)
+      console.log(`tEvAnsRanking ${this.primaryId} ${this.secondaryId} ${value}`)
     }
     return value
   }
@@ -165,16 +165,17 @@ export class GridPair {
     });
 
   public BuffsForInvestment(BP: BuffParamsType){
-    this.GeneralBuffs(Display.enum.primary, this.InvestmentLevel);
-    this.GeneralBuffs(Display.enum.secondary, this.InvestmentLevel);
+    this.InvestmentLevel = BP;
+    this.GeneralBuffs(Display.enum.primary);
+    this.GeneralBuffs(Display.enum.secondary);
   }
 
   //from https://www.evonyanswers.com/post/evony-answers-attribute-methodology-explanation
   private GeneralBuffs = z
     .function()
-    .args(Display, BuffParams )
+    .args(Display)
     .returns(z.boolean())
-    .implement((display: DisplayType, BP: BuffParamsType) => {
+    .implement((display: DisplayType) => {
       let general: ExtendedGeneralType;
       let eg: ExtendedGeneralType;
       let nBP: BuffParamsType;
@@ -182,20 +183,11 @@ export class GridPair {
       if (!Display.enum.primary.localeCompare(Display.enum.primary)) {
         general = this._primary;
 
-        nBP = BP;
+        nBP = this.pInvestment;
       } else {
         general = this._secondary;
 
-        nBP = {
-          special1: BP.special1,
-          special2: BP.special2,
-          special3: BP.special3,
-          special4: BP.special4,
-          special5: BP.special5,
-          stars: AscendingLevels.enum['0'],
-          dragon: BP.dragon,
-          beast: BP.beast
-        }
+        nBP = this.sInvestment;
       }
       if (general === null) {
         return false;
@@ -224,25 +216,33 @@ export class GridPair {
           display,
           nBP,
         );
+        if (DEBUG) {
+          console.log(
+            `GeneralBuffs, computed: ${EvAnsRanking} ${AttackRanking} ${ToughnessRanking} for ${general.name} ${display} `,
+          );
+        }
 
-        const hashKey = GridPair.InvestmentOptions2Key(BP);
         if (!Display.enum.primary.localeCompare(Display.enum.primary)) {
           this.pEvAnsRanking = EvAnsRanking;
           this.pAttackRanking = AttackRanking;
           this.pToughnessRanking = ToughnessRanking;
+          if (DEBUG) {
+            console.log(
+              `GeneralBuffs, stored: ${this.pEvAnsRanking} ${this.pAttackRanking} ${this.pToughnessRanking} for ${general.name} ${display} `,
+            );
+          }
         } else {
           this.sEvAnsRanking = EvAnsRanking;
           this.sAttackRanking = AttackRanking;
           this.sToughnessRanking = ToughnessRanking;
+          if (DEBUG) {
+            console.log(
+              `GeneralBuffs, stored: ${this.sEvAnsRanking} ${this.sAttackRanking} ${this.sToughnessRanking} for ${general.name} ${display} `,
+            );
+          }
         }
-        if (DEBUG) {
-          console.log(
-            `in GeneralBuffs, got scores: ${EvAnsRanking} ${AttackRanking} ${ToughnessRanking} for ${general.name}`,
-          );
-        }
+        return true;
       }
-
-      return true;
     });
 
   constructor(p: ExtendedGeneralType, s: ExtendedGeneralType, u: string) {
@@ -261,6 +261,9 @@ export class GridPair {
       beast: false,
     };
     this.ApiUrl = new URL('/', u);
+
+    this.GeneralBuffs(Display.enum.primary);
+    this.GeneralBuffs(Display.enum.secondary,)
 
     if (DEBUG) {
       console.log(`base URL initialized to ${this.ApiUrl}`);

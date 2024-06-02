@@ -96,7 +96,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
     await Promise.all(
       this.RawPairs.map(async (pair, index) => {
 
-        const delayValue = Math.floor((Math.random() * 80000));
+        const delayValue = Math.floor((Math.random() * this.RawPairs.length));
         await delay(delayValue).then(async () => {
           if (DEBUG) {
             console.log(`DisplayGrid getData RawPairs index ${index} ${delayValue} ${pair.primary.name} ${pair.secondary.name}`);
@@ -267,8 +267,11 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       console.log(`gridDiv is ${gridDiv.localName}`);
       this.grid = createGrid(gridDiv as HTMLElement, this.gridOptions);
       if (Array.isArray(this._DisplayPairs) && this._DisplayPairs.length > 0) {
-        this._DisplayPairs.forEach((dp) => {
+        this._DisplayPairs.forEach((dp, index) => {
           dp.BuffsForInvestment(this.InvestmentLevel);
+          if((index % 10) === 0){
+            this.grid.setGridOption('rowData', this._DisplayPairs);
+          }
         });
         this.grid.setGridOption('rowData', this._DisplayPairs);
       } else {
@@ -285,7 +288,9 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       console.log(`DisplayGrid render called`);
       console.log(`${this._DisplayPairs.length} pairs ready`);
     }
-
+    if(Array.isArray(this._DisplayPairs) && this._DisplayPairs.length > 0) {
+      this.grid.setGridOption('rowData', this._DisplayPairs);
+    }
     return html`
       
       <div
