@@ -92,41 +92,50 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
 
   private async getData() {
     const currentPage = `${document.location.protocol}//${document.location.host}`;
-    const newRows: GridPair[] = new Array<GridPair>();
-    await Promise.all(
-      this.RawPairs.map(async (pair, index) => {
-
-        const delayValue = Math.floor((Math.random() * this.RawPairs.length));
-        await delay(delayValue).then(async () => {
+    const batchLimit = 10;
+    for(let i = 0; i< this.RawPairs.length; i++){
+      const newRows: GridPair[] = new Array<GridPair>();
+      const batch: GeneralPairType[] = new Array<GeneralPairType>();
+      if(i !== 0 && (i % batchLimit !== 0)) {
+        batch.push(this.RawPairs[i])
+        continue;
+      } else {
+        batch.push(this.RawPairs[i])
+        await Promise.all(
+          batch.map(async (pair) => {
+            const delayValue = Math.floor((Math.random() * batch.length));
+            await delay(delayValue).then(async () => {
+              if (DEBUG) {
+                console.log(`DisplayGrid getData RawPairs index ${i} ${delayValue} ${pair.primary.name} ${pair.secondary.name}`);
+              }
+            })
+            const dp = new GridPair(pair.primary, pair.secondary, currentPage);
+            dp.index = i;
+            if (!pair.primary.name.localeCompare(dp.primaryId)) {
+              //if that works, the set appears to have worked
+              await dp.getSkillBooks(generalRole.enum.primary);
+              await dp.getSkillBooks(generalRole.enum.secondary);
+              newRows.push(dp);
+            }
+          })
+        )
+        if (newRows.length > 0 && this.grid !== null && this.grid !== undefined) {
           if (DEBUG) {
-            console.log(`DisplayGrid getData RawPairs index ${index} ${delayValue} ${pair.primary.name} ${pair.secondary.name}`);
+            console.log(`setting rowData from getData on RawPairs`);
           }
-          const dp = new GridPair(pair.primary, pair.secondary, currentPage);
-          dp.index = index;
-          if (!pair.primary.name.localeCompare(dp.primaryId)) {
-            //if that works, the set appears to have worked
-            await dp.getSkillBooks(generalRole.enum.primary);
-            await delay(10);
-            await dp.getSkillBooks(generalRole.enum.secondary);
-            newRows.push(dp);
+          newRows.forEach((dp) => {
+            dp.BuffsForInvestment(this.InvestmentLevel);
+          });
+          this._DisplayPairs.push(...newRows);
+          if (this.grid !== null && this.grid !== undefined) {
+            this.grid.setGridOption('rowData', this._DisplayPairs);
+            this.requestUpdate('grid');
           }
-        });
-    }));
-    if (newRows.length > 0 && this.grid !== null && this.grid !== undefined) {
-      if (DEBUG) {
-        console.log(`setting rowData from getData on RawPairs`);
-      }
-      this._DisplayPairs = [...newRows]
-      this._DisplayPairs.forEach((dp) => {
-        dp.BuffsForInvestment(this.InvestmentLevel);
-      });
-      if(this.grid !== null && this.grid !== undefined) {
-        this.grid.setGridOption('rowData', this._DisplayPairs);
-        this.requestUpdate('grid');
-      }
-    } else {
-      if (DEBUG) {
-        console.log(`getData for RawPairs, grid was null`);
+        } else {
+          if (DEBUG) {
+            console.log(`getData for RawPairs, grid was null`);
+          }
+        }
       }
     }
   }

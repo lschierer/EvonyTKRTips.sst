@@ -176,72 +176,74 @@ export class GridPair {
     .args(Display)
     .returns(z.boolean())
     .implement((display: DisplayType) => {
-      let general: ExtendedGeneralType;
-      let eg: ExtendedGeneralType;
-      let nBP: BuffParamsType;
-
-      if (!Display.enum.primary.localeCompare(Display.enum.primary)) {
-        general = this._primary;
-
-        nBP = this.pInvestment;
-      } else {
-        general = this._secondary;
-
-        nBP = this.sInvestment;
-      }
-      if (general === null) {
-        return false;
-      } else {
-
-        if (DEBUG) console.log(`EvAnsBuff starting for ${general.name}`);
-        //figure out my state engine here
-
-        const EvAnsRanking = EvAnsScoreComputer(
+      if(!display.localeCompare(Display.enum.primary)) {
+        if(DEBUG) {
+          console.log(`GeneralBuffs for ${this._primary.name} as primary`)
+        }
+        this.pEvAnsRanking = EvAnsScoreComputer(
           generalUseCase.enum.Attack,
-          general,
+          this._primary,
           display,
-          nBP,
+          this.pInvestment
         );
-
-        const AttackRanking = AttackScoreComputer(
+        this.pAttackRanking = AttackScoreComputer(
           generalUseCase.enum.Attack,
-          general,
+          this._primary,
           display,
-          nBP,
+          this.pInvestment
         );
-
-        const ToughnessRanking = ToughnessScoreComputer(
+        this.pToughnessRanking = ToughnessScoreComputer(
           generalUseCase.enum.Attack,
-          general,
+          this._primary,
           display,
-          nBP,
+          this.pInvestment
+        );
+        if(DEBUG){
+          console.log(`GeneralBuffs ${display} ${this._primary}: ${this.pEvAnsRanking}, ${this.pAttackRanking}, ${this.pToughnessRanking}`)
+        }
+        if(this.pEvAnsRanking > 0 &&
+          this.pAttackRanking > 0 &&
+          this.pToughnessRanking > 0
+        ) {
+          return true;
+        } else {
+          return false;
+        }
+      }else if(!display.localeCompare(Display.enum.secondary)) {
+        if (DEBUG) {
+          console.log(`GeneralBuffs for ${this._secondary.name} as secondary`)
+        }
+        this.sEvAnsRanking = EvAnsScoreComputer(
+          generalUseCase.enum.Attack,
+          this._secondary,
+          display,
+          this.sInvestment
+        );
+        this.sAttackRanking = AttackScoreComputer(
+          generalUseCase.enum.Attack,
+          this._secondary,
+          display,
+          this.sInvestment
+        );
+        this.sToughnessRanking = ToughnessScoreComputer(
+          generalUseCase.enum.Attack,
+          this._secondary,
+          display,
+          this.sInvestment
         );
         if (DEBUG) {
-          console.log(
-            `GeneralBuffs, computed: ${EvAnsRanking} ${AttackRanking} ${ToughnessRanking} for ${general.name} ${display} `,
-          );
+          console.log(`GeneralBuffs ${display} ${this._secondary}: ${this.sEvAnsRanking}, ${this.sAttackRanking}, ${this.sToughnessRanking}`)
         }
-
-        if (!Display.enum.primary.localeCompare(Display.enum.primary)) {
-          this.pEvAnsRanking = EvAnsRanking;
-          this.pAttackRanking = AttackRanking;
-          this.pToughnessRanking = ToughnessRanking;
-          if (DEBUG) {
-            console.log(
-              `GeneralBuffs, stored: ${this.pEvAnsRanking} ${this.pAttackRanking} ${this.pToughnessRanking} for ${general.name} ${display} `,
-            );
-          }
+        if (this.sEvAnsRanking > 0 &&
+          this.sAttackRanking > 0 &&
+          this.sToughnessRanking > 0
+        ) {
+          return true;
         } else {
-          this.sEvAnsRanking = EvAnsRanking;
-          this.sAttackRanking = AttackRanking;
-          this.sToughnessRanking = ToughnessRanking;
-          if (DEBUG) {
-            console.log(
-              `GeneralBuffs, stored: ${this.sEvAnsRanking} ${this.sAttackRanking} ${this.sToughnessRanking} for ${general.name} ${display} `,
-            );
-          }
+          return false;
         }
-        return true;
+      } else {
+        return false;
       }
     });
 
