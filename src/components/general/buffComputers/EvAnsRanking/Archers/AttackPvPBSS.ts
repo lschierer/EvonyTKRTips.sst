@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { BuffParams, type BuffParamsType } from '@schemas/baseSchemas';
+import { BuffParams, type BuffParamsType, type BuffType } from '@schemas/baseSchemas';
 
 import {
   ExtendedGeneral,
@@ -38,7 +38,7 @@ export const AttackPvPBSS = z
             return accumulator;
           } else {
             const bisb: specialSkillBookType = v.data;
-            const array_total = bisb.buff.reduce((a2, tb) => {
+            const array_total = bisb.buff.reduce((a2, tb: BuffType) => {
               if (DEBUG_BSS) {
                 console.log(`--- start tb ---`);
                 console.log(JSON.stringify(tb));

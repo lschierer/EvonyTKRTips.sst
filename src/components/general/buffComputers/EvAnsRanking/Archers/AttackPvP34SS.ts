@@ -17,7 +17,7 @@ import { PvPBuff } from './PvPBuff';
 
 const DEBUG_34SS = false;
 
-export const GroundAttackPvP34SS = z
+export const AttackPvP34SS = z
   .function()
   .args(ExtendedGeneral, BuffParams)
   .returns(z.number())

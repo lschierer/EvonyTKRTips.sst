@@ -18,7 +18,7 @@ import { PvPBuff } from './PvPBuff';
 const DEBUG_AES = false;
 const DEBUG = false;
 
-export const GroundAttackPvPAES = z
+export const AttackPvPAES = z
   .function()
   .args(ExtendedGeneral, BuffParams)
   .returns(z.number())

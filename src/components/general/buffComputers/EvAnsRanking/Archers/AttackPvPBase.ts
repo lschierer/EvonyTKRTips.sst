@@ -1,5 +1,5 @@
-const DEBUG = false;
-const DEBUG_BAS = false;
+const DEBUG = true;
+const DEBUG_BAS = true;
 
 import { z } from 'zod';
 
@@ -18,10 +18,10 @@ import {
 
 import { RangedPvPAttackAttributeMultipliers } from '@lib/EvAnsAttributeRanking';
 import { AttackPvPBSS } from './AttackPvPBSS';
-import { GroundAttackPvPAES } from './AttackPvPAES';
-import { GroundAttackPvP34SS } from './AttackPvP34SS';
+import { AttackPvPAES } from './AttackPvPAES';
+import { AttackPvP34SS } from './AttackPvP34SS';
 
-const EvAnsBasicGround = z
+const EvAnsBasic = z
   .function()
   .args(ExtendedGeneral)
   .returns(z.number())
@@ -52,58 +52,45 @@ const EvAnsBasicGround = z
       500 + AES_adjustment + eg.attack + 45 * eg.attack_increment < 900
         ? (500 + AES_adjustment + eg.attack + 45 * eg.attack_increment) * 0.1
         : 90 +
-          (500 + AES_adjustment + eg.attack + 45 * eg.attack_increment - 900) *
-            0.2;
+        (500 + AES_adjustment + eg.attack + 45 * eg.attack_increment - 900) *
+        0.2;
     const BasicDefense =
       500 + AES_adjustment + eg.defense + 45 * eg.defense_increment < 900
         ? (500 + AES_adjustment + eg.defense + 45 * eg.defense_increment) * 0.1
         : 90 +
-          (500 +
-            AES_adjustment +
-            eg.defense +
-            45 * eg.defense_increment -
-            900) *
-            0.2;
+        (500 + AES_adjustment + eg.defense + 45 * eg.defense_increment - 900) *
+        0.2;
     const BasicLeaderShip =
       500 + AES_adjustment + eg.leadership + 45 * eg.leadership_increment < 900
-        ? (500 +
-            AES_adjustment +
-            eg.leadership +
-            45 * eg.leadership_increment) *
-          0.1
+        ? (500 + AES_adjustment + eg.leadership + 45 * eg.leadership_increment) *
+        0.1
         : 90 +
-          (500 +
-            AES_adjustment +
-            eg.leadership +
-            45 * eg.leadership_increment -
-            900) *
-            0.2;
+        (500 + AES_adjustment + eg.leadership + 45 * eg.leadership_increment -
+          900) *
+        0.2;
     const BasicPolitics =
       500 + AES_adjustment + eg.politics + 45 * eg.politics_increment < 900
         ? (500 + AES_adjustment + eg.politics + 45 * eg.politics_increment) *
-          0.1
+        0.1
         : 90 +
-          (500 +
-            AES_adjustment +
-            eg.politics +
-            45 * eg.politics_increment -
-            900) *
-            0.2;
+        (500 + AES_adjustment + eg.politics + 45 * eg.politics_increment -
+          900) *
+        0.2;
 
     const attackMultiplier =
       RangedPvPAttackAttributeMultipliers?.Offensive.AllTroopAttack ?? 1;
     const defenseMultiplier =
       RangedPvPAttackAttributeMultipliers?.Toughness.AllTroopDefense ?? 1;
-    const HPMultipler =
+    const HPMultiplier =
       RangedPvPAttackAttributeMultipliers?.Toughness.AllTroopHP ?? 1;
-    const PoliticsMultipler =
+    const PoliticsMultiplier =
       RangedPvPAttackAttributeMultipliers?.Preservation.Death2Wounded ?? 1;
 
     const BAS =
       BasicAttack * attackMultiplier +
       BasicDefense * defenseMultiplier +
-      BasicLeaderShip * HPMultipler +
-      BasicPolitics * PoliticsMultipler;
+      BasicLeaderShip * HPMultiplier +
+      BasicPolitics * PoliticsMultiplier;
 
     if (DEBUG_BAS) {
       console.log(`BasicAttack: ${BasicAttack} for ${eg.name}`);
@@ -125,10 +112,10 @@ export const EvAnsArchersPvPAttack = z
         console.log(`${eg.name}: EvAnsGroundPvPAttack starting`);
       }
 
-      const BAS = EvAnsBasicGround(eg);
+      const BAS = EvAnsBasic(eg);
       const BSS = AttackPvPBSS(eg, bp);
-      const AES = GroundAttackPvPAES(eg, bp);
-      const specialities = GroundAttackPvP34SS(eg, bp);
+      const AES = AttackPvPAES(eg, bp);
+      const specialities = AttackPvP34SS(eg, bp);
 
       let TLGS = BSS + specialities;
       if (DEBUG) {
@@ -149,9 +136,9 @@ export const EvAnsArchersPvPAttack = z
       }
       if (DEBUG) {
         console.log(
-          `for ${eg.name} BAS: ${BAS} BSS: ${BSS} AES: ${AES} specialities: ${specialities} TLGS: ${TLGS}`
+          `for ${eg.name} BAS: ${BAS} BSS: ${BSS} AES: ${AES} specialities: ${specialities} TLGS: ${TLGS}`,
         );
       }
       return TLGS;
-    }
+    },
   );
