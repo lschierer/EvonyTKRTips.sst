@@ -14,65 +14,65 @@ general:
   politics: 107
   politics_increment: 8.64
   books:
-  - Crossing the River Rhine
+    - Crossing the River Rhine
   ascending:
-  - level: '6'
-    buff:
-    - attribute: Attack
-      class: Ground
-      value:
-        number: 5
-        unit: percentage
-    - attribute: HP
-      class: Ground
-      value:
-        number: 10
-        unit: percentage
-    - attribute: HP
-      class: Mounted
-      value:
-        number: 10
-        unit: percentage
-  - level: '7'
-    buff:
-    - attribute: Death_to_Wounded
-      condition:
-      - Marching
-      value:
-        number: 10
-        unit: percentage
-  - level: '8'
-    buff:
-    - attribute: March_Size_Capacity
-      value:
-        number: 12
-        unit: percentage
-  - level: '9'
-    buff:
-    - attribute: Attack
-      class: Ground
-      value:
-        number: 10
-        unit: percentage
-    - attribute: HP
-      class: Ground
-      value:
-        number: 20
-        unit: percentage
-  - level: '10'
-    buff:
-    - attribute: Attack
-      class: Ground
-      value:
-        number: 20
-        unit: percentage
-    - attribute: Defense
-      class: Ground
-      value:
-        number: 35
-        unit: percentage
+    - level: '6'
+      buff:
+        - attribute: Attack
+          class: Ground
+          value:
+            number: 5
+            unit: percentage
+        - attribute: HP
+          class: Ground
+          value:
+            number: 10
+            unit: percentage
+        - attribute: HP
+          class: Mounted
+          value:
+            number: 10
+            unit: percentage
+    - level: '7'
+      buff:
+        - attribute: Death_to_Wounded
+          condition:
+            - Marching
+          value:
+            number: 10
+            unit: percentage
+    - level: '8'
+      buff:
+        - attribute: March_Size_Capacity
+          value:
+            number: 12
+            unit: percentage
+    - level: '9'
+      buff:
+        - attribute: Attack
+          class: Ground
+          value:
+            number: 10
+            unit: percentage
+        - attribute: HP
+          class: Ground
+          value:
+            number: 20
+            unit: percentage
+    - level: '10'
+      buff:
+        - attribute: Attack
+          class: Ground
+          value:
+            number: 20
+            unit: percentage
+        - attribute: Defense
+          class: Ground
+          value:
+            number: 35
+            unit: percentage
   specialities:
-  - Ground Troop Assault
-  - Formation
-  - Ground Troop Ares
-  - Battle of the Dunes
+    - Ground Troop Assault
+    - Formation
+    - Ground Troop Ares
+    - Battle of the Dunes

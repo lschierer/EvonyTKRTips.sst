@@ -14,114 +14,114 @@ general:
   level: '1'
   score_as: Siege
   books:
-  - The King of Atlis
-  - King of Rhine
+    - The King of Atlis
+    - King of Rhine
   specialities:
-  - Siege Machine Formation
-  - Bash
-  - Siege Machine Ares
-  - Rhine Flame Axe
+    - Siege Machine Formation
+    - Bash
+    - Siege Machine Ares
+    - Rhine Flame Axe
   ascending:
-  - level: '6'
-    buff:
-    - attribute: Attack
-      condition:
-      - Marching
-      class: Siege
-      value:
-        number: 15
-        unit: percentage
-    - attribute: HP
-      condition:
-      - Marching
-      class: Siege
-      value:
-        number: 10
-        unit: percentage
-  - level: '7'
-    buff:
-    - attribute: Death_to_Wounded
-      condition:
-      - Marching
-      value:
-        number: 8
-        unit: percentage
-  - level: '8'
-    buff:
-    - attribute: HP
-      condition:
-      - Marching
-      class: Archers
-      value:
-        number: 15
-        unit: percentage
-    - attribute: HP
-      condition:
-      - Marching
-      class: Siege
-      value:
-        number: 15
-        unit: percentage
-    - attribute: Defense
-      condition:
-      - Marching
-      class: Archers
-      value:
-        number: 15
-        unit: percentage
-    - attribute: Defense
-      condition:
-      - Marching
-      class: Siege
-      value:
-        number: 15
-        unit: percentage
-  - level: '9'
-    buff:
-    - attribute: Attack
-      class: Siege
-      value:
-        number: 30
-        unit: percentage
-    - attribute: Defense
-      class: Siege
-      value:
-        number: 15
-        unit: percentage
-  - level: '10'
-    buff:
-    - attribute: Attack
-      condition:
-      - Marching
-      class: Siege
-      value:
-        number: 30
-        unit: percentage
-    - attribute: Defense
-      condition:
-      - Marching
-      class: Archers
-      value:
-        number: 15
-        unit: percentage
-    - attribute: Defense
-      condition:
-      - Marching
-      class: Siege
-      value:
-        number: 15
-        unit: percentage
-    - attribute: HP
-      condition:
-      - Marching
-      class: Archers
-      value:
-        number: 15
-        unit: percentage
-    - attribute: HP
-      condition:
-      - Marching
-      class: Siege
-      value:
-        number: 15
-        unit: percentage
+    - level: '6'
+      buff:
+        - attribute: Attack
+          condition:
+            - Marching
+          class: Siege
+          value:
+            number: 15
+            unit: percentage
+        - attribute: HP
+          condition:
+            - Marching
+          class: Siege
+          value:
+            number: 10
+            unit: percentage
+    - level: '7'
+      buff:
+        - attribute: Death_to_Wounded
+          condition:
+            - Marching
+          value:
+            number: 8
+            unit: percentage
+    - level: '8'
+      buff:
+        - attribute: HP
+          condition:
+            - Marching
+          class: Archers
+          value:
+            number: 15
+            unit: percentage
+        - attribute: HP
+          condition:
+            - Marching
+          class: Siege
+          value:
+            number: 15
+            unit: percentage
+        - attribute: Defense
+          condition:
+            - Marching
+          class: Archers
+          value:
+            number: 15
+            unit: percentage
+        - attribute: Defense
+          condition:
+            - Marching
+          class: Siege
+          value:
+            number: 15
+            unit: percentage
+    - level: '9'
+      buff:
+        - attribute: Attack
+          class: Siege
+          value:
+            number: 30
+            unit: percentage
+        - attribute: Defense
+          class: Siege
+          value:
+            number: 15
+            unit: percentage
+    - level: '10'
+      buff:
+        - attribute: Attack
+          condition:
+            - Marching
+          class: Siege
+          value:
+            number: 30
+            unit: percentage
+        - attribute: Defense
+          condition:
+            - Marching
+          class: Archers
+          value:
+            number: 15
+            unit: percentage
+        - attribute: Defense
+          condition:
+            - Marching
+          class: Siege
+          value:
+            number: 15
+            unit: percentage
+        - attribute: HP
+          condition:
+            - Marching
+          class: Archers
+          value:
+            number: 15
+            unit: percentage
+        - attribute: HP
+          condition:
+            - Marching
+          class: Siege
+          value:
+            number: 15
+            unit: percentage

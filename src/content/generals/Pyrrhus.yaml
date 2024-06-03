@@ -14,90 +14,90 @@ general:
   politics: 107
   politics_increment: 8.69
   specialities:
-  - Ground Troop Defense
-  - Annihilation
-  - Ground Troop Ares
-  - Pyrrhic Victory
+    - Ground Troop Defense
+    - Annihilation
+    - Ground Troop Ares
+    - Pyrrhic Victory
   ascending:
-  - level: '6'
-    buff:
-    - attribute: Attack
-      class: Ground
-      value:
-        number: 10
-        unit: percentage
-    - attribute: HP
-      class: Ground
-      value:
-        number: 10
-        unit: percentage
-    - attribute: HP
-      class: Mounted
-      value:
-        number: 10
-        unit: percentage
-  - level: '7'
-    buff:
-    - attribute: Death_to_Wounded
-      condition:
-      - Marching
-      value:
-        number: 10
-        unit: percentage
-  - level: '8'
-    buff:
-    - attribute: Rally_Capacity
-      condition:
-      - When_Rallying
-      value:
-        number: 8
-        unit: percentage
-  - level: '9'
-    buff:
-    - attribute: Attack
-      class: Mounted
-      condition:
-      - Marching
-      value:
-        number: 15
-        unit: percentage
-    - attribute: Attack
-      class: Ground
-      condition:
-      - Marching
-      value:
-        number: 15
-        unit: percentage
-    - attribute: Defense
-      class: Mounted
-      condition:
-      - Marching
-      value:
-        number: 15
-        unit: percentage
-    - attribute: Defense
-      class: Ground
-      condition:
-      - Marching
-      value:
-        number: 15
-        unit: percentage
-  - level: '10'
-    buff:
-    - attribute: Attack
-      class: Ground
-      value:
-        number: 25
-        unit: percentage
-    - attribute: Defense
-      class: Ground
-      value:
-        number: 15
-        unit: percentage
-    - attribute: HP
-      class: Ground
-      value:
-        number: 15
-        unit: percentage
+    - level: '6'
+      buff:
+        - attribute: Attack
+          class: Ground
+          value:
+            number: 10
+            unit: percentage
+        - attribute: HP
+          class: Ground
+          value:
+            number: 10
+            unit: percentage
+        - attribute: HP
+          class: Mounted
+          value:
+            number: 10
+            unit: percentage
+    - level: '7'
+      buff:
+        - attribute: Death_to_Wounded
+          condition:
+            - Marching
+          value:
+            number: 10
+            unit: percentage
+    - level: '8'
+      buff:
+        - attribute: Rally_Capacity
+          condition:
+            - When_Rallying
+          value:
+            number: 8
+            unit: percentage
+    - level: '9'
+      buff:
+        - attribute: Attack
+          class: Mounted
+          condition:
+            - Marching
+          value:
+            number: 15
+            unit: percentage
+        - attribute: Attack
+          class: Ground
+          condition:
+            - Marching
+          value:
+            number: 15
+            unit: percentage
+        - attribute: Defense
+          class: Mounted
+          condition:
+            - Marching
+          value:
+            number: 15
+            unit: percentage
+        - attribute: Defense
+          class: Ground
+          condition:
+            - Marching
+          value:
+            number: 15
+            unit: percentage
+    - level: '10'
+      buff:
+        - attribute: Attack
+          class: Ground
+          value:
+            number: 25
+            unit: percentage
+        - attribute: Defense
+          class: Ground
+          value:
+            number: 15
+            unit: percentage
+        - attribute: HP
+          class: Ground
+          value:
+            number: 15
+            unit: percentage
   books:
-  - Pyrrhic War
+    - Pyrrhic War

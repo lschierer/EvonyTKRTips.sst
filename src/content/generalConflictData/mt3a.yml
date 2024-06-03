@@ -1,79 +1,79 @@
 name: 01HGKYRFD3XP10X55VSXMBNPMB
 members:
-- Ii Naomasa
+  - Ii Naomasa
 others:
-- Laudon
-- Prince Eugene
-- Martinus
-- Martinus (Dragon God)
-- Li Jing
-- Robert Guiscard
-- Washington
-- Xiang Yu
-- Honda Tadakatsu
-- Khalid
+  - Laudon
+  - Prince Eugene
+  - Martinus
+  - Martinus (Dragon God)
+  - Li Jing
+  - Robert Guiscard
+  - Washington
+  - Xiang Yu
+  - Honda Tadakatsu
+  - Khalid
 books:
-- name: Mounted Attack Increase
-  level: '1'
-  buff:
-  - attribute: Attack
-    class: Mounted
-    value:
-      number: 10
-      unit: percentage
-- name: Mounted Attack Increase
-  level: '2'
-  buff:
-  - attribute: Attack
-    class: Mounted
-    value:
-      number: 15
-      unit: percentage
-- name: Mounted Attack Increase
-  level: '3'
-  buff:
-  - attribute: Attack
-    class: Mounted
-    value:
-      number: 20
-      unit: percentage
-- name: Mounted Attack Increase
-  level: '4'
-  buff:
-  - attribute: Attack
-    class: Mounted
-    value:
-      number: 25
-      unit: percentage
-- name: Mounted HP Increase
-  level: '1'
-  buff:
-  - attribute: HP
-    class: Mounted
-    value:
-      number: 10
-      unit: percentage
-- name: Mounted HP Increase
-  level: '2'
-  buff:
-  - attribute: HP
-    class: Mounted
-    value:
-      number: 15
-      unit: percentage
-- name: Mounted HP Increase
-  level: '3'
-  buff:
-  - attribute: HP
-    class: Mounted
-    value:
-      number: 20
-      unit: percentage
-- name: Mounted HP Increase
-  level: '4'
-  buff:
-  - attribute: HP
-    class: Mounted
-    value:
-      number: 25
-      unit: percentage
+  - name: Mounted Attack Increase
+    level: '1'
+    buff:
+      - attribute: Attack
+        class: Mounted
+        value:
+          number: 10
+          unit: percentage
+  - name: Mounted Attack Increase
+    level: '2'
+    buff:
+      - attribute: Attack
+        class: Mounted
+        value:
+          number: 15
+          unit: percentage
+  - name: Mounted Attack Increase
+    level: '3'
+    buff:
+      - attribute: Attack
+        class: Mounted
+        value:
+          number: 20
+          unit: percentage
+  - name: Mounted Attack Increase
+    level: '4'
+    buff:
+      - attribute: Attack
+        class: Mounted
+        value:
+          number: 25
+          unit: percentage
+  - name: Mounted HP Increase
+    level: '1'
+    buff:
+      - attribute: HP
+        class: Mounted
+        value:
+          number: 10
+          unit: percentage
+  - name: Mounted HP Increase
+    level: '2'
+    buff:
+      - attribute: HP
+        class: Mounted
+        value:
+          number: 15
+          unit: percentage
+  - name: Mounted HP Increase
+    level: '3'
+    buff:
+      - attribute: HP
+        class: Mounted
+        value:
+          number: 20
+          unit: percentage
+  - name: Mounted HP Increase
+    level: '4'
+    buff:
+      - attribute: HP
+        class: Mounted
+        value:
+          number: 25
+          unit: percentage

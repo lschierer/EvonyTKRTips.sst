@@ -1,54 +1,52 @@
 name: 01HGKXXRT5ARNCK525NRWQXQNR
 members:
-- Kleos
+  - Kleos
 others:
-- Zucca
-- Petronas
-- John Churchill
-- Philip II
-- Napoleon
-- Genghis Khan
-- King Arthur
+  - Zucca
+  - Petronas
+  - John Churchill
+  - Philip II
+  - Napoleon
+  - Genghis Khan
+  - King Arthur
 books:
-- name: March Size Increase
-  level: '1'
-  buff:
-  - attribute: Attack
-    condition:
-    - When not mine
-    class: Archers
-    value:
-      number: 3
-      unit: percentage
-- name: March Size Increase
-  level: '2'
-  buff:
-  - attribute: Attack
-    condition:
-    - When not mine
-    class: Archers
-    value:
-      number: 6
-      unit: percentage
-- name: March Size Increase
-  level: '3'
-  buff:
-  - attribute: Attack
-    condition:
-    - When not mine
-    class: Archers
-    value:
-      number: 9
-      unit: percentage
-- name: March Size Increase
-  level: '4'
-  buff:
-  - attribute: Attack
-    condition:
-    - When not mine
-    class: Archers
-    value:
-      number: 12
-      unit: percentage
-
-
+  - name: March Size Increase
+    level: '1'
+    buff:
+      - attribute: Attack
+        condition:
+          - When not mine
+        class: Archers
+        value:
+          number: 3
+          unit: percentage
+  - name: March Size Increase
+    level: '2'
+    buff:
+      - attribute: Attack
+        condition:
+          - When not mine
+        class: Archers
+        value:
+          number: 6
+          unit: percentage
+  - name: March Size Increase
+    level: '3'
+    buff:
+      - attribute: Attack
+        condition:
+          - When not mine
+        class: Archers
+        value:
+          number: 9
+          unit: percentage
+  - name: March Size Increase
+    level: '4'
+    buff:
+      - attribute: Attack
+        condition:
+          - When not mine
+        class: Archers
+        value:
+          number: 12
+          unit: percentage

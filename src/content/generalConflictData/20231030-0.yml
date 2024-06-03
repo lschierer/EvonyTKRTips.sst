@@ -1,42 +1,42 @@
 name: 01HGKZ0XGTEWDNKZGG6M7EKVZ5
 members:
-- Raimondo
+  - Raimondo
 others:
-- Zucca
-- Petronas
-- John Churchill
-- Philip II
-- Septimus Severus
+  - Zucca
+  - Petronas
+  - John Churchill
+  - Philip II
+  - Septimus Severus
 books:
-- name: Siege Attack Increase
-  level: '1'
-  buff:
-  - attribute: Attack
-    class: Siege
-    value:
-      number: 10
-      unit: percentage
-- name: Siege Attack Increase
-  level: '2'
-  buff:
-  - attribute: Attack
-    class: Siege
-    value:
-      number: 15
-      unit: percentage
-- name: Siege Attack Increase
-  level: '3'
-  buff:
-  - attribute: Attack
-    class: Siege
-    value:
-      number: 20
-      unit: percentage
-- name: Siege Attack Increase
-  level: '4'
-  buff:
-  - attribute: Attack
-    class: Siege
-    value:
-      number: 25
-      unit: percentage
+  - name: Siege Attack Increase
+    level: '1'
+    buff:
+      - attribute: Attack
+        class: Siege
+        value:
+          number: 10
+          unit: percentage
+  - name: Siege Attack Increase
+    level: '2'
+    buff:
+      - attribute: Attack
+        class: Siege
+        value:
+          number: 15
+          unit: percentage
+  - name: Siege Attack Increase
+    level: '3'
+    buff:
+      - attribute: Attack
+        class: Siege
+        value:
+          number: 20
+          unit: percentage
+  - name: Siege Attack Increase
+    level: '4'
+    buff:
+      - attribute: Attack
+        class: Siege
+        value:
+          number: 25
+          unit: percentage

@@ -1,44 +1,44 @@
 name: 01HPAK3MANZXT0FYCM9BV81YPZ
 members:
-- Matthias I
+  - Matthias I
 others:
-- John Hunyadi
-- Genghis Khan
-- King Arthur
+  - John Hunyadi
+  - Genghis Khan
+  - King Arthur
 books:
-- name: March Size Increase
-  level: '1'
-  buff:
-  - attribute: March_Size_Capacity
-    condition:
-    - When not mine
-    value:
-      number: 3
-      unit: percentage
-- name: March Size Increase
-  level: '2'
-  buff:
-  - attribute: March_Size_Capacity
-    condition:
-    - When not mine
-    value:
-      number: 6
-      unit: percentage
-- name: March Size Increase
-  level: '3'
-  buff:
-  - attribute: March_Size_Capacity
-    condition:
-    - When not mine
-    value:
-      number: 9
-      unit: percentage
-- name: March Size Increase
-  level: '4'
-  buff:
-  - attribute: March_Size_Capacity
-    condition:
-    - When not mine
-    value:
-      number: 12
-      unit: percentage
+  - name: March Size Increase
+    level: '1'
+    buff:
+      - attribute: March_Size_Capacity
+        condition:
+          - When not mine
+        value:
+          number: 3
+          unit: percentage
+  - name: March Size Increase
+    level: '2'
+    buff:
+      - attribute: March_Size_Capacity
+        condition:
+          - When not mine
+        value:
+          number: 6
+          unit: percentage
+  - name: March Size Increase
+    level: '3'
+    buff:
+      - attribute: March_Size_Capacity
+        condition:
+          - When not mine
+        value:
+          number: 9
+          unit: percentage
+  - name: March Size Increase
+    level: '4'
+    buff:
+      - attribute: March_Size_Capacity
+        condition:
+          - When not mine
+        value:
+          number: 12
+          unit: percentage
