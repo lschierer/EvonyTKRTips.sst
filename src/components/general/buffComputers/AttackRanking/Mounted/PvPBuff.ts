@@ -13,8 +13,8 @@ import {
 
 import { MountedPvPAttackAttributeMultipliers } from '@lib/EvAnsAttributeRanking';
 
-const DEBUG_GBUFF = true;
-const DEBUG = true;
+const DEBUG_GBUFF = false;
+const DEBUG = false;
 
 export const PvPBuff = z
   .function()
