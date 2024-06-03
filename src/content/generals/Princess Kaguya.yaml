@@ -3,7 +3,7 @@ general:
   name: Princess Kaguya
   display: summary
   leadership: 115
-  leadership_increment: 98.92
+  leadership_increment: 8.92
   attack: 114
   attack_increment: 8.83
   defense: 116
