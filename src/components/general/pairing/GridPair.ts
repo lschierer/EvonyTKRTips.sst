@@ -1,17 +1,24 @@
 import { fromFetch } from 'rxjs/fetch';
-import { BehaviorSubject, from, map, concatMap, switchMap, throwError } from 'rxjs';
+import {
+  BehaviorSubject,
+  from,
+  map,
+  concatMap,
+  switchMap,
+  throwError,
+} from 'rxjs';
 import { z } from 'zod';
 
 import {
   AscendingLevels,
   BuffParams,
-  type BuffParamsType, qualityColor,
+  type BuffParamsType,
+  qualityColor,
 } from '@schemas/baseSchemas';
 
 import {
   Display,
   type DisplayType,
-
   generalRole,
   type generalRoleType,
   generalUseCase,
@@ -21,7 +28,8 @@ import {
   type ExtendedGeneralType,
   ExtendedGeneralStatus,
   type ExtendedGeneralStatusType,
-  type RankInstanceType, ExtendedGeneral,
+  type RankInstanceType,
+  ExtendedGeneral,
 } from '@schemas/ExtendedGeneral';
 
 import { EvAnsScoreComputer } from '../buffComputers/EvAnsRanking/EvAnsScoreComputer';
@@ -31,7 +39,6 @@ import { ScoreComputer as ToughnessScoreComputer } from '../buffComputers/Toughn
 const DEBUG = false;
 
 export class GridPair {
-
   public index = 0;
 
   private _primaryId = '';
@@ -42,7 +49,6 @@ export class GridPair {
 
   set primaryId(pId: string) {
     this._primaryId = pId;
-
   }
 
   // @ts-ignore
@@ -56,11 +62,13 @@ export class GridPair {
     const v = ExtendedGeneral.safeParse(g);
     if (v.success) {
       this._primary = v.data;
-      if (this._primaryId.localeCompare((this._primary.name))) {
+      if (this._primaryId.localeCompare(this._primary.name)) {
         this._primaryId = this._primary.name;
       }
       if (DEBUG) {
-        console.log(`GridPair set primary; _primary.name: ${this._primary.name}`);
+        console.log(
+          `GridPair set primary; _primary.name: ${this._primary.name}`
+        );
         console.log(`GridPair set primary; _primaryId: ${this._primaryId}`);
       }
     }
@@ -74,7 +82,6 @@ export class GridPair {
 
   set secondaryId(sId: string) {
     this._secondaryId = sId;
-
   }
 
   // @ts-ignore
@@ -88,7 +95,7 @@ export class GridPair {
     const v = ExtendedGeneral.safeParse(g);
     if (v.success) {
       this._secondary = v.data;
-      if (this._secondaryId.localeCompare((this._secondary.name))) {
+      if (this._secondaryId.localeCompare(this._secondary.name)) {
         this._secondaryId = this._secondary.name;
       }
     }
@@ -100,27 +107,31 @@ export class GridPair {
   private sEvAnsRanking = 0;
 
   get EvAnsRanking(): number {
-    const value = (this.pEvAnsRanking + this.sEvAnsRanking);
-    if(DEBUG) {
-      console.log(`pEvAnsRanking for ${this.primaryId} ${this.pEvAnsRanking} `)
-      console.log(`sEvAnsRanking for ${this.secondaryId} ${this.sEvAnsRanking} `)
-      console.log(`tEvAnsRanking ${this.primaryId} ${this.secondaryId} ${value}`)
+    const value = this.pEvAnsRanking + this.sEvAnsRanking;
+    if (DEBUG) {
+      console.log(`pEvAnsRanking for ${this.primaryId} ${this.pEvAnsRanking} `);
+      console.log(
+        `sEvAnsRanking for ${this.secondaryId} ${this.sEvAnsRanking} `
+      );
+      console.log(
+        `tEvAnsRanking ${this.primaryId} ${this.secondaryId} ${value}`
+      );
     }
-    return value
+    return value;
   }
 
   private pAttackRanking = 0;
   private sAttackRanking = 0;
 
   get AttackRanking(): number {
-    return (this.pAttackRanking + this.sAttackRanking);
+    return this.pAttackRanking + this.sAttackRanking;
   }
 
   private pToughnessRanking = 0;
   private sToughnessRanking = 0;
 
   get ToughnessRanking(): number {
-    return (this.pToughnessRanking + this.sToughnessRanking);
+    return this.pToughnessRanking + this.sToughnessRanking;
   }
 
   // @ts-ignore
@@ -164,7 +175,7 @@ export class GridPair {
       return JSON.stringify(BP).replace(GridPair.InvestmentOptionsRE, '');
     });
 
-  public BuffsForInvestment(BP: BuffParamsType){
+  public BuffsForInvestment(BP: BuffParamsType) {
     this.InvestmentLevel = BP;
     this.GeneralBuffs(Display.enum.primary);
     this.GeneralBuffs(Display.enum.secondary);
@@ -176,9 +187,9 @@ export class GridPair {
     .args(Display)
     .returns(z.boolean())
     .implement((display: DisplayType) => {
-      if(!display.localeCompare(Display.enum.primary)) {
-        if(DEBUG) {
-          console.log(`GeneralBuffs for ${this._primary.name} as primary`)
+      if (!display.localeCompare(Display.enum.primary)) {
+        if (DEBUG) {
+          console.log(`GeneralBuffs for ${this._primary.name} as primary`);
         }
         this.pEvAnsRanking = EvAnsScoreComputer(
           generalUseCase.enum.Attack,
@@ -198,10 +209,13 @@ export class GridPair {
           display,
           this.pInvestment
         );
-        if(DEBUG){
-          console.log(`GeneralBuffs ${display} ${this._primary}: ${this.pEvAnsRanking}, ${this.pAttackRanking}, ${this.pToughnessRanking}`)
+        if (DEBUG) {
+          console.log(
+            `GeneralBuffs ${display} ${this._primary}: ${this.pEvAnsRanking}, ${this.pAttackRanking}, ${this.pToughnessRanking}`
+          );
         }
-        if(this.pEvAnsRanking > 0 &&
+        if (
+          this.pEvAnsRanking > 0 &&
           this.pAttackRanking > 0 &&
           this.pToughnessRanking > 0
         ) {
@@ -209,9 +223,9 @@ export class GridPair {
         } else {
           return false;
         }
-      }else if(!display.localeCompare(Display.enum.secondary)) {
+      } else if (!display.localeCompare(Display.enum.secondary)) {
         if (DEBUG) {
-          console.log(`GeneralBuffs for ${this._secondary.name} as secondary`)
+          console.log(`GeneralBuffs for ${this._secondary.name} as secondary`);
         }
         this.sEvAnsRanking = EvAnsScoreComputer(
           generalUseCase.enum.Attack,
@@ -232,9 +246,12 @@ export class GridPair {
           this.sInvestment
         );
         if (DEBUG) {
-          console.log(`GeneralBuffs ${display} ${this._secondary}: ${this.sEvAnsRanking}, ${this.sAttackRanking}, ${this.sToughnessRanking}`)
+          console.log(
+            `GeneralBuffs ${display} ${this._secondary}: ${this.sEvAnsRanking}, ${this.sAttackRanking}, ${this.sToughnessRanking}`
+          );
         }
-        if (this.sEvAnsRanking > 0 &&
+        if (
+          this.sEvAnsRanking > 0 &&
           this.sAttackRanking > 0 &&
           this.sToughnessRanking > 0
         ) {
@@ -265,7 +282,7 @@ export class GridPair {
     this.ApiUrl = new URL('/', u);
 
     this.GeneralBuffs(Display.enum.primary);
-    this.GeneralBuffs(Display.enum.secondary,)
+    this.GeneralBuffs(Display.enum.secondary);
 
     if (DEBUG) {
       console.log(`base URL initialized to ${this.ApiUrl}`);

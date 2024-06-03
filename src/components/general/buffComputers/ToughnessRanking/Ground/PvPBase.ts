@@ -35,7 +35,6 @@ const Basic = z
   .args(ExtendedGeneral)
   .returns(z.number())
   .implement((eg: ExtendedGeneralType) => {
-
     let AES_adjustment = 0;
     switch (eg.stars) {
       case AscendingLevels.enum[0]:

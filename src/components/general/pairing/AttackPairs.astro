@@ -1,5 +1,4 @@
 ---
-
 import type { ComponentProps } from 'astro/types';
 
 import { ulid } from 'ulidx';
@@ -34,7 +33,6 @@ import { generalSpecialists } from '../../../schemas/generalsSchema';
 
 const DEBUG = false;
 
-
 interface Props {
   generalClass: generalSpecialistsType;
 }
@@ -59,8 +57,8 @@ let MyInvestmentLevel: BuffParamsType = {
 
 // @ts-ignore
 const AllPairsProps: AllPairsPropsType = {
-  TargetClass: generalClass
-}
+  TargetClass: generalClass,
+};
 
 const DisplayGridProps = {
   tableName: table_name,

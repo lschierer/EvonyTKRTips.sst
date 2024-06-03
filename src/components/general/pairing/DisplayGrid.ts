@@ -1,5 +1,12 @@
 import { fromFetch } from 'rxjs/fetch';
-import { BehaviorSubject, from, map, concatMap, switchMap, throwError } from 'rxjs';
+import {
+  BehaviorSubject,
+  from,
+  map,
+  concatMap,
+  switchMap,
+  throwError,
+} from 'rxjs';
 import { z } from 'zod';
 
 import {
@@ -73,7 +80,6 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
   @property({ type: Object })
   public RawPairs: GeneralPairType[] = new Array<GeneralPairType>();
 
-
   //private tableDivRef: Ref<HTMLElement> = createRef()
 
   private MutationObserver: MutationObserver;
@@ -97,15 +103,17 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
     let batch: GeneralPairType[] = new Array<GeneralPairType>();
     for (let i = 0; i < this.RawPairs.length; i++) {
       batch.push(this.RawPairs[i]);
-      if (i !== 0 && (i % batchLimit !== 0)) {
+      if (i !== 0 && i % batchLimit !== 0) {
         continue;
       } else {
         await Promise.all(
           batch.map(async (pair) => {
-            const delayValue = Math.floor((Math.random() * batch.length));
+            const delayValue = Math.floor(Math.random() * batch.length);
             await delay(delayValue).then(async () => {
               if (DEBUG) {
-                console.log(`DisplayGrid getData RawPairs index ${i}, ${delayValue} ${pair.primary.name} ${pair.secondary.name}`);
+                console.log(
+                  `DisplayGrid getData RawPairs index ${i}, ${delayValue} ${pair.primary.name} ${pair.secondary.name}`
+                );
               }
             });
             const dp = new GridPair(pair.primary, pair.secondary, currentPage);
@@ -116,9 +124,13 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
               await dp.getSkillBooks(generalRole.enum.secondary);
               newRows.push(dp);
             }
-          }),
+          })
         );
-        if (newRows.length > 0 && this.grid !== null && this.grid !== undefined) {
+        if (
+          newRows.length > 0 &&
+          this.grid !== null &&
+          this.grid !== undefined
+        ) {
           if (DEBUG) {
             console.log(`getData: index ${i} newRows: ${newRows.length} `);
           }
@@ -154,25 +166,25 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       // Columns to be displayed (Should match rowData properties)
       columnDefs: [
         {
-          valueGetter: p => p.data!.primaryId,
+          valueGetter: (p) => p.data!.primaryId,
           headerName: 'Primary',
           filter: true,
         },
         {
-          valueGetter: p => p.data!.secondaryId,
+          valueGetter: (p) => p.data!.secondaryId,
           headerName: 'Secondary',
           filter: true,
         },
         {
-          valueGetter: p => p.data!.EvAnsRanking,
+          valueGetter: (p) => p.data!.EvAnsRanking,
           headerName: 'EvAns Ranking',
         },
         {
-          valueGetter: p => p.data!.AttackRanking,
+          valueGetter: (p) => p.data!.AttackRanking,
           headerName: 'Adjusted Attack Score',
         },
         {
-          valueGetter: p => p.data!.ToughnessRanking,
+          valueGetter: (p) => p.data!.ToughnessRanking,
           headerName: 'Adjusted Toughness Score',
         },
       ],
@@ -231,7 +243,6 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       if (DEBUG) {
         console.log(`willUpdate called for RawPairs`);
       }
-
     }
     if (_changedProperties.has('_DisplayPairs')) {
       if (this.grid !== null && this.grid !== undefined) {
@@ -256,7 +267,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       .ag-theme-alpine-dark {
         --ag-icon-font-family: agGridAlpine;
       }
-      
+
       .hidden {
         display: block;
       }
@@ -275,7 +286,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       if (Array.isArray(this._DisplayPairs) && this._DisplayPairs.length > 0) {
         this._DisplayPairs.forEach((dp, index) => {
           dp.BuffsForInvestment(this.InvestmentLevel);
-          if ((index % 10) === 0) {
+          if (index % 10 === 0) {
             this.grid.setGridOption('rowData', this._DisplayPairs);
           }
         });
@@ -288,7 +299,6 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
     }
   }
 
-
   protected override render() {
     if (DEBUG) {
       console.log(`DisplayGrid render called`);
@@ -298,7 +308,6 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       this.grid.setGridOption('rowData', this._DisplayPairs);
     }
     return html`
-      
       <div
         id="agdiv"
         class="ag-theme-alpine"
