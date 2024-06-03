@@ -93,22 +93,21 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
   private async getData() {
     const currentPage = `${document.location.protocol}//${document.location.host}`;
     const batchLimit = 10;
-    for(let i = 0; i< this.RawPairs.length; i++){
-      const newRows: GridPair[] = new Array<GridPair>();
-      const batch: GeneralPairType[] = new Array<GeneralPairType>();
-      if(i !== 0 && (i % batchLimit !== 0)) {
-        batch.push(this.RawPairs[i])
+    let newRows: GridPair[] = new Array<GridPair>();
+    let batch: GeneralPairType[] = new Array<GeneralPairType>();
+    for (let i = 0; i < this.RawPairs.length; i++) {
+      batch.push(this.RawPairs[i]);
+      if (i !== 0 && (i % batchLimit !== 0)) {
         continue;
       } else {
-        batch.push(this.RawPairs[i])
         await Promise.all(
           batch.map(async (pair) => {
             const delayValue = Math.floor((Math.random() * batch.length));
             await delay(delayValue).then(async () => {
               if (DEBUG) {
-                console.log(`DisplayGrid getData RawPairs index ${i} ${delayValue} ${pair.primary.name} ${pair.secondary.name}`);
+                console.log(`DisplayGrid getData RawPairs index ${i}, ${delayValue} ${pair.primary.name} ${pair.secondary.name}`);
               }
-            })
+            });
             const dp = new GridPair(pair.primary, pair.secondary, currentPage);
             dp.index = i;
             if (!pair.primary.name.localeCompare(dp.primaryId)) {
@@ -117,11 +116,11 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
               await dp.getSkillBooks(generalRole.enum.secondary);
               newRows.push(dp);
             }
-          })
-        )
+          }),
+        );
         if (newRows.length > 0 && this.grid !== null && this.grid !== undefined) {
           if (DEBUG) {
-            console.log(`setting rowData from getData on RawPairs`);
+            console.log(`getData: index ${i} newRows: ${newRows.length} `);
           }
           newRows.forEach((dp) => {
             dp.BuffsForInvestment(this.InvestmentLevel);
@@ -136,6 +135,8 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
             console.log(`getData for RawPairs, grid was null`);
           }
         }
+        newRows = new Array<GridPair>();
+        batch = new Array<GeneralPairType>();
       }
     }
   }
@@ -230,11 +231,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       if (DEBUG) {
         console.log(`willUpdate called for RawPairs`);
       }
-      if (Array.isArray(this.RawPairs) && this.RawPairs.length > 0) {
-        await this.getData();
-      } else {
-        console.log(`DisplayGrid willUpdate called for RawPairs but no data`);
-      }
+      
     }
     if (_changedProperties.has('_DisplayPairs')) {
       if (this.grid !== null && this.grid !== undefined) {
@@ -278,7 +275,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       if (Array.isArray(this._DisplayPairs) && this._DisplayPairs.length > 0) {
         this._DisplayPairs.forEach((dp, index) => {
           dp.BuffsForInvestment(this.InvestmentLevel);
-          if((index % 10) === 0){
+          if ((index % 10) === 0) {
             this.grid.setGridOption('rowData', this._DisplayPairs);
           }
         });
@@ -297,7 +294,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       console.log(`DisplayGrid render called`);
       console.log(`${this._DisplayPairs.length} pairs ready`);
     }
-    if(Array.isArray(this._DisplayPairs) && this._DisplayPairs.length > 0) {
+    if (Array.isArray(this._DisplayPairs) && this._DisplayPairs.length > 0) {
       this.grid.setGridOption('rowData', this._DisplayPairs);
     }
     return html`
