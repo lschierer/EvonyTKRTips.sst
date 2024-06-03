@@ -15,9 +15,9 @@ import { checkInvalidConditions } from '../EvAnsScoreComputer';
 
 import { RangedPvPAttackAttributeMultipliers } from '@lib/EvAnsAttributeRanking';
 
-const DEBUGRB = false;
+const DEBUGD = false;
 
-const PvPRangeBuffClassCheck = z
+const PvPDefenseBuffClassCheck = z
   .function()
   .args(Buff, BuffParams)
   .returns(z.number())
@@ -26,42 +26,44 @@ const PvPRangeBuffClassCheck = z
     let multiplier = 0;
     if (tb !== null && tb !== undefined) {
       if (tb.value !== null && tb.value !== undefined) {
-        if (tb.class !== null && tb.class !== undefined) {
-          if (!ClassEnum.enum.Archers.localeCompare(tb.class)) {
-            multiplier =
-              RangedPvPAttackAttributeMultipliers?.Offensive.RangedRangeBonus ??
-              0;
-          } else if (!ClassEnum.enum.Ground.localeCompare(tb.class)) {
-            multiplier = 0;
-          } else if (!ClassEnum.enum.Mounted.localeCompare(tb.class)) {
-            multiplier = 0;
-          } else if (!ClassEnum.enum.Siege.localeCompare(tb.class)) {
-            if (tb.value.unit.localeCompare(UnitSchema.enum.percentage)) {
+        if (!UnitSchema.enum.percentage.localeCompare(tb.value.unit)) {
+          if (tb.class !== null && tb.class !== undefined) {
+            if (!ClassEnum.enum.Archers.localeCompare(tb.class)) {
               multiplier =
-                RangedPvPAttackAttributeMultipliers?.Offensive
-                  .SiegeRangeBonusPercent ?? 0;
+                RangedPvPAttackAttributeMultipliers?.Toughness.RangedDefense ??
+                0;
+            } else if (!ClassEnum.enum.Ground.localeCompare(tb.class)) {
+              multiplier =
+                RangedPvPAttackAttributeMultipliers?.Toughness.GroundDefense ??
+                0;
+            } else if (!ClassEnum.enum.Mounted.localeCompare(tb.class)) {
+              multiplier =
+                RangedPvPAttackAttributeMultipliers?.Toughness.MountedDefense ??
+                0;
+            } else if (!ClassEnum.enum.Siege.localeCompare(tb.class)) {
+              multiplier =
+                RangedPvPAttackAttributeMultipliers?.Toughness.SiegeDefense ??
+                0;
             } else {
-              multiplier =
-                RangedPvPAttackAttributeMultipliers?.Offensive
-                  .SiegeRangeBonusFlat ?? 0;
+              multiplier = 0;
             }
           } else {
-            multiplier = 0;
+            multiplier =
+              RangedPvPAttackAttributeMultipliers?.Toughness.AllTroopDefense ??
+              0;
           }
-        } else {
-          multiplier = 0;
+          const additional = tb.value.number * multiplier;
+          if (DEBUGD) {
+            console.log(`adding ${additional} to ${score}`);
+          }
+          score += additional;
         }
-        const additional = tb.value.number * multiplier;
-        if (DEBUGRB) {
-          console.log(`adding ${additional} to ${score}`);
-        }
-        score += additional;
       }
     }
     return score;
   });
 
-export const PvPRangeBuff = z
+export const PvPDefenseBuff = z
   .function()
   .args(z.string(), z.string(), Buff, BuffParams)
   .returns(z.number())
@@ -76,8 +78,8 @@ export const PvPRangeBuff = z
       if (tb === null || tb === undefined || iv === null || iv === undefined) {
         return -1000;
       } else {
-        if (DEBUGRB) {
-          console.log(`PvPRangeBuff: ${generalName}: ${buffName}`);
+        if (DEBUGD) {
+          console.log(`PvPDefenseBuff: ${generalName}: ${buffName}`);
         }
         let score = 0;
         if (tb?.value === undefined || tb.value === null) {
@@ -86,20 +88,22 @@ export const PvPRangeBuff = z
           );
           return score;
         } else {
-          if (DEBUGRB) {
-            console.log(`PvPRangeBuff: ${generalName}: ${buffName} has value`);
+          if (DEBUGD) {
+            console.log(
+              `PvPDefenseBuff: ${generalName}: ${buffName} has value`
+            );
           }
           if (tb.attribute === undefined || tb.attribute === null) {
-            if (DEBUGRB) {
+            if (DEBUGD) {
               console.log(
-                `PvPRangeBuff: ${generalName}: ${buffName} has null attribute`
+                `PvPDefenseBuff: ${generalName}: ${buffName} has null attribute`
               );
             }
             return score;
-          } else if (Attribute.enum.Range.localeCompare(tb.attribute)) {
-            if (DEBUGRB) {
+          } else if (Attribute.enum.Defense.localeCompare(tb.attribute)) {
+            if (DEBUGD) {
               console.log(
-                `PvPRangeBuff: ${generalName}: ${buffName} is not an Range buff`
+                `PvPDefenseBuff: ${generalName}: ${buffName} is not an Defense buff`
               );
             }
             return score;
@@ -120,15 +124,15 @@ export const PvPRangeBuff = z
                     Condition.enum.Reduces_Enemy_with_a_Dragon
                   )
                 ) {
-                  if (DEBUGRB) {
+                  if (DEBUGD) {
                     console.log(
-                      `PvPRangeBuff: ${generalName}: ${buffName} detected attack debuff`
+                      `PvPDefenseBuff: ${generalName}: ${buffName} detected debuff`
                     );
                   }
                   return 0;
                 } else {
                   //I think all other conditions that matter have been checked
-                  score = PvPRangeBuffClassCheck(tb, iv);
+                  score = PvPDefenseBuffClassCheck(tb, iv);
                 }
               } else {
                 //if I get here, there were invalid conditions
@@ -137,7 +141,7 @@ export const PvPRangeBuff = z
             } else {
               //if I get here, there were no conditions to check, but there is
               //an attack attribute.
-              score = PvPRangeBuffClassCheck(tb, iv);
+              score = PvPDefenseBuffClassCheck(tb, iv);
             }
           }
         }

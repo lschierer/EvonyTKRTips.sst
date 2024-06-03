@@ -256,53 +256,56 @@ export class DetailView extends SizedMixin(BaseGeneral, {
 
   private renderBasicStats() {
     let debugHTML = html``;
-    if(DEBUG) {
+    if (DEBUG) {
       debugHTML = html`
-        Summary EvAns: ${this.computedBuffs.get(
-          BaseGeneral.InvestmentOptions2Key(DetailView.InvestmentLevel)
-        )?.EvAnsRanking}<br/>
-        Summary Attack: ${this.computedBuffs.get(
-          BaseGeneral.InvestmentOptions2Key(DetailView.InvestmentLevel)
-        )?.AttackRanking}<br />
-        Summary Tough: ${this.computedBuffs.get(
-          BaseGeneral.InvestmentOptions2Key(DetailView.InvestmentLevel)
-        )?.ToughnessRanking}<br />
-      `
-      this.GeneralBuffs(
-        Display.enum.primary,
-        DetailView.InvestmentLevel
-      );
-      debugHTML = html`
-        ${debugHTML}<br/>
-        Primary EvAns: ${this.computedBuffs.get(
+        Summary EvAns:
+        ${this.computedBuffs.get(
           BaseGeneral.InvestmentOptions2Key(DetailView.InvestmentLevel)
         )?.EvAnsRanking}<br />
-        Primary Attack: ${this.computedBuffs.get(
+        Summary Attack:
+        ${this.computedBuffs.get(
           BaseGeneral.InvestmentOptions2Key(DetailView.InvestmentLevel)
         )?.AttackRanking}<br />
-        Primary Tough: ${this.computedBuffs.get(
+        Summary Tough:
+        ${this.computedBuffs.get(
           BaseGeneral.InvestmentOptions2Key(DetailView.InvestmentLevel)
         )?.ToughnessRanking}<br />
-      `
-      this.GeneralBuffs(
-        Display.enum.secondary,
-        DetailView.InvestmentLevel
-      );
+      `;
+      this.GeneralBuffs(Display.enum.primary, DetailView.InvestmentLevel);
       debugHTML = html`
         ${debugHTML}<br />
-        Assistant EvAns: ${this.computedBuffs.get(
+        Primary EvAns:
+        ${this.computedBuffs.get(
           BaseGeneral.InvestmentOptions2Key(DetailView.InvestmentLevel)
         )?.EvAnsRanking}<br />
-        Assistant Attack: ${this.computedBuffs.get(
+        Primary Attack:
+        ${this.computedBuffs.get(
           BaseGeneral.InvestmentOptions2Key(DetailView.InvestmentLevel)
         )?.AttackRanking}<br />
-        Assistant Tough: ${this.computedBuffs.get(
+        Primary Tough:
+        ${this.computedBuffs.get(
           BaseGeneral.InvestmentOptions2Key(DetailView.InvestmentLevel)
         )?.ToughnessRanking}<br />
-      `
+      `;
+      this.GeneralBuffs(Display.enum.secondary, DetailView.InvestmentLevel);
+      debugHTML = html`
+        ${debugHTML}<br />
+        Assistant EvAns:
+        ${this.computedBuffs.get(
+          BaseGeneral.InvestmentOptions2Key(DetailView.InvestmentLevel)
+        )?.EvAnsRanking}<br />
+        Assistant Attack:
+        ${this.computedBuffs.get(
+          BaseGeneral.InvestmentOptions2Key(DetailView.InvestmentLevel)
+        )?.AttackRanking}<br />
+        Assistant Tough:
+        ${this.computedBuffs.get(
+          BaseGeneral.InvestmentOptions2Key(DetailView.InvestmentLevel)
+        )?.ToughnessRanking}<br />
+      `;
     }
     return html`
-      ${(DEBUG) ? html`${debugHTML}` : html``}
+      ${DEBUG ? html`${debugHTML}` : html``}
       <span class="label spectrum-Heading spectrum-Heading--sizeM"
         >Basic Statistics</span
       ><br />
@@ -427,7 +430,10 @@ export class DetailView extends SizedMixin(BaseGeneral, {
   }
 
   private renderBooks() {
-    if (!Array.isArray(this.general?.books) || this.general.books.length === 0) {
+    if (
+      !Array.isArray(this.general?.books) ||
+      this.general.books.length === 0
+    ) {
       if (DEBUG) {
         console.log(`renderBooks called with no books`);
       }
@@ -548,18 +554,22 @@ export class DetailView extends SizedMixin(BaseGeneral, {
 
   private renderAscending() {
     if (
-      this.general === null || this.general === undefined ||
-      (this.general && (
-      !Array.isArray(this.general.ascending) ||
-      this.general.ascending.length === 0))
+      this.general === null ||
+      this.general === undefined ||
+      (this.general &&
+        (!Array.isArray(this.general.ascending) ||
+          this.general.ascending.length === 0))
     ) {
       if (DEBUG) {
         console.log(`renderAscending called with no ascending attributes`);
-        console.log(JSON.stringify((this.general)))
+        console.log(JSON.stringify(this.general));
       }
       return html``;
     } else {
-      if(this.general.ascending === null || this.general.ascending === undefined) {
+      if (
+        this.general.ascending === null ||
+        this.general.ascending === undefined
+      ) {
         return html``;
       } else {
         if (DEBUG) {
@@ -570,50 +580,52 @@ export class DetailView extends SizedMixin(BaseGeneral, {
 
         const a1 = this.general.ascending.map((gaa, index) => {
           return html`
-          <div class=${`AscendingAttributeName${index} non-content`}>
-            <span class="label spectrum-Heading spectrum-Heading--sizeXXS">
-              ${index + 1} Star
-            </span>
-          </div>
-        `;
+            <div class=${`AscendingAttributeName${index} non-content`}>
+              <span class="label spectrum-Heading spectrum-Heading--sizeXXS">
+                ${index + 1} Star
+              </span>
+            </div>
+          `;
         });
         const a2 = this.general.ascending.map((gaa, index) => {
           const a4 = gaa.buff.map((b: BuffType) => {
             return html`
-            <li>
-              ${b.condition ? b.condition.join(' ').replaceAll(/_/g, ' ') : ''}
-              ${b.class !== 'all' ? b.class : 'all troops '}
-              ${b.attribute ? b.attribute.replaceAll(/_/g, ' ') : ''}
-              ${b.value!.number}${!b.value!.unit.localeCompare(
-              UnitSchema.enum.percentage
-            )
-              ? '%'
-              : ''}
-            </li>
-          `;
+              <li>
+                ${b.condition
+                  ? b.condition.join(' ').replaceAll(/_/g, ' ')
+                  : ''}
+                ${b.class !== 'all' ? b.class : 'all troops '}
+                ${b.attribute ? b.attribute.replaceAll(/_/g, ' ') : ''}
+                ${b.value!.number}${!b.value!.unit.localeCompare(
+                  UnitSchema.enum.percentage
+                )
+                  ? '%'
+                  : ''}
+              </li>
+            `;
           });
 
           return html`
-          <div class=${`AscendingAttribute${index}  non-content`}>
-            <ul>
-              ${a4}
-            </ul>
-          </div>
-        `;
+            <div class=${`AscendingAttribute${index}  non-content`}>
+              <ul>
+                ${a4}
+              </ul>
+            </div>
+          `;
         });
         return html`
-        <span class="label spectrum-Heading spectrum-Heading--sizeM"
-          >Ascending Attributes</span
-        >
-        <div class="AscendingAttributes non-content">${a1} ${a2}</div>
-      `;
+          <span class="label spectrum-Heading spectrum-Heading--sizeM"
+            >Ascending Attributes</span
+          >
+          <div class="AscendingAttributes non-content">${a1} ${a2}</div>
+        `;
       }
     }
   }
 
   protected override render(): TemplateResult {
-    if(this.general === null || this.general === undefined) {
-      return html`no general present`
+    if (this.general === null || this.general === undefined) {
+      return html`no general present`;
     }
     return html`
       <div

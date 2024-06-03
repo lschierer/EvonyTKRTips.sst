@@ -15,9 +15,10 @@ import { checkInvalidConditions } from '../EvAnsScoreComputer';
 
 import { RangedPvPAttackAttributeMultipliers } from '@lib/EvAnsAttributeRanking';
 
-const DEBUGA = true;
+const DEBUGA = false;
 
-const PvPAttackBuffClassCheck = z.function()
+const PvPAttackBuffClassCheck = z
+  .function()
   .args(Buff, BuffParams)
   .returns(z.number())
   .implement((tb: BuffType, iv: BuffParamsType) => {
@@ -27,31 +28,34 @@ const PvPAttackBuffClassCheck = z.function()
       if (tb.value !== null && tb.value !== undefined) {
         if (!UnitSchema.enum.percentage.localeCompare(tb.value.unit)) {
           if (tb.class !== null && tb.class !== undefined) {
-            if (!ClassEnum.enum.Archers.localeCompare((tb.class))) {
+            if (!ClassEnum.enum.Archers.localeCompare(tb.class)) {
               multiplier =
-                RangedPvPAttackAttributeMultipliers?.Offensive
-                  .RangedAttack ?? 0;
-            } else if (!ClassEnum.enum.Ground.localeCompare((tb.class))) {
+                RangedPvPAttackAttributeMultipliers?.Offensive.RangedAttack ??
+                0;
+            } else if (!ClassEnum.enum.Ground.localeCompare(tb.class)) {
               multiplier =
-                RangedPvPAttackAttributeMultipliers?.Offensive
-                  .GroundAttack ?? 0;
-            } else if (!ClassEnum.enum.Mounted.localeCompare((tb.class))) {
+                RangedPvPAttackAttributeMultipliers?.Offensive.GroundAttack ??
+                0;
+            } else if (!ClassEnum.enum.Mounted.localeCompare(tb.class)) {
               multiplier =
-                RangedPvPAttackAttributeMultipliers?.Offensive
-                  .MountedAttack ?? 0;
-            } else if (!ClassEnum.enum.Siege.localeCompare((tb.class))) {
+                RangedPvPAttackAttributeMultipliers?.Offensive.MountedAttack ??
+                0;
+            } else if (!ClassEnum.enum.Siege.localeCompare(tb.class)) {
               multiplier =
-                RangedPvPAttackAttributeMultipliers?.Offensive
-                  .SiegeAttack ?? 0;
+                RangedPvPAttackAttributeMultipliers?.Offensive.SiegeAttack ?? 0;
             } else {
               multiplier = 0;
             }
           } else {
-            multiplier = RangedPvPAttackAttributeMultipliers?.Offensive.AllTroopAttack ?? 0;
+            multiplier =
+              RangedPvPAttackAttributeMultipliers?.Offensive.AllTroopAttack ??
+              0;
           }
           const additional = tb.value.number * multiplier;
           if (DEBUGA) {
-            console.log(`adding ${additional} to ${score}`);
+            console.log(
+              `adding ${additional} to ${score}, multiplier: ${multiplier}`
+            );
           }
           score += additional;
         }
@@ -60,7 +64,8 @@ const PvPAttackBuffClassCheck = z.function()
     return score;
   });
 
-export const PvPAttackBuff = z.function()
+export const PvPAttackBuff = z
+  .function()
   .args(z.string(), z.string(), Buff, BuffParams)
   .returns(z.number())
   .implement(
@@ -68,7 +73,7 @@ export const PvPAttackBuff = z.function()
       buffName: string,
       generalName: string,
       tb: BuffType,
-      iv: BuffParamsType,
+      iv: BuffParamsType
     ) => {
       let multiplier = 0;
       if (tb === null || tb === undefined || iv === null || iv === undefined) {
@@ -79,7 +84,9 @@ export const PvPAttackBuff = z.function()
         }
         let score = 0;
         if (tb?.value === undefined || tb.value === null) {
-          console.log(`how to score a buff with no value? gc is ${generalName}`);
+          console.log(
+            `how to score a buff with no value? gc is ${generalName}`
+          );
           return score;
         } else {
           if (DEBUGA) {
@@ -87,12 +94,16 @@ export const PvPAttackBuff = z.function()
           }
           if (tb.attribute === undefined || tb.attribute === null) {
             if (DEBUGA) {
-              console.log(`PvPAttackBuff: ${generalName}: ${buffName} has null attribute`);
+              console.log(
+                `PvPAttackBuff: ${generalName}: ${buffName} has null attribute`
+              );
             }
             return score;
           } else if (Attribute.enum.Attack.localeCompare(tb.attribute)) {
             if (DEBUGA) {
-              console.log(`PvPAttackBuff: ${generalName}: ${buffName} is not an attack buff`);
+              console.log(
+                `PvPAttackBuff: ${generalName}: ${buffName} is not an attack buff`
+              );
             }
             return score;
           } else {
@@ -101,25 +112,32 @@ export const PvPAttackBuff = z.function()
               if (checkInvalidConditions(tb, iv)) {
                 //I probably ought to rename that function, but if I get here,
                 //there were no invalid conditions
-                if
-                (tb.condition.includes(Condition.enum.Enemy) ||
+                if (
+                  tb.condition.includes(Condition.enum.Enemy) ||
                   tb.condition.includes(Condition.enum.Enemy_In_City) ||
                   tb.condition.includes(Condition.enum.Reduces_Enemy) ||
                   tb.condition.includes(
-                    Condition.enum.Reduces_Enemy_in_Attack,
+                    Condition.enum.Reduces_Enemy_in_Attack
                   ) ||
                   tb.condition.includes(
-                    Condition.enum.Reduces_Enemy_with_a_Dragon,
-                  )) {
+                    Condition.enum.Reduces_Enemy_with_a_Dragon
+                  )
+                ) {
                   if (DEBUGA) {
-                    console.log(`PvPAttackBuff: ${generalName}: ${buffName} detected attack debuff`);
+                    console.log(
+                      `PvPAttackBuff: ${generalName}: ${buffName} detected attack debuff`
+                    );
                   }
                   return 0;
                 } else {
                   //I think all other conditions that matter have been checked
-                  score = PvPAttackBuffClassCheck(tb, iv)
+                  score = PvPAttackBuffClassCheck(tb, iv);
+                  if (DEBUGA) {
+                    console.log(
+                      `\`PvPAttackBuff: ${generalName}: ${buffName} score: ${score}`
+                    );
+                  }
                 }
-
               } else {
                 //if I get here, there were invalid conditions
                 return score;
@@ -127,10 +145,11 @@ export const PvPAttackBuff = z.function()
             } else {
               //if I get here, there were no conditions to check, but there is
               //an attack attribute.
-              score = PvPAttackBuffClassCheck(tb, iv)
+              score = PvPAttackBuffClassCheck(tb, iv);
             }
           }
         }
         return score;
       }
-    });
+    }
+  );

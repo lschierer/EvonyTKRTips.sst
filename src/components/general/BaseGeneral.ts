@@ -21,7 +21,8 @@ import SpectrumTable from '@spectrum-css/table/dist/index.css?inline';
 import { BuffParams, type BuffParamsType } from '@schemas/baseSchemas';
 
 import {
-  Display, type DisplayType,
+  Display,
+  type DisplayType,
   GeneralClass,
   type GeneralClassType,
   generalUseCase,
@@ -31,7 +32,8 @@ import {
   type ExtendedGeneralType,
   ExtendedGeneralStatus,
   type ExtendedGeneralStatusType,
-  type RankInstanceType, ExtendedGeneral,
+  type RankInstanceType,
+  ExtendedGeneral,
 } from '@schemas/ExtendedGeneral';
 
 import { EvAnsScoreComputer } from '@components/general/buffComputers/EvAnsRanking/EvAnsScoreComputer';
@@ -224,21 +226,20 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
           `BaseGeneral firstUpdated generalId prop for ${this.generalId ?? ''}`
         );
       }
-        if (this.general === null) {
-          if (DEBUG) {
-            console.log(
-              `BaseGeneral firstUpdated generalId needs to getGeneral for ${this.generalId ?? ''}`
-            );
-          }
-          await Promise.all([this.getGeneral(), delay(10)]);
-        }
-      } else {
+      if (this.general === null) {
         if (DEBUG) {
           console.log(
-            `BaseGeneral firstUpdated ${this.generalId} status ${this.status}`
+            `BaseGeneral firstUpdated generalId needs to getGeneral for ${this.generalId ?? ''}`
           );
         }
-
+        await Promise.all([this.getGeneral(), delay(10)]);
+      }
+    } else {
+      if (DEBUG) {
+        console.log(
+          `BaseGeneral firstUpdated ${this.generalId} status ${this.status}`
+        );
+      }
     }
   }
 
@@ -262,7 +263,10 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
         } else {
           this.status = ExtendedGeneralStatus.enum.complete;
           this.dispatchEvent(
-            new CustomEvent('GeneralComplete', { composed: false, bubbles: true })
+            new CustomEvent('GeneralComplete', {
+              composed: false,
+              bubbles: true,
+            })
           );
         }
       }

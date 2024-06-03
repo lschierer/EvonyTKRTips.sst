@@ -25,15 +25,17 @@ import {
 import { SpecialityType } from '../../schemas/specialitySchema';
 import { BookType } from '../../schemas/bookSchemas';
 
-import {EvAnsScoreComputer} from './buffComputers/EvAnsRanking/EvAnsScoreComputer';
+import {EvAnsScoreComputer} from '@components/general/buffComputers/EvAnsRanking/EvAnsScoreComputer';
 
-const DEBUG = false;
+const DEBUG = true;
 
 interface Props {
   TargetClass?: generalSpecialistsType;
   }
 
-const { TargetClass } = Astro.props;
+let { TargetClass } = Astro.props;
+
+TargetClass = generalSpecialists.enum.Archers;
 
 const generalObjects: CollectionEntry<'generals'>[] =
   await getCollection('generals');
@@ -87,12 +89,12 @@ if (generalObjects !== undefined && generalObjects !== null) {
         }
       }));
 
-      gc.specialities && gc.specialities.map(async (gs) => {
+      gc.specialities && await Promise.all(gc.specialities.map(async (gs) => {
         const gse: CollectionEntry<'specialities'> | undefined = await getEntry('specialities', gs);
         if(gse !== null && gse !== undefined) {
           eg.specialities.push(gse.data);
         }
-      })
+      }));
 
       Astro.locals.CachedGenerals.push(eg);
 
@@ -102,6 +104,18 @@ if (generalObjects !== undefined && generalObjects !== null) {
     console.log(`CachedGenerals is ${Astro.locals.CachedGenerals.length}`);
   }
 }
+Astro.locals.CachedGenerals.sort((a, b) => {
+  if(a === null || a === undefined) {
+    if (b === null || b === undefined) {
+      return 0
+    }
+    return -1
+  } else if (b === null || b === undefined) {
+    return 1;
+  } else {
+    return a.name.localeCompare(b.name)
+  }
+})
 ---
 
 {
@@ -111,7 +125,7 @@ if (generalObjects !== undefined && generalObjects !== null) {
       <li>
         <dl>
           <dt>{thisG.name}</dt>
-          <dd>${JSON.stringify(thisG)}</dd>
+          <!--<dd>${JSON.stringify(thisG)}</dd>-->
           <dd>{EvAnsScoreComputer(
             generalUseCase.enum.Attack,
             thisG,

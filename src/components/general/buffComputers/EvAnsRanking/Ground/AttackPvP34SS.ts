@@ -43,9 +43,7 @@ export const GroundAttackPvP34SS = z
           } else {
             const v = Speciality.safeParse(special);
             if (v.error) {
-              console.log(
-                `${eg.name}: invalid speciality: ${special.name}`
-              );
+              console.log(`${eg.name}: invalid speciality: ${special.name}`);
               return a1;
             } else {
               const specialB: SpecialityType = v.data;
@@ -315,9 +313,7 @@ export const GroundAttackPvP34SS = z
       );
 
       if (DEBUG_34SS) {
-        console.log(
-          `${eg.name}: specialities total: ${specialities_total}`
-        );
+        console.log(`${eg.name}: specialities total: ${specialities_total}`);
         console.log('');
       }
       BSS_Score += Math.floor(specialities_total);

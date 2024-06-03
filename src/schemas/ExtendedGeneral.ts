@@ -21,8 +21,8 @@ export type RankInstanceType = zod.infer<typeof RankInstance>;
 
 export const ExtendedGeneral = GeneralClass.extend({
   specialities: zod.array(Speciality),
-  books: zod.array(Book)
-})
+  books: zod.array(Book),
+});
 
 export type ExtendedGeneralType = zod.infer<typeof ExtendedGeneral>;
 

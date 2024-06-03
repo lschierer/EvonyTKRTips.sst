@@ -1,6 +1,10 @@
 import { z } from 'zod';
 
-import { BuffParams, type BuffParamsType, type BuffType } from '@schemas/baseSchemas';
+import {
+  BuffParams,
+  type BuffParamsType,
+  type BuffType,
+} from '@schemas/baseSchemas';
 
 import {
   ExtendedGeneral,
@@ -12,7 +16,14 @@ import {
   type specialSkillBookType,
 } from '@schemas/bookSchemas';
 
-import { PvPBuff } from './PvPBuff';
+import { PvPAttackBuff } from '@components/general/buffComputers/EvAnsRanking/Archers/PvPAttackBuff.ts';
+import { PvPHPBuff } from '@components/general/buffComputers/EvAnsRanking/Archers/PvPHPBuff.ts';
+import { PvPDefenseBuff } from '@components/general/buffComputers/EvAnsRanking/Archers/PvPDefenseBuff.ts';
+import { PvPDeAttackBuff } from '@components/general/buffComputers/EvAnsRanking/Archers/PvPDeAttackBuff.ts';
+import { PvPDeHPBuff } from '@components/general/buffComputers/EvAnsRanking/Archers/PvPDeHPBuff.ts';
+import { PvPDeDefenseBuff } from '@components/general/buffComputers/EvAnsRanking/Archers/PvPDeDefense.ts';
+import { PvPPreservationBuff } from '@components/general/buffComputers/EvAnsRanking/Archers/PvPPreservationBuff.ts';
+import { PvPDebilitationBuff } from '@components/general/buffComputers/EvAnsRanking/Archers/PvPDebilitationBuff.ts';
 
 const DEBUG_BSS = false;
 
@@ -44,7 +55,7 @@ export const AttackPvPBSS = z
                 console.log(JSON.stringify(tb));
                 console.log(`--- end tb ---`);
               }
-              const tbscore = PvPBuff(bisb.name, eg.name, tb, bp);
+              const tbscore = PvPAttackBuff(bisb.name, eg.name, tb, bp);
               if (DEBUG_BSS) {
                 console.log(JSON.stringify(tb));
                 console.log(

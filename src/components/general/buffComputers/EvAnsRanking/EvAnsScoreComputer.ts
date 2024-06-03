@@ -1,6 +1,12 @@
 import { z } from 'zod';
 
-import { Buff, BuffParams, type BuffParamsType, type BuffType, Condition } from '@schemas/baseSchemas';
+import {
+  Buff,
+  BuffParams,
+  type BuffParamsType,
+  type BuffType,
+  Condition,
+} from '@schemas/baseSchemas';
 
 import {
   Display,
@@ -28,7 +34,7 @@ import { EvAnsSiegePvPAttack } from './Siege/AttackPvPBase';
  * https://evonyguidewiki.com/en/general-cultivate-en/#Relationship_between_Stats_value_Buff_value
  */
 
-const DEBUG = false;
+const DEBUG = true;
 const DEBUGC = false;
 
 export const EvAnsScoreComputer = z
@@ -46,17 +52,13 @@ export const EvAnsScoreComputer = z
         if (DEBUG) {
           console.log(`called for Attack use case`);
         }
-        if (
-          !generalSpecialists.enum.Archers.localeCompare(eg.score_as)
-        ) {
+        if (!generalSpecialists.enum.Archers.localeCompare(eg.score_as)) {
           return EvAnsArchersPvPAttack(eg, display, bp);
         }
         if (!generalSpecialists.enum.Ground.localeCompare(eg.score_as)) {
           return EvAnsGroundPvPAttack(eg, display, bp);
         }
-        if (
-          !generalSpecialists.enum.Mounted.localeCompare(eg.score_as)
-        ) {
+        if (!generalSpecialists.enum.Mounted.localeCompare(eg.score_as)) {
           return EvAnsMountedPvPAttack(eg, display, bp);
         }
         if (!generalSpecialists.enum.Siege.localeCompare(eg.score_as)) {
@@ -70,15 +72,14 @@ export const EvAnsScoreComputer = z
     }
   );
 
-export const checkInvalidConditions = z.function()
+export const checkInvalidConditions = z
+  .function()
   .args(Buff, BuffParams)
   .returns(z.boolean())
   .implement((tb: BuffType, iv: BuffParamsType) => {
     if (tb.condition !== undefined && tb.condition !== null) {
       if (DEBUGC) {
-        console.log(
-          `null condition detected: ${JSON.stringify(tb)}`
-        );
+        console.log(`null condition detected: ${JSON.stringify(tb)}`);
       }
       if (
         tb.condition.includes(Condition.enum['Against Monsters']) ||
@@ -97,9 +98,7 @@ export const checkInvalidConditions = z.function()
       ) {
         //none of These apply to PvP attacking
         if (DEBUGC) {
-          console.log(
-            `buff with inapplicable attribute `
-          );
+          console.log(`buff with inapplicable attribute `);
           console.log(JSON.stringify(tb));
         }
         return false;
@@ -107,9 +106,7 @@ export const checkInvalidConditions = z.function()
 
       //check for dragon and beast buffs
       if (
-        (tb.condition.includes(
-            Condition.enum.Reduces_Enemy_with_a_Dragon
-          ) ||
+        (tb.condition.includes(Condition.enum.Reduces_Enemy_with_a_Dragon) ||
           tb.condition.includes(Condition.enum.brings_a_dragon) ||
           tb.condition.includes(Condition.enum.dragon_to_the_attack)) &&
         iv.dragon !== true
@@ -127,4 +124,4 @@ export const checkInvalidConditions = z.function()
       return true;
     }
     return false;
-  })
+  });

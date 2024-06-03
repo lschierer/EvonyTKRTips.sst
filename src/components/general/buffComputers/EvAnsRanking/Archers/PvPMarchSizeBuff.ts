@@ -17,7 +17,8 @@ import { RangedPvPAttackAttributeMultipliers } from '@lib/EvAnsAttributeRanking'
 
 const DEBUGMS = true;
 
-const PvPMarchSizeBuffClassCheck = z.function()
+const PvPMarchSizeBuffClassCheck = z
+  .function()
   .args(Buff, BuffParams)
   .returns(z.number())
   .implement((tb: BuffType, iv: BuffParamsType) => {
@@ -27,19 +28,19 @@ const PvPMarchSizeBuffClassCheck = z.function()
       if (tb.value !== null && tb.value !== undefined) {
         if (!UnitSchema.enum.percentage.localeCompare(tb.value.unit)) {
           if (tb.class !== null && tb.class !== undefined) {
-            if (!ClassEnum.enum.Archers.localeCompare((tb.class))) {
+            if (!ClassEnum.enum.Archers.localeCompare(tb.class)) {
               multiplier =
                 RangedPvPAttackAttributeMultipliers?.Offensive
                   .MarchSizeIncrease ?? 0;
-            } else if (!ClassEnum.enum.Ground.localeCompare((tb.class))) {
+            } else if (!ClassEnum.enum.Ground.localeCompare(tb.class)) {
               multiplier =
                 RangedPvPAttackAttributeMultipliers?.Offensive
                   .MarchSizeIncrease ?? 0;
-            } else if (!ClassEnum.enum.Mounted.localeCompare((tb.class))) {
+            } else if (!ClassEnum.enum.Mounted.localeCompare(tb.class)) {
               multiplier =
                 RangedPvPAttackAttributeMultipliers?.Offensive
                   .MarchSizeIncrease ?? 0;
-            } else if (!ClassEnum.enum.Siege.localeCompare((tb.class))) {
+            } else if (!ClassEnum.enum.Siege.localeCompare(tb.class)) {
               multiplier =
                 RangedPvPAttackAttributeMultipliers?.Offensive
                   .MarchSizeIncrease ?? 0;
@@ -47,11 +48,14 @@ const PvPMarchSizeBuffClassCheck = z.function()
               //honestly only this one should ever be hit.  I can't think
               //of a case where a general would have a class specific march
               //increase.
-              multiplier = RangedPvPAttackAttributeMultipliers?.Offensive
-                .MarchSizeIncrease ?? 0;
+              multiplier =
+                RangedPvPAttackAttributeMultipliers?.Offensive
+                  .MarchSizeIncrease ?? 0;
             }
           } else {
-            multiplier = RangedPvPAttackAttributeMultipliers?.Offensive.AllTroopAttack ?? 0;
+            multiplier =
+              RangedPvPAttackAttributeMultipliers?.Offensive.AllTroopAttack ??
+              0;
           }
           const additional = tb.value.number * multiplier;
           if (DEBUGMS) {
@@ -64,7 +68,8 @@ const PvPMarchSizeBuffClassCheck = z.function()
     return score;
   });
 
-export const PvPMarchSizeBuff = z.function()
+export const PvPMarchSizeBuff = z
+  .function()
   .args(z.string(), z.string(), Buff, BuffParams)
   .returns(z.number())
   .implement(
@@ -72,7 +77,7 @@ export const PvPMarchSizeBuff = z.function()
       buffName: string,
       generalName: string,
       tb: BuffType,
-      iv: BuffParamsType,
+      iv: BuffParamsType
     ) => {
       let multiplier = 0;
       if (tb === null || tb === undefined || iv === null || iv === undefined) {
@@ -83,20 +88,30 @@ export const PvPMarchSizeBuff = z.function()
         }
         let score = 0;
         if (tb?.value === undefined || tb.value === null) {
-          console.log(`how to score a buff with no value? gc is ${generalName}`);
+          console.log(
+            `how to score a buff with no value? gc is ${generalName}`
+          );
           return score;
         } else {
           if (DEBUGMS) {
-            console.log(`PvPMarchSizeBuff: ${generalName}: ${buffName} has value`);
+            console.log(
+              `PvPMarchSizeBuff: ${generalName}: ${buffName} has value`
+            );
           }
           if (tb.attribute === undefined || tb.attribute === null) {
             if (DEBUGMS) {
-              console.log(`PvPMarchSizeBuff: ${generalName}: ${buffName} has null attribute`);
+              console.log(
+                `PvPMarchSizeBuff: ${generalName}: ${buffName} has null attribute`
+              );
             }
             return score;
-          } else if (Attribute.enum.March_Size_Capacity.localeCompare(tb.attribute)) {
+          } else if (
+            Attribute.enum.March_Size_Capacity.localeCompare(tb.attribute)
+          ) {
             if (DEBUGMS) {
-              console.log(`PvPMarchSizeBuff: ${generalName}: ${buffName} is not an March Size buff`);
+              console.log(
+                `PvPMarchSizeBuff: ${generalName}: ${buffName} is not an March Size buff`
+              );
             }
             return score;
           } else {
@@ -105,25 +120,27 @@ export const PvPMarchSizeBuff = z.function()
               if (checkInvalidConditions(tb, iv)) {
                 //I probably ought to rename that function, but if I get here,
                 //there were no invalid conditions
-                if
-                (tb.condition.includes(Condition.enum.Enemy) ||
+                if (
+                  tb.condition.includes(Condition.enum.Enemy) ||
                   tb.condition.includes(Condition.enum.Enemy_In_City) ||
                   tb.condition.includes(Condition.enum.Reduces_Enemy) ||
                   tb.condition.includes(
-                    Condition.enum.Reduces_Enemy_in_Attack,
+                    Condition.enum.Reduces_Enemy_in_Attack
                   ) ||
                   tb.condition.includes(
-                    Condition.enum.Reduces_Enemy_with_a_Dragon,
-                  )) {
+                    Condition.enum.Reduces_Enemy_with_a_Dragon
+                  )
+                ) {
                   if (DEBUGMS) {
-                    console.log(`PvPMarchSizeBuff: ${generalName}: ${buffName} detected March Size debuff`);
+                    console.log(
+                      `PvPMarchSizeBuff: ${generalName}: ${buffName} detected March Size debuff`
+                    );
                   }
                   return 0;
                 } else {
                   //I think all other conditions that matter have been checked
-                  score = PvPMarchSizeBuffClassCheck(tb, iv)
+                  score = PvPMarchSizeBuffClassCheck(tb, iv);
                 }
-
               } else {
                 //if I get here, there were invalid conditions
                 return score;
@@ -131,10 +148,11 @@ export const PvPMarchSizeBuff = z.function()
             } else {
               //if I get here, there were no conditions to check, but there is
               //an MarchSize attribute.
-              score = PvPMarchSizeBuffClassCheck(tb, iv)
+              score = PvPMarchSizeBuffClassCheck(tb, iv);
             }
           }
         }
         return score;
       }
-    });
+    }
+  );
