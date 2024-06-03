@@ -42,7 +42,7 @@ const { Content } = await entry.render();
   }}
 >
   {DEBUG && `Dynamic Template`}
-  <AllGenerals />
+  <AllGenerals TargetClass={slug}/>
   <AllConflicts />
   <Content />
 </StarlightPage>

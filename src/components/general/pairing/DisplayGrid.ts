@@ -231,7 +231,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       if (DEBUG) {
         console.log(`willUpdate called for RawPairs`);
       }
-      
+
     }
     if (_changedProperties.has('_DisplayPairs')) {
       if (this.grid !== null && this.grid !== undefined) {

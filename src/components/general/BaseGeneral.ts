@@ -20,8 +20,6 @@ import SpectrumTable from '@spectrum-css/table/dist/index.css?inline';
 
 import { BuffParams, type BuffParamsType } from '@schemas/baseSchemas';
 
-
-
 import {
   Display, type DisplayType,
   GeneralClass,
@@ -40,7 +38,7 @@ import { EvAnsScoreComputer } from '@components/general/buffComputers/EvAnsRanki
 import { ScoreComputer as AttackScoreComputer } from '@components/general/buffComputers/AttackRanking/ScoreComputer';
 import { ScoreComputer as ToughnessScoreComputer } from '@components/general/buffComputers/ToughnessRanking/ScoreComputer';
 
-const DEBUG = true;
+const DEBUG = false;
 
 @customElement('base-general')
 export class BaseGeneral extends SizedMixin(SpectrumElement, {

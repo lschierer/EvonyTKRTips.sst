@@ -4,11 +4,17 @@ import type { ComponentProps } from 'astro/types';
 
 import { delay } from 'nanodelay';
 
+import { BuffParamsType, qualityColor, AscendingLevels } from '../../schemas/baseSchemas';
+
 import {
   GeneralElement,
   GeneralClass,
+  Display,
   type GeneralClassType,
   type GeneralElementType,
+  generalUseCase,
+  generalSpecialists,
+  type generalSpecialistsType
 } from '@schemas/generalsSchema';
 
 import {
@@ -19,14 +25,33 @@ import {
 import { SpecialityType } from '../../schemas/specialitySchema';
 import { BookType } from '../../schemas/bookSchemas';
 
+import {EvAnsScoreComputer} from './buffComputers/EvAnsRanking/EvAnsScoreComputer';
+
 const DEBUG = false;
+
+interface Props {
+  TargetClass?: generalSpecialistsType;
+  }
+
+const { TargetClass } = Astro.props;
 
 const generalObjects: CollectionEntry<'generals'>[] =
   await getCollection('generals');
 
+const  InvestmentLevel: BuffParamsType = {
+    special1: qualityColor.enum.Gold,
+    special2: qualityColor.enum.Gold,
+    special3: qualityColor.enum.Gold,
+    special4: qualityColor.enum.Gold,
+    special5: qualityColor.enum.Disabled,
+    stars: AscendingLevels.enum[10],
+    dragon: true,
+    beast: true,
+  };
+
 if (generalObjects !== undefined && generalObjects !== null) {
   await Promise.all(
-    generalObjects.map(async (element: GeneralElementType) => {
+    generalObjects.map(async (element: GeneralElementType, index) => {
       const gc: GeneralClassType = element.data.general;
       const eg: ExtendedGeneralType = {
         name: gc.name,
@@ -46,7 +71,14 @@ if (generalObjects !== undefined && generalObjects !== null) {
         specialities: new Array<SpecialityType>(),
         books: new Array<BookType>(),
       };
-
+      if(TargetClass !== undefined && TargetClass !== null && generalSpecialists.enum.all.localeCompare(TargetClass)){
+        if (TargetClass.toLocaleString().toLocaleLowerCase().localeCompare(eg.score_as.toLocaleString().toLocaleLowerCase())) {
+          if(DEBUG) {
+            console.log(`AllGenerals rejecting ${eg.name}: ${eg.score_as} != ${TargetClass}`)
+          }
+          return;
+        }
+      }
       gc.books && await Promise.all(gc.books.map(async (gb) => {
         const gbe: CollectionEntry<'skillBooks'> | undefined = await getEntry('skillBooks', gb);
         if (gbe !== null && gbe !== undefined) {
@@ -80,6 +112,12 @@ if (generalObjects !== undefined && generalObjects !== null) {
         <dl>
           <dt>{thisG.name}</dt>
           <dd>${JSON.stringify(thisG)}</dd>
+          <dd>{EvAnsScoreComputer(
+            generalUseCase.enum.Attack,
+            thisG,
+            Display.enum.summary,
+            InvestmentLevel
+          )}</dd>
         </dl>
       </li>
     ))}

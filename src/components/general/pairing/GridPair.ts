@@ -28,7 +28,7 @@ import { EvAnsScoreComputer } from '../buffComputers/EvAnsRanking/EvAnsScoreComp
 import { ScoreComputer as AttackScoreComputer } from '../buffComputers/AttackRanking/ScoreComputer';
 import { ScoreComputer as ToughnessScoreComputer } from '../buffComputers/ToughnessRanking/ScoreComputer';
 
-const DEBUG = true;
+const DEBUG = false;
 
 export class GridPair {
 
