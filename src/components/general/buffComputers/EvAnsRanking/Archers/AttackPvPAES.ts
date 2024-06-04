@@ -73,47 +73,182 @@ export const AttackPvPAES = z
                   !eg.stars.localeCompare(AscendingLevels.enum[10]) &&
                   !ab.level.localeCompare(AscendingLevels.enum[10])
                 ) {
-                  const tbscore = PvPAttackBuff(
-                    `Star ${index} ${ab.level}`,
-                    eg.name,
-                    actual,
-                    bp
-                  );
+                  let tbscore = PvPAttackBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp );
                   if (DEBUG_AES) {
                     console.log(`accumulating ${tbscore}`);
                   }
-                  return tbscore + a2;
+                  a2 += tbscore;
+                  tbscore = PvPHPBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  a2 += tbscore;
+                  tbscore = PvPDefenseBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  a2 += tbscore;
+                  tbscore = PvPDeAttackBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  a2 += tbscore;
+                  tbscore = PvPDeHPBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  a2 += tbscore;
+                  tbscore = PvPDeHPBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  a2 += tbscore;
+                  tbscore = PvPDeDefenseBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  a2 += tbscore;
+                  tbscore = PvPPreservationBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  a2 += tbscore;
+                  tbscore = PvPDebilitationBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  a2 += tbscore;
+                  return a2
                 } else if (
                   (!eg.stars.localeCompare(AscendingLevels.enum[10]) ||
                     !eg.stars.localeCompare(AscendingLevels.enum[9])) &&
                   !ab.level.localeCompare(AscendingLevels.enum[9])
                 ) {
-                  const tbscore = PvPAttackBuff(
-                    `Star ${index} ${ab.level}`,
-                    eg.name,
-                    actual,
-                    bp
-                  );
+                  let tbscore = PvPAttackBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
                   if (DEBUG_AES) {
                     console.log(`accumulating ${tbscore}`);
                   }
-                  return tbscore + a2;
+                  a2 += tbscore;
+                  tbscore = PvPHPBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  a2 += tbscore;
+                  tbscore = PvPDefenseBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  a2 += tbscore;
+                  tbscore = PvPDeAttackBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  a2 += tbscore;
+                  tbscore = PvPDeHPBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  a2 += tbscore;
+                  tbscore = PvPDeHPBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  a2 += tbscore;
+                  tbscore = PvPDeDefenseBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  a2 += tbscore;
+                  tbscore = PvPPreservationBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  a2 += tbscore;
+                  tbscore = PvPDebilitationBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  a2 += tbscore;
+                  return a2
                 } else if (
                   (!eg.stars.localeCompare(AscendingLevels.enum[10]) ||
                     !eg.stars.localeCompare(AscendingLevels.enum[9]) ||
                     !eg.stars.localeCompare(AscendingLevels.enum[8])) &&
                   !ab.level.localeCompare(AscendingLevels.enum[8])
                 ) {
-                  const tbscore = PvPAttackBuff(
-                    `Star ${index} ${ab.level}`,
-                    eg.name,
-                    actual,
-                    bp
-                  );
+                  let tbscore = PvPAttackBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
                   if (DEBUG_AES) {
                     console.log(`accumulating ${tbscore}`);
                   }
-                  return tbscore + a2;
+                  a2 += tbscore;
+                  tbscore = PvPHPBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  a2 += tbscore;
+                  tbscore = PvPDefenseBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  a2 += tbscore;
+                  tbscore = PvPDeAttackBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  a2 += tbscore;
+                  tbscore = PvPDeHPBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  a2 += tbscore;
+                  tbscore = PvPDeHPBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  a2 += tbscore;
+                  tbscore = PvPDeDefenseBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  a2 += tbscore;
+                  tbscore = PvPPreservationBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  a2 += tbscore;
+                  tbscore = PvPDebilitationBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  a2 += tbscore;
+                  return a2
                 } else if (
                   (!eg.stars.localeCompare(AscendingLevels.enum[10]) ||
                     !eg.stars.localeCompare(AscendingLevels.enum[9]) ||
@@ -121,16 +256,61 @@ export const AttackPvPAES = z
                     !eg.stars.localeCompare(AscendingLevels.enum[7])) &&
                   !ab.level.localeCompare(AscendingLevels.enum[7])
                 ) {
-                  const tbscore = PvPAttackBuff(
-                    `Star ${index} ${ab.level}`,
-                    eg.name,
-                    actual,
-                    bp
-                  );
+                  let tbscore = PvPAttackBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
                   if (DEBUG_AES) {
                     console.log(`accumulating ${tbscore}`);
                   }
-                  return tbscore;
+                  a2 += tbscore;
+                  tbscore = PvPHPBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  a2 += tbscore;
+                  tbscore = PvPDefenseBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  a2 += tbscore;
+                  tbscore = PvPDeAttackBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  a2 += tbscore;
+                  tbscore = PvPDeHPBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  a2 += tbscore;
+                  tbscore = PvPDeHPBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  a2 += tbscore;
+                  tbscore = PvPDeDefenseBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  a2 += tbscore;
+                  tbscore = PvPPreservationBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  a2 += tbscore;
+                  tbscore = PvPDebilitationBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  a2 += tbscore;
+                  return a2
                 } else if (
                   (!eg.stars.localeCompare(AscendingLevels.enum[10]) ||
                     !eg.stars.localeCompare(AscendingLevels.enum[9]) ||
@@ -139,16 +319,61 @@ export const AttackPvPAES = z
                     !eg.stars.localeCompare(AscendingLevels.enum[6])) &&
                   !ab.level.localeCompare(AscendingLevels.enum[6])
                 ) {
-                  const tbscore = PvPAttackBuff(
-                    `Star ${index} ${ab.level}`,
-                    eg.name,
-                    actual,
-                    bp
-                  );
+                  let tbscore = PvPAttackBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
                   if (DEBUG_AES) {
                     console.log(`accumulating ${tbscore}`);
                   }
-                  return tbscore + a2;
+                  a2 += tbscore;
+                  tbscore = PvPHPBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  a2 += tbscore;
+                  tbscore = PvPDefenseBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  a2 += tbscore;
+                  tbscore = PvPDeAttackBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  a2 += tbscore;
+                  tbscore = PvPDeHPBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  a2 += tbscore;
+                  tbscore = PvPDeHPBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  a2 += tbscore;
+                  tbscore = PvPDeDefenseBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  a2 += tbscore;
+                  tbscore = PvPPreservationBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  a2 += tbscore;
+                  tbscore = PvPDebilitationBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  a2 += tbscore;
+                  return a2
                 } else {
                   console.log(
                     `${eg.name} Star ${index} ${ab.level} did not match anywhere deciding`

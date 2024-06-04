@@ -55,14 +55,45 @@ export const AttackPvPBSS = z
                 console.log(JSON.stringify(tb));
                 console.log(`--- end tb ---`);
               }
-              const tbscore = PvPAttackBuff(bisb.name, eg.name, tb, bp);
+              let tbscore = PvPAttackBuff(bisb.name, eg.name, tb, bp);
+              if (DEBUG_BSS) { console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`); }
+              a2 += tbscore;
+              tbscore = PvPHPBuff(bisb.name, eg.name, tb, bp);
               if (DEBUG_BSS) {
-                console.log(JSON.stringify(tb));
-                console.log(
-                  `${eg.name}: ${book.name}: accumulating ${tbscore}`
-                );
+                console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
               }
-              return tbscore + a2;
+              a2 += tbscore;
+              tbscore = PvPDefenseBuff(bisb.name, eg.name, tb, bp);
+              if (DEBUG_BSS) {
+                console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
+              }
+              a2 += tbscore;
+              tbscore = PvPDeAttackBuff(bisb.name, eg.name, tb, bp);
+              if (DEBUG_BSS) {
+                console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
+              }
+              a2 += tbscore;
+              tbscore = PvPDeHPBuff(bisb.name, eg.name, tb, bp);
+              if (DEBUG_BSS) {
+                console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
+              }
+              a2 += tbscore;
+              tbscore = PvPDeDefenseBuff(bisb.name, eg.name, tb, bp);
+              if (DEBUG_BSS) {
+                console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
+              }
+              a2 += tbscore;
+              tbscore = PvPPreservationBuff(bisb.name, eg.name, tb, bp);
+              if (DEBUG_BSS) {
+                console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
+              }
+              a2 += tbscore;
+              tbscore = PvPDebilitationBuff(bisb.name, eg.name, tb, bp);
+              if (DEBUG_BSS) {
+                console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
+              }
+              a2 += tbscore;
+              return a2;
             }, 0);
             return accumulator + array_total;
           }
