@@ -4,6 +4,7 @@ import * as b from './baseSchemas';
 
 export const generalRole = zod.enum(['primary', 'secondary']);
 export type generalRoleType = zod.infer<typeof generalRole>;
+
 export const generalSpecialists = zod.enum([
   ...b.ClassEnum.options,
   'Wall',

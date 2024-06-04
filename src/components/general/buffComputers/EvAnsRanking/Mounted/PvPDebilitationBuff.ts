@@ -27,7 +27,7 @@ const DEBUGT = false;
  * 5) Limited to being in a specific role then applying generically.
  */
 
-const PvPDeDebilitationBuffDetailCheck = z
+const PvPDebilitationBuffDetailCheck = z
   .function()
   .args(Buff, BuffParams)
   .returns(z.number())
@@ -38,11 +38,7 @@ const PvPDeDebilitationBuffDetailCheck = z
       if (tb.condition !== null && tb.condition !== undefined) {
         if (tb.value !== null && tb.value !== undefined) {
           if (!UnitSchema.enum.percentage.localeCompare(tb.value.unit)) {
-            if (tb.class !== null && tb.class !== undefined) {
-              //I don't think I've ever seen a class limited Debilitation debuff. I think
-              // this is how it would be handled by EvAns.
-              multiplier = 0;
-            } else {
+
               if (
                 tb.condition.includes(Condition.enum.Attacking) ||
                 tb.condition.includes(Condition.enum.Marching) ||
@@ -71,7 +67,7 @@ const PvPDeDebilitationBuffDetailCheck = z
               console.log(`adding ${additional} to ${score}`);
             }
             score += additional;
-          }
+
         }
       }
     }
@@ -145,7 +141,7 @@ export const PvPDebilitationBuff = z
                       `PvPDebilitationBuff: ${generalName}: ${buffName} detected Debilitation buff`
                     );
                   }
-                  return PvPDeDebilitationBuffDetailCheck(tb, iv);
+                  return PvPDebilitationBuffDetailCheck(tb, iv);
                 } else {
                   //I am *ONLY* looking for debuffs here. DO NOT handle anything not a debuff.
                   return score;

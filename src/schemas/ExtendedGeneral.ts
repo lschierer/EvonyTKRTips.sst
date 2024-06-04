@@ -1,4 +1,4 @@
-import { reference, z as zod } from 'astro:content';
+import {  z as zod } from 'zod';
 
 import { GeneralClass } from './generalsSchema';
 import { Speciality } from './specialitySchema';

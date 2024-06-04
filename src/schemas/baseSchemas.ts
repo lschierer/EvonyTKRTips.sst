@@ -188,3 +188,4 @@ export const BuffParams = zod.object({
   beast: zod.boolean().default(false), //7
 });
 export type BuffParamsType = zod.infer<typeof BuffParams>;
+

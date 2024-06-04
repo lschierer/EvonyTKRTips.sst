@@ -16,23 +16,11 @@ import {
   type specialSkillBookType,
 } from '@schemas/bookSchemas';
 
-import { PvPAttackBuff } from '@components/general/buffComputers/EvAnsRanking/Archers/PvPAttackBuff.ts';
-import { PvPMarchSizeBuff } from '@components/general/buffComputers/EvAnsRanking/Archers/PvPMarchSizeBuff';
-import { PvPHPBuff } from '@components/general/buffComputers/EvAnsRanking/Archers/PvPHPBuff.ts';
-import { PvPDefenseBuff } from '@components/general/buffComputers/EvAnsRanking/Archers/PvPDefenseBuff.ts';
-import { PvPDeAttackBuff } from '@components/general/buffComputers/EvAnsRanking/Archers/PvPDeAttackBuff.ts';
-import { PvPDeHPBuff } from '@components/general/buffComputers/EvAnsRanking/Archers/PvPDeHPBuff.ts';
-import { PvPDeDefenseBuff } from '@components/general/buffComputers/EvAnsRanking/Archers/PvPDeDefense.ts';
-import { PvPPreservationBuff } from '@components/general/buffComputers/EvAnsRanking/Archers/PvPPreservationBuff.ts';
-import { PvPDebilitationBuff } from '@components/general/buffComputers/EvAnsRanking/Archers/PvPDebilitationBuff.ts';
+import {type BuffFunctionInterface} from '@lib/RankingInterfaces.ts';
 
 const DEBUG_BSS = false;
 
-export const AttackPvPBSS = z
-  .function()
-  .args(ExtendedGeneral, BuffParams)
-  .returns(z.number())
-  .implement((eg: ExtendedGeneralType, bp: BuffParamsType) => {
+export const AttackPvPBSS = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFunction: BuffFunctionInterface) => {
     let BSS_Score = 0;
 
     if (
@@ -56,45 +44,45 @@ export const AttackPvPBSS = z
                 console.log(JSON.stringify(tb));
                 console.log(`--- end tb ---`);
               }
-              let tbscore = PvPAttackBuff(bisb.name, eg.name, tb, bp);
+              let tbscore = (typedBuffFunction.Attack(bisb.name, eg.name, tb, bp) as number);
               if (DEBUG_BSS) { console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`); }
               a2 += tbscore;
-              tbscore = PvPMarchSizeBuff(bisb.name, eg.name, tb, bp);
+              tbscore = (typedBuffFunction.MarchSize(bisb.name, eg.name, tb, bp) as number);
               if (DEBUG_BSS) {
                 console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
               }
               a2 += tbscore;
-              tbscore = PvPHPBuff(bisb.name, eg.name, tb, bp);
+              tbscore = (typedBuffFunction.HP(bisb.name, eg.name, tb, bp) as number);
               if (DEBUG_BSS) {
                 console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
               }
               a2 += tbscore;
-              tbscore = PvPDefenseBuff(bisb.name, eg.name, tb, bp);
+              tbscore = (typedBuffFunction.Defense(bisb.name, eg.name, tb, bp) as number);
               if (DEBUG_BSS) {
                 console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
               }
               a2 += tbscore;
-              tbscore = PvPDeAttackBuff(bisb.name, eg.name, tb, bp);
+              tbscore = (typedBuffFunction.DeAttack(bisb.name, eg.name, tb, bp) as number);
               if (DEBUG_BSS) {
                 console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
               }
               a2 += tbscore;
-              tbscore = PvPDeHPBuff(bisb.name, eg.name, tb, bp);
+              tbscore = (typedBuffFunction.DeHP(bisb.name, eg.name, tb, bp) as number);
               if (DEBUG_BSS) {
                 console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
               }
               a2 += tbscore;
-              tbscore = PvPDeDefenseBuff(bisb.name, eg.name, tb, bp);
+              tbscore = (typedBuffFunction.DeDefense(bisb.name, eg.name, tb, bp) as number);
               if (DEBUG_BSS) {
                 console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
               }
               a2 += tbscore;
-              tbscore = PvPPreservationBuff(bisb.name, eg.name, tb, bp);
+              tbscore = (typedBuffFunction.Preservation(bisb.name, eg.name, tb, bp) as number);
               if (DEBUG_BSS) {
                 console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
               }
               a2 += tbscore;
-              tbscore = PvPDebilitationBuff(bisb.name, eg.name, tb, bp);
+              tbscore = (typedBuffFunction.Debilitation(bisb.name, eg.name, tb, bp) as number);
               if (DEBUG_BSS) {
                 console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
               }
@@ -113,4 +101,4 @@ export const AttackPvPBSS = z
       BSS_Score += Math.floor(book_score);
     }
     return Math.floor(BSS_Score);
-  });
+  }
