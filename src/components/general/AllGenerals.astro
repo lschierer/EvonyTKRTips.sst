@@ -33,9 +33,7 @@ interface Props {
   TargetClass?: generalSpecialistsType;
   }
 
-let { TargetClass } = Astro.props;
-
-TargetClass = generalSpecialists.enum.Archers;
+const { TargetClass } = Astro.props;
 
 const generalObjects: CollectionEntry<'generals'>[] =
   await getCollection('generals');

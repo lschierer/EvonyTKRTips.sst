@@ -13,15 +13,15 @@ import {
   type ExtendedGeneralType,
 } from '@schemas/ExtendedGeneral';
 
-import { PvPAttackBuff } from '@components/general/buffComputers/EvAnsRanking/Siege/PvPAttackBuff.ts';
-import { PvPMarchSizeBuff } from '@components/general/buffComputers/EvAnsRanking/Siege/PvPMarchSizeBuff.ts';
-import { PvPHPBuff } from '@components/general/buffComputers/EvAnsRanking/Siege/PvPHPBuff.ts';
-import { PvPDefenseBuff } from '@components/general/buffComputers/EvAnsRanking/Siege/PvPDefenseBuff.ts';
-import { PvPDeAttackBuff } from '@components/general/buffComputers/EvAnsRanking/Siege/PvPDeAttackBuff.ts';
-import { PvPDeHPBuff } from '@components/general/buffComputers/EvAnsRanking/Siege/PvPDeHPBuff.ts';
-import { PvPDeDefenseBuff } from '@components/general/buffComputers/EvAnsRanking/Siege/PvPDeDefense.ts';
-import { PvPPreservationBuff } from '@components/general/buffComputers/EvAnsRanking/Siege/PvPPreservationBuff.ts';
-import { PvPDebilitationBuff } from '@components/general/buffComputers/EvAnsRanking/Siege/PvPDebilitationBuff.ts';
+import { PvPAttackBuff } from './PvPAttackBuff.ts';
+import { PvPMarchSizeBuff } from './PvPMarchSizeBuff.ts';
+import { PvPHPBuff } from './PvPHPBuff.ts';
+import { PvPDefenseBuff } from './PvPDefenseBuff.ts';
+import { PvPDeAttackBuff } from './PvPDeAttackBuff.ts';
+import { PvPDeHPBuff } from './PvPDeHPBuff.ts';
+import { PvPDeDefenseBuff } from './PvPDeDefense.ts';
+import { PvPPreservationBuff } from './PvPPreservationBuff.ts';
+import { PvPDebilitationBuff } from './PvPDebilitationBuff.ts';
 
 const DEBUG_34SS = false;
 
@@ -94,6 +94,12 @@ export const AttackPvP34SS = z
                           specialB.name, eg.name, sb, bp);
                         if (DEBUG_34SS) {
                           console.log(`adding ${sb_total} to green: ${aGreen}`);
+                        }
+                        aGreen += sb_total;
+                        sb_total = PvPMarchSizeBuff(
+                          specialB.name, eg.name, sb, bp);
+                        if (DEBUG_34SS) {
+                          console.log(`adding ${sb_total} to aGreen: ${aGreen}`);
                         }
                         aGreen += sb_total;
                         sb_total = PvPHPBuff(
@@ -281,6 +287,12 @@ export const AttackPvP34SS = z
                           console.log(`adding ${sb_total} to aPurple: ${aPurple}`);
                         }
                         aPurple += sb_total;
+                        sb_total = PvPMarchSizeBuff(
+                          specialB.name, eg.name, sb, bp);
+                        if (DEBUG_34SS) {
+                          console.log(`adding ${sb_total} to aPurple: ${aPurple}`);
+                        }
+                        aPurple += sb_total;
                         sb_total = PvPHPBuff(
                           specialB.name, eg.name, sb, bp);
                         if (DEBUG_34SS) {
@@ -375,6 +387,12 @@ export const AttackPvP34SS = z
                           console.log(`adding ${sb_total} to aOrange: ${aOrange}`);
                         }
                         aOrange += sb_total;
+                        sb_total = PvPMarchSizeBuff(
+                          specialB.name, eg.name, sb, bp);
+                        if (DEBUG_34SS) {
+                          console.log(`adding ${sb_total} to aOrange: ${aOrange}`);
+                        }
+                        aOrange += sb_total;
                         sb_total = PvPHPBuff(
                           specialB.name, eg.name, sb, bp);
                         if (DEBUG_34SS) {
@@ -449,6 +467,12 @@ export const AttackPvP34SS = z
                         return aGold;
                       } else {
                         let sb_total = PvPAttackBuff(
+                          specialB.name, eg.name, sb, bp);
+                        if (DEBUG_34SS) {
+                          console.log(`adding ${sb_total} to aGold: ${aGold}`);
+                        }
+                        aGold += sb_total;
+                        sb_total = PvPMarchSizeBuff(
                           specialB.name, eg.name, sb, bp);
                         if (DEBUG_34SS) {
                           console.log(`adding ${sb_total} to aGold: ${aGold}`);

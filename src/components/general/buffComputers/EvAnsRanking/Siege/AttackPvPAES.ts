@@ -13,15 +13,15 @@ import {
   type ExtendedGeneralType,
 } from '@schemas/ExtendedGeneral';
 
-import { PvPAttackBuff } from '@components/general/buffComputers/EvAnsRanking/Siege/PvPAttackBuff.ts';
-import { PvPMarchSizeBuff } from '@components/general/buffComputers/EvAnsRanking/Siege/PvPMarchSizeBuff';
-import { PvPHPBuff } from '@components/general/buffComputers/EvAnsRanking/Siege/PvPHPBuff.ts';
-import { PvPDefenseBuff } from '@components/general/buffComputers/EvAnsRanking/Siege/PvPDefenseBuff.ts';
-import { PvPDeAttackBuff } from '@components/general/buffComputers/EvAnsRanking/Siege/PvPDeAttackBuff.ts';
-import { PvPDeHPBuff } from '@components/general/buffComputers/EvAnsRanking/Siege/PvPDeHPBuff.ts';
-import { PvPDeDefenseBuff } from '@components/general/buffComputers/EvAnsRanking/Siege/PvPDeDefense.ts';
-import { PvPPreservationBuff } from '@components/general/buffComputers/EvAnsRanking/Siege/PvPPreservationBuff.ts';
-import { PvPDebilitationBuff } from '@components/general/buffComputers/EvAnsRanking/Siege/PvPDebilitationBuff.ts';
+import { PvPAttackBuff } from '@components/general/buffComputers/AttackRanking/Archers/PvPAttackBuff.ts';
+import { PvPMarchSizeBuff } from '@components/general/buffComputers/AttackRanking/Archers/PvPMarchSizeBuff';
+import { PvPHPBuff } from '@components/general/buffComputers/AttackRanking/Archers/PvPHPBuff.ts';
+import { PvPDefenseBuff } from '@components/general/buffComputers/AttackRanking/Archers/PvPDefenseBuff.ts';
+import { PvPDeAttackBuff } from '@components/general/buffComputers/AttackRanking/Archers/PvPDeAttackBuff.ts';
+import { PvPDeHPBuff } from '@components/general/buffComputers/AttackRanking/Archers/PvPDeHPBuff.ts';
+import { PvPDeDefenseBuff } from '@components/general/buffComputers/AttackRanking/Archers/PvPDeDefense.ts';
+import { PvPPreservationBuff } from '@components/general/buffComputers/AttackRanking/Archers/PvPPreservationBuff.ts';
+import { PvPDebilitationBuff } from '@components/general/buffComputers/AttackRanking/Archers/PvPDebilitationBuff.ts';
 
 const DEBUG_AES = false;
 const DEBUG = false;
@@ -76,6 +76,12 @@ export const AttackPvPAES = z
                 ) {
                   let tbscore = PvPAttackBuff(
                     `Star ${index} ${ab.level}`, eg.name, actual, bp );
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  a2 += tbscore;
+                  tbscore = PvPMarchSizeBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
                   if (DEBUG_AES) {
                     console.log(`accumulating ${tbscore}`);
                   }
@@ -207,6 +213,12 @@ export const AttackPvPAES = z
                     console.log(`accumulating ${tbscore}`);
                   }
                   a2 += tbscore;
+                  tbscore = PvPMarchSizeBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  a2 += tbscore;
                   tbscore = PvPHPBuff(
                     `Star ${index} ${ab.level}`, eg.name, actual, bp);
                   if (DEBUG_AES) {
@@ -264,6 +276,12 @@ export const AttackPvPAES = z
                   !ab.level.localeCompare(AscendingLevels.enum[7])
                 ) {
                   let tbscore = PvPAttackBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  a2 += tbscore;
+                  tbscore = PvPMarchSizeBuff(
                     `Star ${index} ${ab.level}`, eg.name, actual, bp);
                   if (DEBUG_AES) {
                     console.log(`accumulating ${tbscore}`);
@@ -327,6 +345,12 @@ export const AttackPvPAES = z
                   !ab.level.localeCompare(AscendingLevels.enum[6])
                 ) {
                   let tbscore = PvPAttackBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  a2 += tbscore;
+                  tbscore = PvPMarchSizeBuff(
                     `Star ${index} ${ab.level}`, eg.name, actual, bp);
                   if (DEBUG_AES) {
                     console.log(`accumulating ${tbscore}`);

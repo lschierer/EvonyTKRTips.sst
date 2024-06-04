@@ -102,24 +102,7 @@ export const AttackPvP34SS = z
                           console.log(`adding ${sb_total} to aGreen: ${aGreen}`);
                         }
                         aGreen += sb_total;
-                        sb_total = PvPHPBuff(
-                          specialB.name, eg.name, sb, bp);
-                        if (DEBUG_34SS) {
-                          console.log(`adding ${sb_total} to green: ${aGreen}`);
-                        }
-                        aGreen += sb_total;
-                        sb_total = PvPDefenseBuff(
-                          specialB.name, eg.name, sb, bp);
-                        if (DEBUG_34SS) {
-                          console.log(`adding ${sb_total} to green: ${aGreen}`);
-                        }
-                        aGreen += sb_total;
-                        sb_total = PvPDeAttackBuff(
-                          specialB.name, eg.name, sb, bp);
-                        if (DEBUG_34SS) {
-                          console.log(`adding ${sb_total} to green: ${aGreen}`);
-                        }
-                        aGreen += sb_total;
+
                         sb_total = PvPDeHPBuff(
                           specialB.name, eg.name, sb, bp);
                         if (DEBUG_34SS) {
@@ -132,18 +115,7 @@ export const AttackPvP34SS = z
                           console.log(`adding ${sb_total} to green: ${aGreen}`);
                         }
                         aGreen += sb_total;
-                        sb_total = PvPPreservationBuff(
-                          specialB.name, eg.name, sb, bp);
-                        if (DEBUG_34SS) {
-                          console.log(`adding ${sb_total} to green: ${aGreen}`);
-                        }
-                        aGreen += sb_total;
-                        sb_total = PvPDebilitationBuff(
-                          specialB.name, eg.name, sb, bp);
-                        if (DEBUG_34SS) {
-                          console.log(`adding ${sb_total} to green: ${aGreen}`);
-                        }
-                        aGreen += sb_total;
+
                       }
                       if (DEBUG_34SS) {
                         console.log(
@@ -198,24 +170,7 @@ export const AttackPvP34SS = z
                           console.log(`adding ${sb_total} to aBlue: ${aBlue}`);
                         }
                         aBlue += sb_total;
-                        sb_total = PvPHPBuff(
-                          specialB.name, eg.name, sb, bp);
-                        if (DEBUG_34SS) {
-                          console.log(`adding ${sb_total} to aBlue: ${aBlue}`);
-                        }
-                        aBlue += sb_total;
-                        sb_total = PvPDefenseBuff(
-                          specialB.name, eg.name, sb, bp);
-                        if (DEBUG_34SS) {
-                          console.log(`adding ${sb_total} to aBlue: ${aBlue}`);
-                        }
-                        aBlue += sb_total;
-                        sb_total = PvPDeAttackBuff(
-                          specialB.name, eg.name, sb, bp);
-                        if (DEBUG_34SS) {
-                          console.log(`adding ${sb_total} to aBlue: ${aBlue}`);
-                        }
-                        aBlue += sb_total;
+
                         sb_total = PvPDeHPBuff(
                           specialB.name, eg.name, sb, bp);
                         if (DEBUG_34SS) {
@@ -228,18 +183,7 @@ export const AttackPvP34SS = z
                           console.log(`adding ${sb_total} to aBlue: ${aBlue}`);
                         }
                         aBlue += sb_total;
-                        sb_total = PvPPreservationBuff(
-                          specialB.name, eg.name, sb, bp);
-                        if (DEBUG_34SS) {
-                          console.log(`adding ${sb_total} to aBlue: ${aBlue}`);
-                        }
-                        aBlue += sb_total;
-                        sb_total = PvPDebilitationBuff(
-                          specialB.name, eg.name, sb, bp);
-                        if (DEBUG_34SS) {
-                          console.log(`adding ${sb_total} to aBlue: ${aBlue}`);
-                        }
-                        aBlue += sb_total;
+
                       }
                       return aBlue;
                     }, 0);
@@ -293,24 +237,7 @@ export const AttackPvP34SS = z
                           console.log(`adding ${sb_total} to aPurple: ${aPurple}`);
                         }
                         aPurple += sb_total;
-                        sb_total = PvPHPBuff(
-                          specialB.name, eg.name, sb, bp);
-                        if (DEBUG_34SS) {
-                          console.log(`adding ${sb_total} to aPurple: ${aPurple}`);
-                        }
-                        aPurple += sb_total;
-                        sb_total = PvPDefenseBuff(
-                          specialB.name, eg.name, sb, bp);
-                        if (DEBUG_34SS) {
-                          console.log(`adding ${sb_total} to aPurple: ${aPurple}`);
-                        }
-                        aPurple += sb_total;
-                        sb_total = PvPDeAttackBuff(
-                          specialB.name, eg.name, sb, bp);
-                        if (DEBUG_34SS) {
-                          console.log(`adding ${sb_total} to aPurple: ${aPurple}`);
-                        }
-                        aPurple += sb_total;
+
                         sb_total = PvPDeHPBuff(
                           specialB.name, eg.name, sb, bp);
                         if (DEBUG_34SS) {
@@ -322,19 +249,7 @@ export const AttackPvP34SS = z
                         if (DEBUG_34SS) {
                           console.log(`adding ${sb_total} to aPurple: ${aPurple}`);
                         }
-                        aPurple += sb_total;
-                        sb_total = PvPPreservationBuff(
-                          specialB.name, eg.name, sb, bp);
-                        if (DEBUG_34SS) {
-                          console.log(`adding ${sb_total} to aPurple: ${aPurple}`);
-                        }
-                        aPurple += sb_total;
-                        sb_total = PvPDebilitationBuff(
-                          specialB.name, eg.name, sb, bp);
-                        if (DEBUG_34SS) {
-                          console.log(`adding ${sb_total} to aPurple: ${aPurple}`);
-                        }
-                        aPurple += sb_total;
+
                       }
                       return aPurple;
                     }, 0);
@@ -393,24 +308,7 @@ export const AttackPvP34SS = z
                           console.log(`adding ${sb_total} to aOrange: ${aOrange}`);
                         }
                         aOrange += sb_total;
-                        sb_total = PvPHPBuff(
-                          specialB.name, eg.name, sb, bp);
-                        if (DEBUG_34SS) {
-                          console.log(`adding ${sb_total} to aOrange: ${aOrange}`);
-                        }
-                        aOrange += sb_total;
-                        sb_total = PvPDefenseBuff(
-                          specialB.name, eg.name, sb, bp);
-                        if (DEBUG_34SS) {
-                          console.log(`adding ${sb_total} to aOrange: ${aOrange}`);
-                        }
-                        aOrange += sb_total;
-                        sb_total = PvPDeAttackBuff(
-                          specialB.name, eg.name, sb, bp);
-                        if (DEBUG_34SS) {
-                          console.log(`adding ${sb_total} to aOrange: ${aOrange}`);
-                        }
-                        aOrange += sb_total;
+
                         sb_total = PvPDeHPBuff(
                           specialB.name, eg.name, sb, bp);
                         if (DEBUG_34SS) {
@@ -423,18 +321,7 @@ export const AttackPvP34SS = z
                           console.log(`adding ${sb_total} to aOrange: ${aOrange}`);
                         }
                         aOrange += sb_total;
-                        sb_total = PvPPreservationBuff(
-                          specialB.name, eg.name, sb, bp);
-                        if (DEBUG_34SS) {
-                          console.log(`adding ${sb_total} to aOrange: ${aOrange}`);
-                        }
-                        aOrange += sb_total;
-                        sb_total = PvPDebilitationBuff(
-                          specialB.name, eg.name, sb, bp);
-                        if (DEBUG_34SS) {
-                          console.log(`adding ${sb_total} to aOrange: ${aOrange}`);
-                        }
-                        aOrange += sb_total;
+
                       }
                       return aOrange;
                     }, 0);
@@ -478,24 +365,7 @@ export const AttackPvP34SS = z
                           console.log(`adding ${sb_total} to aGold: ${aGold}`);
                         }
                         aGold += sb_total;
-                        sb_total = PvPHPBuff(
-                          specialB.name, eg.name, sb, bp);
-                        if (DEBUG_34SS) {
-                          console.log(`adding ${sb_total} to aGold: ${aGold}`);
-                        }
-                        aGold += sb_total;
-                        sb_total = PvPDefenseBuff(
-                          specialB.name, eg.name, sb, bp);
-                        if (DEBUG_34SS) {
-                          console.log(`adding ${sb_total} to aGold: ${aGold}`);
-                        }
-                        aGold += sb_total;
-                        sb_total = PvPDeAttackBuff(
-                          specialB.name, eg.name, sb, bp);
-                        if (DEBUG_34SS) {
-                          console.log(`adding ${sb_total} to aGold: ${aGold}`);
-                        }
-                        aGold += sb_total;
+
                         sb_total = PvPDeHPBuff(
                           specialB.name, eg.name, sb, bp);
                         if (DEBUG_34SS) {
@@ -508,18 +378,7 @@ export const AttackPvP34SS = z
                           console.log(`adding ${sb_total} to aGold: ${aGold}`);
                         }
                         aGold += sb_total;
-                        sb_total = PvPPreservationBuff(
-                          specialB.name, eg.name, sb, bp);
-                        if (DEBUG_34SS) {
-                          console.log(`adding ${sb_total} to aGold: ${aGold}`);
-                        }
-                        aGold += sb_total;
-                        sb_total = PvPDebilitationBuff(
-                          specialB.name, eg.name, sb, bp);
-                        if (DEBUG_34SS) {
-                          console.log(`adding ${sb_total} to aGold: ${aGold}`);
-                        }
-                        aGold += sb_total;
+
                       }
                       return aGold;
                     }, 0);

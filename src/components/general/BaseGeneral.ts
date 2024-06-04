@@ -37,7 +37,7 @@ import {
 } from '@schemas/ExtendedGeneral';
 
 import { EvAnsScoreComputer } from '@components/general/buffComputers/EvAnsRanking/EvAnsScoreComputer';
-import { ScoreComputer as AttackScoreComputer } from '@components/general/buffComputers/AttackRanking/ScoreComputer';
+import { AttackScoreComputer } from '@components/general/buffComputers/TKRTipsRanking/AttackScoreComputer';
 import { ScoreComputer as ToughnessScoreComputer } from '@components/general/buffComputers/ToughnessRanking/ScoreComputer';
 
 const DEBUG = false;
