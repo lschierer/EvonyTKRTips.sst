@@ -31,10 +31,10 @@ import { PvPDeDefenseBuff } from './PvPDeDefense.ts';
 import { PvPPreservationBuff } from './PvPPreservationBuff.ts';
 import { PvPDebilitationBuff } from './PvPDebilitationBuff.ts';
 
-import {BuffFunctionObject, type BuffFunctionObjectType} from '@schemas/baseSchemas';
+import {type BuffFunctionInterface} from '@lib/RankingInterfaces';
 
 
-const typedBuffFunctions: BuffFunctionObjectType = {
+const typedBuffFunctions: BuffFunctionInterface = {
  Attack: PvPAttackBuff,
  MarchSize: PvPMarchSizeBuff,
  HP: PvPHPBuff,

@@ -1,5 +1,5 @@
 const DEBUG = true;
-const DEBUG_BAS = true;
+const DEBUG_BAS = false;
 
 import { z } from 'zod';
 

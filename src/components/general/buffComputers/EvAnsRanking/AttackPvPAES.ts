@@ -23,67 +23,63 @@ import {type BuffFunctionInterface} from '@lib/RankingInterfaces';
 const DEBUG_AES = false;
 const DEBUG = false;
 
-function buffDetailsReducerLogic(tbf: BuffFunctionInterface, index: number, ab: AscendingType, eg: ExtendedGeneralType, actual:BuffType, bp: BuffParamsType, a2: number) {
+function buffDetailsReducerLogic(tbf: BuffFunctionInterface, index: number, ab: AscendingType, eg: ExtendedGeneralType, actual:BuffType, bp: BuffParamsType) {
+  let a3 = 0;
   let tbscore = tbf.Attack(
     `Star ${index} ${ab.level}`, eg.name, actual, bp);
   if (DEBUG_AES) {
     console.log(`accumulating ${tbscore}`);
   }
-  a2 += tbscore;
+  a3 += tbscore;
   tbscore = tbf.MarchSize(
     `Star ${index} ${ab.level}`, eg.name, actual, bp);
   if (DEBUG_AES) {
     console.log(`accumulating ${tbscore}`);
   }
-  a2 += tbscore;
+  a3 += tbscore;
   tbscore = tbf.HP(
     `Star ${index} ${ab.level}`, eg.name, actual, bp);
   if (DEBUG_AES) {
     console.log(`accumulating ${tbscore}`);
   }
-  a2 += tbscore;
+  a3 += tbscore;
   tbscore = tbf.Defense(
     `Star ${index} ${ab.level}`, eg.name, actual, bp);
   if (DEBUG_AES) {
     console.log(`accumulating ${tbscore}`);
   }
-  a2 += tbscore;
+  a3 += tbscore;
   tbscore = tbf.DeAttack(
     `Star ${index} ${ab.level}`, eg.name, actual, bp);
   if (DEBUG_AES) {
     console.log(`accumulating ${tbscore}`);
   }
-  a2 += tbscore;
+  a3 += tbscore;
   tbscore = tbf.DeHP(
     `Star ${index} ${ab.level}`, eg.name, actual, bp);
   if (DEBUG_AES) {
     console.log(`accumulating ${tbscore}`);
   }
-  a2 += tbscore;
-  tbscore = tbf.DeHP(
-    `Star ${index} ${ab.level}`, eg.name, actual, bp);
-  if (DEBUG_AES) {
-    console.log(`accumulating ${tbscore}`);
-  }
-  a2 += tbscore;
+  a3 += tbscore;
   tbscore = tbf.DeDefense(
     `Star ${index} ${ab.level}`, eg.name, actual, bp);
   if (DEBUG_AES) {
     console.log(`accumulating ${tbscore}`);
   }
-  a2 += tbscore;
+  a3 += tbscore;
   tbscore = tbf.Preservation(
     `Star ${index} ${ab.level}`, eg.name, actual, bp);
   if (DEBUG_AES) {
     console.log(`accumulating ${tbscore}`);
   }
-  a2 += tbscore;
+  a3 += tbscore;
   tbscore = tbf.Debilitation(
     `Star ${index} ${ab.level}`, eg.name, actual, bp);
   if (DEBUG_AES) {
     console.log(`accumulating ${tbscore}`);
   }
-  return tbscore
+  a3 += tbscore;
+  return a3;
 }
 
 export const AttackPvPAES = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFunction: BuffFunctionInterface) => {
@@ -130,14 +126,14 @@ export const AttackPvPAES = (eg: ExtendedGeneralType, bp: BuffParamsType, typedB
                   !eg.stars.localeCompare(AscendingLevels.enum[10]) &&
                   !ab.level.localeCompare(AscendingLevels.enum[10])
                 ) {
-                  a2 += buffDetailsReducerLogic(typedBuffFunction,index,ab, eg, actual, bp, a2)
+                  a2 += buffDetailsReducerLogic(typedBuffFunction,index,ab, eg, actual, bp)
                   return a2;
                 } else if (
                   (!eg.stars.localeCompare(AscendingLevels.enum[10]) ||
                     !eg.stars.localeCompare(AscendingLevels.enum[9])) &&
                   !ab.level.localeCompare(AscendingLevels.enum[9])
                 ) {
-                  a2 += buffDetailsReducerLogic(typedBuffFunction,index,ab, eg, actual, bp, a2)
+                  a2 += buffDetailsReducerLogic(typedBuffFunction,index,ab, eg, actual, bp)
                   return a2
                 } else if (
                   (!eg.stars.localeCompare(AscendingLevels.enum[10]) ||
@@ -145,7 +141,7 @@ export const AttackPvPAES = (eg: ExtendedGeneralType, bp: BuffParamsType, typedB
                     !eg.stars.localeCompare(AscendingLevels.enum[8])) &&
                   !ab.level.localeCompare(AscendingLevels.enum[8])
                 ) {
-                  a2 += buffDetailsReducerLogic(typedBuffFunction,index,ab, eg, actual, bp, a2)
+                  a2 += buffDetailsReducerLogic(typedBuffFunction,index,ab, eg, actual, bp)
                   return a2
                 } else if (
                   (!eg.stars.localeCompare(AscendingLevels.enum[10]) ||
@@ -154,7 +150,7 @@ export const AttackPvPAES = (eg: ExtendedGeneralType, bp: BuffParamsType, typedB
                     !eg.stars.localeCompare(AscendingLevels.enum[7])) &&
                   !ab.level.localeCompare(AscendingLevels.enum[7])
                 ) {
-                  a2 += buffDetailsReducerLogic(typedBuffFunction,index,ab, eg, actual, bp, a2)
+                  a2 += buffDetailsReducerLogic(typedBuffFunction,index,ab, eg, actual, bp)
                   return a2
                 } else if (
                   (!eg.stars.localeCompare(AscendingLevels.enum[10]) ||
@@ -164,7 +160,7 @@ export const AttackPvPAES = (eg: ExtendedGeneralType, bp: BuffParamsType, typedB
                     !eg.stars.localeCompare(AscendingLevels.enum[6])) &&
                   !ab.level.localeCompare(AscendingLevels.enum[6])
                 ) {
-                  a2 += buffDetailsReducerLogic(typedBuffFunction,index,ab, eg, actual, bp, a2)
+                  a2 += buffDetailsReducerLogic(typedBuffFunction,index,ab, eg, actual, bp)
                   return a2
                 } else {
                   console.log(

@@ -18,7 +18,8 @@ import {type BuffFunctionInterface} from '@lib/RankingInterfaces';
 
 const DEBUG_34SS = false;
 
-const buffReductionLogic = (specialB: SpecialityType, eg: ExtendedGeneralType, sb: BuffType, bp: BuffParamsType, ba: number, tbfo:  BuffFunctionInterface) => {
+const buffReductionLogic = (specialB: SpecialityType, eg: ExtendedGeneralType, sb: BuffType, bp: BuffParamsType, tbfo:  BuffFunctionInterface) => {
+  let ba = 0;
   let sb_total = tbfo.Attack(
     specialB.name, eg.name, sb, bp);
   if (DEBUG_34SS) {
@@ -138,7 +139,7 @@ export const AttackPvP34SS = (eg: ExtendedGeneralType, bp: BuffParamsType, typed
                         return aGreen;
                       } else {
                         //(tbfo: BuffFunctionInterface, specialB: SpecialityType, eg: ExtendedGeneralType, sb: BuffType, bp: BuffParamsType, ba: number) => {
-                        aGreen = buffReductionLogic(specialB, eg, sb, bp, aGreen, typedBuffFunction);
+                        aGreen = buffReductionLogic(specialB, eg, sb, bp, typedBuffFunction);
                       }
                       if (DEBUG_34SS) {
                         console.log(
@@ -181,7 +182,7 @@ export const AttackPvP34SS = (eg: ExtendedGeneralType, bp: BuffParamsType, typed
                       if (sb === undefined || sb === null) {
                         return aBlue;
                       } else {
-                        aBlue = buffReductionLogic(specialB, eg, sb, bp, aBlue, typedBuffFunction);
+                        aBlue = buffReductionLogic(specialB, eg, sb, bp, typedBuffFunction);
                       }
                       return aBlue;
                     }, 0);
@@ -223,7 +224,7 @@ export const AttackPvP34SS = (eg: ExtendedGeneralType, bp: BuffParamsType, typed
                       if (sb === undefined || sb === null) {
                         return aPurple;
                       } else {
-                        aPurple = buffReductionLogic(specialB, eg, sb, bp, aPurple, typedBuffFunction,);
+                        aPurple = buffReductionLogic(specialB, eg, sb, bp, typedBuffFunction,);
                       }
                       return aPurple;
                     }, 0);
@@ -270,7 +271,7 @@ export const AttackPvP34SS = (eg: ExtendedGeneralType, bp: BuffParamsType, typed
                       if (sb === undefined || sb === null) {
                         return aOrange;
                       } else {
-                        aOrange = buffReductionLogic(specialB, eg, sb, bp, aOrange, typedBuffFunction);
+                        aOrange = buffReductionLogic(specialB, eg, sb, bp, typedBuffFunction);
                       }
                       return aOrange;
                     }, 0);
@@ -302,7 +303,7 @@ export const AttackPvP34SS = (eg: ExtendedGeneralType, bp: BuffParamsType, typed
                       if (sb === undefined || sb === null) {
                         return aGold;
                       } else {
-                        aGold = buffReductionLogic(specialB, eg, sb, bp, aGold, typedBuffFunction);
+                        aGold = buffReductionLogic(specialB, eg, sb, bp, typedBuffFunction);
                       }
                       return aGold;
                     }, 0);
