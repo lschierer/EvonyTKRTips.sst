@@ -15,6 +15,11 @@ general:
   politics_increment: 8.65
   books:
     - Queen Annes Revenge
+  specialities:
+  - Siege Machine Formation
+  - Bash
+  - Siege Machine Ares
+  - Blackbeard
   ascending:
     - level: '6'
       buff:
@@ -61,8 +66,4 @@ general:
           value:
             number: 25
             unit: percentage
-  specialities:
-    - Siege Machine Formation
-    - Bash
-    - Siege Machine Ares
-    - Blackbeard
+  
