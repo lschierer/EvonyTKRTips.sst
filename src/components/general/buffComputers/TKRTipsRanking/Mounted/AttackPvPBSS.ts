@@ -16,15 +16,15 @@ import {
   type specialSkillBookType,
 } from '@schemas/bookSchemas';
 
-import { PvPAttackBuff } from '@components/general/buffComputers/AttackRanking/Mounted/PvPAttackBuff.ts';
-import { PvPMarchSizeBuff } from '@components/general/buffComputers/AttackRanking/Mounted/PvPMarchSizeBuff';
-import { PvPHPBuff } from '@components/general/buffComputers/AttackRanking/Mounted/PvPHPBuff.ts';
-import { PvPDefenseBuff } from '@components/general/buffComputers/AttackRanking/Mounted/PvPDefenseBuff.ts';
-import { PvPDeAttackBuff } from '@components/general/buffComputers/AttackRanking/Mounted/PvPDeAttackBuff.ts';
-import { PvPDeHPBuff } from '@components/general/buffComputers/AttackRanking/Mounted/PvPDeHPBuff.ts';
-import { PvPDeDefenseBuff } from '@components/general/buffComputers/AttackRanking/Mounted/PvPDeDefense.ts';
-import { PvPPreservationBuff } from '@components/general/buffComputers/AttackRanking/Mounted/PvPPreservationBuff.ts';
-import { PvPDebilitationBuff } from '@components/general/buffComputers/AttackRanking/Mounted/PvPDebilitationBuff.ts';
+import { PvPAttackBuff } from 'ng/Mounted/PvPAttackBuff.ts';
+import { PvPMarchSizeBuff } from 'ng/Mounted/PvPMarchSizeBuff';
+import { PvPHPBuff } from 'ng/Mounted/PvPHPBuff.ts';
+import { PvPDefenseBuff } from 'ng/Mounted/PvPDefenseBuff.ts';
+import { PvPDeAttackBuff } from 'ng/Mounted/PvPDeAttackBuff.ts';
+import { PvPDeHPBuff } from 'ng/Mounted/PvPDeHPBuff.ts';
+import { PvPDeDefenseBuff } from 'ng/Mounted/PvPDeDefense.ts';
+import { PvPPreservationBuff } from 'ng/Mounted/PvPPreservationBuff.ts';
+import { PvPDebilitationBuff } from 'ng/Mounted/PvPDebilitationBuff.ts';
 
 const DEBUG_BSS = false;
 

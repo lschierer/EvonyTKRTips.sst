@@ -11,7 +11,7 @@ import {
   UnitSchema,
 } from '@schemas/baseSchemas';
 
-import { checkInvalidConditions } from '../AttackScoreComputer.ts';
+import { checkInvalidConditions } from '../AttackScoreComputer';
 
 import { GroundPvPAttackAttributeMultipliers } from '@lib/EvAnsAttributeRanking';
 

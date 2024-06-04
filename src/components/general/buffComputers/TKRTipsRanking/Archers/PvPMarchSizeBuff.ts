@@ -11,11 +11,11 @@ import {
   UnitSchema,
 } from '@schemas/baseSchemas';
 
-import { checkInvalidConditions } from '../AttackScoreComputer.ts';
+import { checkInvalidConditions } from '../AttackScoreComputer';
 
 import { RangedPvPAttackAttributeMultipliers } from '@lib/EvAnsAttributeRanking';
 
-const DEBUGMS = true;
+const DEBUGMS = false;
 
 const PvPMarchSizeBuffClassCheck = z
   .function()

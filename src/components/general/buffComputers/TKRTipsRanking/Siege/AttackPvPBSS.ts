@@ -16,15 +16,15 @@ import {
   type specialSkillBookType,
 } from '@schemas/bookSchemas';
 
-import { PvPAttackBuff } from '@components/general/buffComputers/AttackRanking/Siege/PvPAttackBuff.ts';
-import { PvPMarchSizeBuff } from '@components/general/buffComputers/AttackRanking/Siege/PvPMarchSizeBuff';
-import { PvPHPBuff } from '@components/general/buffComputers/AttackRanking/Siege/PvPHPBuff.ts';
-import { PvPDefenseBuff } from '@components/general/buffComputers/AttackRanking/Siege/PvPDefenseBuff.ts';
-import { PvPDeAttackBuff } from '@components/general/buffComputers/AttackRanking/Siege/PvPDeAttackBuff.ts';
-import { PvPDeHPBuff } from '@components/general/buffComputers/AttackRanking/Siege/PvPDeHPBuff.ts';
-import { PvPDeDefenseBuff } from '@components/general/buffComputers/AttackRanking/Siege/PvPDeDefense.ts';
-import { PvPPreservationBuff } from '@components/general/buffComputers/AttackRanking/Siege/PvPPreservationBuff.ts';
-import { PvPDebilitationBuff } from '@components/general/buffComputers/AttackRanking/Siege/PvPDebilitationBuff.ts';
+import { PvPAttackBuff } from './PvPAttackBuff.ts';
+import { PvPMarchSizeBuff } from './PvPMarchSizeBuff';
+import { PvPHPBuff } from './PvPHPBuff.ts';
+import { PvPDefenseBuff } from './PvPDefenseBuff.ts';
+import { PvPDeAttackBuff } from './PvPDeAttackBuff.ts';
+import { PvPDeHPBuff } from './PvPDeHPBuff.ts';
+import { PvPDeDefenseBuff } from './PvPDeDefense.ts';
+import { PvPPreservationBuff } from './PvPPreservationBuff.ts';
+import { PvPDebilitationBuff } from './PvPDebilitationBuff.ts';
 
 const DEBUG_BSS = false;
 

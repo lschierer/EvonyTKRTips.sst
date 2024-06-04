@@ -9,28 +9,56 @@ import {
 } from '@schemas/baseSchemas';
 
 import {
+  Ascending,
+  type AscendingType
+} from '@schemas/generalsSchema.ts'
+
+import {
   ExtendedGeneral,
   type ExtendedGeneralType,
 } from '@schemas/ExtendedGeneral';
 
-import { PvPAttackBuff } from '@components/general/buffComputers/AttackRanking/Archers/PvPAttackBuff.ts';
-import { PvPMarchSizeBuff } from '@components/general/buffComputers/AttackRanking/Archers/PvPMarchSizeBuff';
-import { PvPHPBuff } from '@components/general/buffComputers/AttackRanking/Archers/PvPHPBuff.ts';
-import { PvPDefenseBuff } from '@components/general/buffComputers/AttackRanking/Archers/PvPDefenseBuff.ts';
-import { PvPDeAttackBuff } from '@components/general/buffComputers/AttackRanking/Archers/PvPDeAttackBuff.ts';
-import { PvPDeHPBuff } from '@components/general/buffComputers/AttackRanking/Archers/PvPDeHPBuff.ts';
-import { PvPDeDefenseBuff } from '@components/general/buffComputers/AttackRanking/Archers/PvPDeDefense.ts';
-import { PvPPreservationBuff } from '@components/general/buffComputers/AttackRanking/Archers/PvPPreservationBuff.ts';
-import { PvPDebilitationBuff } from '@components/general/buffComputers/AttackRanking/Archers/PvPDebilitationBuff.ts';
+import {type BuffFunctionInterface} from '@lib/RankingInterfaces';
 
 const DEBUG_AES = false;
 const DEBUG = false;
 
-export const AttackPvPAES = z
-  .function()
-  .args(ExtendedGeneral, BuffParams)
-  .returns(z.number())
-  .implement((eg: ExtendedGeneralType, bp: BuffParamsType) => {
+function buffDetailsReducerLogic(tbf: BuffFunctionInterface, index: number, ab: AscendingType, eg: ExtendedGeneralType, actual:BuffType, bp: BuffParamsType) {
+  let a3 = 0;
+  let tbscore = tbf.Attack(
+    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+  if (DEBUG_AES) {
+    console.log(`accumulating ${tbscore}`);
+  }
+  a3 += tbscore;
+  tbscore = tbf.MarchSize(
+    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+  if (DEBUG_AES) {
+    console.log(`accumulating ${tbscore}`);
+  }
+  a3 += tbscore;
+  tbscore = tbf.Range(`Star ${index} ${ab.level}`, eg.name, actual, bp);
+  if(DEBUG_AES) {
+    console.log(`accumulating ${tbscore}`);
+  }
+  a3 += tbscore;
+  tbscore = tbf.DeHP(
+    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+  if (DEBUG_AES) {
+    console.log(`accumulating ${tbscore}`);
+  }
+  a3 += tbscore;
+  tbscore = tbf.DeDefense(
+    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+  if (DEBUG_AES) {
+    console.log(`accumulating ${tbscore}`);
+  }
+  a3 += tbscore;
+
+  return a3;
+}
+
+export const AttackPvPAES = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFunction: BuffFunctionInterface) => {
     let BSS_Score = 0;
 
     //I will assume you set the bp to disabled if it is an assistant.
@@ -74,76 +102,14 @@ export const AttackPvPAES = z
                   !eg.stars.localeCompare(AscendingLevels.enum[10]) &&
                   !ab.level.localeCompare(AscendingLevels.enum[10])
                 ) {
-                  let tbscore = PvPAttackBuff(
-                    `Star ${index} ${ab.level}`, eg.name, actual, bp );
-                  if (DEBUG_AES) {
-                    console.log(`accumulating ${tbscore}`);
-                  }
-                  a2 += tbscore;
-                  tbscore = PvPMarchSizeBuff(
-                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
-                  if (DEBUG_AES) {
-                    console.log(`accumulating ${tbscore}`);
-                  }
-                  a2 += tbscore;
-
-                  tbscore = PvPDeHPBuff(
-                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
-                  if (DEBUG_AES) {
-                    console.log(`accumulating ${tbscore}`);
-                  }
-                  a2 += tbscore;
-                  tbscore = PvPDeHPBuff(
-                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
-                  if (DEBUG_AES) {
-                    console.log(`accumulating ${tbscore}`);
-                  }
-                  a2 += tbscore;
-                  tbscore = PvPDeDefenseBuff(
-                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
-                  if (DEBUG_AES) {
-                    console.log(`accumulating ${tbscore}`);
-                  }
-                  a2 += tbscore;
-
-                  return a2
+                  a2 += buffDetailsReducerLogic(typedBuffFunction,index,ab, eg, actual, bp)
+                  return a2;
                 } else if (
                   (!eg.stars.localeCompare(AscendingLevels.enum[10]) ||
                     !eg.stars.localeCompare(AscendingLevels.enum[9])) &&
                   !ab.level.localeCompare(AscendingLevels.enum[9])
                 ) {
-                  let tbscore = PvPAttackBuff(
-                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
-                  if (DEBUG_AES) {
-                    console.log(`accumulating ${tbscore}`);
-                  }
-                  a2 += tbscore;
-                  tbscore = PvPMarchSizeBuff(
-                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
-                  if (DEBUG_AES) {
-                    console.log(`accumulating ${tbscore}`);
-                  }
-                  a2 += tbscore;
-
-                  tbscore = PvPDeHPBuff(
-                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
-                  if (DEBUG_AES) {
-                    console.log(`accumulating ${tbscore}`);
-                  }
-                  a2 += tbscore;
-                  tbscore = PvPDeHPBuff(
-                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
-                  if (DEBUG_AES) {
-                    console.log(`accumulating ${tbscore}`);
-                  }
-                  a2 += tbscore;
-                  tbscore = PvPDeDefenseBuff(
-                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
-                  if (DEBUG_AES) {
-                    console.log(`accumulating ${tbscore}`);
-                  }
-                  a2 += tbscore;
-
+                  a2 += buffDetailsReducerLogic(typedBuffFunction,index,ab, eg, actual, bp)
                   return a2
                 } else if (
                   (!eg.stars.localeCompare(AscendingLevels.enum[10]) ||
@@ -151,38 +117,7 @@ export const AttackPvPAES = z
                     !eg.stars.localeCompare(AscendingLevels.enum[8])) &&
                   !ab.level.localeCompare(AscendingLevels.enum[8])
                 ) {
-                  let tbscore = PvPAttackBuff(
-                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
-                  if (DEBUG_AES) {
-                    console.log(`accumulating ${tbscore}`);
-                  }
-                  a2 += tbscore;
-                  tbscore = PvPMarchSizeBuff(
-                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
-                  if (DEBUG_AES) {
-                    console.log(`accumulating ${tbscore}`);
-                  }
-                  a2 += tbscore;
-
-                  tbscore = PvPDeHPBuff(
-                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
-                  if (DEBUG_AES) {
-                    console.log(`accumulating ${tbscore}`);
-                  }
-                  a2 += tbscore;
-                  tbscore = PvPDeHPBuff(
-                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
-                  if (DEBUG_AES) {
-                    console.log(`accumulating ${tbscore}`);
-                  }
-                  a2 += tbscore;
-                  tbscore = PvPDeDefenseBuff(
-                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
-                  if (DEBUG_AES) {
-                    console.log(`accumulating ${tbscore}`);
-                  }
-                  a2 += tbscore;
-
+                  a2 += buffDetailsReducerLogic(typedBuffFunction,index,ab, eg, actual, bp)
                   return a2
                 } else if (
                   (!eg.stars.localeCompare(AscendingLevels.enum[10]) ||
@@ -191,38 +126,7 @@ export const AttackPvPAES = z
                     !eg.stars.localeCompare(AscendingLevels.enum[7])) &&
                   !ab.level.localeCompare(AscendingLevels.enum[7])
                 ) {
-                  let tbscore = PvPAttackBuff(
-                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
-                  if (DEBUG_AES) {
-                    console.log(`accumulating ${tbscore}`);
-                  }
-                  a2 += tbscore;
-                  tbscore = PvPMarchSizeBuff(
-                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
-                  if (DEBUG_AES) {
-                    console.log(`accumulating ${tbscore}`);
-                  }
-                  a2 += tbscore;
-
-                  tbscore = PvPDeHPBuff(
-                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
-                  if (DEBUG_AES) {
-                    console.log(`accumulating ${tbscore}`);
-                  }
-                  a2 += tbscore;
-                  tbscore = PvPDeHPBuff(
-                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
-                  if (DEBUG_AES) {
-                    console.log(`accumulating ${tbscore}`);
-                  }
-                  a2 += tbscore;
-                  tbscore = PvPDeDefenseBuff(
-                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
-                  if (DEBUG_AES) {
-                    console.log(`accumulating ${tbscore}`);
-                  }
-                  a2 += tbscore;
-
+                  a2 += buffDetailsReducerLogic(typedBuffFunction,index,ab, eg, actual, bp)
                   return a2
                 } else if (
                   (!eg.stars.localeCompare(AscendingLevels.enum[10]) ||
@@ -232,38 +136,7 @@ export const AttackPvPAES = z
                     !eg.stars.localeCompare(AscendingLevels.enum[6])) &&
                   !ab.level.localeCompare(AscendingLevels.enum[6])
                 ) {
-                  let tbscore = PvPAttackBuff(
-                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
-                  if (DEBUG_AES) {
-                    console.log(`accumulating ${tbscore}`);
-                  }
-                  a2 += tbscore;
-                  tbscore = PvPMarchSizeBuff(
-                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
-                  if (DEBUG_AES) {
-                    console.log(`accumulating ${tbscore}`);
-                  }
-                  a2 += tbscore;
-
-                  tbscore = PvPDeHPBuff(
-                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
-                  if (DEBUG_AES) {
-                    console.log(`accumulating ${tbscore}`);
-                  }
-                  a2 += tbscore;
-                  tbscore = PvPDeHPBuff(
-                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
-                  if (DEBUG_AES) {
-                    console.log(`accumulating ${tbscore}`);
-                  }
-                  a2 += tbscore;
-                  tbscore = PvPDeDefenseBuff(
-                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
-                  if (DEBUG_AES) {
-                    console.log(`accumulating ${tbscore}`);
-                  }
-                  a2 += tbscore;
-
+                  a2 += buffDetailsReducerLogic(typedBuffFunction,index,ab, eg, actual, bp)
                   return a2
                 } else {
                   console.log(
@@ -299,4 +172,4 @@ export const AttackPvPAES = z
     }
 
     return Math.floor(BSS_Score);
-  });
+  }

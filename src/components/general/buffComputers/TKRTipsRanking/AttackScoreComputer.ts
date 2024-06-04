@@ -21,10 +21,10 @@ import {
   type ExtendedGeneralType,
 } from '@schemas/ExtendedGeneral';
 
-import { GroundPvPAttack } from './Ground/AttackPvPBase';
-import { ArchersPvPAttack } from './Archers/AttackPvPBase';
-import { MountedPvPAttack } from './Mounted/AttackPvPBase';
-import { SiegePvPAttack } from './Siege/AttackPvPBase';
+import { TKRTipsAttackGroundPvPAttack } from './Ground/AttackPvPBase';
+import { TKRTipsAttackArchersPvPAttack } from './Archers/AttackPvPBase';
+import { TKRTipsAttackMountedPvPAttack } from './Mounted/AttackPvPBase';
+import { TKRTipsAttackSiegePvPAttack } from './Siege/AttackPvPBase';
 
 /*******************
  * this is derived by reverse engineering the formula from
@@ -53,16 +53,16 @@ export const AttackScoreComputer = z
           console.log(`called for Attack use case`);
         }
         if (!generalSpecialists.enum.Archers.localeCompare(eg.score_as)) {
-          return ArchersPvPAttack(eg, display, bp);
+          return TKRTipsAttackArchersPvPAttack(eg, display, bp);
         }
         if (!generalSpecialists.enum.Ground.localeCompare(eg.score_as)) {
-          return GroundPvPAttack(eg, display, bp);
+          return TKRTipsAttackGroundPvPAttack(eg, display, bp);
         }
         if (!generalSpecialists.enum.Mounted.localeCompare(eg.score_as)) {
-          return MountedPvPAttack(eg, display, bp);
+          return TKRTipsAttackMountedPvPAttack(eg, display, bp);
         }
         if (!generalSpecialists.enum.Siege.localeCompare(eg.score_as)) {
-          return SiegePvPAttack(eg, display, bp);
+          return TKRTipsAttackSiegePvPAttack(eg, display, bp);
         }
       } else {
         console.log(`not called for Attack use case`);

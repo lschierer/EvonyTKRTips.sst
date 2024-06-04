@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import {
   BuffParams,
-  type BuffParamsType,
+  type BuffParamsType, type BuffType,
   qualityColor,
 } from '@schemas/baseSchemas';
 
@@ -13,23 +13,47 @@ import {
   type ExtendedGeneralType,
 } from '@schemas/ExtendedGeneral';
 
-import { PvPAttackBuff } from './PvPAttackBuff.ts';
-import { PvPMarchSizeBuff } from './PvPMarchSizeBuff.ts';
-import { PvPHPBuff } from './PvPHPBuff.ts';
-import { PvPDefenseBuff } from './PvPDefenseBuff.ts';
-import { PvPDeAttackBuff } from './PvPDeAttackBuff.ts';
-import { PvPDeHPBuff } from './PvPDeHPBuff.ts';
-import { PvPDeDefenseBuff } from './PvPDeDefense.ts';
-import { PvPPreservationBuff } from './PvPPreservationBuff.ts';
-import { PvPDebilitationBuff } from './PvPDebilitationBuff.ts';
+import {type BuffFunctionInterface} from '@lib/RankingInterfaces';
+
 
 const DEBUG_34SS = false;
 
-export const AttackPvP34SS = z
-  .function()
-  .args(ExtendedGeneral, BuffParams)
-  .returns(z.number())
-  .implement((eg: ExtendedGeneralType, bp: BuffParamsType) => {
+const buffReductionLogic = (specialB: SpecialityType, eg: ExtendedGeneralType, sb: BuffType, bp: BuffParamsType, tbfo:  BuffFunctionInterface) => {
+  let ba = 0;
+  let sb_total = tbfo.Attack(
+    specialB.name, eg.name, sb, bp);
+  if (DEBUG_34SS) {
+    console.log(`adding ${sb_total} to: ${ba}`);
+  }
+  ba += sb_total;
+  sb_total = tbfo.MarchSize(
+    specialB.name, eg.name, sb, bp);
+  if (DEBUG_34SS) {
+    console.log(`adding ${sb_total} to: ${ba}`);
+  }
+  ba += sb_total;
+  sb_total = tbfo.Range(specialB.name, eg.name, sb, bp);
+  if (DEBUG_34SS) {
+    console.log(`adding ${sb_total} to: ${ba}`);
+  }
+  ba += sb_total;
+  sb_total = tbfo.DeHP(
+    specialB.name, eg.name, sb, bp);
+  if (DEBUG_34SS) {
+    console.log(`adding ${sb_total} to: ${ba}`);
+  }
+  ba += sb_total;
+  sb_total = tbfo.DeDefense(
+    specialB.name, eg.name, sb, bp);
+  if (DEBUG_34SS) {
+    console.log(`adding ${sb_total} to: ${ba}`);
+  }
+  ba += sb_total;
+
+  return ba;
+};
+
+export const AttackPvP34SS = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFunction: BuffFunctionInterface) => {
     let BSS_Score = 0;
 
     if (
@@ -90,32 +114,8 @@ export const AttackPvP34SS = z
                       if (sb === undefined || sb === null) {
                         return aGreen;
                       } else {
-                        let sb_total = PvPAttackBuff(
-                          specialB.name, eg.name, sb, bp);
-                        if (DEBUG_34SS) {
-                          console.log(`adding ${sb_total} to green: ${aGreen}`);
-                        }
-                        aGreen += sb_total;
-                        sb_total = PvPMarchSizeBuff(
-                          specialB.name, eg.name, sb, bp);
-                        if (DEBUG_34SS) {
-                          console.log(`adding ${sb_total} to aGreen: ${aGreen}`);
-                        }
-                        aGreen += sb_total;
-
-                        sb_total = PvPDeHPBuff(
-                          specialB.name, eg.name, sb, bp);
-                        if (DEBUG_34SS) {
-                          console.log(`adding ${sb_total} to green: ${aGreen}`);
-                        }
-                        aGreen += sb_total;
-                        sb_total = PvPDeDefenseBuff(
-                          specialB.name, eg.name, sb, bp);
-                        if (DEBUG_34SS) {
-                          console.log(`adding ${sb_total} to green: ${aGreen}`);
-                        }
-                        aGreen += sb_total;
-
+                        //(tbfo: BuffFunctionInterface, specialB: SpecialityType, eg: ExtendedGeneralType, sb: BuffType, bp: BuffParamsType, ba: number) => {
+                        aGreen = buffReductionLogic(specialB, eg, sb, bp, typedBuffFunction);
                       }
                       if (DEBUG_34SS) {
                         console.log(
@@ -158,32 +158,7 @@ export const AttackPvP34SS = z
                       if (sb === undefined || sb === null) {
                         return aBlue;
                       } else {
-                        let sb_total = PvPAttackBuff(
-                          specialB.name, eg.name, sb, bp);
-                        if (DEBUG_34SS) {
-                          console.log(`adding ${sb_total} to aBlue: ${aBlue}`);
-                        }
-                        aBlue += sb_total;
-                        sb_total = PvPMarchSizeBuff(
-                          specialB.name, eg.name, sb, bp);
-                        if (DEBUG_34SS) {
-                          console.log(`adding ${sb_total} to aBlue: ${aBlue}`);
-                        }
-                        aBlue += sb_total;
-
-                        sb_total = PvPDeHPBuff(
-                          specialB.name, eg.name, sb, bp);
-                        if (DEBUG_34SS) {
-                          console.log(`adding ${sb_total} to aBlue: ${aBlue}`);
-                        }
-                        aBlue += sb_total;
-                        sb_total = PvPDeDefenseBuff(
-                          specialB.name, eg.name, sb, bp);
-                        if (DEBUG_34SS) {
-                          console.log(`adding ${sb_total} to aBlue: ${aBlue}`);
-                        }
-                        aBlue += sb_total;
-
+                        aBlue = buffReductionLogic(specialB, eg, sb, bp, typedBuffFunction);
                       }
                       return aBlue;
                     }, 0);
@@ -225,31 +200,7 @@ export const AttackPvP34SS = z
                       if (sb === undefined || sb === null) {
                         return aPurple;
                       } else {
-                        let sb_total = PvPAttackBuff(
-                          specialB.name, eg.name, sb, bp);
-                        if (DEBUG_34SS) {
-                          console.log(`adding ${sb_total} to aPurple: ${aPurple}`);
-                        }
-                        aPurple += sb_total;
-                        sb_total = PvPMarchSizeBuff(
-                          specialB.name, eg.name, sb, bp);
-                        if (DEBUG_34SS) {
-                          console.log(`adding ${sb_total} to aPurple: ${aPurple}`);
-                        }
-                        aPurple += sb_total;
-
-                        sb_total = PvPDeHPBuff(
-                          specialB.name, eg.name, sb, bp);
-                        if (DEBUG_34SS) {
-                          console.log(`adding ${sb_total} to aPurple: ${aPurple}`);
-                        }
-                        aPurple += sb_total;
-                        sb_total = PvPDeDefenseBuff(
-                          specialB.name, eg.name, sb, bp);
-                        if (DEBUG_34SS) {
-                          console.log(`adding ${sb_total} to aPurple: ${aPurple}`);
-                        }
-
+                        aPurple = buffReductionLogic(specialB, eg, sb, bp, typedBuffFunction,);
                       }
                       return aPurple;
                     }, 0);
@@ -296,32 +247,7 @@ export const AttackPvP34SS = z
                       if (sb === undefined || sb === null) {
                         return aOrange;
                       } else {
-                        let sb_total = PvPAttackBuff(
-                          specialB.name, eg.name, sb, bp);
-                        if (DEBUG_34SS) {
-                          console.log(`adding ${sb_total} to aOrange: ${aOrange}`);
-                        }
-                        aOrange += sb_total;
-                        sb_total = PvPMarchSizeBuff(
-                          specialB.name, eg.name, sb, bp);
-                        if (DEBUG_34SS) {
-                          console.log(`adding ${sb_total} to aOrange: ${aOrange}`);
-                        }
-                        aOrange += sb_total;
-
-                        sb_total = PvPDeHPBuff(
-                          specialB.name, eg.name, sb, bp);
-                        if (DEBUG_34SS) {
-                          console.log(`adding ${sb_total} to aOrange: ${aOrange}`);
-                        }
-                        aOrange += sb_total;
-                        sb_total = PvPDeDefenseBuff(
-                          specialB.name, eg.name, sb, bp);
-                        if (DEBUG_34SS) {
-                          console.log(`adding ${sb_total} to aOrange: ${aOrange}`);
-                        }
-                        aOrange += sb_total;
-
+                        aOrange = buffReductionLogic(specialB, eg, sb, bp, typedBuffFunction);
                       }
                       return aOrange;
                     }, 0);
@@ -353,32 +279,7 @@ export const AttackPvP34SS = z
                       if (sb === undefined || sb === null) {
                         return aGold;
                       } else {
-                        let sb_total = PvPAttackBuff(
-                          specialB.name, eg.name, sb, bp);
-                        if (DEBUG_34SS) {
-                          console.log(`adding ${sb_total} to aGold: ${aGold}`);
-                        }
-                        aGold += sb_total;
-                        sb_total = PvPMarchSizeBuff(
-                          specialB.name, eg.name, sb, bp);
-                        if (DEBUG_34SS) {
-                          console.log(`adding ${sb_total} to aGold: ${aGold}`);
-                        }
-                        aGold += sb_total;
-
-                        sb_total = PvPDeHPBuff(
-                          specialB.name, eg.name, sb, bp);
-                        if (DEBUG_34SS) {
-                          console.log(`adding ${sb_total} to aGold: ${aGold}`);
-                        }
-                        aGold += sb_total;
-                        sb_total = PvPDeDefenseBuff(
-                          specialB.name, eg.name, sb, bp);
-                        if (DEBUG_34SS) {
-                          console.log(`adding ${sb_total} to aGold: ${aGold}`);
-                        }
-                        aGold += sb_total;
-
+                        aGold = buffReductionLogic(specialB, eg, sb, bp, typedBuffFunction);
                       }
                       return aGold;
                     }, 0);
@@ -410,4 +311,4 @@ export const AttackPvP34SS = z
       BSS_Score += Math.floor(specialities_total);
     }
     return Math.floor(BSS_Score);
-  });
+  }

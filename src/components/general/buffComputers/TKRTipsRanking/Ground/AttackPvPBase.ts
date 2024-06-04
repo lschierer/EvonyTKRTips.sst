@@ -17,11 +17,38 @@ import {
 } from '@schemas/ExtendedGeneral';
 
 import { GroundPvPAttackAttributeMultipliers } from '@lib/EvAnsAttributeRanking';
-import { AttackPvPBSS } from './AttackPvPBSS';
-import { AttackPvPAES } from './AttackPvPAES';
-import { AttackPvP34SS } from './AttackPvP34SS';
+import { AttackPvPBSS } from '../AttackPvPBSS';
+import { AttackPvPAES } from '../AttackPvPAES';
+import { AttackPvP34SS } from '../AttackPvP34SS';
 
-const EvAnsBasic = z
+import { PvPAttackBuff } from './PvPAttackBuff';
+import { PvPMarchSizeBuff } from './PvPMarchSizeBuff';
+import { PvPHPBuff } from './PvPHPBuff.ts';
+import { PvPDefenseBuff } from './PvPDefenseBuff.ts';
+import { PvPDeAttackBuff } from './PvPDeAttackBuff.ts';
+import { PvPDeHPBuff } from './PvPDeHPBuff.ts';
+import { PvPDeDefenseBuff } from './PvPDeDefense.ts';
+import { PvPPreservationBuff } from './PvPPreservationBuff.ts';
+import { PvPDebilitationBuff } from './PvPDebilitationBuff.ts';
+import { PvPRangeBuff} from './PvPRangeBuff'
+
+import {type BuffFunctionInterface} from '@lib/RankingInterfaces';
+
+
+const typedBuffFunctions: BuffFunctionInterface = {
+ Attack: PvPAttackBuff,
+ MarchSize: PvPMarchSizeBuff,
+ HP: PvPHPBuff,
+ Defense: PvPDefenseBuff,
+ DeAttack: PvPDeAttackBuff,
+ DeHP: PvPDeHPBuff,
+ DeDefense: PvPDeDefenseBuff,
+ Preservation: PvPPreservationBuff,
+ Debilitation: PvPDebilitationBuff,
+  Range: PvPRangeBuff,
+}
+
+const TKRTipsAttackBasic = z
   .function()
   .args(ExtendedGeneral)
   .returns(z.number())
@@ -163,12 +190,9 @@ const EvAnsBasic = z
 
     const attackMultiplier =
       GroundPvPAttackAttributeMultipliers?.Offensive.AllTroopAttack ?? 1;
-    const defenseMultiplier =
-      GroundPvPAttackAttributeMultipliers?.Toughness.AllTroopDefense ?? 1;
-    const HPMultiplier =
-      GroundPvPAttackAttributeMultipliers?.Toughness.AllTroopHP ?? 1;
-    const PoliticsMultiplier =
-      GroundPvPAttackAttributeMultipliers?.Preservation.Death2Wounded ?? 1;
+    const defenseMultiplier = 0;
+    const HPMultiplier = 0;
+    const PoliticsMultiplier = 0;
 
     const BAS =
       (BasicAttack * attackMultiplier ) +
@@ -192,31 +216,31 @@ const EvAnsBasic = z
     return Math.floor(BAS);
   });
 
-export const GroundPvPAttack = z
+export const TKRTipsAttackGroundPvPAttack = z
   .function()
   .args(ExtendedGeneral, Display, BuffParams)
   .returns(z.number())
   .implement(
     (eg: ExtendedGeneralType, display: DisplayType, bp: BuffParamsType) => {
       if (DEBUG) {
-        console.log(`${eg.name}: EvAnsGroundPvPAttack starting`);
+        console.log(`${eg.name}: TKRTipsAttackGroundPvPAttack starting`);
       }
 
-      const BAS = EvAnsBasic(eg);
-      const BSS = AttackPvPBSS(eg, bp);
-      const AES = AttackPvPAES(eg, bp);
-      const specialities = AttackPvP34SS(eg, bp);
+      const BAS = TKRTipsAttackBasic(eg);
+      const BSS = AttackPvPBSS(eg, bp, typedBuffFunctions);
+      const AES = AttackPvPAES(eg, bp, typedBuffFunctions);
+      const specialities = AttackPvP34SS(eg, bp, typedBuffFunctions);
 
       let TLGS = BSS + specialities;
       if (DEBUG) {
-        console.log(`EvAnsGroundPvPAttack: ${eg.name}: BSS: ${BSS}`);
+        console.log(`TKRTipsAttackGroundPvPAttack: ${eg.name}: BSS: ${BSS}`);
         console.log(
-          `EvAnsGroundPvPAttack: ${eg.name}: specialities: ${specialities}`
+          `TKRTipsAttackGroundPvPAttack: ${eg.name}: specialities: ${specialities}`
         );
-        console.log(`EvAnsGroundPvPAttack: ${eg.name}: BAS: ${BAS}`);
-        console.log(`EvAnsGroundPvPAttack: ${eg.name}: AES: ${AES}`);
+        console.log(`TKRTipsAttackGroundPvPAttack: ${eg.name}: BAS: ${BAS}`);
+        console.log(`TKRTipsAttackGroundPvPAttack: ${eg.name}: AES: ${AES}`);
         console.log(
-          `EvAnsGroundPvPAttack: ${eg.name}: TLGS (BSS & 34SS): ${TLGS}`
+          `TKRTipsAttackGroundPvPAttack: ${eg.name}: TLGS (BSS & 34SS): ${TLGS}`
         );
       }
       if (display.localeCompare(Display.enum.secondary)) {

@@ -11,7 +11,7 @@ import {
   UnitSchema,
 } from '@schemas/baseSchemas';
 
-import { checkInvalidConditions } from '@components/general/buffComputers/AttackRanking/AttackScoreComputer';
+import { checkInvalidConditions } from '../AttackScoreComputer';
 
 import {
   GroundPvPAttackAttributeMultipliers
@@ -92,7 +92,7 @@ export const PvPPreservationBuff = z
             Attribute.enum.Death_to_Soul.localeCompare(tb.attribute)
           ) {
             //as best I can tell, these are effectively the same thing.
-            //EvAns scores them slightly differently, *unless* you tack
+            //TKRTipsAttack scores them slightly differently, *unless* you tack
             //on the "when attacking" condition to the "to wounded" buff
             //in which case he does treat it the same as the "to souls."
             //I don't completely get these buffs.  As best I can tell

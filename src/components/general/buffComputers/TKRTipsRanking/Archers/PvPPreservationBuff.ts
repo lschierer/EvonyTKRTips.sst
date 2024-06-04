@@ -11,7 +11,7 @@ import {
   UnitSchema,
 } from '@schemas/baseSchemas';
 
-import { checkInvalidConditions } from '@components/general/buffComputers/AttackRanking/AttackScoreComputer';
+import { checkInvalidConditions } from '../AttackScoreComputer';
 
 import {
   RangedPvPAttackAttributeMultipliers
@@ -30,7 +30,7 @@ const PvPPreservationBuffDetailCheck = z
       if (tb.value !== null && tb.value !== undefined) {
         if (!UnitSchema.enum.percentage.localeCompare(tb.value.unit)) {
           if (tb.class !== null && tb.class !== undefined) {
-            //I have never actually seen a class condition on this buff, but this is how I think it would get scored by EvAns.
+            //I have never actually seen a class condition on this buff, but this is how I think it would get scored by TKRTipsAttack.
             if (!ClassEnum.enum.Archers.localeCompare(tb.class)) {
               if (tb.condition!.includes(Condition.enum.Attacking)) {
                 multiplier =
@@ -110,7 +110,7 @@ export const PvPPreservationBuff = z
             Attribute.enum.Death_to_Soul.localeCompare(tb.attribute)
           ) {
             //as best I can tell, these are effectively the same thing.
-            //EvAns scores them slightly differently, *unless* you tack
+            //TKRTipsAttack scores them slightly differently, *unless* you tack
             //on the "when attacking" condition to the "to wounded" buff
             //in which case he does treat it the same as the "to souls."
             //I don't completely get these buffs.  As best I can tell

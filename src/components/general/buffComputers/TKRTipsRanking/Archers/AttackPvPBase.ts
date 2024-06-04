@@ -1,5 +1,5 @@
 const DEBUG = true;
-const DEBUG_BAS = true;
+const DEBUG_BAS = false;
 
 import { z } from 'zod';
 
@@ -17,11 +17,24 @@ import {
 } from '@schemas/ExtendedGeneral';
 
 import { RangedPvPAttackAttributeMultipliers } from '@lib/EvAnsAttributeRanking';
-import { AttackPvPBSS } from './AttackPvPBSS';
-import { AttackPvPAES } from './AttackPvPAES';
-import { AttackPvP34SS } from './AttackPvP34SS';
+import { AttackPvPBSS } from '../AttackPvPBSS';
+import { AttackPvPAES } from '../AttackPvPAES';
+import { AttackPvP34SS } from '../AttackPvP34SS';
 
-const EvAnsBasic = z
+import { PvPAttackBuff } from './PvPAttackBuff';
+import { PvPMarchSizeBuff } from './PvPMarchSizeBuff';
+import { PvPHPBuff } from './PvPHPBuff.ts';
+import { PvPDefenseBuff } from './PvPDefenseBuff';
+import { PvPDeAttackBuff } from './PvPDeAttackBuff';
+import { PvPDeHPBuff } from './PvPDeHPBuff';
+import { PvPDeDefenseBuff } from './PvPDeDefense';
+import { PvPPreservationBuff } from './PvPPreservationBuff';
+import { PvPDebilitationBuff } from './PvPDebilitationBuff';
+import { PvPRangeBuff} from './PvPRangeBuff'
+
+import {type BuffFunctionInterface} from '@lib/RankingInterfaces';
+
+const TKRTipsAttackBasic = z
   .function()
   .args(ExtendedGeneral)
   .returns(z.number())
@@ -189,31 +202,44 @@ const EvAnsBasic = z
     return Math.floor(BAS);
   });
 
-export const ArchersPvPAttack = z
+export const TKRTipsAttackArchersPvPAttack = z
   .function()
   .args(ExtendedGeneral, Display, BuffParams)
   .returns(z.number())
   .implement(
     (eg: ExtendedGeneralType, display: DisplayType, bp: BuffParamsType) => {
       if (DEBUG) {
-        console.log(`${eg.name}: EvAnsGroundPvPAttack starting`);
+        console.log(`${eg.name}: TKRTipsAttackArchersPvPAttack starting`);
       }
 
-      const BAS = EvAnsBasic(eg);
-      const BSS = AttackPvPBSS(eg, bp);
-      const AES = AttackPvPAES(eg, bp);
-      const specialities = AttackPvP34SS(eg, bp);
+      const typedBuffFunctions: BuffFunctionInterface = {
+        Attack: PvPAttackBuff,
+        MarchSize: PvPMarchSizeBuff,
+        HP: PvPHPBuff,
+        Defense: PvPDefenseBuff,
+        DeAttack: PvPDeAttackBuff,
+        DeHP: PvPDeHPBuff,
+        DeDefense: PvPDeDefenseBuff,
+        Preservation: PvPPreservationBuff,
+        Debilitation: PvPDebilitationBuff,
+        Range: PvPRangeBuff,
+      }
+
+      const BAS = TKRTipsAttackBasic(eg);
+      const BSS = AttackPvPBSS(eg, bp, typedBuffFunctions);
+      const AES = AttackPvPAES(eg, bp, typedBuffFunctions);
+      const specialities = AttackPvP34SS(eg, bp, typedBuffFunctions);
 
       let TLGS = BSS + specialities;
       if (DEBUG) {
-        console.log(`EvAnsArchersPvPAttack: ${eg.name}: BSS: ${BSS}`);
+        console.log(`TKRTipsAttackArchersPvPAttack: ${eg.name}: BSS: ${BSS}`);
         console.log(
-          `EvAnsArchersPvPAttack: ${eg.name}: specialities: ${specialities}`
+          `TKRTipsAttackArchersPvPAttack: ${eg.name}: specialities: ${specialities}`
         );
-        console.log(`EvAnsArchersPvPAttack: ${eg.name}: BAS: ${BAS}`);
-        console.log(`EvAnsArchersPvPAttack: ${eg.name}: AES: ${AES}`);
+        console.log(`TKRTipsAttackArchersPvPAttack: ${eg.name}: BAS: ${BAS}`);
+        console.log(`TKRTipsAttackArchersPvPAttack: ${eg.name}: AES: ${AES}`);
         console.log(
-          `EvAnsArchersPvPAttack: ${eg.name}: TLGS (BSS & 34SS): ${TLGS}`
+          `TKRTipsAttackArchersPvPAttack: ${eg.name}: TLGS (BSS & 34SS): ${TLGS}`
         );
       }
       if (display.localeCompare(Display.enum.secondary)) {
