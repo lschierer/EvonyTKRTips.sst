@@ -11,9 +11,8 @@ import {
   UnitSchema,
 } from '@schemas/baseSchemas';
 
-import { checkInvalidConditions } from '../AttackScoreComputer';
-
 import { MountedPvPAttackAttributeMultipliers } from '@lib/EvAnsAttributeRanking';
+import { checkInvalidConditions } from '@components/general/buffComputers/TKRTipsRanking/Common.ts';
 
 const DEBUGD = false;
 

@@ -11,11 +11,10 @@ import {
   UnitSchema,
 } from '@schemas/baseSchemas';
 
-import { checkInvalidConditions } from '../AttackScoreComputer';
-
 import {
   RangedPvPAttackAttributeMultipliers
 } from '@lib/EvAnsAttributeRanking';
+import { checkInvalidConditions } from '@components/general/buffComputers/TKRTipsRanking/Common.ts';
 
 const DEBUGP = false;
 

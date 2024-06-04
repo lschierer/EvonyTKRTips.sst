@@ -10,15 +10,12 @@ import {
   type generalUseCaseType,
 } from '@schemas/generalsSchema';
 
-import {
-  ExtendedGeneral,
-  type ExtendedGeneralType,
-} from '@schemas/ExtendedGeneral';
+import { ExtendedGeneral, type ExtendedGeneralType } from '@schemas/ExtendedGeneral';
 
-import { GroundPvPDefense } from './Ground/PvPBase';
-import { ArchersPvPDefense } from './Archers/PvPBase';
-import { MountedPvPDefense } from './Mounted/PvPBase';
-import { SiegePvPDefense } from './Siege/PvPBase';
+import { GroundPvPToughness } from './Ground/ToughnessPvPBase';
+import { TKRTipsArchersPvPToughness } from './Archers/ToughnessPvPBase';
+import { MountedPvPToughness } from './Mounted/ToughnessPvPBase';
+import { SiegePvPToughness } from './Siege/ToughnessPvPBase';
 
 /*******************
  * this is derived by reverse engineering the formula from
@@ -28,9 +25,9 @@ import { SiegePvPDefense } from './Siege/PvPBase';
  * https://evonyguidewiki.com/en/general-cultivate-en/#Relationship_between_Stats_value_Buff_value
  */
 
-export const DEBUG = false;
+const DEBUG = true;
 
-export const ScoreComputer = z
+export const ToughnessScoreComputer = z
   .function()
   .args(generalUseCase, ExtendedGeneral, Display, BuffParams)
   .returns(z.number())
@@ -45,17 +42,17 @@ export const ScoreComputer = z
         if (DEBUG) {
           console.log(`called for Attack use case`);
         }
-        if (generalSpecialists.enum.Archers.localeCompare(eg.score_as)) {
-          return ArchersPvPDefense(eg, display, bp);
+        if (!generalSpecialists.enum.Archers.localeCompare(eg.score_as)) {
+          return TKRTipsArchersPvPToughness(eg, display, bp);
         }
-        if (generalSpecialists.enum.Ground.localeCompare(eg.score_as)) {
-          return GroundPvPDefense(eg, display, bp);
+        if (!generalSpecialists.enum.Ground.localeCompare(eg.score_as)) {
+          return GroundPvPToughness(eg, display, bp);
         }
-        if (generalSpecialists.enum.Mounted.localeCompare(eg.score_as)) {
-          return MountedPvPDefense(eg, display, bp);
+        if (!generalSpecialists.enum.Mounted.localeCompare(eg.score_as)) {
+          return MountedPvPToughness(eg, display, bp);
         }
-        if (generalSpecialists.enum.Siege.localeCompare(eg.score_as)) {
-          return SiegePvPDefense(eg, display, bp);
+        if (!generalSpecialists.enum.Siege.localeCompare(eg.score_as)) {
+          return SiegePvPToughness(eg, display, bp);
         }
       } else {
         console.log(`not called for Attack use case`);
@@ -64,3 +61,4 @@ export const ScoreComputer = z
       return -7;
     }
   );
+

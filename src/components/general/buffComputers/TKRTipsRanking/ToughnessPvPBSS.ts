@@ -1,6 +1,10 @@
 import { z } from 'zod';
 
-import { BuffParams, type BuffParamsType } from '@schemas/baseSchemas';
+import {
+  BuffParams,
+  type BuffParamsType,
+  type BuffType,
+} from '@schemas/baseSchemas';
 
 import {
   ExtendedGeneral,
@@ -12,15 +16,11 @@ import {
   type specialSkillBookType,
 } from '@schemas/bookSchemas';
 
-import { PvPBuff } from './PvPBuff';
+import {type BuffFunctionInterface} from '@lib/RankingInterfaces.ts';
 
 const DEBUG_BSS = false;
 
-export const PvPBSS = z
-  .function()
-  .args(ExtendedGeneral, BuffParams)
-  .returns(z.number())
-  .implement((eg: ExtendedGeneralType, bp: BuffParamsType) => {
+export const ToughnessPvPBSS = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFunction: BuffFunctionInterface) => {
     let BSS_Score = 0;
 
     if (
@@ -38,20 +38,29 @@ export const PvPBSS = z
             return accumulator;
           } else {
             const bisb: specialSkillBookType = v.data;
-            const array_total = bisb.buff.reduce((a2, tb) => {
+            const array_total = bisb.buff.reduce((a2, tb: BuffType) => {
               if (DEBUG_BSS) {
                 console.log(`--- start tb ---`);
                 console.log(JSON.stringify(tb));
                 console.log(`--- end tb ---`);
               }
-              const tbscore = PvPBuff(bisb.name, eg.name, tb, bp);
+              let tbscore = 0;
+              tbscore = (typedBuffFunction.HP(bisb.name, eg.name, tb, bp) as number);
               if (DEBUG_BSS) {
-                console.log(JSON.stringify(tb));
-                console.log(
-                  `${eg.name}: ${book.name}: accumulating ${tbscore}`
-                );
+                console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
               }
-              return tbscore + a2;
+              a2 += tbscore;
+              tbscore = (typedBuffFunction.Defense(bisb.name, eg.name, tb, bp) as number);
+              if (DEBUG_BSS) {
+                console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
+              }
+              a2 += tbscore;
+              tbscore = (typedBuffFunction.DeAttack(bisb.name, eg.name, tb, bp) as number);
+              if (DEBUG_BSS) {
+                console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
+              }
+              a2 += tbscore;
+              return a2;
             }, 0);
             return accumulator + array_total;
           }
@@ -65,4 +74,4 @@ export const PvPBSS = z
       BSS_Score += Math.floor(book_score);
     }
     return Math.floor(BSS_Score);
-  });
+  }

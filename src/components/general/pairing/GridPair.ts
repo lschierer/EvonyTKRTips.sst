@@ -34,7 +34,7 @@ import {
 
 import { EvAnsScoreComputer } from '../buffComputers/EvAnsRanking/EvAnsScoreComputer';
 import { AttackScoreComputer } from '../buffComputers/TKRTipsRanking/AttackScoreComputer';
-import { ScoreComputer as ToughnessScoreComputer } from '../buffComputers/ToughnessRanking/ScoreComputer';
+import { ToughnessScoreComputer } from '../buffComputers/TKRTipsRanking/ToughnessScoreComputer';
 
 const DEBUG = false;
 
