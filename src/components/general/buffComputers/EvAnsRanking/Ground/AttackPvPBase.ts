@@ -30,6 +30,7 @@ import { PvPDeHPBuff } from './PvPDeHPBuff.ts';
 import { PvPDeDefenseBuff } from './PvPDeDefense.ts';
 import { PvPPreservationBuff } from './PvPPreservationBuff.ts';
 import { PvPDebilitationBuff } from './PvPDebilitationBuff.ts';
+import { PvPRangeBuff } from './PvPRangeBuff'
 
 import {type BuffFunctionInterface} from '@lib/RankingInterfaces';
 
@@ -43,7 +44,8 @@ const typedBuffFunctions: BuffFunctionInterface = {
  DeHP: PvPDeHPBuff,
  DeDefense: PvPDeDefenseBuff,
  Preservation: PvPPreservationBuff,
- Debilitation: PvPDebilitationBuff
+ Debilitation: PvPDebilitationBuff,
+  Range: PvPRangeBuff,
 }
 
 const EvAnsBasic = z
