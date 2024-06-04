@@ -1,5 +1,5 @@
-const DEBUG = false;
-const DEBUG_BAS = false;
+const DEBUG = true;
+const DEBUG_BAS = true;
 
 import { z } from 'zod';
 
@@ -17,11 +17,11 @@ import {
 } from '@schemas/ExtendedGeneral';
 
 import { GroundPvPAttackAttributeMultipliers } from '@lib/EvAnsAttributeRanking';
-import { GroundAttackPvPBSS } from './AttackPvPBSS';
-import { GroundAttackPvPAES } from './AttackPvPAES';
-import { GroundAttackPvP34SS } from './AttackPvP34SS';
+import { AttackPvPBSS } from './AttackPvPBSS';
+import { AttackPvPAES } from './AttackPvPAES';
+import { AttackPvP34SS } from './AttackPvP34SS';
 
-const EvAnsBasicGround = z
+const EvAnsBasic = z
   .function()
   .args(ExtendedGeneral)
   .returns(z.number())
@@ -48,68 +48,145 @@ const EvAnsBasicGround = z
       default:
         console.log(`this should not happen!!!`);
     }
-    const BasicAttack =
-      500 + AES_adjustment + eg.attack + 45 * eg.attack_increment < 900
-        ? (500 + AES_adjustment + eg.attack + 45 * eg.attack_increment) * 0.1
-        : 90 +
-          (500 + AES_adjustment + eg.attack + 45 * eg.attack_increment - 900) *
-            0.2;
-    const BasicDefense =
-      500 + AES_adjustment + eg.defense + 45 * eg.defense_increment < 900
-        ? (500 + AES_adjustment + eg.defense + 45 * eg.defense_increment) * 0.1
-        : 90 +
-          (500 +
-            AES_adjustment +
-            eg.defense +
-            45 * eg.defense_increment -
-            900) *
-            0.2;
-    const BasicLeaderShip =
-      500 + AES_adjustment + eg.leadership + 45 * eg.leadership_increment < 900
-        ? (500 +
-            AES_adjustment +
-            eg.leadership +
-            45 * eg.leadership_increment) *
-          0.1
-        : 90 +
-          (500 +
-            AES_adjustment +
-            eg.leadership +
-            45 * eg.leadership_increment -
-            900) *
-            0.2;
-    const BasicPolitics =
-      500 + AES_adjustment + eg.politics + 45 * eg.politics_increment < 900
-        ? (500 + AES_adjustment + eg.politics + 45 * eg.politics_increment) *
-          0.1
-        : 90 +
-          (500 +
-            AES_adjustment +
-            eg.politics +
-            45 * eg.politics_increment -
-            900) *
-            0.2;
+
+    let BasicAttack = eg.attack + 45 * eg.attack_increment;
+    if(DEBUG_BAS) {
+      console.log(`BasicAttack step1: ${BasicAttack}`)
+    }
+    BasicAttack -= 190;
+    if(DEBUG_BAS) {
+      console.log(`190 off the top: ${BasicAttack}`)
+    }
+    BasicAttack += 500;
+    if(DEBUG_BAS) {
+      console.log(`BasicAttack with cultivation: ${BasicAttack}`)
+    }
+    BasicAttack += AES_adjustment;
+    if(DEBUG_BAS) {
+      console.log(`BasicAttack with AES`)
+    }
+    if(BasicAttack < 900){
+      BasicAttack = BasicAttack * 0.1
+      if(DEBUG_BAS ) {
+        console.log(`BasicAttack less than 900, now ${BasicAttack}`)
+      }
+    } else {
+      BasicAttack = 90 + (BasicAttack -900)*.2;
+      if(DEBUG_BAS) {
+        console.log(`BasicAttack > 900, now ${BasicAttack}`)
+      }
+    }
+
+    let BasicDefense = eg.defense + 45 * eg.defense_increment;
+    if(DEBUG_BAS) {
+      console.log(`BasicDefense step1: ${BasicDefense}`)
+    }
+    BasicDefense -= 190;
+    if(DEBUG_BAS) {
+      console.log(`190 off the top: ${BasicDefense}`)
+    }
+    BasicDefense += AES_adjustment
+    if(DEBUG_BAS) {
+      console.log(`BasicDefense with AES: ${BasicDefense}`)
+    }
+    BasicDefense += 500;
+    if(DEBUG_BAS) {
+      console.log(`BasicDefense with cultivation: ${BasicDefense}`)
+    }
+    if(BasicDefense < 900){
+      BasicDefense = BasicDefense * 0.1
+      if(DEBUG_BAS ) {
+        console.log(`BasicDefense less than 900, now ${BasicDefense}`)
+      }
+    } else {
+      BasicDefense = 90 + (BasicDefense -900)*.2;
+      if(DEBUG_BAS) {
+        console.log(`BasicDefense > 900, now ${BasicDefense}`)
+      }
+    }
+
+    let BasicLeaderShip = eg.leadership + 45 * eg.leadership_increment;
+    if(DEBUG_BAS) {
+      console.log(`BasicLeaderShip step1: ${BasicLeaderShip}`)
+    }
+    BasicLeaderShip -= 190;
+    if(DEBUG_BAS) {
+      console.log(`190 off the top: ${BasicLeaderShip}`)
+    }
+    BasicLeaderShip += AES_adjustment
+    if(DEBUG_BAS) {
+      console.log(`BasicLeadership with AES`)
+    }
+    BasicLeaderShip += 500;
+      if(DEBUG_BAS) {
+      console.log(`BasicLeaderShip with cultivation: ${BasicLeaderShip}`)
+    }
+    if(BasicLeaderShip < 900){
+      BasicLeaderShip = BasicLeaderShip * 0.1
+      if(DEBUG_BAS ) {
+        console.log(`BasicLeaderShip less than 900, now ${BasicLeaderShip}`)
+      }
+    } else {
+      BasicLeaderShip = 90 + (BasicLeaderShip -900)*.2;
+      if(DEBUG_BAS) {
+        console.log(`BasicLeaderShip > 900, now ${BasicLeaderShip}`)
+      }
+    }
+
+    let BasicPolitics = eg.politics + 45 * eg.politics_increment;
+    if(DEBUG_BAS) {
+      console.log(`BasicPolitics step1: ${BasicPolitics}`)
+    }
+    BasicPolitics -= 190;
+    if(DEBUG_BAS) {
+      console.log(`190 off the top: ${BasicPolitics}`)
+    }
+    BasicPolitics += AES_adjustment
+    if(DEBUG_BAS) {
+      console.log(`BasicPolitics with AES ${BasicPolitics}`)
+    }
+    BasicPolitics += 500;
+    if(DEBUG_BAS) {
+      console.log(`BasicPolitics with cultivation: ${BasicPolitics}`)
+    }
+    if(BasicPolitics < 900){
+      BasicPolitics = BasicPolitics * 0.1
+      if(DEBUG_BAS ) {
+        console.log(`BasicPolitics less than 900, now ${BasicPolitics}`)
+      }
+    } else {
+      BasicPolitics = 90 + (BasicPolitics -900)*.2;
+      if(DEBUG_BAS) {
+        console.log(`BasicPolitics > 900, now ${BasicPolitics}`)
+      }
+    }
 
     const attackMultiplier =
       GroundPvPAttackAttributeMultipliers?.Offensive.AllTroopAttack ?? 1;
     const defenseMultiplier =
       GroundPvPAttackAttributeMultipliers?.Toughness.AllTroopDefense ?? 1;
-    const HPMultipler =
+    const HPMultiplier =
       GroundPvPAttackAttributeMultipliers?.Toughness.AllTroopHP ?? 1;
-    const PoliticsMultipler =
+    const PoliticsMultiplier =
       GroundPvPAttackAttributeMultipliers?.Preservation.Death2Wounded ?? 1;
 
     const BAS =
-      BasicAttack * attackMultiplier +
-      BasicDefense * defenseMultiplier +
-      BasicLeaderShip * HPMultipler +
-      BasicPolitics * PoliticsMultipler;
+      (BasicAttack * attackMultiplier ) +
+      (BasicDefense * defenseMultiplier ) +
+      (BasicLeaderShip * HPMultiplier  )+
+      BasicPolitics * PoliticsMultiplier;
 
     if (DEBUG_BAS) {
-      console.log(`BasicAttack: ${BasicAttack} for ${eg.name}`);
-      console.log(`BasicDefense: ${BasicDefense} for ${eg.name}`);
-      console.log(`BasicLeaderShip: ${BasicLeaderShip} for ${eg.name}`);
-      console.log(`BasicPolitics: ${BasicPolitics} for ${eg.name}`);
+      console.log(
+        `BasicAttack: ${BasicAttack} = ${BasicAttack * attackMultiplier} for ${eg.name}`
+      );
+      console.log(
+        `BasicDefense: ${BasicDefense} = ${BasicDefense * defenseMultiplier} for ${eg.name}`
+      );
+      console.log(
+        `BasicLeaderShip: ${BasicLeaderShip} = ${BasicLeaderShip * HPMultiplier} for ${eg.name}`
+      );
+      console.log(`BasicPolitics: ${BasicPolitics} = ${BasicPolitics * PoliticsMultiplier} for ${eg.name}`);
       console.log(`BAS: ${BAS} for: ${eg.name}`);
     }
     return Math.floor(BAS);
@@ -125,15 +202,22 @@ export const EvAnsGroundPvPAttack = z
         console.log(`${eg.name}: EvAnsGroundPvPAttack starting`);
       }
 
-      const BAS = EvAnsBasicGround(eg);
-      const BSS = GroundAttackPvPBSS(eg, bp);
-      const AES = GroundAttackPvPAES(eg, bp);
-      const specialities = GroundAttackPvP34SS(eg, bp);
+      const BAS = EvAnsBasic(eg);
+      const BSS = AttackPvPBSS(eg, bp);
+      const AES = AttackPvPAES(eg, bp);
+      const specialities = AttackPvP34SS(eg, bp);
 
       let TLGS = BSS + specialities;
       if (DEBUG) {
-        console.log(`TLGS with BSS and specialities`);
-        console.log(`${eg.name}: ${TLGS}`);
+        console.log(`EvAnsGroundPvPAttack: ${eg.name}: BSS: ${BSS}`);
+        console.log(
+          `EvAnsGroundPvPAttack: ${eg.name}: specialities: ${specialities}`
+        );
+        console.log(`EvAnsGroundPvPAttack: ${eg.name}: BAS: ${BAS}`);
+        console.log(`EvAnsGroundPvPAttack: ${eg.name}: AES: ${AES}`);
+        console.log(
+          `EvAnsGroundPvPAttack: ${eg.name}: TLGS (BSS & 34SS): ${TLGS}`
+        );
       }
       if (display.localeCompare(Display.enum.secondary)) {
         TLGS += BAS;
@@ -149,7 +233,7 @@ export const EvAnsGroundPvPAttack = z
       }
       if (DEBUG) {
         console.log(
-          `for ${eg.name} BAS: ${BAS} BSS: ${BSS} AES: ${AES} specialities: ${specialities} TLGS: ${TLGS}`
+          `for ${eg.name} as ${display}:  BAS: ${BAS} BSS: ${BSS} AES: ${AES} specialities: ${specialities} TLGS: ${TLGS}`
         );
       }
       return TLGS;
