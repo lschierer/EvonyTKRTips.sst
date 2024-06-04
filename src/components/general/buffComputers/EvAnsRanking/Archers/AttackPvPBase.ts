@@ -118,7 +118,7 @@ const EvAnsBasic = z
       console.log(`BasicLeadership with AES`)
     }
     BasicLeaderShip += 500;
-    if(DEBUG_BAS) {
+      if(DEBUG_BAS) {
       console.log(`BasicLeaderShip with cultivation: ${BasicLeaderShip}`)
     }
     if(BasicLeaderShip < 900){
@@ -137,10 +137,10 @@ const EvAnsBasic = z
     if(DEBUG_BAS) {
       console.log(`BasicPolitics step1: ${BasicPolitics}`)
     }
-    /*BasicPolitics -= 190;
+    BasicPolitics -= 190;
     if(DEBUG_BAS) {
       console.log(`190 off the top: ${BasicPolitics}`)
-    }*/
+    }
     BasicPolitics += AES_adjustment
     if(DEBUG_BAS) {
       console.log(`BasicPolitics with AES ${BasicPolitics}`)

@@ -17,6 +17,7 @@ import {
 } from '@schemas/bookSchemas';
 
 import { PvPAttackBuff } from '@components/general/buffComputers/EvAnsRanking/Archers/PvPAttackBuff.ts';
+import { PvPMarchSizeBuff } from '@components/general/buffComputers/EvAnsRanking/Archers/PvPMarchSizeBuff';
 import { PvPHPBuff } from '@components/general/buffComputers/EvAnsRanking/Archers/PvPHPBuff.ts';
 import { PvPDefenseBuff } from '@components/general/buffComputers/EvAnsRanking/Archers/PvPDefenseBuff.ts';
 import { PvPDeAttackBuff } from '@components/general/buffComputers/EvAnsRanking/Archers/PvPDeAttackBuff.ts';
@@ -57,6 +58,11 @@ export const AttackPvPBSS = z
               }
               let tbscore = PvPAttackBuff(bisb.name, eg.name, tb, bp);
               if (DEBUG_BSS) { console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`); }
+              a2 += tbscore;
+              tbscore = PvPMarchSizeBuff(bisb.name, eg.name, tb, bp);
+              if (DEBUG_BSS) {
+                console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
+              }
               a2 += tbscore;
               tbscore = PvPHPBuff(bisb.name, eg.name, tb, bp);
               if (DEBUG_BSS) {

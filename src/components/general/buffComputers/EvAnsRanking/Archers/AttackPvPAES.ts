@@ -14,6 +14,7 @@ import {
 } from '@schemas/ExtendedGeneral';
 
 import { PvPAttackBuff } from '@components/general/buffComputers/EvAnsRanking/Archers/PvPAttackBuff.ts';
+import { PvPMarchSizeBuff } from '@components/general/buffComputers/EvAnsRanking/Archers/PvPMarchSizeBuff';
 import { PvPHPBuff } from '@components/general/buffComputers/EvAnsRanking/Archers/PvPHPBuff.ts';
 import { PvPDefenseBuff } from '@components/general/buffComputers/EvAnsRanking/Archers/PvPDefenseBuff.ts';
 import { PvPDeAttackBuff } from '@components/general/buffComputers/EvAnsRanking/Archers/PvPDeAttackBuff.ts';
@@ -134,6 +135,12 @@ export const AttackPvPAES = z
                   !ab.level.localeCompare(AscendingLevels.enum[9])
                 ) {
                   let tbscore = PvPAttackBuff(
+                    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+                  if (DEBUG_AES) {
+                    console.log(`accumulating ${tbscore}`);
+                  }
+                  a2 += tbscore;
+                  tbscore = PvPMarchSizeBuff(
                     `Star ${index} ${ab.level}`, eg.name, actual, bp);
                   if (DEBUG_AES) {
                     console.log(`accumulating ${tbscore}`);

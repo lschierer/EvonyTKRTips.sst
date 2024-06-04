@@ -14,6 +14,7 @@ import {
 } from '@schemas/ExtendedGeneral';
 
 import { PvPAttackBuff } from '@components/general/buffComputers/EvAnsRanking/Archers/PvPAttackBuff.ts';
+import { PvPMarchSizeBuff } from '@components/general/buffComputers/EvAnsRanking/Archers/PvPMarchSizeBuff.ts';
 import { PvPHPBuff } from '@components/general/buffComputers/EvAnsRanking/Archers/PvPHPBuff.ts';
 import { PvPDefenseBuff } from '@components/general/buffComputers/EvAnsRanking/Archers/PvPDefenseBuff.ts';
 import { PvPDeAttackBuff } from '@components/general/buffComputers/EvAnsRanking/Archers/PvPDeAttackBuff.ts';
@@ -180,6 +181,12 @@ export const AttackPvP34SS = z
                         return aBlue;
                       } else {
                         let sb_total = PvPAttackBuff(
+                          specialB.name, eg.name, sb, bp);
+                        if (DEBUG_34SS) {
+                          console.log(`adding ${sb_total} to aBlue: ${aBlue}`);
+                        }
+                        aBlue += sb_total;
+                        sb_total = PvPMarchSizeBuff(
                           specialB.name, eg.name, sb, bp);
                         if (DEBUG_34SS) {
                           console.log(`adding ${sb_total} to aBlue: ${aBlue}`);
