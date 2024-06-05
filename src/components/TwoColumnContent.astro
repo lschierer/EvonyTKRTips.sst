@@ -4,7 +4,7 @@ import Default from '@astrojs/starlight/components/TwoColumnContent.astro';
 ---
 
 <div id="twoColumnContainer">
-  <Default {...Astro.props} class="lg:sl-flex" id="wrap"><slot /></Default>
+  <Default {...Astro.props} class="lg:sl-flex wrap" id="wrap"><slot /></Default>
   <div class="policies" id="policies">
     <a href="/policy/privacy/">Privacy Policy</a>
   </div>
@@ -19,11 +19,11 @@ import Default from '@astrojs/starlight/components/TwoColumnContent.astro';
     justify-content: center;
     align-content: start;
   }
-  #wrap {
+  .wrap {
     grid-row-start: 0;
   }
-  #policies {
-    grid-row-start: 1;
+  .policies {
+    grid-row-start: 2;
     grid-row-end: span 1;
   }
 </style>
