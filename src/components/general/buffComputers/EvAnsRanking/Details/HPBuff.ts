@@ -11,37 +11,44 @@ import {
   UnitSchema,
 } from '@schemas/baseSchemas';
 
-import {
-  GroundPvPAttackAttributeMultipliers
-} from '@lib/EvAnsAttributeRanking';
-import { checkInvalidConditions } from '@components/general/buffComputers/EvAnsRanking/Archers/AttackPvPBase.ts';
+import { AttributeMultipliers, type AttributeMultipliersType } from '@schemas/EvAns.zod';
+import { checkInvalidConditions } from '../checkConditions';
+import { generalUseCase, type generalUseCaseType } from '@schemas/generalsSchema.ts';
 
-const DEBUGP = false;
+const DEBUGHP = false;
 
-const PvPPreservationBuffDetailCheck = z
+const PvPHPBuffClassCheck = z
   .function()
-  .args(Buff, BuffParams)
+  .args(Buff, BuffParams, AttributeMultipliers)
   .returns(z.number())
-  .implement((tb: BuffType, iv: BuffParamsType) => {
+  .implement((tb: BuffType, iv: BuffParamsType, am: AttributeMultipliersType) => {
     let score = 0;
     let multiplier = 0;
     if (tb !== null && tb !== undefined) {
       if (tb.value !== null && tb.value !== undefined) {
         if (!UnitSchema.enum.percentage.localeCompare(tb.value.unit)) {
           if (tb.class !== null && tb.class !== undefined) {
-            //I have never actually seen a class condition on this buff.
-            multiplier = 0;
-          } else {
-            if (tb.condition?.includes(Condition.enum.Attacking)) {
+            if (!ClassEnum.enum.Archers.localeCompare(tb.class)) {
               multiplier =
-                GroundPvPAttackAttributeMultipliers.Preservation.Death2WoundedWhenAttacking;
+                am?.Toughness.RangedHP ?? 0;
+            } else if (!ClassEnum.enum.Ground.localeCompare(tb.class)) {
+              multiplier =
+                am?.Toughness.GroundHP ?? 0;
+            } else if (!ClassEnum.enum.Mounted.localeCompare(tb.class)) {
+              multiplier =
+                am?.Toughness.MountedHP ?? 0;
+            } else if (!ClassEnum.enum.Siege.localeCompare(tb.class)) {
+              multiplier =
+                am?.Toughness.SiegeHP ?? 0;
             } else {
-              multiplier =
-                GroundPvPAttackAttributeMultipliers.Preservation.Death2Wounded;
+              multiplier = 0;
             }
+          } else {
+            multiplier =
+              am?.Toughness.AllTroopHP ?? 0;
           }
           const additional = tb.value.number * multiplier;
-          if (DEBUGP) {
+          if (DEBUGHP) {
             console.log(`adding ${additional} to ${score}`);
           }
           score += additional;
@@ -51,22 +58,24 @@ const PvPPreservationBuffDetailCheck = z
     return score;
   });
 
-export const PvPPreservationBuff = z
+export const HPBuff = z
   .function()
-  .args(z.string(), z.string(), Buff, BuffParams)
+  .args(z.string(), z.string(), Buff, BuffParams, generalUseCase, AttributeMultipliers)
   .returns(z.number())
   .implement(
     (
       buffName: string,
       generalName: string,
       tb: BuffType,
-      iv: BuffParamsType
+      iv: BuffParamsType,
+      useCase: generalUseCaseType,
+      am: AttributeMultipliersType
     ) => {
       const multiplier = 0;
       if (tb === null || tb === undefined || iv === null || iv === undefined) {
         return -1000;
       } else {
-        if (DEBUGP) {
+        if (DEBUGHP) {
           console.log(`PvPHPBuff: ${generalName}: ${buffName}`);
         }
         let score = 0;
@@ -76,37 +85,27 @@ export const PvPPreservationBuff = z
           );
           return score;
         } else {
-          if (DEBUGP) {
+          if (DEBUGHP) {
             console.log(`PvPHPBuff: ${generalName}: ${buffName} has value`);
           }
           if (tb.attribute === undefined || tb.attribute === null) {
-            if (DEBUGP) {
+            if (DEBUGHP) {
               console.log(
                 `PvPHPBuff: ${generalName}: ${buffName} has null attribute`
               );
             }
             return score;
-          } else if (
-            Attribute.enum.Death_to_Wounded.localeCompare(tb.attribute) &&
-            Attribute.enum.Death_to_Soul.localeCompare(tb.attribute)
-          ) {
-            //as best I can tell, these are effectively the same thing.
-            //EvAns scores them slightly differently, *unless* you tack
-            //on the "when attacking" condition to the "to wounded" buff
-            //in which case he does treat it the same as the "to souls."
-            //I don't completely get these buffs.  As best I can tell
-            // during SvS or Battlefield they are both effectively the same
-            //and both effectively useless.
-            if (DEBUGP) {
+          } else if (Attribute.enum.HP.localeCompare(tb.attribute)) {
+            if (DEBUGHP) {
               console.log(
-                `PvPHPBuff: ${generalName}: ${buffName} is not a Preservation buff`
+                `PvPHPBuff: ${generalName}: ${buffName} is not an HP buff`
               );
             }
             return score;
           } else {
             //check if buff has some conditions that never work for PvP
             if (tb.condition !== null && tb.condition !== undefined) {
-              if (checkInvalidConditions(tb, iv)) {
+              if (checkInvalidConditions(tb, iv, useCase)) {
                 //I probably ought to rename that function, but if I get here,
                 //there were no invalid conditions
                 if (
@@ -120,7 +119,7 @@ export const PvPPreservationBuff = z
                     Condition.enum.Reduces_Enemy_with_a_Dragon
                   )
                 ) {
-                  if (DEBUGP) {
+                  if (DEBUGHP) {
                     console.log(
                       `PvPHPBuff: ${generalName}: ${buffName} detected debuff`
                     );
@@ -128,7 +127,7 @@ export const PvPPreservationBuff = z
                   return 0;
                 } else {
                   //I think all other conditions that matter have been checked
-                  score = PvPPreservationBuffDetailCheck(tb, iv);
+                  score = PvPHPBuffClassCheck(tb, iv, am);
                 }
               } else {
                 //if I get here, there were invalid conditions
@@ -137,7 +136,7 @@ export const PvPPreservationBuff = z
             } else {
               //if I get here, there were no conditions to check, but there is
               //an attack attribute.
-              score = PvPPreservationBuffDetailCheck(tb, iv);
+              score = PvPHPBuffClassCheck(tb, iv, am);
             }
           }
         }

@@ -17,10 +17,11 @@ import {
 } from '@schemas/bookSchemas';
 
 import {type BuffFunctionInterface} from '@lib/RankingInterfaces.ts';
+import type { generalUseCaseType } from '@schemas/generalsSchema.ts';
 
 const DEBUG_BSS = false;
 
-export const PvPBSS = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFunction: BuffFunctionInterface, am: AttributeMultipliersType) => {
+export const PvPBSS = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFunction: BuffFunctionInterface, useCase: generalUseCaseType, am: AttributeMultipliersType) => {
     let BSS_Score = 0;
 
     if (
@@ -44,45 +45,45 @@ export const PvPBSS = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFun
                 console.log(JSON.stringify(tb));
                 console.log(`--- end tb ---`);
               }
-              let tbscore = (typedBuffFunction.Attack(bisb.name, eg.name, tb, bp, am));
+              let tbscore = (typedBuffFunction.Attack(bisb.name, eg.name, tb, bp, useCase, am));
               if (DEBUG_BSS) { console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`); }
               a2 += tbscore;
-              tbscore = (typedBuffFunction.MarchSize(bisb.name, eg.name, tb, bp, am));
+              tbscore = (typedBuffFunction.MarchSize(bisb.name, eg.name, tb, bp, useCase, am));
               if (DEBUG_BSS) {
                 console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
               }
               a2 += tbscore;
-              tbscore = (typedBuffFunction.HP(bisb.name, eg.name, tb, bp, am));
+              tbscore = (typedBuffFunction.HP(bisb.name, eg.name, tb, bp, useCase, am));
               if (DEBUG_BSS) {
                 console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
               }
               a2 += tbscore;
-              tbscore = (typedBuffFunction.Defense(bisb.name, eg.name, tb, bp, am));
+              tbscore = (typedBuffFunction.Defense(bisb.name, eg.name, tb, bp, useCase, am));
               if (DEBUG_BSS) {
                 console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
               }
               a2 += tbscore;
-              tbscore = (typedBuffFunction.DeAttack(bisb.name, eg.name, tb, bp, am));
+              tbscore = (typedBuffFunction.DeAttack(bisb.name, eg.name, tb, bp, useCase, am));
               if (DEBUG_BSS) {
                 console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
               }
               a2 += tbscore;
-              tbscore = (typedBuffFunction.DeHP(bisb.name, eg.name, tb, bp, am));
+              tbscore = (typedBuffFunction.DeHP(bisb.name, eg.name, tb, bp, useCase, am));
               if (DEBUG_BSS) {
                 console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
               }
               a2 += tbscore;
-              tbscore = (typedBuffFunction.DeDefense(bisb.name, eg.name, tb, bp, am));
+              tbscore = (typedBuffFunction.DeDefense(bisb.name, eg.name, tb, bp, useCase, am));
               if (DEBUG_BSS) {
                 console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
               }
               a2 += tbscore;
-              tbscore = (typedBuffFunction.Preservation(bisb.name, eg.name, tb, bp, am));
+              tbscore = (typedBuffFunction.Preservation(bisb.name, eg.name, tb, bp, useCase, am));
               if (DEBUG_BSS) {
                 console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
               }
               a2 += tbscore;
-              tbscore = (typedBuffFunction.Debilitation(bisb.name, eg.name, tb, bp, am));
+              tbscore = (typedBuffFunction.Debilitation(bisb.name, eg.name, tb, bp, useCase, am));
               if (DEBUG_BSS) {
                 console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
               }

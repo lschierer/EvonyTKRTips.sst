@@ -11,8 +11,11 @@ import {
   UnitSchema,
 } from '@schemas/baseSchemas';
 
-import { SiegePvPAttackAttributeMultipliers } from '@lib/EvAnsAttributeRanking';
-import { checkInvalidConditions } from '@components/general/buffComputers/EvAnsRanking/Archers/AttackPvPBase.ts';
+import {AttributeMultipliers, type AttributeMultipliersType} from '@schemas/EvAns.zod'
+
+
+import { checkInvalidConditions } from '../checkConditions';
+import { generalUseCase, type generalUseCaseType } from '@schemas/generalsSchema.ts';
 
 const DEBUGT = false;
 
@@ -26,11 +29,11 @@ const DEBUGT = false;
  * 5) Limited to being in a specific role then applying generically.
  */
 
-const PvPDeDefenseBuffDetailCheck = z
+const PvPDeAttackBuffDetailCheck = z
   .function()
-  .args(Buff, BuffParams)
+  .args(Buff, BuffParams, AttributeMultipliers)
   .returns(z.number())
-  .implement((tb: BuffType, iv: BuffParamsType) => {
+  .implement((tb: BuffType, iv: BuffParamsType, am: AttributeMultipliersType) => {
     let score = 0;
     let multiplier = 0;
     if (tb !== null && tb !== undefined) {
@@ -54,12 +57,12 @@ const PvPDeDefenseBuffDetailCheck = z
                   )
                 ) {
                   multiplier =
-                    SiegePvPAttackAttributeMultipliers.AttackingToughnessDebuff
-                      .ReduceEnemyRangedDefense;
+                    am.AttackingAttackDebuff
+                      .ReduceEnemyRangedAttack;
                 } else {
                   multiplier =
-                    SiegePvPAttackAttributeMultipliers
-                      .ReinforcingToughnessDebuff.ReduceEnemyRangedDefense;
+                    am.ReinforcingAttackDebuff
+                      .ReduceEnemyRangedAttack;
                 }
               } else if (!ClassEnum.enum.Ground.localeCompare(tb.class)) {
                 if (
@@ -77,12 +80,12 @@ const PvPDeDefenseBuffDetailCheck = z
                   )
                 ) {
                   multiplier =
-                    SiegePvPAttackAttributeMultipliers.AttackingToughnessDebuff
-                      .ReduceEnemyGroundDefense;
+                    am.AttackingAttackDebuff
+                      .ReduceEnemyGroundAttack;
                 } else {
                   multiplier =
-                    SiegePvPAttackAttributeMultipliers
-                      .ReinforcingToughnessDebuff.ReduceEnemyGroundDefense;
+                    am.ReinforcingAttackDebuff
+                      .ReduceEnemyGroundAttack;
                 }
               } else if (!ClassEnum.enum.Mounted.localeCompare(tb.class)) {
                 if (
@@ -100,12 +103,12 @@ const PvPDeDefenseBuffDetailCheck = z
                   )
                 ) {
                   multiplier =
-                    SiegePvPAttackAttributeMultipliers.AttackingToughnessDebuff
-                      .ReduceEnemyMountedDefense;
+                    am.AttackingAttackDebuff
+                      .ReduceEnemyMountedAttack;
                 } else {
                   multiplier =
-                    SiegePvPAttackAttributeMultipliers
-                      .ReinforcingToughnessDebuff.ReduceEnemyMountedDefense;
+                    am.ReinforcingAttackDebuff
+                      .ReduceEnemyMountedAttack;
                 }
               } else if (!ClassEnum.enum.Siege.localeCompare(tb.class)) {
                 if (
@@ -123,12 +126,12 @@ const PvPDeDefenseBuffDetailCheck = z
                   )
                 ) {
                   multiplier =
-                    SiegePvPAttackAttributeMultipliers.AttackingToughnessDebuff
-                      .ReduceEnemySiegeDefense;
+                    am.AttackingAttackDebuff
+                      .ReduceEnemySiegeAttack;
                 } else {
                   multiplier =
-                    SiegePvPAttackAttributeMultipliers
-                      .ReinforcingToughnessDebuff.ReduceEnemySiegeDefense;
+                    am.ReinforcingAttackDebuff
+                      .ReduceEnemySiegeAttack;
                 }
               } else {
                 multiplier = 0;
@@ -147,12 +150,12 @@ const PvPDeDefenseBuffDetailCheck = z
                 )
               ) {
                 multiplier =
-                  SiegePvPAttackAttributeMultipliers.AttackingToughnessDebuff
-                    .ReduceEnemyAllDefense;
+                  am.AttackingAttackDebuff
+                    .ReduceAllAttack;
               } else {
                 multiplier =
-                  SiegePvPAttackAttributeMultipliers.ReinforcingToughnessDebuff
-                    .ReduceEnemyAllDefense;
+                  am.ReinforcingAttackDebuff
+                    .ReduceAllAttack;
               }
             }
             const additional = Math.abs(tb.value.number) * multiplier;
@@ -167,22 +170,24 @@ const PvPDeDefenseBuffDetailCheck = z
     return score;
   });
 
-export const PvPDeDefenseBuff = z
+export const DeAttackBuff = z
   .function()
-  .args(z.string(), z.string(), Buff, BuffParams)
+  .args(z.string(), z.string(), Buff, BuffParams, generalUseCase, AttributeMultipliers)
   .returns(z.number())
   .implement(
     (
       buffName: string,
       generalName: string,
       tb: BuffType,
-      iv: BuffParamsType
+      iv: BuffParamsType,
+      useCase: generalUseCaseType,
+      am: AttributeMultipliersType
     ) => {
       if (tb === null || tb === undefined || iv === null || iv === undefined) {
         return -1000;
       } else {
         if (DEBUGT) {
-          console.log(`PvPDeDefenseBuff: ${generalName}: ${buffName}`);
+          console.log(`PvPDeAttackBuff: ${generalName}: ${buffName}`);
         }
         const score = 0;
         if (tb?.value === undefined || tb.value === null) {
@@ -193,27 +198,27 @@ export const PvPDeDefenseBuff = z
         } else {
           if (DEBUGT) {
             console.log(
-              `PvPDeDefenseBuff: ${generalName}: ${buffName} has value`
+              `PvPDeAttackBuff: ${generalName}: ${buffName} has value`
             );
           }
           if (tb.attribute === undefined || tb.attribute === null) {
             if (DEBUGT) {
               console.log(
-                `PvPDeDefenseBuff: ${generalName}: ${buffName} has null attribute`
+                `PvPDeAttackBuff: ${generalName}: ${buffName} has null attribute`
               );
             }
             return score;
-          } else if (Attribute.enum.Defense.localeCompare(tb.attribute)) {
+          } else if (Attribute.enum.Attack.localeCompare(tb.attribute)) {
             if (DEBUGT) {
               console.log(
-                `PvPDeDefenseBuff: ${generalName}: ${buffName} is not an Defense debuff`
+                `PvPDeAttackBuff: ${generalName}: ${buffName} is not an attack debuff`
               );
             }
             return score;
           } else {
             //check if buff has some conditions that never work for PvP
             if (tb.condition !== null && tb.condition !== undefined) {
-              if (checkInvalidConditions(tb, iv)) {
+              if (checkInvalidConditions(tb, iv, useCase)) {
                 //I probably ought to rename that function, but if I get here,
                 //there were no invalid conditions
                 if (
@@ -229,10 +234,10 @@ export const PvPDeDefenseBuff = z
                 ) {
                   if (DEBUGT) {
                     console.log(
-                      `PvPDeDefenseBuff: ${generalName}: ${buffName} detected Defense debuff`
+                      `PvPDeAttackBuff: ${generalName}: ${buffName} detected Attack debuff`
                     );
                   }
-                  return PvPDeDefenseBuffDetailCheck(tb, iv);
+                  return PvPDeAttackBuffDetailCheck(tb, iv, am);
                 } else {
                   //I am *ONLY* looking for debuffs here. DO NOT handle anything not a debuff.
                   return score;

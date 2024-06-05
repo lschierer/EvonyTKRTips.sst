@@ -1,58 +1,46 @@
 const DEBUG = false;
 const DEBUG_BAS = false;
+const DEBUGC = false;
 
 import { z } from 'zod';
 
 import {
-  AscendingLevels,
+  AscendingLevels, Buff,
   BuffParams,
-  type BuffParamsType,
+  type BuffParamsType, type BuffType, Condition,
 } from '@schemas/baseSchemas';
 
-import { Display, type DisplayType } from '@schemas/generalsSchema';
+import {AttributeMultipliers, type AttributeMultipliersType} from '@schemas/EvAns.zod';
+
+import { Display, type DisplayType, generalUseCase } from '@schemas/generalsSchema';
 
 import {
   ExtendedGeneral,
   type ExtendedGeneralType,
 } from '@schemas/ExtendedGeneral';
 
-import { MountedPvPAttackAttributeMultipliers } from '@lib/EvAnsAttributeRanking';
 import { PvPBSS } from '../PvPBSS.ts';
 import { PvPAES } from '../PvPAES.ts';
 import { PvP34SS } from '../PvP34SS.ts';
 
-import { PvPAttackBuff } from './PvPAttackBuff';
-import { PvPMarchSizeBuff } from './PvPMarchSizeBuff';
-import { PvPHPBuff } from './PvPHPBuff.ts';
-import { PvPDefenseBuff } from './PvPDefenseBuff.ts';
-import { PvPDeAttackBuff } from './PvPDeAttackBuff.ts';
-import { PvPDeHPBuff } from './PvPDeHPBuff.ts';
-import { PvPDeDefenseBuff } from './PvPDeDefense.ts';
-import { PvPPreservationBuff } from './PvPPreservationBuff.ts';
-import { PvPDebilitationBuff } from './PvPDebilitationBuff.ts';
-import { PvPRangeBuff } from './PvPRangeBuff'
+import { AttackBuff } from './AttackBuff';
+import { MarchSizeBuff } from './MarchSizeBuff.ts';
+import { HPBuff } from './HPBuff.ts';
+import { DefenseBuff } from './DefenseBuff.ts';
+import { DeAttackBuff } from './DeAttackBuff.ts';
+import { DeHPBuff } from './DeHPBuff.ts';
+import { DeDefenseBuff } from './DeDefense.ts';
+import { PreservationBuff } from './PreservationBuff.ts';
+import { DebilitationBuff } from './DebilitationBuff.ts';
+import { RangeBuff } from './RangeBuff.ts'
 
 import {type BuffFunctionInterface} from '@lib/RankingInterfaces';
 
-
-const typedBuffFunctions: BuffFunctionInterface = {
- Attack: PvPAttackBuff,
- MarchSize: PvPMarchSizeBuff,
- HP: PvPHPBuff,
- Defense: PvPDefenseBuff,
- DeAttack: PvPDeAttackBuff,
- DeHP: PvPDeHPBuff,
- DeDefense: PvPDeDefenseBuff,
- Preservation: PvPPreservationBuff,
- Debilitation: PvPDebilitationBuff,
-  Range: PvPRangeBuff
-}
-
 const EvAnsBasic = z
   .function()
-  .args(ExtendedGeneral)
+  .args(ExtendedGeneral, AttributeMultipliers)
   .returns(z.number())
-  .implement((eg: ExtendedGeneralType) => {
+  .implement((eg: ExtendedGeneralType, am: AttributeMultipliersType) => {
     let AES_adjustment = 0;
     switch (eg.stars) {
       case AscendingLevels.enum[0]:
@@ -189,19 +177,19 @@ const EvAnsBasic = z
     }
 
     const attackMultiplier =
-      MountedPvPAttackAttributeMultipliers?.Offensive.AllTroopAttack ?? 1;
+      am.Offensive.AllTroopAttack ?? 1;
     const defenseMultiplier =
-      MountedPvPAttackAttributeMultipliers?.Toughness.AllTroopDefense ?? 1;
+      am.Toughness.AllTroopDefense ?? 1;
     const HPMultiplier =
-      MountedPvPAttackAttributeMultipliers?.Toughness.AllTroopHP ?? 1;
+      am.Toughness.AllTroopHP ?? 1;
     const PoliticsMultiplier =
-      MountedPvPAttackAttributeMultipliers?.Preservation.Death2Wounded ?? 1;
+      am.Preservation.Death2Wounded ?? 1;
 
     const BAS =
-      (BasicAttack * attackMultiplier ) +
-      (BasicDefense * defenseMultiplier ) +
-      (BasicLeaderShip * HPMultiplier  )+
-      BasicPolitics * PoliticsMultiplier;
+      Math.floor(BasicAttack * attackMultiplier ) +
+      Math.floor(BasicDefense * defenseMultiplier ) +
+      Math.floor(BasicLeaderShip * HPMultiplier  )+
+      Math.floor(BasicPolitics * PoliticsMultiplier);
 
     if (DEBUG_BAS) {
       console.log(
@@ -216,34 +204,49 @@ const EvAnsBasic = z
       console.log(`BasicPolitics: ${BasicPolitics} = ${BasicPolitics * PoliticsMultiplier} for ${eg.name}`);
       console.log(`BAS: ${BAS} for: ${eg.name}`);
     }
-    return Math.floor(BAS);
+    return BAS;
   });
 
-export const EvAnsMountedPvPAttack = z
+export const EvAnsPvPReinforcement = z
   .function()
-  .args(ExtendedGeneral, Display, BuffParams)
+  .args(ExtendedGeneral, Display, BuffParams, AttributeMultipliers)
   .returns(z.number())
   .implement(
-    (eg: ExtendedGeneralType, display: DisplayType, bp: BuffParamsType) => {
+    (eg: ExtendedGeneralType, display: DisplayType, bp: BuffParamsType, am: AttributeMultipliersType) => {
       if (DEBUG) {
-        console.log(`${eg.name}: EvAnsMountedPvPAttack starting`);
+        console.log(`${eg.name}: EvAnsArchersPvPAttack starting`);
       }
 
-      const BAS = EvAnsBasic(eg);
-      const BSS = PvPBSS(eg, bp, typedBuffFunctions);
-      const AES = PvPAES(eg, bp, typedBuffFunctions);
-      const specialities = PvP34SS(eg, bp, typedBuffFunctions);
+      const ValidConditions = null;
+
+      const typedBuffFunctions: BuffFunctionInterface = {
+        Attack: AttackBuff,
+        DeAttack: DeAttackBuff,
+        DeDefense: DeDefenseBuff,
+        DeHP: DeHPBuff,
+        Debilitation: DebilitationBuff,
+        Defense: DefenseBuff,
+        HP: HPBuff,
+        MarchSize: MarchSizeBuff,
+        Preservation: PreservationBuff,
+        Range: RangeBuff,
+      }
+
+      const BAS = EvAnsBasic(eg, am);
+      const BSS = PvPBSS(eg, bp, typedBuffFunctions, generalUseCase.enum.Reinforcement, am);
+      const AES = PvPAES(eg, bp, typedBuffFunctions, generalUseCase.enum.Reinforcement, am);
+      const specialities = PvP34SS(eg, bp, typedBuffFunctions, generalUseCase.enum.Reinforcement, am);
 
       let TLGS = BSS + specialities;
       if (DEBUG) {
-        console.log(`EvAnsMountedPvPAttack: ${eg.name}: BSS: ${BSS}`);
+        console.log(`EvAnsArchersPvPAttack: ${eg.name}: BSS: ${BSS}`);
         console.log(
-          `EvAnsMountedPvPAttack: ${eg.name}: specialities: ${specialities}`
+          `EvAnsArchersPvPAttack: ${eg.name}: specialities: ${specialities}`
         );
-        console.log(`EvAnsMountedPvPAttack: ${eg.name}: BAS: ${BAS}`);
-        console.log(`EvAnsMountedPvPAttack: ${eg.name}: AES: ${AES}`);
+        console.log(`EvAnsArchersPvPAttack: ${eg.name}: BAS: ${BAS}`);
+        console.log(`EvAnsArchersPvPAttack: ${eg.name}: AES: ${AES}`);
         console.log(
-          `EvAnsMountedPvPAttack: ${eg.name}: TLGS (BSS & 34SS): ${TLGS}`
+          `EvAnsArchersPvPAttack: ${eg.name}: TLGS (BSS & 34SS): ${TLGS}`
         );
       }
       if (display.localeCompare(Display.enum.secondary)) {
@@ -266,3 +269,4 @@ export const EvAnsMountedPvPAttack = z
       return TLGS;
     }
   );
+

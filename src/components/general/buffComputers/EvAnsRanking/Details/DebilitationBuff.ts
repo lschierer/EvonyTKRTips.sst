@@ -11,8 +11,11 @@ import {
   UnitSchema,
 } from '@schemas/baseSchemas';
 
-import { SiegePvPAttackAttributeMultipliers } from '@lib/EvAnsAttributeRanking';
-import { checkInvalidConditions } from '@components/general/buffComputers/EvAnsRanking/Archers/AttackPvPBase.ts';
+import { AttributeMultipliers, type AttributeMultipliersType} from '@schemas/EvAns.zod'
+
+
+import { checkInvalidConditions } from '../checkConditions';
+import { generalUseCase, type generalUseCaseType } from '@schemas/generalsSchema.ts';
 
 const DEBUGT = false;
 
@@ -28,9 +31,9 @@ const DEBUGT = false;
 
 const PvPDebilitationBuffDetailCheck = z
   .function()
-  .args(Buff, BuffParams)
+  .args(Buff, BuffParams, AttributeMultipliers)
   .returns(z.number())
-  .implement((tb: BuffType, iv: BuffParamsType) => {
+  .implement((tb: BuffType, iv: BuffParamsType, am: AttributeMultipliersType) => {
     let score = 0;
     let multiplier = 0;
     if (tb !== null && tb !== undefined) {
@@ -43,21 +46,21 @@ const PvPDebilitationBuffDetailCheck = z
                 tb.condition.includes(Condition.enum.Marching) ||
                 tb.condition.includes(Condition.enum.Reduces_Enemy_in_Attack) ||
                 tb.condition.includes(
-                  Condition.enum.brings_dragon_or_beast_to_attack,
+                  Condition.enum.brings_dragon_or_beast_to_attack
                 ) ||
                 tb.condition.includes(
-                  Condition.enum.When_Defending_Outside_The_Main_City,
+                  Condition.enum.When_Defending_Outside_The_Main_City
                 )
               ) {
                 multiplier =
-                  SiegePvPAttackAttributeMultipliers.Debilitation
+                  am.Debilitation
                     .Wounded2DeathWhenAttacking;
               } else if (tb.condition.includes(Condition.enum.Enemy_In_City)) {
-                SiegePvPAttackAttributeMultipliers.Debilitation
+                am.Debilitation
                   .InCityWounded2Death;
               } else {
                 multiplier =
-                  SiegePvPAttackAttributeMultipliers.Debilitation
+                  am.Debilitation
                     .Wounded2Death;
               }
             }
@@ -66,16 +69,16 @@ const PvPDebilitationBuffDetailCheck = z
               console.log(`adding ${additional} to ${score}`);
             }
             score += additional;
-
+          }
         }
-      }
+
     }
     return score;
   });
 
-export const PvPDebilitationBuff = z
+export const DebilitationBuff = z
   .function()
-  .args(z.string(), z.string(), Buff, BuffParams)
+  .args(z.string(), z.string(), Buff, BuffParams, generalUseCase, AttributeMultipliers)
   .returns(z.number())
   .implement(
     (
@@ -83,6 +86,8 @@ export const PvPDebilitationBuff = z
       generalName: string,
       tb: BuffType,
       iv: BuffParamsType,
+      useCase: generalUseCaseType,
+      am: AttributeMultipliersType
     ) => {
       if (tb === null || tb === undefined || iv === null || iv === undefined) {
         return -1000;
@@ -93,19 +98,19 @@ export const PvPDebilitationBuff = z
         const score = 0;
         if (tb?.value === undefined || tb.value === null) {
           console.log(
-            `how to score a buff with no value? gc is ${generalName}`,
+            `how to score a buff with no value? gc is ${generalName}`
           );
           return score;
         } else {
           if (DEBUGT) {
             console.log(
-              `PvPDebilitationBuff: ${generalName}: ${buffName} has value`,
+              `PvPDebilitationBuff: ${generalName}: ${buffName} has value`
             );
           }
           if (tb.attribute === undefined || tb.attribute === null) {
             if (DEBUGT) {
               console.log(
-                `PvPDebilitationBuff: ${generalName}: ${buffName} has null attribute`,
+                `PvPDebilitationBuff: ${generalName}: ${buffName} has null attribute`
               );
             }
             return score;
@@ -114,14 +119,14 @@ export const PvPDebilitationBuff = z
           ) {
             if (DEBUGT) {
               console.log(
-                `PvPDebilitationBuff: ${generalName}: ${buffName} is not an Debilitation buff`,
+                `PvPDebilitationBuff: ${generalName}: ${buffName} is not an Debilitation buff`
               );
             }
             return score;
           } else {
             //check if buff has some conditions that never work for PvP
             if (tb.condition !== null && tb.condition !== undefined) {
-              if (checkInvalidConditions(tb, iv)) {
+              if (checkInvalidConditions(tb, iv, useCase)) {
                 //I probably ought to rename that function, but if I get here,
                 //there were no invalid conditions
                 if (
@@ -129,18 +134,18 @@ export const PvPDebilitationBuff = z
                   tb.condition.includes(Condition.enum.Enemy_In_City) ||
                   tb.condition.includes(Condition.enum.Reduces_Enemy) ||
                   tb.condition.includes(
-                    Condition.enum.Reduces_Enemy_in_Attack,
+                    Condition.enum.Reduces_Enemy_in_Attack
                   ) ||
                   tb.condition.includes(
-                    Condition.enum.Reduces_Enemy_with_a_Dragon,
+                    Condition.enum.Reduces_Enemy_with_a_Dragon
                   )
                 ) {
                   if (DEBUGT) {
                     console.log(
-                      `PvPDebilitationBuff: ${generalName}: ${buffName} detected Debilitation buff`,
+                      `PvPDebilitationBuff: ${generalName}: ${buffName} detected Debilitation buff`
                     );
                   }
-                  return PvPDebilitationBuffDetailCheck(tb, iv);
+                  return PvPDebilitationBuffDetailCheck(tb, iv, am);
                 } else {
                   //I am *ONLY* looking for debuffs here. DO NOT handle anything not a debuff.
                   return score;
@@ -158,5 +163,5 @@ export const PvPDebilitationBuff = z
         }
         return score;
       }
-    },
+    }
   );

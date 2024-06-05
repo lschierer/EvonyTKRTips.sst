@@ -12,11 +12,9 @@ import {
 
 import { ExtendedGeneral, type ExtendedGeneralType } from '@schemas/ExtendedGeneral';
 
-import { EvAnsGroundPvPAttack } from './Ground/AttackPvPBase';
-import { EvAnsArchersPvPAttack } from './Archers/AttackPvPBase';
-import { EvAnsMountedPvPAttack } from './Mounted/AttackPvPBase';
-import { EvAnsSiegePvPAttack } from './Siege/AttackPvPBase';
-import {EvAnsArchersPvPReinforcement} from './Archers/ReinforcementPvPBase';
+
+import { EvAnsPvPAttacking } from './Details/AttackPvPBase';
+import { EvAnsPvPReinforcement } from './Details/ReinforcementPvPBase';
 import * as EvAnsAttributes from '@lib/EvAnsAttributeRanking';
 
 /*******************
@@ -45,20 +43,20 @@ export const EvAnsScoreComputer = z
           console.log(`called for Attack use case`);
         }
         if (!generalSpecialists.enum.Archers.localeCompare(eg.score_as)) {
-          return EvAnsArchersPvPAttack(eg, display, bp, EvAnsAttributes.RangedPvPAttackAttributeMultipliers);
+          return EvAnsPvPAttacking(eg, display, bp, EvAnsAttributes.RangedPvPAttackAttributeMultipliers);
         }
         if (!generalSpecialists.enum.Ground.localeCompare(eg.score_as)) {
-          return EvAnsGroundPvPAttack(eg, display, bp);
+          return EvAnsPvPAttacking(eg, display, bp, EvAnsAttributes.GroundPvPAttackAttributeMultipliers);
         }
         if (!generalSpecialists.enum.Mounted.localeCompare(eg.score_as)) {
-          return EvAnsMountedPvPAttack(eg, display, bp);
+          return EvAnsPvPAttacking(eg, display, bp, EvAnsAttributes.MountedPvPAttackAttributeMultipliers);
         }
         if (!generalSpecialists.enum.Siege.localeCompare(eg.score_as)) {
-          return EvAnsSiegePvPAttack(eg, display, bp);
+          return EvAnsPvPAttacking(eg, display, bp, EvAnsAttributes.SiegePvPAttackAttributeMultipliers);
         }
       } else if (!UseCase.localeCompare(generalUseCase.enum.Reinforcement)){
         if (!generalSpecialists.enum.Archers.localeCompare(eg.score_as)) {
-          return EvAnsArchersPvPReinforcement(eg, display, bp, EvAnsAttributes.RangedPvPReinforcementAttributeMultipliers);
+          return EvAnsPvPReinforcement(eg, display, bp, EvAnsAttributes.RangedPvPReinforcementAttributeMultipliers);
         }
       } else {
         console.log(`not called for Attack use case`);

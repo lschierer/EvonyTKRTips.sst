@@ -10,8 +10,8 @@ import {
 
 import {
   Ascending,
-  type AscendingType
-} from '@schemas/generalsSchema.ts'
+  type AscendingType, type generalUseCaseType,
+} from '@schemas/generalsSchema.ts';
 
 import {
   ExtendedGeneral,
@@ -24,58 +24,58 @@ import type { AttributeMultipliersType } from '@schemas/EvAns.zod';
 const DEBUG_AES = false;
 const DEBUG = false;
 
-function buffDetailsReducerLogic(tbf: BuffFunctionInterface, index: number, ab: AscendingType, eg: ExtendedGeneralType, actual:BuffType, bp: BuffParamsType, am: AttributeMultipliersType) {
+function buffDetailsReducerLogic(tbf: BuffFunctionInterface, index: number, ab: AscendingType, eg: ExtendedGeneralType, actual:BuffType, bp: BuffParamsType, useCase: generalUseCaseType, am: AttributeMultipliersType) {
   let a3 = 0;
   let tbscore = tbf.Attack(
-    `Star ${index} ${ab.level}`, eg.name, actual, bp, am);
+    `Star ${index} ${ab.level}`, eg.name, actual, bp, useCase, am);
   if (DEBUG_AES) {
     console.log(`accumulating ${tbscore}`);
   }
   a3 += tbscore;
   tbscore = tbf.MarchSize(
-    `Star ${index} ${ab.level}`, eg.name, actual, bp, am);
+    `Star ${index} ${ab.level}`, eg.name, actual, bp, useCase, am);
   if (DEBUG_AES) {
     console.log(`accumulating ${tbscore}`);
   }
   a3 += tbscore;
   tbscore = tbf.HP(
-    `Star ${index} ${ab.level}`, eg.name, actual, bp, am);
+    `Star ${index} ${ab.level}`, eg.name, actual, bp, useCase, am);
   if (DEBUG_AES) {
     console.log(`accumulating ${tbscore}`);
   }
   a3 += tbscore;
   tbscore = tbf.Defense(
-    `Star ${index} ${ab.level}`, eg.name, actual, bp, am);
+    `Star ${index} ${ab.level}`, eg.name, actual, bp, useCase, am);
   if (DEBUG_AES) {
     console.log(`accumulating ${tbscore}`);
   }
   a3 += tbscore;
   tbscore = tbf.DeAttack(
-    `Star ${index} ${ab.level}`, eg.name, actual, bp, am);
+    `Star ${index} ${ab.level}`, eg.name, actual, bp, useCase, am);
   if (DEBUG_AES) {
     console.log(`accumulating ${tbscore}`);
   }
   a3 += tbscore;
   tbscore = tbf.DeHP(
-    `Star ${index} ${ab.level}`, eg.name, actual, bp, am);
+    `Star ${index} ${ab.level}`, eg.name, actual, bp, useCase, am);
   if (DEBUG_AES) {
     console.log(`accumulating ${tbscore}`);
   }
   a3 += tbscore;
   tbscore = tbf.DeDefense(
-    `Star ${index} ${ab.level}`, eg.name, actual, bp, am);
+    `Star ${index} ${ab.level}`, eg.name, actual, bp, useCase, am);
   if (DEBUG_AES) {
     console.log(`accumulating ${tbscore}`);
   }
   a3 += tbscore;
   tbscore = tbf.Preservation(
-    `Star ${index} ${ab.level}`, eg.name, actual, bp, am);
+    `Star ${index} ${ab.level}`, eg.name, actual, bp, useCase, am);
   if (DEBUG_AES) {
     console.log(`accumulating ${tbscore}`);
   }
   a3 += tbscore;
   tbscore = tbf.Debilitation(
-    `Star ${index} ${ab.level}`, eg.name, actual, bp, am);
+    `Star ${index} ${ab.level}`, eg.name, actual, bp, useCase, am);
   if (DEBUG_AES) {
     console.log(`accumulating ${tbscore}`);
   }
@@ -83,7 +83,7 @@ function buffDetailsReducerLogic(tbf: BuffFunctionInterface, index: number, ab: 
   return a3;
 }
 
-export const PvPAES = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFunction: BuffFunctionInterface, am: AttributeMultipliersType) => {
+export const PvPAES = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFunction: BuffFunctionInterface, useCase: generalUseCaseType, am: AttributeMultipliersType) => {
     let BSS_Score = 0;
 
     //I will assume you set the bp to disabled if it is an assistant.
@@ -127,14 +127,14 @@ export const PvPAES = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFun
                   !eg.stars.localeCompare(AscendingLevels.enum[10]) &&
                   !ab.level.localeCompare(AscendingLevels.enum[10])
                 ) {
-                  a2 += buffDetailsReducerLogic(typedBuffFunction,index,ab, eg, actual, bp, am)
+                  a2 += buffDetailsReducerLogic(typedBuffFunction,index,ab, eg, actual, bp, useCase, am)
                   return a2;
                 } else if (
                   (!eg.stars.localeCompare(AscendingLevels.enum[10]) ||
                     !eg.stars.localeCompare(AscendingLevels.enum[9])) &&
                   !ab.level.localeCompare(AscendingLevels.enum[9])
                 ) {
-                  a2 += buffDetailsReducerLogic(typedBuffFunction,index,ab, eg, actual, bp, am)
+                  a2 += buffDetailsReducerLogic(typedBuffFunction,index,ab, eg, actual, bp, useCase, am)
                   return a2
                 } else if (
                   (!eg.stars.localeCompare(AscendingLevels.enum[10]) ||
@@ -142,7 +142,7 @@ export const PvPAES = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFun
                     !eg.stars.localeCompare(AscendingLevels.enum[8])) &&
                   !ab.level.localeCompare(AscendingLevels.enum[8])
                 ) {
-                  a2 += buffDetailsReducerLogic(typedBuffFunction,index,ab, eg, actual, bp, am)
+                  a2 += buffDetailsReducerLogic(typedBuffFunction,index,ab, eg, actual, bp, useCase, am)
                   return a2
                 } else if (
                   (!eg.stars.localeCompare(AscendingLevels.enum[10]) ||
@@ -151,7 +151,7 @@ export const PvPAES = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFun
                     !eg.stars.localeCompare(AscendingLevels.enum[7])) &&
                   !ab.level.localeCompare(AscendingLevels.enum[7])
                 ) {
-                  a2 += buffDetailsReducerLogic(typedBuffFunction,index,ab, eg, actual, bp, am)
+                  a2 += buffDetailsReducerLogic(typedBuffFunction,index,ab, eg, actual, bp, useCase, am)
                   return a2
                 } else if (
                   (!eg.stars.localeCompare(AscendingLevels.enum[10]) ||
@@ -161,7 +161,7 @@ export const PvPAES = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFun
                     !eg.stars.localeCompare(AscendingLevels.enum[6])) &&
                   !ab.level.localeCompare(AscendingLevels.enum[6])
                 ) {
-                  a2 += buffDetailsReducerLogic(typedBuffFunction,index,ab, eg, actual, bp, am)
+                  a2 += buffDetailsReducerLogic(typedBuffFunction,index,ab, eg, actual, bp, useCase, am)
                   return a2
                 } else {
                   console.log(

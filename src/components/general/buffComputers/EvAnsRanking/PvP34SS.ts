@@ -15,62 +15,63 @@ import {
 
 import {type BuffFunctionInterface} from '@lib/RankingInterfaces';
 import type { AttributeMultipliersType } from '@schemas/EvAns.zod.ts';
+import type { generalUseCaseType } from '@schemas/generalsSchema.ts';
 
 
 const DEBUG_34SS = false;
 
-const buffReductionLogic = (specialB: SpecialityType, eg: ExtendedGeneralType, sb: BuffType, bp: BuffParamsType, tbfo:  BuffFunctionInterface, am: AttributeMultipliersType) => {
+const buffReductionLogic = (specialB: SpecialityType, eg: ExtendedGeneralType, sb: BuffType, bp: BuffParamsType, tbfo:  BuffFunctionInterface, useCase: generalUseCaseType, am: AttributeMultipliersType) => {
   let ba = 0;
   let sb_total = tbfo.Attack(
-    specialB.name, eg.name, sb, bp, am);
+    specialB.name, eg.name, sb, bp, useCase, am);
   if (DEBUG_34SS) {
     console.log(`Attack adding ${sb_total} to: ${ba}`);
   }
   ba += sb_total;
   sb_total = tbfo.MarchSize(
-    specialB.name, eg.name, sb, bp, am);
+    specialB.name, eg.name, sb, bp, useCase, am);
   if (DEBUG_34SS) {
     console.log(`MarchSize adding ${sb_total} to: ${ba}`);
   }
   ba += sb_total;
   sb_total = tbfo.HP(
-    specialB.name, eg.name, sb, bp, am);
+    specialB.name, eg.name, sb, bp, useCase, am);
   if (DEBUG_34SS) {
     console.log(`HP adding ${sb_total} to: ${ba}`);
   }
   ba += sb_total;
   sb_total = tbfo.Defense(
-    specialB.name, eg.name, sb, bp, am);
+    specialB.name, eg.name, sb, bp, useCase, am);
   if (DEBUG_34SS) {
     console.log(`Defense adding ${sb_total} to: ${ba}`);
   }
   ba += sb_total;
   sb_total = tbfo.DeAttack(
-    specialB.name, eg.name, sb, bp, am);
+    specialB.name, eg.name, sb, bp, useCase, am);
   if (DEBUG_34SS) {
     console.log(`DeAttack adding ${sb_total} to: ${ba}`);
   }
   ba += sb_total;
   sb_total = tbfo.DeHP(
-    specialB.name, eg.name, sb, bp, am);
+    specialB.name, eg.name, sb, bp, useCase, am);
   if (DEBUG_34SS) {
     console.log(`DeHP adding ${sb_total} to: ${ba}`);
   }
   ba += sb_total;
   sb_total = tbfo.DeDefense(
-    specialB.name, eg.name, sb, bp, am);
+    specialB.name, eg.name, sb, bp, useCase, am);
   if (DEBUG_34SS) {
     console.log(`DeDefense adding ${sb_total} to: ${ba}`);
   }
   ba += sb_total;
   sb_total = tbfo.Preservation(
-    specialB.name, eg.name, sb, bp, am);
+    specialB.name, eg.name, sb, bp, useCase, am);
   if (DEBUG_34SS) {
     console.log(`Preservation adding ${sb_total} to: ${ba}`);
   }
   ba += sb_total;
   sb_total = tbfo.Debilitation(
-    specialB.name, eg.name, sb, bp, am);
+    specialB.name, eg.name, sb, bp, useCase, am);
   if (DEBUG_34SS) {
     console.log(`Debilitation adding ${sb_total} to: ${ba}`);
   }
@@ -78,7 +79,7 @@ const buffReductionLogic = (specialB: SpecialityType, eg: ExtendedGeneralType, s
   return ba;
 };
 
-export const PvP34SS = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFunction: BuffFunctionInterface, am: AttributeMultipliersType) => {
+export const PvP34SS = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFunction: BuffFunctionInterface, useCase: generalUseCaseType, am: AttributeMultipliersType) => {
     let BSS_Score = 0;
 
     if (
@@ -141,7 +142,7 @@ export const PvP34SS = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFu
                         return aGreen;
                       } else {
                         //(tbfo: BuffFunctionInterface, specialB: SpecialityType, eg: ExtendedGeneralType, sb: BuffType, bp: BuffParamsType, ba: number) => {
-                        buff_total = buffReductionLogic(specialB, eg, sb, bp, typedBuffFunction, am);
+                        buff_total = buffReductionLogic(specialB, eg, sb, bp, typedBuffFunction, useCase, am);
                       }
                       if (DEBUG_34SS) {
                         console.log(
@@ -189,7 +190,7 @@ export const PvP34SS = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFu
                       if (sb === undefined || sb === null) {
                         return aBlue;
                       } else {
-                        buff_total = buffReductionLogic(specialB, eg, sb, bp, typedBuffFunction, am);
+                        buff_total = buffReductionLogic(specialB, eg, sb, bp, typedBuffFunction, useCase, am);
                       }
                       aBlue += buff_total
                       return aBlue;
@@ -233,7 +234,7 @@ export const PvP34SS = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFu
                       if (sb === undefined || sb === null) {
                         return aPurple;
                       } else {
-                        buff_total = buffReductionLogic(specialB, eg, sb, bp, typedBuffFunction, am);
+                        buff_total = buffReductionLogic(specialB, eg, sb, bp, typedBuffFunction, useCase, am);
                       }
                       aPurple += buff_total;
                       return aPurple;
@@ -282,7 +283,7 @@ export const PvP34SS = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFu
                       if (sb === undefined || sb === null) {
                         return aOrange;
                       } else {
-                        buff_total = buffReductionLogic(specialB, eg, sb, bp, typedBuffFunction, am);
+                        buff_total = buffReductionLogic(specialB, eg, sb, bp, typedBuffFunction, useCase, am);
                       }
                       aOrange += buff_total;
                       return aOrange;
@@ -316,7 +317,7 @@ export const PvP34SS = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFu
                       if (sb === undefined || sb === null) {
                         return aGold;
                       } else {
-                        buff_total = buffReductionLogic(specialB, eg, sb, bp, typedBuffFunction, am);
+                        buff_total = buffReductionLogic(specialB, eg, sb, bp, typedBuffFunction, useCase, am);
                       }
                       aGold += buff_total;
                       return aGold;

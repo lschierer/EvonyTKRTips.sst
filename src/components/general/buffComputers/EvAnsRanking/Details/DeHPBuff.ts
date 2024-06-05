@@ -14,7 +14,8 @@ import {
 import { AttributeMultipliers, type AttributeMultipliersType} from '@schemas/EvAns.zod';
 
 
-import { checkInvalidConditions } from '@components/general/buffComputers/EvAnsRanking/Archers/AttackPvPBase.ts';
+import { checkInvalidConditions } from '../checkConditions';
+import { generalUseCase, type generalUseCaseType } from '@schemas/generalsSchema.ts';
 
 const DEBUGT = false;
 
@@ -28,11 +29,11 @@ const DEBUGT = false;
  * 5) Limited to being in a specific role then applying generically.
  */
 
-const PvPDeHPBuffDetailCheck = z
+const DeHPBuffDetailCheck = z
   .function()
   .args(Buff, BuffParams, AttributeMultipliers)
   .returns(z.number())
-  .implement((tb: BuffType, iv: BuffParamsType, am: AttributeMultipliersType) => {
+  .implement((tb: BuffType, iv: BuffParamsType,  am: AttributeMultipliersType) => {
     let score = 0;
     let multiplier = 0;
     if (tb !== null && tb !== undefined) {
@@ -171,7 +172,7 @@ const PvPDeHPBuffDetailCheck = z
 
 export const DeHPBuff = z
   .function()
-  .args(z.string(), z.string(), Buff, BuffParams, AttributeMultipliers)
+  .args(z.string(), z.string(), Buff, BuffParams, generalUseCase, AttributeMultipliers)
   .returns(z.number())
   .implement(
     (
@@ -179,6 +180,7 @@ export const DeHPBuff = z
       generalName: string,
       tb: BuffType,
       iv: BuffParamsType,
+      useCase: generalUseCaseType,
       am: AttributeMultipliersType
     ) => {
       if (tb === null || tb === undefined || iv === null || iv === undefined) {
@@ -214,7 +216,7 @@ export const DeHPBuff = z
           } else {
             //check if buff has some conditions that never work for PvP
             if (tb.condition !== null && tb.condition !== undefined) {
-              if (checkInvalidConditions(tb, iv)) {
+              if (checkInvalidConditions(tb, iv, useCase)) {
                 //I probably ought to rename that function, but if I get here,
                 //there were no invalid conditions
                 if (
@@ -233,7 +235,7 @@ export const DeHPBuff = z
                       `PvPDeHPBuff: ${generalName}: ${buffName} detected HP debuff`
                     );
                   }
-                  return PvPDeHPBuffDetailCheck(tb, iv, am);
+                  return DeHPBuffDetailCheck(tb, iv,  am);
                 } else {
                   //I am *ONLY* looking for debuffs here. DO NOT handle anything not a debuff.
                   return score;
