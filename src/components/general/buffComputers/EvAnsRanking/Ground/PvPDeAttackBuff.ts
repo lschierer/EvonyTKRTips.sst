@@ -233,7 +233,8 @@ export const PvPDeAttackBuff = z
                       `PvPDeAttackBuff: ${generalName}: ${buffName} detected Attack debuff`
                     );
                   }
-                  return PvPDeAttackBuffDetailCheck(tb, iv);
+                  score = PvPDeAttackBuffDetailCheck(tb, iv);
+                  return score;
                 } else {
                   //I am *ONLY* looking for debuffs here. DO NOT handle anything not a debuff.
                   return score;

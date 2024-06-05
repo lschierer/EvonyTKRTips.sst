@@ -51,7 +51,7 @@ const PvPPreservationBuffDetailCheck = z
               multiplier = 0;
             }
           } else {
-            if (tb.condition && tb.condition.includes(Condition.enum.Attacking)) {
+            if (tb.condition?.includes(Condition.enum.Attacking)) {
               multiplier =
                 RangedPvPAttackAttributeMultipliers.Preservation.Death2WoundedWhenAttacking;
             } else {
@@ -81,7 +81,7 @@ export const PvPPreservationBuff = z
       tb: BuffType,
       iv: BuffParamsType
     ) => {
-      let multiplier = 0;
+      const multiplier = 0;
       if (tb === null || tb === undefined || iv === null || iv === undefined) {
         return -1000;
       } else {

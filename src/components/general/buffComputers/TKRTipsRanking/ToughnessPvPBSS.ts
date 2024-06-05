@@ -45,17 +45,17 @@ export const ToughnessPvPBSS = (eg: ExtendedGeneralType, bp: BuffParamsType, typ
                 console.log(`--- end tb ---`);
               }
               let tbscore = 0;
-              tbscore = (typedBuffFunction.HP(bisb.name, eg.name, tb, bp) as number);
+              tbscore = (typedBuffFunction.HP(bisb.name, eg.name, tb, bp));
               if (DEBUG_BSS) {
                 console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
               }
               a2 += tbscore;
-              tbscore = (typedBuffFunction.Defense(bisb.name, eg.name, tb, bp) as number);
+              tbscore = (typedBuffFunction.Defense(bisb.name, eg.name, tb, bp));
               if (DEBUG_BSS) {
                 console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
               }
               a2 += tbscore;
-              tbscore = (typedBuffFunction.DeAttack(bisb.name, eg.name, tb, bp) as number);
+              tbscore = (typedBuffFunction.DeAttack(bisb.name, eg.name, tb, bp));
               if (DEBUG_BSS) {
                 console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
               }

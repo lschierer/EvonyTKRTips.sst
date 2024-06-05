@@ -184,7 +184,7 @@ export const PvPDeDefenseBuff = z
         if (DEBUGT) {
           console.log(`PvPDeDefenseBuff: ${generalName}: ${buffName}`);
         }
-        let score = 0;
+        const score = 0;
         if (tb?.value === undefined || tb.value === null) {
           console.log(
             `how to score a buff with no value? gc is ${generalName}`

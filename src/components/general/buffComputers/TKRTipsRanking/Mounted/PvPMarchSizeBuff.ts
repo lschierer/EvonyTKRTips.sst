@@ -78,7 +78,7 @@ export const PvPMarchSizeBuff = z
       tb: BuffType,
       iv: BuffParamsType
     ) => {
-      let multiplier = 0;
+      const multiplier = 0;
       if (tb === null || tb === undefined || iv === null || iv === undefined) {
         return -1000;
       } else {
