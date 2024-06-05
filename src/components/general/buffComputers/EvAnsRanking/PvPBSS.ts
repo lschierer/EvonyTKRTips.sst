@@ -47,42 +47,42 @@ export const PvPBSS = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFun
               let tbscore = (typedBuffFunction.Attack(bisb.name, eg.name, tb, bp, am));
               if (DEBUG_BSS) { console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`); }
               a2 += tbscore;
-              tbscore = (typedBuffFunction.MarchSize(bisb.name, eg.name, tb, bp));
+              tbscore = (typedBuffFunction.MarchSize(bisb.name, eg.name, tb, bp, am));
               if (DEBUG_BSS) {
                 console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
               }
               a2 += tbscore;
-              tbscore = (typedBuffFunction.HP(bisb.name, eg.name, tb, bp));
+              tbscore = (typedBuffFunction.HP(bisb.name, eg.name, tb, bp, am));
               if (DEBUG_BSS) {
                 console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
               }
               a2 += tbscore;
-              tbscore = (typedBuffFunction.Defense(bisb.name, eg.name, tb, bp));
+              tbscore = (typedBuffFunction.Defense(bisb.name, eg.name, tb, bp, am));
               if (DEBUG_BSS) {
                 console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
               }
               a2 += tbscore;
-              tbscore = (typedBuffFunction.DeAttack(bisb.name, eg.name, tb, bp));
+              tbscore = (typedBuffFunction.DeAttack(bisb.name, eg.name, tb, bp, am));
               if (DEBUG_BSS) {
                 console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
               }
               a2 += tbscore;
-              tbscore = (typedBuffFunction.DeHP(bisb.name, eg.name, tb, bp));
+              tbscore = (typedBuffFunction.DeHP(bisb.name, eg.name, tb, bp, am));
               if (DEBUG_BSS) {
                 console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
               }
               a2 += tbscore;
-              tbscore = (typedBuffFunction.DeDefense(bisb.name, eg.name, tb, bp));
+              tbscore = (typedBuffFunction.DeDefense(bisb.name, eg.name, tb, bp, am));
               if (DEBUG_BSS) {
                 console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
               }
               a2 += tbscore;
-              tbscore = (typedBuffFunction.Preservation(bisb.name, eg.name, tb, bp));
+              tbscore = (typedBuffFunction.Preservation(bisb.name, eg.name, tb, bp, am));
               if (DEBUG_BSS) {
                 console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
               }
               a2 += tbscore;
-              tbscore = (typedBuffFunction.Debilitation(bisb.name, eg.name, tb, bp));
+              tbscore = (typedBuffFunction.Debilitation(bisb.name, eg.name, tb, bp, am));
               if (DEBUG_BSS) {
                 console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
               }

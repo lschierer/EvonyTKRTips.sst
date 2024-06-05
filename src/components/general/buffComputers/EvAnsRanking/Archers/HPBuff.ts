@@ -11,17 +11,16 @@ import {
   UnitSchema,
 } from '@schemas/baseSchemas';
 
-import { checkInvalidConditions } from '../EvAnsScoreComputer';
+import { AttributeMultipliers, type AttributeMultipliersType } from '@schemas/EvAns.zod';
+import { checkInvalidConditions } from '@components/general/buffComputers/EvAnsRanking/Archers/AttackPvPBase.ts';
 
-import { RangedPvPAttackAttributeMultipliers } from '@lib/EvAnsAttributeRanking';
+const DEBUGHP = false;
 
-const DEBUGRC = false;
-
-const PvPRallyBuffClassCheck = z
+const PvPHPBuffClassCheck = z
   .function()
-  .args(Buff, BuffParams)
+  .args(Buff, BuffParams, AttributeMultipliers)
   .returns(z.number())
-  .implement((tb: BuffType, iv: BuffParamsType) => {
+  .implement((tb: BuffType, iv: BuffParamsType, am: AttributeMultipliersType) => {
     let score = 0;
     let multiplier = 0;
     if (tb !== null && tb !== undefined) {
@@ -30,29 +29,25 @@ const PvPRallyBuffClassCheck = z
           if (tb.class !== null && tb.class !== undefined) {
             if (!ClassEnum.enum.Archers.localeCompare(tb.class)) {
               multiplier =
-                RangedPvPAttackAttributeMultipliers?.Offensive.RallyCapacity ??
-                0;
+                am?.Toughness.RangedHP ?? 0;
             } else if (!ClassEnum.enum.Ground.localeCompare(tb.class)) {
               multiplier =
-                RangedPvPAttackAttributeMultipliers?.Offensive.RallyCapacity ??
-                0;
+                am?.Toughness.GroundHP ?? 0;
             } else if (!ClassEnum.enum.Mounted.localeCompare(tb.class)) {
               multiplier =
-                RangedPvPAttackAttributeMultipliers?.Offensive.RallyCapacity ??
-                0;
+                am?.Toughness.MountedHP ?? 0;
             } else if (!ClassEnum.enum.Siege.localeCompare(tb.class)) {
               multiplier =
-                RangedPvPAttackAttributeMultipliers?.Offensive.RallyCapacity ??
-                0;
+                am?.Toughness.SiegeHP ?? 0;
             } else {
               multiplier = 0;
             }
           } else {
             multiplier =
-              RangedPvPAttackAttributeMultipliers?.Offensive.RallyCapacity ?? 0;
+              am?.Toughness.AllTroopHP ?? 0;
           }
           const additional = tb.value.number * multiplier;
-          if (DEBUGRC) {
+          if (DEBUGHP) {
             console.log(`adding ${additional} to ${score}`);
           }
           score += additional;
@@ -62,23 +57,24 @@ const PvPRallyBuffClassCheck = z
     return score;
   });
 
-export const PvPRallyBuff = z
+export const HPBuff = z
   .function()
-  .args(z.string(), z.string(), Buff, BuffParams)
+  .args(z.string(), z.string(), Buff, BuffParams, AttributeMultipliers)
   .returns(z.number())
   .implement(
     (
       buffName: string,
       generalName: string,
       tb: BuffType,
-      iv: BuffParamsType
+      iv: BuffParamsType,
+      am: AttributeMultipliersType
     ) => {
       const multiplier = 0;
       if (tb === null || tb === undefined || iv === null || iv === undefined) {
         return -1000;
       } else {
-        if (DEBUGRC) {
-          console.log(`PvPRallyBuff: ${generalName}: ${buffName}`);
+        if (DEBUGHP) {
+          console.log(`PvPHPBuff: ${generalName}: ${buffName}`);
         }
         let score = 0;
         if (tb?.value === undefined || tb.value === null) {
@@ -87,22 +83,20 @@ export const PvPRallyBuff = z
           );
           return score;
         } else {
-          if (DEBUGRC) {
-            console.log(`PvPRallyBuff: ${generalName}: ${buffName} has value`);
+          if (DEBUGHP) {
+            console.log(`PvPHPBuff: ${generalName}: ${buffName} has value`);
           }
           if (tb.attribute === undefined || tb.attribute === null) {
-            if (DEBUGRC) {
+            if (DEBUGHP) {
               console.log(
-                `PvPRallyBuff: ${generalName}: ${buffName} has null attribute`
+                `PvPHPBuff: ${generalName}: ${buffName} has null attribute`
               );
             }
             return score;
-          } else if (
-            Attribute.enum.Rally_Capacity.localeCompare(tb.attribute)
-          ) {
-            if (DEBUGRC) {
+          } else if (Attribute.enum.HP.localeCompare(tb.attribute)) {
+            if (DEBUGHP) {
               console.log(
-                `PvPRallyBuff: ${generalName}: ${buffName} is not an Rally_Capacity buff`
+                `PvPHPBuff: ${generalName}: ${buffName} is not an HP buff`
               );
             }
             return score;
@@ -123,15 +117,15 @@ export const PvPRallyBuff = z
                     Condition.enum.Reduces_Enemy_with_a_Dragon
                   )
                 ) {
-                  if (DEBUGRC) {
+                  if (DEBUGHP) {
                     console.log(
-                      `PvPRallyBuff: ${generalName}: ${buffName} detected attack debuff`
+                      `PvPHPBuff: ${generalName}: ${buffName} detected debuff`
                     );
                   }
                   return 0;
                 } else {
                   //I think all other conditions that matter have been checked
-                  score = PvPRallyBuffClassCheck(tb, iv);
+                  score = PvPHPBuffClassCheck(tb, iv, am);
                 }
               } else {
                 //if I get here, there were invalid conditions
@@ -140,7 +134,7 @@ export const PvPRallyBuff = z
             } else {
               //if I get here, there were no conditions to check, but there is
               //an attack attribute.
-              score = PvPRallyBuffClassCheck(tb, iv);
+              score = PvPHPBuffClassCheck(tb, iv, am);
             }
           }
         }

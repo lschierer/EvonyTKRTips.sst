@@ -33,49 +33,49 @@ function buffDetailsReducerLogic(tbf: BuffFunctionInterface, index: number, ab: 
   }
   a3 += tbscore;
   tbscore = tbf.MarchSize(
-    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+    `Star ${index} ${ab.level}`, eg.name, actual, bp, am);
   if (DEBUG_AES) {
     console.log(`accumulating ${tbscore}`);
   }
   a3 += tbscore;
   tbscore = tbf.HP(
-    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+    `Star ${index} ${ab.level}`, eg.name, actual, bp, am);
   if (DEBUG_AES) {
     console.log(`accumulating ${tbscore}`);
   }
   a3 += tbscore;
   tbscore = tbf.Defense(
-    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+    `Star ${index} ${ab.level}`, eg.name, actual, bp, am);
   if (DEBUG_AES) {
     console.log(`accumulating ${tbscore}`);
   }
   a3 += tbscore;
   tbscore = tbf.DeAttack(
-    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+    `Star ${index} ${ab.level}`, eg.name, actual, bp, am);
   if (DEBUG_AES) {
     console.log(`accumulating ${tbscore}`);
   }
   a3 += tbscore;
   tbscore = tbf.DeHP(
-    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+    `Star ${index} ${ab.level}`, eg.name, actual, bp, am);
   if (DEBUG_AES) {
     console.log(`accumulating ${tbscore}`);
   }
   a3 += tbscore;
   tbscore = tbf.DeDefense(
-    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+    `Star ${index} ${ab.level}`, eg.name, actual, bp, am);
   if (DEBUG_AES) {
     console.log(`accumulating ${tbscore}`);
   }
   a3 += tbscore;
   tbscore = tbf.Preservation(
-    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+    `Star ${index} ${ab.level}`, eg.name, actual, bp, am);
   if (DEBUG_AES) {
     console.log(`accumulating ${tbscore}`);
   }
   a3 += tbscore;
   tbscore = tbf.Debilitation(
-    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+    `Star ${index} ${ab.level}`, eg.name, actual, bp, am);
   if (DEBUG_AES) {
     console.log(`accumulating ${tbscore}`);
   }
@@ -89,7 +89,7 @@ export const PvPAES = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFun
     //I will assume you set the bp to disabled if it is an assistant.
     if (bp.stars.localeCompare(AscendingLevels.enum[0])) {
       if (!Array.isArray(eg.ascending)) {
-        console.log(`${eg.name} is not ascended`);
+        if(DEBUG_AES) {console.log(`${eg.name} is not ascended`); }
         return -11;
       }
       const ascending_score = eg.ascending.reduce((accumulator, ab, index) => {

@@ -53,7 +53,7 @@ export const ToughnessPvPAES = (eg: ExtendedGeneralType, bp: BuffParamsType, typ
     //I will assume you set the bp to disabled if it is an assistant.
     if (bp.stars.localeCompare(AscendingLevels.enum[0])) {
       if (!Array.isArray(eg.ascending)) {
-        console.log(`${eg.name} is not ascended`);
+        if (DEBUG_AES) {console.log(`${eg.name} is not ascended`);}
         return -11;
       }
       const ascending_score = eg.ascending.reduce((accumulator, ab, index) => {

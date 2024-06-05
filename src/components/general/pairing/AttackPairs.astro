@@ -31,17 +31,24 @@ import {
   type GeneralPairType,
 } from '@schemas/ExtendedGeneral';
 
-const DEBUG = false;
+const DEBUG = true;
 
 interface Props {
   generalClass: generalSpecialistsType;
   useCase?: generalUseCaseType
 }
 
-const { generalClass } = Astro.props;
-let { useCase } = Astro.props;
+let { generalClass, useCase }: Props = Astro.props;
+
 if(useCase === null || useCase === undefined) {
+  if(DEBUG) {
+    console.log(`warning, use case was null`)
+  }
   useCase = generalUseCase.enum.Attack;
+} else {
+  if (DEBUG) {
+    console.log(`use case was ${useCase}`)
+  }
 }
 
 const table_name = `${Astro.url.pathname}-${ulid()}`;

@@ -41,7 +41,7 @@ import { EvAnsScoreComputer } from '@components/general/buffComputers/EvAnsRanki
 import { AttackScoreComputer } from '@components/general/buffComputers/TKRTipsRanking/AttackScoreComputer';
 import { ToughnessScoreComputer } from '@components/general/buffComputers/TKRTipsRanking/ToughnessScoreComputer';
 
-const DEBUG = false;
+const DEBUG = true;
 
 @customElement('base-general')
 export class BaseGeneral extends SizedMixin(SpectrumElement, {
@@ -182,7 +182,10 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
       ) {
         return false;
       } else {
-        if (DEBUG) console.log(`EvAnsBuff starting for ${this.general.name}`);
+        if (DEBUG) {
+          console.log(`EvAnsBuff starting for ${this.general.name}`);
+          console.log(`EvAnsBuff has useCase ${this.useCase}`)
+        }
         //figure out my state engine here
 
         const EvAnsRankScore = EvAnsScoreComputer(

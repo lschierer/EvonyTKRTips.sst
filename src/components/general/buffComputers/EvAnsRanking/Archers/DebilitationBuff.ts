@@ -11,9 +11,10 @@ import {
   UnitSchema,
 } from '@schemas/baseSchemas';
 
-import { checkInvalidConditions } from '../EvAnsScoreComputer';
+import { AttributeMultipliers, type AttributeMultipliersType} from '@schemas/EvAns.zod'
 
-import { RangedPvPAttackAttributeMultipliers } from '@lib/EvAnsAttributeRanking';
+
+import { checkInvalidConditions } from '@components/general/buffComputers/EvAnsRanking/Archers/AttackPvPBase.ts';
 
 const DEBUGT = false;
 
@@ -29,9 +30,9 @@ const DEBUGT = false;
 
 const PvPDebilitationBuffDetailCheck = z
   .function()
-  .args(Buff, BuffParams)
+  .args(Buff, BuffParams, AttributeMultipliers)
   .returns(z.number())
-  .implement((tb: BuffType, iv: BuffParamsType) => {
+  .implement((tb: BuffType, iv: BuffParamsType, am: AttributeMultipliersType) => {
     let score = 0;
     let multiplier = 0;
     if (tb !== null && tb !== undefined) {
@@ -51,14 +52,14 @@ const PvPDebilitationBuffDetailCheck = z
                 )
               ) {
                 multiplier =
-                  RangedPvPAttackAttributeMultipliers.Debilitation
+                  am.Debilitation
                     .Wounded2DeathWhenAttacking;
               } else if (tb.condition.includes(Condition.enum.Enemy_In_City)) {
-                RangedPvPAttackAttributeMultipliers.Debilitation
+                am.Debilitation
                   .InCityWounded2Death;
               } else {
                 multiplier =
-                  RangedPvPAttackAttributeMultipliers.Debilitation
+                  am.Debilitation
                     .Wounded2Death;
               }
             }
@@ -74,16 +75,17 @@ const PvPDebilitationBuffDetailCheck = z
     return score;
   });
 
-export const PvPDebilitationBuff = z
+export const DebilitationBuff = z
   .function()
-  .args(z.string(), z.string(), Buff, BuffParams)
+  .args(z.string(), z.string(), Buff, BuffParams, AttributeMultipliers)
   .returns(z.number())
   .implement(
     (
       buffName: string,
       generalName: string,
       tb: BuffType,
-      iv: BuffParamsType
+      iv: BuffParamsType,
+      am: AttributeMultipliersType
     ) => {
       if (tb === null || tb === undefined || iv === null || iv === undefined) {
         return -1000;
@@ -141,7 +143,7 @@ export const PvPDebilitationBuff = z
                       `PvPDebilitationBuff: ${generalName}: ${buffName} detected Debilitation buff`
                     );
                   }
-                  return PvPDebilitationBuffDetailCheck(tb, iv);
+                  return PvPDebilitationBuffDetailCheck(tb, iv, am);
                 } else {
                   //I am *ONLY* looking for debuffs here. DO NOT handle anything not a debuff.
                   return score;

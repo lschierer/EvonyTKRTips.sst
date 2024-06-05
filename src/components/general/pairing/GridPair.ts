@@ -21,7 +21,7 @@ import {
   type DisplayType,
   generalRole,
   type generalRoleType,
-  generalUseCase,
+  generalUseCase, type generalUseCaseType,
 } from '@schemas/generalsSchema';
 
 import {
@@ -40,6 +40,19 @@ const DEBUG = false;
 
 export class GridPair {
   public index = 0;
+
+  private _useCase: generalUseCaseType = generalUseCase.enum.all;
+
+  get useCase(): generalUseCaseType {
+    return this._useCase;
+  }
+
+  set useCase(value: generalUseCaseType) {
+    const v = generalUseCase.safeParse(value)
+    if(v.success) {
+      this._useCase = v.data;
+    }
+  }
 
   private _primaryId = '';
 
@@ -192,19 +205,19 @@ export class GridPair {
           console.log(`GeneralBuffs for ${this._primary.name} as primary`);
         }
         this.pEvAnsRanking = EvAnsScoreComputer(
-          generalUseCase.enum.Attack,
+          this.useCase,
           this._primary,
           display,
           this.pInvestment
         );
         this.pAttackRanking = AttackScoreComputer(
-          generalUseCase.enum.Attack,
+          this.useCase,
           this._primary,
           display,
           this.pInvestment
         );
         this.pToughnessRanking = ToughnessScoreComputer(
-          generalUseCase.enum.Attack,
+          this.useCase,
           this._primary,
           display,
           this.pInvestment
@@ -228,19 +241,19 @@ export class GridPair {
           console.log(`GeneralBuffs for ${this._secondary.name} as secondary`);
         }
         this.sEvAnsRanking = EvAnsScoreComputer(
-          generalUseCase.enum.Attack,
+          this.useCase,
           this._secondary,
           display,
           this.sInvestment
         );
         this.sAttackRanking = AttackScoreComputer(
-          generalUseCase.enum.Attack,
+          this.useCase,
           this._secondary,
           display,
           this.sInvestment
         );
         this.sToughnessRanking = ToughnessScoreComputer(
-          generalUseCase.enum.Attack,
+          this.useCase,
           this._secondary,
           display,
           this.sInvestment

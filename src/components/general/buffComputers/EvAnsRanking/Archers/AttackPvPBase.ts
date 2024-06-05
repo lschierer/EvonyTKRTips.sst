@@ -5,36 +5,34 @@ import { z } from 'zod';
 
 import {
   AscendingLevels,
+  Buff,
   BuffParams,
   type BuffParamsType,
+  type BuffType,
+  Condition,
 } from '@schemas/baseSchemas';
 
-import {AttributeMultipliers, type AttributeMultipliersType} from '@schemas/EvAns.zod';
+import { AttributeMultipliers, type AttributeMultipliersType } from '@schemas/EvAns.zod';
 
 import { Display, type DisplayType } from '@schemas/generalsSchema';
 
-import {
-  ExtendedGeneral,
-  type ExtendedGeneralType,
-} from '@schemas/ExtendedGeneral';
-
-import { RangedPvPAttackAttributeMultipliers } from '@lib/EvAnsAttributeRanking';
+import { ExtendedGeneral, type ExtendedGeneralType } from '@schemas/ExtendedGeneral';
 import { PvPBSS } from '../PvPBSS.ts';
 import { PvPAES } from '../PvPAES.ts';
 import { PvP34SS } from '../PvP34SS.ts';
 
-import { AttackBuff } from './AttackBuff.ts';
-import { PvPMarchSizeBuff } from './PvPMarchSizeBuff';
-import { PvPHPBuff } from './PvPHPBuff.ts';
-import { PvPDefenseBuff } from './PvPDefenseBuff';
-import { PvPDeAttackBuff } from './PvPDeAttackBuff';
-import { PvPDeHPBuff } from './PvPDeHPBuff';
-import { PvPDeDefenseBuff } from './PvPDeDefense';
-import { PvPPreservationBuff } from './PvPPreservationBuff';
-import { PvPDebilitationBuff } from './PvPDebilitationBuff';
-import { PvPRangeBuff } from './PvPRangeBuff'
+import { AttackingAttackBuff } from './AttackingAttackBuff.ts';
+import { MarchSizeBuff } from './MarchSizeBuff.ts';
+import { HPBuff } from './HPBuff.ts';
+import { DefenseBuff } from './DefenseBuff.ts';
+import { DeAttackBuff } from './DeAttackBuff.ts';
+import { DeHPBuff } from './DeHPBuff.ts';
+import { DeDefenseBuff } from './DeDefense.ts';
+import { PreservationBuff } from './PreservationBuff.ts';
+import { DebilitationBuff } from './DebilitationBuff.ts';
+import { RangeBuff } from './RangeBuff.ts';
 
-import {type BuffFunctionInterface} from '@lib/RankingInterfaces';
+import { type BuffFunctionInterface } from '@lib/RankingInterfaces';
 
 const EvAnsBasic = z
   .function()
@@ -218,16 +216,16 @@ export const EvAnsArchersPvPAttack = z
       }
 
       const typedBuffFunctions: BuffFunctionInterface = {
-        Attack: AttackBuff,
-        MarchSize: PvPMarchSizeBuff,
-        HP: PvPHPBuff,
-        Defense: PvPDefenseBuff,
-        DeAttack: PvPDeAttackBuff,
-        DeHP: PvPDeHPBuff,
-        DeDefense: PvPDeDefenseBuff,
-        Preservation: PvPPreservationBuff,
-        Debilitation: PvPDebilitationBuff,
-        Range: PvPRangeBuff
+        Attack: AttackingAttackBuff,
+        DeAttack: DeAttackBuff,
+        DeDefense: DeDefenseBuff,
+        DeHP: DeHPBuff,
+        Debilitation: DebilitationBuff,
+        Defense: DefenseBuff,
+        HP: HPBuff,
+        MarchSize: MarchSizeBuff,
+        Preservation: PreservationBuff,
+        Range: RangeBuff,
       }
 
       const BAS = EvAnsBasic(eg, am);
@@ -267,3 +265,59 @@ export const EvAnsArchersPvPAttack = z
       return TLGS;
     }
   );
+const DEBUGC = false;
+
+export const checkInvalidConditions = z
+  .function()
+  .args(Buff, BuffParams)
+  .returns(z.boolean())
+  .implement((tb: BuffType, iv: BuffParamsType) => {
+    if (tb.condition !== undefined && tb.condition !== null) {
+      if (DEBUGC) {
+        console.log(`null condition detected: ${JSON.stringify(tb)}`);
+      }
+      if (
+        tb.condition.includes(Condition.enum['Against Monsters']) ||
+        tb.condition.includes(Condition.enum.Reduces_Monster) ||
+        tb.condition.includes(Condition.enum.In_Main_City) ||
+        tb.condition.includes(Condition.enum.Reinforcing) ||
+        tb.condition.includes(
+          Condition.enum.When_Defending_Outside_The_Main_City,
+        ) ||
+        tb.condition.includes(Condition.enum.When_City_Mayor) ||
+        tb.condition.includes(Condition.enum.When_The_Main_Defense_General) ||
+        tb.condition.includes(
+          Condition.enum.When_City_Mayor_for_this_SubCity,
+        ) ||
+        tb.condition.includes(Condition.enum['When not mine']) ||
+        tb.condition.includes(Condition.enum.When_an_officer)
+      ) {
+        //none of These apply to PvP attacking
+        if (DEBUGC) {
+          console.log(`buff with inapplicable attribute `);
+          console.log(JSON.stringify(tb));
+        }
+        return false;
+      }
+
+      //check for dragon and beast buffs
+      if (
+        (tb.condition.includes(Condition.enum.Reduces_Enemy_with_a_Dragon) ||
+          tb.condition.includes(Condition.enum.brings_a_dragon) ||
+          tb.condition.includes(Condition.enum.dragon_to_the_attack)) &&
+        iv.dragon !== true
+      ) {
+        return false;
+      }
+      if (
+        tb.condition.includes(
+          Condition.enum.brings_dragon_or_beast_to_attack,
+        ) &&
+        !(iv.dragon === true || iv.beast === true)
+      ) {
+        return false;
+      }
+      return true;
+    }
+    return false;
+  });

@@ -11,56 +11,52 @@ import {
   UnitSchema,
 } from '@schemas/baseSchemas';
 
-import { checkInvalidConditions } from '@components/general/buffComputers/EvAnsRanking/EvAnsScoreComputer';
+import {AttributeMultipliers, type AttributeMultipliersType} from '@schemas/EvAns.zod';
+import { checkInvalidConditions } from '@components/general/buffComputers/EvAnsRanking/Archers/AttackPvPBase.ts';
+const DEBUGMS = false;
 
-import {
-  RangedPvPAttackAttributeMultipliers
-} from '@lib/EvAnsAttributeRanking';
-
-const DEBUGP = false;
-
-const PvPPreservationBuffDetailCheck = z
+const PvPMarchSizeBuffClassCheck = z
   .function()
-  .args(Buff, BuffParams)
+  .args(Buff, BuffParams, AttributeMultipliers)
   .returns(z.number())
-  .implement((tb: BuffType, iv: BuffParamsType) => {
+  .implement((tb: BuffType, iv: BuffParamsType, am: AttributeMultipliersType) => {
     let score = 0;
     let multiplier = 0;
     if (tb !== null && tb !== undefined) {
       if (tb.value !== null && tb.value !== undefined) {
         if (!UnitSchema.enum.percentage.localeCompare(tb.value.unit)) {
           if (tb.class !== null && tb.class !== undefined) {
-            //I have never actually seen a class condition on this buff, but this is how I think it would get scored by EvAns.
             if (!ClassEnum.enum.Archers.localeCompare(tb.class)) {
-              if (tb.condition!.includes(Condition.enum.Attacking)) {
-                multiplier =
-                  RangedPvPAttackAttributeMultipliers.Preservation
-                    .Death2WoundedWhenAttacking;
-              } else {
-                multiplier =
-                  RangedPvPAttackAttributeMultipliers.Preservation
-                    .Death2Wounded;
-              }
+              multiplier =
+                am?.Offensive
+                  .MarchSizeIncrease ?? 0;
             } else if (!ClassEnum.enum.Ground.localeCompare(tb.class)) {
-              multiplier = 0;
+              multiplier =
+                am?.Offensive
+                  .MarchSizeIncrease ?? 0;
             } else if (!ClassEnum.enum.Mounted.localeCompare(tb.class)) {
-              multiplier = 0;
+              multiplier =
+                am?.Offensive
+                  .MarchSizeIncrease ?? 0;
             } else if (!ClassEnum.enum.Siege.localeCompare(tb.class)) {
-              multiplier = 0;
+              multiplier =
+                am?.Offensive
+                  .MarchSizeIncrease ?? 0;
             } else {
-              multiplier = 0;
+              //honestly only this one should ever be hit.  I can't think
+              //of a case where a general would have a class specific march
+              //increase.
+              multiplier =
+                am?.Offensive
+                  .MarchSizeIncrease ?? 0;
             }
           } else {
-            if (tb.condition?.includes(Condition.enum.Attacking)) {
-              multiplier =
-                RangedPvPAttackAttributeMultipliers.Preservation.Death2WoundedWhenAttacking;
-            } else {
-              multiplier =
-                RangedPvPAttackAttributeMultipliers.Preservation.Death2Wounded;
-            }
+            multiplier =
+              am?.Offensive.AllTroopAttack ??
+              0;
           }
           const additional = tb.value.number * multiplier;
-          if (DEBUGP) {
+          if (DEBUGMS) {
             console.log(`adding ${additional} to ${score}`);
           }
           score += additional;
@@ -70,23 +66,24 @@ const PvPPreservationBuffDetailCheck = z
     return score;
   });
 
-export const PvPPreservationBuff = z
+export const MarchSizeBuff = z
   .function()
-  .args(z.string(), z.string(), Buff, BuffParams)
+  .args(z.string(), z.string(), Buff, BuffParams, AttributeMultipliers)
   .returns(z.number())
   .implement(
     (
       buffName: string,
       generalName: string,
       tb: BuffType,
-      iv: BuffParamsType
+      iv: BuffParamsType,
+      am: AttributeMultipliersType
     ) => {
       const multiplier = 0;
       if (tb === null || tb === undefined || iv === null || iv === undefined) {
         return -1000;
       } else {
-        if (DEBUGP) {
-          console.log(`PvPHPBuff: ${generalName}: ${buffName}`);
+        if (DEBUGMS) {
+          console.log(`PvPMarchSizeBuff: ${generalName}: ${buffName}`);
         }
         let score = 0;
         if (tb?.value === undefined || tb.value === null) {
@@ -95,30 +92,24 @@ export const PvPPreservationBuff = z
           );
           return score;
         } else {
-          if (DEBUGP) {
-            console.log(`PvPHPBuff: ${generalName}: ${buffName} has value`);
+          if (DEBUGMS) {
+            console.log(
+              `PvPMarchSizeBuff: ${generalName}: ${buffName} has value`
+            );
           }
           if (tb.attribute === undefined || tb.attribute === null) {
-            if (DEBUGP) {
+            if (DEBUGMS) {
               console.log(
-                `PvPHPBuff: ${generalName}: ${buffName} has null attribute`
+                `PvPMarchSizeBuff: ${generalName}: ${buffName} has null attribute`
               );
             }
             return score;
           } else if (
-            Attribute.enum.Death_to_Wounded.localeCompare(tb.attribute) &&
-            Attribute.enum.Death_to_Soul.localeCompare(tb.attribute)
+            Attribute.enum.March_Size_Capacity.localeCompare(tb.attribute)
           ) {
-            //as best I can tell, these are effectively the same thing.
-            //EvAns scores them slightly differently, *unless* you tack
-            //on the "when attacking" condition to the "to wounded" buff
-            //in which case he does treat it the same as the "to souls."
-            //I don't completely get these buffs.  As best I can tell
-            // during SvS or Battlefield they are both effectively the same
-            //and both effectively useless.
-            if (DEBUGP) {
+            if (DEBUGMS) {
               console.log(
-                `PvPHPBuff: ${generalName}: ${buffName} is not a Preservation buff`
+                `PvPMarchSizeBuff: ${generalName}: ${buffName} is not an March Size buff`
               );
             }
             return score;
@@ -139,15 +130,15 @@ export const PvPPreservationBuff = z
                     Condition.enum.Reduces_Enemy_with_a_Dragon
                   )
                 ) {
-                  if (DEBUGP) {
+                  if (DEBUGMS) {
                     console.log(
-                      `PvPHPBuff: ${generalName}: ${buffName} detected debuff`
+                      `PvPMarchSizeBuff: ${generalName}: ${buffName} detected March Size debuff`
                     );
                   }
                   return 0;
                 } else {
                   //I think all other conditions that matter have been checked
-                  score = PvPPreservationBuffDetailCheck(tb, iv);
+                  score = PvPMarchSizeBuffClassCheck(tb, iv, am);
                 }
               } else {
                 //if I get here, there were invalid conditions
@@ -155,8 +146,8 @@ export const PvPPreservationBuff = z
               }
             } else {
               //if I get here, there were no conditions to check, but there is
-              //an attack attribute.
-              score = PvPPreservationBuffDetailCheck(tb, iv);
+              //an MarchSize attribute.
+              score = PvPMarchSizeBuffClassCheck(tb, iv, am);
             }
           }
         }

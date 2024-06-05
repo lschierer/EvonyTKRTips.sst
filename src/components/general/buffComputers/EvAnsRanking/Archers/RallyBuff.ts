@@ -11,17 +11,15 @@ import {
   UnitSchema,
 } from '@schemas/baseSchemas';
 
-import { checkInvalidConditions } from '../EvAnsScoreComputer';
+import {AttributeMultipliers, type AttributeMultipliersType} from '@schemas/EvAns.zod';
+import { checkInvalidConditions } from '@components/general/buffComputers/EvAnsRanking/Archers/AttackPvPBase.ts';
+const DEBUGRC = false;
 
-import { RangedPvPAttackAttributeMultipliers } from '@lib/EvAnsAttributeRanking';
-
-const DEBUGMS = false;
-
-const PvPMarchSizeBuffClassCheck = z
+const PvPRallyBuffClassCheck = z
   .function()
-  .args(Buff, BuffParams)
+  .args(Buff, BuffParams, AttributeMultipliers)
   .returns(z.number())
-  .implement((tb: BuffType, iv: BuffParamsType) => {
+  .implement((tb: BuffType, iv: BuffParamsType, am: AttributeMultipliersType) => {
     let score = 0;
     let multiplier = 0;
     if (tb !== null && tb !== undefined) {
@@ -30,35 +28,29 @@ const PvPMarchSizeBuffClassCheck = z
           if (tb.class !== null && tb.class !== undefined) {
             if (!ClassEnum.enum.Archers.localeCompare(tb.class)) {
               multiplier =
-                RangedPvPAttackAttributeMultipliers?.Offensive
-                  .MarchSizeIncrease ?? 0;
+                am?.Offensive.RallyCapacity ??
+                0;
             } else if (!ClassEnum.enum.Ground.localeCompare(tb.class)) {
               multiplier =
-                RangedPvPAttackAttributeMultipliers?.Offensive
-                  .MarchSizeIncrease ?? 0;
+                am?.Offensive.RallyCapacity ??
+                0;
             } else if (!ClassEnum.enum.Mounted.localeCompare(tb.class)) {
               multiplier =
-                RangedPvPAttackAttributeMultipliers?.Offensive
-                  .MarchSizeIncrease ?? 0;
+                am?.Offensive.RallyCapacity ??
+                0;
             } else if (!ClassEnum.enum.Siege.localeCompare(tb.class)) {
               multiplier =
-                RangedPvPAttackAttributeMultipliers?.Offensive
-                  .MarchSizeIncrease ?? 0;
+                am?.Offensive.RallyCapacity ??
+                0;
             } else {
-              //honestly only this one should ever be hit.  I can't think
-              //of a case where a general would have a class specific march
-              //increase.
-              multiplier =
-                RangedPvPAttackAttributeMultipliers?.Offensive
-                  .MarchSizeIncrease ?? 0;
+              multiplier = 0;
             }
           } else {
             multiplier =
-              RangedPvPAttackAttributeMultipliers?.Offensive.AllTroopAttack ??
-              0;
+              am?.Offensive.RallyCapacity ?? 0;
           }
           const additional = tb.value.number * multiplier;
-          if (DEBUGMS) {
+          if (DEBUGRC) {
             console.log(`adding ${additional} to ${score}`);
           }
           score += additional;
@@ -68,23 +60,24 @@ const PvPMarchSizeBuffClassCheck = z
     return score;
   });
 
-export const PvPMarchSizeBuff = z
+export const RallyBuff = z
   .function()
-  .args(z.string(), z.string(), Buff, BuffParams)
+  .args(z.string(), z.string(), Buff, BuffParams, AttributeMultipliers)
   .returns(z.number())
   .implement(
     (
       buffName: string,
       generalName: string,
       tb: BuffType,
-      iv: BuffParamsType
+      iv: BuffParamsType,
+      am: AttributeMultipliersType
     ) => {
       const multiplier = 0;
       if (tb === null || tb === undefined || iv === null || iv === undefined) {
         return -1000;
       } else {
-        if (DEBUGMS) {
-          console.log(`PvPMarchSizeBuff: ${generalName}: ${buffName}`);
+        if (DEBUGRC) {
+          console.log(`PvPRallyBuff: ${generalName}: ${buffName}`);
         }
         let score = 0;
         if (tb?.value === undefined || tb.value === null) {
@@ -93,24 +86,22 @@ export const PvPMarchSizeBuff = z
           );
           return score;
         } else {
-          if (DEBUGMS) {
-            console.log(
-              `PvPMarchSizeBuff: ${generalName}: ${buffName} has value`
-            );
+          if (DEBUGRC) {
+            console.log(`PvPRallyBuff: ${generalName}: ${buffName} has value`);
           }
           if (tb.attribute === undefined || tb.attribute === null) {
-            if (DEBUGMS) {
+            if (DEBUGRC) {
               console.log(
-                `PvPMarchSizeBuff: ${generalName}: ${buffName} has null attribute`
+                `PvPRallyBuff: ${generalName}: ${buffName} has null attribute`
               );
             }
             return score;
           } else if (
-            Attribute.enum.March_Size_Capacity.localeCompare(tb.attribute)
+            Attribute.enum.Rally_Capacity.localeCompare(tb.attribute)
           ) {
-            if (DEBUGMS) {
+            if (DEBUGRC) {
               console.log(
-                `PvPMarchSizeBuff: ${generalName}: ${buffName} is not an March Size buff`
+                `PvPRallyBuff: ${generalName}: ${buffName} is not an Rally_Capacity buff`
               );
             }
             return score;
@@ -131,15 +122,15 @@ export const PvPMarchSizeBuff = z
                     Condition.enum.Reduces_Enemy_with_a_Dragon
                   )
                 ) {
-                  if (DEBUGMS) {
+                  if (DEBUGRC) {
                     console.log(
-                      `PvPMarchSizeBuff: ${generalName}: ${buffName} detected March Size debuff`
+                      `PvPRallyBuff: ${generalName}: ${buffName} detected attack debuff`
                     );
                   }
                   return 0;
                 } else {
                   //I think all other conditions that matter have been checked
-                  score = PvPMarchSizeBuffClassCheck(tb, iv);
+                  score = PvPRallyBuffClassCheck(tb, iv, am);
                 }
               } else {
                 //if I get here, there were invalid conditions
@@ -147,8 +138,8 @@ export const PvPMarchSizeBuff = z
               }
             } else {
               //if I get here, there were no conditions to check, but there is
-              //an MarchSize attribute.
-              score = PvPMarchSizeBuffClassCheck(tb, iv);
+              //an attack attribute.
+              score = PvPRallyBuffClassCheck(tb, iv, am);
             }
           }
         }

@@ -11,17 +11,16 @@ import {
   UnitSchema,
 } from '@schemas/baseSchemas';
 
-import { checkInvalidConditions } from '../EvAnsScoreComputer';
-
-import { RangedPvPAttackAttributeMultipliers } from '@lib/EvAnsAttributeRanking';
+import {AttributeMultipliers, type AttributeMultipliersType} from '@schemas/EvAns.zod';
+import { checkInvalidConditions } from '@components/general/buffComputers/EvAnsRanking/Archers/AttackPvPBase.ts';
 
 const DEBUGRB = false;
 
 const PvPRangeBuffClassCheck = z
   .function()
-  .args(Buff, BuffParams)
+  .args(Buff, BuffParams, AttributeMultipliers)
   .returns(z.number())
-  .implement((tb: BuffType, iv: BuffParamsType) => {
+  .implement((tb: BuffType, iv: BuffParamsType, am: AttributeMultipliersType) => {
     let score = 0;
     let multiplier = 0;
     if (tb !== null && tb !== undefined) {
@@ -29,7 +28,7 @@ const PvPRangeBuffClassCheck = z
         if (tb.class !== null && tb.class !== undefined) {
           if (!ClassEnum.enum.Archers.localeCompare(tb.class)) {
             multiplier =
-              RangedPvPAttackAttributeMultipliers?.Offensive.RangedRangeBonus ??
+              am?.Offensive.RangedRangeBonus ??
               0;
           } else if (!ClassEnum.enum.Ground.localeCompare(tb.class)) {
             multiplier = 0;
@@ -38,11 +37,11 @@ const PvPRangeBuffClassCheck = z
           } else if (!ClassEnum.enum.Siege.localeCompare(tb.class)) {
             if (tb.value.unit.localeCompare(UnitSchema.enum.percentage)) {
               multiplier =
-                RangedPvPAttackAttributeMultipliers?.Offensive
+                am?.Offensive
                   .SiegeRangeBonusPercent ?? 0;
             } else {
               multiplier =
-                RangedPvPAttackAttributeMultipliers?.Offensive
+                am?.Offensive
                   .SiegeRangeBonusFlat ?? 0;
             }
           } else {
@@ -61,16 +60,17 @@ const PvPRangeBuffClassCheck = z
     return score;
   });
 
-export const PvPRangeBuff = z
+export const RangeBuff = z
   .function()
-  .args(z.string(), z.string(), Buff, BuffParams)
+  .args(z.string(), z.string(), Buff, BuffParams, AttributeMultipliers)
   .returns(z.number())
   .implement(
     (
       buffName: string,
       generalName: string,
       tb: BuffType,
-      iv: BuffParamsType
+      iv: BuffParamsType,
+      am: AttributeMultipliersType
     ) => {
       const multiplier = 0;
       if (tb === null || tb === undefined || iv === null || iv === undefined) {
@@ -128,7 +128,7 @@ export const PvPRangeBuff = z
                   return 0;
                 } else {
                   //I think all other conditions that matter have been checked
-                  score = PvPRangeBuffClassCheck(tb, iv);
+                  score = PvPRangeBuffClassCheck(tb, iv, am);
                 }
               } else {
                 //if I get here, there were invalid conditions
@@ -137,7 +137,7 @@ export const PvPRangeBuff = z
             } else {
               //if I get here, there were no conditions to check, but there is
               //an attack attribute.
-              score = PvPRangeBuffClassCheck(tb, iv);
+              score = PvPRangeBuffClassCheck(tb, iv, am);
             }
           }
         }

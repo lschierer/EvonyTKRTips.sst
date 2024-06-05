@@ -11,17 +11,16 @@ import {
   UnitSchema,
 } from '@schemas/baseSchemas';
 
-import { checkInvalidConditions } from '../EvAnsScoreComputer';
-
-import { RangedPvPAttackAttributeMultipliers } from '@lib/EvAnsAttributeRanking';
+import {AttributeMultipliers, type AttributeMultipliersType} from '@schemas/EvAns.zod'
+import { checkInvalidConditions } from '@components/general/buffComputers/EvAnsRanking/Archers/AttackPvPBase.ts';
 
 const DEBUGD = false;
 
 const PvPDefenseBuffClassCheck = z
   .function()
-  .args(Buff, BuffParams)
+  .args(Buff, BuffParams, AttributeMultipliers)
   .returns(z.number())
-  .implement((tb: BuffType, iv: BuffParamsType) => {
+  .implement((tb: BuffType, iv: BuffParamsType, am: AttributeMultipliersType) => {
     let score = 0;
     let multiplier = 0;
     if (tb !== null && tb !== undefined) {
@@ -30,26 +29,26 @@ const PvPDefenseBuffClassCheck = z
           if (tb.class !== null && tb.class !== undefined) {
             if (!ClassEnum.enum.Archers.localeCompare(tb.class)) {
               multiplier =
-                RangedPvPAttackAttributeMultipliers?.Toughness.RangedDefense ??
+                am?.Toughness.RangedDefense ??
                 0;
             } else if (!ClassEnum.enum.Ground.localeCompare(tb.class)) {
               multiplier =
-                RangedPvPAttackAttributeMultipliers?.Toughness.GroundDefense ??
+                am?.Toughness.GroundDefense ??
                 0;
             } else if (!ClassEnum.enum.Mounted.localeCompare(tb.class)) {
               multiplier =
-                RangedPvPAttackAttributeMultipliers?.Toughness.MountedDefense ??
+                am?.Toughness.MountedDefense ??
                 0;
             } else if (!ClassEnum.enum.Siege.localeCompare(tb.class)) {
               multiplier =
-                RangedPvPAttackAttributeMultipliers?.Toughness.SiegeDefense ??
+                am?.Toughness.SiegeDefense ??
                 0;
             } else {
               multiplier = 0;
             }
           } else {
             multiplier =
-              RangedPvPAttackAttributeMultipliers?.Toughness.AllTroopDefense ??
+              am?.Toughness.AllTroopDefense ??
               0;
           }
           const additional = tb.value.number * multiplier;
@@ -63,16 +62,17 @@ const PvPDefenseBuffClassCheck = z
     return score;
   });
 
-export const PvPDefenseBuff = z
+export const DefenseBuff = z
   .function()
-  .args(z.string(), z.string(), Buff, BuffParams)
+  .args(z.string(), z.string(), Buff, BuffParams, AttributeMultipliers)
   .returns(z.number())
   .implement(
     (
       buffName: string,
       generalName: string,
       tb: BuffType,
-      iv: BuffParamsType
+      iv: BuffParamsType,
+      am: AttributeMultipliersType
     ) => {
       const multiplier = 0;
       if (tb === null || tb === undefined || iv === null || iv === undefined) {
@@ -132,7 +132,7 @@ export const PvPDefenseBuff = z
                   return 0;
                 } else {
                   //I think all other conditions that matter have been checked
-                  score = PvPDefenseBuffClassCheck(tb, iv);
+                  score = PvPDefenseBuffClassCheck(tb, iv, am);
                 }
               } else {
                 //if I get here, there were invalid conditions
@@ -141,7 +141,7 @@ export const PvPDefenseBuff = z
             } else {
               //if I get here, there were no conditions to check, but there is
               //an attack attribute.
-              score = PvPDefenseBuffClassCheck(tb, iv);
+              score = PvPDefenseBuffClassCheck(tb, iv, am);
             }
           }
         }

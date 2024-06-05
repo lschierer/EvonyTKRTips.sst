@@ -11,9 +11,8 @@ import {
   UnitSchema,
 } from '@schemas/baseSchemas';
 
-import { checkInvalidConditions } from '../EvAnsScoreComputer';
-
 import { GroundPvPAttackAttributeMultipliers } from '@lib/EvAnsAttributeRanking';
+import { checkInvalidConditions } from '@components/general/buffComputers/EvAnsRanking/Archers/AttackPvPBase.ts';
 
 const DEBUGRC = false;
 

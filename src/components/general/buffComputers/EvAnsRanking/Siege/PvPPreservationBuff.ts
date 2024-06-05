@@ -11,11 +11,10 @@ import {
   UnitSchema,
 } from '@schemas/baseSchemas';
 
-import { checkInvalidConditions } from '@components/general/buffComputers/EvAnsRanking/EvAnsScoreComputer';
-
 import {
   SiegePvPAttackAttributeMultipliers
 } from '@lib/EvAnsAttributeRanking';
+import { checkInvalidConditions } from '@components/general/buffComputers/EvAnsRanking/Archers/AttackPvPBase.ts';
 
 const DEBUGP = false;
 

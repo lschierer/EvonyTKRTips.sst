@@ -16,7 +16,7 @@ export const generalUseCase = zod.enum([
   'all',
   'Monsters',
   'Attack',
-  'Defense',
+  'Reinforcement',
   'Overall',
   'Wall',
   'Mayor',

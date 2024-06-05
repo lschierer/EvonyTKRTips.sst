@@ -70,7 +70,11 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
   @property({ type: Object })
   public InvestmentLevel: BuffParamsType;
 
-
+  @property({
+    type: String,
+    reflect: true
+  })
+  public useCase: generalUseCaseType = generalUseCase.enum.all;
 
   @state()
   private sInvestment: BuffParamsType;
@@ -115,6 +119,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
               }
             });
             const dp = new GridPair(pair.primary, pair.secondary, currentPage);
+            dp.useCase = this.useCase;
             dp.index = i;
             if (!pair.primary.name.localeCompare(dp.primaryId)) {
               //if that works, the set appears to have worked
