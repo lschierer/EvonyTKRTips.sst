@@ -1,5 +1,5 @@
 const DEBUG = true;
-const DEBUG_BAS = false;
+const DEBUG_BAS = true;
 
 import { z } from 'zod';
 
@@ -24,12 +24,12 @@ import { AttackPvP34SS } from '../AttackPvP34SS';
 import { PvPAttackBuff } from './PvPAttackBuff';
 import { PvPMarchSizeBuff } from './PvPMarchSizeBuff';
 import { PvPHPBuff } from './PvPHPBuff.ts';
-import { PvPDefenseBuff } from './PvPDefenseBuff.ts';
-import { PvPDeAttackBuff } from './PvPDeAttackBuff.ts';
-import { PvPDeHPBuff } from './PvPDeHPBuff.ts';
-import { PvPDeDefenseBuff } from './PvPDeDefense.ts';
-import { PvPPreservationBuff } from './PvPPreservationBuff.ts';
-import { PvPDebilitationBuff } from './PvPDebilitationBuff.ts';
+import { PvPDefenseBuff } from './PvPDefenseBuff';
+import { PvPDeAttackBuff } from './PvPDeAttackBuff';
+import { PvPDeHPBuff } from './PvPDeHPBuff';
+import { PvPDeDefenseBuff } from './PvPDeDefense';
+import { PvPPreservationBuff } from './PvPPreservationBuff';
+import { PvPDebilitationBuff } from './PvPDebilitationBuff';
 import { PvPRangeBuff } from './PvPRangeBuff'
 
 import {type BuffFunctionInterface} from '@lib/RankingInterfaces';
@@ -184,10 +184,10 @@ const EvAnsBasic = z
       RangedPvPAttackAttributeMultipliers?.Preservation.Death2Wounded ?? 1;
 
     const BAS =
-      (BasicAttack * attackMultiplier ) +
-      (BasicDefense * defenseMultiplier ) +
-      (BasicLeaderShip * HPMultiplier  )+
-      BasicPolitics * PoliticsMultiplier;
+      Math.floor(BasicAttack * attackMultiplier ) +
+      Math.floor(BasicDefense * defenseMultiplier ) +
+      Math.floor(BasicLeaderShip * HPMultiplier  )+
+      Math.floor(BasicPolitics * PoliticsMultiplier);
 
     if (DEBUG_BAS) {
       console.log(
@@ -202,7 +202,7 @@ const EvAnsBasic = z
       console.log(`BasicPolitics: ${BasicPolitics} = ${BasicPolitics * PoliticsMultiplier} for ${eg.name}`);
       console.log(`BAS: ${BAS} for: ${eg.name}`);
     }
-    return Math.floor(BAS);
+    return BAS;
   });
 
 export const EvAnsArchersPvPAttack = z

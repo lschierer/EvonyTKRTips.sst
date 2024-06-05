@@ -24,19 +24,19 @@ const buffReductionLogic = (specialB: SpecialityType, eg: ExtendedGeneralType, s
   sb_total = tbfo.HP(
     specialB.name, eg.name, sb, bp);
   if (DEBUG_34SS) {
-    console.log(`adding ${sb_total} to: ${ba}`);
+    console.log(`HP adding ${sb_total} to: ${ba}`);
   }
   ba += sb_total;
   sb_total = tbfo.Defense(
     specialB.name, eg.name, sb, bp);
   if (DEBUG_34SS) {
-    console.log(`adding ${sb_total} to: ${ba}`);
+    console.log(`Defense adding ${sb_total} to: ${ba}`);
   }
   ba += sb_total;
   sb_total = tbfo.DeAttack(
     specialB.name, eg.name, sb, bp);
   if (DEBUG_34SS) {
-    console.log(`adding ${sb_total} to: ${ba}`);
+    console.log(`DeAttack adding ${sb_total} to: ${ba}`);
   }
   ba += sb_total;
   return ba;
@@ -100,19 +100,24 @@ export const ToughnessPvP34SS = (eg: ExtendedGeneralType, bp: BuffParamsType, ty
                       );
                     }
                     const gt = sa.buff.reduce((aGreen, sb, index3) => {
+                      let buff_total = 0;
                       if (sb === undefined || sb === null) {
                         return aGreen;
                       } else {
                         //(tbfo: BuffFunctionInterface, specialB: SpecialityType, eg: ExtendedGeneralType, sb: BuffType, bp: BuffParamsType, ba: number) => {
-                        aGreen = buffReductionLogic(specialB, eg, sb, bp, typedBuffFunction);
+                        buff_total = buffReductionLogic(specialB, eg, sb, bp, typedBuffFunction);
                       }
                       if (DEBUG_34SS) {
                         console.log(
-                          `aGeen: ${aGreen} at end of green reduce ${index3}`
+                          `green ${index3} adding ${buff_total} to ${aGreen}`
                         );
                       }
+                      aGreen += buff_total;
                       return aGreen;
                     }, 0);
+                    if (DEBUG_34SS) {
+                      console.log(`gt adding ${gt} to ${a2}`)
+                    }
                     a2 += gt;
                   }
 
@@ -144,11 +149,13 @@ export const ToughnessPvP34SS = (eg: ExtendedGeneralType, bp: BuffParamsType, ty
                       );
                     }
                     const bt = sa.buff.reduce((aBlue, sb, index3) => {
+                      let buff_total = 0;
                       if (sb === undefined || sb === null) {
                         return aBlue;
                       } else {
-                        aBlue = buffReductionLogic(specialB, eg, sb, bp, typedBuffFunction);
+                        buff_total = buffReductionLogic(specialB, eg, sb, bp, typedBuffFunction);
                       }
+                      aBlue += buff_total;
                       return aBlue;
                     }, 0);
                     a2 += bt;
@@ -186,11 +193,13 @@ export const ToughnessPvP34SS = (eg: ExtendedGeneralType, bp: BuffParamsType, ty
                       );
                     }
                     const pt = sa.buff.reduce((aPurple, sb, index3) => {
+                      let buff_total = 0;
                       if (sb === undefined || sb === null) {
                         return aPurple;
                       } else {
-                        aPurple = buffReductionLogic(specialB, eg, sb, bp, typedBuffFunction,);
+                        buff_total = buffReductionLogic(specialB, eg, sb, bp, typedBuffFunction,);
                       }
+                      aPurple += buff_total;
                       return aPurple;
                     }, 0);
                     a2 += pt;
@@ -233,11 +242,13 @@ export const ToughnessPvP34SS = (eg: ExtendedGeneralType, bp: BuffParamsType, ty
                       );
                     }
                     const ot = sa.buff.reduce((aOrange, sb, index3) => {
+                      let buff_total = 0;
                       if (sb === undefined || sb === null) {
                         return aOrange;
                       } else {
-                        aOrange = buffReductionLogic(specialB, eg, sb, bp, typedBuffFunction);
+                        buff_total = buffReductionLogic(specialB, eg, sb, bp, typedBuffFunction);
                       }
+                      aOrange += buff_total;
                       return aOrange;
                     }, 0);
                     a2 += ot;
@@ -265,11 +276,13 @@ export const ToughnessPvP34SS = (eg: ExtendedGeneralType, bp: BuffParamsType, ty
                       );
                     }
                     const goldT = sa.buff.reduce((aGold, sb, index3) => {
+                      let buff_total = 0;
                       if (sb === undefined || sb === null) {
                         return aGold;
                       } else {
-                        aGold = buffReductionLogic(specialB, eg, sb, bp, typedBuffFunction);
+                        buff_total = buffReductionLogic(specialB, eg, sb, bp, typedBuffFunction);
                       }
+                      aGold += buff_total;
                       return aGold;
                     }, 0);
                     a2 += goldT;
@@ -288,7 +301,6 @@ export const ToughnessPvP34SS = (eg: ExtendedGeneralType, bp: BuffParamsType, ty
               return a1;
             }
           }
-          return a1;
         },
         0
       );

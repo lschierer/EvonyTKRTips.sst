@@ -25,7 +25,7 @@ import { SiegePvPToughness } from './Siege/ToughnessPvPBase';
  * https://evonyguidewiki.com/en/general-cultivate-en/#Relationship_between_Stats_value_Buff_value
  */
 
-const DEBUG = true;
+const DEBUG = false;
 
 export const ToughnessScoreComputer = z
   .function()

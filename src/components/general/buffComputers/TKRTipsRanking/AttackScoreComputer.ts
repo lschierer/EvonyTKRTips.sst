@@ -25,7 +25,7 @@ import { TKRTipsAttackSiegePvPAttack } from './Siege/AttackPvPBase';
  * https://evonyguidewiki.com/en/general-cultivate-en/#Relationship_between_Stats_value_Buff_value
  */
 
-const DEBUG = true;
+const DEBUG = false;
 
 export const AttackScoreComputer = z
   .function()

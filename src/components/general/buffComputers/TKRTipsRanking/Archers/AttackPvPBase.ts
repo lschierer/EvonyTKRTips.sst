@@ -1,4 +1,4 @@
-const DEBUG = true;
+const DEBUG = false;
 const DEBUG_BAS = false;
 
 import { z } from 'zod';

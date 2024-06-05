@@ -28,14 +28,14 @@ export const AttackPvPBSS = (eg: ExtendedGeneralType, bp: BuffParamsType, typedB
       Array.isArray(eg.books) &&
       eg.books.length > 0
     ) {
-      const book_score = eg.books.reduce((accumulator, book) => {
+      const book_score = eg.books.reduce((a1, book) => {
         if (book === undefined) {
-          return accumulator;
+          return a1;
         } else {
           const v = specialSkillBook.safeParse(book);
           if (v.error) {
             console.log(`${eg.name} invalid book: ${book.name}`);
-            return accumulator;
+            return a1;
           } else {
             const bisb: specialSkillBookType = v.data;
             const array_total = bisb.buff.reduce((a2, tb: BuffType) => {
@@ -89,10 +89,12 @@ export const AttackPvPBSS = (eg: ExtendedGeneralType, bp: BuffParamsType, typedB
               a2 += tbscore;
               return a2;
             }, 0);
-            return accumulator + array_total;
+            if(DEBUG_BSS){
+              console.log(`a1 loop: ${array_total} to ${a1}`);
+            }
+            return a1 + array_total;
           }
         }
-        return accumulator;
       }, 0);
       if (DEBUG_BSS) {
         console.log(`${eg.name} total book buff: ${book_score}`);
