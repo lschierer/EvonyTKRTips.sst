@@ -1,0 +1,60 @@
+---
+export const prerender = true;
+
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { Debug } from 'astro:components';
+import type {
+  InferGetStaticParamsType,
+  InferGetStaticPropsType,
+  GetStaticPaths,
+} from 'astro';
+import type { CollectionEntry } from 'astro:content';
+import { getEntry, getCollection } from 'astro:content';
+import type { ComponentProps } from 'astro/types';
+
+import AllGenerals from '@components/general/AllGenerals.astro';
+import AllConflicts from '@components/general/AllConflicts.astro';
+
+import type { generalSpecialistsType } from '../../../schemas/generalsSchema';
+
+const DEBUG = true;
+
+export const getStaticPaths = (async () => {
+  const pairEntries = await getCollection('docs', ({id}) => {
+    return id.includes('pair-picking');
+  });
+
+  return pairEntries.map((entry) => {
+     console.log(`matched ${entry.slug}`)
+    const id = entry.slug;
+     const specialist = entry.slug.split('/').pop()
+    return ({
+      params: {
+        slug: id,
+        Specialist: specialist,
+      },
+      props: { entry },
+    })
+  });
+}) satisfies GetStaticPaths;
+
+type Params = InferGetStaticParamsType<typeof getStaticPaths>;
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const {entry} = Astro.props;
+
+const { Content } = await entry.render();
+---
+
+<StarlightPage
+  frontmatter={{
+    title: entry.data.title,
+    lastUpdated: entry.data.lastUpdated,
+    tableOfContents: entry.data.tableOfContents,
+  }}
+>
+  {DEBUG && `Dynamic Template`}
+  <AllGenerals TargetClass={entry.slug} />
+  <AllConflicts />
+  <Content />
+</StarlightPage>
