@@ -1,13 +1,13 @@
-import { z } from 'zod';
-
 import {
-  BuffParams,
   type BuffParamsType,
   type BuffType,
 } from '@schemas/baseSchemas';
 
 import {
-  ExtendedGeneral,
+  type AttributeMultipliersType,
+} from '@schemas/EvAns.zod';
+
+import {
   type ExtendedGeneralType,
 } from '@schemas/ExtendedGeneral';
 
@@ -20,7 +20,7 @@ import {type BuffFunctionInterface} from '@lib/RankingInterfaces.ts';
 
 const DEBUG_BSS = false;
 
-export const AttackPvPBSS = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFunction: BuffFunctionInterface) => {
+export const PvPBSS = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFunction: BuffFunctionInterface, am: AttributeMultipliersType) => {
     let BSS_Score = 0;
 
     if (
@@ -44,7 +44,7 @@ export const AttackPvPBSS = (eg: ExtendedGeneralType, bp: BuffParamsType, typedB
                 console.log(JSON.stringify(tb));
                 console.log(`--- end tb ---`);
               }
-              let tbscore = (typedBuffFunction.Attack(bisb.name, eg.name, tb, bp));
+              let tbscore = (typedBuffFunction.Attack(bisb.name, eg.name, tb, bp, am));
               if (DEBUG_BSS) { console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`); }
               a2 += tbscore;
               tbscore = (typedBuffFunction.MarchSize(bisb.name, eg.name, tb, bp));

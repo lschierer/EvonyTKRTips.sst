@@ -15,29 +15,34 @@ import {
   ClassEnum,
   type ClassEnumType,
   qualityColor,
-} from '@schemas/baseSchemas';
+} from '../../../schemas/baseSchemas';
 
 import {
   GeneralElement,
   type GeneralClassType,
   type GeneralElementType,
   type generalSpecialistsType,
-} from '@schemas/generalsSchema';
+  type generalUseCaseType, generalUseCase,
+} from '../../../schemas/generalsSchema';
 
 import {
   type ExtendedGeneralType,
   ExtendedGeneralStatus,
   type GeneralPairType,
 } from '@schemas/ExtendedGeneral';
-import { generalSpecialists } from '../../../schemas/generalsSchema';
 
 const DEBUG = false;
 
 interface Props {
   generalClass: generalSpecialistsType;
+  useCase?: generalUseCaseType
 }
 
 const { generalClass } = Astro.props;
+let { useCase } = Astro.props;
+if(useCase === null || useCase === undefined) {
+  useCase = generalUseCase.enum.Attack;
+}
 
 const table_name = `${Astro.url.pathname}-${ulid()}`;
 
@@ -64,6 +69,7 @@ const DisplayGridProps = {
   tableName: table_name,
   InvestmentLevel: MyInvestmentLevel,
   RawPairs: Astro.locals.CachedPairs,
+  useCase: useCase,
 };
 ---
 

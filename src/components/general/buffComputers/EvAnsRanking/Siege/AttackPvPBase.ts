@@ -17,9 +17,9 @@ import {
 } from '@schemas/ExtendedGeneral';
 
 import { SiegePvPAttackAttributeMultipliers } from '@lib/EvAnsAttributeRanking';
-import { AttackPvPBSS } from '../AttackPvPBSS';
-import { AttackPvPAES } from '../AttackPvPAES';
-import { AttackPvP34SS } from '../AttackPvP34SS';
+import { PvPBSS } from '../PvPBSS.ts';
+import { PvPAES } from '../PvPAES.ts';
+import { PvP34SS } from '../PvP34SS.ts';
 
 import { PvPAttackBuff } from './PvPAttackBuff';
 import { PvPMarchSizeBuff } from './PvPMarchSizeBuff';
@@ -230,9 +230,9 @@ export const EvAnsSiegePvPAttack = z
       }
 
       const BAS = EvAnsBasic(eg);
-      const BSS = AttackPvPBSS(eg, bp, typedBuffFunctions);
-      const AES = AttackPvPAES(eg, bp, typedBuffFunctions);
-      const specialities = AttackPvP34SS(eg, bp, typedBuffFunctions);
+      const BSS = PvPBSS(eg, bp, typedBuffFunctions);
+      const AES = PvPAES(eg, bp, typedBuffFunctions);
+      const specialities = PvP34SS(eg, bp, typedBuffFunctions);
 
       let TLGS = BSS + specialities;
       if (DEBUG) {

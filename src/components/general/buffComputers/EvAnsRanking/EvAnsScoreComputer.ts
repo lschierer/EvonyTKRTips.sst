@@ -8,6 +8,8 @@ import {
   Condition,
 } from '@schemas/baseSchemas';
 
+import {AttributeMultipliers, type AttributeMultipliersType} from '@schemas/EvAns.zod';
+
 import {
   Display,
   type DisplayType,
@@ -25,6 +27,8 @@ import { EvAnsGroundPvPAttack } from './Ground/AttackPvPBase';
 import { EvAnsArchersPvPAttack } from './Archers/AttackPvPBase';
 import { EvAnsMountedPvPAttack } from './Mounted/AttackPvPBase';
 import { EvAnsSiegePvPAttack } from './Siege/AttackPvPBase';
+
+import * as EvAnsAttributes from '@lib/EvAnsAttributeRanking';
 
 /*******************
  * this is derived by reverse engineering the formula from
@@ -53,7 +57,7 @@ export const EvAnsScoreComputer = z
           console.log(`called for Attack use case`);
         }
         if (!generalSpecialists.enum.Archers.localeCompare(eg.score_as)) {
-          return EvAnsArchersPvPAttack(eg, display, bp);
+          return EvAnsArchersPvPAttack(eg, display, bp, EvAnsAttributes.RangedPvPAttackAttributeMultipliers);
         }
         if (!generalSpecialists.enum.Ground.localeCompare(eg.score_as)) {
           return EvAnsGroundPvPAttack(eg, display, bp);

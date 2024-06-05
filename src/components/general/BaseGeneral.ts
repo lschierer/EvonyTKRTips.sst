@@ -26,6 +26,7 @@ import {
   GeneralClass,
   type GeneralClassType,
   generalUseCase,
+  type generalUseCaseType,
 } from '@schemas/generalsSchema';
 
 import {
@@ -51,6 +52,12 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
 
   @state()
   public general: ExtendedGeneralType | null = null;
+
+  @property({
+    type: String,
+    reflect: true,
+  })
+  public useCase: generalUseCaseType = generalUseCase.enum.Attack;
 
   @property({
     type: Object,
@@ -179,20 +186,20 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
         //figure out my state engine here
 
         const EvAnsRankScore = EvAnsScoreComputer(
-          generalUseCase.enum.Attack,
+          this.useCase,
           this.general,
           display,
           BP
         );
 
         const AttackRank = AttackScoreComputer(
-          generalUseCase.enum.Attack,
+          this.useCase,
           this.general,
           display,
           BP
         );
         const ToughnessRank = ToughnessScoreComputer(
-          generalUseCase.enum.Attack,
+          this.useCase,
           this.general,
           display,
           BP

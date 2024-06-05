@@ -9,6 +9,8 @@ import {
   type BuffParamsType,
 } from '@schemas/baseSchemas';
 
+import {AttributeMultipliers, type AttributeMultipliersType} from '@schemas/EvAns.zod';
+
 import { Display, type DisplayType } from '@schemas/generalsSchema';
 
 import {
@@ -17,11 +19,11 @@ import {
 } from '@schemas/ExtendedGeneral';
 
 import { RangedPvPAttackAttributeMultipliers } from '@lib/EvAnsAttributeRanking';
-import { AttackPvPBSS } from '../AttackPvPBSS';
-import { AttackPvPAES } from '../AttackPvPAES';
-import { AttackPvP34SS } from '../AttackPvP34SS';
+import { PvPBSS } from '../PvPBSS.ts';
+import { PvPAES } from '../PvPAES.ts';
+import { PvP34SS } from '../PvP34SS.ts';
 
-import { PvPAttackBuff } from './PvPAttackBuff';
+import { AttackBuff } from './AttackBuff.ts';
 import { PvPMarchSizeBuff } from './PvPMarchSizeBuff';
 import { PvPHPBuff } from './PvPHPBuff.ts';
 import { PvPDefenseBuff } from './PvPDefenseBuff';
@@ -36,9 +38,9 @@ import {type BuffFunctionInterface} from '@lib/RankingInterfaces';
 
 const EvAnsBasic = z
   .function()
-  .args(ExtendedGeneral)
+  .args(ExtendedGeneral, AttributeMultipliers)
   .returns(z.number())
-  .implement((eg: ExtendedGeneralType) => {
+  .implement((eg: ExtendedGeneralType, am: AttributeMultipliersType) => {
     let AES_adjustment = 0;
     switch (eg.stars) {
       case AscendingLevels.enum[0]:
@@ -175,13 +177,13 @@ const EvAnsBasic = z
     }
 
     const attackMultiplier =
-      RangedPvPAttackAttributeMultipliers?.Offensive.AllTroopAttack ?? 1;
+      am.Offensive.AllTroopAttack ?? 1;
     const defenseMultiplier =
-      RangedPvPAttackAttributeMultipliers?.Toughness.AllTroopDefense ?? 1;
+      am.Toughness.AllTroopDefense ?? 1;
     const HPMultiplier =
-      RangedPvPAttackAttributeMultipliers?.Toughness.AllTroopHP ?? 1;
+      am.Toughness.AllTroopHP ?? 1;
     const PoliticsMultiplier =
-      RangedPvPAttackAttributeMultipliers?.Preservation.Death2Wounded ?? 1;
+      am.Preservation.Death2Wounded ?? 1;
 
     const BAS =
       Math.floor(BasicAttack * attackMultiplier ) +
@@ -207,16 +209,16 @@ const EvAnsBasic = z
 
 export const EvAnsArchersPvPAttack = z
   .function()
-  .args(ExtendedGeneral, Display, BuffParams)
+  .args(ExtendedGeneral, Display, BuffParams, AttributeMultipliers)
   .returns(z.number())
   .implement(
-    (eg: ExtendedGeneralType, display: DisplayType, bp: BuffParamsType) => {
+    (eg: ExtendedGeneralType, display: DisplayType, bp: BuffParamsType, am: AttributeMultipliersType) => {
       if (DEBUG) {
         console.log(`${eg.name}: EvAnsArchersPvPAttack starting`);
       }
 
       const typedBuffFunctions: BuffFunctionInterface = {
-        Attack: PvPAttackBuff,
+        Attack: AttackBuff,
         MarchSize: PvPMarchSizeBuff,
         HP: PvPHPBuff,
         Defense: PvPDefenseBuff,
@@ -228,10 +230,10 @@ export const EvAnsArchersPvPAttack = z
         Range: PvPRangeBuff
       }
 
-      const BAS = EvAnsBasic(eg);
-      const BSS = AttackPvPBSS(eg, bp, typedBuffFunctions);
-      const AES = AttackPvPAES(eg, bp, typedBuffFunctions);
-      const specialities = AttackPvP34SS(eg, bp, typedBuffFunctions);
+      const BAS = EvAnsBasic(eg, am);
+      const BSS = PvPBSS(eg, bp, typedBuffFunctions, am);
+      const AES = PvPAES(eg, bp, typedBuffFunctions, am);
+      const specialities = PvP34SS(eg, bp, typedBuffFunctions, am);
 
       let TLGS = BSS + specialities;
       if (DEBUG) {

@@ -1,8 +1,8 @@
 //based on https://www.evonyanswers.com/post/evony-answers-attribute-methodology-explanation
 
-import { type PvPAttributeMultipliers as PvPAttributeMultipliersType } from '../schemas/EvAns.zod';
+import { type AttributeMultipliersType  } from '../schemas/EvAns.zod';
 
-export const GroundPvPAttackAttributeMultipliers: PvPAttributeMultipliersType =
+export const GroundPvPAttackAttributeMultipliers: AttributeMultipliersType =
   {
     Offensive: {
       AllTroopAttack: 2.14833,
@@ -79,7 +79,7 @@ export const GroundPvPAttackAttributeMultipliers: PvPAttributeMultipliersType =
       Wounded2DeathWhenAttacking: 0.12555,
     },
   };
-export const GroundPvPReinforcementAttributeMultipliers: PvPAttributeMultipliersType =
+export const GroundPvPReinforcementAttributeMultipliers: AttributeMultipliersType =
   {
     Offensive: {
       AllTroopAttack: 2.14833,
@@ -157,7 +157,7 @@ export const GroundPvPReinforcementAttributeMultipliers: PvPAttributeMultipliers
     },
   };
 
-export const RangedPvPAttackAttributeMultipliers: PvPAttributeMultipliersType =
+export const RangedPvPAttackAttributeMultipliers: AttributeMultipliersType =
   {
     Offensive: {
       AllTroopAttack: 2.84933,
@@ -234,7 +234,7 @@ export const RangedPvPAttackAttributeMultipliers: PvPAttributeMultipliersType =
       Wounded2DeathWhenAttacking: 0.12555,
     },
   };
-export const RangedPvPReinforcementAttributeMultipliers: PvPAttributeMultipliersType =
+export const RangedPvPReinforcementAttributeMultipliers: AttributeMultipliersType =
   {
     Offensive: {
       AllTroopAttack: 2.84933,
@@ -312,7 +312,7 @@ export const RangedPvPReinforcementAttributeMultipliers: PvPAttributeMultipliers
     },
   };
 
-export const MountedPvPAttackAttributeMultipliers: PvPAttributeMultipliersType =
+export const MountedPvPAttackAttributeMultipliers: AttributeMultipliersType =
   {
     Offensive: {
       AllTroopAttack: 2.20333,
@@ -389,7 +389,7 @@ export const MountedPvPAttackAttributeMultipliers: PvPAttributeMultipliersType =
       Wounded2DeathWhenAttacking: 0.12555,
     },
   };
-export const MountedPvPReinforcementAttributeMultipliers: PvPAttributeMultipliersType =
+export const MountedPvPReinforcementAttributeMultipliers: AttributeMultipliersType =
   {
     Offensive: {
       AllTroopAttack: 2.20333,
@@ -467,7 +467,7 @@ export const MountedPvPReinforcementAttributeMultipliers: PvPAttributeMultiplier
     },
   };
 
-export const SiegePvPAttackAttributeMultipliers: PvPAttributeMultipliersType = {
+export const SiegePvPAttackAttributeMultipliers: AttributeMultipliersType = {
   Offensive: {
     AllTroopAttack: 3.20733,
     SiegeAttack: 2.874,
@@ -543,7 +543,7 @@ export const SiegePvPAttackAttributeMultipliers: PvPAttributeMultipliersType = {
     Wounded2DeathWhenAttacking: 0.12555,
   },
 };
-export const SiegePvPReinforcementAttributeMultipliers: PvPAttributeMultipliersType =
+export const SiegePvPReinforcementAttributeMultipliers: AttributeMultipliersType =
   {
     Offensive: {
       AllTroopAttack: 3.20733,

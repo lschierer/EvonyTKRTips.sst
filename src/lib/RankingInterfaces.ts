@@ -1,8 +1,9 @@
 import {z} from 'zod';
 import type { BuffType, BuffParamsType } from '@schemas/baseSchemas';
+import type {AttributeMultipliersType} from '@schemas/EvAns.zod';
 
 export interface BuffFunctionInterface {
-  Attack: (name: string, buffName: string, actualBuff: BuffType, desired: BuffParamsType) => number,
+  Attack: (name: string, buffName: string, actualBuff: BuffType, desired: BuffParamsType, am: AttributeMultipliersType) => number,
   DeAttack: (name: string, buffName: string, actualBuff: BuffType, desired: BuffParamsType) => number,
   DeDefense: (name: string, buffName: string, actualBuff: BuffType, desired: BuffParamsType) => number,
   DeHP: (name: string, buffName: string, actualBuff: BuffType, desired: BuffParamsType) => number,

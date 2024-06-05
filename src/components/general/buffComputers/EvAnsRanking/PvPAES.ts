@@ -19,14 +19,15 @@ import {
 } from '@schemas/ExtendedGeneral';
 
 import {type BuffFunctionInterface} from '@lib/RankingInterfaces';
+import type { AttributeMultipliersType } from '@schemas/EvAns.zod';
 
 const DEBUG_AES = false;
 const DEBUG = false;
 
-function buffDetailsReducerLogic(tbf: BuffFunctionInterface, index: number, ab: AscendingType, eg: ExtendedGeneralType, actual:BuffType, bp: BuffParamsType) {
+function buffDetailsReducerLogic(tbf: BuffFunctionInterface, index: number, ab: AscendingType, eg: ExtendedGeneralType, actual:BuffType, bp: BuffParamsType, am: AttributeMultipliersType) {
   let a3 = 0;
   let tbscore = tbf.Attack(
-    `Star ${index} ${ab.level}`, eg.name, actual, bp);
+    `Star ${index} ${ab.level}`, eg.name, actual, bp, am);
   if (DEBUG_AES) {
     console.log(`accumulating ${tbscore}`);
   }
@@ -82,7 +83,7 @@ function buffDetailsReducerLogic(tbf: BuffFunctionInterface, index: number, ab: 
   return a3;
 }
 
-export const AttackPvPAES = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFunction: BuffFunctionInterface) => {
+export const PvPAES = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFunction: BuffFunctionInterface, am: AttributeMultipliersType) => {
     let BSS_Score = 0;
 
     //I will assume you set the bp to disabled if it is an assistant.
@@ -126,14 +127,14 @@ export const AttackPvPAES = (eg: ExtendedGeneralType, bp: BuffParamsType, typedB
                   !eg.stars.localeCompare(AscendingLevels.enum[10]) &&
                   !ab.level.localeCompare(AscendingLevels.enum[10])
                 ) {
-                  a2 += buffDetailsReducerLogic(typedBuffFunction,index,ab, eg, actual, bp)
+                  a2 += buffDetailsReducerLogic(typedBuffFunction,index,ab, eg, actual, bp, am)
                   return a2;
                 } else if (
                   (!eg.stars.localeCompare(AscendingLevels.enum[10]) ||
                     !eg.stars.localeCompare(AscendingLevels.enum[9])) &&
                   !ab.level.localeCompare(AscendingLevels.enum[9])
                 ) {
-                  a2 += buffDetailsReducerLogic(typedBuffFunction,index,ab, eg, actual, bp)
+                  a2 += buffDetailsReducerLogic(typedBuffFunction,index,ab, eg, actual, bp, am)
                   return a2
                 } else if (
                   (!eg.stars.localeCompare(AscendingLevels.enum[10]) ||
@@ -141,7 +142,7 @@ export const AttackPvPAES = (eg: ExtendedGeneralType, bp: BuffParamsType, typedB
                     !eg.stars.localeCompare(AscendingLevels.enum[8])) &&
                   !ab.level.localeCompare(AscendingLevels.enum[8])
                 ) {
-                  a2 += buffDetailsReducerLogic(typedBuffFunction,index,ab, eg, actual, bp)
+                  a2 += buffDetailsReducerLogic(typedBuffFunction,index,ab, eg, actual, bp, am)
                   return a2
                 } else if (
                   (!eg.stars.localeCompare(AscendingLevels.enum[10]) ||
@@ -150,7 +151,7 @@ export const AttackPvPAES = (eg: ExtendedGeneralType, bp: BuffParamsType, typedB
                     !eg.stars.localeCompare(AscendingLevels.enum[7])) &&
                   !ab.level.localeCompare(AscendingLevels.enum[7])
                 ) {
-                  a2 += buffDetailsReducerLogic(typedBuffFunction,index,ab, eg, actual, bp)
+                  a2 += buffDetailsReducerLogic(typedBuffFunction,index,ab, eg, actual, bp, am)
                   return a2
                 } else if (
                   (!eg.stars.localeCompare(AscendingLevels.enum[10]) ||
@@ -160,7 +161,7 @@ export const AttackPvPAES = (eg: ExtendedGeneralType, bp: BuffParamsType, typedB
                     !eg.stars.localeCompare(AscendingLevels.enum[6])) &&
                   !ab.level.localeCompare(AscendingLevels.enum[6])
                 ) {
-                  a2 += buffDetailsReducerLogic(typedBuffFunction,index,ab, eg, actual, bp)
+                  a2 += buffDetailsReducerLogic(typedBuffFunction,index,ab, eg, actual, bp, am)
                   return a2
                 } else {
                   console.log(

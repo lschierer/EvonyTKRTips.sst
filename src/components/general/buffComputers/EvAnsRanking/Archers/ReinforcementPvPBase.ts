@@ -21,7 +21,7 @@ import { PvPBSS } from '../PvPBSS.ts';
 import { PvPAES } from '../PvPAES.ts';
 import { PvP34SS } from '../PvP34SS.ts';
 
-import { PvPAttackBuff } from './PvPAttackBuff';
+import { AttackBuff } from './AttackBuff.ts';
 import { PvPMarchSizeBuff } from './PvPMarchSizeBuff';
 import { PvPHPBuff } from './PvPHPBuff.ts';
 import { PvPDefenseBuff } from './PvPDefenseBuff';
@@ -216,7 +216,7 @@ export const EvAnsArchersPvPAttack = z
       }
 
       const typedBuffFunctions: BuffFunctionInterface = {
-        Attack: PvPAttackBuff,
+        Attack: AttackBuff,
         MarchSize: PvPMarchSizeBuff,
         HP: PvPHPBuff,
         Defense: PvPDefenseBuff,
