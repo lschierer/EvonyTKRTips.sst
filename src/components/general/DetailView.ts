@@ -37,7 +37,7 @@ import {
 import { ExtendedGeneralStatus } from '@schemas/ExtendedGeneral';
 
 import { BaseGeneral } from './BaseGeneral';
-const DEBUG = true;
+const DEBUG = false;
 
 @customElement('detail-view')
 export class DetailView extends SizedMixin(BaseGeneral, {

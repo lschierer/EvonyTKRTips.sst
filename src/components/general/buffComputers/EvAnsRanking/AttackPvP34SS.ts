@@ -16,7 +16,7 @@ import {
 import {type BuffFunctionInterface} from '@lib/RankingInterfaces';
 
 
-const DEBUG_34SS = true;
+const DEBUG_34SS = false;
 
 const buffReductionLogic = (specialB: SpecialityType, eg: ExtendedGeneralType, sb: BuffType, bp: BuffParamsType, tbfo:  BuffFunctionInterface) => {
   let ba = 0;

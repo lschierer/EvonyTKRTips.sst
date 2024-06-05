@@ -9,7 +9,7 @@ import { state } from 'lit/decorators.js';
 
 import { withStores } from '@nanostores/lit';
 
-const DEBUG = true;
+const DEBUG = false;
 
 import { SpectrumElement } from '@spectrum-web-components/base';
 

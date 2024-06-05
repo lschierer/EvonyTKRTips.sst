@@ -9,7 +9,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { ref, createRef, type Ref } from 'lit/directives/ref.js';
 import { consume } from '@lit/context';
 
-const DEBUG = true;
+const DEBUG = false;
 
 import { type GeneralArrayType } from '@schemas/generalsSchema';
 

@@ -36,7 +36,7 @@ import {
   type standardSkillBookType,
 } from '@schemas/bookSchemas';
 
-const DEBUG = true;
+const DEBUG = false;
 
 export const DisplayGeneralsMWRoutes = ['/generals/'];
 

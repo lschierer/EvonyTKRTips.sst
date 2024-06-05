@@ -17,7 +17,7 @@ ModuleRegistry.registerModules([ClientSideRowModelModule]);
 
 import { delay } from 'nanodelay';
 
-const DEBUG = true;
+const DEBUG = false;
 
 import { customElement, property, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
