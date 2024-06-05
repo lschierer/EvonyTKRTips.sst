@@ -156,6 +156,8 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
     }
   }
 
+  private rowIndexer()
+
   constructor() {
     super();
 
@@ -168,6 +170,13 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       rowData: [],
       // Columns to be displayed (Should match rowData properties)
       columnDefs: [
+        {
+          headerName: 'Index',
+          flex: 1,
+          valueGetter: "node.rowIndex + 1",
+          filter: false,
+          sortable: false,
+        },
         {
           valueGetter: (p) => p.data!.primaryId,
           headerName: 'Primary',
