@@ -66,10 +66,7 @@ const TKRTipsAttackBasic = z
     if(DEBUG_BAS) {
       console.log(`BasicAttack step1: ${BasicAttack}`)
     }
-    BasicAttack -= 190;
-    if(DEBUG_BAS) {
-      console.log(`190 off the top: ${BasicAttack}`)
-    }
+
     BasicAttack += 500;
     if(DEBUG_BAS) {
       console.log(`BasicAttack with cultivation: ${BasicAttack}`)
@@ -94,10 +91,7 @@ const TKRTipsAttackBasic = z
     if(DEBUG_BAS) {
       console.log(`BasicDefense step1: ${BasicDefense}`)
     }
-    BasicDefense -= 190;
-    if(DEBUG_BAS) {
-      console.log(`190 off the top: ${BasicDefense}`)
-    }
+
     BasicDefense += AES_adjustment
     if(DEBUG_BAS) {
       console.log(`BasicDefense with AES: ${BasicDefense}`)
@@ -122,10 +116,7 @@ const TKRTipsAttackBasic = z
     if(DEBUG_BAS) {
       console.log(`BasicLeaderShip step1: ${BasicLeaderShip}`)
     }
-    BasicLeaderShip -= 190;
-    if(DEBUG_BAS) {
-      console.log(`190 off the top: ${BasicLeaderShip}`)
-    }
+
     BasicLeaderShip += AES_adjustment
     if(DEBUG_BAS) {
       console.log(`BasicLeadership with AES`)
@@ -150,10 +141,7 @@ const TKRTipsAttackBasic = z
     if(DEBUG_BAS) {
       console.log(`BasicPolitics step1: ${BasicPolitics}`)
     }
-    BasicPolitics -= 190;
-    if(DEBUG_BAS) {
-      console.log(`190 off the top: ${BasicPolitics}`)
-    }
+
     BasicPolitics += AES_adjustment
     if(DEBUG_BAS) {
       console.log(`BasicPolitics with AES ${BasicPolitics}`)
