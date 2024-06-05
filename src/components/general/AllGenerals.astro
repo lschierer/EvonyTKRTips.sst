@@ -27,7 +27,7 @@ import { BookType } from '../../schemas/bookSchemas';
 
 import {EvAnsScoreComputer} from '@components/general/buffComputers/EvAnsRanking/EvAnsScoreComputer';
 
-const DEBUG = false;
+const DEBUG = true;
 
 interface Props {
   TargetClass?: generalSpecialistsType;
@@ -115,24 +115,27 @@ Astro.locals.CachedGenerals.sort((a, b) => {
   }
 })
 ---
-
-{
-  DEBUG && (
+<div class="hidden">
+  All Generals Component
   <ol>
-    {Astro.locals.CachedGenerals.map((thisG: ExtendedGeneralType) => (
-      <li>
-        <dl>
-          <dt>{thisG.name}</dt>
-          <!--<dd>${JSON.stringify(thisG)}</dd>-->
-          <dd>{EvAnsScoreComputer(
-            generalUseCase.enum.Attack,
-            thisG,
-            Display.enum.summary,
-            InvestmentLevel
-          )}</dd>
-        </dl>
-      </li>
-    ))}
+  {Astro.locals.CachedGenerals.map((thisG: ExtendedGeneralType) => (
+    <li>
+      <dl>
+        <dt>{thisG.name}</dt>
+        <!--<dd>${JSON.stringify(thisG)}</dd>-->
+        <dd>{EvAnsScoreComputer(
+          generalUseCase.enum.Attack,
+          thisG,
+          Display.enum.summary,
+          InvestmentLevel
+        )}</dd>
+      </dl>
+    </li>
+  ))}
   </ol>
-    )
+</div>
+<style>
+  .hidden {
+    display: none;
   }
+</style>
