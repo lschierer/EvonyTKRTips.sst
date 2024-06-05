@@ -1,4 +1,6 @@
 
+// noinspection SpellCheckingInspection
+
 import { z } from 'zod';
 
 import {
@@ -11,7 +13,7 @@ import {
 } from 'ag-grid-community';
 import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
 import BaseAGCSSImport from 'ag-grid-community/styles/ag-grid.css?inline';
-import AlpineImport from 'ag-grid-community/styles/ag-theme-alpine.css?inline';
+import BalhamImport from 'ag-grid-community/styles/ag-theme-balham.css?inline';
 
 ModuleRegistry.registerModules([ClientSideRowModelModule]);
 
@@ -46,10 +48,12 @@ import {
 } from '@schemas/baseSchemas';
 
 import {
-  Display,
+  Display, type DisplayType,
   GeneralClass,
   generalRole,
   type generalRoleType,
+  generalUseCase,
+  type generalUseCaseType,
 } from '@schemas/generalsSchema';
 
 import { type GeneralPairType } from '@schemas/ExtendedGeneral';
@@ -65,6 +69,8 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
 
   @property({ type: Object })
   public InvestmentLevel: BuffParamsType;
+
+
 
   @state()
   private sInvestment: BuffParamsType;
@@ -161,27 +167,34 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
           valueGetter: (p) => p.data!.primaryId,
           headerName: 'Primary',
           filter: true,
+          flex: 4,
         },
         {
           valueGetter: (p) => p.data!.secondaryId,
           headerName: 'Secondary',
           filter: true,
+          flex: 4,
         },
         {
           valueGetter: (p) => p.data!.EvAnsRanking,
           headerName: 'EvAns Ranking',
+          flex: 2,
         },
         {
           valueGetter: (p) => p.data!.AttackRanking,
           headerName: 'Adjusted Attack Score',
+          flex: 2,
         },
         {
           valueGetter: (p) => p.data!.ToughnessRanking,
           headerName: 'Adjusted Toughness Score',
+          flex: 2,
         },
       ],
       defaultColDef: {
         flex: 1,
+        wrapHeaderText: true,
+        autoHeaderHeight: true,
       },
       onGridReady: (params) => {
         this.getData();
@@ -253,13 +266,15 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
 
   public static override get styles(): CSSResultArray {
     const AGBaseCSS = unsafeCSS(BaseAGCSSImport);
-    const AlpineCSS = unsafeCSS(AlpineImport);
+    const AlpineCSS = unsafeCSS(BalhamImport);
     const localStyle = css`
-      .ag-theme-alpine,
-      .ag-theme-alpine-dark {
-        --ag-icon-font-family: agGridAlpine;
+      .ag-theme-balham,
+      .ag-theme-balham-dark {
+        --ag-header-height: 120px;
+        --ag-grid-size: 5px;
+        --ag-list-item-height: 16px;
       }
-
+      
       .hidden {
         display: block;
       }
@@ -302,7 +317,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
     return html`
       <div
         id="agdiv"
-        class="ag-theme-alpine"
+        class="ag-theme-balham"
         style="height: 500px;"
         ${ref(this.renderGrid)}
       ></div>

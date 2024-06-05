@@ -13,15 +13,17 @@ import {
 
 import { checkInvalidConditions } from '../EvAnsScoreComputer';
 
+import {AttributeMultipliers, type AttributeMultipliersType} from '@schemas/EvAns.zod'
+
 import { RangedPvPAttackAttributeMultipliers } from '@lib/EvAnsAttributeRanking';
 
 const DEBUGA = false;
 
 const PvPAttackBuffClassCheck = z
   .function()
-  .args(Buff, BuffParams)
+  .args(Buff, BuffParams, AttributeMultipliers)
   .returns(z.number())
-  .implement((tb: BuffType, iv: BuffParamsType) => {
+  .implement((tb: BuffType, iv: BuffParamsType, am: AttributeMultipliersType) => {
     let score = 0;
     let multiplier = 0;
     if (tb !== null && tb !== undefined) {
