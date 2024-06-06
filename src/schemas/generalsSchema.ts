@@ -7,6 +7,7 @@ export type generalRoleType = zod.infer<typeof generalRole>;
 
 export const generalSpecialists = zod.enum([
   ...b.ClassEnum.options,
+  'Monsters',
   'Wall',
   'Mayor',
 ]);
