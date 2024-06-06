@@ -19,7 +19,7 @@ ModuleRegistry.registerModules([ClientSideRowModelModule]);
 
 import { delay } from 'nanodelay';
 
-const DEBUG = false;
+const DEBUG = true;
 
 import { customElement, property, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
@@ -189,8 +189,9 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
         },
         {
           valueGetter: (p) => p.data!.EvAnsRanking,
-          headerName: 'EvAns Ranking',
+          headerName: 'EvAns Estimate',
           flex: 2,
+          colId: 'EvAnsEstimate',
         },
         {
           valueGetter: (p) => p.data!.AttackRanking,
@@ -261,6 +262,24 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
         console.log(`willUpdate called for RawPairs`);
       }
     }
+    if(_changedProperties.has('useCase')){
+      if(!this.useCase.localeCompare(generalUseCase.enum.Monsters)){
+        if (this.grid !== null && this.grid !== undefined) {
+          this.grid.applyColumnState({
+            state: [
+              {
+                colId: 'EvAnsEstimate',
+                hide: true,
+              }
+            ],
+            defaultState: {
+              // important to say 'null' as undefined means 'do nothing'
+              hide: false
+            }
+          })
+        }
+      }
+    }
     if (_changedProperties.has('_DisplayPairs')) {
       if (this.grid !== null && this.grid !== undefined) {
         if (DEBUG) {
@@ -302,6 +321,23 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
     if (gridDiv !== null && gridDiv !== undefined) {
       console.log(`gridDiv is ${gridDiv.localName}`);
       this.grid = createGrid(gridDiv as HTMLElement, this.gridOptions);
+      if (!this.useCase.localeCompare(generalUseCase.enum.Monsters)) {
+        // I do not currently *have* EvAns score estimates for useCase Monsters. 
+        if (this.grid !== null && this.grid !== undefined) {
+          this.grid.applyColumnState({
+            state: [
+              {
+                colId: 'EvAnsEstimate',
+                hide: true,
+              }
+            ],
+          })
+        }
+      } else {
+        if (DEBUG) {
+          console.log(`use case is ${this.useCase}`)
+        }
+      }
       if (Array.isArray(this._DisplayPairs) && this._DisplayPairs.length > 0) {
         this._DisplayPairs.forEach((dp, index) => {
           dp.BuffsForInvestment(this.InvestmentLevel);
