@@ -12,10 +12,10 @@ import {
 
 import { ExtendedGeneral, type ExtendedGeneralType } from '@schemas/ExtendedGeneral';
 
-import { GroundPvPToughness } from './Ground/ToughnessPvPBase';
-import { TKRTipsArchersPvPToughness } from './Archers/ToughnessPvPBase';
-import { MountedPvPToughness } from './Mounted/ToughnessPvPBase';
-import { SiegePvPToughness } from './Siege/ToughnessPvPBase';
+
+import { AttackingToughnessPvPBase } from './Details/AttackingToughnessPvPBase';
+import { ReinforcementToughnessPvPBase } from './Details/ReinforcementToughnessPvPBase';
+import * as Attributes from '@lib/EvAnsAttributeRanking';
 
 /*******************
  * this is derived by reverse engineering the formula from
@@ -43,16 +43,20 @@ export const ToughnessScoreComputer = z
           console.log(`called for Attack use case`);
         }
         if (!generalSpecialists.enum.Archers.localeCompare(eg.score_as)) {
-          return TKRTipsArchersPvPToughness(eg, display, bp);
+          return AttackingToughnessPvPBase(eg, display, bp, Attributes.RangedPvPAttackAttributeMultipliers);
         }
         if (!generalSpecialists.enum.Ground.localeCompare(eg.score_as)) {
-          return GroundPvPToughness(eg, display, bp);
+          return AttackingToughnessPvPBase(eg, display, bp, Attributes.GroundPvPAttackAttributeMultipliers);
         }
         if (!generalSpecialists.enum.Mounted.localeCompare(eg.score_as)) {
-          return MountedPvPToughness(eg, display, bp);
+          return AttackingToughnessPvPBase(eg, display, bp, Attributes.MountedPvPAttackAttributeMultipliers);
         }
         if (!generalSpecialists.enum.Siege.localeCompare(eg.score_as)) {
-          return SiegePvPToughness(eg, display, bp);
+          return AttackingToughnessPvPBase(eg, display, bp, Attributes.SiegePvPAttackAttributeMultipliers);
+        }
+      } else if (!UseCase.localeCompare(generalUseCase.enum.Reinforcement)){
+        if (!generalSpecialists.enum.Archers.localeCompare(eg.score_as)) {
+          return ReinforcementToughnessPvPBase(eg, display, bp, Attributes.RangedPvPReinforcementAttributeMultipliers);
         }
       } else {
         console.log(`not called for Attack use case`);

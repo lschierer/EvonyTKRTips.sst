@@ -12,10 +12,10 @@ import {
 
 import { ExtendedGeneral, type ExtendedGeneralType } from '@schemas/ExtendedGeneral';
 
-import { TKRTipsAttackGroundPvPAttack } from './Ground/AttackPvPBase';
-import { TKRTipsAttackArchersPvPAttack } from './Archers/AttackPvPBase';
-import { TKRTipsAttackMountedPvPAttack } from './Mounted/AttackPvPBase';
-import { TKRTipsAttackSiegePvPAttack } from './Siege/AttackPvPBase';
+
+import { AttackingAttackPvPBase } from './Details/AttackingAttackPvPBase';
+import { ReinforcementAttackPvPBase } from './Details/ReinforcementAttackPvPBase';
+import * as Attributes from '@lib/EvAnsAttributeRanking';
 
 /*******************
  * this is derived by reverse engineering the formula from
@@ -27,7 +27,7 @@ import { TKRTipsAttackSiegePvPAttack } from './Siege/AttackPvPBase';
 
 const DEBUG = false;
 
-export const AttackScoreComputer = z
+export const AttackingScoreComputer = z
   .function()
   .args(generalUseCase, ExtendedGeneral, Display, BuffParams)
   .returns(z.number())
@@ -43,16 +43,20 @@ export const AttackScoreComputer = z
           console.log(`called for Attack use case`);
         }
         if (!generalSpecialists.enum.Archers.localeCompare(eg.score_as)) {
-          return TKRTipsAttackArchersPvPAttack(eg, display, bp);
+          return AttackingAttackPvPBase(eg, display, bp, Attributes.RangedPvPAttackAttributeMultipliers);
         }
         if (!generalSpecialists.enum.Ground.localeCompare(eg.score_as)) {
-          return TKRTipsAttackGroundPvPAttack(eg, display, bp);
+          return AttackingAttackPvPBase(eg, display, bp, Attributes.GroundPvPAttackAttributeMultipliers);
         }
         if (!generalSpecialists.enum.Mounted.localeCompare(eg.score_as)) {
-          return TKRTipsAttackMountedPvPAttack(eg, display, bp);
+          return AttackingAttackPvPBase(eg, display, bp, Attributes.MountedPvPAttackAttributeMultipliers);
         }
         if (!generalSpecialists.enum.Siege.localeCompare(eg.score_as)) {
-          return TKRTipsAttackSiegePvPAttack(eg, display, bp);
+          return AttackingAttackPvPBase(eg, display, bp, Attributes.SiegePvPAttackAttributeMultipliers);
+        }
+      } else if (!UseCase.localeCompare(generalUseCase.enum.Reinforcement)){
+        if (!generalSpecialists.enum.Archers.localeCompare(eg.score_as)) {
+          return ReinforcementAttackPvPBase(eg, display, bp, Attributes.RangedPvPReinforcementAttributeMultipliers);
         }
       } else {
         console.log(`not called for Attack use case`);
