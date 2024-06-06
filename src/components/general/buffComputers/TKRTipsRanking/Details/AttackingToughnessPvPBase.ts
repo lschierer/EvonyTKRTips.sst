@@ -162,10 +162,9 @@ const Basic = z
       }
     }
 
-    const attackMultiplier =
-      am.Offensive.AllTroopAttack ?? 1;
-    const defenseMultiplier = 0;
-    const HPMultiplier = 0;
+    const attackMultiplier = 0;
+    const defenseMultiplier = am.Toughness.AllTroopDefense;
+    const HPMultiplier = am.Toughness.AllTroopHP;
     const PoliticsMultiplier = 0;
 
     const BAS =

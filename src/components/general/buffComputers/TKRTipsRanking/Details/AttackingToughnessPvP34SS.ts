@@ -22,18 +22,8 @@ const DEBUG_34SS = false;
 
 const buffReductionLogic = (specialB: SpecialityType, eg: ExtendedGeneralType, sb: BuffType, bp: BuffParamsType, tbfo:  BuffFunctionInterface, useCase: generalUseCaseType, am: AttributeMultipliersType) => {
   let ba = 0;
-  let sb_total = tbfo.Attack(
-    specialB.name, eg.name, sb, bp, useCase, am);
-  if (DEBUG_34SS) {
-    console.log(`Attack adding ${sb_total} to: ${ba}`);
-  }
-  ba += sb_total;
-  sb_total = tbfo.MarchSize(
-    specialB.name, eg.name, sb, bp, useCase, am);
-  if (DEBUG_34SS) {
-    console.log(`MarchSize adding ${sb_total} to: ${ba}`);
-  }
-  ba += sb_total;
+  let sb_total = 0;
+
   sb_total = tbfo.HP(
     specialB.name, eg.name, sb, bp, useCase, am);
   if (DEBUG_34SS) {
@@ -52,30 +42,7 @@ const buffReductionLogic = (specialB: SpecialityType, eg: ExtendedGeneralType, s
     console.log(`DeAttack adding ${sb_total} to: ${ba}`);
   }
   ba += sb_total;
-  sb_total = tbfo.DeHP(
-    specialB.name, eg.name, sb, bp, useCase, am);
-  if (DEBUG_34SS) {
-    console.log(`DeHP adding ${sb_total} to: ${ba}`);
-  }
-  ba += sb_total;
-  sb_total = tbfo.DeDefense(
-    specialB.name, eg.name, sb, bp, useCase, am);
-  if (DEBUG_34SS) {
-    console.log(`DeDefense adding ${sb_total} to: ${ba}`);
-  }
-  ba += sb_total;
-  sb_total = tbfo.Preservation(
-    specialB.name, eg.name, sb, bp, useCase, am);
-  if (DEBUG_34SS) {
-    console.log(`Preservation adding ${sb_total} to: ${ba}`);
-  }
-  ba += sb_total;
-  sb_total = tbfo.Debilitation(
-    specialB.name, eg.name, sb, bp, useCase, am);
-  if (DEBUG_34SS) {
-    console.log(`Debilitation adding ${sb_total} to: ${ba}`);
-  }
-  ba += sb_total;
+
   return ba;
 };
 

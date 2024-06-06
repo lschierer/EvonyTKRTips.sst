@@ -26,18 +26,8 @@ const DEBUG = false;
 
 function buffDetailsReducerLogic(tbf: BuffFunctionInterface, index: number, ab: AscendingType, eg: ExtendedGeneralType, actual:BuffType, bp: BuffParamsType, useCase: generalUseCaseType, am: AttributeMultipliersType) {
   let a3 = 0;
-  let tbscore = tbf.Attack(
-    `Star ${index} ${ab.level}`, eg.name, actual, bp, useCase, am);
-  if (DEBUG_AES) {
-    console.log(`accumulating ${tbscore}`);
-  }
-  a3 += tbscore;
-  tbscore = tbf.MarchSize(
-    `Star ${index} ${ab.level}`, eg.name, actual, bp, useCase, am);
-  if (DEBUG_AES) {
-    console.log(`accumulating ${tbscore}`);
-  }
-  a3 += tbscore;
+  let tbscore = 0;
+
   tbscore = tbf.HP(
     `Star ${index} ${ab.level}`, eg.name, actual, bp, useCase, am);
   if (DEBUG_AES) {
@@ -56,30 +46,7 @@ function buffDetailsReducerLogic(tbf: BuffFunctionInterface, index: number, ab: 
     console.log(`accumulating ${tbscore}`);
   }
   a3 += tbscore;
-  tbscore = tbf.DeHP(
-    `Star ${index} ${ab.level}`, eg.name, actual, bp, useCase, am);
-  if (DEBUG_AES) {
-    console.log(`accumulating ${tbscore}`);
-  }
-  a3 += tbscore;
-  tbscore = tbf.DeDefense(
-    `Star ${index} ${ab.level}`, eg.name, actual, bp, useCase, am);
-  if (DEBUG_AES) {
-    console.log(`accumulating ${tbscore}`);
-  }
-  a3 += tbscore;
-  tbscore = tbf.Preservation(
-    `Star ${index} ${ab.level}`, eg.name, actual, bp, useCase, am);
-  if (DEBUG_AES) {
-    console.log(`accumulating ${tbscore}`);
-  }
-  a3 += tbscore;
-  tbscore = tbf.Debilitation(
-    `Star ${index} ${ab.level}`, eg.name, actual, bp, useCase, am);
-  if (DEBUG_AES) {
-    console.log(`accumulating ${tbscore}`);
-  }
-  a3 += tbscore;
+
   return a3;
 }
 

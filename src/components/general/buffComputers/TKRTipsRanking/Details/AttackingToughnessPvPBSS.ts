@@ -45,14 +45,7 @@ export const PvPBSS = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFun
                 console.log(JSON.stringify(tb));
                 console.log(`--- end tb ---`);
               }
-              let tbscore = (typedBuffFunction.Attack(bisb.name, eg.name, tb, bp, useCase, am));
-              if (DEBUG_BSS) { console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`); }
-              a2 += tbscore;
-              tbscore = (typedBuffFunction.MarchSize(bisb.name, eg.name, tb, bp, useCase, am));
-              if (DEBUG_BSS) {
-                console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
-              }
-              a2 += tbscore;
+              let tbscore = 0;
               tbscore = (typedBuffFunction.HP(bisb.name, eg.name, tb, bp, useCase, am));
               if (DEBUG_BSS) {
                 console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
@@ -68,22 +61,8 @@ export const PvPBSS = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFun
                 console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
               }
               a2 += tbscore;
-              tbscore = (typedBuffFunction.DeHP(bisb.name, eg.name, tb, bp, useCase, am));
-              if (DEBUG_BSS) {
-                console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
-              }
-              a2 += tbscore;
-              tbscore = (typedBuffFunction.DeDefense(bisb.name, eg.name, tb, bp, useCase, am));
-              if (DEBUG_BSS) {
-                console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
-              }
-              a2 += tbscore;
-              tbscore = (typedBuffFunction.Preservation(bisb.name, eg.name, tb, bp, useCase, am));
-              if (DEBUG_BSS) {
-                console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
-              }
-              a2 += tbscore;
-              tbscore = (typedBuffFunction.Debilitation(bisb.name, eg.name, tb, bp, useCase, am));
+
+              tbscore = (typedBuffFunction.Range(bisb.name, eg.name, tb, bp, useCase, am));
               if (DEBUG_BSS) {
                 console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
               }
