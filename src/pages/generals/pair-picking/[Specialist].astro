@@ -2,7 +2,6 @@
 export const prerender = false;
 
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
-import { Debug } from 'astro:components';
 import type {
   InferGetStaticParamsType,
   InferGetStaticPropsType,
@@ -15,7 +14,7 @@ import type { ComponentProps } from 'astro/types';
 import AllGenerals from '@components/general/AllGenerals.astro';
 import AllConflicts from '@components/general/AllConflicts.astro';
 
-import { generalSpecialists, generalSpecialistsType } from '../../../schemas/generalsSchema';
+import { generalSpecialists, type generalSpecialistsType } from '../../../schemas/generalsSchema';
 
 const DEBUG = true;
 
@@ -61,6 +60,10 @@ if(entry === undefined || entry === null) {
 let TargetClass: generalSpecialistsType;
 if(!Specialist.toLocaleLowerCase().localeCompare(generalSpecialists.enum.Archers.toLocaleLowerCase())) {
   TargetClass = generalSpecialists.enum.Archers;
+} else if (!Specialist.toLocaleLowerCase().localeCompare(generalSpecialists.enum.Mounted.toLocaleLowerCase())) {
+  TargetClass = generalSpecialists.enum.Mounted;
+} else if (!Specialist.toLocaleLowerCase().localeCompare(generalSpecialists.enum.Monsters.toLocaleLowerCase())) {
+  TargetClass = generalSpecialists.enum.Mounted;
 } else if (! Specialist.toLocaleLowerCase().localeCompare(generalSpecialists.enum.Ground.toLocaleLowerCase())) {
   TargetClass = generalSpecialists.enum.Ground;
 } else if (!Specialist.toLocaleLowerCase().localeCompare(generalSpecialists.enum.Siege.toLocaleLowerCase())) {
@@ -76,6 +79,10 @@ if(!Specialist.toLocaleLowerCase().localeCompare(generalSpecialists.enum.Archers
   } else {
     return Astro.redirect('/404');
   }
+}
+
+if(DEBUG) {
+  console.log(`Specialist.astro Specialist ${Specialist} became TargetClass ${TargetClass}`)
 }
 
 const { Content } = await entry.render();

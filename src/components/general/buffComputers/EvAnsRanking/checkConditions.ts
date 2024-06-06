@@ -33,7 +33,24 @@ export const checkInvalidConditions = z
         debuffConditions.push(Condition.enum.Reduces_Enemy);
         debuffConditions.push(Condition.enum.Reduces_Enemy_in_Attack)
         debuffConditions.push(Condition.enum.Reduces_Enemy_with_a_Dragon);
-      }else if(!am.localeCompare(generalUseCase.enum.Reinforcement)){
+        debuffConditions.push(Condition.enum.Reduces_Monster);
+      } else if (!am.localeCompare(generalUseCase.enum.Monsters)) {
+        conditions.push(Condition.enum.Defending);
+        conditions.push(Condition.enum.In_City);
+        conditions.push(Condition.enum.In_Main_City);
+        conditions.push(Condition.enum.Reinforcing);
+        conditions.push(Condition.enum['When not mine']);
+        conditions.push(Condition.enum.When_City_Mayor);
+        conditions.push(Condition.enum.When_City_Mayor_for_this_SubCity);
+        conditions.push(Condition.enum.When_Defending_Outside_The_Main_City);
+        conditions.push(Condition.enum.When_The_Main_Defense_General);
+        conditions.push(Condition.enum.When_an_officer);
+        debuffConditions.push(Condition.enum.Enemy);
+        debuffConditions.push(Condition.enum.Enemy_In_City);
+        debuffConditions.push(Condition.enum.Reduces_Enemy);
+        debuffConditions.push(Condition.enum.Reduces_Enemy_in_Attack)
+        debuffConditions.push(Condition.enum.Reduces_Enemy_with_a_Dragon);
+      } else if(!am.localeCompare(generalUseCase.enum.Reinforcement)){
         conditions.push(Condition.enum['Against Monsters']);
         conditions.push(Condition.enum.Marching);
         conditions.push(Condition.enum['When not mine']);
@@ -47,6 +64,7 @@ export const checkInvalidConditions = z
         debuffConditions.push(Condition.enum.Enemy);
         debuffConditions.push(Condition.enum.Reduces_Enemy);
         debuffConditions.push(Condition.enum.Reduces_Enemy_with_a_Dragon);
+        debuffConditions.push(Condition.enum.Reduces_Monster);
       }else {
         console.log(`no list of conditions for this use case`)
         return false;

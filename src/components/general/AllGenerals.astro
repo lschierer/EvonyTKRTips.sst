@@ -1,14 +1,11 @@
 ---
 import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
-import type { ComponentProps } from 'astro/types';
 
-import { delay } from 'nanodelay';
 
 import { BuffParamsType, qualityColor, AscendingLevels } from '../../schemas/baseSchemas';
 
 import {
-  GeneralElement,
-  GeneralClass,
+
   Display,
   type GeneralClassType,
   type GeneralElementType,
@@ -18,8 +15,6 @@ import {
 } from '@schemas/generalsSchema';
 
 import {
-  ExtendedGeneral,
-  ExtendedGeneralStatus,
   type ExtendedGeneralType,
 } from '@schemas/ExtendedGeneral';
 import { SpecialityType } from '../../schemas/specialitySchema';
@@ -33,7 +28,15 @@ interface Props {
   TargetClass?: generalSpecialistsType;
   }
 
-const { TargetClass } = Astro.props;
+let { TargetClass } = Astro.props;
+
+if (!TargetClass.toLocaleString().toLocaleLowerCase().localeCompare(generalSpecialists.enum.Monsters)) {
+  TargetClass = generalSpecialists.enum.Mounted;
+} else {
+  if(DEBUG) {
+    console.log(`TargetClass is ${TargetClass}`)
+  }
+}
 
 const generalObjects: CollectionEntry<'generals'>[] =
   await getCollection('generals');

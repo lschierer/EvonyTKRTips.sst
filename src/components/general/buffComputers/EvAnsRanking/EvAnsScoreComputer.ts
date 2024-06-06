@@ -38,7 +38,14 @@ export const EvAnsScoreComputer = z
       display: DisplayType,
       bp: BuffParamsType
     ) => {
-      if (!UseCase.localeCompare(generalUseCase.enum.Attack)) {
+      if(!UseCase.localeCompare(generalUseCase.enum.all)) {
+        if(DEBUG) {
+          console.log(`EvansScoreComputer detects useCase of all`)
+        }
+        return 0;
+      } else if(!UseCase.localeCompare(generalUseCase.enum.Monsters)) {
+        return 0; //EvAns has not released Attribute Multipliers for PvM and with his attention to detail, I am confident they *will* differ considerably.
+      } else if (!UseCase.localeCompare(generalUseCase.enum.Attack)) {
         if (DEBUG) {
           console.log(`called for Attack use case`);
         }
@@ -59,9 +66,11 @@ export const EvAnsScoreComputer = z
           return EvAnsPvPReinforcement(eg, display, bp, EvAnsAttributes.RangedPvPReinforcementAttributeMultipliers);
         }
       } else {
-        console.log(`not called for Attack use case`);
+        if(DEBUG) {
+          console.log(`not called for Attack, Monsters, or Reinforcement use cases`);
+        }
       }
-      console.log(`${eg.name} did not match any scoring function`);
+      console.log(`${eg.name} ${UseCase} ${eg.score_as} did not match any scoring function`);
       return -7;
     }
   );

@@ -14,7 +14,7 @@ import {
 
 import { AttributeMultipliers, type AttributeMultipliersType } from '@schemas/EvAns.zod';
 
-import { Display, type DisplayType, generalUseCase } from '@schemas/generalsSchema';
+import { Display, type DisplayType, generalUseCase, type generalUseCaseType } from '@schemas/generalsSchema';
 
 import { ExtendedGeneral, type ExtendedGeneralType } from '@schemas/ExtendedGeneral';
 import { PvPBSS } from './AttackingAttackPvPBSS';
@@ -192,10 +192,10 @@ const Basic = z
 
 export const AttackingAttackPvPBase = z
   .function()
-  .args(ExtendedGeneral, Display, BuffParams, AttributeMultipliers)
+  .args(ExtendedGeneral, Display, BuffParams, generalUseCase, AttributeMultipliers)
   .returns(z.number())
   .implement(
-    (eg: ExtendedGeneralType, display: DisplayType, bp: BuffParamsType, am: AttributeMultipliersType) => {
+    (eg: ExtendedGeneralType, display: DisplayType, bp: BuffParamsType, useCase: generalUseCaseType, am: AttributeMultipliersType) => {
       if (DEBUG) {
         console.log(`${eg.name}: ArchersPvPAttack starting`);
       }
@@ -214,9 +214,9 @@ export const AttackingAttackPvPBase = z
       }
 
       const BAS = Basic(eg, am);
-      const BSS = PvPBSS(eg, bp, typedBuffFunctions, generalUseCase.enum.Attack, am);
-      const AES = PvPAES(eg, bp, typedBuffFunctions, generalUseCase.enum.Attack, am);
-      const specialities = PvP34SS(eg, bp, typedBuffFunctions, generalUseCase.enum.Attack, am);
+      const BSS = PvPBSS(eg, bp, typedBuffFunctions, useCase, am);
+      const AES = PvPAES(eg, bp, typedBuffFunctions, useCase, am);
+      const specialities = PvP34SS(eg, bp, typedBuffFunctions, useCase, am);
 
       let TLGS = BSS + specialities;
       if (DEBUG) {
