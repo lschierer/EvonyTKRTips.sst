@@ -38,7 +38,7 @@ import {
 } from '@schemas/ExtendedGeneral';
 
 import { EvAnsScoreComputer } from '@components/general/buffComputers/EvAnsRanking/EvAnsScoreComputer';
-import { AttackScoreComputer } from '@components/general/buffComputers/TKRTipsRanking/AttackScoreComputer';
+import { AttackingScoreComputer } from '@components/general/buffComputers/TKRTipsRanking/AttackScoreComputer';
 import { ToughnessScoreComputer } from '@components/general/buffComputers/TKRTipsRanking/ToughnessScoreComputer';
 
 const DEBUG = true;
@@ -195,7 +195,7 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
           BP
         );
 
-        const AttackRank = AttackScoreComputer(
+        const AttackRank = AttackingScoreComputer(
           this.useCase,
           this.general,
           display,
