@@ -34,24 +34,7 @@ const buffReductionLogic = (specialB: SpecialityType, eg: ExtendedGeneralType, s
     console.log(`MarchSize adding ${sb_total} to: ${ba}`);
   }
   ba += sb_total;
-  sb_total = tbfo.HP(
-    specialB.name, eg.name, sb, bp, useCase, am);
-  if (DEBUG_34SS) {
-    console.log(`HP adding ${sb_total} to: ${ba}`);
-  }
-  ba += sb_total;
-  sb_total = tbfo.Defense(
-    specialB.name, eg.name, sb, bp, useCase, am);
-  if (DEBUG_34SS) {
-    console.log(`Defense adding ${sb_total} to: ${ba}`);
-  }
-  ba += sb_total;
-  sb_total = tbfo.DeAttack(
-    specialB.name, eg.name, sb, bp, useCase, am);
-  if (DEBUG_34SS) {
-    console.log(`DeAttack adding ${sb_total} to: ${ba}`);
-  }
-  ba += sb_total;
+
   sb_total = tbfo.DeHP(
     specialB.name, eg.name, sb, bp, useCase, am);
   if (DEBUG_34SS) {
@@ -64,16 +47,11 @@ const buffReductionLogic = (specialB: SpecialityType, eg: ExtendedGeneralType, s
     console.log(`DeDefense adding ${sb_total} to: ${ba}`);
   }
   ba += sb_total;
-  sb_total = tbfo.Preservation(
+
+  sb_total = tbfo.Range(
     specialB.name, eg.name, sb, bp, useCase, am);
   if (DEBUG_34SS) {
-    console.log(`Preservation adding ${sb_total} to: ${ba}`);
-  }
-  ba += sb_total;
-  sb_total = tbfo.Debilitation(
-    specialB.name, eg.name, sb, bp, useCase, am);
-  if (DEBUG_34SS) {
-    console.log(`Debilitation adding ${sb_total} to: ${ba}`);
+    console.log(`Range adding ${sb_total} to: ${ba}`);
   }
   ba += sb_total;
   return ba;

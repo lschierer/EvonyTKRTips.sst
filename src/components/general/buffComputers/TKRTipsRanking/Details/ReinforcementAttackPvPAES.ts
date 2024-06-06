@@ -38,24 +38,7 @@ function buffDetailsReducerLogic(tbf: BuffFunctionInterface, index: number, ab: 
     console.log(`accumulating ${tbscore}`);
   }
   a3 += tbscore;
-  tbscore = tbf.HP(
-    `Star ${index} ${ab.level}`, eg.name, actual, bp, useCase, am);
-  if (DEBUG_AES) {
-    console.log(`accumulating ${tbscore}`);
-  }
-  a3 += tbscore;
-  tbscore = tbf.Defense(
-    `Star ${index} ${ab.level}`, eg.name, actual, bp, useCase, am);
-  if (DEBUG_AES) {
-    console.log(`accumulating ${tbscore}`);
-  }
-  a3 += tbscore;
-  tbscore = tbf.DeAttack(
-    `Star ${index} ${ab.level}`, eg.name, actual, bp, useCase, am);
-  if (DEBUG_AES) {
-    console.log(`accumulating ${tbscore}`);
-  }
-  a3 += tbscore;
+
   tbscore = tbf.DeHP(
     `Star ${index} ${ab.level}`, eg.name, actual, bp, useCase, am);
   if (DEBUG_AES) {
@@ -68,13 +51,8 @@ function buffDetailsReducerLogic(tbf: BuffFunctionInterface, index: number, ab: 
     console.log(`accumulating ${tbscore}`);
   }
   a3 += tbscore;
-  tbscore = tbf.Preservation(
-    `Star ${index} ${ab.level}`, eg.name, actual, bp, useCase, am);
-  if (DEBUG_AES) {
-    console.log(`accumulating ${tbscore}`);
-  }
-  a3 += tbscore;
-  tbscore = tbf.Debilitation(
+
+  tbscore = tbf.Range(
     `Star ${index} ${ab.level}`, eg.name, actual, bp, useCase, am);
   if (DEBUG_AES) {
     console.log(`accumulating ${tbscore}`);

@@ -62,11 +62,6 @@ export const PvPBSS = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFun
               }
               a2 += tbscore;
 
-              tbscore = (typedBuffFunction.Range(bisb.name, eg.name, tb, bp, useCase, am));
-              if (DEBUG_BSS) {
-                console.log(`${eg.name}: ${book.name}: accumulating ${tbscore}`);
-              }
-              a2 += tbscore;
               return a2;
             }, 0);
             if(DEBUG_BSS){
