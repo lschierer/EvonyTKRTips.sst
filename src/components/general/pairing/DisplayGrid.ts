@@ -156,8 +156,6 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
     }
   }
 
-  private rowIndexer()
-
   constructor() {
     super();
 

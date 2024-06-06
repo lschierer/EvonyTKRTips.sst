@@ -33,7 +33,7 @@ import {
 } from '@schemas/ExtendedGeneral';
 
 import { EvAnsScoreComputer } from '../buffComputers/EvAnsRanking/EvAnsScoreComputer';
-import { AttackScoreComputer } from '../buffComputers/TKRTipsRanking/AttackScoreComputer';
+import { AttackingScoreComputer } from '../buffComputers/TKRTipsRanking/AttackScoreComputer';
 import { ToughnessScoreComputer } from '../buffComputers/TKRTipsRanking/ToughnessScoreComputer';
 
 const DEBUG = false;
@@ -210,7 +210,7 @@ export class GridPair {
           display,
           this.pInvestment
         );
-        this.pAttackRanking = AttackScoreComputer(
+        this.pAttackRanking = AttackingScoreComputer(
           this.useCase,
           this._primary,
           display,
@@ -246,7 +246,7 @@ export class GridPair {
           display,
           this.sInvestment
         );
-        this.sAttackRanking = AttackScoreComputer(
+        this.sAttackRanking = AttackingScoreComputer(
           this.useCase,
           this._secondary,
           display,
