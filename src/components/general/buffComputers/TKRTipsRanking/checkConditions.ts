@@ -71,10 +71,10 @@ export const checkInvalidConditions = z
       }
 
       const r1 = conditions.map((c)=> {
-        return !(tb.condition && tb.condition.includes(c));
+        return !(tb.condition?.includes(c));
       })
       const r2 = debuffConditions.map((dc) => {
-        return !(tb.condition && tb.condition.includes(dc));
+        return !(tb.condition?.includes(dc));
       })
       if(r1.includes(false) || r2.includes(false)) {
         return false;

@@ -3,33 +3,22 @@ import type { ComponentProps } from 'astro/types';
 
 import { ulid } from 'ulidx';
 
-import { delay } from 'nanodelay';
-
-import { DisplayGrid } from './DisplayGrid';
 import AllPairs from '@components/general/AllPairs.astro';
 type AllPairsPropsType = ComponentProps<typeof AllPairs>;
+
+import {DisplayGrid} from './DisplayGrid'
 
 import {
   AscendingLevels,
   type BuffParamsType,
-  ClassEnum,
-  type ClassEnumType,
   qualityColor,
 } from '../../../schemas/baseSchemas';
 
 import {
-  GeneralElement,
-  type GeneralClassType,
   type GeneralElementType,
   type generalSpecialistsType,
   type generalUseCaseType, generalUseCase,
 } from '../../../schemas/generalsSchema';
-
-import {
-  type ExtendedGeneralType,
-  ExtendedGeneralStatus,
-  type GeneralPairType,
-} from '@schemas/ExtendedGeneral';
 
 const DEBUG = true;
 
@@ -52,8 +41,6 @@ if(useCase === null || useCase === undefined) {
 }
 
 const table_name = `${Astro.url.pathname}-${ulid()}`;
-
-let allGenerals = new Array<GeneralElementType>();
 
 //while no general can *have* both, I can evaluate generals assuming I will give them whichever that particular one needs.
 let MyInvestmentLevel: BuffParamsType = {

@@ -1,40 +1,19 @@
 import { defineMiddleware } from 'astro:middleware';
-import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
 
 import { z } from 'zod';
 
 import {
-  AscendingLevels,
-  BuffParams,
-  type BuffParamsType,
-  qualityColor,
-} from '@schemas/baseSchemas';
-
-import {
-  ConflictDatum,
   type ConflictDatumType,
 } from '@schemas/conflictSchemas';
 
 import {
-  Display,
   GeneralClass,
-  type GeneralClassType,
-  generalUseCase,
 } from '@schemas/generalsSchema';
-
-import { Speciality, type SpecialityType } from '@schemas/specialitySchema';
 
 import {
   type GeneralPairType,
   type ExtendedGeneralType,
 } from '@schemas/ExtendedGeneral';
-
-import {
-  Book,
-  type BookType,
-  type specialSkillBookType,
-  type standardSkillBookType,
-} from '@schemas/bookSchemas';
 
 const DEBUG = false;
 
@@ -43,8 +22,6 @@ export const DisplayGeneralsMWRoutes = ['/generals/'];
 export const DisplayGeneralsMW = defineMiddleware(
   async ({ locals, url }, next) => {
     let continueHandler = false;
-
-    const re = /[[\]'",]/g;
 
     //define a bunch of functions almost like a class
 
@@ -80,7 +57,7 @@ export const DisplayGeneralsMW = defineMiddleware(
         } else {
           const valid = GeneralClass.safeParse(general);
           if (valid.success) {
-            //double checking because I seem to be hitting race conditions.
+            //double-checking because I seem to be hitting race conditions.
             const present = locals.CachedGenerals.some(
               (element: ExtendedGeneralType) => {
                 return !element.name.localeCompare(valid.data.name);

@@ -22,7 +22,7 @@ import { BookType } from '../../schemas/bookSchemas';
 
 import {EvAnsScoreComputer} from '@components/general/buffComputers/EvAnsRanking/EvAnsScoreComputer';
 
-const DEBUG = true;
+const DEBUG = false;
 
 interface Props {
   TargetClass?: generalSpecialistsType;
@@ -30,7 +30,7 @@ interface Props {
 
 let { TargetClass } = Astro.props;
 
-if (!TargetClass.toLocaleString().toLocaleLowerCase().localeCompare(generalSpecialists.enum.Monsters)) {
+if (!TargetClass?.toLocaleString().toLocaleLowerCase().localeCompare(generalSpecialists.enum.Monsters)) {
   TargetClass = generalSpecialists.enum.Mounted;
 } else {
   if(DEBUG) {

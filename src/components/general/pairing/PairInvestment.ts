@@ -1,6 +1,4 @@
-import { nothing } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
-import { ref } from 'lit/directives/ref.js';
+import { customElement, property,  } from 'lit/decorators.js';
 
 import { z } from 'zod';
 
@@ -8,7 +6,6 @@ import {
   SizedMixin,
   SpectrumElement,
   type CSSResultArray,
-  type CSSResult,
   html,
   css,
   unsafeCSS,
@@ -37,7 +34,7 @@ import { Slider } from '@spectrum-web-components/slider';
 
 import { AscendingLevels, type BuffParamsType, qualityColor, type qualityColorType } from '@schemas/baseSchemas.ts';
 
-import { animal, type animalType } from '@schemas/beastSchemas';
+import { animal,  } from '@schemas/beastSchemas';
 
 const DEBUG = true;
 

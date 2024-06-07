@@ -1,12 +1,3 @@
-import { fromFetch } from 'rxjs/fetch';
-import {
-  BehaviorSubject,
-  from,
-  map,
-  concatMap,
-  switchMap,
-  throwError,
-} from 'rxjs';
 import { z } from 'zod';
 
 import {
@@ -19,16 +10,13 @@ import {
 import {
   Display,
   type DisplayType,
-  generalRole,
+
   type generalRoleType,
   generalUseCase, type generalUseCaseType,
 } from '@schemas/generalsSchema';
 
 import {
   type ExtendedGeneralType,
-  ExtendedGeneralStatus,
-  type ExtendedGeneralStatusType,
-  type RankInstanceType,
   ExtendedGeneral,
 } from '@schemas/ExtendedGeneral';
 
@@ -238,7 +226,7 @@ export class GridPair {
         );
         if (DEBUG) {
           console.log(
-            `GeneralBuffs ${display} ${this._primary}: ${this.pEvAnsRanking}, ${this.pAttackRanking}, ${this.pToughnessRanking}`
+            `GeneralBuffs ${display} ${this._primary.name}: ${this.pEvAnsRanking}, ${this.pAttackRanking}, ${this.pToughnessRanking}`
           );
         }
         if (
@@ -274,7 +262,7 @@ export class GridPair {
         );
         if (DEBUG) {
           console.log(
-            `GeneralBuffs ${display} ${this._secondary}: ${this.sEvAnsRanking}, ${this.sAttackRanking}, ${this.sToughnessRanking}`
+            `GeneralBuffs ${display} ${this._secondary.name}: ${this.sEvAnsRanking}, ${this.sAttackRanking}, ${this.sToughnessRanking}`
           );
         }
         if (

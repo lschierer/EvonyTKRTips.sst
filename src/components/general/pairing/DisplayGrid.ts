@@ -1,15 +1,9 @@
 
-// noinspection SpellCheckingInspection
-
-import { z } from 'zod';
-
 import {
   GridApi,
   type GridOptions,
   createGrid,
   type RowNodeTransaction,
-  type GridReadyEvent,
-  type ValueGetterParams,
   ModuleRegistry,
 } from 'ag-grid-community';
 import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
@@ -97,7 +91,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
 
   private gridOptions: GridOptions<GridPair> = {};
 
-  // @ts-ignore
+  // @ts-expect-error
   private grid: GridApi<GridPair>;
 
   handleMutation(): void {
@@ -117,7 +111,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
         await Promise.all(
           batch.map(async (pair) => {
             const delayValue = Math.floor(Math.random() * batch.length);
-            await delay(delayValue).then(async () => {
+            await delay(delayValue).then( () => {
               if (DEBUG) {
                 console.log(
                   `DisplayGrid getData RawPairs index ${i}, ${delayValue} ${pair.primary.name} ${pair.secondary.name}`
@@ -312,7 +306,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
     }
   }
 
-  protected override async willUpdate(_changedProperties: PropertyValues) {
+  protected override  willUpdate(_changedProperties: PropertyValues) {
     super.willUpdate(_changedProperties);
 
     if (_changedProperties.has('RawPairs')) {
