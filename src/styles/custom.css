@@ -16,6 +16,7 @@ governing permissions and limitations under the License.
 @import '@spectrum-css/vars/dist/spectrum-global.css';
 @import '@spectrum-css/vars/dist/spectrum-medium.css';
 @import '@spectrum-css/page/dist/index.css';
+@import '@spectrum-css/tokens/dist/index.css';
 @import 'ag-grid-community/styles/ag-grid.css';
 @import 'ag-grid-community/styles/ag-theme-balham.css';
 
