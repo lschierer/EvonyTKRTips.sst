@@ -5,6 +5,7 @@ import { Icon } from '@astrojs/starlight/components';
 
 {/* This is intentionally inlined to avoid FOUC. */}
 <script is:inline>
+
   window.StarlightThemeProvider = (() => {
     const storedTheme =
       typeof localStorage !== 'undefined' &&
@@ -50,6 +51,23 @@ import { Icon } from '@astrojs/starlight/components';
               }
             }
           });
+        if(theme === 'light' || theme === 'dark') {
+          document.querySelectorAll('sp-theme').forEach((sptheme) => {
+            if(theme === 'light') {
+              const colorattribute = sptheme.getAttribute('color');
+              if(colorattribute && colorattribute.localeCompare('light')){
+                sptheme.setAttribute('color','light');
+              }
+            }else if(theme === 'dark') {
+              const colorattribute = sptheme.getAttribute('color');
+              if(colorattribute && colorattribute.localeCompare('dark')){
+                sptheme.setAttribute('color','dark');
+              }
+            }else {
+              console.error`failure setting theme`
+            }
+          });
+        }
       },
     };
   })();
