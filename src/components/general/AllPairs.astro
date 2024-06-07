@@ -91,16 +91,16 @@ if (Astro.locals.CachedGenerals.length > 0) {
       const relConflicts = Astro.locals.ConflictData.some(
         (cDatum: ConflictDatumType) => {
           const c = Object.values(cDatum.members).flat();
-          if (Array.isArray(cDatum.others)) {
-            c.push(...Object.values(cDatum.others).flat());
-          }
           if (c.includes(primary.name)) {
+            if (Array.isArray(cDatum.others)) {
+              c.push(...Object.values(cDatum.others).flat());
+            }
             if (c.includes(secondary.name)) {
               return true;
             }
           }
           return false;
-        }
+        },
       );
       if (!relConflicts) {
         if (DEBUG) {
@@ -114,7 +114,7 @@ if (Astro.locals.CachedGenerals.length > 0) {
               }
             }
             return false;
-          }
+          },
         );
         if (!present) {
           if (DEBUG) {
@@ -161,15 +161,15 @@ if (Astro.locals.CachedGenerals.length > 0) {
 
 {
   DEBUG && Astro.locals.CachedPairs && (
-    <ol>
-      {Astro.locals.CachedPairs.map((thisPair: GeneralPairType) => (
-        <li>
-          <ul>
-            <li>Primary: {thisPair.primary.name}</li>
-            <li>Secondary: {thisPair.secondary.name}</li>
-          </ul>
-        </li>
-      ))}
-    </ol>
-  )
-}
+  <ol>
+    {Astro.locals.CachedPairs.map((thisPair: GeneralPairType) => (
+      <li>
+        <ul>
+          <li>Primary: {thisPair.primary.name}</li>
+          <li>Secondary: {thisPair.secondary.name}</li>
+        </ul>
+      </li>
+    ))}
+  </ol>
+    )
+  }
