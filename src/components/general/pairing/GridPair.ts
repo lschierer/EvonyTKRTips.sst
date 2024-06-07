@@ -157,21 +157,34 @@ export class GridPair {
     const v = BuffParams.safeParse(level);
     if (v.success) {
       this.pInvestment = v.data;
-      this.sInvestment = {
-        special1: v.data.special1,
-        special2: v.data.special2,
-        special3: v.data.special3,
-        special4: v.data.special4,
-        special5: v.data.special5,
-        stars: AscendingLevels.enum['0'],
-        dragon: v.data.dragon,
-        beast: v.data.beast,
-      };
+      if(this.sInvestment === null || this.sInvestment === undefined) {
+        this.sInvestment = {
+          special1: v.data.special1,
+          special2: v.data.special2,
+          special3: v.data.special3,
+          special4: v.data.special4,
+          special5: v.data.special5,
+          stars: AscendingLevels.enum['0'],
+          dragon: v.data.dragon,
+          beast: v.data.beast,
+        };
+      }
     }
   }
 
   get InvestmentLevel(): BuffParamsType {
     return this.pInvestment;
+  }
+
+  get SecondaryInvestmentLevel(): BuffParamsType {
+    return this.sInvestment;
+  }
+
+  set SecondaryInvestmentLevel(level: BuffParamsType) {
+    const v = BuffParams.safeParse(level);
+    if(v.success) {
+      this.sInvestment = v.data;
+    }
   }
 
   public async getSkillBooks(forG: generalRoleType) {
@@ -188,8 +201,9 @@ export class GridPair {
       return JSON.stringify(BP).replace(GridPair.InvestmentOptionsRE, '');
     });
 
-  public BuffsForInvestment(BP: BuffParamsType) {
-    this.InvestmentLevel = BP;
+  public BuffsForInvestment(pBP: BuffParamsType, sBP: BuffParamsType) {
+    this.InvestmentLevel = pBP;
+    this.SecondaryInvestmentLevel = sBP;
     this.GeneralBuffs(Display.enum.primary);
     this.GeneralBuffs(Display.enum.secondary);
   }

@@ -7,6 +7,7 @@ import {
   GridApi,
   type GridOptions,
   createGrid,
+  type RowNodeTransaction,
   type GridReadyEvent,
   type ValueGetterParams,
   ModuleRegistry,
@@ -19,12 +20,10 @@ ModuleRegistry.registerModules([ClientSideRowModelModule]);
 
 import { delay } from 'nanodelay';
 
-const DEBUG = true;
+const DEBUG = false;
 
 import { customElement, property, state } from 'lit/decorators.js';
-import { repeat } from 'lit/directives/repeat.js';
-import { asyncAppend } from 'lit/directives/async-append.js';
-import { ref } from 'lit/directives/ref.js';
+import { ref, createRef, type Ref } from 'lit/directives/ref.js';
 
 import {
   SizedMixin,
@@ -48,15 +47,14 @@ import {
 } from '@schemas/baseSchemas';
 
 import {
-  Display, type DisplayType,
-  GeneralClass,
   generalRole,
-  type generalRoleType,
   generalUseCase,
   type generalUseCaseType,
 } from '@schemas/generalsSchema';
 
 import { type GeneralPairType } from '@schemas/ExtendedGeneral';
+
+import {PairInvestment} from './PairInvestment.ts';
 
 import { GridPair } from './GridPair';
 
@@ -67,8 +65,17 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
   @property({ type: String })
   public tableName = '';
 
-  @property({ type: Object })
+  @property({
+    type: Object,
+    reflect: true
+  })
   public InvestmentLevel: BuffParamsType;
+
+  @property({
+    type: Object,
+    reflect: true
+  })
+  public SecondaryInvestmentLevel: BuffParamsType;
 
   @property({
     type: String,
@@ -76,13 +83,12 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
   })
   public useCase: generalUseCaseType = generalUseCase.enum.all;
 
-  @state()
-  private sInvestment: BuffParamsType;
-
   @property({ type: Object })
   public RawPairs: GeneralPairType[] = new Array<GeneralPairType>();
 
   //private tableDivRef: Ref<HTMLElement> = createRef()
+  private InvestmentSelectorRef: Ref<PairInvestment> = createRef();
+
 
   private MutationObserver: MutationObserver;
 
@@ -138,7 +144,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
             console.log(`getData: index ${i} newRows: ${newRows.length} `);
           }
           newRows.forEach((dp) => {
-            dp.BuffsForInvestment(this.InvestmentLevel);
+            dp.BuffsForInvestment(this.InvestmentLevel, this.SecondaryInvestmentLevel);
           });
           this._DisplayPairs.push(...newRows);
           if (this.grid !== null && this.grid !== undefined) {
@@ -209,11 +215,14 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
         wrapHeaderText: true,
         autoHeaderHeight: true,
       },
+      suppressModelUpdateAfterUpdateTransaction: false,
       onGridReady: (params) => {
         this.getData();
         params.api.setGridOption('rowData', this._DisplayPairs);
       },
     };
+
+    this.addEventListener('InvestmentLevelUpdate', this.UpdateInvestmentAndGridData);
 
     this.InvestmentLevel = {
       special1: qualityColor.enum.Gold,
@@ -226,7 +235,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       beast: true,
     };
 
-    this.sInvestment = {
+    this.SecondaryInvestmentLevel = {
       special1: qualityColor.enum.Gold,
       special2: qualityColor.enum.Gold,
       special3: qualityColor.enum.Gold,
@@ -236,6 +245,54 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       dragon: true,
       beast: true,
     };
+  }
+
+  private printResult(res: RowNodeTransaction) {
+    console.log("---------------------------------------");
+    if (res.add) {
+      res.add.forEach((rowNode) => {
+        console.log("Added Row Node", rowNode);
+      });
+    }
+    if (res.remove) {
+      res.remove.forEach((rowNode) => {
+        console.log("Removed Row Node", rowNode);
+      });
+    }
+    if (res.update) {
+      res.update.forEach((rowNode) => {
+        console.log("Updated Row Node", rowNode);
+      });
+    }
+  }
+
+  private UpdateInvestmentAndGridData = () => {
+    console.log(`UpdateInvestmentAndGridData`)
+    if(this.InvestmentSelectorRef.value !== undefined) {
+      console.log(`UpdateInvestmentAndGridData with target node`)
+      this.InvestmentLevel = this.InvestmentSelectorRef.value.PrimaryInvestmentLevel;
+      this.SecondaryInvestmentLevel = this.InvestmentSelectorRef.value.SecondaryInvestmentLevel;
+      if(this.grid !== null && this.grid !== undefined) {
+        console.log(`UpdateInvestmentAndGridData; with BuffParams & grid`)
+        let transaction = new Array<GridPair>();
+        this.grid.forEachNode((irgp, index) => {
+          if(irgp.data !== undefined && irgp.data !== null) {
+            irgp.data.BuffsForInvestment(this.InvestmentLevel, this.SecondaryInvestmentLevel);
+            if(!(index % 10)) {
+              const res = this.grid.applyTransaction({
+                update: transaction
+              })
+              if(DEBUG && res) {
+                console.log(this.printResult(res))
+              }
+              transaction = new Array<GridPair>();
+            }
+          }
+        })
+        this.grid.refreshClientSideRowModel('sort')
+      }
+    }
+    this.requestUpdate('InestmentLevel');
   }
 
   protected override firstUpdated(_changedProperties: PropertyValues): void {
@@ -257,6 +314,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
 
   protected override async willUpdate(_changedProperties: PropertyValues) {
     super.willUpdate(_changedProperties);
+
     if (_changedProperties.has('RawPairs')) {
       if (DEBUG) {
         console.log(`willUpdate called for RawPairs`);
@@ -339,13 +397,20 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
         }
       }
       if (Array.isArray(this._DisplayPairs) && this._DisplayPairs.length > 0) {
-        this._DisplayPairs.forEach((dp, index) => {
-          dp.BuffsForInvestment(this.InvestmentLevel);
-          if (index % 10 === 0) {
-            this.grid.setGridOption('rowData', this._DisplayPairs);
-          }
-        });
-        this.grid.setGridOption('rowData', this._DisplayPairs);
+        if(this.grid?.getGridOption('rowData')?.length !== this._DisplayPairs.length) {
+          let transaction = new Array<GridPair>();
+          this._DisplayPairs.forEach((dp, index) => {
+            dp.BuffsForInvestment(this.InvestmentLevel, this.SecondaryInvestmentLevel);
+            if (index % 10 === 0) {
+              this.grid.applyTransaction({
+                add: transaction
+              });
+              transaction = new Array<GridPair>();
+            }else {
+              transaction.push(dp)
+            }
+          });
+        }
       } else {
         if (DEBUG) {
           console.log(`renderGrid _DisplayPairs is not populated`);
@@ -363,6 +428,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       this.grid.setGridOption('rowData', this._DisplayPairs);
     }
     return html`
+      <pair-investment ${ref(this.InvestmentSelectorRef)} ></pair-investment>
       <div
         id="agdiv"
         class="ag-theme-balham"

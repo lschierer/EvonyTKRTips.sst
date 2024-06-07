@@ -2,6 +2,13 @@ import { z as zod } from 'zod';
 
 import * as b from './baseSchemas';
 
+export const animal = zod.enum([
+  'none',
+  'beast',
+  'dragon'
+])
+export type animalType = zod.infer<typeof animal>;
+
 export const beast = zod.object({
   name: zod.string(),
   quality: b.qualityColor,
