@@ -13,7 +13,8 @@ import {
 
 import {AttributeMultipliers, type AttributeMultipliersType} from '@schemas/EvAns.zod'
 
-import { checkInvalidConditions } from './ReinforcementPvPBase.ts';
+import { checkInvalidConditions } from '../checkConditions';
+import { generalUseCase, type generalUseCaseType } from '@schemas/generalsSchema.ts';
 
 const DEBUGA = false;
 
@@ -66,7 +67,7 @@ const AttackBuffDetailCheck = z
 
 export const AttackBuff = z
   .function()
-  .args(z.string(), z.string(), Buff, BuffParams, AttributeMultipliers)
+  .args(z.string(), z.string(), Buff, BuffParams, generalUseCase, AttributeMultipliers)
   .returns(z.number())
   .implement(
     (
@@ -74,6 +75,7 @@ export const AttackBuff = z
       generalName: string,
       tb: BuffType,
       iv: BuffParamsType,
+      useCase: generalUseCaseType,
       am: AttributeMultipliersType
     ) => {
       const multiplier = 0;
@@ -110,7 +112,7 @@ export const AttackBuff = z
           } else {
             //check if buff has some conditions that never work for this activation condition
             if (tb.condition !== null && tb.condition !== undefined) {
-              if (checkInvalidConditions(tb, iv)) {
+              if (checkInvalidConditions(tb, iv, useCase)) {
                 //I probably ought to rename that function, but if I get here,
                 //there were no invalid conditions
                 if (
