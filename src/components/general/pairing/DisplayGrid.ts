@@ -425,7 +425,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       <pair-investment ${ref(this.InvestmentSelectorRef)} ></pair-investment>
       <div
         id="agdiv"
-        class="ag-theme-balham"
+        class="ag-theme-balham-auto-dark"
         style="height: 500px;"
         ${ref(this.renderGrid)}
       ></div>
