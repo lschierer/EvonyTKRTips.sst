@@ -1,5 +1,5 @@
 ---
-export const prerender = false;
+export const prerender = true;
 
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 import type {
@@ -14,11 +14,15 @@ import type { ComponentProps } from 'astro/types';
 import AllGenerals from '@components/general/AllGenerals.astro';
 import AllConflicts from '@components/general/AllConflicts.astro';
 
-import { generalSpecialists, generalUseCase, type generalUseCaseType } from '../../../schemas/generalsSchema';
+import {
+  generalSpecialists,
+  generalUseCase,
+  type generalSpecialistsType
+} from '../../../schemas/generalsSchema';
 
 const DEBUG = true;
 
-/*export const getStaticPaths = (async () => {
+export const getStaticPaths = (async () => {
   const pairEntries = await getCollection('docs', ({id}) => {
     return id.includes('pair-picking');
   });
@@ -40,13 +44,13 @@ const DEBUG = true;
 type Params = InferGetStaticParamsType<typeof getStaticPaths>;
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
-const {entry} = Astro.props;*/
+const {entry}: Props = Astro.props;
 
-const { Specialist } = Astro.params;
-let entry: CollectionEntry<'docs'> | undefined;
+const { Specialist }: Params = Astro.params;
+/*let entry: CollectionEntry<'docs'> | undefined;
 if(Specialist !== null && Specialist !== undefined) {
   entry = await getEntry('docs', `generals/pair-picking/${Specialist}`);
-}
+}*/
 
 if(entry === undefined || entry === null) {
   if(DEBUG) {
@@ -57,21 +61,21 @@ if(entry === undefined || entry === null) {
   }
 }
 
-let TargetClass: generalUseCaseType;
+let TargetClass: generalSpecialistsType;
 if(!Specialist.toLocaleLowerCase().localeCompare(generalSpecialists.enum.Archers.toLocaleLowerCase())) {
-  TargetClass = generalUseCase.enum.Archers;
+  TargetClass = generalSpecialists.enum.Archers;
 } else if (!Specialist.toLocaleLowerCase().localeCompare(generalSpecialists.enum.Mounted.toLocaleLowerCase())) {
-  TargetClass = generalUseCase.enum.Mounted;
+  TargetClass = generalSpecialists.enum.Mounted;
 } else if (!Specialist.toLocaleLowerCase().localeCompare(generalSpecialists.enum.Monsters.toLocaleLowerCase())) {
-  TargetClass = generalUseCase.enum.Mounted;
+  TargetClass = generalSpecialists.enum.Mounted;
 } else if (! Specialist.toLocaleLowerCase().localeCompare(generalSpecialists.enum.Ground.toLocaleLowerCase())) {
-  TargetClass = generalUseCase.enum.Ground;
+  TargetClass = generalSpecialists.enum.Ground;
 } else if (!Specialist.toLocaleLowerCase().localeCompare(generalSpecialists.enum.Siege.toLocaleLowerCase())) {
-  TargetClass = generalUseCase.enum.Siege;
+  TargetClass = generalSpecialists.enum.Siege
 } else if (!Specialist.toLocaleLowerCase().localeCompare(generalSpecialists.enum.Wall.toLocaleLowerCase())) {
-  TargetClass = generalUseCase.enum.Wall;
+  TargetClass = generalSpecialists.enum.Wall;
 } else if (!Specialist.toLocaleLowerCase().localeCompare(generalSpecialists.enum.Mayor.toLocaleLowerCase())) {
-  TargetClass = generalUseCase.enum.Mayor;
+  TargetClass = generalSpecialists.enum.Mayor;
 } else {
   if(DEBUG) {
     console.log(`Specialist ${Specialist} not valid`)

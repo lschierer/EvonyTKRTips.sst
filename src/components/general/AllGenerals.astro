@@ -1,11 +1,9 @@
 ---
 import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
 
-
 import { BuffParamsType, qualityColor, AscendingLevels } from '../../schemas/baseSchemas';
 
 import {
-
   Display,
   type GeneralClassType,
   type GeneralElementType,
@@ -21,12 +19,11 @@ import { SpecialityType } from '../../schemas/specialitySchema';
 import { BookType } from '../../schemas/bookSchemas';
 
 import {EvAnsScoreComputer} from '@components/general/buffComputers/EvAnsRanking/EvAnsScoreComputer';
-import { generalUseCaseType } from '../../schemas/generalsSchema';
 
 const DEBUG = false;
 
 interface Props {
-  TargetClass?: generalUseCaseType;
+  TargetClass?: generalSpecialistsType;
   }
 
 let { TargetClass } = Astro.props;
