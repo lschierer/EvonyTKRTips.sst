@@ -4,9 +4,6 @@ import { delay } from 'nanodelay';
 import { BaseN } from 'js-combinatorics';
 
 import {
-  GeneralClass,
-  type GeneralClassType,
-  Display,
   type generalSpecialistsType,
   generalSpecialists,
 } from '@schemas/generalsSchema';
@@ -34,8 +31,8 @@ if (Astro.locals.CachedGenerals.length > 0) {
   }
   const generalBaseN = new BaseN(Astro.locals.CachedGenerals, 2);
   [...generalBaseN].forEach((pPair: ExtendedGeneralType[]) => {
-    const primary = pPair[0];
-    const secondary = pPair[1];
+    const primary: ExtendedGeneralType = pPair[0];
+    const secondary: ExtendedGeneralType = pPair[1];
     if (primary === undefined || secondary === undefined) {
       return;
     }
@@ -156,11 +153,15 @@ if (Astro.locals.CachedGenerals.length > 0) {
       }
     }
   });
+} else{
+  if (DEBUG) {
+    console.log(`Cached Pairs finds empty Astro.locals.CachedPairs.`);
+  }
 }
 ---
 
-{
-  DEBUG && Astro.locals.CachedPairs && (
+<div class="hidden">
+  All Pairs Component
   <ol>
     {Astro.locals.CachedPairs.map((thisPair: GeneralPairType) => (
       <li>
@@ -171,5 +172,9 @@ if (Astro.locals.CachedGenerals.length > 0) {
       </li>
     ))}
   </ol>
-    )
+</div>
+<style>
+  .hidden {
+    display: none;
   }
+</style>
