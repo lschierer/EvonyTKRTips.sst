@@ -17,6 +17,10 @@ export default defineConfig({
   devToolbar: {
     enabled: false
   },
+  redirects: {
+    '/generals/pair-picking/cavalry/': '/generals/pair-picking/mounted/',
+    '/generals/pair-picking/monster-hunters/': '/generals/pair-picking/monsters/',
+  },
   prefetch: {
     prefetchAll: false,
     defaultStrategy: 'tap',
