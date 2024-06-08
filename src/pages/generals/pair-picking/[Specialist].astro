@@ -20,7 +20,7 @@ import {
   type generalSpecialistsType
 } from '../../../schemas/generalsSchema';
 
-const DEBUG = true;
+const DEBUG = false;
 
 export const getStaticPaths = (async () => {
   const pairEntries = await getCollection('docs', ({id}) => {
@@ -77,12 +77,7 @@ if(!Specialist.toLocaleLowerCase().localeCompare(generalSpecialists.enum.Archers
 } else if (!Specialist.toLocaleLowerCase().localeCompare(generalSpecialists.enum.Mayor.toLocaleLowerCase())) {
   TargetClass = generalSpecialists.enum.Mayor;
 } else {
-  if(DEBUG) {
-    console.log(`Specialist ${Specialist} not valid`)
-    throw new Error('Specialist is required');
-  } else {
-    return Astro.redirect('/404');
-  }
+  TargetClass = undefined;
 }
 
 if(DEBUG) {
@@ -100,7 +95,8 @@ const { Content } = await entry.render();
   }}
 >
   {DEBUG && `Dynamic Template`}
-  <AllGenerals TargetClass={TargetClass} />
+  {(TargetClass !== undefined) ? (<AllGenerals TargetClass={TargetClass} />) :
+    (<AllGenerals />)}
   <AllConflicts />
   <Content />
 </StarlightPage>
