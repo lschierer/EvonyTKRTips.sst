@@ -30,7 +30,9 @@ import {
 } from '@spectrum-web-components/base';
 
 import '@spectrum-css/tokens/dist/index.css';
+import SpectrumTokens from '@spectrum-css/tokens/dist/index.css?inline';
 import '@spectrum-css/typography/dist/index.css';
+import SpectrumTypography from '@spectrum-web-components/styles/typography.css?inline';
 import '@spectrum-css/icon/dist/index.css';
 import '@spectrum-css/table/dist/index.css';
 
@@ -350,6 +352,8 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
   public static override get styles(): CSSResultArray {
     const AGBaseCSS = unsafeCSS(BaseAGCSSImport);
     const AlpineCSS = unsafeCSS(BalhamImport);
+    const SpectrumTokensCSS = unsafeCSS(SpectrumTokens);
+    const SpectrumTypographyCSS = unsafeCSS(SpectrumTypography)
     const localStyle = css`
       .ag-theme-balham,
       .ag-theme-balham-dark {
@@ -363,9 +367,9 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       }
     `;
     if (super.styles !== undefined && Array.isArray(super.styles)) {
-      return [...super.styles, AGBaseCSS, AlpineCSS, localStyle];
+      return [...super.styles, AGBaseCSS, AlpineCSS, SpectrumTokensCSS, SpectrumTypographyCSS, localStyle];
     } else {
-      return [AGBaseCSS, AlpineCSS, localStyle];
+      return [AGBaseCSS, AlpineCSS, SpectrumTokensCSS, SpectrumTypographyCSS, localStyle];
     }
   }
 
