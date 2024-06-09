@@ -20,10 +20,15 @@ import '@spectrum-web-components/radio/sp-radio.js';
 import '@spectrum-web-components/radio/sp-radio-group.js';
 import '@spectrum-web-components/slider/sp-slider.js';
 
-import SpectrumTypography from '@spectrum-web-components/styles/typography.css?inline';
-import SpectrumScaleMedium from '@spectrum-web-components/styles/scale-medium.css?inline';
-import SpectrumTokens from '@spectrum-css/page/dist/index.css?inline';
+import '@spectrum-css/tokens/dist/index.css';
+
+import '@spectrum-css/vars/dist/spectrum-medium.css';
 import '@spectrum-css/page/dist/index.css';
+import SpectrumTypography from '@spectrum-web-components/styles/typography.css?inline';
+import SpectrumWebScaleMedium from '@spectrum-web-components/styles/scale-medium.css?inline';
+import SpectrumMedium from '@spectrum-css/vars/dist/spectrum-medium.css?inline';
+import SpectrumTokens from '@spectrum-css/tokens/dist/index.css?inline';
+import SpectrumPage from '@spectrum-css/page/dist/index.css?inline';
 
 
 import { Picker } from '@spectrum-web-components/picker';
@@ -372,8 +377,10 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
 
   public static override get styles(): CSSResultArray {
     const SpectrumTypographyCSS = unsafeCSS(SpectrumTypography);
-    const SpectrumScaleMediumCSS = unsafeCSS(SpectrumScaleMedium);
+    const SpectrumScaleMediumCSS = unsafeCSS(SpectrumWebScaleMedium);
     const SpectrumTokensCSS = unsafeCSS(SpectrumTokens);
+    const SpectrumMediumCSS = unsafeCSS(SpectrumMedium);
+    const SpectrumPageCSS = unsafeCSS(SpectrumPage);
     const localStyle = css`
       
       .GeneralOptions {
@@ -409,9 +416,9 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
     `;
 
     if (super.styles !== undefined && Array.isArray(super.styles)) {
-      return [...super.styles, SpectrumTypographyCSS, SpectrumScaleMediumCSS, SpectrumTokensCSS, localStyle];
+      return [...super.styles, SpectrumTypographyCSS, SpectrumScaleMediumCSS, SpectrumTokensCSS, SpectrumMediumCSS, SpectrumPageCSS, localStyle];
     } else {
-      return [SpectrumTypographyCSS, SpectrumScaleMediumCSS, SpectrumTokensCSS, localStyle];
+      return [SpectrumTypographyCSS, SpectrumScaleMediumCSS, SpectrumTokensCSS, SpectrumMediumCSS, SpectrumPageCSS, localStyle];
     }
   }
 
