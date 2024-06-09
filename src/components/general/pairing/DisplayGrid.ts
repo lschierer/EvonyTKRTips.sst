@@ -274,17 +274,18 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
         this.grid.forEachNode((irgp, index) => {
           if(irgp.data !== undefined && irgp.data !== null) {
             irgp.data.BuffsForInvestment(this.InvestmentLevel, this.SecondaryInvestmentLevel);
-            if(!(index % 10)) {
+            if(!(index % 20)) {
               const res = this.grid.applyTransaction({
                 update: transaction
               })
               if(DEBUG && res) {
-                console.log(this.printResult(res))
+                this.printResult(res)
               }
               transaction = new Array<GridPair>();
             }
           }
         })
+        const res = this.grid.applyTransaction({update: transaction})
         this.grid.refreshClientSideRowModel('sort')
       }
     }
