@@ -13,6 +13,7 @@ import {
 } from '@spectrum-web-components/base';
 
 import '@spectrum-web-components/field-group/sp-field-group.js';
+import '@spectrum-web-components/overlay/sp-overlay.js';
 import '@spectrum-web-components/help-text/sp-help-text.js';
 import '@spectrum-web-components/menu/sp-menu-item.js';
 import '@spectrum-web-components/picker/sp-picker.js';
@@ -99,6 +100,9 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
   }
 
   private ascendingHandler(e: CustomEvent) {
+    if(DEBUG) {
+      console.log(`ascendingHandler start`)
+    }
     let num = (e.target as Slider).value;
     if (num > 0) {
       num += 5;
@@ -117,6 +121,9 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
   }
 
   private animalHandler(e: CustomEvent) {
+    if(DEBUG){
+      console.log(`animalHandler start`)
+    }
     const na = (e.target as RadioGroup).selected;
     const v = animal.safeParse(na);
     if (v.success) {
@@ -130,6 +137,17 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
         } else {
           this.PrimaryInvestmentLevel.dragon = false;
           this.PrimaryInvestmentLevel.beast = false;
+        }
+      } else if(!(e.target as RadioGroup).name.localeCompare('SecondaryBeastSelector')) {
+        if (!v.data.localeCompare(animal.enum.dragon)) {
+          this.SecondaryInvestmentLevel.dragon = true;
+          this.SecondaryInvestmentLevel.beast = false;
+        } else if (!v.data.localeCompare(animal.enum.beast)) {
+          this.SecondaryInvestmentLevel.dragon = false;
+          this.SecondaryInvestmentLevel.beast = true;
+        } else {
+          this.SecondaryInvestmentLevel.dragon = false;
+          this.SecondaryInvestmentLevel.beast = false;
         }
       }
     }
