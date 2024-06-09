@@ -65,6 +65,15 @@ export const EvAnsScoreComputer = z
         if (!generalSpecialists.enum.Archers.localeCompare(eg.score_as)) {
           return EvAnsPvPReinforcement(eg, display, bp, EvAnsAttributes.RangedPvPReinforcementAttributeMultipliers);
         }
+        if (!generalSpecialists.enum.Ground.localeCompare(eg.score_as)) {
+          return EvAnsPvPReinforcement(eg, display, bp, EvAnsAttributes.GroundPvPReinforcementAttributeMultipliers);
+        }
+        if (!generalSpecialists.enum.Mounted.localeCompare(eg.score_as)) {
+          return EvAnsPvPReinforcement(eg, display, bp, EvAnsAttributes.MountedPvPReinforcementAttributeMultipliers);
+        }
+        if (!generalSpecialists.enum.Siege.localeCompare(eg.score_as)) {
+          return EvAnsPvPReinforcement(eg, display, bp, EvAnsAttributes.SiegePvPReinforcementAttributeMultipliers);
+        }
       } else {
         if(DEBUG) {
           console.log(`not called for Attack, Monsters, or Reinforcement use cases`);
