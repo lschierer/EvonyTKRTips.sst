@@ -10,13 +10,13 @@ general:
   defense_increment: 7.91
   politics: 105
   politics_increment: 8.16
-  stars: '10'
+  stars: '5red'
   level: '1'
   score_as: Mounted
   books:
     - Strategy Expert
   ascending:
-    - level: '6'
+    - level: '1red'
       buff:
         - attribute: Attack
           condition:
@@ -30,7 +30,7 @@ general:
           value:
             number: 10
             unit: percentage
-    - level: '7'
+    - level: '2red'
       buff:
         - attribute: Defense
           condition:
@@ -44,7 +44,7 @@ general:
           value:
             number: 15
             unit: percentage
-    - level: '8'
+    - level: '3red'
       buff:
         - attribute: Attack
           condition:
@@ -58,7 +58,7 @@ general:
           value:
             number: 15
             unit: percentage
-    - level: '9'
+    - level: '4red'
       buff:
         - attribute: Attack
           condition:
@@ -72,7 +72,7 @@ general:
           value:
             number: 15
             unit: percentage
-    - level: '10'
+    - level: '5red'
       buff:
         - attribute: Attack
           condition:

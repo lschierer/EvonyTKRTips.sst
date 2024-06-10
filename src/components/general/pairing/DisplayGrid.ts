@@ -1,6 +1,7 @@
 
 import {
   GridApi,
+  type IRowNode,
   type GridOptions,
   createGrid,
   type RowNodeTransaction,
@@ -226,7 +227,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       special3: qualityColor.enum.Gold,
       special4: qualityColor.enum.Gold,
       special5: qualityColor.enum.Gold,
-      stars: AscendingLevels.enum[10],
+      stars: AscendingLevels.enum['5red'],
       dragon: true,
       beast: true,
     };
@@ -237,7 +238,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       special3: qualityColor.enum.Gold,
       special4: qualityColor.enum.Gold,
       special5: qualityColor.enum.Gold,
-      stars: AscendingLevels.enum[0],
+      stars: AscendingLevels.enum['0stars'],
       dragon: true,
       beast: true,
     };
@@ -263,29 +264,68 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
   }
 
   private UpdateInvestmentAndGridData = () => {
-    console.log(`UpdateInvestmentAndGridData`)
+    if(DEBUG) {
+      console.log(`UpdateInvestmentAndGridData`)
+    }
     if(this.InvestmentSelectorRef.value !== undefined) {
-      console.log(`UpdateInvestmentAndGridData with target node`)
+      if(DEBUG) {
+        console.log(`UpdateInvestmentAndGridData with target node`)
+      }
       this.InvestmentLevel = this.InvestmentSelectorRef.value.PrimaryInvestmentLevel;
       this.SecondaryInvestmentLevel = this.InvestmentSelectorRef.value.SecondaryInvestmentLevel;
+      if(DEBUG) {
+        console.log(`UpdateInvestmentAndGridData: ${JSON.stringify(this.InvestmentLevel)}`);
+        console.log(`UpdateInvestmentAndGridData: ${JSON.stringify(this.SecondaryInvestmentLevel)}`);
+      }
       if(this.grid !== null && this.grid !== undefined) {
-        console.log(`UpdateInvestmentAndGridData; with BuffParams & grid`)
+        if(DEBUG) {
+          console.log(`UpdateInvestmentAndGridData; with BuffParams & grid`)
+        }
         let transaction = new Array<GridPair>();
         this.grid.forEachNode((irgp, index) => {
           if(irgp.data !== undefined && irgp.data !== null) {
-            irgp.data.BuffsForInvestment(this.InvestmentLevel, this.SecondaryInvestmentLevel);
+            if(DEBUG){
+              console.log(`UpdateInvestmentAndGridData: before call to buffs`)
+              console.log(`UpdateInvestmentAndGridData: irgp.data versions:`)
+              console.log(`${irgp.data.primaryId} ${irgp.data.secondaryId}`)
+              console.log(JSON.stringify(irgp.data.InvestmentLevel));
+              console.log(JSON.stringify(irgp.data.SecondaryInvestmentLevel));
+              console.log(irgp.data.EvAnsRanking);
+              console.log(irgp.data.AttackRanking);
+              console.log(irgp.data.ToughnessRanking);
+            }
+            const buffs = irgp.data.BuffsForInvestment(this.InvestmentLevel, this.SecondaryInvestmentLevel);
+            if(DEBUG){
+              console.log(`UpdateInvestmentAndGridData: ${buffs} setting buffs`)
+              console.log(`UpdateInvestmentAndGridData: irgp.data versions:`)
+              console.log(`${irgp.data.primaryId} ${irgp.data.secondaryId}`)
+              console.log(JSON.stringify(irgp.data.InvestmentLevel));
+              console.log(JSON.stringify(irgp.data.SecondaryInvestmentLevel));
+              console.log(irgp.data.EvAnsRanking);
+              console.log(irgp.data.AttackRanking);
+              console.log(irgp.data.ToughnessRanking);
+            }
+            transaction.push((irgp.data))
             if(!(index % 20)) {
               const res = this.grid.applyTransaction({
                 update: transaction
               })
               if(DEBUG && res) {
+                console.log(`UpdateInvestmentAndGridData ${transaction.length} entries in transaction`)
                 this.printResult(res)
               }
               transaction = new Array<GridPair>();
             }
+            if(DEBUG){
+              console.log(`UpdateInvestmentAndGridData ${transaction.length} pending in transaction`)
+            }
           }
         })
         const res = this.grid.applyTransaction({update: transaction})
+        if(DEBUG && res) {
+          console.log(`UpdateInvestmentAndGridData ${transaction.length} entries in transaction`)
+          this.printResult(res)
+        }
         this.grid.refreshClientSideRowModel('sort')
       }
     }
@@ -376,7 +416,9 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
 
   renderGrid(gridDiv?: Element) {
     if (gridDiv !== null && gridDiv !== undefined) {
-      console.log(`gridDiv is ${gridDiv.localName}`);
+      if(DEBUG) {
+        console.log(`gridDiv is ${gridDiv.localName}`);
+      }
       this.grid = createGrid(gridDiv as HTMLElement, this.gridOptions);
       if (!this.useCase.localeCompare(generalUseCase.enum.Monsters)) {
         // I do not currently *have* EvAns score estimates for useCase Monsters. 

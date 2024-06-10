@@ -10,13 +10,13 @@ general:
   defense_increment: 8.91
   politics: 112
   politics_increment: 8.49
-  stars: '10'
+  stars: '5red'
   level: '1'
   score_as: Mounted
   books:
     - Queen of Hungary
   ascending:
-    - level: '6'
+    - level: '1red'
       buff:
         - attribute: Double_Items_Drop_Rate
           condition:
@@ -30,7 +30,7 @@ general:
           value:
             number: 5
             unit: percentage
-    - level: '7'
+    - level: '2red'
       buff:
         - attribute: Attack
           condition:
@@ -44,7 +44,7 @@ general:
           value:
             number: 10
             unit: percentage
-    - level: '8'
+    - level: '3red'
       buff:
         - attribute: March_Size_Capacity
           value:
@@ -56,7 +56,7 @@ general:
           value:
             number: -5
             unit: percentage
-    - level: '9'
+    - level: '4red'
       buff:
         - attribute: Attack
           condition:
@@ -65,7 +65,7 @@ general:
           value:
             number: 30
             unit: percentage
-    - level: '10'
+    - level: '5red'
       buff:
         - attribute: Double_Items_Drop_Rate
           condition:

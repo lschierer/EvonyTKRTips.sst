@@ -10,7 +10,7 @@ general:
   defense_increment: 8.46
   politics: 107
   politics_increment: 8.67
-  stars: '10'
+  stars: '5red'
   level: '1'
   score_as: Archers
   books:
@@ -21,7 +21,7 @@ general:
     - Ranged Troop Ares
     - Gwanggaeto the Great
   ascending:
-    - level: '6'
+    - level: '1red'
       buff:
         - attribute: Defense
           class: Archers
@@ -43,7 +43,7 @@ general:
           value:
             number: 10
             unit: percentage
-    - level: '7'
+    - level: '2red'
       buff:
         - attribute: Death_to_Wounded
           condition:
@@ -51,13 +51,13 @@ general:
           value:
             number: 8
             unit: percentage
-    - level: '8'
+    - level: '3red'
       buff:
         - attribute: March_Size_Capacity
           value:
             number: 10
             unit: percentage
-    - level: '9'
+    - level: '4red'
       buff:
         - attribute: Defense
           class: Archers
@@ -79,7 +79,7 @@ general:
           value:
             number: 10
             unit: percentage
-    - level: '10'
+    - level: '5red'
       buff:
         - attribute: Attack
           class: Archers

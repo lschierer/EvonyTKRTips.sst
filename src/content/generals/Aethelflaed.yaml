@@ -7,9 +7,8 @@ general:
     - severity: info
       text: >
         The Mounted Troops' Attack Skill Book may, however, be used.
-
   score_as: Mounted
-  stars: '10'
+  stars: '5red'
   leadership: 112
   leadership_increment: 8.94
   attack: 107
@@ -21,7 +20,7 @@ general:
   books:
     - Lady of the Mercians
   ascending:
-    - level: '6'
+    - level: '1red'
       buff:
         - attribute: HP
           condition:
@@ -37,7 +36,7 @@ general:
           value:
             number: 10
             unit: percentage
-    - level: '7'
+    - level: '2red'
       buff:
         - attribute: Defense
           condition:
@@ -51,7 +50,7 @@ general:
           value:
             number: 15
             unit: percentage
-    - level: '8'
+    - level: '3red'
       buff:
         - attribute: Attack
           condition:
@@ -65,7 +64,7 @@ general:
           value:
             number: 20
             unit: percentage
-    - level: '9'
+    - level: '4red'
       buff:
         - attribute: Attack
           condition:
@@ -80,7 +79,7 @@ general:
           value:
             number: 20
             unit: percentage
-    - level: '10'
+    - level: '5red'
       buff:
         - attribute: Attack
           condition:

@@ -10,7 +10,7 @@ general:
   defense_increment: 8.84
   politics: 112
   politics_increment: 9.11
-  stars: '10'
+  stars: '5red'
   level: '1'
   score_as: Mounted
   books:
@@ -21,7 +21,7 @@ general:
     - Mounted Troop Ares
     - King of the Geats
   ascending:
-    - level: '6'
+    - level: '1red'
       buff:
         - attribute: Defense
           class: Mounted
@@ -33,7 +33,7 @@ general:
           value:
             number: 15
             unit: percentage
-    - level: '7'
+    - level: '2red'
       buff:
         - attribute: Death_to_Wounded
           condition:
@@ -41,7 +41,7 @@ general:
           value:
             number: 8
             unit: percentage
-    - level: '8'
+    - level: '3red'
       buff:
         - attribute: Attack
           condition:
@@ -57,7 +57,7 @@ general:
           value:
             number: 10
             unit: percentage
-    - level: '9'
+    - level: '4red'
       buff:
         - attribute: Attack
           class: Mounted
@@ -79,7 +79,7 @@ general:
           value:
             number: 15
             unit: percentage
-    - level: '10'
+    - level: '5red'
       buff:
         - attribute: Attack
           class: Mounted

@@ -50,7 +50,19 @@ export const levels = zod.enum([
 ]);
 export type levelsType = zod.infer<typeof levels>;
 
-export const AscendingLevels = zod.enum(['0', '6', '7', '8', '9', '10']);
+export const AscendingLevels = zod.enum([
+  '0stars',
+  '1purple',
+  '2purple',
+  '3purple',
+  '4purple',
+  '5purple',
+  '1red',
+  '2red',
+  '3red',
+  '4red',
+  '5red',
+]);
 export type AscendingLevelsType = zod.infer<typeof AscendingLevels>;
 
 export const ActivationSituations = zod.enum([
@@ -183,7 +195,7 @@ export const BuffParams = zod.object({
   special3: qualityColor.default(qualityColor.enum.Disabled), //2
   special4: qualityColor.default(qualityColor.enum.Disabled), //3
   special5: qualityColor.default(qualityColor.enum.Disabled), //4
-  stars: AscendingLevels.default(AscendingLevels.enum[0]), //5
+  stars: AscendingLevels.default(AscendingLevels.enum['0stars']), //5
   dragon: zod.boolean().default(false), //6
   beast: zod.boolean().default(false), //7
 });

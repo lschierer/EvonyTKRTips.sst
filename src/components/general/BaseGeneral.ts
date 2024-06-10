@@ -41,7 +41,7 @@ import { EvAnsScoreComputer } from '@components/general/buffComputers/EvAnsRanki
 import { AttackingScoreComputer } from '@components/general/buffComputers/TKRTipsRanking/AttackScoreComputer';
 import { ToughnessScoreComputer } from '@components/general/buffComputers/TKRTipsRanking/ToughnessScoreComputer';
 
-const DEBUG = true;
+const DEBUG = false;
 
 @customElement('base-general')
 export class BaseGeneral extends SizedMixin(SpectrumElement, {

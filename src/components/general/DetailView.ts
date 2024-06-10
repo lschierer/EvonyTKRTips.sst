@@ -56,7 +56,7 @@ export class DetailView extends SizedMixin(BaseGeneral, {
     special3: qualityColor.enum.Gold,
     special4: qualityColor.enum.Gold,
     special5: qualityColor.enum.Disabled,
-    stars: AscendingLevels.enum[10],
+    stars: AscendingLevels.enum['5red'],
     dragon: true,
     beast: true,
   };
@@ -215,40 +215,36 @@ export class DetailView extends SizedMixin(BaseGeneral, {
   }
 
   private renderStars() {
-    let starsNum = 0;
-    let starsLimit = 0;
     let starsHtml = html``;
-    if (this.general !== null) {
-      starsNum = +(this.general.stars ? this.general.stars : 0);
-      starsLimit = starsNum <= 5 ? starsNum : 5;
-      if (DEBUG) {
-        console.log(`starsNum: ${starsNum}; starsLimit ${starsLimit}`);
-      }
-      for (let i = 0; i < starsLimit; i++) {
-        if (starsNum >= 6 && i < starsNum - 5) {
-          if (
-            Array.isArray(this.general.ascending) &&
-            this.general.ascending.length > 0
-          ) {
-            starsHtml = html`${starsHtml}
-              <iconify-icon
-                style="color: var(--spectrum-red-900)"
-                icon="mdi:star"
-              ></iconify-icon>`;
-          } else {
-            starsHtml = html`${starsHtml}
-              <iconify-icon
-                style="color: var(--spectrum-purple-900)"
-                icon="mdi:star"
-              ></iconify-icon>`;
-          }
-        } else {
-          starsHtml = html`${starsHtml}
-            <iconify-icon
-              style="color: var(--spectrum-yellow-300)"
-              icon="mdi:star"
-            ></iconify-icon>`;
+    if(this.general !== null && this.general.stars !== null && this.general.stars !== undefined) {
+      for (let i = 1; i <= 5; i++) {
+        let starColor = 'var(--spectrum-yellow-400)';
+        if (!AscendingLevels.enum['5red'].localeCompare((this.general.stars))) {
+          starColor = 'var(--spectrum-red-900)';
+        } else if (!AscendingLevels.enum['4red'].localeCompare((this.general.stars)) && i <= 4) {
+          starColor = 'var(--spectrum-red-900)';
+        } else if (!AscendingLevels.enum['3red'].localeCompare((this.general.stars)) && i <= 3) {
+          starColor = 'var(--spectrum-red-900)';
+        } else if (!AscendingLevels.enum['2red'].localeCompare((this.general.stars)) && i <= 2) {
+          starColor = 'var(--spectrum-red-900)';
+        } else if (!AscendingLevels.enum['1red'].localeCompare((this.general.stars)) && i <= 1) {
+          starColor = 'var(--spectrum-red-900)';
+        } else if (!AscendingLevels.enum['5purple'].localeCompare((this.general.stars))) {
+          starColor = 'var(--spectrum-purple-900)';
+        } else if (!AscendingLevels.enum['4purple'].localeCompare((this.general.stars)) && i <= 4) {
+          starColor = 'var(--spectrum-purple-900)';
+        } else if (!AscendingLevels.enum['3purple'].localeCompare((this.general.stars)) && i <= 3) {
+          starColor = 'var(--spectrum-purple-900)';
+        } else if (!AscendingLevels.enum['2purple'].localeCompare((this.general.stars)) && i <= 2) {
+          starColor = 'var(--spectrum-purple-900)';
+        } else if (!AscendingLevels.enum['1purple'].localeCompare((this.general.stars)) && i <= 1) {
+          starColor = 'var(--spectrum-purple-900)';
         }
+        starsHtml = html`${starsHtml}
+      <iconify-icon
+        style="color: ${starColor}"
+        icon="mdi:star"
+      ></iconify-icon>`;
       }
     }
     return starsHtml;

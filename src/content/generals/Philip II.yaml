@@ -10,7 +10,7 @@ general:
   defense_increment: 8.88
   politics: 110
   politics_increment: 8.59
-  stars: '10'
+  stars: '5red'
   level: '1'
   score_as: Siege
   books:
@@ -21,7 +21,7 @@ general:
     - Siege Machine Ares
     - Battle of Bouvines
   ascending:
-    - level: '6'
+    - level: '1red'
       buff:
         - attribute: Attack
           condition:
@@ -37,7 +37,7 @@ general:
           value:
             number: 20
             unit: percentage
-    - level: '7'
+    - level: '2red'
       buff:
         - attribute: Wounded_to_Death
           condition:
@@ -45,7 +45,7 @@ general:
           value:
             number: 10
             unit: percentage
-    - level: '8'
+    - level: '3red'
       buff:
         - attribute: March_Size_Capacity
           condition:
@@ -53,7 +53,7 @@ general:
           value:
             number: 14
             unit: percentage
-    - level: '9'
+    - level: '4red'
       buff:
         - attribute: Attack
           condition:
@@ -76,7 +76,7 @@ general:
           value:
             number: 25
             unit: percentage
-    - level: '10'
+    - level: '5red'
       buff:
         - attribute: Attack
           condition:

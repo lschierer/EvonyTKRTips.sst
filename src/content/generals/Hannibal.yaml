@@ -3,7 +3,7 @@ general:
   name: Hannibal
   display: summary
   score_as: Mounted
-  stars: '10'
+  stars: '5red'
   leadership: 120
   leadership_increment: 9.15
   attack: 115
@@ -16,7 +16,7 @@ general:
   books:
     - Master of Strategy
   ascending:
-    - level: '6'
+    - level: '1red'
       buff:
         - attribute: Attack
           condition:
@@ -46,7 +46,7 @@ general:
           value:
             number: 10
             unit: percentage
-    - level: '7'
+    - level: '2red'
       buff:
         - attribute: Death_to_Wounded
           condition:
@@ -54,7 +54,7 @@ general:
           value:
             number: 10
             unit: percentage
-    - level: '8'
+    - level: '3red'
       buff:
         - attribute: Rally_Capacity
           condition:
@@ -62,7 +62,7 @@ general:
           value:
             number: 8
             unit: percentage
-    - level: '9'
+    - level: '4red'
       buff:
         - attribute: Attack
           condition:
@@ -92,7 +92,7 @@ general:
           value:
             number: 10
             unit: percentage
-    - level: '10'
+    - level: '5red'
       buff:
         - attribute: Attack
           condition:

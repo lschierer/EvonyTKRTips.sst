@@ -52,29 +52,7 @@ export const GeneralClass = zod.object({
   politics: zod.number(),
   politics_increment: zod.number(),
   level: b.levels,
-  stars: b.levels
-    .refine((l) => {
-      if (l !== null && l !== undefined) {
-        switch (l) {
-          case '0':
-          case '1':
-          case '2':
-          case '3':
-          case '4':
-          case '5':
-          case '6':
-          case '7':
-          case '8':
-          case '9':
-          case '10':
-            return true;
-          default:
-            return false;
-        }
-      }
-      return false;
-    })
-    .nullish(),
+  stars: b.AscendingLevels.optional().nullish(),
   score_as: generalSpecialists,
   specialities: zod.array(zod.string()).nullish(),
   books: zod.array(zod.string()).nullish(),

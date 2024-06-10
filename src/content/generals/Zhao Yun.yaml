@@ -11,12 +11,12 @@ general:
   defense_increment: 9.05
   politics: 110
   politics_increment: 8.35
-  stars: '10'
+  stars: '5red'
   level: '1'
   books:
     - Undefeatable General
   ascending:
-    - level: '6'
+    - level: '1red'
       buff:
         - condition:
             - leading_the_army_to_attack
@@ -32,7 +32,7 @@ general:
           value:
             number: 10
             unit: percentage
-    - level: '7'
+    - level: '2red'
       buff:
         - attribute: Wounded_to_Death
           condition:
@@ -40,7 +40,7 @@ general:
           value:
             number: 10
             unit: percentage
-    - level: '8'
+    - level: '3red'
       buff:
         - attribute: Rally_Capacity
           condition:
@@ -48,7 +48,7 @@ general:
           value:
             number: 8
             unit: percentage
-    - level: '9'
+    - level: '4red'
       buff:
         - attribute: Defense
           condition:
@@ -64,7 +64,7 @@ general:
           value:
             number: 15
             unit: percentage
-    - level: '10'
+    - level: '5red'
       buff:
         - attribute: Attack
           condition:

@@ -65,7 +65,7 @@ export const PvPAES = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFun
     let BSS_Score = 0;
 
     //I will assume you set the bp to disabled if it is an assistant.
-    if (bp.stars.localeCompare(AscendingLevels.enum[0])) {
+    if (bp.stars.localeCompare(AscendingLevels.enum['0stars'])) {
       if (!Array.isArray(eg.ascending)) {
         if(DEBUG_AES) {console.log(`${eg.name} is not ascended`); }
         return -11;
@@ -76,7 +76,7 @@ export const PvPAES = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFun
           console.log(`${eg.name}: Ascending ${index}`);
           console.log(`accumulator currently ${accumulator}`);
         }
-        if (!eg.stars?.localeCompare(AscendingLevels.enum[0])) {
+        if (!eg.stars?.localeCompare(AscendingLevels.enum['0stars'])) {
           return accumulator;
         } else {
           if (DEBUG_AES) {
@@ -102,52 +102,102 @@ export const PvPAES = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFun
                   return a2;
                 }
                 if (
-                  !eg.stars.localeCompare(AscendingLevels.enum[10]) &&
-                  !ab.level.localeCompare(AscendingLevels.enum[10])
+                  !bp.stars.localeCompare(AscendingLevels.enum['5red']) &&
+                  !eg.stars.localeCompare(AscendingLevels.enum['5red']) &&
+                  !ab.level.localeCompare(AscendingLevels.enum['5red'])
                 ) {
+                  if(DEBUG) {
+                    console.log(`PvPAES matched 5Red`)
+                  }
                   a2 += buffDetailsReducerLogic(typedBuffFunction,index,ab, eg, actual, bp, useCase, am)
                   return a2;
                 } else if (
-                  (!eg.stars.localeCompare(AscendingLevels.enum[10]) ||
-                    !eg.stars.localeCompare(AscendingLevels.enum[9])) &&
-                  !ab.level.localeCompare(AscendingLevels.enum[9])
-                ) {
-                  a2 += buffDetailsReducerLogic(typedBuffFunction,index,ab, eg, actual, bp, useCase, am)
-                  return a2
-                } else if (
-                  (!eg.stars.localeCompare(AscendingLevels.enum[10]) ||
-                    !eg.stars.localeCompare(AscendingLevels.enum[9]) ||
-                    !eg.stars.localeCompare(AscendingLevels.enum[8])) &&
-                  !ab.level.localeCompare(AscendingLevels.enum[8])
-                ) {
-                  a2 += buffDetailsReducerLogic(typedBuffFunction,index,ab, eg, actual, bp, useCase, am)
-                  return a2
-                } else if (
-                  (!eg.stars.localeCompare(AscendingLevels.enum[10]) ||
-                    !eg.stars.localeCompare(AscendingLevels.enum[9]) ||
-                    !eg.stars.localeCompare(AscendingLevels.enum[8]) ||
-                    !eg.stars.localeCompare(AscendingLevels.enum[7])) &&
-                  !ab.level.localeCompare(AscendingLevels.enum[7])
-                ) {
-                  a2 += buffDetailsReducerLogic(typedBuffFunction,index,ab, eg, actual, bp, useCase, am)
-                  return a2
-                } else if (
-                  (!eg.stars.localeCompare(AscendingLevels.enum[10]) ||
-                    !eg.stars.localeCompare(AscendingLevels.enum[9]) ||
-                    !eg.stars.localeCompare(AscendingLevels.enum[8]) ||
-                    !eg.stars.localeCompare(AscendingLevels.enum[7]) ||
-                    !eg.stars.localeCompare(AscendingLevels.enum[6])) &&
-                  !ab.level.localeCompare(AscendingLevels.enum[6])
-                ) {
-                  a2 += buffDetailsReducerLogic(typedBuffFunction,index,ab, eg, actual, bp, useCase, am)
-                  return a2
-                } else {
-                  console.log(
-                    `${eg.name} Star ${index} ${ab.level} did not match anywhere deciding`
-                  );
-                  console.log(JSON.stringify(ab.buff));
+                  (
+                    (
+                      !bp.stars.localeCompare(AscendingLevels.enum['5red']) ||
+                      !bp.stars.localeCompare(AscendingLevels.enum['4red'])
+                    ) &&
+                    !ab.level.localeCompare(AscendingLevels.enum['4red'])
+                  ) &&
+                  (
+                    !eg.stars.localeCompare(AscendingLevels.enum['5red']) ||
+                    !eg.stars.localeCompare(AscendingLevels.enum['4red'])
+                  )
+                ){
+                  if (DEBUG) {
+                    console.log(`PvPAES matched 4Red`);
+                  }
+                  a2 += buffDetailsReducerLogic(typedBuffFunction, index, ab, eg, actual, bp, useCase, am);
+                  return a2;
+                }else if (
+                  (
+                    (
+                      !bp.stars.localeCompare(AscendingLevels.enum['5red']) ||
+                      !bp.stars.localeCompare(AscendingLevels.enum['4red']) ||
+                      !bp.stars.localeCompare(AscendingLevels.enum['3red'])
+                    ) &&
+                    !ab.level.localeCompare(AscendingLevels.enum['3red'])
+                  ) &&
+                  (
+                    !eg.stars.localeCompare(AscendingLevels.enum['5red']) ||
+                    !eg.stars.localeCompare(AscendingLevels.enum['4red']) ||
+                    !eg.stars.localeCompare(AscendingLevels.enum['3red'])
+                  )
+                ){
+                  if (DEBUG) {
+                    console.log(`PvPAES matched 3Red`);
+                  }
+                  a2 += buffDetailsReducerLogic(typedBuffFunction, index, ab, eg, actual, bp, useCase, am);
+                  return a2;
+                }else if (
+                  (
+                    (
+                      !bp.stars.localeCompare(AscendingLevels.enum['5red']) ||
+                      !bp.stars.localeCompare(AscendingLevels.enum['4red']) ||
+                      !bp.stars.localeCompare(AscendingLevels.enum['3red']) ||
+                      !bp.stars.localeCompare(AscendingLevels.enum['2red'])
+                    ) &&
+                    !ab.level.localeCompare(AscendingLevels.enum['2red'])
+                  ) &&
+                  (
+                    !eg.stars.localeCompare(AscendingLevels.enum['5red']) ||
+                    !eg.stars.localeCompare(AscendingLevels.enum['4red']) ||
+                    !eg.stars.localeCompare(AscendingLevels.enum['3red']) ||
+                    !eg.stars.localeCompare(AscendingLevels.enum['2red'])
+                  )
+                ){
+                  if (DEBUG) {
+                    console.log(`PvPAES matched 2Red`);
+                  }
+                  a2 += buffDetailsReducerLogic(typedBuffFunction, index, ab, eg, actual, bp, useCase, am);
                   return a2;
                 }
+                else if (
+                  (
+                    (
+                      !bp.stars.localeCompare(AscendingLevels.enum['5red']) ||
+                      !bp.stars.localeCompare(AscendingLevels.enum['4red']) ||
+                      !bp.stars.localeCompare(AscendingLevels.enum['3red']) ||
+                      !bp.stars.localeCompare(AscendingLevels.enum['2red']) ||
+                      !bp.stars.localeCompare(AscendingLevels.enum['1red'])
+                    ) &&
+                    !ab.level.localeCompare(AscendingLevels.enum['1red'])
+                  ) &&
+                  (
+                    !eg.stars.localeCompare(AscendingLevels.enum['5red']) ||
+                    !eg.stars.localeCompare(AscendingLevels.enum['4red']) ||
+                    !eg.stars.localeCompare(AscendingLevels.enum['3red']) ||
+                    !eg.stars.localeCompare(AscendingLevels.enum['2red']) ||
+                    !eg.stars.localeCompare(AscendingLevels.enum['1red'])
+                  )
+                ){
+                  if (DEBUG) {
+                    console.log(`PvPAES matched 1Red`);
+                  }
+                  a2 += buffDetailsReducerLogic(typedBuffFunction, index, ab, eg, actual, bp, useCase, am);
+                  return a2;
+                }
+                return a2;
               }, 0);
               accumulator += array_total;
               if (DEBUG_AES) {

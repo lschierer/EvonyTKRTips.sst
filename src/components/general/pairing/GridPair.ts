@@ -152,7 +152,7 @@ export class GridPair {
           special3: v.data.special3,
           special4: v.data.special4,
           special5: v.data.special5,
-          stars: AscendingLevels.enum['0'],
+          stars: AscendingLevels.enum['0stars'],
           dragon: v.data.dragon,
           beast: v.data.beast,
         };
@@ -192,8 +192,9 @@ export class GridPair {
   public BuffsForInvestment(pBP: BuffParamsType, sBP: BuffParamsType) {
     this.InvestmentLevel = pBP;
     this.SecondaryInvestmentLevel = sBP;
-    this.GeneralBuffs(Display.enum.primary);
-    this.GeneralBuffs(Display.enum.secondary);
+    const r1 = this.GeneralBuffs(Display.enum.primary);
+    const r2 = this.GeneralBuffs(Display.enum.secondary);
+    return (r1 && r2);
   }
 
   //from https://www.evonyanswers.com/post/evony-answers-attribute-methodology-explanation
@@ -290,7 +291,7 @@ export class GridPair {
       special3: qualityColor.enum.Disabled,
       special4: qualityColor.enum.Disabled,
       special5: qualityColor.enum.Disabled,
-      stars: AscendingLevels.enum['0'],
+      stars: AscendingLevels.enum['0stars'],
       dragon: false,
       beast: false,
     };

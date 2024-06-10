@@ -11,12 +11,12 @@ general:
   attack_increment: 9.11
   politics: 113
   politics_increment: 8.26
-  stars: '10'
+  stars: '5red'
   level: '1'
   books:
     - Dragon's Song
   ascending:
-    - level: '6'
+    - level: '1red'
       buff:
         - attribute: HP
           condition:
@@ -39,7 +39,7 @@ general:
           value:
             number: 15
             unit: percentage
-    - level: '7'
+    - level: '2red'
       buff:
         - attribute: Wounded_to_Death
           condition:
@@ -51,7 +51,7 @@ general:
           value:
             number: 14
             unit: percentage
-    - level: '8'
+    - level: '3red'
       buff:
         - attribute: Defense
           class: Ground
@@ -60,7 +60,7 @@ general:
           value:
             number: 60
             unit: percentage
-    - level: '9'
+    - level: '4red'
       buff:
         - attribute: HP
           class: Mounted

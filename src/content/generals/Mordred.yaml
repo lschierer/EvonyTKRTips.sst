@@ -3,7 +3,7 @@ general:
   name: Mordred
   display: summary
   score_as: Mounted
-  stars: '10'
+  stars: '5red'
   leadership: 119
   leadership_increment: 8.91
   attack: 118
@@ -16,7 +16,7 @@ general:
   books:
     - Knight of Treachery
   ascending:
-    - level: '6'
+    - level: '1red'
       buff:
         - attribute: Attack
           condition:
@@ -39,7 +39,7 @@ general:
           value:
             number: 10
             unit: percentage
-    - level: '7'
+    - level: '2red'
       buff:
         - attribute: Wounded_to_Death
           condition:
@@ -47,7 +47,7 @@ general:
           value:
             number: 10
             unit: percentage
-    - level: '8'
+    - level: '3red'
       buff:
         - attribute: Attack
           condition:
@@ -69,7 +69,7 @@ general:
           value:
             number: 5
             unit: percentage
-    - level: '9'
+    - level: '4red'
       buff:
         - attribute: Defense
           condition:
@@ -92,7 +92,7 @@ general:
           value:
             number: 20
             unit: percentage
-    - level: '10'
+    - level: '5red'
       buff:
         - attribute: Attack
           class: Mounted

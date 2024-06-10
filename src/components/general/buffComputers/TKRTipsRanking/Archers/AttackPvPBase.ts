@@ -41,21 +41,21 @@ const TKRTipsAttackBasic = z
   .implement((eg: ExtendedGeneralType) => {
     let AES_adjustment = 0;
     switch (eg.stars) {
-      case AscendingLevels.enum[0]:
+      case AscendingLevels.enum['0stars']:
         break;
-      case AscendingLevels.enum[6]:
+      case AscendingLevels.enum['1red']:
         AES_adjustment = 10;
         break;
-      case AscendingLevels.enum[7]:
+      case AscendingLevels.enum['2red']:
         AES_adjustment = 20;
         break;
-      case AscendingLevels.enum[8]:
+      case AscendingLevels.enum['3red']:
         AES_adjustment = 30;
         break;
-      case AscendingLevels.enum[9]:
+      case AscendingLevels.enum['4red']:
         AES_adjustment = 40;
         break;
-      case AscendingLevels.enum[10]:
+      case AscendingLevels.enum['5red']:
         AES_adjustment = 50;
         break;
       default:
