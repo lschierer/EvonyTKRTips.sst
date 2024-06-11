@@ -72,7 +72,7 @@ attributes:
       number: 12
       unit: percentage
   - attribute: Attack
-    class: mounted
+    class: Mounted
     condition:
     - When_Rallying
     value:
