@@ -15,7 +15,7 @@ import type { BookType } from '@schemas/bookSchemas.ts';
 import type { ConflictDatumType } from '@schemas/conflictSchemas.ts';
 
 export const prerender = true;
-const DEBUG = true;
+const DEBUG = false;
 
 export async function getStaticPaths() {
   const generalObjects: CollectionEntry<'generals'>[] =
