@@ -192,7 +192,7 @@ const BuffEffectiveMap: BuffEffectiveMap = {
       Condition.enum.dragon_to_the_attack,
       Condition.enum.leading_the_army_to_attack,
       Condition.enum['Against Monsters'],
-      Condition.enum.Reduces_Monster,
+      Condition.enum['Reduces Monster'],
     ];
     if (trueCases.includes(condition)) {
       return true;
@@ -211,7 +211,7 @@ const BuffEffectiveMap: BuffEffectiveMap = {
       Condition.enum.dragon_to_the_attack,
       Condition.enum.leading_the_army_to_attack,
       Condition.enum['Against Monsters'],
-      Condition.enum.Reduces_Monster,
+      Condition.enum['Reduces Monster'],
       Condition.enum.When_Rallying,
     ];
     if (trueCases.includes(condition)) {

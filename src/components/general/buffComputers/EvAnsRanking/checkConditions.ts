@@ -20,7 +20,6 @@ export const checkInvalidConditions = z
         conditions.push(Condition.enum.Defending);
         conditions.push(Condition.enum.In_City);
         conditions.push(Condition.enum.In_Main_City);
-        conditions.push(Condition.enum.Reduces_Monster);
         conditions.push(Condition.enum.Reinforcing);
         conditions.push(Condition.enum['When not mine']);
         conditions.push(Condition.enum.When_City_Mayor);
@@ -33,7 +32,7 @@ export const checkInvalidConditions = z
         debuffConditions.push(Condition.enum.Reduces_Enemy);
         debuffConditions.push(Condition.enum.Reduces_Enemy_in_Attack)
         debuffConditions.push(Condition.enum.Reduces_Enemy_with_a_Dragon);
-        debuffConditions.push(Condition.enum.Reduces_Monster);
+        debuffConditions.push(Condition.enum['Reduces Monster']);
       } else if (!am.localeCompare(generalUseCase.enum.Monsters)) {
         conditions.push(Condition.enum.Defending);
         conditions.push(Condition.enum.In_City);
@@ -64,7 +63,7 @@ export const checkInvalidConditions = z
         debuffConditions.push(Condition.enum.Enemy);
         debuffConditions.push(Condition.enum.Reduces_Enemy);
         debuffConditions.push(Condition.enum.Reduces_Enemy_with_a_Dragon);
-        debuffConditions.push(Condition.enum.Reduces_Monster);
+        debuffConditions.push(Condition.enum['Reduces Monster']);
       }else {
         console.log(`no list of conditions for this use case`)
         return false;
