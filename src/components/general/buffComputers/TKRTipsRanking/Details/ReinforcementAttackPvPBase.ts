@@ -22,6 +22,8 @@ import {
 import { PvPBSS } from './ReinforcementAttackPvPBSS';
 import { PvPAES } from './ReinforcementAttackPvPAES';
 import { PvP34SS } from './ReinforcementAttackPvP34SS';
+import { CovComputer } from './ReinforcementAttackCov';
+
 
 import { AttackBuff } from './AttackBuff';
 import { MarchSizeBuff } from './MarchSizeBuff.ts';
@@ -221,6 +223,7 @@ export const ReinforcementAttackPvPBase = z
       const BSS = PvPBSS(eg, bp, typedBuffFunctions, generalUseCase.enum.Reinforcement, am);
       const AES = PvPAES(eg, bp, typedBuffFunctions, generalUseCase.enum.Reinforcement, am);
       const specialities = PvP34SS(eg, bp, typedBuffFunctions, generalUseCase.enum.Reinforcement, am);
+      const Cov = CovComputer(eg, bp, typedBuffFunctions, generalUseCase.enum.Reinforcement, am);
 
       let TLGS = BSS + specialities;
       if (DEBUG) {
@@ -245,6 +248,10 @@ export const ReinforcementAttackPvPBase = z
           console.log(`TLGS with AES`);
           console.log(`${eg.name}: ${TLGS}`);
         }
+      }
+      TLGS += Cov;
+      if(DEBUG) {
+        console.log(`${eg.name} cov ${Cov} resulted in TLGS ${TLGS}`)
       }
       if (DEBUG) {
         console.log(

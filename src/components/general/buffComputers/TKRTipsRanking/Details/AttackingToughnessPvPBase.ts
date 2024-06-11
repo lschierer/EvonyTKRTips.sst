@@ -20,6 +20,7 @@ import { ExtendedGeneral, type ExtendedGeneralType } from '@schemas/ExtendedGene
 import { PvPBSS } from './AttackingToughnessPvPBSS';
 import { PvPAES } from './AttackingToughnessPvPAES';
 import { PvP34SS } from './AttackingToughnessPvP34SS';
+import { CovComputer } from './AttackingToughnessCov'
 
 import { AttackBuff } from './AttackBuff.ts';
 import { MarchSizeBuff } from './MarchSizeBuff.ts';
@@ -216,6 +217,7 @@ export const AttackingToughnessPvPBase = z
       const BSS = PvPBSS(eg, bp, typedBuffFunctions, useCase, am);
       const AES = PvPAES(eg, bp, typedBuffFunctions, useCase, am);
       const specialities = PvP34SS(eg, bp, typedBuffFunctions, useCase, am);
+      const Cov = CovComputer(eg, bp, typedBuffFunctions, useCase, am);
 
       let TLGS = BSS + specialities;
       if (DEBUG) {
@@ -240,6 +242,10 @@ export const AttackingToughnessPvPBase = z
           console.log(`TLGS with AES`);
           console.log(`${eg.name}: ${TLGS}`);
         }
+      }
+      TLGS += Cov;
+      if(DEBUG) {
+        console.log(`${eg.name} cov ${Cov} resulted in TLGS ${TLGS}`)
       }
       if (DEBUG) {
         console.log(
