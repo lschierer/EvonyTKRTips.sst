@@ -138,6 +138,7 @@ export const Attribute = zod.enum([
   'Attack_Speed',
   'Wounded_to_Death',
   'Death_to_Wounded',
+  'Death to Survival',
   'Death_to_Soul',
   'Load',
   'Double_Items_Drop_Rate',
@@ -145,6 +146,8 @@ export const Attribute = zod.enum([
   'Stamina_cost',
   'SubCity_Training_Speed',
   'SubCity_Troop_Capacity',
+  'SubCity Construction Speed',
+  'SubCity Gold Production',
   'Monster_Attack',
   'Double Items Drop Rate',
 ]);

@@ -242,7 +242,7 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
             `BaseGeneral firstUpdated generalId needs to getGeneral for ${this.generalId ?? ''}`
           );
         }
-        await Promise.all([this.getGeneral(), delay(10)]);
+        await Promise.all([this.getGeneral(), delay(5)]);
       }
     } else {
       if (DEBUG) {

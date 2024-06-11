@@ -49,11 +49,12 @@ import {
   type generalUseCaseType,
 } from '@schemas/generalsSchema';
 
-import { type ExtendedGeneralType } from '@schemas/ExtendedGeneral';
+import { type ExtendedGeneralType, type GeneralPairType } from '@schemas/ExtendedGeneral';
 
 import {MayorInvestment} from './MayorInvestment';
 
 import { GridMayor } from './GridMayor';
+import { GridPair } from '@components/general/pairing/GridPair.ts';
 
 @customElement('display-grid')
 export class DisplayGrid extends SizedMixin(SpectrumElement, {
@@ -96,65 +97,67 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
     return;
   }
 
-  private async getData() {
-    if(DEBUG) {
-      console.log(`getData starting with ${this.RawGenerals.length} general data`)
-    }
+  private processBatch = async (b: ExtendedGeneralType[], n: GridMayor[], index: number) => {
     const currentPage = `${document.location.protocol}//${document.location.host}`;
+
+    await Promise.all(b.map(async (bp) => {
+      const delayValue = Math.floor(Math.random() * b.length);
+      await delay(delayValue).then(() => {
+        if (DEBUG) {
+          console.log(
+            `DisplayGrid getData RawGenerals index ${index}, ${delayValue} ${bp.name}`
+          );
+        }
+      });
+      const dp = new GridMayor(bp, currentPage)
+      dp.useCase = this.useCase;
+      dp.index = index;
+      if (!dp.primary.name.localeCompare(dp.primaryId)) {
+        //if that works, the set appears to have worked
+        await dp.getSkillBooks(generalRole.enum.primary);
+        await dp.getSkillBooks(generalRole.enum.secondary);
+        n.push(dp);
+      }
+    }))
+    if (
+      n.length > 0 &&
+      this.grid !== null &&
+      this.grid !== undefined
+    ) {
+      if (DEBUG) {
+        console.log(`getData: index ${index} newRows: ${n.length} `);
+      }
+      n.forEach((dp) => {
+        dp.BuffsForInvestment(this.InvestmentLevel);
+      });
+      this._DisplayGenerals.push(...n);
+      this.grid.setGridOption('rowData', this._DisplayGenerals);
+      this.requestUpdate('grid');
+    } else {
+      if (DEBUG) {
+        console.log(`getData for RawPairs, grid was null`);
+      }
+    }
+  }
+
+  private async getData() {
+
     const batchLimit = 10;
     let newRows: GridMayor[] = new Array<GridMayor>();
     let batch: ExtendedGeneralType[] = new Array<ExtendedGeneralType>();
-    for (let i = 0; i < this.RawGenerals.length; i++) {
-      batch.push(this.RawGenerals[i]);
-      if (i !== 0 && i % batchLimit !== 0) {
-        continue;
-      } else {
-        await Promise.all(
-          batch.map(async (thisG) => {
-            const delayValue = Math.floor(Math.random() * batch.length);
-            await delay(delayValue).then( () => {
-              if (DEBUG) {
-                console.log(
-                  `DisplayGrid getData RawPairs index ${i}, ${delayValue} ${thisG.name} `
-                );
-              }
-            });
-            const dp = new GridMayor(thisG, currentPage);
-            dp.useCase = this.useCase;
-            dp.index = i;
-            if (!thisG.name.localeCompare(dp.primaryId)) {
-              //if that works, the set appears to have worked
-              await dp.getSkillBooks(generalRole.enum.primary);
-              await dp.getSkillBooks(generalRole.enum.secondary);
-              newRows.push(dp);
-            }
-          })
-        );
-        if (
-          newRows.length > 0 &&
-          this.grid !== null &&
-          this.grid !== undefined
-        ) {
-          if (DEBUG) {
-            console.log(`getData: index ${i} newRows: ${newRows.length} `);
-          }
-          newRows.forEach((dp) => {
-            dp.BuffsForInvestment(this.InvestmentLevel);
-          });
-          this._DisplayGenerals.push(...newRows);
-          if (this.grid !== null && this.grid !== undefined) {
-            this.grid.setGridOption('rowData', this._DisplayGenerals);
-            this.requestUpdate('grid');
-          }
-        } else {
-          if (DEBUG) {
-            console.log(`getData for RawPairs, grid was null`);
-          }
+    await Promise.all(this.RawGenerals.map(async (thisG, index) => {
+      batch.push(thisG);
+      const rem = batch.length % batchLimit;
+      if ((index > 0) && (rem < 1)) {
+        if (DEBUG) {
+          console.log(`getData index ${index} rem ${rem}`)
         }
+        await this.processBatch(batch, newRows, index)
         newRows = new Array<GridMayor>();
         batch = new Array<ExtendedGeneralType>();
       }
-    }
+    }))
+    await this.processBatch(batch, newRows, this.RawGenerals.length)
   }
 
   constructor() {
