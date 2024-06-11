@@ -1,4 +1,5 @@
 import {
+  AscendingLevels,
   BuffParams,
   type BuffParamsType, type BuffType,
   qualityColor,
@@ -13,7 +14,11 @@ import {
 
 import { type BuffFunctionInterface } from '@lib/RankingInterfaces';
 import type { AttributeMultipliersType } from '@schemas/EvAns.zod.ts';
-import type { CovenantAttributeType, generalUseCaseType } from '@schemas/generalsSchema.ts';
+import {
+  CovenantAttributeCategory,
+  type CovenantAttributeType,
+  type generalUseCaseType,
+} from '@schemas/generalsSchema.ts';
 
 const DEBUG = true;
 
@@ -54,7 +59,7 @@ const buffReductionLogic = (buffName: string, eg: ExtendedGeneralType, ab: BuffT
 };
 
 
-export const PvPCov = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFunction: BuffFunctionInterface, useCase: generalUseCaseType, am: AttributeMultipliersType) => {
+export const CovComputer = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFunction: BuffFunctionInterface, useCase: generalUseCaseType, am: AttributeMultipliersType) => {
   let Score = 0;
   if(DEBUG) {
     console.log(`PvPCov start`)
@@ -69,22 +74,120 @@ export const PvPCov = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFun
       if(cur === null || cur === undefined) {
         return acc;
       } else {
-        if(Array.isArray(cur.buff) && cur.buff.length > 0){
-          const bValue = cur.buff.reduce((ac2, thisB: BuffType) => {
-            if(thisB === null || thisB === undefined) {
-              return ac2;
-            } else {
-              if(thisB.value === null || thisB.value === undefined) {
+        if(
+          (
+            !cur.category.localeCompare(CovenantAttributeCategory.enum['War Covenant']) ||
+            !cur.category.localeCompare(CovenantAttributeCategory.enum['Cooperation Covenant'])
+          ) &&
+          ((
+            bp.special1.localeCompare(qualityColor.enum.Disabled) &&
+            bp.special1.localeCompare(qualityColor.enum.Green) &&
+            bp.special1.localeCompare(qualityColor.enum.Blue) &&
+            bp.special2.localeCompare(qualityColor.enum.Disabled) &&
+            bp.special2.localeCompare(qualityColor.enum.Green) &&
+            bp.special2.localeCompare(qualityColor.enum.Blue) &&
+            bp.special3.localeCompare(qualityColor.enum.Disabled) &&
+            bp.special3.localeCompare(qualityColor.enum.Green) &&
+            bp.special3.localeCompare(qualityColor.enum.Blue)
+          ) ||
+            (
+              bp.stars.localeCompare(AscendingLevels.enum['0stars']) &&
+              bp.stars.localeCompare(AscendingLevels.enum['1red'])
+            ))
+        ) {
+          if(Array.isArray(cur.buff) && cur.buff.length > 0){
+            const bValue = cur.buff.reduce((ac2, thisB: BuffType) => {
+              if(thisB === null || thisB === undefined) {
                 return ac2;
               } else {
-                return buffReductionLogic(cur.category, eg, thisB, bp, typedBuffFunction, useCase, am);
+                if(thisB.value === null || thisB.value === undefined) {
+                  return ac2;
+                } else {
+                  return buffReductionLogic(cur.category, eg, thisB, bp, typedBuffFunction, useCase, am);
+                }
               }
+            }, 0)
+            if(DEBUG) {
+              console.log(`PvPCov adding ${bValue} to ${acc} for ${cur.category}`)
             }
-          }, 0)
-          if(DEBUG) {
-            console.log(`PvPCov adding ${bValue} to ${acc} for ${cur.category}`)
+            acc += bValue;
           }
-          acc += bValue;
+        }
+        if(
+          (
+            !cur.category.localeCompare(CovenantAttributeCategory.enum['Peace Covenant']) ||
+            !cur.category.localeCompare(CovenantAttributeCategory.enum['Faith Covenant'])
+          ) &&
+          ((
+              (
+                !bp.special1.localeCompare(qualityColor.enum.Orange) ||
+                !bp.special1.localeCompare(qualityColor.enum.Gold)
+              ) &&
+              (
+                !bp.special2.localeCompare(qualityColor.enum.Orange) ||
+                !bp.special2.localeCompare(qualityColor.enum.Gold)
+              ) &&
+              (
+                !bp.special3.localeCompare(qualityColor.enum.Orange) ||
+                !bp.special3.localeCompare(qualityColor.enum.Gold)
+              )
+            ) ||
+            (
+              bp.stars.localeCompare(AscendingLevels.enum['0stars']) &&
+              bp.stars.localeCompare(AscendingLevels.enum['1red']) &&
+              bp.stars.localeCompare(AscendingLevels.enum['2red']) &&
+              bp.stars.localeCompare(AscendingLevels.enum['3red'])
+            ))
+        ) {
+          if(Array.isArray(cur.buff) && cur.buff.length > 0){
+            const bValue = cur.buff.reduce((ac2, thisB: BuffType) => {
+              if(thisB === null || thisB === undefined) {
+                return ac2;
+              } else {
+                if(thisB.value === null || thisB.value === undefined) {
+                  return ac2;
+                } else {
+                  return buffReductionLogic(cur.category, eg, thisB, bp, typedBuffFunction, useCase, am);
+                }
+              }
+            }, 0)
+            if(DEBUG) {
+              console.log(`PvPCov adding ${bValue} to ${acc} for ${cur.category}`)
+            }
+            acc += bValue;
+          }
+        }
+        if(
+          (
+            !cur.category.localeCompare(CovenantAttributeCategory.enum['Honor Covenant']) ||
+            !cur.category.localeCompare(CovenantAttributeCategory.enum['Civilization Covenant'])
+          ) &&
+          ((
+              !bp.special1.localeCompare(qualityColor.enum.Gold) &&
+              !bp.special2.localeCompare(qualityColor.enum.Gold) &&
+              !bp.special3.localeCompare(qualityColor.enum.Gold) &&
+              !bp.special4.localeCompare(qualityColor.enum.Gold)
+            ) ||
+            !bp.stars.localeCompare(AscendingLevels.enum['5red'])
+          )
+        ) {
+          if(Array.isArray(cur.buff) && cur.buff.length > 0){
+            const bValue = cur.buff.reduce((ac2, thisB: BuffType) => {
+              if(thisB === null || thisB === undefined) {
+                return ac2;
+              } else {
+                if(thisB.value === null || thisB.value === undefined) {
+                  return ac2;
+                } else {
+                  return buffReductionLogic(cur.category, eg, thisB, bp, typedBuffFunction, useCase, am);
+                }
+              }
+            }, 0)
+            if(DEBUG) {
+              console.log(`PvPCov adding ${bValue} to ${acc} for ${cur.category}`)
+            }
+            acc += bValue;
+          }
         }
       }
       return acc;
