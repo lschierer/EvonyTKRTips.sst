@@ -15,6 +15,8 @@ import { ExtendedGeneral, type ExtendedGeneralType } from '@schemas/ExtendedGene
 
 import { AttackingToughnessPvPBase } from './Details/AttackingToughnessPvPBase';
 import { ReinforcementToughnessPvPBase } from './Details/ReinforcementToughnessPvPBase';
+import { MayorToughnessPvPBase} from './Details/MayorToughnessPvPBase';
+import {MayorPvPAttackAttributeMultipliers} from '@lib/TKRAttributeRanking';
 import * as Attributes from '@lib/EvAnsAttributeRanking';
 
 /*******************
@@ -88,6 +90,8 @@ export const ToughnessScoreComputer = z
         if (!generalSpecialists.enum.Siege.localeCompare(eg.score_as)) {
           return ReinforcementToughnessPvPBase(eg, display, bp, Attributes.SiegePvPReinforcementAttributeMultipliers);
         }
+      } else if (!UseCase.localeCompare(generalUseCase.enum.Mayor)) {
+        return MayorToughnessPvPBase(eg, display, bp, UseCase, MayorPvPAttackAttributeMultipliers);
       } else {
         console.log(`not called for Attack, Monsters or Reinforcement use cases`);
       }

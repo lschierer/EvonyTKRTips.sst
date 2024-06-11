@@ -1,0 +1,54 @@
+---
+export const prerender = true;
+
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import type {
+  InferGetStaticParamsType,
+  InferGetStaticPropsType,
+  GetStaticPaths,
+} from 'astro';
+import type { CollectionEntry } from 'astro:content';
+import { getEntry, getCollection } from 'astro:content';
+import type { ComponentProps } from 'astro/types';
+
+import AllGenerals from '@components/general/AllGenerals.astro';
+import AllConflicts from '@components/general/AllConflicts.astro';
+
+import {
+  generalSpecialists,
+  generalUseCase,
+  type generalSpecialistsType
+} from '../../schemas/generalsSchema';
+
+const DEBUG = false;
+
+const entry: CollectionEntry<'docs'> | undefined =  await getEntry('docs', `generals/mayors`);
+
+
+if(entry === undefined || entry === null) {
+  if(DEBUG) {
+    console.log(`mayors not found`)
+    throw new Error('Specialist is required');
+  } else {
+    return Astro.redirect('/404');
+  }
+}
+
+let TargetClass: generalSpecialistsType = generalSpecialists.enum.Mayor;
+
+const { Content } = await entry.render();
+---
+
+<StarlightPage
+  frontmatter={{
+    title: entry.data.title,
+    lastUpdated: entry.data.lastUpdated,
+    tableOfContents: entry.data.tableOfContents,
+  }}
+>
+  {DEBUG && `Dynamic Template`}
+  {(TargetClass !== undefined) ? (<AllGenerals TargetClass={TargetClass} />) :
+    (<AllGenerals />)}
+  <AllConflicts />
+  <Content />
+</StarlightPage>

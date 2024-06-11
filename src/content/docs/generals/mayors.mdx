@@ -5,7 +5,7 @@ sidebar:
   order: 8
 ---
 
-import SPTable from '../../../components/SPTable.astro';
+import Mayors from '../../../components/general/mayors/Mayors.astro';
 
 :::note
 In the [Overview][], I explain my thinking. This is a fairly long article, but
@@ -54,7 +54,7 @@ list and everyone else use the 3 Orange list. Further note, generals marked
 with a 'Y' in the 'Availability' column are the only ones available without
 getting lucky in paid events.
 
-<SPTable csv="attack_mayors.csv"></SPTable>
+<Mayors generalClass='Mayor' ></Mayors>
 
 ## Reducing the Enemy's Ability to Survive Your Attack
 
@@ -69,7 +69,7 @@ list and everyone else use the 3 Orange list. Further note, generals marked
 with a 'Y' in the 'Availability' column are the only ones available without
 getting lucky in paid events.
 
-<SPTable csv="toughness_mayors.csv"></SPTable>
+<Mayors generalClass='Mayor' ></Mayors>
 
 ## Trying to find balance
 
@@ -87,6 +87,6 @@ because another use for this list is as a tie breaker: if you are debating
 between two generals in one of the other lists, knowing where they fall here
 can help make the decision.
 
-SPTable csv="overall_mayors.csv"
+<Mayors generalClass='Mayor' ></Mayors>
 
 [Overview]: ../overview

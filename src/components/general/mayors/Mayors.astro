@@ -1,0 +1,78 @@
+---
+import type { ComponentProps } from 'astro/types';
+
+import { ulid } from 'ulidx';
+
+import {DisplayGrid} from './DisplayGrid'
+
+import {
+  AscendingLevels,
+  type BuffParamsType,
+  qualityColor,
+} from '../../../schemas/baseSchemas';
+
+import {
+  type GeneralElementType,
+  type generalSpecialistsType,
+  type generalUseCaseType, generalUseCase,
+} from '../../../schemas/generalsSchema';
+import AllGenerals from '../AllGenerals.astro';
+import AllConflicts from '../AllConflicts.astro';
+
+const DEBUG = true;
+
+interface Props {
+  generalClass: generalSpecialistsType;
+  useCase?: generalUseCaseType
+}
+
+let { generalClass, useCase }: Props = Astro.props;
+
+if(useCase === null || useCase === undefined) {
+  if(DEBUG) {
+    console.log(`warning, use case was null`)
+  }
+  useCase = generalUseCase.enum.Mayor;
+} else {
+  if (DEBUG) {
+    console.log(`use case was ${useCase}`)
+  }
+}
+
+const table_name = `${Astro.url.pathname}-${ulid()}`;
+
+//It makes sense to assume that most people will assign neither dragon nor beast to a mayor.
+let MyInvestmentLevel: BuffParamsType = {
+  special1: qualityColor.enum.Gold,
+  special2: qualityColor.enum.Gold,
+  special3: qualityColor.enum.Gold,
+  special4: qualityColor.enum.Gold,
+  special5: qualityColor.enum.Disabled,
+  stars: AscendingLevels.enum['5red'],
+  dragon: false,
+  beast: false,
+};
+
+if(DEBUG) {
+  console.log(`${Astro.locals.CachedGenerals.length} cached generals`);
+}
+
+const DisplayGridProps = {
+  tableName: table_name,
+  InvestmentLevel: MyInvestmentLevel,
+  RawGenerals: Astro.locals.CachedGenerals,
+  useCase: useCase,
+};
+---
+
+<div class="table-container non-content">
+
+  <DisplayGrid {...DisplayGridProps} client:only="lit" />
+
+  <style>
+    .table-container {
+      display: block;
+      flex: 2 0 auto;
+    }
+  </style>
+</div>

@@ -60,10 +60,28 @@ export const checkInvalidConditions = z
         conditions.push(Condition.enum.When_The_Main_Defense_General);
         conditions.push(Condition.enum.When_an_officer);
         conditions.push(Condition.enum.brings_dragon_or_beast_to_attack);
+        conditions.push(Condition.enum.dragon_to_the_attack);
         conditions.push(Condition.enum.leading_the_army_to_attack);
         debuffConditions.push(Condition.enum.Enemy);
         debuffConditions.push(Condition.enum.Reduces_Enemy);
         debuffConditions.push(Condition.enum.Reduces_Enemy_with_a_Dragon);
+        debuffConditions.push(Condition.enum.Reduces_Monster);
+      } else if(!am.localeCompare(generalUseCase.enum.Mayor)){
+        conditions.push(Condition.enum['Against Monsters']);
+        conditions.push(Condition.enum.Attacking);
+        conditions.push(Condition.enum.Defending);
+        conditions.push(Condition.enum.In_City);
+        conditions.push(Condition.enum.In_Main_City);
+        conditions.push(Condition.enum.Marching);
+        conditions.push(Condition.enum.Reinforcing);
+        conditions.push(Condition.enum['When not mine']);
+        conditions.push(Condition.enum.When_Defending_Outside_The_Main_City);
+        conditions.push(Condition.enum.When_Rallying);
+        conditions.push(Condition.enum.When_The_Main_Defense_General);
+        conditions.push(Condition.enum.When_an_officer);
+        conditions.push(Condition.enum.brings_dragon_or_beast_to_attack);
+        conditions.push(Condition.enum.dragon_to_the_attack);
+        conditions.push(Condition.enum.leading_the_army_to_attack);
         debuffConditions.push(Condition.enum.Reduces_Monster);
       }else {
         console.log(`no list of conditions for this use case`)
