@@ -101,8 +101,59 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
     return;
   }
 
-  private async getData() {
+  private async processBatch(b: GeneralPairType[], n: GridPair[], i: number){
     const currentPage = `${document.location.protocol}//${document.location.host}`;
+    await Promise.all(
+      b.map(async (pair) => {
+        const delayValue = Math.floor(Math.random() * b.length);
+        await delay(delayValue).then(() => {
+          if (DEBUG) {
+            console.log(
+              `DisplayGrid processBatch RawPairs index ${i}, ${delayValue} ${pair.primary.name} ${pair.secondary.name}`
+            );
+          }
+        });
+        const dp = new GridPair(pair.primary, pair.secondary, currentPage);
+        dp.useCase = this.useCase;
+        dp.index = i;
+        if (!pair.primary.name.localeCompare(dp.primaryId)) {
+          //if that works, the set appears to have worked
+          await dp.getSkillBooks(generalRole.enum.primary);
+          await dp.getSkillBooks(generalRole.enum.secondary);
+          n.push(dp);
+        }
+      })
+    );
+    if (
+      n.length > 0 &&
+      this.grid !== null &&
+      this.grid !== undefined
+    ) {
+      if (DEBUG) {
+        console.log(`processBatch: index ${i} n: ${n.length} `);
+      }
+      n.forEach((dp) => {
+        dp.BuffsForInvestment(this.InvestmentLevel, this.SecondaryInvestmentLevel);
+      });
+      this._DisplayPairs.push(...n);
+      if (this.grid !== null && this.grid !== undefined) {
+        this.grid.applyTransactionAsync({
+          add: n
+        }, (res) => {
+          if(DEBUG){
+            this.printResult(res)
+          }
+          this.requestUpdate('grid');
+        })
+      }
+    } else {
+      if (DEBUG) {
+        console.log(`getData for RawPairs, grid was null`);
+      }
+    }
+  }
+
+  private async getData() {
     const batchLimit = 10;
     let newRows: GridPair[] = new Array<GridPair>();
     let batch: GeneralPairType[] = new Array<GeneralPairType>();
@@ -111,52 +162,12 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       if (i !== 0 && i % batchLimit !== 0) {
         continue;
       } else {
-        await Promise.all(
-          batch.map(async (pair) => {
-            const delayValue = Math.floor(Math.random() * batch.length);
-            await delay(delayValue).then( () => {
-              if (DEBUG) {
-                console.log(
-                  `DisplayGrid getData RawPairs index ${i}, ${delayValue} ${pair.primary.name} ${pair.secondary.name}`
-                );
-              }
-            });
-            const dp = new GridPair(pair.primary, pair.secondary, currentPage);
-            dp.useCase = this.useCase;
-            dp.index = i;
-            if (!pair.primary.name.localeCompare(dp.primaryId)) {
-              //if that works, the set appears to have worked
-              await dp.getSkillBooks(generalRole.enum.primary);
-              await dp.getSkillBooks(generalRole.enum.secondary);
-              newRows.push(dp);
-            }
-          })
-        );
-        if (
-          newRows.length > 0 &&
-          this.grid !== null &&
-          this.grid !== undefined
-        ) {
-          if (DEBUG) {
-            console.log(`getData: index ${i} newRows: ${newRows.length} `);
-          }
-          newRows.forEach((dp) => {
-            dp.BuffsForInvestment(this.InvestmentLevel, this.SecondaryInvestmentLevel);
-          });
-          this._DisplayPairs.push(...newRows);
-          if (this.grid !== null && this.grid !== undefined) {
-            this.grid.setGridOption('rowData', this._DisplayPairs);
-            this.requestUpdate('grid');
-          }
-        } else {
-          if (DEBUG) {
-            console.log(`getData for RawPairs, grid was null`);
-          }
-        }
+        await this.processBatch(batch, newRows, i);
         newRows = new Array<GridPair>();
         batch = new Array<GeneralPairType>();
       }
     }
+    await this.processBatch(batch, newRows, this.RawPairs.length);
   }
 
   constructor() {
