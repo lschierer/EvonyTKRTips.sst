@@ -3,7 +3,7 @@ import { z } from 'zod';
 import {
   AscendingLevels,
   BuffParams,
-  type BuffParamsType,
+  type BuffParamsType, CovenantAttributeCategory,
   qualityColor,
 } from '@schemas/baseSchemas';
 
@@ -244,6 +244,7 @@ export class GridMayor {
       special4: qualityColor.enum.Disabled,
       special5: qualityColor.enum.Disabled,
       stars: AscendingLevels.enum['0stars'],
+      covenants: CovenantAttributeCategory.enum.Disabled,
       dragon: false,
       beast: false,
     };

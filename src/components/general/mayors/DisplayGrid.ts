@@ -39,7 +39,7 @@ import '@spectrum-css/table/dist/index.css';
 
 import {
   AscendingLevels,
-  type BuffParamsType,
+  type BuffParamsType, CovenantAttributeCategory,
   qualityColor,
 } from '@schemas/baseSchemas';
 
@@ -237,6 +237,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       special4: qualityColor.enum.Gold,
       special5: qualityColor.enum.Gold,
       stars: AscendingLevels.enum['5red'],
+      covenants: CovenantAttributeCategory.enum.Disabled,
       dragon: true,
       beast: true,
     };

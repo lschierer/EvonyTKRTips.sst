@@ -24,7 +24,7 @@ import {
   type BuffParamsType,
   qualityColor,
   type BuffType,
-  UnitSchema,
+  UnitSchema, CovenantAttributeCategory,
 } from '@schemas/baseSchemas';
 
 import {
@@ -58,6 +58,7 @@ export class DetailView extends SizedMixin(BaseGeneral, {
     special4: qualityColor.enum.Gold,
     special5: qualityColor.enum.Disabled,
     stars: AscendingLevels.enum['5red'],
+    covenants: CovenantAttributeCategory.enum.Disabled,
     dragon: true,
     beast: true,
   };

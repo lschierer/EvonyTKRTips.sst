@@ -69,9 +69,6 @@ export type GeneralElementType = zod.infer<typeof GeneralElement>;
 export const GeneralArray = zod.array(GeneralElement);
 export type GeneralArrayType = zod.infer<typeof GeneralArray>;
 
-export type CovenantAttributeCategoryType = zod.infer<
-  typeof b.CovenantAttributeCategory
->;
 
 export const CovenantAttribute = zod.object({
   category: b.CovenantAttributeCategory,

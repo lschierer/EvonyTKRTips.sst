@@ -189,6 +189,10 @@ export const CovenantAttributeCategory = zod.enum([
   'Civilization Covenant',
 ]);
 
+export type CovenantAttributeCategoryType = zod.infer<
+  typeof CovenantAttributeCategory
+>;
+
 export const ValueSchema = zod.object({
   number: zod.number(),
   unit: UnitSchema,
@@ -212,6 +216,7 @@ export const BuffParams = zod.object({
   special4: qualityColor.default(qualityColor.enum.Disabled), //3
   special5: qualityColor.default(qualityColor.enum.Disabled), //4
   stars: AscendingLevels.default(AscendingLevels.enum['0stars']), //5
+  covenants: CovenantAttributeCategory.default(CovenantAttributeCategory.enum.Disabled),
   dragon: zod.boolean().default(false), //6
   beast: zod.boolean().default(false), //7
 });

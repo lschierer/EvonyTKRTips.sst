@@ -41,7 +41,13 @@ import {
 } from '@spectrum-web-components/radio';
 import { Slider } from '@spectrum-web-components/slider';
 
-import { AscendingLevels, type BuffParamsType, qualityColor, type qualityColorType } from '@schemas/baseSchemas.ts';
+import {
+  AscendingLevels,
+  type BuffParamsType,
+  CovenantAttributeCategory,
+  qualityColor,
+  type qualityColorType,
+} from '@schemas/baseSchemas.ts';
 
 import { animal,  } from '@schemas/beastSchemas';
 
@@ -63,6 +69,7 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
     special4: qualityColor.enum.Disabled,
     special5: qualityColor.enum.Disabled,
     stars: AscendingLevels.enum['0stars'],
+    covenants: CovenantAttributeCategory.enum.Disabled,
     dragon: false,
     beast: false,
   };
@@ -78,6 +85,7 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
     special4: qualityColor.enum.Disabled,
     special5: qualityColor.enum.Disabled,
     stars: AscendingLevels.enum['0stars'],
+    covenants: CovenantAttributeCategory.enum.Disabled,
     dragon: false,
     beast: false,
   };
@@ -456,6 +464,7 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
             special4: qualityColor.enum.Disabled,
             special5: qualityColor.enum.Disabled,
             stars: AscendingLevels.enum['0stars'],
+            covenants: CovenantAttributeCategory.enum['Faith Covenant'],
             dragon: false,
             beast: true,
           }
@@ -468,6 +477,7 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
             special4: qualityColor.enum.Disabled,
             special5: qualityColor.enum.Disabled,
             stars: AscendingLevels.enum['0stars'],
+            covenants: CovenantAttributeCategory.enum['Faith Covenant'],
             dragon: true,
             beast: false,
           }
@@ -480,6 +490,7 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
             special4: qualityColor.enum.Gold,
             special5: qualityColor.enum.Disabled,
             stars: AscendingLevels.enum['0stars'],
+            covenants: CovenantAttributeCategory.enum['Civilization Covenant'],
             dragon: false,
             beast: true,
           }
@@ -492,6 +503,7 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
             special4: qualityColor.enum.Gold,
             special5: qualityColor.enum.Disabled,
             stars: AscendingLevels.enum['0stars'],
+            covenants: CovenantAttributeCategory.enum['Civilization Covenant'],
             dragon: true,
             beast: false,
           }
@@ -504,6 +516,7 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
             special4: qualityColor.enum.Gold,
             special5: qualityColor.enum.Disabled,
             stars: AscendingLevels.enum['2red'],
+            covenants: CovenantAttributeCategory.enum['Civilization Covenant'],
             dragon: false,
             beast: true,
           }
@@ -516,6 +529,7 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
             special4: qualityColor.enum.Gold,
             special5: qualityColor.enum.Disabled,
             stars: AscendingLevels.enum['2red'],
+            covenants: CovenantAttributeCategory.enum['Civilization Covenant'],
             dragon: true,
             beast: false,
           }
@@ -528,6 +542,7 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
             special4: qualityColor.enum.Gold,
             special5: qualityColor.enum.Disabled,
             stars: AscendingLevels.enum['3red'],
+            covenants: CovenantAttributeCategory.enum['Civilization Covenant'],
             dragon: true,
             beast: false,
           }
@@ -540,6 +555,7 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
             special4: qualityColor.enum.Gold,
             special5: qualityColor.enum.Disabled,
             stars: AscendingLevels.enum['4red'],
+            covenants: CovenantAttributeCategory.enum['Civilization Covenant'],
             dragon: true,
             beast: false,
           }
@@ -552,6 +568,7 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
             special4: qualityColor.enum.Gold,
             special5: qualityColor.enum.Disabled,
             stars: AscendingLevels.enum['5red'],
+            covenants: CovenantAttributeCategory.enum['Civilization Covenant'],
             dragon: true,
             beast: false,
           }
@@ -564,6 +581,7 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
             special4: qualityColor.enum.Disabled,
             special5: qualityColor.enum.Disabled,
             stars: AscendingLevels.enum['0stars'],
+            covenants: CovenantAttributeCategory.enum.Disabled,
             dragon: false,
             beast: false,
           }
@@ -578,6 +596,7 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
             special4: qualityColor.enum.Disabled,
             special5: qualityColor.enum.Disabled,
             stars: AscendingLevels.enum['0stars'],
+            covenants: CovenantAttributeCategory.enum['Faith Covenant'],
             dragon: false,
             beast: true,
           }
@@ -590,6 +609,7 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
             special4: qualityColor.enum.Disabled,
             special5: qualityColor.enum.Disabled,
             stars: AscendingLevels.enum['0stars'],
+            covenants: CovenantAttributeCategory.enum['Faith Covenant'],
             dragon: true,
             beast: false,
           }
@@ -602,6 +622,7 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
             special4: qualityColor.enum.Gold,
             special5: qualityColor.enum.Disabled,
             stars: AscendingLevels.enum['0stars'],
+            covenants: CovenantAttributeCategory.enum['Civilization Covenant'],
             dragon: false,
             beast: true,
           }
@@ -614,6 +635,7 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
             special4: qualityColor.enum.Gold,
             special5: qualityColor.enum.Disabled,
             stars: AscendingLevels.enum['0stars'],
+            covenants: CovenantAttributeCategory.enum['Civilization Covenant'],
             dragon: true,
             beast: false,
           }
@@ -626,6 +648,7 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
             special4: qualityColor.enum.Disabled,
             special5: qualityColor.enum.Disabled,
             stars: AscendingLevels.enum['0stars'],
+            covenants: CovenantAttributeCategory.enum.Disabled,
             dragon: false,
             beast: false,
           }
