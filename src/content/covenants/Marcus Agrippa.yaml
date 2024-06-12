@@ -6,7 +6,7 @@ generals:
 attributes:
 - category: War Covenant
   type: personal
-  buffs:
+  buff:
   - attribute: Resources Production
     value:
       number: 5
@@ -23,7 +23,7 @@ attributes:
       unit: percentage
 - category: Peace Covenant
   type: passive
-  buffs:
+  buff:
   - attribute: Training Capacity
     class: Archers
     value:
@@ -31,7 +31,7 @@ attributes:
       unit: percentage
 - category: Faith Covenant
   type: personal
-  buffs:
+  buff:
   - attribute: Defense
     class: Archers
     value:
@@ -48,28 +48,31 @@ attributes:
       unit: percentage
 - category: Honor Covenant
   type: personal
-  buffs:
+  buff:
   - attribute: Attack
     class: Archers
-    condition: When_Rallying
+    condition:
+    - When_Rallying
     value:
       number: 5
       unit: percentage
   - attribute: Attack
     class: Siege
-    condition: When_Rallying
+    condition:
+    - When_Rallying
     value:
       number: 5
       unit: percentage
   - attribute: Attack
     class: Siege
-    condition: When_Rallying
+    condition:
+    - When_Rallying
     value:
       number: 10
       unit: percentage
 - category: Civilization Covenant
   type: personal
-  buffs:
+  buff:
   - attribute: Attack
     class: Archers
     condition:
