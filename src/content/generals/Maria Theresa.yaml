@@ -18,7 +18,7 @@ general:
   ascending:
     - level: '1red'
       buff:
-        - attribute: Double_Items_Drop_Rate
+        - attribute: 'Double Items Drop Rate'
           condition:
             - Against Monsters
           value:
@@ -67,7 +67,7 @@ general:
             unit: percentage
     - level: '5red'
       buff:
-        - attribute: Double_Items_Drop_Rate
+        - attribute: 'Double Items Drop Rate'
           condition:
             - Against Monsters
           value:
