@@ -4,37 +4,6 @@ import { type AttributeMultipliersType  } from '../schemas/EvAns.zod';
 
 export const GroundPvPAttackAttributeMultipliers: AttributeMultipliersType =
   {
-    Offensive: {
-      AllTroopAttack: 2.14833,
-      GroundAttack: 1.815,
-      RangedAttack: 0.11111,
-      SiegeAttack: 0.11111,
-      MountedAttack: 0.11111,
-      InBattleMovementBonus: 0.6,
-      MarchSizeIncrease: 2.66667,
-      RallyCapacity: 0.5,
-      RangedRangeBonus: 0,
-      SiegeRangeBonusFlat: 0,
-      SiegeRangeBonusPercent: 0,
-    },
-    Toughness: {
-      AllTroopHP: 1.67101,
-      RangedHP: 1.171,
-      MountedHP: 0.16667,
-      GroundHP: 0.16667,
-      SiegeHP: 0.16667,
-      AllTroopDefense: 1.55391,
-      RangedDefense: 1.0539,
-      MountedDefense: 0.16667,
-      SiegeDefense: 0.16667,
-      GroundDefense: 0.16667,
-    },
-    Preservation: {
-      Death2Wounded: 0.25555,
-      Death2WoundedWhenAttacking: 0.12555,
-      Death2Souls: 0.12555,
-      Death2SoulsinMainCity: 0,
-    },
     AttackingAttackDebuff: {
       ReduceAllAttack: 3.5424,
       ReduceEnemyMountedAttack: 1.2,
@@ -53,6 +22,30 @@ export const GroundPvPAttackAttributeMultipliers: AttributeMultipliersType =
       ReduceEnemySiegeDefense: 0.84,
       ReduceEnemyMountedDefense: 0.72,
       ReduceEnemyGroundDefense: 0.6,
+    },
+    Debilitation: {
+      Wounded2Death: 0.25555,
+      InCityWounded2Death: 0.12555,
+      Wounded2DeathWhenAttacking: 0.12555,
+    },
+    Offensive: {
+      AllTroopAttack: 2.14833,
+      GroundAttack: 1.815,
+      InBattleMovementBonus: 0.6,
+      MarchSizeIncrease: 2.66667,
+      MountedAttack: 0.11111,
+      RallyCapacity: 0.5,
+      RangedAttack: 0.11111,
+      RangedRangeBonus: 0,
+      SiegeAttack: 0.11111,
+      SiegeRangeBonusFlat: 0,
+      SiegeRangeBonusPercent: 0,
+    },
+    Preservation: {
+      Death2Wounded: 0.25555,
+      Death2WoundedWhenAttacking: 0.12555,
+      Death2Souls: 0.12555,
+      Death2SoulsinMainCity: 0,
     },
     ReinforcingAttackDebuff: {
       ReduceAllAttack: 3.5424,
@@ -73,10 +66,17 @@ export const GroundPvPAttackAttributeMultipliers: AttributeMultipliersType =
       ReduceEnemyMountedDefense: 0.72,
       ReduceEnemyGroundDefense: 0.6,
     },
-    Debilitation: {
-      Wounded2Death: 0.25555,
-      InCityWounded2Death: 0.12555,
-      Wounded2DeathWhenAttacking: 0.12555,
+    Toughness: {
+      AllTroopHP: 1.67101,
+      RangedHP: 1.171,
+      MountedHP: 0.16667,
+      GroundHP: 0.16667,
+      SiegeHP: 0.16667,
+      AllTroopDefense: 1.55391,
+      RangedDefense: 1.0539,
+      MountedDefense: 0.16667,
+      SiegeDefense: 0.16667,
+      GroundDefense: 0.16667,
     },
   };
 export const GroundPvPReinforcementAttributeMultipliers: AttributeMultipliersType =
