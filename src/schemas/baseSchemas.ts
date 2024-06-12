@@ -179,6 +179,16 @@ export const ClassEnum = zod.enum([
 ]);
 export type ClassEnumType = zod.infer<typeof ClassEnum>;
 
+export const CovenantAttributeCategory = zod.enum([
+  'Disabled',
+  'War Covenant',
+  'Cooperation Covenant',
+  'Peace Covenant',
+  'Faith Covenant',
+  'Honor Covenant',
+  'Civilization Covenant',
+]);
+
 export const ValueSchema = zod.object({
   number: zod.number(),
   unit: UnitSchema,

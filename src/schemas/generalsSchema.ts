@@ -69,21 +69,12 @@ export type GeneralElementType = zod.infer<typeof GeneralElement>;
 export const GeneralArray = zod.array(GeneralElement);
 export type GeneralArrayType = zod.infer<typeof GeneralArray>;
 
-export const CovenantAttributeCategory = zod.enum([
-  'War Covenant',
-  'Cooperation Covenant',
-  'Peace Covenant',
-  'Faith Covenant',
-  'Honor Covenant',
-  'Civilization Covenant',
-]);
-
 export type CovenantAttributeCategoryType = zod.infer<
-  typeof CovenantAttributeCategory
+  typeof b.CovenantAttributeCategory
 >;
 
 export const CovenantAttribute = zod.object({
-  category: CovenantAttributeCategory,
+  category: b.CovenantAttributeCategory,
   type: zod.enum(['personal', 'passive']),
   buff: zod.array(b.Buff),
 });

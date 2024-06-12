@@ -2,6 +2,7 @@ import {
   AscendingLevels,
   BuffParams,
   type BuffParamsType, type BuffType,
+  CovenantAttributeCategory,
   qualityColor,
 } from '@schemas/baseSchemas';
 
@@ -15,7 +16,6 @@ import {
 import { type BuffFunctionInterface } from '@lib/RankingInterfaces';
 import type { AttributeMultipliersType } from '@schemas/EvAns.zod.ts';
 import {
-  CovenantAttributeCategory,
   type CovenantAttributeType,
   type generalUseCaseType,
 } from '@schemas/generalsSchema.ts';
