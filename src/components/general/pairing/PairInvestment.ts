@@ -141,7 +141,7 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
     const na = (e.target as RadioGroup).selected;
     const v = animal.safeParse(na);
     if (v.success) {
-      if (!(e.target as RadioGroup).name.localeCompare('PrimaryBeastSelector')) {
+      if (!(e.target as RadioGroup).name.localeCompare('PrimaryAnimalSelector')) {
         if (!v.data.localeCompare(animal.enum.dragon)) {
           this.PrimaryInvestmentLevel.dragon = true;
           this.PrimaryInvestmentLevel.beast = false;
@@ -156,7 +156,7 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
           console.log(`animial Handler Set PIL: ${JSON.stringify(this.PrimaryInvestmentLevel)}`)
         }
         this.requestUpdate('PrimaryInvestmentLevel');
-      } else if(!(e.target as RadioGroup).name.localeCompare('SecondaryBeastSelector')) {
+      } else if(!(e.target as RadioGroup).name.localeCompare('SecondaryAnimalSelector')) {
         if (!v.data.localeCompare(animal.enum.dragon)) {
           this.SecondaryInvestmentLevel.dragon = true;
           this.SecondaryInvestmentLevel.beast = false;
@@ -346,6 +346,33 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
       }else {
         if(DEBUG) {
           console.log(`invalid picker id ${picker.id}`)
+        }
+      }
+    }
+  }
+
+  private CovenantHandler(e: CustomEvent) {
+    const picker = (e.target as Picker);
+    const v = CovenantAttributeCategory.safeParse(picker.value);
+    if(!v.success) {
+      if(DEBUG) {
+        console.log(`error parsing CovenantAttributeCategory for ${picker.value} of ${picker.id}`)
+        console.log(v.error.message)
+      }
+    } else {
+      const value = v.data;
+      if(DEBUG) {
+        console.log(`CovenantHandler found ${value} for ${picker.id}`)
+      }
+      if(picker.id.includes('Primary')){
+        this.PrimaryInvestmentLevel.covenants = value;
+        this.requestUpdate('PrimaryInvestmentLevel');
+      } else if (picker.id.includes('Secondary')) {
+        this.SecondaryInvestmentLevel.covenants = value;
+        this.requestUpdate('SecondaryInvestmentLevel');
+      } else {
+        if(DEBUG) {
+          console.log(`unknown picker ${picker.id}`)
         }
       }
     }
@@ -697,12 +724,19 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
         justify-content: space-around;
       }
       
-      .BeastSelector {
-        grid-column-end: span 2;
+      .AnimalSelector {
+        grid-row-start: 3;
+        grid-column-end: span 4;
+        justify-self: center;
       }
       
       sp-picker {
         width: 100%;
+      }
+      
+      .Presets {
+        width: 100%;
+        grid-column-start: 4;
       }
       
       .hidden {
@@ -789,28 +823,27 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
                   <sp-menu-item value="5red">5</sp-menu-item>
                 </sp-picker>  
               </div>
-              <div class="BeastSelector non-content">
-                <sp-field-label for="PrimaryBeastSelector">Primary Beast/Dragon:</sp-field-label>
-                <sp-radio-group
-                  id="PrimaryBeastSelector"
-                  horizontal
-                  name="PrimaryBeastSelector"
-                  selected=${this.PrimaryInvestmentLevel.dragon ? animal.enum.dragon : this.PrimaryInvestmentLevel.beast ? animal.enum.beast : animal.enum.none}
-                  @change=${this.animalHandler}
-                >
-                  ${animal.options.map((ta) => {
+              <div class="Covenants">
+                <sp-field-label for="PrimaryCovenantPicker">Covenant Level</sp-field-label>
+                <sp-picker
+                  id="PrimaryCovenantPicker"
+                  size="m"
+                  value=${this.PrimaryInvestmentLevel.covenants}
+                  @change=${this.CovenantHandler}
+                  >
+                  ${CovenantAttributeCategory.options.map((cac) => {
                     return html`
-                      <sp-radio value=${ta}>${ta}</sp-radio>
-                    `;
+                      <sp-menu-item value=${cac}>${cac}</sp-menu-item>
+                    `                   
                   })}
-                </sp-radio-group>
+                </sp-picker>
               </div>
-              <div class="PreSetSelector non-content">
+              <div class="Presets PreSetSelector non-content">
                 <sp-field-label for="PrimaryPreSet">PreSet</sp-field-label>
                 <sp-picker
                   id="PrimaryPreSet"
                   size="m"
-                  label="Presets for Primary General"
+                  label="Presets"
                   @change=${this.PresetHandler}
                   ${ref(this.resetPicker)}
                   >
@@ -830,7 +863,25 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
             <div class="row2">
               ${primarySpecialityPickers}
             </div>
-          
+            <div class="row3">
+              <div class="AnimalSelector non-content">
+                <sp-field-label for="PrimaryAnimalSelector">Primary Beast/Dragon:</sp-field-label>
+                <sp-radio-group
+                  class="AnimalSelector"
+                  id="PrimaryAnimalSelector"
+                  horizontal
+                  name="PrimaryAnimalSelector"
+                  selected=${this.PrimaryInvestmentLevel.dragon ? animal.enum.dragon : this.PrimaryInvestmentLevel.beast ? animal.enum.beast : animal.enum.none}
+                  @change=${this.animalHandler}
+                >
+                  ${animal.options.map((ta) => {
+                    return html`
+                      <sp-radio value=${ta}>${ta}</sp-radio>
+                    `;
+                  })}
+                </sp-radio-group>
+              </div>
+            </div>
           </sp-field-group>
         </div>
         
@@ -841,28 +892,28 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
         <sp-field-group id="SecondaryInvestmentLevelGroup">
           
             <div class="row1">
-              <div class="BeastSelector non-content">
-                <sp-field-label for="SecondaryBeastSelector">Secondary Beast/Dragon*:</sp-field-label>
-                <sp-radio-group
-                  id="SecondaryBeastSelector"
-                  horizontal
-                  name="SecondaryBeastSelector"
-                  selected=${this.SecondaryInvestmentLevel.dragon ? animal.enum.dragon : this.SecondaryInvestmentLevel.beast ? animal.enum.beast : animal.enum.none}
-                  @change=${this.animalHandler}
+              <div class="Covenants">
+                <sp-field-label for="SecondaryCovenantPicker">Covenant Level</sp-field-label>
+                <sp-picker
+                  id="SecondaryCovenantPicker"
+                  size="m"
+                  value=${this.SecondaryInvestmentLevel.covenants}
+                  @change=${this.CovenantHandler}
                 >
-                  ${animal.options.map((ta) => {
+                  ${CovenantAttributeCategory.options.map((cac) => {
                     return html`
-                      <sp-radio value=${ta}>${ta}</sp-radio>
-                    `;
+                      <sp-menu-item value=${cac}>${cac}</sp-menu-item>
+                    `
                   })}
-                </sp-radio-group>
+                </sp-picker>
               </div>
-              <div class="PreSetSelector non-content">
+              <div class="Presets PreSetSelector non-content">
                 <sp-field-label for="SecondaryPreSet">PreSet</sp-field-label>
                 <sp-picker
+                  
                   id="SecondaryPreSet"
                   size="m"
-                  label="Presets for Secondary General"
+                  label="Presets"
                   @change=${this.PresetHandler}
                   ${ref(this.resetPicker)}
                 >
@@ -876,7 +927,25 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
             <div class="row2">
               ${secondarySpecialityPickers}
             </div>
-          
+            <div class="row3">
+              <div class="AnimalSelector non-content">
+                <sp-field-label for="SecondaryAnimalSelector">Secondary Beast/Dragon*:</sp-field-label>
+                <sp-radio-group
+                  class="AnimalSelector"
+                  id="SecondaryAnimalSelector"
+                  horizontal
+                  name="SecondaryAnimalSelector"
+                  selected=${this.SecondaryInvestmentLevel.dragon ? animal.enum.dragon : this.SecondaryInvestmentLevel.beast ? animal.enum.beast : animal.enum.none}
+                  @change=${this.animalHandler}
+                >
+                  ${animal.options.map((ta) => {
+                    return html`
+                      <sp-radio value=${ta}>${ta}</sp-radio>
+                    `;
+                  })}
+                </sp-radio-group>
+              </div>
+            </div>
           <sp-help-text slot="help-text">*Note that a Secondary General's dragon or beast is used only to activate
             buffs, not to provide them itself.
           </sp-help-text>
