@@ -1,4 +1,4 @@
-import { GeneralClass, type GeneralClassType } from '@schemas/generalsSchema';
+import { type CovenantAttributeType, GeneralClass, type GeneralClassType } from '@schemas/generalsSchema';
 import {
   type APIRoute,
   type InferGetStaticParamsType,
@@ -12,8 +12,10 @@ import {
 } from '@schemas/ExtendedGeneral.ts';
 import type { SpecialityType } from '@schemas/specialitySchema.ts';
 import type { BookType } from '@schemas/bookSchemas.ts';
+import type { ConflictDatumType } from '@schemas/conflictSchemas.ts';
 
 export const prerender = true;
+const DEBUG = false;
 
 export async function getStaticPaths() {
   const generalObjects: CollectionEntry<'generals'>[] =
@@ -58,6 +60,8 @@ export const GET: APIRoute = async ({ params, locals }) => {
         books: new Array<BookType>(),
         ascending: gc.ascending,
         specialities: new Array<SpecialityType>(),
+        covenants: new Array<CovenantAttributeType>(),
+        conflicts: new Array<ConflictDatumType>(),
       };
       gc.books &&
         (await Promise.all(
@@ -77,12 +81,27 @@ export const GET: APIRoute = async ({ params, locals }) => {
             }
           })
         ));
-      return new Response(JSON.stringify(eg), {
-        status: 200,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const v = ExtendedGeneral.safeParse(eg)
+      if(v.success){
+        if(DEBUG) {
+          console.log(`valid parse before response`)
+        }
+        return new Response(JSON.stringify(v.data), {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+      } else {
+        if(DEBUG) {
+          console.log(v.error.message)
+        }
+        return new Response(null, {
+          status: 404,
+          statusText: 'Invalid Build'
+        })
+      }
+
     }
   }
   return new Response(null, {

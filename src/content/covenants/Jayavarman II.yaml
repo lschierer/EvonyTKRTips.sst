@@ -1,19 +1,10 @@
-name: Beowulf
+name: Jayavarman II
 generals:
-  - King Arthur
-  - Roland
-  - Mordred
+  - Martinus
+  - Ly Thuong Kiet
+  - Tran Hung Dao
 attributes:
 - category: War Covenant
-  type: personal
-  buff:
-  - attribute: Defense
-    condition:
-    - Reduces Monster
-    value:
-      number: 10
-      unit: percentage
-- category: Cooperation Covenant
   type: personal
   buff:
   - attribute: Attack
@@ -21,9 +12,43 @@ attributes:
     condition:
     - Against Monsters
     value:
-      number: 10
+      number: 15
       unit: percentage
 - category: Cooperation Covenant
+  type: personal
+  buff:
+  - attribute: Defense
+    class: Mounted
+    condition:
+    - When_Rallying
+    value:
+      number: 5
+      unit: percentage
+- category: Cooperation Covenant
+  type: passive
+  buff:
+  - attribute: Training_Speed
+    value:
+      number: 5
+      unit: percentage
+- category: Peace Covenant
+  type: personal
+  buff:
+  - attribute: HP
+    class: Mounted
+    condition:
+    - Attacking
+    value:
+      number: 10
+      unit: percentage
+  - attribute: HP
+    class: Ground
+    condition:
+    - Attacking
+    value:
+      number: 10
+      unit: percentage
+- category: Peace Covenant
   type: passive
   buff:
   - attribute: Training Capacity
@@ -31,67 +56,32 @@ attributes:
     value:
       number: 10
       unit: percentage
-- category: Peace Covenant
-  type: personal
-  buff:
-  - attribute: HP
-    class: Mounted
-    condition:
-    - Attacking
-    value:
-      number: 5
-      unit: percentage
-  - attribute: HP
-    class: Ground
-    condition:
-    - Attacking
-    value:
-      number: 5
-      unit: percentage
-- category: Peace Covenant
-  type: passive
-  buff:
-  - attribute: Marching_Speed
-    value:
-      number: 15
-      unit: percentage
 - category: Faith Covenant
   type: personal
   buff:
-  - attribute: Defense
-    class: Ground
-    condition:
-    - Reinforcing
-    value:
-      number: 10
-      unit: percentage
-  - attribute: Defense
+  - attribute: HP
     class: Mounted
     condition:
-    - Reinforcing
+    - When_Rallying
     value:
       number: 10
       unit: percentage
   - attribute: Attack
-    class: Ground
-    condition:
-    - Reinforcing
-    value:
-      number: 5
-      unit: percentage
-  - attribute: Attack
     class: Mounted
     condition:
-    - Reinforcing
+    - When_Rallying
     value:
       number: 5
       unit: percentage
 - category: Honor Covenant
   type: personal
   buff:
-  - attribute: March_Size_Capacity
+  - attribute: Attack
+    class: Mounted
+    condition:
+    - Marching
     value:
-      number: 8
+      number: 15
       unit: percentage
 - category: Civilization Covenant
   type: personal
@@ -99,11 +89,10 @@ attributes:
   - attribute: Attack
     class: Mounted
     value:
-      number: 5
-      unit: percentage
-  - attribute: HP
-    class: Mounted
-    value:
       number: 10
+      unit: percentage
+  - attribute: March_Size_Capacity
+    value:
+      number: 5
       unit: percentage
       

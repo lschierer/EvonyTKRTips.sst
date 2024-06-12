@@ -1,109 +1,100 @@
-name: Beowulf
+name: Isaac Brock
 generals:
-  - King Arthur
-  - Roland
-  - Mordred
+- Edward the Black Prince
+- William Marshal
+- John Churchill
 attributes:
 - category: War Covenant
   type: personal
   buff:
+  - attribute: Attack
+    condition:
+    - In_City
+    value:
+      number: 5
+      unit: percentage
+- category: Cooperation Covenant
+  type: passive
+  buff:
+  - attribute: Death_to_Soul
+    condition:
+    - In_Main_City
+    value:
+      number: 10
+      unit: percentage
+- category: Peace Covenant
+  type: personal
+  buff:
+  - attribute: HP
+    condition:
+    - In_City
+    value:
+      number: 5
+      unit: percentage
+- category: Peace Covenant
+  type: passive
+  buff:
   - attribute: Defense
     condition:
-    - Reduces Monster
-    value:
-      number: 10
-      unit: percentage
-- category: Cooperation Covenant
-  type: personal
-  buff:
-  - attribute: Attack
-    class: Mounted
-    condition:
-    - Against Monsters
-    value:
-      number: 10
-      unit: percentage
-- category: Cooperation Covenant
-  type: passive
-  buff:
-  - attribute: Training Capacity
-    class: Mounted
-    value:
-      number: 10
-      unit: percentage
-- category: Peace Covenant
-  type: personal
-  buff:
-  - attribute: HP
-    class: Mounted
-    condition:
-    - Attacking
+    - In_City
     value:
       number: 5
-      unit: percentage
-  - attribute: HP
-    class: Ground
-    condition:
-    - Attacking
-    value:
-      number: 5
-      unit: percentage
-- category: Peace Covenant
-  type: passive
-  buff:
-  - attribute: Marching_Speed
-    value:
-      number: 15
       unit: percentage
 - category: Faith Covenant
   type: personal
   buff:
-  - attribute: Defense
+  - attribute: HP
     class: Ground
     condition:
-    - Reinforcing
+    - In_City
     value:
       number: 10
       unit: percentage
   - attribute: Defense
-    class: Mounted
-    condition:
-    - Reinforcing
-    value:
-      number: 10
-      unit: percentage
-  - attribute: Attack
     class: Ground
     condition:
-    - Reinforcing
+    - In_City
     value:
-      number: 5
-      unit: percentage
-  - attribute: Attack
-    class: Mounted
-    condition:
-    - Reinforcing
-    value:
-      number: 5
+      number: 10
       unit: percentage
 - category: Honor Covenant
   type: personal
   buff:
-  - attribute: March_Size_Capacity
+  - attribute: Defense
+    class: Ground
+    condition:
+    - In_City
     value:
-      number: 8
+      number: 5
+      unit: percentage
+  - attribute: Defense
+    class: Mounted
+    condition:
+    - In_City
+    value:
+      number: 5
+      unit: percentage
+  - attribute: HP
+    class: Ground
+    condition:
+    - In_City
+    value:
+      number: 5
+      unit: percentage
+  - attribute: HP
+    class: Mounted
+    condition:
+    - In_City
+    value:
+      number: 5
       unit: percentage
 - category: Civilization Covenant
   type: personal
   buff:
   - attribute: Attack
-    class: Mounted
+    class: Ground
+    condition:
+    - In_City
     value:
-      number: 5
+      number: 30
       unit: percentage
-  - attribute: HP
-    class: Mounted
-    value:
-      number: 10
-      unit: percentage
-      

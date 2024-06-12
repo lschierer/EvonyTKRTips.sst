@@ -50,7 +50,10 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
   @property({ type: String })
   public generalId = '';
 
-  @state()
+  @property({
+    type: Object,
+    reflect: true
+  })
   public general: ExtendedGeneralType | null = null;
 
   @property({
@@ -143,6 +146,7 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
     this.status = ExtendedGeneralStatus.enum.fetching;
     const currentPage = `${document.location.protocol}//${document.location.host}`;
     if (this.generalId.length > 0) {
+
       const gURL = new URL(`/generals/${this.generalId}.json`, currentPage);
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const data = await fetch(gURL)

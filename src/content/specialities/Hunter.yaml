@@ -4,7 +4,7 @@ attribute:
   - level: Green
     buff:
       - condition:
-          - Reduces_Monster
+          - Reduces Monster
         attribute: Attack
         value:
           number: 1
@@ -12,7 +12,7 @@ attribute:
   - level: Blue
     buff:
       - condition:
-          - Reduces_Monster
+          - Reduces Monster
         attribute: Attack
         value:
           number: 2
@@ -20,7 +20,7 @@ attribute:
   - level: Purple
     buff:
       - condition:
-          - Reduces_Monster
+          - Reduces Monster
         attribute: Attack
         value:
           number: 3
@@ -28,7 +28,7 @@ attribute:
   - level: Orange
     buff:
       - condition:
-          - Reduces_Monster
+          - Reduces Monster
         attribute: Attack
         value:
           number: 3
@@ -36,7 +36,7 @@ attribute:
   - level: Gold
     buff:
       - condition:
-          - Reduces_Monster
+          - Reduces Monster
         attribute: Attack
         value:
           number: 6

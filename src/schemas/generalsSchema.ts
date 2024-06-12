@@ -95,3 +95,4 @@ export const Covenant = zod.object({
   generals: zod.string().array(),
   attributes: zod.array(CovenantAttribute).optional(),
 });
+export type CovenantType = zod.infer<typeof Covenant>;

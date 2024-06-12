@@ -1,45 +1,49 @@
-name: Suchet
+name: Hestia
 generals:
-  - Napoleon
-  - Soult
-  - Louis IX
+- Flavius Aetius
+- Zucca
+- Poligenus
 attributes:
 - category: War Covenant
   type: personal
   buff:
-  - attribute: Attack
-    class: Ground
+  - attribute: Marching_Speed
     value:
-      number: 5
-      unit: percentage
-- category: War Covenant
-  type: passive
-  buff:
-  - attribute: Training Capacity
-    class: Ground
-    value:
-      number: 5
+      number: 10
       unit: percentage
 - category: Cooperation Covenant
-  type: passive
+  type: personal
   buff:
-  - attribute: Deserter Capacity
+  - attribute: Attack
+    class: Mounted
+    condition:
+    - Marching
     value:
       number: 10
       unit: percentage
 - category: Peace Covenant
-  type: personal
+  type: passive
   buff:
-  - attribute: Defense
-    class: Ground
+  - attribute: Training_Speed
+    class: Mounted
     value:
-      number: 10
+      number: 5
       unit: percentage
 - category: Faith Covenant
   type: personal
   buff:
   - attribute: Defense
-    class: Ground
+    class: Mounted
+    condition:
+    - When_Rallying
+    value:
+      number: 10
+      unit: percentage
+- category: Faith Covenant
+  type: passive
+  buff:
+  - attribute: Attack
+    class: Mounted
     condition:
     - When_Rallying
     value:
@@ -48,24 +52,28 @@ attributes:
 - category: Honor Covenant
   type: personal
   buff:
-  - attribute: Attack
-    class: Ground
-    condition:
-    - When_Rallying
-    value:
-      number: 15
-      unit: percentage
-- category: Civilization Covenant
-  type: personal
-  buff:
-  - attribute: Attack
-    class: Ground
+  - attribute: HP
+    class: Mounted
     condition:
     - Marching
     value:
       number: 10
       unit: percentage
-  - attribute: March_Size_Capacity
+- category: Civilization Covenant
+  type: personal
+  buff:
+  - attribute: Defense
+    class: Mounted
+    condition:
+    - Marching
     value:
-      number: 5
+      number: 10
       unit: percentage
+  - attribute: HP
+    class: Mounted
+    condition:
+    - Marching
+    value:
+      number: 10
+      unit: percentage
+      

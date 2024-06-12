@@ -1,71 +1,75 @@
-name: Suchet
+name: Merlin
 generals:
-  - Napoleon
-  - Soult
-  - Louis IX
+- King Arthur
+- Alfred the Great
+- Beowulf
 attributes:
 - category: War Covenant
   type: personal
   buff:
-  - attribute: Attack
-    class: Ground
-    value:
-      number: 5
-      unit: percentage
-- category: War Covenant
-  type: passive
-  buff:
-  - attribute: Training Capacity
-    class: Ground
+  - attribute: March_Size_Capacity
     value:
       number: 5
       unit: percentage
 - category: Cooperation Covenant
-  type: passive
+  type: personal
   buff:
-  - attribute: Deserter Capacity
+  - attribute: HP
+    class: Archers
+    condition:
+    - Marching
     value:
       number: 10
       unit: percentage
 - category: Peace Covenant
-  type: personal
+  type: passive
   buff:
-  - attribute: Defense
-    class: Ground
+  - attribute: Training_Speed
+    class: Archers
     value:
-      number: 10
+      number: 5
       unit: percentage
 - category: Faith Covenant
   type: personal
   buff:
   - attribute: Defense
-    class: Ground
+    class: Archers
     condition:
     - When_Rallying
+    value:
+      number: 10
+      unit: percentage
+- category: Faith Covenant
+  type: passive
+  buff:
+  - attribute: Marching_Speed
     value:
       number: 10
       unit: percentage
 - category: Honor Covenant
   type: personal
   buff:
-  - attribute: Attack
-    class: Ground
+  - attribute: HP
+    class: Archers
     condition:
     - When_Rallying
     value:
-      number: 15
+      number: 5
       unit: percentage
 - category: Civilization Covenant
   type: personal
   buff:
   - attribute: Attack
-    class: Ground
+    class: Archers
     condition:
     - Marching
     value:
-      number: 10
+      number: 5
       unit: percentage
-  - attribute: March_Size_Capacity
+  - attribute: Defense
+    class: Archers
+    condition:
+    - Marching
     value:
       number: 5
       unit: percentage

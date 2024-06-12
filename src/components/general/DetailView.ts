@@ -37,6 +37,7 @@ import {
 import { ExtendedGeneralStatus } from '@schemas/ExtendedGeneral';
 
 import { BaseGeneral } from './BaseGeneral';
+
 const DEBUG = false;
 
 @customElement('detail-view')
@@ -61,9 +62,10 @@ export class DetailView extends SizedMixin(BaseGeneral, {
     beast: true,
   };
 
-  protected async willUpdate(
-    _changedProperties: PropertyValues
-  ): Promise<void> {
+  protected async willUpdate (_changedProperties: PropertyValues): Promise<void> {
+    if(DEBUG) {
+      console.log(`DetailView willUpdate`)
+    }
     await super.willUpdate(_changedProperties);
     if (_changedProperties.has('general')) {
       if (DEBUG) {

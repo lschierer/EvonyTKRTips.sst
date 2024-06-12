@@ -34,7 +34,7 @@ general:
       buff:
         - attribute: Defense
           condition:
-            - Reduces_Monster
+            - Reduces Monster
           value:
             number: -10
             unit: percentage
@@ -48,7 +48,7 @@ general:
       buff:
         - attribute: Attack
           condition:
-            - Reduces_Monster
+            - Reduces Monster
           value:
             number: 10
             unit: percentage

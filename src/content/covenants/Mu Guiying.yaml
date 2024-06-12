@@ -1,55 +1,70 @@
-name: Suchet
+name: Mu Guiying
 generals:
-  - Napoleon
-  - Soult
-  - Louis IX
+  - Elektra
+  - Yue Fei
+  - Guan Yu
 attributes:
 - category: War Covenant
   type: personal
   buff:
   - attribute: Attack
-    class: Ground
+    class: Siege
     value:
       number: 5
       unit: percentage
-- category: War Covenant
-  type: passive
+- category: Cooperation Covenant
+  type: personal
   buff:
-  - attribute: Training Capacity
-    class: Ground
+  - attribute: Defense
+    class: Siege
     value:
       number: 5
       unit: percentage
 - category: Cooperation Covenant
   type: passive
   buff:
-  - attribute: Deserter Capacity
+  - attribute: Hospital Capacity
     value:
-      number: 10
+      number: 5
       unit: percentage
 - category: Peace Covenant
   type: personal
   buff:
   - attribute: Defense
-    class: Ground
+    class: Siege
+    condition:
+    - When_Rallying
+    value:
+      number: 10
+      unit: percentage
+- category: Peace Covenant
+  type: passive
+  buff:
+  - attribute: Training Capacity
+    class: Siege
     value:
       number: 10
       unit: percentage
 - category: Faith Covenant
   type: personal
   buff:
-  - attribute: Defense
-    class: Ground
+  - attribute: HP
+    class: Siege
     condition:
     - When_Rallying
     value:
       number: 10
       unit: percentage
+  - attribute: HP
+    class: Siege
+    value:
+      number: 5
+      unit: percentage
 - category: Honor Covenant
   type: personal
   buff:
   - attribute: Attack
-    class: Ground
+    class: Siege
     condition:
     - When_Rallying
     value:
@@ -59,7 +74,7 @@ attributes:
   type: personal
   buff:
   - attribute: Attack
-    class: Ground
+    class: Siege
     condition:
     - Marching
     value:
@@ -69,3 +84,4 @@ attributes:
     value:
       number: 5
       unit: percentage
+      

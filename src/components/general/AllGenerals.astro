@@ -4,6 +4,11 @@ import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
 import { BuffParamsType, qualityColor, AscendingLevels } from '../../schemas/baseSchemas';
 
 import {
+  Covenant,
+  type CovenantType,
+  CovenantAttribute,
+  CovenantAttributeCategory,
+  type CovenantAttributeType,
   Display,
   type GeneralClassType,
   type GeneralElementType,
@@ -15,8 +20,14 @@ import {
 import {
   type ExtendedGeneralType,
 } from '@schemas/ExtendedGeneral';
+
 import { SpecialityType } from '../../schemas/specialitySchema';
+
 import { BookType } from '../../schemas/bookSchemas';
+
+import {
+  type ConflictDatumType
+} from '../../schemas/conflictSchemas';
 
 import {EvAnsScoreComputer} from '@components/general/buffComputers/EvAnsRanking/EvAnsScoreComputer';
 
@@ -71,6 +82,8 @@ if (generalObjects !== undefined && generalObjects !== null) {
         note: gc.note,
         specialities: new Array<SpecialityType>(),
         books: new Array<BookType>(),
+        covenants: new Array<CovenantAttributeType>(),
+        conflicts: new Array<ConflictDatumType>(),
       };
       if(TargetClass !== undefined && TargetClass !== null && generalSpecialists.enum.all.localeCompare(TargetClass)){
         if (TargetClass.toLocaleString().toLocaleLowerCase().localeCompare(eg.score_as.toLocaleString().toLocaleLowerCase())) {
@@ -94,6 +107,31 @@ if (generalObjects !== undefined && generalObjects !== null) {
           eg.specialities.push(gse.data);
         }
       }));
+
+      const covenantEntry: CollectionEntry<'covenants'> | undefined = await getEntry('covenants', eg.name);
+      if(covenantEntry !== undefined && covenantEntry !== null) {
+        const fullCovenant: CovenantType = covenantEntry.data;
+        if(Array.isArray(fullCovenant.attributes) && fullCovenant.attributes.length > 0) {
+          if(DEBUG) {
+            console.log(`full Covenant for ${eg.name}`)
+          }
+          fullCovenant.attributes.forEach((ca: CovenantAttributeType) => {
+            if(!ca.type.localeCompare('personal')) {
+              eg.covenants.push(ca);
+            }
+          })
+        }else {
+          if(DEBUG){
+            console.log(`Covenant attributes for ${eg.name} not an array or size 0`)
+          }
+        }
+      } else {
+        if(DEBUG){
+          console.log(`No Covenant for ${eg.name}`)
+        }
+      }
+
+
 
       Astro.locals.CachedGenerals.push(eg);
 
@@ -123,7 +161,7 @@ Astro.locals.CachedGenerals.sort((a, b) => {
     <li>
       <dl>
         <dt>{thisG.name}</dt>
-        <!--<dd>${JSON.stringify(thisG)}</dd>-->
+        <dd>{JSON.stringify(thisG)}</dd>
         <dd>{EvAnsScoreComputer(
           generalUseCase.enum.Attack,
           thisG,

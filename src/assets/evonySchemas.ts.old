@@ -72,7 +72,7 @@ export const BuffAdverbs = z.enum([
   'Reduces_Enemy_in_Attack',
   'Enemy',
   'Enemy_In_City',
-  'Reduces_Monster',
+  'Reduces Monster',
 ]);
 export type BuffAdverbsType = z.infer<typeof BuffAdverbs>;
 

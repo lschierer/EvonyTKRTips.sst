@@ -3,6 +3,7 @@ members:
   - George A. Custer
   - Barbarossa
 others:
+  - André Masséna
   - Lysander
   - Gaius Octavius
   - Bertrand du Guesclin
@@ -14,6 +15,10 @@ others:
   - Jayavarman II
   - Napoleon (Prime)
   - Roland
+  - 01HNP2VSPGA7AWKN10M2ABCR3G
+  - 01HPNDQ4D8BADN1GWD6EAWRK7B
+  - 01HPNDW5NNX2YBJW5B8X2YA2CR
+  - 01HGKYRN4Y9B5JHDXSPJ7CTDR5
 books:
   - name: March Size Increase
     level: '1'

@@ -1,4 +1,5 @@
 ---
+import { Astro } from '../../../../.sst/platform/src/components/aws';
 export const prerender = true;
 import type { ComponentProps } from 'astro/types';
 import type {
@@ -12,9 +13,10 @@ import { DetailView } from '@components/general/DetailView.ts';
 import AllGenerals from '@components/general/AllGenerals.astro';
 import AllConflicts from '@components/general/AllConflicts.astro';
 
-const DEBUG = false;
+const DEBUG = true;
 
 import { getEntry, getCollection } from 'astro:content';
+import { ExtendedGeneralType } from '../../../schemas/ExtendedGeneral';
 
 export const getStaticPaths = (async () => {
   const generalEntries = await getCollection('generals');
@@ -32,13 +34,11 @@ if (id === undefined) {
   if (DEBUG) console.log(`id was undefined`);
   throw new Error('Id is required');
 }
----
 
+---
 <StarlightPage
   frontmatter={{ title: `Details for ${id}`, tableOfContents: false }}
 >
-  <AllGenerals />
-  <AllConflicts />
   <DetailView generalId={id} client:only="lit" />
   <slot />
 </StarlightPage>
