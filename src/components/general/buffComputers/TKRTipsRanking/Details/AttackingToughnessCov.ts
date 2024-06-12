@@ -24,12 +24,8 @@ const DEBUG = false;
 
 const buffReductionLogic = (buffName: string, eg: ExtendedGeneralType, ab: BuffType, bp: BuffParamsType, tbfo: BuffFunctionInterface, useCase: generalUseCaseType, am: AttributeMultipliersType) => {
   let ba = 0;
-  let total = tbfo.Attack(
-    buffName, eg.name, ab, bp, useCase, am);
-  if (DEBUG) {
-    console.log(`CovBuff Attack adding ${total} to: ${ba}`);
-  }
-  ba += total;
+  let total  = 0;
+
   total = tbfo.HP(
     buffName, eg.name, ab, bp, useCase, am);
   if (DEBUG) {
