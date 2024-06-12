@@ -1,98 +1,100 @@
-name: Jayavarman II
+name: Isaac Brock
 generals:
-  - Martinus
-  - Ly Thuong Kiet
-  - Tran Hung Dao
+- Edward the Black Prince
+- William Marshal
+- John Churchill
 attributes:
 - category: War Covenant
   type: personal
   buff:
   - attribute: Attack
-    class: Mounted
     condition:
-    - Against Monsters
+    - In_City
     value:
-      number: 15
+      number: 5
       unit: percentage
 - category: Cooperation Covenant
+  type: passive
+  buff:
+  - attribute: Death_to_Soul
+    condition:
+    - In_Main_City
+    value:
+      number: 10
+      unit: percentage
+- category: Peace Covenant
   type: personal
+  buff:
+  - attribute: HP
+    condition:
+    - In_City
+    value:
+      number: 5
+      unit: percentage
+- category: Peace Covenant
+  type: passive
   buff:
   - attribute: Defense
-    class: Mounted
     condition:
-    - When_Rallying
+    - In_City
     value:
       number: 5
-      unit: percentage
-- category: Cooperation Covenant
-  type: passive
-  buff:
-  - attribute: Training_Speed
-    value:
-      number: 5
-      unit: percentage
-- category: Peace Covenant
-  type: personal
-  buff:
-  - attribute: HP
-    class: Mounted
-    condition:
-    - Attacking
-    value:
-      number: 10
-      unit: percentage
-  - attribute: HP
-    class: Ground
-    condition:
-    - Attacking
-    value:
-      number: 10
-      unit: percentage
-- category: Peace Covenant
-  type: passive
-  buff:
-  - attribute: Training Capacity
-    class: Mounted
-    value:
-      number: 10
       unit: percentage
 - category: Faith Covenant
   type: personal
   buff:
   - attribute: HP
-    class: Mounted
+    class: Ground
     condition:
-    - When_Rallying
+    - In_City
     value:
       number: 10
       unit: percentage
-  - attribute: Attack
-    class: Mounted
+  - attribute: Defense
+    class: Ground
     condition:
-    - When_Rallying
+    - In_City
     value:
-      number: 5
+      number: 10
       unit: percentage
 - category: Honor Covenant
   type: personal
   buff:
-  - attribute: Attack
+  - attribute: Defense
+    class: Ground
+    condition:
+    - In_City
+    value:
+      number: 5
+      unit: percentage
+  - attribute: Defense
     class: Mounted
     condition:
-    - Marching
+    - In_City
     value:
-      number: 15
+      number: 5
+      unit: percentage
+  - attribute: HP
+    class: Ground
+    condition:
+    - In_City
+    value:
+      number: 5
+      unit: percentage
+  - attribute: HP
+    class: Mounted
+    condition:
+    - In_City
+    value:
+      number: 5
       unit: percentage
 - category: Civilization Covenant
   type: personal
   buff:
   - attribute: Attack
-    class: Mounted
+    class: Ground
+    condition:
+    - In_City
     value:
-      number: 10
+      number: 30
       unit: percentage
-  - attribute: March_Size_Capacity
-    value:
-      number: 5
-      unit: percentage
-      

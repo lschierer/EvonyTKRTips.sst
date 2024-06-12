@@ -1,39 +1,34 @@
-name: Suchet
+name: Frigg
 generals:
-  - Napoleon
-  - Soult
-  - Louis IX
+- Tomyris
+- Theodora
+- Gnarr
 attributes:
 - category: War Covenant
   type: personal
   buff:
-  - attribute: Attack
-    class: Ground
-    value:
-      number: 5
-      unit: percentage
-- category: War Covenant
-  type: passive
-  buff:
-  - attribute: Training Capacity
-    class: Ground
+  - attribute: Wounded_to_Death
+    condition:
+    - Enemy
+    - Attacking
     value:
       number: 5
       unit: percentage
 - category: Cooperation Covenant
-  type: passive
+  type: personal
   buff:
-  - attribute: Deserter Capacity
+  - attribute: HP
+    class: Ground
     value:
       number: 10
       unit: percentage
 - category: Peace Covenant
-  type: personal
+  type: passive
   buff:
-  - attribute: Defense
+  - attribute: Training_Speed
     class: Ground
     value:
-      number: 10
+      number: 5
       unit: percentage
 - category: Faith Covenant
   type: personal
@@ -45,27 +40,31 @@ attributes:
     value:
       number: 10
       unit: percentage
+- category: Faith Covenant
+  type: passive
+  buff:
+  - attribute: Marching_Speed
+    value:
+      number: 15
+      unit: percentage
 - category: Honor Covenant
   type: personal
   buff:
-  - attribute: Attack
-    class: Ground
-    condition:
-    - When_Rallying
+  - attribute: March_Size_Capacity
     value:
-      number: 15
+      number: 8
       unit: percentage
 - category: Civilization Covenant
   type: personal
   buff:
   - attribute: Attack
     class: Ground
-    condition:
-    - Marching
     value:
       number: 10
       unit: percentage
-  - attribute: March_Size_Capacity
+  - attribute: Defense
+    class: Ground
     value:
-      number: 5
+      number: 10
       unit: percentage
+      

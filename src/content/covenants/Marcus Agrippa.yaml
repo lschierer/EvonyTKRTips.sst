@@ -1,12 +1,16 @@
-name: John Hunyadi
+name: Marcus_Agrippa
 generals:
-  - Matthias I
-  - Jadwiga
-  - Suleiman the Magnificent
+  - Caesar
+  - Gaius Octavius
+  - Mark Antony
 attributes:
 - category: War Covenant
   type: personal
-  buff:
+  buffs:
+  - attribute: Resources Production
+    value:
+      number: 5
+      unit: percentage
   - attribute: HP
     class: Archers
     value:
@@ -17,69 +21,60 @@ attributes:
     value:
       number: 5
       unit: percentage
-- category: Cooperation Covenant
+- category: Peace Covenant
   type: passive
-  buff:
-  - attribute: Deserter Capacity
+  buffs:
+  - attribute: Training Capacity
+    class: Archers
     value:
       number: 10
       unit: percentage
-- category: Peace Covenant
+- category: Faith Covenant
   type: personal
-  buff:
-  - attribute: Attack
+  buffs:
+  - attribute: Defense
+    class: Archers
+    value:
+      number: 5
+      unit: percentage
+  - attribute: Defense
     class: Siege
     value:
       number: 5
       unit: percentage
-- category: Faith Covenant
-  type: passive
-  buff:
-  - attribute: HP
-    class: Archers
-    condition:
-    - Enemy
+  - attribute: Marching_Speed
     value:
-      number: 8
-      unit: percentage
-  - attribute: HP
-    class: Siege
-    condition:
-    - Enemy
-    value:
-      number: 8
+      number: 15
       unit: percentage
 - category: Honor Covenant
   type: personal
-  buff:
+  buffs:
   - attribute: Attack
     class: Archers
-    condition:
-    - When_Rallying
+    condition: When_Rallying
     value:
       number: 5
       unit: percentage
   - attribute: Attack
     class: Siege
-    condition:
-    - When_Rallying
+    condition: When_Rallying
     value:
       number: 5
       unit: percentage
   - attribute: Attack
     class: Siege
-    condition:
-    - When_Rallying
+    condition: When_Rallying
     value:
       number: 10
       unit: percentage
 - category: Civilization Covenant
   type: personal
-  buff:
+  buffs:
   - attribute: Attack
-    class: Siege
+    class: Archers
     condition:
     - Marching
     value:
       number: 15
       unit: percentage
+      

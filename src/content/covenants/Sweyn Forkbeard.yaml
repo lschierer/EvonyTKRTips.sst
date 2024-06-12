@@ -1,14 +1,34 @@
-name: John Hunyadi
+name: Sweyn Forkbeard
 generals:
-  - Matthias I
-  - Jadwiga
-  - Suleiman the Magnificent
+  - Cnut the Great
+  - Margaret I
+  - Harald
 attributes:
 - category: War Covenant
   type: personal
   buff:
+  - attribute: Defense
+    class: Ground
+    value:
+      number: 5
+      unit: percentage
+  - attribute: Defense
+    class: Mounted
+    value:
+      number: 5
+      unit: percentage
+- category: War Covenant
+  type: passive
+  buff:
+  - attribute: Marching_Speed
+    value:
+      number: 5
+      unit: percentage
+- category: Cooperation Covenant
+  type: personal
+  buff:
   - attribute: HP
-    class: Archers
+    class: Mounted
     value:
       number: 5
       unit: percentage
@@ -16,70 +36,70 @@ attributes:
     class: Siege
     value:
       number: 5
-      unit: percentage
-- category: Cooperation Covenant
-  type: passive
-  buff:
-  - attribute: Deserter Capacity
-    value:
-      number: 10
       unit: percentage
 - category: Peace Covenant
   type: personal
   buff:
   - attribute: Attack
-    class: Siege
+    class: Ground
     value:
       number: 5
       unit: percentage
-- category: Faith Covenant
+- category: Peace Covenant
   type: passive
   buff:
-  - attribute: HP
-    class: Archers
-    condition:
-    - Enemy
+  - attribute: Training Capacity
+    class: Ground
     value:
-      number: 8
+      number: 10
       unit: percentage
-  - attribute: HP
-    class: Siege
-    condition:
-    - Enemy
-    value:
-      number: 8
-      unit: percentage
-- category: Honor Covenant
+- category: Faith Covenant
   type: personal
   buff:
-  - attribute: Attack
-    class: Archers
-    condition:
-    - When_Rallying
-    value:
-      number: 5
-      unit: percentage
-  - attribute: Attack
-    class: Siege
-    condition:
-    - When_Rallying
-    value:
-      number: 5
-      unit: percentage
-  - attribute: Attack
-    class: Siege
+  - attribute: Defense
+    class: Ground
     condition:
     - When_Rallying
     value:
       number: 10
       unit: percentage
+- category: Honor Covenant
+  type: personal
+  buff:
+  - attribute: Attack
+    class: Ground
+    condition:
+    - When_Rallying
+    value:
+      number: 5
+      unit: percentage
+  - attribute: Attack
+    class: Mounted
+    condition:
+    - When_Rallying
+    value:
+      number: 5
+      unit: percentage
+  - attribute: Attack
+    class: Ground
+    condition:
+    - When_Rallying
+    value:
+      number: 5
+      unit: percentage
 - category: Civilization Covenant
   type: personal
   buff:
   - attribute: Attack
-    class: Siege
+    class: Ground
     condition:
     - Marching
     value:
-      number: 15
+      number: 10
       unit: percentage
+  - attribute: March_Size_Capacity
+    value:
+      number: 5
+      unit: percentage
+      
+    

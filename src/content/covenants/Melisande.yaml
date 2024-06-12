@@ -1,18 +1,18 @@
-name: John Hunyadi
+name: Melisande
 generals:
-  - Matthias I
-  - Jadwiga
-  - Suleiman the Magnificent
+- Gunther
+- Eleanor
+- Catherine II
 attributes:
 - category: War Covenant
   type: personal
   buff:
-  - attribute: HP
+  - attribute: Attack
     class: Archers
     value:
       number: 5
       unit: percentage
-  - attribute: HP
+  - attribute: Attack
     class: Siege
     value:
       number: 5
@@ -20,13 +20,20 @@ attributes:
 - category: Cooperation Covenant
   type: passive
   buff:
-  - attribute: Deserter Capacity
+  - attribute: Marching_Speed
     value:
-      number: 10
+      number: 15
       unit: percentage
 - category: Peace Covenant
   type: personal
   buff:
+  - attribute: Defense
+    class: Siege
+    condition:
+    - When_Rallying
+    value:
+      number: 10
+      unit: percentage
   - attribute: Attack
     class: Siege
     value:
@@ -35,51 +42,39 @@ attributes:
 - category: Faith Covenant
   type: passive
   buff:
-  - attribute: HP
-    class: Archers
+  - attribute: Defense
     condition:
-    - Enemy
+    - Reinforcing
     value:
-      number: 8
-      unit: percentage
-  - attribute: HP
-    class: Siege
-    condition:
-    - Enemy
-    value:
-      number: 8
+      number: 5
       unit: percentage
 - category: Honor Covenant
   type: personal
   buff:
-  - attribute: Attack
-    class: Archers
-    condition:
-    - When_Rallying
+  - attribute: March_Size_Capacity
     value:
       number: 5
-      unit: percentage
-  - attribute: Attack
-    class: Siege
-    condition:
-    - When_Rallying
-    value:
-      number: 5
-      unit: percentage
-  - attribute: Attack
-    class: Siege
-    condition:
-    - When_Rallying
-    value:
-      number: 10
       unit: percentage
 - category: Civilization Covenant
   type: personal
   buff:
-  - attribute: Attack
-    class: Siege
-    condition:
-    - Marching
+  - attribute: HP
+    class: Archers
     value:
-      number: 15
+      number: 5
+      unit: percentage
+  - attribute: HP
+    class: Siege
+    value:
+      number: 5
+      unit: percentage
+  - attribute: Defense
+    class: Archers
+    value:
+      number: 5
+      unit: percentage
+  - attribute: Defense
+    class: Siege
+    value:
+      number: 5
       unit: percentage
