@@ -325,8 +325,8 @@ importers:
         specifier: ^20.14.2
         version: 20.14.2
       astro-sst:
-        specifier: ^2.43.0
-        version: 2.43.0
+        specifier: ^2.43.1
+        version: 2.43.1
       aws-cdk-lib:
         specifier: 2.142.1
         version: 2.142.1(constructs@10.3.0)
@@ -2203,8 +2203,8 @@ packages:
     peerDependencies:
       astro: ^4.0.0-beta || ^3.3.0
 
-  astro-sst@2.43.0:
-    resolution: {integrity: sha512-THihc+GJr7tIE9hgcFsmti0OcbBEDAxlp7fnzqtUn42+03Aj5wTYan6LGlgS37D39E5V4WdmFb9yIxyWtMlrMQ==}
+  astro-sst@2.43.1:
+    resolution: {integrity: sha512-sWvoHDTyQ9wJ6htPqyic+KiiGyJMIX+W+gbsfQ/In7J4NguX4aPACiay4KvYG6TO1lZ7GVCxnZHJKkYPVGRR1Q==}
 
   astro@4.10.2:
     resolution: {integrity: sha512-SBdkoOanPsxKlKVU4uu/XG0G7NYAFoqmfBtq9SPMJ34B7Hr1MxVdEugERs8IwYN6UaxdDVcqA++9PvH6Onq2cg==}
@@ -2701,8 +2701,8 @@ packages:
   eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
 
-  electron-to-chromium@1.4.798:
-    resolution: {integrity: sha512-by9J2CiM9KPGj9qfp5U4FcPSbXJG7FNzqnYaY4WLzX+v2PHieVGmnsA4dxfpGE3QEC7JofpPZmn7Vn1B9NR2+Q==}
+  electron-to-chromium@1.4.799:
+    resolution: {integrity: sha512-3D3DwWkRTzrdEpntY0hMLYwj7SeBk1138CkPE8sBDSj3WzrzOiG2rHm3luw8jucpf+WiyLBCZyU9lMHyQI9M9Q==}
 
   emmet@2.4.7:
     resolution: {integrity: sha512-O5O5QNqtdlnQM2bmKHtJgyChcrFMgQuulI+WdiOw2NArzprUqqxUW6bgYtKvzKgrsYpuLWalOkdhNP+1jluhCA==}
@@ -7374,7 +7374,7 @@ snapshots:
       astro: 4.10.2(@types/node@20.14.2)(typescript@5.4.5)
       rehype-expressive-code: 0.35.3
 
-  astro-sst@2.43.0:
+  astro-sst@2.43.1:
     dependencies:
       '@astrojs/webapi': 3.0.0
       set-cookie-parser: 2.6.0
@@ -7522,7 +7522,7 @@ snapshots:
   browserslist@4.23.1:
     dependencies:
       caniuse-lite: 1.0.30001632
-      electron-to-chromium: 1.4.798
+      electron-to-chromium: 1.4.799
       node-releases: 2.0.14
       update-browserslist-db: 1.0.16(browserslist@4.23.1)
 
@@ -7990,7 +7990,7 @@ snapshots:
 
   eastasianwidth@0.2.0: {}
 
-  electron-to-chromium@1.4.798: {}
+  electron-to-chromium@1.4.799: {}
 
   emmet@2.4.7:
     dependencies:
