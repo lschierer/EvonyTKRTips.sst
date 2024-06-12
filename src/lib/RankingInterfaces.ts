@@ -2,6 +2,8 @@ import type { BuffType, BuffParamsType } from '@schemas/baseSchemas';
 import type {AttributeMultipliersType} from '@schemas/EvAns.zod';
 import type { generalUseCaseType } from '@schemas/generalsSchema.ts';
 
+export type BuffFunction = (name: string, buffName: string, actualBuff: BuffType, desired: BuffParamsType, useCase: generalUseCaseType, am: AttributeMultipliersType) => number;
+
 export interface BuffFunctionInterface {
   Attack: (name: string, buffName: string, actualBuff: BuffType, desired: BuffParamsType, useCase: generalUseCaseType, am: AttributeMultipliersType) => number,
   DeAttack: (name: string, buffName: string, actualBuff: BuffType, desired: BuffParamsType, useCase: generalUseCaseType, am: AttributeMultipliersType) => number,

@@ -37,11 +37,11 @@ import { type BuffFunctionInterface } from '@lib/RankingInterfaces';
 
 const Basic = z
   .function()
-  .args(ExtendedGeneral, AttributeMultipliers)
+  .args(ExtendedGeneral, BuffParams, AttributeMultipliers)
   .returns(z.number())
-  .implement((eg: ExtendedGeneralType, am: AttributeMultipliersType) => {
+  .implement((eg: ExtendedGeneralType, bp: BuffParamsType, am: AttributeMultipliersType) => {
     let AES_adjustment = 0;
-    switch (eg.stars) {
+    switch (bp.stars) {
       case AscendingLevels.enum['0stars']:
         break;
       case AscendingLevels.enum['1red']:
@@ -214,7 +214,7 @@ export const AttackingAttackPvPBase = z
         Range: RangeBuff,
       }
 
-      const BAS = Basic(eg, am);
+      const BAS = Basic(eg, bp, am);
       const BSS = PvPBSS(eg, bp, typedBuffFunctions, useCase, am);
       const AES = PvPAES(eg, bp, typedBuffFunctions, useCase, am);
       const Cov = CovComputer(eg, bp, typedBuffFunctions, useCase, am);

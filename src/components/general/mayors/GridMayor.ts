@@ -23,7 +23,7 @@ import {
 import { EvAnsScoreComputer } from '../buffComputers/EvAnsRanking/EvAnsScoreComputer';
 import { AttackingScoreComputer } from '../buffComputers/TKRTipsRanking/AttackScoreComputer';
 import { ToughnessScoreComputer } from '../buffComputers/TKRTipsRanking/ToughnessScoreComputer';
-import { MayorAttackDetails } from '../buffComputers/TKRTipsRanking/MayorAttackDetails';
+import { type MayorBuffDetails, MayorDetail } from '../buffComputers/TKRTipsRanking/MayorDetail';
 
 const DEBUG = false;
 
@@ -43,35 +43,35 @@ export class GridMayor {
     }
   }
 
-  private _primaryId = '';
+  private _generalId = '';
 
-  get primaryId(): string {
-    return this._primaryId;
+  get generalId(): string {
+    return this._generalId;
   }
 
-  set primaryId(pId: string) {
-    this._primaryId = pId;
+  set generalId(pId: string) {
+    this._generalId = pId;
   }
 
   // @ts-ignore
-  private _primary: ExtendedGeneralType;
+  private _eg: ExtendedGeneralType;
 
-  get primary(): ExtendedGeneralType {
-    return this._primary;
+  get eg(): ExtendedGeneralType {
+    return this._eg;
   }
 
-  set primary(g: ExtendedGeneralType) {
+  set eg(g: ExtendedGeneralType) {
     const v = ExtendedGeneral.safeParse(g);
     if (v.success) {
-      this._primary = v.data;
-      if (this._primaryId.localeCompare(this._primary.name)) {
-        this._primaryId = this._primary.name;
+      this._eg = v.data;
+      if (this._generalId.localeCompare(this._eg.name)) {
+        this._generalId = this._eg.name;
       }
       if (DEBUG) {
         console.log(
-          `GridPair set primary; _primary.name: ${this._primary.name}`
+          `GridPair set primary; _primary.name: ${this._eg.name}`
         );
-        console.log(`GridPair set primary; _primaryId: ${this._primaryId}`);
+        console.log(`GridPair set primary; _primaryId: ${this._generalId}`);
       }
     }
   }
@@ -83,48 +83,72 @@ export class GridMayor {
   get EvAnsRanking(): number {
     const value = Math.floor(this.pEvAnsRanking);
     if (DEBUG) {
-      console.log(`pEvAnsRanking for ${this.primaryId} ${this.pEvAnsRanking} `);
+      console.log(`pEvAnsRanking for ${this.generalId} ${this.pEvAnsRanking} `);
       console.log(
-        `tEvAnsRanking ${this.primaryId} ${value}`
+        `tEvAnsRanking ${this.generalId} ${value}`
       );
     }
     return value;
   }
 
   private pAttackRanking = 0;
-
   get AttackRanking(): number {
     return this.pAttackRanking
   }
 
   private pToughnessRanking = 0;
-
   get ToughnessRanking(): number {
     return this.pToughnessRanking ;
   }
 
-  private pGroundAttackRanking = 0;
-
-  get GroundAttackRanking() {
-    return this.pGroundAttackRanking;
+  private pAttack = 0;
+  get Attack():number {
+    return this.pAttack;
   }
 
-  private pArcheryAttackRanking = 0;
-
-  get ArcheryAttackRanking(): number {
-    return this.pArcheryAttackRanking;
+  private pDeAttack = 0;
+  get DeAttack(): number {
+    return this.pDeAttack;
   }
 
-  private pMountedAttackRanking = 0;
-
-  get MountedAttackRanking() {
-    return this.pMountedAttackRanking;
+  private pDeDefense = 0;
+  get DeDefense(): number {
+    return this.pDeDefense;
   }
 
-  private pSiegeAttackRanking = 0;
+  private pDeHP = 0;
+  get DeHP(): number {
+    return this.pDeHP;
+  }
 
-  get SiegeAttackRanking() {
-    return this.pSiegeAttackRanking;
+  private pDebilitation = 0;
+  get Debilitation(): number {
+    return this.pDebilitation;
+  }
+
+  private pDefense = 0;
+  get Defense(): number {
+    return this.pDefense;
+  }
+
+  private pHP = 0;
+  get HP(): number {
+    return this.pHP;
+  }
+
+  private pMarchSize = 0;
+  get MarchSize(): number {
+    return this.pMarchSize;
+  }
+
+  private pPreservation = 0;
+  get Preservation(): number {
+    return this.pPreservation;
+  }
+
+  private pRange = 0;
+  get Range(): number {
+    return this.pRange;
   }
 
   // @ts-ignore
@@ -171,48 +195,41 @@ export class GridMayor {
     .implement((display: DisplayType) => {
       if (!display.localeCompare(Display.enum.primary)) {
         if (DEBUG) {
-          console.log(`GeneralBuffs for ${this._primary.name} as primary`);
+          console.log(`GeneralBuffs for ${this._eg.name} as primary`);
         }
         this.pAttackRanking = AttackingScoreComputer(
           this.useCase,
-          this._primary,
+          this._eg,
           display,
           this.pInvestment
         );
         this.pToughnessRanking = ToughnessScoreComputer(
           this.useCase,
-          this._primary,
+          this._eg,
           display,
           this.pInvestment
         );
 
-        this.pGroundAttackRanking = MayorAttackDetails(
-          this._primary,
+        const Details: MayorBuffDetails = MayorDetail(
+          this._eg,
           this.pInvestment,
-          generalSpecialists.enum.Ground,
-        );
+          generalSpecialists.enum.Mayor,
+          )
 
-        this.pArcheryAttackRanking = MayorAttackDetails(
-          this._primary,
-          this.pInvestment,
-          generalSpecialists.enum.Archers,
-        );
-
-        this.pMountedAttackRanking = MayorAttackDetails(
-          this._primary,
-          this.pInvestment,
-          generalSpecialists.enum.Mounted,
-        );
-
-        this.pSiegeAttackRanking = MayorAttackDetails(
-          this._primary,
-          this.pInvestment,
-          generalSpecialists.enum.Siege,
-        );
+        this.pAttack = Details.Attack;
+        this.pDeAttack = Details.DeAttack;
+        this.pDeDefense = Details.DeDefense;
+        this.pDeHP = Details.DeHP;
+        this.pDebilitation = Details.Debilitation;
+        this.pDefense = Details.Defense;
+        this.pHP = Details.HP;
+        this.pMarchSize = Details.MarchSize;
+        this.pPreservation = Details.Preservation;
+        this.pRange = Details.Range;
 
         if (DEBUG) {
           console.log(
-            `GeneralBuffs ${display} ${this._primary.name}: ${this.pEvAnsRanking}, ${this.pAttackRanking}, ${this.pToughnessRanking}`
+            `GeneralBuffs ${display} ${this._eg.name}: ${this.pEvAnsRanking}, ${this.pAttackRanking}, ${this.pToughnessRanking}`
           );
         }
         if (
@@ -235,7 +252,7 @@ export class GridMayor {
     });
 
   constructor(p: ExtendedGeneralType, u: string) {
-    this.primary = p;
+    this.eg = p;
 
     this.InvestmentLevel = {
       special1: qualityColor.enum.Disabled,

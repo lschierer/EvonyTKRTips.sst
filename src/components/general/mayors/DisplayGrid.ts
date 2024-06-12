@@ -15,7 +15,7 @@ ModuleRegistry.registerModules([ClientSideRowModelModule]);
 
 import { delay } from 'nanodelay';
 
-const DEBUG = true;
+const DEBUG = false;
 
 import { customElement, property, state } from 'lit/decorators.js';
 import { ref, createRef, type Ref } from 'lit/directives/ref.js';
@@ -112,7 +112,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       const dp = new GridMayor(bp, currentPage)
       dp.useCase = this.useCase;
       dp.index = index;
-      if (!dp.primary.name.localeCompare(dp.primaryId)) {
+      if (!dp.eg.name.localeCompare(dp.generalId)) {
         //if that works, the set appears to have worked
         await dp.getSkillBooks(generalRole.enum.primary);
         await dp.getSkillBooks(generalRole.enum.secondary);
@@ -180,41 +180,74 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
           sortable: false,
         },
         {
-          valueGetter: (p) => p.data!.primaryId,
-          headerName: 'Primary',
+          valueGetter: (p) => p.data!.generalId,
+          headerName: 'General Name',
           filter: true,
+          filterParams: {
+            maxNumConditions: 10,
+          },
           flex: 4,
         },
         {
-          valueGetter: (p) => p.data!.AttackRanking,
-          headerName: 'Adjusted Attack Score',
+          headerName: 'Adjusted Attack Ranking',
+          children: [
+            {
+              columnGroupShow: 'closed',
+              headerName: 'Overall',
+              valueGetter: (p) => p.data!.AttackRanking,
+            },
+            {
+              columnGroupShow: 'open',
+              valueGetter: (p) => p.data!.Attack,
+              headerName: 'Adjusted Attack Score',
+              flex: 2,
+            },
+            {
+              columnGroupShow: 'open',
+              valueGetter: (p) => p.data!.DeDefense,
+              headerName: 'Adjusted DeDefense Score',
+              flex: 2,
+            },
+            {
+              columnGroupShow: 'open',
+              valueGetter: (p) => p.data!.DeHP,
+              headerName: 'Adjusted DeHP Score',
+              flex: 2,
+            },
+          ],
           flex: 2,
         },
+
         {
-          valueGetter: (p) => p.data!.ArcheryAttackRanking,
-          headerName: 'Adjusted Archer Attack Score',
-          flex: 2,
-        },
-        {
-          valueGetter: (p) => p.data!.GroundAttackRanking,
-          headerName: 'Adjusted Ground Attack Score',
-          flex: 2,
-        },
-        {
-          valueGetter: (p) => p.data!.MountedAttackRanking,
-          headerName: 'Adjusted Mounted Attack Score',
-          flex: 2,
-        },
-        {
-          valueGetter: (p) => p.data!.SiegeAttackRanking,
-          headerName: 'Adjusted Siege Attack Score',
-          flex: 2,
-        },
-        {
-          valueGetter: (p) => p.data!.ToughnessRanking,
           headerName: 'Adjusted Toughness Score',
-          flex: 2,
+          children: [
+            {
+              columnGroupShow: 'closed',
+              headerName: 'Overall',
+              valueGetter: (p) => p.data!.ToughnessRanking,
+            },
+            {
+              columnGroupShow: 'open',
+              valueGetter: (p) => p.data!.HP,
+              headerName: 'Adjusted HP Score',
+              flex: 2,
+            },
+            {
+              columnGroupShow: 'open',
+              valueGetter: (p) => p.data!.Defense,
+              headerName: 'Adjusted Defense Score',
+              flex: 2,
+            },
+            {
+              columnGroupShow: 'open',
+              valueGetter: (p) => p.data!.DeAttack,
+              headerName: 'Adjusted DeAttack Score',
+              flex: 2,
+            },
+          ],
+          flex: 3,
         },
+
       ],
       defaultColDef: {
         flex: 1,

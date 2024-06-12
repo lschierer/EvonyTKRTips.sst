@@ -19,7 +19,7 @@ import { generalUseCase, type generalUseCaseType } from '@schemas/generalsSchema
 
 const DEBUGT = false;
 
-/* Debuffs have an extra consideration, as they are one of the primary places that push
+/* Debuffs have an extra consideration, as they are one of the eg places that push
  * the "condition" field into being an array instead of a singular adjective.
  * A DeBuff can be
  * 1) Generic
