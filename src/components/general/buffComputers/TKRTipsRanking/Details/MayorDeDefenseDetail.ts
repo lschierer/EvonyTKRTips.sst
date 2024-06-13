@@ -1,24 +1,16 @@
-const DEBUG = true;
+const DEBUG = false;
 
 import { z } from 'zod';
-import type { SpecialityType } from '@schemas/specialitySchema.ts';
 
 import { ExtendedGeneral, type ExtendedGeneralType } from '@schemas/ExtendedGeneral.ts';
 import {
-  AscendingLevels,
   BuffParams,
   type BuffParamsType,
-  qualityColor,
-  type qualityColorType,
 } from '@schemas/baseSchemas.ts';
 import {
-  generalSpecialists,
-  type generalSpecialistsType,
   generalUseCase,
-  type generalUseCaseType,
 } from '@schemas/generalsSchema.ts';
 import {AttributeMultipliers, type AttributeMultipliersType} from '@schemas/EvAns.zod.ts';
-import * as MayorAttributeMultipliers from '@lib/TKRAttributeRanking.ts';
 
 import { DeDefenseBuff } from './DeDefense';
 

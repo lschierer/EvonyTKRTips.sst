@@ -13,7 +13,7 @@ import {
 } from '@schemas/generalsSchema.ts';
 import {AttributeMultipliers, type AttributeMultipliersType} from '@schemas/EvAns.zod.ts';
 
-import { AttackBuff } from './AttackBuff'
+import { DefenseBuff } from './DefenseBuff'
 
 const Basic = z
   .function()
@@ -43,33 +43,33 @@ const Basic = z
         console.log(`this should not happen!!!`);
     }
 
-    let BasicAttack = eg.attack + 45 * eg.attack_increment;
+    let BasicDefense = eg.defense + 45 * eg.defense_increment;
     if(DEBUG) {
-      console.log(`BasicAttack step1: ${BasicAttack}`)
+      console.log(`BasicDefense step1: ${BasicDefense}`)
     }
 
-    BasicAttack += 500;
+    BasicDefense += 500;
     if(DEBUG) {
-      console.log(`BasicAttack with cultivation: ${BasicAttack}`)
+      console.log(`BasicDefense with cultivation: ${BasicDefense}`)
     }
-    BasicAttack += AES_adjustment;
+    BasicDefense += AES_adjustment;
     if(DEBUG) {
-      console.log(`BasicAttack with AES`)
+      console.log(`BasicDefense with AES`)
     }
-    if(BasicAttack < 900){
-      BasicAttack = BasicAttack * 0.1
+    if(BasicDefense < 900){
+      BasicDefense = BasicDefense * 0.1
       if(DEBUG ) {
-        console.log(`BasicAttack less than 900, now ${BasicAttack}`)
+        console.log(`BasicDefense less than 900, now ${BasicDefense}`)
       }
     } else {
-      BasicAttack = 90 + (BasicAttack -900)*.2;
+      BasicDefense = 90 + (BasicDefense -900)*.2;
       if(DEBUG) {
-        console.log(`BasicAttack > 900, now ${BasicAttack}`)
+        console.log(`BasicDefense > 900, now ${BasicDefense}`)
       }
     }
-    const multiplier = am.Offensive.AllTroopAttack;
+    const multiplier = am.Toughness.AllTroopDefense;
 
-    const BAS = Math.floor(BasicAttack * multiplier);
+    const BAS = Math.floor(BasicDefense * multiplier);
     if(DEBUG){
       console.log(`returning BAS: ${BAS} for ${eg.name}`)
     }
@@ -80,14 +80,14 @@ const Basic = z
 import { SpecialityBuffs } from './Speciality_SingleScope.ts';
 import { SkillBookBuffs } from './SkillBook_SingleScore';
 
-export const MayorAttackDetail = z.function()
+export const MayorDefenseDetail = z.function()
   .args(ExtendedGeneral, BuffParams, AttributeMultipliers)
   .returns(z.number())
   .implement((eg: ExtendedGeneralType, bp: BuffParamsType, am: AttributeMultipliersType) => {
 
     const bas = Basic(eg, bp, am);
-    const bss =  SkillBookBuffs(eg, generalUseCase.enum.Mayor, bp, am, AttackBuff);
-    const speciality = SpecialityBuffs(eg, generalUseCase.enum.Mayor, bp, am, AttackBuff);
+    const bss =  SkillBookBuffs(eg, generalUseCase.enum.Mayor, bp, am, DefenseBuff);
+    const speciality = SpecialityBuffs(eg, generalUseCase.enum.Mayor, bp, am, DefenseBuff);
 
     return bas + bss + speciality;
   })

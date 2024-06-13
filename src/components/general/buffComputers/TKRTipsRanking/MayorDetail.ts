@@ -8,7 +8,10 @@ import * as MayorAttributeMultipliers from '@lib/TKRAttributeRanking.ts';
 
 import { MayorAttackDetail } from './Details/MayorAttackDetail';
 import { MayorDeHPDetail } from './Details/MayorDeHPDetail';
+import { MayorHPDetail } from './Details/MayorHPDetail';
+import { MayorDefenseDetail } from './Details/MayorDefenseDetail';
 import { MayorDeDefenseDetail } from './Details/MayorDeDefenseDetail';
+import { MayorDeAttackDetail } from './Details/MayorDeAttackDetail';
 
 export const MayorBuffDetails = z.object({
   Attack: z.number(),
@@ -28,9 +31,10 @@ export const MayorDetail = z.function()
   .args(ExtendedGeneral, BuffParams, generalSpecialists)
   .returns(MayorBuffDetails)
   .implement((eg: ExtendedGeneralType, bp: BuffParamsType, specialize: generalSpecialistsType) =>{
+    if(DEBUG) {console.log(`MayorDetail start for ${eg.name}`)}
     const am = MayorAttributeMultipliers.MayorPvPAttackAttributeMultipliers;
     const useCase = generalUseCase.enum.Mayor;
-    let returnable =  {
+    const returnable =  {
       Attack: 0,
       DeAttack: 0,
       DeDefense: 0,
@@ -43,7 +47,10 @@ export const MayorDetail = z.function()
       Range: 0,
     }
     returnable.Attack = MayorAttackDetail(eg, bp, am);
+    returnable.DeAttack = MayorDeAttackDetail(eg, bp, am);
     returnable.DeHP = MayorDeHPDetail(eg, bp, am);
     returnable.DeDefense = MayorDeDefenseDetail(eg, bp, am);
+    returnable.HP = MayorHPDetail(eg, bp, am);
+    returnable.Defense =  MayorDefenseDetail(eg, bp, am);
     return returnable;
   })

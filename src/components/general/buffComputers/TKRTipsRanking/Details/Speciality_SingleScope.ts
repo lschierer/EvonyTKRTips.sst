@@ -1,4 +1,4 @@
-const DEBUG = true;
+const DEBUG = false;
 import { z } from 'zod';
 import { ExtendedGeneral, type ExtendedGeneralType } from '@schemas/ExtendedGeneral.ts';
 import { generalUseCase, type generalUseCaseType } from '@schemas/generalsSchema.ts';
