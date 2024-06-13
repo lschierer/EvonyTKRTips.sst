@@ -275,6 +275,9 @@ importers:
       strnum:
         specifier: ^1.0.5
         version: 1.0.5
+      tabulator-tables:
+        specifier: ^6.2.1
+        version: 6.2.1
       ulidx:
         specifier: ^2.3.0
         version: 2.3.0
@@ -297,6 +300,9 @@ importers:
       '@astrojs/ts-plugin':
         specifier: ^1.8.0
         version: 1.8.0
+      '@csstools/tokenizer':
+        specifier: ^3.1.0
+        version: 3.1.0
       '@eslint/js':
         specifier: ^9.4.0
         version: 9.4.0
@@ -324,6 +330,9 @@ importers:
       '@types/node':
         specifier: ^20.14.2
         version: 20.14.2
+      '@types/tabulator-tables':
+        specifier: ^6.2.0
+        version: 6.2.0
       astro-sst:
         specifier: ^2.43.1
         version: 2.43.1
@@ -722,6 +731,10 @@ packages:
   '@cspotcode/source-map-support@0.8.1':
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
     engines: {node: '>=12'}
+
+  '@csstools/tokenizer@3.1.0':
+    resolution: {integrity: sha512-4TEQYujec8VXb5md1DSDudHZmYnWdorAs3PO98OfwezonS1TEk3QHkeOwrmwCrKOKokSbFSNO+qZujDHdMuKwQ==}
+    engines: {node: '>= 12'}
 
   '@ctrl/tinycolor@4.1.0':
     resolution: {integrity: sha512-WyOx8cJQ+FQus4Mm4uPIZA64gbk3Wxh0so5Lcii0aJifqwoVOlfFtorjLE0Hen4OYyHZMXDWqMmaQemBhgxFRQ==}
@@ -2006,6 +2019,9 @@ packages:
 
   '@types/sax@1.2.7':
     resolution: {integrity: sha512-rO73L89PJxeYM3s3pPPjiPgVVcymqU490g0YO5n5By0k2Erzj6tay/4lr1CHAAU4JyOWd1rpQ8bCf6cZfHU96A==}
+
+  '@types/tabulator-tables@6.2.0':
+    resolution: {integrity: sha512-dKEz3X/1SuEBa25RpbPhG4a5mVa+/nL5G4hHDWf+W+Xs6m1HREN9lX2qVhEIoJSeTqfqpvze8Fw5+qbCakH86g==}
 
   '@types/trusted-types@2.0.7':
     resolution: {integrity: sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw==}
@@ -4520,6 +4536,9 @@ packages:
     resolution: {integrity: sha512-7RnqIMq572L8PeEzKeBINYEJDDxpcH8JEgLwUqBd3TkofhFRbkq4QLR0u+36avGAhCRbk2nnmjcW9SE531hPDg==}
     engines: {node: ^14.18.0 || >=16.0.0}
 
+  tabulator-tables@6.2.1:
+    resolution: {integrity: sha512-iCyLUzE9xEesEWqHDzNgShr6fpIIsRXnvTSDxiEti3sVbVYwlRt5HTBnXsl8bxY+4p64Rxxdlk9jT3voNLcIZQ==}
+
   tapable@2.2.1:
     resolution: {integrity: sha512-GNzQvQTOIP6RyTfE2Qxb8ZVlNmw0n88vp1szwWRimP02mnTsx3Wtn5qRdqY9w2XduFNUgvOwhNnQsjwCp+kqaQ==}
     engines: {node: '>=6'}
@@ -5680,6 +5699,8 @@ snapshots:
   '@cspotcode/source-map-support@0.8.1':
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
+
+  '@csstools/tokenizer@3.1.0': {}
 
   '@ctrl/tinycolor@4.1.0': {}
 
@@ -7132,6 +7153,8 @@ snapshots:
   '@types/sax@1.2.7':
     dependencies:
       '@types/node': 20.14.2
+
+  '@types/tabulator-tables@6.2.0': {}
 
   '@types/trusted-types@2.0.7': {}
 
@@ -10337,6 +10360,8 @@ snapshots:
     dependencies:
       '@pkgr/core': 0.1.1
       tslib: 2.6.3
+
+  tabulator-tables@6.2.1: {}
 
   tapable@2.2.1: {}
 
