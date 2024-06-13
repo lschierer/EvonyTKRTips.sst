@@ -1,6 +1,6 @@
 const DEBUG = true;
 
-import {TabulatorFull as Tabulator} from 'tabulator-tables';
+import {type Sorter, TabulatorFull as Tabulator} from 'tabulator-tables';
 import TabulatorStyles from 'tabulator-tables/dist/css/tabulator.css?inline';
 import TabulatorMaterialize from 'tabulator-tables/dist/css/tabulator_materialize.css?inline'
 import 'tabulator-tables/dist/js/tabulator.js';
@@ -258,9 +258,20 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
             console.log(`I seem to have exactly a multiple of 20`)
           }
         }
+        const sorters = this.grid.getSorters();
+        if(sorters.length > 0) {
+          const ns: Sorter[] = sorters.map((s) => {
+            return {
+              column: s.column.getField(),
+              dir: s.dir,
+            }
+          })
+          this.grid.setSort(ns)
+        }
       }
+      this.requestUpdate('InvestmentLevel');
     }
-    this.requestUpdate('InvestmentLevel');
+
   }
 
   protected override updated(_changedProperties: PropertyValues): void {
