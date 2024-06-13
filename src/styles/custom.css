@@ -19,6 +19,7 @@ governing permissions and limitations under the License.
 @import '@spectrum-css/tokens/dist/index.css';
 @import 'ag-grid-community/styles/ag-grid.css';
 @import 'ag-grid-community/styles/ag-theme-balham.css';
+@import 'tabulator-tables/dist/css/tabulator.min.css';
 
 /* Color Theme Swatches in Hex */
 .Cyan-600-Theme-1-1-hex {
