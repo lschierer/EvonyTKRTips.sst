@@ -381,8 +381,8 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       }
       this.grid = new Tabulator(div, {
         placeholder:"No Data Available",
-        debugInvalidOptions: true,
-        debugEventsExternal:true,
+        debugInvalidOptions: DEBUG,
+        debugEventsExternal: DEBUG,
         minHeight:"var(--spectrum-component-height-500)",
         maxHeight: "100%",
         layout:"fitColumns",
