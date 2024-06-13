@@ -2,7 +2,7 @@ const DEBUG = true;
 
 import {type Sorter, TabulatorFull as Tabulator} from 'tabulator-tables';
 import TabulatorStyles from 'tabulator-tables/dist/css/tabulator.css?inline';
-import TabulatorMaterialize from 'tabulator-tables/dist/css/tabulator_materialize.css?inline'
+import TabulatorCustomUI from '@styles/tabulator.css?inline'
 import 'tabulator-tables/dist/js/tabulator.js';
 
 
@@ -288,7 +288,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
 
   public static override get styles(): CSSResultArray {
     const TabulatorCSS = unsafeCSS(TabulatorStyles);
-    const TabulatorMaterializeCSS = unsafeCSS(TabulatorMaterialize);
+    const TabulatorCustomUICSS = unsafeCSS(TabulatorCustomUI);
     const SpectrumTokensCSS = unsafeCSS(SpectrumTokens);
     const SpectrumTypographyCSS = unsafeCSS(SpectrumTypography)
     const localStyle = css`
@@ -346,25 +346,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
         white-space: normal;
       }
       
-      #tableDiv > div.tabulator-header > div > div.tabulator-headers > div.tabulator-col.tabulator-sortable.tabulator-col-sorter-element > div > div,
-      #tableDiv > div.tabulator-header > div > div.tabulator-headers > div:nth-child(3) > div.tabulator-col-group-cols > div:nth-child(3) > div > div,
-      #tableDiv > div.tabulator-header > div > div.tabulator-headers > div:nth-child(7) > div.tabulator-col-group-cols > div:nth-child(1) > div > div,
-      #tableDiv > div.tabulator-header > div > div.tabulator-headers > div:nth-child(7) > div.tabulator-col-group-cols > div:nth-child(3) > div > div
-      {
-        width: fit-content;
-      }
-      
-      #tableDiv > div.tabulator-header > div > div.tabulator-headers > div.tabulator-col.tabulator-sortable.tabulator-col-sorter-element > div > div > div.tabulator-col-title,
-      #tableDiv > div.tabulator-header > div > div.tabulator-headers > div:nth-child(3) > div.tabulator-col-group-cols > div:nth-child(3) > div > div > div.tabulator-col-title,
-      #tableDiv > div.tabulator-header > div > div.tabulator-headers > div:nth-child(7) > div.tabulator-col-group-cols > div:nth-child(3) > div > div > div.tabulator-col-title,
-      #tableDiv > div.tabulator-header > div > div.tabulator-headers > div:nth-child(7) > div.tabulator-col-group-cols > div:nth-child(1) > div > div > div.tabulator-col-title
-      {
-        width: fit-content;
-        height: 6em;
-        writing-mode: vertical-rl;
-      }
-      
-      
+            
       .tabulator-col .tabulator-tableholder {
         width: inherit;
         overflow-x: hidden;
@@ -375,9 +357,9 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       }
     `;
     if (super.styles !== undefined && Array.isArray(super.styles)) {
-      return [...super.styles, TabulatorCSS, TabulatorMaterializeCSS, SpectrumTokensCSS, SpectrumTypographyCSS, localStyle];
+      return [...super.styles, TabulatorCSS, TabulatorCustomUICSS, SpectrumTokensCSS, SpectrumTypographyCSS, localStyle];
     } else {
-      return [TabulatorCSS, TabulatorMaterializeCSS, SpectrumTokensCSS, SpectrumTypographyCSS, localStyle];
+      return [TabulatorCSS, TabulatorCustomUICSS, SpectrumTokensCSS, SpectrumTypographyCSS, localStyle];
     }
   }
 
@@ -401,8 +383,9 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
           {
             title: 'Index',
             field: 'index',
+            headerVertical: true,
             formatter: 'rownum',
-            widthGrow: 1,
+
           },
           {
             title: 'General',
@@ -416,6 +399,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
               },
               {
                 title: 'Conflicts',
+                headerVertical: true,
                 field: 'Conflicts',
               }
             ]
@@ -428,15 +412,18 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
               {
                 title: 'Adjusted Attack Score',
                 field: 'attackScore',
+                headerVertical: true,
                 widthGrow: 1,
               },
               {
                 title: 'Adjusted DeHP Score',
+                headerVertical: true,
                 field: 'DeHPScore',
                 widthGrow: 1,
               },
               {
                 title: 'Adjusted DeDefense Score',
+                headerVertical: true,
                 field: 'DeDefenseScore',
                 widthGrow: 1,
               }
@@ -450,11 +437,13 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
               {
                 title: 'Adjusted Toughness Score',
                 field: 'ToughnessScore',
+                headerVertical: true,
                 widthGrow: 1,
               },
               {
                 title: 'Adjusted DeAttack Score',
                 field: 'DeAttackScore',
+                headerVertical: true,
                 widthGrow: 1,
               },
             ],
