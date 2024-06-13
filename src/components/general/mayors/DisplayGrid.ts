@@ -2,7 +2,7 @@ const DEBUG = true;
 
 import {type Sorter, TabulatorFull as Tabulator} from 'tabulator-tables';
 import TabulatorStyles from 'tabulator-tables/dist/css/tabulator.css?inline';
-import TabulatorCustomUI from '@styles/tabulator.css?inline'
+import TabulatorSimpleUI from 'tabulator-tables/dist/css/tabulator_simple.css?inline'
 import 'tabulator-tables/dist/js/tabulator.js';
 
 
@@ -288,7 +288,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
 
   public static override get styles(): CSSResultArray {
     const TabulatorCSS = unsafeCSS(TabulatorStyles);
-    const TabulatorCustomUICSS = unsafeCSS(TabulatorCustomUI);
+    const TabulatorSimpleUICSS = unsafeCSS(TabulatorSimpleUI);
     const SpectrumTokensCSS = unsafeCSS(SpectrumTokens);
     const SpectrumTypographyCSS = unsafeCSS(SpectrumTypography)
     const localStyle = css`
@@ -332,9 +332,16 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
         width: 100%;
       }
       
+      .tabulator .tabulator-header .tabulator-header-contents {
+        max-height: calc(var(--spectrum-table-section-header-row-height-medium) * 4);
+        
+        
+      }
+      
       .tabulator .tabulator-header .tabulator-header-contents .tabulator-headers   {
         width: 1fr;
         height: 2em;
+        white-space: normal;
       }
       .tabulator .tabulator-header .tabulator-col .tabulator-col-content {
         padding: var(--spectrum-global-dimension-static-size-50)
@@ -357,9 +364,9 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       }
     `;
     if (super.styles !== undefined && Array.isArray(super.styles)) {
-      return [...super.styles, TabulatorCSS, TabulatorCustomUICSS, SpectrumTokensCSS, SpectrumTypographyCSS, localStyle];
+      return [...super.styles, TabulatorCSS, TabulatorSimpleUICSS, SpectrumTokensCSS, SpectrumTypographyCSS, localStyle];
     } else {
-      return [TabulatorCSS, TabulatorCustomUICSS, SpectrumTokensCSS, SpectrumTypographyCSS, localStyle];
+      return [TabulatorCSS, TabulatorSimpleUICSS, SpectrumTokensCSS, SpectrumTypographyCSS, localStyle];
     }
   }
 
@@ -386,7 +393,6 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
           {
             title: 'Index',
             field: 'index',
-            headerVertical: true,
             formatter: 'rownum',
 
           },
