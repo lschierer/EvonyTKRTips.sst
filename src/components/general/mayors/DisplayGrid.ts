@@ -49,19 +49,19 @@ import { GridMayor } from './GridMayor';
 //do NOT import this from anywhere else. Use the function in the class to generate one.
 const GridData = z.object({
   index: z.string().ulid(),
-  General: z.object({
+
     Name: z.string(),
     Conflicts: z.number(),
-  }),
-  overallAttack: z.object({
+
+
     attackScore: z.number(),
     DeHPScore: z.number(),
     DeDefenseScore: z.number(),
-  }),
-  overallToughness: z.object({
+
+
     ToughnessScore: z.number(),
     DeAttackScore: z.number(),
-  }),
+
   Original: ExtendedGeneral,
 })
 type GridData = z.infer<typeof GridData>;
@@ -106,53 +106,50 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
     return;
   }
 
-  private processBatch = (b: ExtendedGeneralType[], n: GridData[], index: number) => {
-    //const currentPage = `${document.location.protocol}//${document.location.host}`;
-    b.map((bp) => {
-      if (DEBUG) {
-        console.log(
-          `DisplayGrid getData RawGenerals index ${index}, ${bp.name}`
-        );
+
+
+  private async getData() {
+    if(this._DisplayGenerals.length < this.RawGenerals.length) {
+      if(DEBUG) {
+        console.log(`getData populating _DisplayGenerals`)
       }
-      const dp: GridData = {
-        index: ulid(),
-        General: {
-          Name: bp.name,
-          Conflicts: bp.conflicts.length,
-        },
-        overallAttack: {
-          attackScore: 0,
-          DeHPScore: 0,
-          DeDefenseScore: 0,
-        },
-        overallToughness: {
-          ToughnessScore: 0,
-          DeAttackScore: 0,
-        },
-        Original: bp,
-      };
-      n.push(dp);
-    })
-  }
+      this.RawGenerals.map( (bp, ) => {
 
-  private getData() {
+        const dp: GridData = {
+          index: ulid(),
 
-    const batchLimit = 10;
-    let newRows: GridData[] = new Array<GridData>();
-    let batch: ExtendedGeneralType[] = new Array<ExtendedGeneralType>();
-    this.RawGenerals.map( (thisG, index) => {
-      batch.push(thisG);
-      const rem = batch.length % batchLimit;
-      if ((index > 0) && (rem < 1)) {
-        if (DEBUG) {
-          console.log(`getData index ${index} rem ${rem}`)
+            Name: bp.name,
+            Conflicts: bp.conflicts.length,
+
+            attackScore: 0,
+            DeHPScore: 0,
+            DeDefenseScore: 0,
+
+            ToughnessScore: 0,
+            DeAttackScore: 0,
+          
+          Original: bp,
+        };
+        this._DisplayGenerals.push(dp);
+      })
+    }
+    if(this.grid !== null && this.grid !== undefined && this._DisplayGenerals.length > 0) {
+      if(DEBUG){
+        console.log(`getData attempting to set data`)
+      }
+      await this.grid.setData(this._DisplayGenerals).then(() => {
+        if(DEBUG) {
+          console.log(`getData setData then call`)
         }
-        this.processBatch(batch, newRows, index)
-        newRows = new Array<GridData>();
-        batch = new Array<ExtendedGeneralType>();
+
+      }).catch((error) => {
+        console.error(error);
+      })
+    }else {
+      if(DEBUG) {
+        console.log(`getData unable to setData, ${this._DisplayGenerals.length} rows`)
       }
-    })
-    this.processBatch(batch, newRows, this.RawGenerals.length)
+    }
   }
 
   constructor() {
@@ -424,6 +421,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       this.addEventListener('resize', () => {
         this.grid?.redraw();
       })
+      this.grid.on('tableBuilt', () => {void this.getData()})
     }
   }
 
