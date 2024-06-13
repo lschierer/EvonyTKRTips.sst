@@ -1,3 +1,5 @@
+const DEBUG = true;
+
 import {TabulatorFull as Tabulator} from 'tabulator-tables';
 import TabulatorStyles from 'tabulator-tables/dist/css/tabulator.css?inline';
 import TabulatorMaterialize from 'tabulator-tables/dist/css/tabulator_materialize.css?inline'
@@ -6,8 +8,6 @@ import 'tabulator-tables/dist/js/tabulator.js';
 
 import { z } from 'zod';
 import { ulid} from 'ulidx';
-
-const DEBUG = true;
 
 import { customElement, property, state } from 'lit/decorators.js';
 import { ref, createRef, type Ref } from 'lit/directives/ref.js';
@@ -36,6 +36,7 @@ import {
 } from '@schemas/baseSchemas';
 
 import {
+  generalSpecialists,
   generalUseCase,
   type generalUseCaseType,
 } from '@schemas/generalsSchema';
@@ -43,12 +44,11 @@ import {
 import { ExtendedGeneral, type ExtendedGeneralType } from '@schemas/ExtendedGeneral';
 
 import {MayorInvestment} from './MayorInvestment';
-
-import { GridMayor } from './GridMayor';
+import { type MayorBuffDetails, MayorDetail } from '../buffComputers/TKRTipsRanking/MayorDetail';
 
 //do NOT import this from anywhere else. Use the function in the class to generate one.
 const GridData = z.object({
-  index: z.string().ulid(),
+  id: z.string().ulid(),
 
     Name: z.string(),
     Conflicts: z.number(),
@@ -116,7 +116,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       this.RawGenerals.map( (bp, ) => {
 
         const dp: GridData = {
-          index: ulid(),
+          id: ulid(),
 
             Name: bp.name,
             Conflicts: bp.conflicts.length,
@@ -127,7 +127,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
 
             ToughnessScore: 0,
             DeAttackScore: 0,
-          
+
           Original: bp,
         };
         this._DisplayGenerals.push(dp);
@@ -137,11 +137,11 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       if(DEBUG){
         console.log(`getData attempting to set data`)
       }
-      await this.grid.setData(this._DisplayGenerals).then(() => {
+      await this.grid.setData(this._DisplayGenerals).then(async () => {
         if(DEBUG) {
           console.log(`getData setData then call`)
         }
-
+        await this.UpdateInvestmentAndGridData()
       }).catch((error) => {
         console.error(error);
       })
@@ -161,7 +161,12 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
 
 
 
-    //this.addEventListener('InvestmentLevelUpdate', this.UpdateInvestmentAndGridData);
+    this.addEventListener('InvestmentLevelUpdate', () => {
+      if(DEBUG){
+        console.log(`InvestmentLevelUpdate listener`)
+      }
+      void this.UpdateInvestmentAndGridData();
+    });
 
     this.InvestmentLevel = {
       special1: qualityColor.enum.Gold,
@@ -177,11 +182,11 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
 
   }
 
-  private UpdateInvestmentAndGridData = () => {
+  private UpdateInvestmentAndGridData = async () => {
     if(DEBUG) {
       console.log(`UpdateInvestmentAndGridData`)
     }
-    /*if(this.InvestmentSelectorRef.value !== undefined) {
+    if(this.InvestmentSelectorRef.value !== undefined) {
       if(DEBUG) {
         console.log(`UpdateInvestmentAndGridData with target node`)
       }
@@ -190,45 +195,72 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       if(DEBUG) {
         console.log(`UpdateInvestmentAndGridData: ${JSON.stringify(this.InvestmentLevel)}`);
       }
-      if(this.grid !== null && this.grid !== undefined) {
+      if(this.grid !== null && this.grid !== undefined && this._DisplayGenerals.length > 0) {
         if(DEBUG) {
           console.log(`UpdateInvestmentAndGridData; with BuffParams & grid`)
         }
         let transaction: GridData[] = new Array<GridData>();
-        this.RawGenerals.forEach((rg: ExtendedGeneralType, index: number) => {
-          if(rg !== undefined && rg !== null) {
+        await Promise.all(this._DisplayGenerals.map(async (dg: GridData, index: number) => {
+          if(dg !== undefined && dg !== null) {
             if(DEBUG){
-              console.log(`UpdateInvestmentAndGridData: before call to buffs`)
-              console.log(`UpdateInvestmentAndGridData: irgp.data versions:`)
-
+              console.log(`UpdateInvestmentAndGridData: before call to buffs ${index}`)
             }
-
+            const Details: MayorBuffDetails = MayorDetail(
+              dg.Original,
+              this.InvestmentLevel,
+              generalSpecialists.enum.Mayor,
+            )
             if(DEBUG){
-              console.log(`UpdateInvestmentAndGridData: ${buffs} setting buffs`)
-              console.log(`UpdateInvestmentAndGridData: irgp.data versions:`)
-              console.log(JSON.stringify(irgp.InvestmentLevel));
-
+              console.log(`UpdateInvestmentAndGridData: ${JSON.stringify(Details)} computing buffs`)
             }
-            transaction.push((irgp))
-            if(!(index % 20)) {
-              const res = this.grid.applyTransaction({
-                update: transaction
+            dg.ToughnessScore = Details.HP + Details.Defense;
+            dg.attackScore = Details.Attack;
+            dg.DeAttackScore = Details.DeAttack;
+            dg.DeHPScore = Details.DeHP;
+            dg.DeDefenseScore = Details.DeDefense;
+
+            transaction.push(dg)
+            const rem = index % 20;
+            if((index > 0) && rem < 1) {
+              if(DEBUG) {console.log(`rem was ${rem}`, index, index % 20)}
+              await this.grid?.updateData(transaction).then(() => {
+                if(DEBUG) {
+                  console.log(`UpdateInvestmentAndGridData updateData for ${transaction.length} entries in transaction`)
+                }
+                transaction = new Array<GridData>();
+              }).catch((error) => {
+                if(DEBUG){
+                  console.log(`UpdateInvestmentAndGridData updateData error: ${error}`)
+                }
               })
-
-              transaction = new Array<GridData>();
             }
             if(DEBUG){
               console.log(`UpdateInvestmentAndGridData ${transaction.length} pending in transaction`)
             }
           }
-        })
-        //const res = this.grid.applyTransaction({update: transaction})
-
-        //this.grid.refreshClientSideRowModel('sort')
+        }))
+        if(transaction.length > 0) {
+          if(DEBUG) {
+            console.log(`calling final transaction`)
+          }
+          await this.grid?.updateData(transaction).then(() => {
+            if(DEBUG) {
+              console.log(`UpdateInvestmentAndGridData updateData for ${transaction.length} entries in transaction`)
+            }
+            transaction = new Array<GridData>();
+          }).catch((error) => {
+            if(DEBUG){
+              console.log(`UpdateInvestmentAndGridData updateData error: ${error}`)
+            }
+          })
+        }else {
+          if(DEBUG) {
+            console.log(`I seem to have exactly a multiple of 20`)
+          }
+        }
       }
     }
-    this.requestUpdate('InestmentLevel');
-    */
+    this.requestUpdate('InvestmentLevel');
   }
 
   protected override updated(_changedProperties: PropertyValues): void {
