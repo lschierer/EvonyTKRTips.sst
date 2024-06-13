@@ -1,21 +1,13 @@
+import {TabulatorFull as Tabulator} from 'tabulator-tables';
+import TabulatorStyles from 'tabulator-tables/dist/css/tabulator.css?inline';
+import TabulatorMaterialize from 'tabulator-tables/dist/css/tabulator_materialize.css?inline'
+import 'tabulator-tables/dist/js/tabulator.js';
 
-import {
-  GridApi,
-  type IRowNode,
-  type GridOptions,
-  createGrid,
-  type RowNodeTransaction,
-  ModuleRegistry,
-} from 'ag-grid-community';
-import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
-import BaseAGCSSImport from 'ag-grid-community/styles/ag-grid.css?inline';
-import BalhamImport from 'ag-grid-community/styles/ag-theme-balham.css?inline';
 
-ModuleRegistry.registerModules([ClientSideRowModelModule]);
+import { z } from 'zod';
+import { ulid} from 'ulidx';
 
-import { delay } from 'nanodelay';
-
-const DEBUG = false;
+const DEBUG = true;
 
 import { customElement, property, state } from 'lit/decorators.js';
 import { ref, createRef, type Ref } from 'lit/directives/ref.js';
@@ -44,17 +36,35 @@ import {
 } from '@schemas/baseSchemas';
 
 import {
-  generalRole,
   generalUseCase,
   type generalUseCaseType,
 } from '@schemas/generalsSchema';
 
-import { type ExtendedGeneralType, type GeneralPairType } from '@schemas/ExtendedGeneral';
+import { ExtendedGeneral, type ExtendedGeneralType } from '@schemas/ExtendedGeneral';
 
 import {MayorInvestment} from './MayorInvestment';
 
 import { GridMayor } from './GridMayor';
-import { GridPair } from '@components/general/pairing/GridPair.ts';
+
+//do NOT import this from anywhere else. Use the function in the class to generate one.
+const GridData = z.object({
+  index: z.string().ulid(),
+  General: z.object({
+    Name: z.string(),
+    Conflicts: z.number(),
+  }),
+  overallAttack: z.object({
+    attackScore: z.number(),
+    DeHPScore: z.number(),
+    DeDefenseScore: z.number(),
+  }),
+  overallToughness: z.object({
+    ToughnessScore: z.number(),
+    DeAttackScore: z.number(),
+  }),
+  Original: ExtendedGeneral,
+})
+type GridData = z.infer<typeof GridData>;
 
 @customElement('display-grid')
 export class DisplayGrid extends SizedMixin(SpectrumElement, {
@@ -86,78 +96,63 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
   private MutationObserver: MutationObserver;
 
   @state()
-  private _DisplayGenerals: GridMayor[] = new Array<GridMayor>();
+  private _DisplayGenerals: GridData[] = new Array<GridData>();
 
-  private gridOptions: GridOptions<GridMayor> = {};
+  private grid: Tabulator | null = null;
 
-  // @ts-expect-error
-  private grid: GridApi<GridMayor>;
+  private gridRef: Ref<HTMLElement> = createRef();
 
   handleMutation(): void {
     return;
   }
 
-  private processBatch = async (b: ExtendedGeneralType[], n: GridMayor[], index: number) => {
-    const currentPage = `${document.location.protocol}//${document.location.host}`;
-
-    await Promise.all(b.map(async (bp) => {
-      const delayValue = Math.floor(Math.random() * b.length);
-      await delay(delayValue).then(() => {
-        if (DEBUG) {
-          console.log(
-            `DisplayGrid getData RawGenerals index ${index}, ${delayValue} ${bp.name}`
-          );
-        }
-      });
-      const dp = new GridMayor(bp, currentPage)
-      dp.useCase = this.useCase;
-      dp.index = index;
-      if (!dp.eg.name.localeCompare(dp.generalId)) {
-        //if that works, the set appears to have worked
-        await dp.getSkillBooks(generalRole.enum.primary);
-        await dp.getSkillBooks(generalRole.enum.secondary);
-        n.push(dp);
-      }
-    }))
-    if (
-      n.length > 0 &&
-      this.grid !== null &&
-      this.grid !== undefined
-    ) {
+  private processBatch = (b: ExtendedGeneralType[], n: GridData[], index: number) => {
+    //const currentPage = `${document.location.protocol}//${document.location.host}`;
+    b.map((bp) => {
       if (DEBUG) {
-        console.log(`getData: index ${index} newRows: ${n.length} `);
+        console.log(
+          `DisplayGrid getData RawGenerals index ${index}, ${bp.name}`
+        );
       }
-      n.forEach((dp) => {
-        dp.BuffsForInvestment(this.InvestmentLevel);
-      });
-      this._DisplayGenerals.push(...n);
-      this.grid.setGridOption('rowData', this._DisplayGenerals);
-      this.requestUpdate('grid');
-    } else {
-      if (DEBUG) {
-        console.log(`getData for RawPairs, grid was null`);
-      }
-    }
+      const dp: GridData = {
+        index: ulid(),
+        General: {
+          Name: bp.name,
+          Conflicts: bp.conflicts.length,
+        },
+        overallAttack: {
+          attackScore: 0,
+          DeHPScore: 0,
+          DeDefenseScore: 0,
+        },
+        overallToughness: {
+          ToughnessScore: 0,
+          DeAttackScore: 0,
+        },
+        Original: bp,
+      };
+      n.push(dp);
+    })
   }
 
-  private async getData() {
+  private getData() {
 
     const batchLimit = 10;
-    let newRows: GridMayor[] = new Array<GridMayor>();
+    let newRows: GridData[] = new Array<GridData>();
     let batch: ExtendedGeneralType[] = new Array<ExtendedGeneralType>();
-    await Promise.all(this.RawGenerals.map(async (thisG, index) => {
+    this.RawGenerals.map( (thisG, index) => {
       batch.push(thisG);
       const rem = batch.length % batchLimit;
       if ((index > 0) && (rem < 1)) {
         if (DEBUG) {
           console.log(`getData index ${index} rem ${rem}`)
         }
-        await this.processBatch(batch, newRows, index)
-        newRows = new Array<GridMayor>();
+        this.processBatch(batch, newRows, index)
+        newRows = new Array<GridData>();
         batch = new Array<ExtendedGeneralType>();
       }
-    }))
-    await this.processBatch(batch, newRows, this.RawGenerals.length)
+    })
+    this.processBatch(batch, newRows, this.RawGenerals.length)
   }
 
   constructor() {
@@ -167,101 +162,9 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       this.handleMutation();
     });
 
-    this.gridOptions = {
-      // Data to be displayed
-      rowData: [],
-      // Columns to be displayed (Should match rowData properties)
-      columnDefs: [
-        {
-          headerName: 'Index',
-          flex: 1,
-          valueGetter: "node.rowIndex + 1",
-          filter: false,
-          sortable: false,
-        },
-        {
-          valueGetter: (p) => p.data!.generalId,
-          headerName: 'General Name',
-          filter: true,
-          filterParams: {
-            maxNumConditions: 10,
-          },
-          flex: 4,
-        },
-        {
-          headerName: 'Adjusted Attack Ranking',
-          children: [
-            {
-              columnGroupShow: 'closed',
-              headerName: 'Overall',
-              valueGetter: (p) => p.data!.AttackRanking,
-            },
-            {
-              columnGroupShow: 'open',
-              valueGetter: (p) => p.data!.Attack,
-              headerName: 'Adjusted Attack Score',
-              flex: 2,
-            },
-            {
-              columnGroupShow: 'open',
-              valueGetter: (p) => p.data!.DeDefense,
-              headerName: 'Adjusted DeDefense Score',
-              flex: 2,
-            },
-            {
-              columnGroupShow: 'open',
-              valueGetter: (p) => p.data!.DeHP,
-              headerName: 'Adjusted DeHP Score',
-              flex: 2,
-            },
-          ],
-          flex: 2,
-        },
 
-        {
-          headerName: 'Adjusted Toughness Score',
-          children: [
-            {
-              columnGroupShow: 'closed',
-              headerName: 'Overall',
-              valueGetter: (p) => p.data!.ToughnessRanking,
-            },
-            {
-              columnGroupShow: 'open',
-              valueGetter: (p) => p.data!.HP,
-              headerName: 'Adjusted HP Score',
-              flex: 2,
-            },
-            {
-              columnGroupShow: 'open',
-              valueGetter: (p) => p.data!.Defense,
-              headerName: 'Adjusted Defense Score',
-              flex: 2,
-            },
-            {
-              columnGroupShow: 'open',
-              valueGetter: (p) => p.data!.DeAttack,
-              headerName: 'Adjusted DeAttack Score',
-              flex: 2,
-            },
-          ],
-          flex: 3,
-        },
 
-      ],
-      defaultColDef: {
-        flex: 1,
-        wrapHeaderText: true,
-        autoHeaderHeight: true,
-      },
-      suppressModelUpdateAfterUpdateTransaction: false,
-      onGridReady: (params) => {
-        this.getData();
-        params.api.setGridOption('rowData', this._DisplayGenerals);
-      },
-    };
-
-    this.addEventListener('InvestmentLevelUpdate', this.UpdateInvestmentAndGridData);
+    //this.addEventListener('InvestmentLevelUpdate', this.UpdateInvestmentAndGridData);
 
     this.InvestmentLevel = {
       special1: qualityColor.enum.Gold,
@@ -277,30 +180,11 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
 
   }
 
-  private printResult(res: RowNodeTransaction) {
-    console.log("---------------------------------------");
-    if (res.add) {
-      res.add.forEach((rowNode) => {
-        console.log("Added Row Node", rowNode);
-      });
-    }
-    if (res.remove) {
-      res.remove.forEach((rowNode) => {
-        console.log("Removed Row Node", rowNode);
-      });
-    }
-    if (res.update) {
-      res.update.forEach((rowNode) => {
-        console.log("Updated Row Node", rowNode);
-      });
-    }
-  }
-
   private UpdateInvestmentAndGridData = () => {
     if(DEBUG) {
       console.log(`UpdateInvestmentAndGridData`)
     }
-    if(this.InvestmentSelectorRef.value !== undefined) {
+    /*if(this.InvestmentSelectorRef.value !== undefined) {
       if(DEBUG) {
         console.log(`UpdateInvestmentAndGridData with target node`)
       }
@@ -313,122 +197,137 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
         if(DEBUG) {
           console.log(`UpdateInvestmentAndGridData; with BuffParams & grid`)
         }
-        let transaction = new Array<GridMayor>();
-        this.grid.forEachNode((irgp, index) => {
-          if(irgp.data !== undefined && irgp.data !== null) {
+        let transaction: GridData[] = new Array<GridData>();
+        this.RawGenerals.forEach((rg: ExtendedGeneralType, index: number) => {
+          if(rg !== undefined && rg !== null) {
             if(DEBUG){
               console.log(`UpdateInvestmentAndGridData: before call to buffs`)
               console.log(`UpdateInvestmentAndGridData: irgp.data versions:`)
-              console.log(JSON.stringify(irgp.data.InvestmentLevel));
-              console.log(irgp.data.EvAnsRanking);
-              console.log(irgp.data.AttackRanking);
-              console.log(irgp.data.ToughnessRanking);
+
             }
-            const buffs = irgp.data.BuffsForInvestment(this.InvestmentLevel);
+
             if(DEBUG){
               console.log(`UpdateInvestmentAndGridData: ${buffs} setting buffs`)
               console.log(`UpdateInvestmentAndGridData: irgp.data versions:`)
-              console.log(JSON.stringify(irgp.data.InvestmentLevel));
-              console.log(irgp.data.EvAnsRanking);
-              console.log(irgp.data.AttackRanking);
-              console.log(irgp.data.ToughnessRanking);
+              console.log(JSON.stringify(irgp.InvestmentLevel));
+
             }
-            transaction.push((irgp.data))
+            transaction.push((irgp))
             if(!(index % 20)) {
               const res = this.grid.applyTransaction({
                 update: transaction
               })
-              if(DEBUG && res) {
-                console.log(`UpdateInvestmentAndGridData ${transaction.length} entries in transaction`)
-                this.printResult(res)
-              }
-              transaction = new Array<GridMayor>();
+
+              transaction = new Array<GridData>();
             }
             if(DEBUG){
               console.log(`UpdateInvestmentAndGridData ${transaction.length} pending in transaction`)
             }
           }
         })
-        const res = this.grid.applyTransaction({update: transaction})
-        if(DEBUG && res) {
-          console.log(`UpdateInvestmentAndGridData ${transaction.length} entries in transaction`)
-          this.printResult(res)
-        }
-        this.grid.refreshClientSideRowModel('sort')
+        //const res = this.grid.applyTransaction({update: transaction})
+
+        //this.grid.refreshClientSideRowModel('sort')
       }
     }
     this.requestUpdate('InestmentLevel');
+    */
   }
 
-  protected override firstUpdated(_changedProperties: PropertyValues): void {
-    super.firstUpdated(_changedProperties);
-    if (Array.isArray(this._DisplayGenerals) && this._DisplayGenerals.length > 0) {
-      if (this.grid !== null && this.grid !== undefined) {
-        this.grid.setGridOption('rowData', this._DisplayGenerals);
-      } else {
-        if (DEBUG) {
-          console.log(`firstUpdated: yes _DisplayGenerals, no grid`);
-        }
-      }
-    } else {
-      if (DEBUG) {
-        console.log(`firstUpdated _DisplayGenerals is not populated`);
-      }
+  protected override updated(_changedProperties: PropertyValues): void {
+    super.updated(_changedProperties);
+    if(this.grid === null) {
+      this.renderGrid()
     }
   }
 
   protected override  willUpdate(_changedProperties: PropertyValues) {
     super.willUpdate(_changedProperties);
 
-    if (_changedProperties.has('RawPairs')) {
-      if (DEBUG) {
-        console.log(`willUpdate called for RawPairs`);
-      }
-    }
-    if(_changedProperties.has('useCase')){
-      if(!this.useCase.localeCompare(generalUseCase.enum.Monsters)){
-        if (this.grid !== null && this.grid !== undefined) {
-          this.grid.applyColumnState({
-            state: [
-              {
-                colId: 'EvAnsEstimate',
-                hide: true,
-              }
-            ],
-            defaultState: {
-              // important to say 'null' as undefined means 'do nothing'
-              hide: false
-            }
-          })
-        }
-      }
-    }
-    if (_changedProperties.has('_DisplayGenerals')) {
-      if (this.grid !== null && this.grid !== undefined) {
-        if (DEBUG) {
-          console.log(`setting rowData from willUpdate on _DisplayGenerals`);
-          console.log(`${this._DisplayGenerals.length} pairs ready`);
-        }
-        this.grid.setGridOption('rowData', this._DisplayGenerals);
-      } else {
-        if (DEBUG) {
-          console.log(`willUpdate for _DisplayGenerals, grid was null`);
-        }
-      }
-    }
   }
 
   public static override get styles(): CSSResultArray {
-    const AGBaseCSS = unsafeCSS(BaseAGCSSImport);
-    const AlpineCSS = unsafeCSS(BalhamImport);
+    const TabulatorCSS = unsafeCSS(TabulatorStyles);
+    const TabulatorMaterializeCSS = unsafeCSS(TabulatorMaterialize);
     const SpectrumTokensCSS = unsafeCSS(SpectrumTokens);
     const SpectrumTypographyCSS = unsafeCSS(SpectrumTypography)
     const localStyle = css`
-      .ag-theme-balham,
-      .ag-theme-balham-dark {
-        --ag-header-height: 120px;
-        --ag-grid-size: 5px;
-        --ag-list-item-height: 16px;
+      
+      :host {
+        --headerMargin: 2;
+        width: 100%;
+        display: grid;
+        grid-template-rows: auto 1fr;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        grid-auto-flow: row;
+        justify-items: stretch;
+        align-items: stretch;
+        justify-content: start;
+        align-content: start;
+        
+      }
+      
+      .Investment {
+        grid-row-start: 1;
+        grid-column-start: 1;
+        grid-column-end: span 5;
+        width: 100%;
+      }
+      
+      .tableContainer {
+        grid-row-start: 2;
+        grid-column-start: 1;
+        grid-column-end: span 5;
+        height: calc(var(--spectrum-component-height-500) * 10 + 1);
+        overflow-x: hidden;
+        
+        #table-div {
+          height: calc(var(--spectrum-component-height-500) * 10);
+          
+        }
+      }
+      
+      .tabulator {
+        font-size: var(--spectrum-global-dimension-font-size-25);
+        width: 100%;
+      }
+      
+      .tabulator .tabulator-header .tabulator-header-contents .tabulator-headers   {
+        width: 1fr;
+        height: 2em;
+      }
+      .tabulator .tabulator-header .tabulator-col .tabulator-col-content {
+        padding: var(--spectrum-global-dimension-static-size-50)
+      }
+      .tabulator .tabulator-header .tabulator-col.tabulator-sortable .tabulator-col-title {
+        padding-right: var(--spectrum-global-dimension-static-size-25);
+      }
+      .tabulator .tabulator-header .tabulator-col .tabulator-col-content .tabulator-col-title {
+        white-space: normal;
+      }
+      
+      #tableDiv > div.tabulator-header > div > div.tabulator-headers > div.tabulator-col.tabulator-sortable.tabulator-col-sorter-element > div > div,
+      #tableDiv > div.tabulator-header > div > div.tabulator-headers > div:nth-child(3) > div.tabulator-col-group-cols > div:nth-child(3) > div > div,
+      #tableDiv > div.tabulator-header > div > div.tabulator-headers > div:nth-child(7) > div.tabulator-col-group-cols > div:nth-child(1) > div > div,
+      #tableDiv > div.tabulator-header > div > div.tabulator-headers > div:nth-child(7) > div.tabulator-col-group-cols > div:nth-child(3) > div > div
+      {
+        width: fit-content;
+      }
+      
+      #tableDiv > div.tabulator-header > div > div.tabulator-headers > div.tabulator-col.tabulator-sortable.tabulator-col-sorter-element > div > div > div.tabulator-col-title,
+      #tableDiv > div.tabulator-header > div > div.tabulator-headers > div:nth-child(3) > div.tabulator-col-group-cols > div:nth-child(3) > div > div > div.tabulator-col-title,
+      #tableDiv > div.tabulator-header > div > div.tabulator-headers > div:nth-child(7) > div.tabulator-col-group-cols > div:nth-child(3) > div > div > div.tabulator-col-title,
+      #tableDiv > div.tabulator-header > div > div.tabulator-headers > div:nth-child(7) > div.tabulator-col-group-cols > div:nth-child(1) > div > div > div.tabulator-col-title
+      {
+        width: fit-content;
+        height: 6em;
+        writing-mode: vertical-rl;
+      }
+      
+      
+      .tabulator-col .tabulator-tableholder {
+        width: inherit;
+        overflow-x: hidden;
       }
       
       .hidden {
@@ -436,55 +335,95 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       }
     `;
     if (super.styles !== undefined && Array.isArray(super.styles)) {
-      return [...super.styles, AGBaseCSS, AlpineCSS, SpectrumTokensCSS, SpectrumTypographyCSS, localStyle];
+      return [...super.styles, TabulatorCSS, TabulatorMaterializeCSS, SpectrumTokensCSS, SpectrumTypographyCSS, localStyle];
     } else {
-      return [AGBaseCSS, AlpineCSS, SpectrumTokensCSS, SpectrumTypographyCSS, localStyle];
+      return [TabulatorCSS, TabulatorMaterializeCSS, SpectrumTokensCSS, SpectrumTypographyCSS, localStyle];
     }
   }
 
-  renderGrid(gridDiv?: Element) {
-    if (gridDiv !== null && gridDiv !== undefined) {
+  private renderGrid = (): void  => {
+    if (this.gridRef.value !== undefined) {
       if(DEBUG) {
-        console.log(`gridDiv is ${gridDiv.localName}`);
+        console.log(`gridDiv is ${this.gridRef.value.tagName}`);
       }
-      this.grid = createGrid(gridDiv as HTMLElement, this.gridOptions);
-      if (!this.useCase.localeCompare(generalUseCase.enum.Monsters)) {
-        // I do not currently *have* EvAns score estimates for useCase Monsters. 
-        if (this.grid !== null && this.grid !== undefined) {
-          this.grid.applyColumnState({
-            state: [
+      const div = this.gridRef.value
+      if(div !== null) {
+        console.log(`local queryselector works`)
+      }
+      this.grid = new Tabulator(div, {
+        placeholder:"No Data Available",
+        debugInvalidOptions: true,
+        debugEventsExternal:true,
+        minHeight:"var(--spectrum-component-height-500)",
+        maxHeight: "100%",
+        layout:"fitColumns",
+        columns: [
+          {
+            title: 'Index',
+            field: 'index',
+            formatter: 'rownum',
+            widthGrow: 1,
+          },
+          {
+            title: 'General',
+            field: 'General',
+            widthGrow: 4,
+            columns: [
               {
-                colId: 'EvAnsEstimate',
-                hide: true,
+                title: 'Name',
+                field: 'Name',
+                widthGrow: 3,
+              },
+              {
+                title: 'Conflicts',
+                field: 'Conflicts',
+              }
+            ]
+          },
+          {
+            title: 'Adjusted Attack Ranking',
+            field: 'overallAttack',
+            widthGrow: 3,
+            columns: [
+              {
+                title: 'Adjusted Attack Score',
+                field: 'attackScore',
+                widthGrow: 1,
+              },
+              {
+                title: 'Adjusted DeHP Score',
+                field: 'DeHPScore',
+                widthGrow: 1,
+              },
+              {
+                title: 'Adjusted DeDefense Score',
+                field: 'DeDefenseScore',
+                widthGrow: 1,
               }
             ],
-          })
-        }
-      } else {
-        if (DEBUG) {
-          console.log(`use case is ${this.useCase}`)
-        }
-      }
-      if (Array.isArray(this._DisplayGenerals) && this._DisplayGenerals.length > 0) {
-        if(this.grid?.getGridOption('rowData')?.length !== this._DisplayGenerals.length) {
-          let transaction = new Array<GridMayor>();
-          this._DisplayGenerals.forEach((dp, index) => {
-            dp.BuffsForInvestment(this.InvestmentLevel);
-            if (index % 10 === 0) {
-              this.grid.applyTransaction({
-                add: transaction
-              });
-              transaction = new Array<GridMayor>();
-            }else {
-              transaction.push(dp)
-            }
-          });
-        }
-      } else {
-        if (DEBUG) {
-          console.log(`renderGrid _DisplayGenerals is not populated`);
-        }
-      }
+          },
+          {
+            title: 'Adjusted Toughness Ranking',
+            field: 'overallToughness',
+            widthGrow: 3,
+            columns: [
+              {
+                title: 'Adjusted Toughness Score',
+                field: 'ToughnessScore',
+                widthGrow: 1,
+              },
+              {
+                title: 'Adjusted DeAttack Score',
+                field: 'DeAttackScore',
+                widthGrow: 1,
+              },
+            ],
+          }
+        ],
+      })
+      this.addEventListener('resize', () => {
+        this.grid?.redraw();
+      })
     }
   }
 
@@ -494,16 +433,13 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       console.log(`${this._DisplayGenerals.length} pairs ready`);
     }
     if (Array.isArray(this._DisplayGenerals) && this._DisplayGenerals.length > 0) {
-      this.grid.setGridOption('rowData', this._DisplayGenerals);
+      //set data here
     }
     return html`
-      <mayor-investment ${ref(this.InvestmentSelectorRef)} ></mayor-investment>
-      <div
-        id="agdiv"
-        class="ag-theme-balham-auto-dark"
-        style="height: 500px;"
-        ${ref(this.renderGrid)}
-      ></div>
+      <mayor-investment class="Investment" ${ref(this.InvestmentSelectorRef)} ></mayor-investment>
+      <div class="tableContainer">
+        <div id="tableDiv" ${ref(this.gridRef)} ></div>
+      </div>
     `;
   }
 }

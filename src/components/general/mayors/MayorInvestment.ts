@@ -678,6 +678,10 @@ export class MayorInvestment extends SizedMixin(SpectrumElement, {
     const SpectrumPageCSS = unsafeCSS(SpectrumPage);
     const localStyle = css`
       
+      :host {
+        width: 100%;
+      }
+      
       .GeneralOptions {
         border-top: var(--spectrum-border-width-100) solid var(--sl-color-gray-5);
         border-right: var(--spectrum-border-width-100) solid var(--sl-color-gray-5);

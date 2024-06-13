@@ -20,7 +20,6 @@ import {
   ExtendedGeneral,
 } from '@schemas/ExtendedGeneral';
 
-import { EvAnsScoreComputer } from '../buffComputers/EvAnsRanking/EvAnsScoreComputer';
 import { AttackingScoreComputer } from '../buffComputers/TKRTipsRanking/AttackScoreComputer';
 import { ToughnessScoreComputer } from '../buffComputers/TKRTipsRanking/ToughnessScoreComputer';
 import { type MayorBuffDetails, MayorDetail } from '../buffComputers/TKRTipsRanking/MayorDetail';
@@ -151,7 +150,7 @@ export class GridMayor {
     return this.pRange;
   }
 
-  // @ts-ignore
+  // @ts-expect-error I know I am not initializing
   private pInvestment: BuffParamsType;
 
   set InvestmentLevel(level: BuffParamsType) {
@@ -165,8 +164,11 @@ export class GridMayor {
     return this.pInvestment;
   }
 
-  public async getSkillBooks(forG: generalRoleType) {
+  public getSkillBooks(forG: generalRoleType) {
     //this will eventually need to handle skill books that are not built in
+    if(DEBUG) {
+      console.log(`${forG}`)
+    }
   }
 
   static InvestmentOptionsRE = /[[\]'",]/g;
@@ -270,7 +272,7 @@ export class GridMayor {
     this.GeneralBuffs(Display.enum.primary);
 
     if (DEBUG) {
-      console.log(`base URL initialized to ${this.ApiUrl}`);
+      console.log(`base URL initialized to ${this.ApiUrl.toString()}`);
     }
   }
 }
