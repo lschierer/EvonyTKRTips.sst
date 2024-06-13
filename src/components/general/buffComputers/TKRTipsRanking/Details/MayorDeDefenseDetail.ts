@@ -1,3 +1,5 @@
+import { DeAttackBuff } from '@components/general/buffComputers/TKRTipsRanking/Details/DeAttackBuff.ts';
+
 const DEBUG = false;
 
 import { z } from 'zod';
@@ -14,6 +16,7 @@ import {AttributeMultipliers, type AttributeMultipliersType} from '@schemas/EvAn
 
 import { DeDefenseBuff } from './DeDefense';
 
+import { AscendingBuffs } from './AES_SingleScope.ts';
 import { SpecialityBuffs } from './Speciality_SingleScope.ts';
 import { SkillBookBuffs } from './SkillBook_SingleScore';
 
@@ -25,10 +28,11 @@ export const MayorDeDefenseDetail = z.function()
     const bas = 0; //DeDefense has no Basic Attribute Score.
     const bss =  SkillBookBuffs(eg, generalUseCase.enum.Mayor, bp, am, DeDefenseBuff);
     const speciality = SpecialityBuffs(eg, generalUseCase.enum.Mayor, bp, am, DeDefenseBuff);
+    const aes = AscendingBuffs(eg, generalUseCase.enum.Mayor, bp, am, DeAttackBuff);
 
     if(DEBUG) {
       console.log(`${eg.name}: bas: ${bas}, bss: ${bss}, speciality: ${speciality}`);
     }
 
-    return bas + bss + speciality;
+    return bas + bss + speciality + aes;
   })

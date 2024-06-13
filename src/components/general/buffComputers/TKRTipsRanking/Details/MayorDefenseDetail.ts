@@ -77,6 +77,7 @@ const Basic = z
     return BAS;
 })
 
+import { AscendingBuffs } from './AES_SingleScope.ts';
 import { SpecialityBuffs } from './Speciality_SingleScope.ts';
 import { SkillBookBuffs } from './SkillBook_SingleScore';
 
@@ -88,6 +89,7 @@ export const MayorDefenseDetail = z.function()
     const bas = Basic(eg, bp, am);
     const bss =  SkillBookBuffs(eg, generalUseCase.enum.Mayor, bp, am, DefenseBuff);
     const speciality = SpecialityBuffs(eg, generalUseCase.enum.Mayor, bp, am, DefenseBuff);
+    const aes = AscendingBuffs(eg, generalUseCase.enum.Mayor, bp, am, DefenseBuff);
 
-    return bas + bss + speciality;
+    return bas + bss + speciality + aes;
   })

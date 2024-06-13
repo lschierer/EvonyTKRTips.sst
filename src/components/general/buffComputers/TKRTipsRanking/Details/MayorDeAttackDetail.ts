@@ -15,6 +15,7 @@ import {AttributeMultipliers, type AttributeMultipliersType} from '@schemas/EvAn
 
 import { DeAttackBuff } from './DeAttackBuff';
 
+import { AscendingBuffs } from './AES_SingleScope.ts';
 import { SpecialityBuffs } from './Speciality_SingleScope.ts';
 import { SkillBookBuffs } from './SkillBook_SingleScore';
 
@@ -26,6 +27,7 @@ export const MayorDeAttackDetail = z.function()
     const bas = 0; //DeAttackBuff has no basic attribute score;
     const bss =  SkillBookBuffs(eg, generalUseCase.enum.Mayor, bp, am, DeAttackBuff);
     const speciality = SpecialityBuffs(eg, generalUseCase.enum.Mayor, bp, am, DeAttackBuff);
+    const aes = AscendingBuffs(eg, generalUseCase.enum.Mayor, bp, am, DeAttackBuff);
 
-    return bas + bss + speciality;
+    return bas + bss + speciality + aes;
   })
