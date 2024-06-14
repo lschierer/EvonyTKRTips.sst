@@ -1,10 +1,11 @@
 const DEBUG = true;
 
-import {type Sorter, TabulatorFull as Tabulator} from 'tabulator-tables';
+import {
+  type ColumnComponent,
+  type Sorter,
+  TabulatorFull as Tabulator} from 'tabulator-tables';
 import TabulatorStyles from 'tabulator-tables/dist/css/tabulator.css?inline';
 import TabulatorSimpleUI from 'tabulator-tables/dist/css/tabulator_simple.css?inline'
-import 'tabulator-tables/dist/js/tabulator.js';
-
 
 import { z } from 'zod';
 import { ulid} from 'ulidx';
@@ -338,11 +339,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
         
       }
       
-      .tabulator .tabulator-header .tabulator-header-contents .tabulator-headers   {
-        width: 1fr;
-        height: 2em;
-        white-space: normal;
-      }
+      
       .tabulator .tabulator-header .tabulator-col .tabulator-col-content {
         padding: var(--spectrum-global-dimension-static-size-50)
       }
@@ -394,7 +391,11 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
             title: 'Index',
             field: 'index',
             formatter: 'rownum',
-
+            headerSort: false,
+            hozAlign: "center",
+            resizable: false,
+            frozen: true,
+            width: '5em',
           },
           {
             title: 'General',
@@ -421,48 +422,114 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
               {
                 title: 'Adjusted Attack Score',
                 field: 'attackScore',
-                headerVertical: true,
+                //headerVertical: true,
                 widthGrow: 1,
               },
               {
                 title: 'Adjusted DeHP Score',
-                headerVertical: true,
+                //headerVertical: true,
                 field: 'DeHPScore',
                 widthGrow: 1,
               },
               {
                 title: 'Adjusted DeDefense Score',
-                headerVertical: true,
+                //headerVertical: true,
                 field: 'DeDefenseScore',
                 widthGrow: 1,
               }
             ],
           },
           {
+            title: 'Adjusted Attack Ranking',
+            field: 'overallAttackTotal',
+            widthGrow: 3,
+            mutator: (value, data) => {
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-return
+              return (data.attackScore + data.DeHPScore + data.DeDefenseScore);
+            },
+            visible: false,
+          },
+          {
             title: 'Adjusted Toughness Ranking',
             field: 'overallToughness',
+            mutator: (value, data) => {
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-return
+              return (data.ToughnessScore + data.DeAttackScore);
+            },
             widthGrow: 3,
             columns: [
               {
                 title: 'Adjusted Toughness Score',
                 field: 'ToughnessScore',
-                headerVertical: true,
+                //headerVertical: true,
                 widthGrow: 1,
               },
               {
                 title: 'Adjusted DeAttack Score',
                 field: 'DeAttackScore',
-                headerVertical: true,
+                //headerVertical: true,
                 widthGrow: 1,
               },
             ],
-          }
+          },
+          {
+            title: 'Adjusted Toughness Ranking',
+            field: 'overallToughnessTotal',
+            widthGrow: 3,
+            mutator: (value, data) => {
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-return
+              return (data.ToughnessScore + data.DeAttackScore);
+            },
+            visible: false,
+          },
         ],
       })
       this.addEventListener('resize', () => {
         this.grid?.redraw();
       })
-      this.grid.on('tableBuilt', () => {void this.getData()})
+      this.grid.on('tableBuilt', () => {void this.getData()});
+      this.grid.on('headerDblClick', (e, column) => {this.colGroupToggle(e, column)})
+    }
+  }
+  private colGroupToggle(e: UIEvent, c: ColumnComponent) {
+    if (e.target !== null && e.target !== undefined) {
+      const all = this.grid?.getColumns(true)
+      if (c !== null && c !== undefined && all !== undefined) {
+        const field = c.getField();
+        if (field.startsWith('overall')) {
+          c.toggle();
+          if(field.includes('Total')) {
+            //then this is the non-group version that defaults to hidden.
+            const groupName = field.replace('Total', '');
+            const group = all.find((column) => {
+              const f = column.getField();
+              return !f.localeCompare(groupName);
+            })
+            if(group !== undefined) {
+              group.show();
+              const children = group.getSubColumns();
+              if(DEBUG) {
+                console.log(`found ${children.length} columns for ${groupName}`);
+              }
+              
+            } else {
+              if(DEBUG) {
+                console.log(`failed to find group to unhide`)
+              }
+            }
+          } else {
+            //then this is the group version
+            const singleName = `${field}Total`;
+            const single = all.find((column) => {
+              const f = column.getField();
+              return !f.localeCompare(singleName);
+            })
+            if(single !== undefined) {
+              single.toggle();
+            }
+          }
+        }
+      }
     }
   }
 
