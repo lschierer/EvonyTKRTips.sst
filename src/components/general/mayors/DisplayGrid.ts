@@ -347,16 +347,12 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
                     white-space: normal;
                     width: 80%;
                   }
-                }  
+                }
               }
-            }    
+            }
           }
-        } 
-        
+        }
       }
-      
-       
-      
       
       .tabulator .tabulator-header .tabulator-col .tabulator-col-content {
         padding: var(--spectrum-global-dimension-static-size-50)
@@ -424,7 +420,13 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
               {
                 title: 'Conflicts',
                 headerVertical: true,
+                hozAlign: 'center',
+                width: '3em',
                 field: 'Conflicts',
+                formatter: 'traffic',
+                formatterParams: {
+                  color: ['var(--sl-color-green)', 'var(--sl-color-blue)', 'var(--sl-color-yellow)', 'var(--sl-color-red)']
+                }
               }
             ]
           },
