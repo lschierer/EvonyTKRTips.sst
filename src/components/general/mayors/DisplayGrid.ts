@@ -331,13 +331,31 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       .tabulator {
         font-size: var(--spectrum-global-dimension-font-size-25);
         width: 100%;
+        
+        .tabulator-header {
+          .tabulator-header-contents {
+            .tabulator-col, .tabulator-col-group {
+              max-height: calc(var(--spectrum-table-section-header-row-height-medium) * 4);
+              
+              .tabulator-col-content {
+                .tabulator-col-title-holder {
+                  width: 100%;
+                  display: flex;
+                  flex-direction: row;
+                  
+                  .tabulator-col-title {
+                    white-space: normal;
+                    width: 80%;
+                  }
+                }  
+              }
+            }    
+          }
+        } 
+        
       }
       
-      .tabulator .tabulator-header .tabulator-header-contents {
-        max-height: calc(var(--spectrum-table-section-header-row-height-medium) * 4);
-        
-        
-      }
+       
       
       
       .tabulator .tabulator-header .tabulator-col .tabulator-col-content {
@@ -346,15 +364,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       .tabulator .tabulator-header .tabulator-col.tabulator-sortable .tabulator-col-title {
         padding-right: var(--spectrum-global-dimension-static-size-25);
       }
-      .tabulator .tabulator-header .tabulator-col .tabulator-col-content .tabulator-col-title {
-        white-space: normal;
-      }
       
-            
-      .tabulator-col .tabulator-tableholder {
-        width: inherit;
-        overflow-x: hidden;
-      }
       
       .hidden {
         display: block;
@@ -368,6 +378,8 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
   }
 
   private renderGrid = (): void  => {
+    const overallAttack = 'overallAttack';
+    const overallToughness = 'overallToughness';
     if (this.gridRef.value !== undefined) {
       if(DEBUG) {
         console.log(`gridDiv is ${this.gridRef.value.tagName}`);
@@ -384,7 +396,8 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
         maxHeight: "100%",
         layout:"fitColumns",
         columnDefaults: {
-          tooltip: true,         //show tool tips on cells
+          tooltip: true,//show tool tips on cells
+          headerHozAlign: "center",
         },
         columns: [
           {
@@ -392,6 +405,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
             field: 'index',
             formatter: 'rownum',
             headerSort: false,
+            headerVertical: true,
             hozAlign: "center",
             resizable: false,
             frozen: true,
@@ -416,8 +430,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
           },
           {
             title: 'Adjusted Attack Ranking',
-            field: 'overallAttack',
-            widthGrow: 3,
+            field: overallAttack,
             columns: [
               {
                 title: 'Adjusted Attack Score',
@@ -441,22 +454,20 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
           },
           {
             title: 'Adjusted Attack Ranking',
-            field: 'overallAttackTotal',
-            widthGrow: 3,
+            field: `${overallAttack}Total`,
+            visible: false,
             mutator: (value, data) => {
               // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-return
               return (data.attackScore + data.DeHPScore + data.DeDefenseScore);
             },
-            visible: false,
           },
           {
             title: 'Adjusted Toughness Ranking',
-            field: 'overallToughness',
+            field: overallToughness,
             mutator: (value, data) => {
               // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-return
               return (data.ToughnessScore + data.DeAttackScore);
             },
-            widthGrow: 3,
             columns: [
               {
                 title: 'Adjusted Toughness Score',
@@ -474,8 +485,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
           },
           {
             title: 'Adjusted Toughness Ranking',
-            field: 'overallToughnessTotal',
-            widthGrow: 3,
+            field: `${overallToughness}Total`,
             mutator: (value, data) => {
               // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-return
               return (data.ToughnessScore + data.DeAttackScore);
@@ -487,12 +497,30 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       this.addEventListener('resize', () => {
         this.grid?.redraw();
       })
-      this.grid.on('tableBuilt', () => {void this.getData()});
+      this.grid.on('tableBuilt', () => {
+        void this.getData()
+        const all = this.grid?.getColumns(true);
+        if(all) {
+          const attack = all.find((column) => {
+            const f = column.getField();
+            return !f.localeCompare(overallAttack)
+          })
+          if(attack) {
+            this.colGroupToggle(null, attack);
+          }
+          const toughness = all.find((column) => {
+            const f = column.getField();
+            return !f.localeCompare(overallToughness)
+          })
+          if(toughness) {
+            this.colGroupToggle(null, toughness);
+          }
+        }
+      });
       this.grid.on('headerDblClick', (e, column) => {this.colGroupToggle(e, column)})
     }
   }
-  private colGroupToggle(e: UIEvent, c: ColumnComponent) {
-    if (e.target !== null && e.target !== undefined) {
+  private colGroupToggle(e: UIEvent | null, c: ColumnComponent) {
       const all = this.grid?.getColumns(true)
       if (c !== null && c !== undefined && all !== undefined) {
         const field = c.getField();
@@ -530,7 +558,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
           }
         }
       }
-    }
+      this.grid?.redraw();
   }
 
   protected override render() {
