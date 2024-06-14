@@ -30,10 +30,13 @@ export type MayorBuffDetails = z.infer<typeof MayorBuffDetails>;
 export const MayorDetail = z.function()
   .args(ExtendedGeneral, BuffParams, generalSpecialists)
   .returns(MayorBuffDetails)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   .implement((eg: ExtendedGeneralType, bp: BuffParamsType, specialize: generalSpecialistsType) =>{
+    //I intend to use specialize in the future
     if(DEBUG) {console.log(`MayorDetail start for ${eg.name}`)}
     const am = MayorAttributeMultipliers.MayorPvPAttackAttributeMultipliers;
-    const useCase = generalUseCase.enum.Mayor;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const useCase = generalUseCase.enum.Mayor; //I intend to use this in the future
     const returnable =  {
       Attack: 0,
       DeAttack: 0,
