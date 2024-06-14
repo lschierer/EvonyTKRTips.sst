@@ -39,7 +39,16 @@ export default defineConfig({
       TwoColumnContent: './src/components/TwoColumnContent.astro',
       Sidebar: './src/components/Sidebar.astro'
     },
-    customCss: ['./src/styles/custom.css'],
+    customCss: [
+      '@spectrum-web-components/styles/typography.css',
+      '@spectrum-web-components/styles/scale-medium.css',
+      '@spectrum-css/tokens/dist/index.css',
+      '@spectrum-css/vars/dist/spectrum-global.css',
+      '@spectrum-css/vars/dist/spectrum-medium.css',
+      '@spectrum-css/page/dist/index.css',
+      'tabulator-tables/dist/css/tabulator.min.css',
+      './src/styles/custom.css'
+    ],
     head: [{
       tag: 'script',
       attrs: {
