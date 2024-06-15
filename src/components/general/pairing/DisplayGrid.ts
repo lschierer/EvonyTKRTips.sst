@@ -436,6 +436,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
         debugEventsExternal: DEBUGT,
         minHeight:"var(--spectrum-component-height-500)",
         layout:"fitColumns",
+        columnHeaderSortMulti: true,
         columnDefaults: {
           tooltip: true,//show tool tips on cells
           headerHozAlign: "center",
