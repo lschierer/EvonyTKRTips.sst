@@ -5,9 +5,9 @@ const DEBUGC = false;
 import { z } from 'zod';
 
 import {
-  AscendingLevels, Buff,
+  AscendingLevels,
   BuffParams,
-  type BuffParamsType, type BuffType, Condition,
+  type BuffParamsType,
 } from '@schemas/baseSchemas';
 
 import {AttributeMultipliers, type AttributeMultipliersType} from '@schemas/EvAns.zod';
@@ -203,8 +203,6 @@ export const ReinforcementAttackPvPBase = z
       if (DEBUG) {
         console.log(`${eg.name}: ArchersPvPAttack starting`);
       }
-
-      const ValidConditions = null;
 
       const typedBuffFunctions: BuffFunctionInterface = {
         Attack: AttackBuff,

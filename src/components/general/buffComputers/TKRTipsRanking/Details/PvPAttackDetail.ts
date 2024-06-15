@@ -9,7 +9,8 @@ import {
   type BuffParamsType,
 } from '@schemas/baseSchemas.ts';
 import {
-  generalUseCase,
+  Display, type DisplayType,
+  generalUseCase, type generalUseCaseType,
 } from '@schemas/generalsSchema.ts';
 import {AttributeMultipliers, type AttributeMultipliersType} from '@schemas/EvAns.zod.ts';
 
@@ -81,15 +82,22 @@ import { AscendingBuffs } from './AES_SingleScope.ts';
 import { SpecialityBuffs } from './Speciality_SingleScope.ts';
 import { SkillBookBuffs } from './SkillBook_SingleScore';
 
-export const MayorAttackDetail = z.function()
-  .args(ExtendedGeneral, BuffParams, AttributeMultipliers)
+export const PvPAttackDetail = z.function()
+  .args(ExtendedGeneral, BuffParams, AttributeMultipliers, generalUseCase, Display)
   .returns(z.number())
-  .implement((eg: ExtendedGeneralType, bp: BuffParamsType, am: AttributeMultipliersType) => {
+  .implement((eg: ExtendedGeneralType, bp: BuffParamsType, am: AttributeMultipliersType, useCase: generalUseCaseType, display: DisplayType) => {
 
     const bas = Basic(eg, bp, am);
-    const bss =  SkillBookBuffs(eg, generalUseCase.enum.Mayor, bp, am, AttackBuff);
-    const speciality = SpecialityBuffs(eg, generalUseCase.enum.Mayor, bp, am, AttackBuff);
-    const aes = AscendingBuffs(eg, generalUseCase.enum.Mayor, bp, am, AttackBuff);
+    const bss =  SkillBookBuffs(eg, useCase, bp, am, AttackBuff);
+    const speciality = SpecialityBuffs(eg, useCase, bp, am, AttackBuff);
+    let  aes = 0;
+    if(display.localeCompare(Display.enum.secondary)) {
+      aes = AscendingBuffs(eg, useCase, bp, am, AttackBuff);
+    }
+
+    if(DEBUG){
+      console.log(`returning bas: ${bas} bss: ${bss} speciality: ${speciality} aes: ${aes} for ${eg.name} ${display}`)
+    }
 
     return bas + bss + speciality + aes;
   })

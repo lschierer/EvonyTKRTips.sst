@@ -1,6 +1,6 @@
 import type { BookType } from '@schemas/bookSchemas.ts';
 
-const DEBUG = false;
+const DEBUG = true;
 
 import {  type ExtendedGeneralType } from '@schemas/ExtendedGeneral.ts';
 import { type generalUseCaseType } from '@schemas/generalsSchema.ts';
@@ -17,13 +17,16 @@ export const SkillBookBuffs =
         if (tb !== null && tb !== undefined) {
           if(DEBUG) {
             console.log(`scoring ${tb.name} for ${eg.name}`)
+            console.log(JSON.stringify(tb));
           }
           const additional = tb.buff.reduce((a2, bb, index) => {
             if (bb === null || bb === undefined) {
+              if(DEBUG) {console.log(`bb null or undefined`)}
               return a2;
             } else {
               if(DEBUG) {
                 console.log(`calling BuffComp: ${eg.name} ${tb.name} ${index}`)
+                console.log(JSON.stringify(bb));
               }
               const value = BuffComp(tb.name, eg.name, bb, bp, useCase, am);
               if(DEBUG) {

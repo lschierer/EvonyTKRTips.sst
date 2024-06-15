@@ -12,43 +12,43 @@ others:
   - Xiang Yu
   - Ii Naomasa
 books:
-  - name: Mounted Attack Increase
+- book:
+    name: Mounted Attack Increase
     level: '1'
     buff:
       - attribute: Attack
-        condition:
-          - When not mine
         class: Mounted
         value:
           number: 10
           unit: percentage
-  - name: Mounted Attack Increase
+  condition: when not mine
+- book:
+    name: Mounted Attack Increase
     level: '2'
     buff:
       - attribute: Attack
-        condition:
-          - When not mine
         class: Mounted
         value:
           number: 15
           unit: percentage
-  - name: Mounted Attack Increase
+  condition: when not mine
+- book:
+    name: Mounted Attack Increase
     level: '3'
     buff:
       - attribute: Attack
-        condition:
-          - When not mine
         class: Mounted
         value:
           number: 20
           unit: percentage
-  - name: Mounted Attack Increase
+  condition: when not mine
+- book:
+    name: Mounted Attack Increase
     level: '4'
     buff:
       - attribute: Attack
-        condition:
-          - When not mine
         class: Mounted
         value:
           number: 25
           unit: percentage
+  condition: when not mine

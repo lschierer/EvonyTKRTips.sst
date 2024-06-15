@@ -5,11 +5,8 @@ import { z } from 'zod';
 
 import {
   AscendingLevels,
-  Buff,
   BuffParams,
   type BuffParamsType,
-  type BuffType,
-  Condition,
 } from '@schemas/baseSchemas';
 
 import { AttributeMultipliers, type AttributeMultipliersType } from '@schemas/EvAns.zod';
@@ -255,5 +252,4 @@ export const AttackingToughnessPvPBase = z
       return TLGS;
     }
   );
-const DEBUGC = false;
 

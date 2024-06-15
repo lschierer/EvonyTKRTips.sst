@@ -71,7 +71,6 @@ export const HPBuff = z
       useCase: generalUseCaseType,
       am: AttributeMultipliersType
     ) => {
-      const multiplier = 0;
       if (tb === null || tb === undefined || iv === null || iv === undefined) {
         return -1000;
       } else {
@@ -105,30 +104,10 @@ export const HPBuff = z
           } else {
             //check if buff has some conditions that never work for PvP
             if (tb.condition !== null && tb.condition !== undefined) {
-              if (checkInvalidConditions(tb, iv, useCase)) {
-                //I probably ought to rename that function, but if I get here,
-                //there were no invalid conditions
-                if (
-                  tb.condition.includes(Condition.enum.Enemy) ||
-                  tb.condition.includes(Condition.enum.Enemy_In_City) ||
-                  tb.condition.includes(Condition.enum.Reduces_Enemy) ||
-                  tb.condition.includes(
-                    Condition.enum.Reduces_Enemy_in_Attack
-                  ) ||
-                  tb.condition.includes(
-                    Condition.enum.Reduces_Enemy_with_a_Dragon
-                  )
-                ) {
-                  if (DEBUGHP) {
-                    console.log(
-                      `PvPHPBuff: ${generalName}: ${buffName} detected debuff`
-                    );
-                  }
-                  return 0;
-                } else {
-                  //I think all other conditions that matter have been checked
+              if (checkInvalidConditions(tb, iv, useCase, false)) {
+
                   score = PvPHPBuffClassCheck(tb, iv, am);
-                }
+
               } else {
                 //if I get here, there were invalid conditions
                 return score;

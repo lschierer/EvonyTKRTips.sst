@@ -1,3 +1,4 @@
+const DEBUGMS = true;
 import { z } from 'zod';
 
 import {
@@ -14,7 +15,7 @@ import {
 import {AttributeMultipliers, type AttributeMultipliersType} from '@schemas/EvAns.zod';
 import { checkInvalidConditions } from '../checkConditions';
 import { generalUseCase, type generalUseCaseType } from '@schemas/generalsSchema.ts';
-const DEBUGMS = false;
+
 
 const PvPMarchSizeBuffClassCheck = z
   .function()
@@ -32,29 +33,19 @@ const PvPMarchSizeBuffClassCheck = z
                 am?.Offensive
                   .MarchSizeIncrease ?? 0;
             } else if (!ClassEnum.enum.Ground.localeCompare(tb.class)) {
-              multiplier =
-                am?.Offensive
-                  .MarchSizeIncrease ?? 0;
+              multiplier = am?.Offensive.MarchSizeIncrease ?? 0;
             } else if (!ClassEnum.enum.Mounted.localeCompare(tb.class)) {
-              multiplier =
-                am?.Offensive
-                  .MarchSizeIncrease ?? 0;
+              multiplier = am?.Offensive.MarchSizeIncrease ?? 0;
             } else if (!ClassEnum.enum.Siege.localeCompare(tb.class)) {
-              multiplier =
-                am?.Offensive
-                  .MarchSizeIncrease ?? 0;
+              multiplier = am?.Offensive.MarchSizeIncrease ?? 0;
             } else {
               //honestly only this one should ever be hit.  I can't think
               //of a case where a general would have a class specific march
               //increase.
-              multiplier =
-                am?.Offensive
-                  .MarchSizeIncrease ?? 0;
+              multiplier = am?.Offensive.MarchSizeIncrease ?? 0;
             }
           } else {
-            multiplier =
-              am?.Offensive.AllTroopAttack ??
-              0;
+            multiplier =  am?.Offensive.MarchSizeIncrease ?? 0;
           }
           const additional = tb.value.number * multiplier;
           if (DEBUGMS) {
@@ -80,7 +71,6 @@ export const MarchSizeBuff = z
       useCase: generalUseCaseType,
       am: AttributeMultipliersType
     ) => {
-      const multiplier = 0;
       if (tb === null || tb === undefined || iv === null || iv === undefined) {
         return -1000;
       } else {
@@ -111,44 +101,31 @@ export const MarchSizeBuff = z
           ) {
             if (DEBUGMS) {
               console.log(
-                `PvPMarchSizeBuff: ${generalName}: ${buffName} is not an March Size buff`
+                `PvPMarchSizeBuff: ${generalName}: ${buffName} ${tb.attribute} is not an March Size buff`
               );
             }
             return score;
           } else {
+            if(DEBUGMS) {
+              console.log(`PvPMarchSizeBuff: ${generalName}: ${buffName} ${tb.attribute} IS a March Size buff`)
+            }
             //check if buff has some conditions that never work for PvP
             if (tb.condition !== null && tb.condition !== undefined) {
-              if (checkInvalidConditions(tb, iv, useCase)) {
-                //I probably ought to rename that function, but if I get here,
-                //there were no invalid conditions
-                if (
-                  tb.condition.includes(Condition.enum.Enemy) ||
-                  tb.condition.includes(Condition.enum.Enemy_In_City) ||
-                  tb.condition.includes(Condition.enum.Reduces_Enemy) ||
-                  tb.condition.includes(
-                    Condition.enum.Reduces_Enemy_in_Attack
-                  ) ||
-                  tb.condition.includes(
-                    Condition.enum.Reduces_Enemy_with_a_Dragon
-                  )
-                ) {
-                  if (DEBUGMS) {
-                    console.log(
-                      `PvPMarchSizeBuff: ${generalName}: ${buffName} detected March Size debuff`
-                    );
-                  }
-                  return 0;
-                } else {
-                  //I think all other conditions that matter have been checked
+              if (checkInvalidConditions(tb, iv, useCase, false)) {
                   score = PvPMarchSizeBuffClassCheck(tb, iv, am);
-                }
               } else {
+                if(DEBUGMS) {
+                  console.log(`detected invalid conditions for ${useCase} ${generalName}`)
+                }
                 //if I get here, there were invalid conditions
                 return score;
               }
             } else {
               //if I get here, there were no conditions to check, but there is
               //an MarchSize attribute.
+              if(DEBUGMS) {
+                console.log(`calling PvPMarchSizeBuffClassCheck with no conditions`)
+              }
               score = PvPMarchSizeBuffClassCheck(tb, iv, am);
             }
           }

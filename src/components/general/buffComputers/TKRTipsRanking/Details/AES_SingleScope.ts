@@ -16,9 +16,12 @@ export const AscendingBuffs =
       if(eg.stars?.localeCompare(AscendingLevels.enum['0stars'])){
         if(eg.ascending && Array.isArray(eg.ascending) && eg.ascending.length > 0) {
           eg.ascending.forEach((ascending: AscendingType) => {
+            if(DEBUG) {
+              console.log(`AscendingBuffs: ${eg.name}, ${useCase} ${ascending.level}`)
+            }
             switch (bp.stars) {
               case AscendingLevels.enum['5red']:
-                if (ascending !== null && ascending !== undefined) {
+                if (ascending !== null && ascending !== undefined && !ascending.level.localeCompare(AscendingLevels.enum['5red'])) {
                   const additional = ascending.buff.reduce((a2, ab, index) => {
                     if (ab === null || ab === undefined) {
                       return a2
@@ -31,7 +34,7 @@ export const AscendingBuffs =
               // eslint-disable-next-line no-fallthrough
               case AscendingLevels.enum['4red']:
                 
-                if (ascending !== null && ascending !== undefined) {
+                if (ascending !== null && ascending !== undefined && !ascending.level.localeCompare(AscendingLevels.enum['4red'])) {
                   const additional = ascending.buff.reduce((a2, sb, index) => {
                     if (sb === null || sb === undefined) {
                       return a2
@@ -43,7 +46,7 @@ export const AscendingBuffs =
                 }
               // eslint-disable-next-line no-fallthrough
               case AscendingLevels.enum['3red']:
-                if (ascending !== null && ascending !== undefined) {
+                if (ascending !== null && ascending !== undefined && !ascending.level.localeCompare(AscendingLevels.enum['3red'])) {
                   const additional = ascending.buff.reduce((a2, sb, index) => {
                     if (sb === null || sb === undefined) {
                       return a2
@@ -55,7 +58,7 @@ export const AscendingBuffs =
                 }
               // eslint-disable-next-line no-fallthrough
               case AscendingLevels.enum['2red']:
-                if (ascending !== null && ascending !== undefined) {
+                if (ascending !== null && ascending !== undefined && !ascending.level.localeCompare(AscendingLevels.enum['2red'])) {
                   const additional = ascending.buff.reduce((a2, sb, index) => {
                     if (sb === null || sb === undefined) {
                       return a2
@@ -67,7 +70,7 @@ export const AscendingBuffs =
                 }
               // eslint-disable-next-line no-fallthrough
               case AscendingLevels.enum['1red']:
-                if (ascending !== null && ascending !== undefined) {
+                if (ascending !== null && ascending !== undefined && !ascending.level.localeCompare(AscendingLevels.enum['1red'])) {
                   const additional = ascending.buff.reduce((a2, sb, index) => {
                     if (sb === null || sb === undefined) {
                       return a2
@@ -79,7 +82,7 @@ export const AscendingBuffs =
                 }
                 break;
               case AscendingLevels.enum['5purple']:
-                if (ascending !== null && ascending !== undefined) {
+                if (ascending !== null && ascending !== undefined && !ascending.level.localeCompare(AscendingLevels.enum['5purple'])) {
                   const additional = ascending.buff.reduce((a2, ab, index) => {
                     if (ab === null || ab === undefined) {
                       return a2
@@ -92,7 +95,7 @@ export const AscendingBuffs =
               // eslint-disable-next-line no-fallthrough
               case AscendingLevels.enum['4purple']:
 
-                if (ascending !== null && ascending !== undefined) {
+                if (ascending !== null && ascending !== undefined && !ascending.level.localeCompare(AscendingLevels.enum['4purple'])) {
                   const additional = ascending.buff.reduce((a2, sb, index) => {
                     if (sb === null || sb === undefined) {
                       return a2
@@ -104,7 +107,7 @@ export const AscendingBuffs =
                 }
               // eslint-disable-next-line no-fallthrough
               case AscendingLevels.enum['3purple']:
-                if (ascending !== null && ascending !== undefined) {
+                if (ascending !== null && ascending !== undefined && !ascending.level.localeCompare(AscendingLevels.enum['3purple'])) {
                   const additional = ascending.buff.reduce((a2, sb, index) => {
                     if (sb === null || sb === undefined) {
                       return a2
@@ -116,7 +119,7 @@ export const AscendingBuffs =
                 }
               // eslint-disable-next-line no-fallthrough
               case AscendingLevels.enum['2purple']:
-                if (ascending !== null && ascending !== undefined) {
+                if (ascending !== null && ascending !== undefined && !ascending.level.localeCompare(AscendingLevels.enum['2purple'])) {
                   const additional = ascending.buff.reduce((a2, sb, index) => {
                     if (sb === null || sb === undefined) {
                       return a2
@@ -128,7 +131,7 @@ export const AscendingBuffs =
                 }
               // eslint-disable-next-line no-fallthrough
               case AscendingLevels.enum['1purple']:
-                if (ascending !== null && ascending !== undefined) {
+                if (ascending !== null && ascending !== undefined && !ascending.level.localeCompare(AscendingLevels.enum['1purple'])) {
                   const additional = ascending.buff.reduce((a2, sb, index) => {
                     if (sb === null || sb === undefined) {
                       return a2

@@ -1,4 +1,4 @@
-const DEBUG = true;
+const DEBUG = false;
 
 import {z} from 'zod';
 import { ExtendedGeneral, type ExtendedGeneralType } from '@schemas/ExtendedGeneral.ts';
@@ -55,5 +55,7 @@ export const MayorDetail = z.function()
     returnable.DeDefense = MayorDeDefenseDetail(eg, bp, am);
     returnable.HP = MayorHPDetail(eg, bp, am);
     returnable.Defense =  MayorDefenseDetail(eg, bp, am);
+    if(DEBUG) {console.log(`MayorDetail end for ${eg.name} ${JSON.stringify(returnable)}`)}
+
     return returnable;
   })

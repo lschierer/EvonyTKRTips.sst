@@ -8,7 +8,8 @@ others:
   - Philip II
   - Septimus Severus
 books:
-  - name: Siege Attack Increase
+- book:
+    name: Siege Attack Increase
     level: '1'
     buff:
       - attribute: Attack
@@ -16,7 +17,9 @@ books:
         value:
           number: 10
           unit: percentage
-  - name: Siege Attack Increase
+  condition: when not mine
+- book:
+    name: Siege Attack Increase
     level: '2'
     buff:
       - attribute: Attack
@@ -24,7 +27,9 @@ books:
         value:
           number: 15
           unit: percentage
-  - name: Siege Attack Increase
+  condition: when not mine
+- book:
+    name: Siege Attack Increase
     level: '3'
     buff:
       - attribute: Attack
@@ -32,7 +37,9 @@ books:
         value:
           number: 20
           unit: percentage
-  - name: Siege Attack Increase
+  condition: when not mine
+- book:
+    name: Siege Attack Increase
     level: '4'
     buff:
       - attribute: Attack
@@ -40,3 +47,4 @@ books:
         value:
           number: 25
           unit: percentage
+  condition: when not mine

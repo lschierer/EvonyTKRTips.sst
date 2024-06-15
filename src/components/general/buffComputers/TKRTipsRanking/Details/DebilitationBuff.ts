@@ -6,12 +6,11 @@ import {
   type BuffType,
   BuffParams,
   type BuffParamsType,
-  ClassEnum,
   Condition,
   UnitSchema,
 } from '@schemas/baseSchemas';
 
-import { AttributeMultipliers, type AttributeMultipliersType} from '@schemas/EvAns.zod'
+import { AttributeMultipliers, type AttributeMultipliersType} from '@schemas/EvAns.zod';
 
 
 import { checkInvalidConditions } from '../checkConditions';
@@ -19,7 +18,7 @@ import { generalUseCase, type generalUseCaseType } from '@schemas/generalsSchema
 
 const DEBUGT = false;
 
-/* Debuffs have an extra consideration, as they are one of the eg places that push
+/* Debuffs have an extra consideration, as they are one of the primary places that push
  * the "condition" field into being an array instead of a singular adjective.
  * A DeBuff can be
  * 1) Generic
@@ -126,7 +125,7 @@ export const DebilitationBuff = z
           } else {
             //check if buff has some conditions that never work for PvP
             if (tb.condition !== null && tb.condition !== undefined) {
-              if (checkInvalidConditions(tb, iv, useCase)) {
+              if (checkInvalidConditions(tb, iv, useCase, true)) {
                 //I probably ought to rename that function, but if I get here,
                 //there were no invalid conditions
                 if (

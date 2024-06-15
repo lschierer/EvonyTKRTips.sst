@@ -11,7 +11,7 @@ import {
   UnitSchema,
 } from '@schemas/baseSchemas';
 
-import {AttributeMultipliers, type AttributeMultipliersType} from '@schemas/EvAns.zod'
+import { AttributeMultipliers, type AttributeMultipliersType} from '@schemas/EvAns.zod';
 
 
 import { checkInvalidConditions } from '../checkConditions';
@@ -19,7 +19,7 @@ import { generalUseCase, type generalUseCaseType } from '@schemas/generalsSchema
 
 const DEBUGT = false;
 
-/* Debuffs have an extra consideration, as they are one of the eg places that push
+/* Debuffs have an extra consideration, as they are one of the primary places that push
  * the "condition" field into being an array instead of a singular adjective.
  * A DeBuff can be
  * 1) Generic
@@ -29,11 +29,11 @@ const DEBUGT = false;
  * 5) Limited to being in a specific role then applying generically.
  */
 
-const PvPDeAttackBuffDetailCheck = z
+const DeAttackBuffDetailCheck = z
   .function()
   .args(Buff, BuffParams, AttributeMultipliers)
   .returns(z.number())
-  .implement((tb: BuffType, iv: BuffParamsType, am: AttributeMultipliersType) => {
+  .implement((tb: BuffType, iv: BuffParamsType,  am: AttributeMultipliersType) => {
     let score = 0;
     let multiplier = 0;
     if (tb !== null && tb !== undefined) {
@@ -61,8 +61,8 @@ const PvPDeAttackBuffDetailCheck = z
                       .ReduceEnemyRangedAttack;
                 } else {
                   multiplier =
-                    am.ReinforcingAttackDebuff
-                      .ReduceEnemyRangedAttack;
+                    am
+                      .ReinforcingAttackDebuff.ReduceEnemyRangedAttack;
                 }
               } else if (!ClassEnum.enum.Ground.localeCompare(tb.class)) {
                 if (
@@ -84,8 +84,8 @@ const PvPDeAttackBuffDetailCheck = z
                       .ReduceEnemyGroundAttack;
                 } else {
                   multiplier =
-                    am.ReinforcingAttackDebuff
-                      .ReduceEnemyGroundAttack;
+                    am
+                      .ReinforcingAttackDebuff.ReduceEnemyGroundAttack;
                 }
               } else if (!ClassEnum.enum.Mounted.localeCompare(tb.class)) {
                 if (
@@ -107,8 +107,8 @@ const PvPDeAttackBuffDetailCheck = z
                       .ReduceEnemyMountedAttack;
                 } else {
                   multiplier =
-                    am.ReinforcingAttackDebuff
-                      .ReduceEnemyMountedAttack;
+                    am
+                      .ReinforcingAttackDebuff.ReduceEnemyMountedAttack;
                 }
               } else if (!ClassEnum.enum.Siege.localeCompare(tb.class)) {
                 if (
@@ -130,8 +130,8 @@ const PvPDeAttackBuffDetailCheck = z
                       .ReduceEnemySiegeAttack;
                 } else {
                   multiplier =
-                    am.ReinforcingAttackDebuff
-                      .ReduceEnemySiegeAttack;
+                    am
+                      .ReinforcingAttackDebuff.ReduceEnemySiegeAttack;
                 }
               } else {
                 multiplier = 0;
@@ -150,12 +150,10 @@ const PvPDeAttackBuffDetailCheck = z
                 )
               ) {
                 multiplier =
-                  am.AttackingAttackDebuff
-                    .ReduceAllAttack;
+                  am.AttackingAttackDebuff.ReduceAllAttack;
               } else {
                 multiplier =
-                  am.ReinforcingAttackDebuff
-                    .ReduceAllAttack;
+                  am.ReinforcingAttackDebuff.ReduceAllAttack;
               }
             }
             const additional = Math.abs(tb.value.number) * multiplier;
@@ -197,9 +195,7 @@ export const DeAttackBuff = z
           return score;
         } else {
           if (DEBUGT) {
-            console.log(
-              `PvPDeAttackBuff: ${generalName}: ${buffName} has value`
-            );
+            console.log(`PvPDeAttackBuff: ${generalName}: ${buffName} has value`);
           }
           if (tb.attribute === undefined || tb.attribute === null) {
             if (DEBUGT) {
@@ -211,14 +207,14 @@ export const DeAttackBuff = z
           } else if (Attribute.enum.Attack.localeCompare(tb.attribute)) {
             if (DEBUGT) {
               console.log(
-                `PvPDeAttackBuff: ${generalName}: ${buffName} is not an attack debuff`
+                `PvPDeAttackBuff: ${generalName}: ${buffName} is not an Attack debuff`
               );
             }
             return score;
           } else {
             //check if buff has some conditions that never work for PvP
             if (tb.condition !== null && tb.condition !== undefined) {
-              if (checkInvalidConditions(tb, iv, useCase)) {
+              if (checkInvalidConditions(tb, iv, useCase, true)) {
                 //I probably ought to rename that function, but if I get here,
                 //there were no invalid conditions
                 if (
@@ -237,7 +233,7 @@ export const DeAttackBuff = z
                       `PvPDeAttackBuff: ${generalName}: ${buffName} detected Attack debuff`
                     );
                   }
-                  return PvPDeAttackBuffDetailCheck(tb, iv, am);
+                  return DeAttackBuffDetailCheck(tb, iv,  am);
                 } else {
                   //I am *ONLY* looking for debuffs here. DO NOT handle anything not a debuff.
                   return score;

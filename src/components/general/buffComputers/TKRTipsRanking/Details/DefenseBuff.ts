@@ -7,7 +7,6 @@ import {
   BuffParams,
   type BuffParamsType,
   ClassEnum,
-  Condition,
   UnitSchema,
 } from '@schemas/baseSchemas';
 
@@ -30,27 +29,22 @@ const PvPDefenseBuffClassCheck = z
           if (tb.class !== null && tb.class !== undefined) {
             if (!ClassEnum.enum.Archers.localeCompare(tb.class)) {
               multiplier =
-                am?.Toughness.RangedDefense ??
-                0;
+                am?.Toughness.RangedDefense ;
             } else if (!ClassEnum.enum.Ground.localeCompare(tb.class)) {
               multiplier =
-                am?.Toughness.GroundDefense ??
-                0;
+                am?.Toughness.GroundDefense ;
             } else if (!ClassEnum.enum.Mounted.localeCompare(tb.class)) {
               multiplier =
-                am?.Toughness.MountedDefense ??
-                0;
+                am?.Toughness.MountedDefense ;
             } else if (!ClassEnum.enum.Siege.localeCompare(tb.class)) {
               multiplier =
-                am?.Toughness.SiegeDefense ??
-                0;
+                am?.Toughness.SiegeDefense ;
             } else {
               multiplier = 0;
             }
           } else {
             multiplier =
-              am?.Toughness.AllTroopDefense ??
-              0;
+              am?.Toughness.AllTroopDefense ;
           }
           const additional = tb.value.number * multiplier;
           if (DEBUGD) {
@@ -76,7 +70,6 @@ export const DefenseBuff = z
       useCase: generalUseCaseType,
       am: AttributeMultipliersType
     ) => {
-      const multiplier = 0;
       if (tb === null || tb === undefined || iv === null || iv === undefined) {
         return -1000;
       } else {
@@ -110,32 +103,12 @@ export const DefenseBuff = z
             }
             return score;
           } else {
-            //check if buff has some conditions that never work for PvP
             if (tb.condition !== null && tb.condition !== undefined) {
-              if (checkInvalidConditions(tb, iv, useCase)) {
+              //check if buff has some conditions that never work for PvP
+              if (checkInvalidConditions(tb, iv, useCase, false)) {
                 //I probably ought to rename that function, but if I get here,
                 //there were no invalid conditions
-                if (
-                  tb.condition.includes(Condition.enum.Enemy) ||
-                  tb.condition.includes(Condition.enum.Enemy_In_City) ||
-                  tb.condition.includes(Condition.enum.Reduces_Enemy) ||
-                  tb.condition.includes(
-                    Condition.enum.Reduces_Enemy_in_Attack
-                  ) ||
-                  tb.condition.includes(
-                    Condition.enum.Reduces_Enemy_with_a_Dragon
-                  )
-                ) {
-                  if (DEBUGD) {
-                    console.log(
-                      `PvPDefenseBuff: ${generalName}: ${buffName} detected debuff`
-                    );
-                  }
-                  return 0;
-                } else {
-                  //I think all other conditions that matter have been checked
-                  score = PvPDefenseBuffClassCheck(tb, iv, am);
-                }
+                score = PvPDefenseBuffClassCheck(tb, iv, am);
               } else {
                 //if I get here, there were invalid conditions
                 return score;

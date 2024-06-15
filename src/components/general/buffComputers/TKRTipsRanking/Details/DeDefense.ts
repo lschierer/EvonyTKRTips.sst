@@ -11,11 +11,13 @@ import {
   UnitSchema,
 } from '@schemas/baseSchemas';
 
-import {AttributeMultipliers, type AttributeMultipliersType } from '@schemas/EvAns.zod';
+import { AttributeMultipliers, type AttributeMultipliersType} from '@schemas/EvAns.zod';
+
+
 import { checkInvalidConditions } from '../checkConditions';
 import { generalUseCase, type generalUseCaseType } from '@schemas/generalsSchema.ts';
 
-const DEBUGT = false;
+const DEBUGT = true;
 
 /* Debuffs have an extra consideration, as they are one of the primary places that push
  * the "condition" field into being an array instead of a singular adjective.
@@ -27,7 +29,7 @@ const DEBUGT = false;
  * 5) Limited to being in a specific role then applying generically.
  */
 
-const PvPDeDefenseBuffDetailCheck = z
+const DeDefenseBuffDetailCheck = z
   .function()
   .args(Buff, BuffParams, AttributeMultipliers)
   .returns(z.number())
@@ -181,6 +183,7 @@ export const DeDefenseBuff = z
       useCase: generalUseCaseType,
       am: AttributeMultipliersType
     ) => {
+      if(DEBUGT) {console.log(`DeDefenseBuff ${generalName} ${buffName} ${useCase}`)}
       if (tb === null || tb === undefined || iv === null || iv === undefined) {
         return -1000;
       } else {
@@ -195,9 +198,7 @@ export const DeDefenseBuff = z
           return score;
         } else {
           if (DEBUGT) {
-            console.log(
-              `PvPDeDefenseBuff: ${generalName}: ${buffName} has value`
-            );
+            console.log(`PvPDeDefenseBuff: ${generalName}: ${buffName} has value`);
           }
           if (tb.attribute === undefined || tb.attribute === null) {
             if (DEBUGT) {
@@ -216,7 +217,7 @@ export const DeDefenseBuff = z
           } else {
             //check if buff has some conditions that never work for PvP
             if (tb.condition !== null && tb.condition !== undefined) {
-              if (checkInvalidConditions(tb, iv, useCase)) {
+              if (checkInvalidConditions(tb, iv, useCase, true)) {
                 //I probably ought to rename that function, but if I get here,
                 //there were no invalid conditions
                 if (
@@ -235,7 +236,7 @@ export const DeDefenseBuff = z
                       `PvPDeDefenseBuff: ${generalName}: ${buffName} detected Defense debuff`
                     );
                   }
-                  return PvPDeDefenseBuffDetailCheck(tb, iv, am);
+                  return DeDefenseBuffDetailCheck(tb, iv,  am);
                 } else {
                   //I am *ONLY* looking for debuffs here. DO NOT handle anything not a debuff.
                   return score;

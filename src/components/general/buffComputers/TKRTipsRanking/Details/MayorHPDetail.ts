@@ -1,5 +1,3 @@
-import { DefenseBuff } from '@components/general/buffComputers/TKRTipsRanking/Details/DefenseBuff.ts';
-
 const DEBUG = false;
 
 import { z } from 'zod';
@@ -91,7 +89,7 @@ export const MayorHPDetail = z.function()
     const bas = Basic(eg, bp, am);
     const bss =  SkillBookBuffs(eg, generalUseCase.enum.Mayor, bp, am, HPBuff);
     const speciality = SpecialityBuffs(eg, generalUseCase.enum.Mayor, bp, am, HPBuff);
-    const aes = AscendingBuffs(eg, generalUseCase.enum.Mayor, bp, am, DefenseBuff);
+    const aes = AscendingBuffs(eg, generalUseCase.enum.Mayor, bp, am, HPBuff);
 
     return bas + bss + speciality + aes;
   })

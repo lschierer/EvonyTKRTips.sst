@@ -3,7 +3,7 @@ import { defineMiddleware } from 'astro:middleware';
 import { z } from 'zod';
 
 import {
-  type ConflictDatumType,
+  type ConflictDatum,
 } from '@schemas/conflictSchemas';
 
 import {
@@ -88,7 +88,7 @@ export const DisplayGeneralsMW = defineMiddleware(
       }
 
       if (locals.ConflictData === undefined) {
-        locals.ConflictData = new Array<ConflictDatumType>();
+        locals.ConflictData = new Array<ConflictDatum>();
       }
 
       if (locals.CachedPairs === undefined) {

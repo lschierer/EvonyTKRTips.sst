@@ -1,13 +1,17 @@
 ---
 import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
 
-import { BuffParamsType, qualityColor, AscendingLevels } from '../../schemas/baseSchemas';
+import {
+  BuffParamsType,
+  qualityColor,
+  AscendingLevels ,
+  CovenantAttributeCategory,
+} from '../../schemas/baseSchemas';
 
 import {
   Covenant,
   type CovenantType,
   CovenantAttribute,
-  CovenantAttributeCategory,
   type CovenantAttributeType,
   Display,
   type GeneralClassType,
@@ -26,7 +30,7 @@ import { SpecialityType } from '../../schemas/specialitySchema';
 import { BookType } from '../../schemas/bookSchemas';
 
 import {
-  type ConflictDatumType
+  type ConflictDatum
 } from '../../schemas/conflictSchemas';
 
 import {EvAnsScoreComputer} from '@components/general/buffComputers/EvAnsRanking/EvAnsScoreComputer';
@@ -57,13 +61,14 @@ const  InvestmentLevel: BuffParamsType = {
     special4: qualityColor.enum.Gold,
     special5: qualityColor.enum.Disabled,
     stars: AscendingLevels.enum['5red'],
+    covenants: CovenantAttributeCategory.enum.Disabled,
     dragon: true,
     beast: true,
   };
 
 if (generalObjects !== undefined && generalObjects !== null) {
   await Promise.all(
-    generalObjects.map(async (element: GeneralElementType, index) => {
+    generalObjects.map(async (element, index) => {
       const gc: GeneralClassType = element.data.general;
       const eg: ExtendedGeneralType = {
         name: gc.name,
@@ -83,7 +88,7 @@ if (generalObjects !== undefined && generalObjects !== null) {
         specialities: new Array<SpecialityType>(),
         books: new Array<BookType>(),
         covenants: new Array<CovenantAttributeType>(),
-        conflicts: new Array<ConflictDatumType>(),
+        conflicts: new Array<ConflictDatum>(),
       };
       if(TargetClass !== undefined && TargetClass !== null && generalSpecialists.enum.all.localeCompare(TargetClass)){
         if (TargetClass.toLocaleString().toLocaleLowerCase().localeCompare(eg.score_as.toLocaleString().toLocaleLowerCase())) {

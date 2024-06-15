@@ -3,7 +3,7 @@ import {  z as zod } from 'zod';
 import { GeneralClass, Covenant, CovenantAttribute } from './generalsSchema';
 import { Speciality } from './specialitySchema';
 import { Book, specialSkillBook, standardSkillBook } from './bookSchemas';
-import { ConflictArray } from './conflictSchemas';
+import { ConflictDatum } from './conflictSchemas';
 
 export const ExtendedGeneralStatus = zod.enum([
   'created',
@@ -24,7 +24,7 @@ export const ExtendedGeneral = GeneralClass.extend({
   specialities: zod.array(Speciality),
   books: zod.array(Book),
   covenants: zod.array(CovenantAttribute),
-  conflicts: ConflictArray,
+  conflicts: zod.array(ConflictDatum),
 });
 
 export type ExtendedGeneralType = zod.infer<typeof ExtendedGeneral>;

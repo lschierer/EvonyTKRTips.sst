@@ -9,11 +9,12 @@ import {
   type BuffParamsType,
 } from '@schemas/baseSchemas.ts';
 import {
-  generalUseCase,
+  Display, type DisplayType,
+  generalUseCase, type generalUseCaseType,
 } from '@schemas/generalsSchema.ts';
 import {AttributeMultipliers, type AttributeMultipliersType} from '@schemas/EvAns.zod.ts';
 
-import { AttackBuff } from './AttackBuff'
+import { HPBuff } from './HPBuff'
 
 const Basic = z
   .function()
@@ -43,33 +44,33 @@ const Basic = z
         console.log(`this should not happen!!!`);
     }
 
-    let BasicAttack = eg.attack + 45 * eg.attack_increment;
+    let BasicHP = eg.leadership + 45 * eg.leadership_increment;
     if(DEBUG) {
-      console.log(`BasicAttack step1: ${BasicAttack}`)
+      console.log(`BasicHP step1: ${BasicHP}`)
     }
 
-    BasicAttack += 500;
+    BasicHP += 500;
     if(DEBUG) {
-      console.log(`BasicAttack with cultivation: ${BasicAttack}`)
+      console.log(`BasicHP with cultivation: ${BasicHP}`)
     }
-    BasicAttack += AES_adjustment;
+    BasicHP += AES_adjustment;
     if(DEBUG) {
-      console.log(`BasicAttack with AES`)
+      console.log(`BasicHP with AES`)
     }
-    if(BasicAttack < 900){
-      BasicAttack = BasicAttack * 0.1
+    if(BasicHP < 900){
+      BasicHP = BasicHP * 0.1
       if(DEBUG ) {
-        console.log(`BasicAttack less than 900, now ${BasicAttack}`)
+        console.log(`BasicHP less than 900, now ${BasicHP}`)
       }
     } else {
-      BasicAttack = 90 + (BasicAttack -900)*.2;
+      BasicHP = 90 + (BasicHP -900)*.2;
       if(DEBUG) {
-        console.log(`BasicAttack > 900, now ${BasicAttack}`)
+        console.log(`BasicHP > 900, now ${BasicHP}`)
       }
     }
-    const multiplier = am.Offensive.AllTroopAttack;
+    const multiplier = am.Toughness.AllTroopHP;
 
-    const BAS = Math.floor(BasicAttack * multiplier);
+    const BAS = Math.floor(BasicHP * multiplier);
     if(DEBUG){
       console.log(`returning BAS: ${BAS} for ${eg.name}`)
     }
@@ -81,15 +82,22 @@ import { AscendingBuffs } from './AES_SingleScope.ts';
 import { SpecialityBuffs } from './Speciality_SingleScope.ts';
 import { SkillBookBuffs } from './SkillBook_SingleScore';
 
-export const MayorAttackDetail = z.function()
-  .args(ExtendedGeneral, BuffParams, AttributeMultipliers)
+export const PvPHPDetail = z.function()
+  .args(ExtendedGeneral, BuffParams, AttributeMultipliers, generalUseCase, Display)
   .returns(z.number())
-  .implement((eg: ExtendedGeneralType, bp: BuffParamsType, am: AttributeMultipliersType) => {
+  .implement((eg: ExtendedGeneralType, bp: BuffParamsType, am: AttributeMultipliersType, useCase: generalUseCaseType, display: DisplayType) => {
 
     const bas = Basic(eg, bp, am);
-    const bss =  SkillBookBuffs(eg, generalUseCase.enum.Mayor, bp, am, AttackBuff);
-    const speciality = SpecialityBuffs(eg, generalUseCase.enum.Mayor, bp, am, AttackBuff);
-    const aes = AscendingBuffs(eg, generalUseCase.enum.Mayor, bp, am, AttackBuff);
+    const bss =  SkillBookBuffs(eg, useCase, bp, am, HPBuff);
+    const speciality = SpecialityBuffs(eg, useCase, bp, am, HPBuff);
+    let  aes = 0;
+    if(display.localeCompare(Display.enum.secondary)) {
+      aes = AscendingBuffs(eg, useCase, bp, am, HPBuff);
+    }
+
+    if(DEBUG){
+      console.log(`returning bas: ${bas} bss: ${bss} speciality: ${speciality} aes: ${aes} for ${eg.name} ${display}`)
+    }
 
     return bas + bss + speciality + aes;
   })

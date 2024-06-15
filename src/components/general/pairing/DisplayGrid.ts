@@ -7,7 +7,6 @@ import {
 import TabulatorStyles from 'tabulator-tables/dist/css/tabulator.css?inline';
 import TabulatorSimpleUI from 'tabulator-tables/dist/css/tabulator_simple.css?inline'
 
-import { z } from 'zod';
 import { ulid} from 'ulidx';
 
 import { customElement, property, state } from 'lit/decorators.js';
@@ -43,7 +42,6 @@ import {
 } from '@schemas/generalsSchema';
 
 import {
-  ExtendedGeneral,
   type GeneralPairType,
 } from '@schemas/ExtendedGeneral';
 
@@ -113,20 +111,21 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
               Conflicts: gp.primary.conflicts.length,
               PvPBuffDetails: {
                 attackRank: {
-                  attackScore: 0,
-                  marchSizeScore: 0,
-                  rangeScore: 0,
-                  DeHPScore: 0,
-                  DeDefenseScore: 0,
+                  attackScore:  -10000,
+                  marchSizeScore:  -10000,
+                  rangeScore:  -10000,
+                  rallyScore:  -10000,
+                  DeHPScore:  -10000,
+                  DeDefenseScore:  -10000,
                 },
                 toughnessRank: {
-                  HPScore: 0,
-                  DefenseScore: 0,
-                  DeAttackScore: 0,
+                  HPScore:  -10000,
+                  defenseScore:  -10000,
+                  DeAttackScore:  -10000,
                 },
-                PreservationRank: {
-                  PreservationScore: 0,
-                  DestabilizationScore: 0,
+                preservationRank: {
+                  PreservationScore:  -10000,
+                  DebilitationScore:  -10000,
                 },
               },
               Original: gp.primary,
@@ -136,20 +135,21 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
               Conflicts: gp.secondary.conflicts.length,
               PvPBuffDetails: {
                 attackRank: {
-                  attackScore: 0,
-                  marchSizeScore: 0,
-                  rangeScore: 0,
-                  DeHPScore: 0,
-                  DeDefenseScore: 0,
+                  attackScore:  -10000,
+                  marchSizeScore:  -10000,
+                  rangeScore:  -10000,
+                  rallyScore:  -10000,
+                  DeHPScore:  -10000,
+                  DeDefenseScore:  -10000,
                 },
                 toughnessRank: {
-                  HPScore: 0,
-                  DefenseScore: 0,
-                  DeAttackScore: 0,
+                  HPScore:  -10000,
+                  defenseScore:  -10000,
+                  DeAttackScore:  -10000,
                 },
-                PreservationRank: {
-                  PreservationScore: 0,
-                  DestabilizationScore: 0,
+                preservationRank: {
+                  PreservationScore:  -10000,
+                  DebilitationScore:  -10000,
                 },
               },
               Original: gp.secondary,
@@ -262,7 +262,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
             if(DEBUG){
               console.log(`UpdateInvestmentAndGridData: ${JSON.stringify(sDetails)} computing buffs`)
             }
-            dg.Primary.PvPBuffDetails = sDetails;
+            dg.Secondary.PvPBuffDetails = sDetails;
 
             transaction.push(dg)
             const rem = index % 20;
@@ -501,11 +501,15 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
                       },
                       {
                         title: 'March Score',
-                        field: 'Primary.PvPBuffDetails.attackRank.MarchScore',
+                        field: 'Primary.PvPBuffDetails.attackRank.marchSizeScore',
                       },
                       {
                         title: 'Range Score',
                         field: 'Primary.PvPBuffDetails.attackRank.rangeScore',
+                      },
+                      {
+                        title: 'Rally Score',
+                        field: 'Primary.PvPBuffDetails.attackRank.rallyScore',
                       },
                       {
                         title: 'DeHP Score',
@@ -527,11 +531,11 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
                       },
                       {
                         title: 'Defense Score',
-                        field: 'Primary.PvPBuffDetails.toughnessRank.DefenseScore',
+                        field: 'Primary.PvPBuffDetails.toughnessRank.defenseScore',
                       },
                       {
                         title: 'DeAttack Score',
-                        field: 'Primary.PvPBuffDetails.toughnessRank.DeAttack',
+                        field: 'Primary.PvPBuffDetails.toughnessRank.DeAttackScore',
                       }
                     ]
                   },
@@ -541,11 +545,13 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
                     columns: [
                       {
                         title: 'Preservation Score',
-                        field: 'Primary.PreservationRak.PreservationScore',
+                        field: 'Primary.PvPBuffDetails.preservationRank.PreservationScore',
+                        formatter: 'plaintext',
                       },
                       {
                         title: 'Destabilization Score',
-                        field: 'Primary.PreservationRak.DestabilizationScore',
+                        field: 'Primary.PvPBuffDetails.preservationRank.DebilitationScore',
+                        formatter: 'plaintext',
                       }
                     ]
                   }
@@ -565,11 +571,15 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
                       },
                       {
                         title: 'March Score',
-                        field: 'Secondary.PvPBuffDetails.attackRank.MarchScore',
+                        field: 'Secondary.PvPBuffDetails.attackRank.marchSizeScore',
                       },
                       {
                         title: 'Range Score',
                         field: 'Secondary.PvPBuffDetails.attackRank.rangeScore',
+                      },
+                      {
+                        title: 'Rally Score',
+                        field: 'Secondary.PvPBuffDetails.attackRank.rallyScore',
                       },
                       {
                         title: 'DeHP Score',
@@ -591,11 +601,11 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
                       },
                       {
                         title: 'Defense Score',
-                        field: 'Secondary.PvPBuffDetails.toughnessRank.DefenseScore',
+                        field: 'Secondary.PvPBuffDetails.toughnessRank.defenseScore',
                       },
                       {
                         title: 'DeAttack Score',
-                        field: 'Secondary.PvPBuffDetails.toughnessRank.DeAttack',
+                        field: 'Secondary.PvPBuffDetails.toughnessRank.DeAttackScore',
                       }
                     ]
                   },
@@ -605,11 +615,13 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
                     columns: [
                       {
                         title: 'Preservation Score',
-                        field: 'Secondary.PreservationRak.PreservationScore',
+                        field: 'Secondary.PvPBuffDetails.preservationRank.PreservationScore',
+                        formatter: 'plaintext',
                       },
                       {
                         title: 'Destabilization Score',
-                        field: 'Secondary.PreservationRak.DestabilizationScore',
+                        field: 'Secondary.PvPBuffDetails.preservationRank.DebilitationScore',
+                        formatter: 'plaintext',
                       }
                     ]
                   }

@@ -81,7 +81,6 @@ export const PreservationBuff = z
       useCase: generalUseCaseType,
       am: AttributeMultipliersType
     ) => {
-      const multiplier = 0;
       if (tb === null || tb === undefined || iv === null || iv === undefined) {
         return -1000;
       } else {
@@ -125,7 +124,7 @@ export const PreservationBuff = z
           } else {
             //check if buff has some conditions that never work for PvP
             if (tb.condition !== null && tb.condition !== undefined) {
-              if (checkInvalidConditions(tb, iv, useCase)) {
+              if (checkInvalidConditions(tb, iv, useCase, false)) {
                 //I probably ought to rename that function, but if I get here,
                 //there were no invalid conditions
                 if (

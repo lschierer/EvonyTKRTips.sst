@@ -78,7 +78,6 @@ export const AttackBuff = z
       useCase: generalUseCaseType,
       am: AttributeMultipliersType
     ) => {
-      const multiplier = 0;
       if (tb === null || tb === undefined || iv === null || iv === undefined) {
         return -1000;
       } else {
@@ -112,35 +111,15 @@ export const AttackBuff = z
           } else {
             //check if buff has some conditions that never work for PvP
             if (tb.condition !== null && tb.condition !== undefined) {
-              if (checkInvalidConditions(tb, iv, useCase)) {
-                //I probably ought to rename that function, but if I get here,
-                //there were no invalid conditions
-                if (
-                  tb.condition.includes(Condition.enum.Enemy) ||
-                  tb.condition.includes(Condition.enum.Enemy_In_City) ||
-                  tb.condition.includes(Condition.enum.Reduces_Enemy) ||
-                  tb.condition.includes(
-                    Condition.enum.Reduces_Enemy_in_Attack
-                  ) ||
-                  tb.condition.includes(
-                    Condition.enum.Reduces_Enemy_with_a_Dragon
-                  )
-                ) {
-                  if (DEBUGA) {
-                    console.log(
-                      `PvPAttackBuff: ${generalName}: ${buffName} detected attack debuff`
-                    );
-                  }
-                  return 0;
-                } else {
-                  //I think all other conditions that matter have been checked
+              if (checkInvalidConditions(tb, iv, useCase, false)) {
+
                   score = AttackBuffDetailCheck(tb, iv, am);
                   if (DEBUGA) {
                     console.log(
                       `\`PvPAttackBuff: ${generalName}: ${buffName} score: ${score}`
                     );
                   }
-                }
+
               } else {
                 //if I get here, there were invalid conditions
                 return score;

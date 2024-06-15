@@ -95,7 +95,6 @@ export const Condition = zod.enum([
   'Reduces_Enemy_with_a_Dragon',
   'Reduces Monster',
   'Reinforcing',
-  'When not mine',
   'When_City_Mayor',
   'When_City_Mayor_for_this_SubCity',
   'When_Defending_Outside_The_Main_City',
