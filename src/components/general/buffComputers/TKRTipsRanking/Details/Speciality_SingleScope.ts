@@ -1,4 +1,4 @@
-const DEBUG = true;
+const DEBUG = false;
 
 import {  type ExtendedGeneralType } from '@schemas/ExtendedGeneral.ts';
 import {  type generalUseCaseType } from '@schemas/generalsSchema.ts';

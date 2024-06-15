@@ -18,23 +18,28 @@ import { DebilitationBuff } from './DebilitationBuff'
 import { AscendingBuffs } from './AES_SingleScope.ts';
 import { SpecialityBuffs } from './Speciality_SingleScope.ts';
 import { SkillBookBuffs } from './SkillBook_SingleScore';
+import { CovenantBuffs } from './Covenant_SingleScope';
 
 export const PvPDebilitationDetail = z.function()
   .args(ExtendedGeneral, BuffParams, AttributeMultipliers, generalUseCase, Display)
   .returns(z.number())
   .implement((eg: ExtendedGeneralType, bp: BuffParamsType, am: AttributeMultipliersType, useCase: generalUseCaseType, display: DisplayType) => {
+    if (DEBUG) {
+      console.log(`MayorDeHPDetail ${eg.name}`)
+    }
 
-    const bas = 0; // Debilitation does not have a Basic Attribute Score
-    const bss =  SkillBookBuffs(eg, useCase, bp, am, DebilitationBuff);
+    const bas = 0; //DeHP has no basic attribute score;
+    const bss = SkillBookBuffs(eg, useCase, bp, am, DebilitationBuff);
     const speciality = SpecialityBuffs(eg, useCase, bp, am, DebilitationBuff);
-    let  aes = 0;
-    if(display.localeCompare(Display.enum.secondary)) {
+    const covenant = CovenantBuffs(eg, useCase, bp, am, DebilitationBuff);
+    let aes = 0;
+    if (Display.enum.secondary.localeCompare(display)) {
       aes = AscendingBuffs(eg, useCase, bp, am, DebilitationBuff);
     }
 
-    if(DEBUG){
-      console.log(`returning bas: ${bas} bss: ${bss} speciality: ${speciality} aes: ${aes} for ${eg.name} ${display}`)
+    if (DEBUG) {
+      console.log(`PvPDebilitationDetail returning bas: ${bas} bss: ${bss} speciality: ${speciality} aes: ${aes} covenant: ${covenant} for ${eg.name} ${display}`)
     }
 
-    return bas + bss + speciality + aes;
+    return bas + bss + speciality + aes + covenant;
   })

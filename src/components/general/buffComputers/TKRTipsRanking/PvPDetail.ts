@@ -1,6 +1,6 @@
 import {  type AttributeMultipliersType } from '@schemas/EvAns.zod.ts';
 
-const DEBUG = true;
+const DEBUG = false;
 
 import { z  } from 'zod';
 import { ExtendedGeneral, type ExtendedGeneralType } from '@schemas/ExtendedGeneral.ts';
@@ -24,6 +24,7 @@ import { PvPDeDefenseDetail } from './Details/PvPDeDefenseDetail';
 import { PvPDeAttackDetail } from './Details/PvPDeAttackDetail';
 import { PvPPreservationDetail } from './Details/PvPPreservationDetail';
 import { PvPDebilitationDetail } from './Details/PvPDebilitationDetail';
+import { PvPRallyDetail } from './Details/PvPRallyDetail.ts';
 
 export const PvPBuffDetails = z.object({
   attackRank: z.object({
@@ -182,11 +183,12 @@ export const PvPDetail = z.function()
     returnable.attackRank.attackScore = PvPAttackDetail(eg, bp, am, useCase, display);
     returnable.attackRank.rangeScore = PvPRangeDetail(eg, bp, am, useCase,display);
     returnable.attackRank.marchSizeScore = PvPMarchSizeDetail(eg, bp, am, useCase, display);
+    returnable.attackRank.rallyScore = PvPRallyDetail(eg, bp, am, useCase, display);
     returnable.toughnessRank.DeAttackScore = PvPDeAttackDetail(eg, bp, am, useCase, display);
-    returnable.attackRank.DeHPScore = PvPDeHPDetail(eg, bp, am);
+    returnable.attackRank.DeHPScore = PvPDeHPDetail(eg, bp, am, useCase, display);
     returnable.attackRank.DeDefenseScore = PvPDeDefenseDetail(eg, bp, am, useCase, display);
     returnable.toughnessRank.HPScore = PvPHPDetail(eg, bp, am, useCase, display);
-    returnable.toughnessRank.defenseScore =  PvPDefenseDetail(eg, bp, am);
+    returnable.toughnessRank.defenseScore =  PvPDefenseDetail(eg, bp, am, useCase, display);
     returnable.preservationRank.PreservationScore = PvPPreservationDetail(eg, bp, am, useCase, display);
     returnable.preservationRank.DebilitationScore = PvPDebilitationDetail(eg, bp, am, useCase, display);
     if(DEBUG) {console.log(`PvPDetail${eg.name} end: ${JSON.stringify(returnable)}\n`)}

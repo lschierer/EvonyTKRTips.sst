@@ -9,7 +9,9 @@ import {
   type BuffParamsType,
 } from '@schemas/baseSchemas.ts';
 import {
-  generalUseCase,
+  Display,
+  type DisplayType,
+  generalUseCase, type generalUseCaseType,
 } from '@schemas/generalsSchema.ts';
 import {AttributeMultipliers, type AttributeMultipliersType} from '@schemas/EvAns.zod.ts';
 
@@ -80,16 +82,28 @@ const Basic = z
 import { AscendingBuffs } from './AES_SingleScope.ts';
 import { SpecialityBuffs } from './Speciality_SingleScope.ts';
 import { SkillBookBuffs } from './SkillBook_SingleScore';
+import { CovenantBuffs } from './Covenant_SingleScope';
 
 export const PvPDefenseDetail = z.function()
-  .args(ExtendedGeneral, BuffParams, AttributeMultipliers)
+  .args(ExtendedGeneral, BuffParams, AttributeMultipliers, generalUseCase, Display)
   .returns(z.number())
-  .implement((eg: ExtendedGeneralType, bp: BuffParamsType, am: AttributeMultipliersType) => {
+  .implement((eg: ExtendedGeneralType, bp: BuffParamsType, am: AttributeMultipliersType, useCase: generalUseCaseType, display: DisplayType) => {
+    if (DEBUG) {
+      console.log(`MayorDeHPDetail ${eg.name}`)
+    }
 
     const bas = Basic(eg, bp, am);
-    const bss =  SkillBookBuffs(eg, generalUseCase.enum.Mayor, bp, am, DefenseBuff);
-    const speciality = SpecialityBuffs(eg, generalUseCase.enum.Mayor, bp, am, DefenseBuff);
-    const aes = AscendingBuffs(eg, generalUseCase.enum.Mayor, bp, am, DefenseBuff);
+    const bss = SkillBookBuffs(eg, useCase, bp, am, DefenseBuff);
+    const speciality = SpecialityBuffs(eg, useCase, bp, am, DefenseBuff);
+    const covenant = CovenantBuffs(eg, useCase, bp, am, DefenseBuff);
+    let aes = 0;
+    if (Display.enum.secondary.localeCompare(display)) {
+      aes = AscendingBuffs(eg, useCase, bp, am, DefenseBuff);
+    }
 
-    return bas + bss + speciality + aes;
+    if (DEBUG) {
+      console.log(`PvPDeHPDetail returning bas: ${bas} bss: ${bss} speciality: ${speciality} aes: ${aes} covenant: ${covenant} for ${eg.name} ${display}`)
+    }
+
+    return bas + bss + speciality + aes + covenant;
   })

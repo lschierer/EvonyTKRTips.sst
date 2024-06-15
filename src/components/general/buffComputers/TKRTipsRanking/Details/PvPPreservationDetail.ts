@@ -81,6 +81,7 @@ const Basic = z
 import { AscendingBuffs } from './AES_SingleScope.ts';
 import { SpecialityBuffs } from './Speciality_SingleScope.ts';
 import { SkillBookBuffs } from './SkillBook_SingleScore';
+import { CovenantBuffs } from './Covenant_SingleScope';
 
 export const PvPPreservationDetail = z.function()
   .args(ExtendedGeneral, BuffParams, AttributeMultipliers, generalUseCase, Display)
@@ -90,14 +91,15 @@ export const PvPPreservationDetail = z.function()
     const bas = Basic(eg, bp, am);
     const bss =  SkillBookBuffs(eg, useCase, bp, am, PreservationBuff);
     const speciality = SpecialityBuffs(eg, useCase, bp, am, PreservationBuff);
+    const covenant = CovenantBuffs(eg, useCase, bp, am, PreservationBuff);
     let  aes = 0;
     if(display.localeCompare(Display.enum.secondary)) {
       aes = AscendingBuffs(eg, useCase, bp, am, PreservationBuff);
     }
 
     if(DEBUG){
-      console.log(`returning bas: ${bas} bss: ${bss} speciality: ${speciality} aes: ${aes} for ${eg.name} ${display}`)
+      console.log(`returning bas: ${bas} bss: ${bss} speciality: ${speciality} aes: ${aes} covenant: ${covenant} for ${eg.name} ${display}`)
     }
 
-    return bas + bss + speciality + aes;
+    return bas + bss + speciality + aes + covenant;
   })

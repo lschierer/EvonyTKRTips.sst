@@ -19,6 +19,7 @@ import { DeAttackBuff } from './DeAttackBuff';
 import { AscendingBuffs } from './AES_SingleScope.ts';
 import { SpecialityBuffs } from './Speciality_SingleScope.ts';
 import { SkillBookBuffs } from './SkillBook_SingleScore';
+import { CovenantBuffs } from './Covenant_SingleScope';
 
 export const PvPDeAttackDetail = z.function()
   .args(ExtendedGeneral, BuffParams, AttributeMultipliers, generalUseCase, Display)

@@ -20,6 +20,7 @@ import { RangeBuff } from './RangeBuff'
 import { AscendingBuffs } from './AES_SingleScope.ts';
 import { SpecialityBuffs } from './Speciality_SingleScope.ts';
 import { SkillBookBuffs } from './SkillBook_SingleScore';
+import { CovenantBuffs } from './Covenant_SingleScope';
 
 export const PvPRangeDetail = z.function()
   .args(ExtendedGeneral, BuffParams, AttributeMultipliers, generalUseCase, Display)
@@ -29,13 +30,14 @@ export const PvPRangeDetail = z.function()
     const bas = 0; // Range has no Basic Attribute Score.
     const bss =  SkillBookBuffs(eg, useCase, bp, am, RangeBuff);
     const speciality = SpecialityBuffs(eg, useCase, bp, am, RangeBuff);
+    const covenant = CovenantBuffs(eg, useCase, bp, am, RangeBuff);
     let  aes = 0;
     if(display.localeCompare(Display.enum.secondary)) {
       aes = AscendingBuffs(eg, useCase, bp, am, RangeBuff);
     }
 
     if(DEBUG){
-      console.log(`returning bas: ${bas} bss: ${bss} speciality: ${speciality} aes: ${aes} for ${eg.name} ${display}`)
+      console.log(`returning bas: ${bas} bss: ${bss} speciality: ${speciality} aes: ${aes} covenant: ${covenant} for ${eg.name} ${display}`)
     }
-    return bas + bss + speciality + aes;
+    return bas + bss + speciality + aes + covenant;
   })

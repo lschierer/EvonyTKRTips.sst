@@ -19,6 +19,7 @@ import { MarchSizeBuff } from './MarchSizeBuff'
 import { AscendingBuffs } from './AES_SingleScope.ts';
 import { SpecialityBuffs } from './Speciality_SingleScope.ts';
 import { SkillBookBuffs } from './SkillBook_SingleScore';
+import { CovenantBuffs } from './Covenant_SingleScope';
 
 export const PvPMarchSizeDetail = z.function()
   .args(ExtendedGeneral, BuffParams, AttributeMultipliers, generalUseCase, Display)
@@ -31,14 +32,16 @@ export const PvPMarchSizeDetail = z.function()
       console.log(`bss for ${eg.name}: ${bss}`)
     }
     const speciality = SpecialityBuffs(eg, useCase, bp, am, MarchSizeBuff);
+    const covenant = CovenantBuffs(eg, useCase, bp, am, MarchSizeBuff);
     let  aes = 0;
     if(display.localeCompare(Display.enum.secondary)) {
       aes = AscendingBuffs(eg, useCase, bp, am, MarchSizeBuff);
     }
 
-    const returnable = bas + bss + speciality + aes;
-    if(DEBUG) {
-      console.log(`returning ${returnable} for ${eg.name}`)
+    if (DEBUG) {
+      console.log(`returning bas: ${bas} bss: ${bss} speciality: ${speciality} aes: ${aes} covenant: ${covenant} for ${eg.name} ${display}`)
     }
-    return returnable;
+
+    return bas + bss + speciality + aes + covenant;
+
   })
