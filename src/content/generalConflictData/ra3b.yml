@@ -18,83 +18,83 @@ others:
   - Vladimir the Great
   - Winfield Scott
 books:
-  - name: Ranged Defense Increase
-    level: '1'
-    buff:
-      - attribute: Defense
-        condition:
-          - When not mine
-        class: Archers
-        value:
-          number: 10
-          unit: percentage
-  - name: Ranged Defense Increase
-    level: '2'
-    buff:
-      - attribute: Defense
-        condition:
-          - When not mine
-        class: Archers
-        value:
-          number: 15
-          unit: percentage
-  - name: Ranged Defense Increase
-    level: '3'
-    buff:
-      - attribute: Defense
-        condition:
-          - When not mine
-        class: Archers
-        value:
-          number: 20
-          unit: percentage
-  - name: Ranged Defense Increase
-    level: '4'
-    buff:
-      - attribute: Defense
-        condition:
-          - When not mine
-        class: Archers
-        value:
-          number: 25
-          unit: percentage
-  - name: Ranged Attack Increase
-    level: '1'
-    buff:
-      - attribute: Attack
-        condition:
-          - When not mine
-        class: Archers
-        value:
-          number: 10
-          unit: percentage
-  - name: Ranged Attack Increase
-    level: '2'
-    buff:
-      - attribute: Attack
-        condition:
-          - When not mine
-        class: Archers
-        value:
-          number: 15
-          unit: percentage
-  - name: Ranged Attack Increase
-    level: '3'
-    buff:
-      - attribute: Attack
-        condition:
-          - When not mine
-        class: Archers
-        value:
-          number: 20
-          unit: percentage
-  - name: Ranged Attack Increase
-    level: '4'
-    buff:
-      - attribute: Attack
-        condition:
-          - When not mine
-        class: Archers
-        value:
-          number: 25
-          unit: percentage
+  - book:
+      name: Ranged Attack Increase
+      level: '1'
+      buff:
+        - attribute: Attack
+          class: Archers
+          value:
+            number: 10
+            unit: percentage
+    condition: when not mine
+  - book:
+      name: Ranged Attack Increase
+      level: '2'
+      buff:
+        - attribute: Attack
+          class: Archers
+          value:
+            number: 15
+            unit: percentage
+    condition: when not mine
+  - book:
+      name: Ranged Attack Increase
+      level: '3'
+      buff:
+        - attribute: Attack
+          class: Archers
+          value:
+            number: 20
+            unit: percentage
+    condition: when not mine
+  - book:
+      name: Ranged Attack Increase
+      level: '4'
+      buff:
+        - attribute: Attack
+          class: Archers
+          value:
+            number: 25
+            unit: percentage
+    condition: when not mine
+  - book:
+      name: Ranged Defense Increase
+      level: '1'
+      buff:
+        - attribute: Defense
+          class: Archers
+          value:
+            number: 10
+            unit: percentage
+    condition: when not mine
+  - book:
+      name: Ranged Defense Increase
+      level: '2'
+      buff:
+        - attribute: Defense
+          class: Archers
+          value:
+            number: 15
+            unit: percentage
+    condition: when not mine
+  - book:
+      name: Ranged Defense Increase
+      level: '3'
+      buff:
+        - attribute: Defense
+          class: Archers
+          value:
+            number: 20
+            unit: percentage
+    condition: when not mine
+  - book:
+      name: Ranged Defense Increase
+      level: '4'
+      buff:
+        - attribute: Defense
+          class: Archers
+          value:
+            number: 25
+            unit: percentage
+    condition: when not mine

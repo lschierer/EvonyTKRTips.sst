@@ -5,39 +5,39 @@ others:
   - Biabars
   - Cleopatra
 books:
-  - name: Luck
-    level: '1'
-    buff:
-      - attribute: Double Items Drop Rate
-        condition:
-          - When not mine
-        value:
-          number: 5
-          unit: percentage
-  - name: Luck
-    level: '2'
-    buff:
-      - attribute: Double Items Drop Rate
-        condition:
-          - When not mine
-        value:
-          number: 10
-          unit: percentage
-  - name: Luck
-    level: '3'
-    buff:
-      - attribute: Double Items Drop Rate
-        condition:
-          - When not mine
-        value:
-          number: 15
-          unit: percentage
-  - name: Luck
-    level: '4'
-    buff:
-      - attribute: Double Items Drop Rate
-        condition:
-          - When not mine
-        value:
-          number: 18
-          unit: percentage
+  - book:
+      name: Luck
+      level: '1'
+      buff:
+        - attribute: Double Items Drop Rate
+          value:
+            number: 5
+            unit: percentage
+    condition: when not mine
+  - book:
+      name: Luck
+      level: '2'
+      buff:
+        - attribute: Double Items Drop Rate
+          value:
+            number: 10
+            unit: percentage
+    condition: when not mine
+  - book:
+      name: Luck
+      level: '3'
+      buff:
+        - attribute: Double Items Drop Rate
+          value:
+            number: 15
+            unit: percentage
+    condition: when not mine
+  - book:
+      name: Luck
+      level: '4'
+      buff:
+        - attribute: Double Items Drop Rate
+          value:
+            number: 18
+            unit: percentage
+    condition: when not mine

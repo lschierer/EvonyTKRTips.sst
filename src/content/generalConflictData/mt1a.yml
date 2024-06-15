@@ -20,39 +20,39 @@ others:
   - 01HPNDW5NNX2YBJW5B8X2YA2CR
   - 01HGKYRN4Y9B5JHDXSPJ7CTDR5
 books:
-  - name: March Size Increase
-    level: '1'
-    buff:
-      - attribute: March_Size_Capacity
-        condition:
-          - When not mine
-        value:
-          number: 3
-          unit: percentage
-  - name: March Size Increase
-    level: '2'
-    buff:
-      - attribute: March_Size_Capacity
-        condition:
-          - When not mine
-        value:
-          number: 6
-          unit: percentage
-  - name: March Size Increase
-    level: '3'
-    buff:
-      - attribute: March_Size_Capacity
-        condition:
-          - When not mine
-        value:
-          number: 9
-          unit: percentage
-  - name: March Size Increase
-    level: '4'
-    buff:
-      - attribute: March_Size_Capacity
-        condition:
-          - When not mine
-        value:
-          number: 12
-          unit: percentage
+  - book:
+      name: March Size Increase
+      level: '1'
+      buff:
+        - attribute: March_Size_Capacity
+          value:
+            number: 3
+            unit: percentage
+    condition: when not mine
+  - book:
+      name: March Size Increase
+      level: '2'
+      buff:
+        - attribute: March_Size_Capacity
+          value:
+            number: 6
+            unit: percentage
+    condition: when not mine
+  - book:
+      name: March Size Increase
+      level: '3'
+      buff:
+        - attribute: March_Size_Capacity
+          value:
+            number: 9
+            unit: percentage
+    condition: when not mine
+  - book:
+      name: March Size Increase
+      level: '4'
+      buff:
+        - attribute: March_Size_Capacity
+          value:
+            number: 12
+            unit: percentage
+    condition: when not mine

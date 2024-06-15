@@ -8,35 +8,43 @@ members:
 others:
   - Sweyn Forkbeard
 books:
-  - name: Ground Attack Increase
-    level: '1'
-    buff:
-      - attribute: Attack
-        class: Ground
-        value:
-          number: 10
-          unit: percentage
-  - name: Ground Attack Increase
-    level: '2'
-    buff:
-      - attribute: Attack
-        class: Ground
-        value:
-          number: 15
-          unit: percentage
-  - name: Ground Attack Increase
-    level: '3'
-    buff:
-      - attribute: Attack
-        class: Ground
-        value:
-          number: 20
-          unit: percentage
-  - name: Ground Attack Increase
-    level: '4'
-    buff:
-      - attribute: Attack
-        class: Ground
-        value:
-          number: 25
-          unit: percentage
+  - book:
+      name: Ground Attack Increase
+      level: '1'
+      buff:
+        - attribute: Attack
+          class: Ground
+          value:
+            number: 10
+            unit: percentage
+    condition: all the time
+  - book:
+      name: Ground Attack Increase
+      level: '2'
+      buff:
+        - attribute: Attack
+          class: Ground
+          value:
+            number: 15
+            unit: percentage
+    condition: all the time
+  - book:
+      name: Ground Attack Increase
+      level: '3'
+      buff:
+        - attribute: Attack
+          class: Ground
+          value:
+            number: 20
+            unit: percentage
+    condition: all the time
+  - book:
+      name: Ground Attack Increase
+      level: '4'
+      buff:
+        - attribute: Attack
+          class: Ground
+          value:
+            number: 25
+            unit: percentage
+    condition: all the time

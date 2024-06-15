@@ -14,7 +14,7 @@ books:
     name: March Size Increase
     level: '1'
     buff:
-      - attribute: Attack
+      - attribute: March_Size_Capacity
         value:
           number: 3
           unit: percentage
@@ -23,7 +23,7 @@ books:
     name: March Size Increase
     level: '2'
     buff:
-      - attribute: Attack
+      - attribute: March_Size_Capacity
         value:
           number: 6
           unit: percentage
@@ -32,7 +32,7 @@ books:
     name: March Size Increase
     level: '3'
     buff:
-      - attribute: Attack
+      - attribute: March_Size_Capacity
         value:
           number: 9
           unit: percentage
@@ -41,7 +41,7 @@ books:
     name: March Size Increase
     level: '4'
     buff:
-      - attribute: Attack
+      - attribute: March_Size_Capacity
         value:
           number: 12
           unit: percentage
