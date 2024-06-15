@@ -1,4 +1,4 @@
-const DEBUG = false;
+const DEBUG = true;
 
 import {  type ExtendedGeneralType } from '@schemas/ExtendedGeneral.ts';
 import {  type generalUseCaseType } from '@schemas/generalsSchema.ts';
@@ -6,6 +6,22 @@ import {  type BuffParamsType, qualityColor, type qualityColorType } from '@sche
 import {  type AttributeMultipliersType } from '@schemas/EvAns.zod.ts';
 import type { SpecialityLevelType, SpecialityType } from '@schemas/specialitySchema.ts';
 import {type BuffFunction } from '@lib/RankingInterfaces'
+
+const specialExists = (generalName: string, specialName: string,  useCase: generalUseCaseType, bp: BuffParamsType, am: AttributeMultipliersType, BuffComp: BuffFunction, tsl?: SpecialityLevelType ): number => {
+  let returnable = 0;
+  if(tsl !== undefined && tsl !== null) {
+    returnable = tsl.buff.reduce((a2, sb) => {
+      if(sb === null || sb === undefined) {
+        return a2;
+      } else {
+        a2 += BuffComp(specialName, generalName, sb, bp, useCase, am);
+      }
+      return a2;
+    }, 0)
+  }
+
+  return returnable;
+}
 
 export const SpecialityBuffs =
   (eg: ExtendedGeneralType, useCase: generalUseCaseType, bp: BuffParamsType, am: AttributeMultipliersType, BuffComp: BuffFunction) => {
@@ -16,9 +32,10 @@ export const SpecialityBuffs =
       bp.special3,
       bp.special4,
     )
-    if(DEBUG) {console.log(`SpecialityBuffs for ${eg.name} ${useCase}`)}
+    if(DEBUG) {console.log(`SpecialityBuffs for ${eg.name} ${useCase} start ${JSON.stringify(specialChoices)}`)}
     let accumulator = 0;
     specialChoices.forEach((choice) => {
+      let additional = 0;
       if(eg.specialities && Array.isArray(eg.specialities) && eg.specialities.length > 0){
         eg.specialities.forEach((special: SpecialityType) => {
           let thisSpecial: SpecialityLevelType | undefined;
@@ -27,76 +44,49 @@ export const SpecialityBuffs =
               thisSpecial = special.attribute.find((sa) => {
                 return !sa.level.localeCompare(qualityColor.enum.Gold)
               })
-              if(thisSpecial !== null && thisSpecial !== undefined){
-                const additional = thisSpecial.buff.reduce((a2, sb, index) => {
-                  if(sb === null || sb === undefined) {
-                    return a2
-                  } else {
-                    return BuffComp(special.name, eg.name, sb, bp, useCase, am)
-                  }
-                }, 0)
-                accumulator += additional;
-              }
+              additional = specialExists(eg.name, special.name,  useCase, bp, am, BuffComp, thisSpecial);
+              if(DEBUG) {console.log(`${eg.name} ${useCase} ${special.name} gold additional ${additional}`); }
+              accumulator += additional;
             // eslint-disable-next-line no-fallthrough
             case qualityColor.enum.Orange:
               thisSpecial = special.attribute.find((sa) => {
                 return !sa.level.localeCompare(qualityColor.enum.Orange)
               })
-              if(thisSpecial !== null && thisSpecial !== undefined){
-                const additional = thisSpecial.buff.reduce((a2, sb, index) => {
-                  if(sb === null || sb === undefined) {
-                    return a2
-                  } else {
-                    return BuffComp(special.name, eg.name, sb, bp, useCase, am)
-                  }
-                }, 0)
-                accumulator += additional;
+              additional = specialExists(eg.name, special.name, useCase, bp, am, BuffComp, thisSpecial);
+              if (DEBUG) {
+                console.log(`${eg.name} ${useCase} ${special.name} orange additional ${additional}`);
               }
+              accumulator += additional;
             // eslint-disable-next-line no-fallthrough
             case qualityColor.enum.Purple:
               thisSpecial = special.attribute.find((sa) => {
                 return !sa.level.localeCompare(qualityColor.enum.Purple)
               })
-              if(thisSpecial !== null && thisSpecial !== undefined){
-                const additional = thisSpecial.buff.reduce((a2, sb, index) => {
-                  if(sb === null || sb === undefined) {
-                    return a2
-                  } else {
-                    return BuffComp(special.name, eg.name, sb, bp, useCase, am)
-                  }
-                }, 0)
-                accumulator += additional;
+              additional = specialExists(eg.name, special.name, useCase, bp, am, BuffComp, thisSpecial);
+              if (DEBUG) {
+                console.log(`${eg.name} ${useCase} ${special.name} purple additional ${additional}`);
               }
+              accumulator += additional;
             // eslint-disable-next-line no-fallthrough
             case qualityColor.enum.Blue:
               thisSpecial = special.attribute.find((sa) => {
                 return !sa.level.localeCompare(qualityColor.enum.Blue)
               })
-              if(thisSpecial !== null && thisSpecial !== undefined){
-                const additional = thisSpecial.buff.reduce((a2, sb, index) => {
-                  if(sb === null || sb === undefined) {
-                    return a2
-                  } else {
-                    return BuffComp(special.name, eg.name, sb, bp, useCase, am)
-                  }
-                }, 0)
-                accumulator += additional;
+              additional = specialExists(eg.name, special.name, useCase, bp, am, BuffComp, thisSpecial);
+              if (DEBUG) {
+                console.log(`${eg.name} ${useCase} ${special.name} blue additional ${additional}`);
               }
+              accumulator += additional;
             // eslint-disable-next-line no-fallthrough
             case qualityColor.enum.Green:
               thisSpecial = special.attribute.find((sa) => {
-                return !sa.level.localeCompare(qualityColor.enum.Gold)
+                return !sa.level.localeCompare(qualityColor.enum.Green)
               })
-              if(thisSpecial !== null && thisSpecial !== undefined){
-                const additional = thisSpecial.buff.reduce((a2, sb, index) => {
-                  if(sb === null || sb === undefined) {
-                    return a2
-                  } else {
-                    return BuffComp(special.name, eg.name, sb, bp, useCase, am)
-                  }
-                }, 0)
-                accumulator += additional;
+              additional = specialExists(eg.name, special.name, useCase, bp, am, BuffComp, thisSpecial);
+              if (DEBUG) {
+                console.log(`${eg.name} ${useCase} ${special.name} green additional ${additional}`);
               }
+              accumulator += additional;
             // eslint-disable-next-line no-fallthrough
             case qualityColor.enum.Disabled:
               break;

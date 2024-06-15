@@ -1,4 +1,4 @@
-const DEBUG = false;
+const DEBUG = true;
 
 import { z } from 'zod';
 
@@ -96,7 +96,7 @@ export const PvPAttackDetail = z.function()
     }
 
     if(DEBUG){
-      console.log(`returning bas: ${bas} bss: ${bss} speciality: ${speciality} aes: ${aes} for ${eg.name} ${display}`)
+      console.log(`PvPAttackDetail returning bas: ${bas} bss: ${bss} speciality: ${speciality} aes: ${aes} for ${eg.name} ${display}`)
     }
 
     return bas + bss + speciality + aes;

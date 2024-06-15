@@ -27,7 +27,7 @@ import * as Attributes from '@lib/EvAnsAttributeRanking';
  * https://evonyguidewiki.com/en/general-cultivate-en/#Relationship_between_Stats_value_Buff_value
  */
 
-const DEBUG = false;
+const DEBUG = true;
 
 export const AttackingScoreComputer = z
   .function()

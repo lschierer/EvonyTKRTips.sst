@@ -156,7 +156,7 @@ export const PvPDetail = z.function()
   .args(ExtendedGeneral, BuffParams, generalUseCase, Display)
   .returns(PvPBuffDetails)
   .implement((eg: ExtendedGeneralType, bp: BuffParamsType, useCase: generalUseCaseType, display: DisplayType) =>{
-    if(DEBUG) {console.log(`PvPDetail start for ${eg.name}`)}
+    if(DEBUG) {console.log(`\nPvPDetail start for ${eg.name} ${useCase} ${display}`)}
     const am = getAttributes(useCase,eg.score_as);
     
     const returnable: PvPBuffDetails =  {
@@ -189,6 +189,6 @@ export const PvPDetail = z.function()
     returnable.toughnessRank.defenseScore =  PvPDefenseDetail(eg, bp, am);
     returnable.preservationRank.PreservationScore = PvPPreservationDetail(eg, bp, am, useCase, display);
     returnable.preservationRank.DebilitationScore = PvPDebilitationDetail(eg, bp, am, useCase, display);
-    if(DEBUG) {console.log(`PvPDetail${eg.name} end: ${JSON.stringify(returnable)}`)}
+    if(DEBUG) {console.log(`PvPDetail${eg.name} end: ${JSON.stringify(returnable)}\n`)}
     return returnable;
   })

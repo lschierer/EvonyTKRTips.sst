@@ -1,4 +1,4 @@
-const DEBUGMS = true;
+const DEBUG = false;
 import { z } from 'zod';
 
 import {
@@ -48,7 +48,7 @@ const PvPMarchSizeBuffClassCheck = z
             multiplier =  am?.Offensive.MarchSizeIncrease ?? 0;
           }
           const additional = tb.value.number * multiplier;
-          if (DEBUGMS) {
+          if (DEBUG) {
             console.log(`adding ${additional} to ${score}`);
           }
           score += additional;
@@ -74,7 +74,7 @@ export const MarchSizeBuff = z
       if (tb === null || tb === undefined || iv === null || iv === undefined) {
         return -1000;
       } else {
-        if (DEBUGMS) {
+        if (DEBUG) {
           console.log(`PvPMarchSizeBuff: ${generalName}: ${buffName}`);
         }
         let score = 0;
@@ -84,13 +84,13 @@ export const MarchSizeBuff = z
           );
           return score;
         } else {
-          if (DEBUGMS) {
+          if (DEBUG) {
             console.log(
               `PvPMarchSizeBuff: ${generalName}: ${buffName} has value`
             );
           }
           if (tb.attribute === undefined || tb.attribute === null) {
-            if (DEBUGMS) {
+            if (DEBUG) {
               console.log(
                 `PvPMarchSizeBuff: ${generalName}: ${buffName} has null attribute`
               );
@@ -99,14 +99,14 @@ export const MarchSizeBuff = z
           } else if (
             Attribute.enum.March_Size_Capacity.localeCompare(tb.attribute)
           ) {
-            if (DEBUGMS) {
+            if (DEBUG) {
               console.log(
                 `PvPMarchSizeBuff: ${generalName}: ${buffName} ${tb.attribute} is not an March Size buff`
               );
             }
             return score;
           } else {
-            if(DEBUGMS) {
+            if(DEBUG) {
               console.log(`PvPMarchSizeBuff: ${generalName}: ${buffName} ${tb.attribute} IS a March Size buff`)
             }
             //check if buff has some conditions that never work for PvP
@@ -114,7 +114,7 @@ export const MarchSizeBuff = z
               if (checkInvalidConditions(tb, iv, useCase, false)) {
                   score = PvPMarchSizeBuffClassCheck(tb, iv, am);
               } else {
-                if(DEBUGMS) {
+                if(DEBUG) {
                   console.log(`detected invalid conditions for ${useCase} ${generalName}`)
                 }
                 //if I get here, there were invalid conditions
@@ -123,7 +123,7 @@ export const MarchSizeBuff = z
             } else {
               //if I get here, there were no conditions to check, but there is
               //an MarchSize attribute.
-              if(DEBUGMS) {
+              if(DEBUG) {
                 console.log(`calling PvPMarchSizeBuffClassCheck with no conditions`)
               }
               score = PvPMarchSizeBuffClassCheck(tb, iv, am);

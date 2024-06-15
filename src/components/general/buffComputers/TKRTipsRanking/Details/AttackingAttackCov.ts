@@ -20,7 +20,7 @@ import {
   type generalUseCaseType,
 } from '@schemas/generalsSchema.ts';
 
-const DEBUG = true;
+const DEBUG = false;
 
 const buffReductionLogic = (buffName: string, eg: ExtendedGeneralType, ab: BuffType, bp: BuffParamsType, tbfo: BuffFunctionInterface, useCase: generalUseCaseType, am: AttributeMultipliersType) => {
   let ba = 0;

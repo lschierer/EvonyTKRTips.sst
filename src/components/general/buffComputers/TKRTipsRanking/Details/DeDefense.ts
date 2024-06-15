@@ -1,3 +1,5 @@
+const DEBUG = false;
+
 import { z } from 'zod';
 
 import {
@@ -17,7 +19,6 @@ import { AttributeMultipliers, type AttributeMultipliersType} from '@schemas/EvA
 import { checkInvalidConditions } from '../checkConditions';
 import { generalUseCase, type generalUseCaseType } from '@schemas/generalsSchema.ts';
 
-const DEBUGT = true;
 
 /* Debuffs have an extra consideration, as they are one of the primary places that push
  * the "condition" field into being an array instead of a singular adjective.
@@ -159,7 +160,7 @@ const DeDefenseBuffDetailCheck = z
               }
             }
             const additional = Math.abs(tb.value.number) * multiplier;
-            if (DEBUGT) {
+            if (DEBUG) {
               console.log(`adding ${additional} to ${score}`);
             }
             score += additional;
@@ -183,11 +184,11 @@ export const DeDefenseBuff = z
       useCase: generalUseCaseType,
       am: AttributeMultipliersType
     ) => {
-      if(DEBUGT) {console.log(`DeDefenseBuff ${generalName} ${buffName} ${useCase}`)}
+      if(DEBUG) {console.log(`DeDefenseBuff ${generalName} ${buffName} ${useCase}`)}
       if (tb === null || tb === undefined || iv === null || iv === undefined) {
         return -1000;
       } else {
-        if (DEBUGT) {
+        if (DEBUG) {
           console.log(`PvPDeDefenseBuff: ${generalName}: ${buffName}`);
         }
         const score = 0;
@@ -197,18 +198,18 @@ export const DeDefenseBuff = z
           );
           return score;
         } else {
-          if (DEBUGT) {
+          if (DEBUG) {
             console.log(`PvPDeDefenseBuff: ${generalName}: ${buffName} has value`);
           }
           if (tb.attribute === undefined || tb.attribute === null) {
-            if (DEBUGT) {
+            if (DEBUG) {
               console.log(
                 `PvPDeDefenseBuff: ${generalName}: ${buffName} has null attribute`
               );
             }
             return score;
           } else if (Attribute.enum.Defense.localeCompare(tb.attribute)) {
-            if (DEBUGT) {
+            if (DEBUG) {
               console.log(
                 `PvPDeDefenseBuff: ${generalName}: ${buffName} is not an Defense debuff`
               );
@@ -231,7 +232,7 @@ export const DeDefenseBuff = z
                     Condition.enum.Reduces_Enemy_with_a_Dragon
                   )
                 ) {
-                  if (DEBUGT) {
+                  if (DEBUG) {
                     console.log(
                       `PvPDeDefenseBuff: ${generalName}: ${buffName} detected Defense debuff`
                     );
