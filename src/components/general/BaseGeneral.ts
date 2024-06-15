@@ -23,8 +23,6 @@ import { BuffParams, type BuffParamsType } from '@schemas/baseSchemas';
 import {
   Display,
   type DisplayType,
-  GeneralClass,
-  type GeneralClassType,
   generalUseCase,
   type generalUseCaseType,
 } from '@schemas/generalsSchema';

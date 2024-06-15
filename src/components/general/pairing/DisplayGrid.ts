@@ -1,4 +1,5 @@
-const DEBUG = true;
+const DEBUG = false;
+const DEBUGT = false;
 
 import {
   type ColumnComponent,
@@ -425,13 +426,14 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
         console.log(`gridDiv is ${this.gridRef.value.tagName}`);
       }
       const div = this.gridRef.value
-      if(div !== null) {
+      if(div !== null && DEBUG) {
+
         console.log(`local queryselector works`)
       }
       this.grid = new Tabulator(div, {
         placeholder:"No Data Available",
-        debugInvalidOptions: DEBUG,
-        debugEventsExternal: DEBUG,
+        debugInvalidOptions: DEBUGT,
+        debugEventsExternal: DEBUGT,
         minHeight:"var(--spectrum-component-height-500)",
         layout:"fitColumns",
         columnDefaults: {

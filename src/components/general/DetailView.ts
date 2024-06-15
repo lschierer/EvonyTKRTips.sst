@@ -1,4 +1,6 @@
-import { customElement, property, state } from 'lit/decorators.js';
+const DEBUG = true;
+
+import { customElement,  state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { type PropertyValues } from 'lit';
 
@@ -29,16 +31,15 @@ import {
 
 import {
   Display,
-  GeneralClass,
-  type GeneralClassType,
-  generalUseCase,
+
 } from '@schemas/generalsSchema';
 
 import { ExtendedGeneralStatus } from '@schemas/ExtendedGeneral';
 
 import { BaseGeneral } from './BaseGeneral';
 
-const DEBUG = false;
+import { PvPBuffDetails, PvPDetail } from './buffComputers/TKRTipsRanking/PvPDetail';
+
 
 @customElement('detail-view')
 export class DetailView extends SizedMixin(BaseGeneral, {
@@ -46,6 +47,27 @@ export class DetailView extends SizedMixin(BaseGeneral, {
 }) {
   @state()
   private EvAnsRanking = 0;
+
+  @state()
+  private ScoreDetails: PvPBuffDetails = {
+    attackRank: {
+      attackScore: -10000,
+      marchSizeScore: -10000,
+      rangeScore: -10000,
+      rallyScore: -10000,
+      DeHPScore: -10000,
+      DeDefenseScore: -10000,
+    },
+    toughnessRank: {
+      HPScore: -10000,
+      defenseScore: -10000,
+      DeAttackScore: -10000,
+    },
+    preservationRank: {
+      PreservationScore: -10000,
+      DebilitationScore: -10000,
+    },
+  };
 
   constructor() {
     super();
@@ -62,6 +84,8 @@ export class DetailView extends SizedMixin(BaseGeneral, {
     dragon: true,
     beast: true,
   };
+
+
 
   protected async willUpdate (_changedProperties: PropertyValues): Promise<void> {
     if(DEBUG) {
@@ -94,6 +118,8 @@ export class DetailView extends SizedMixin(BaseGeneral, {
   }
 
   public static override get styles(): CSSResultArray {
+    const SpectrumTokensCSS = unsafeCSS(SpectrumTokens);
+    const SpectrumTypographyCSS = unsafeCSS(SpectrumTypography);
     const SpectrumIconCSS = unsafeCSS(SpectrumIcon);
     const SpectrumTableCSS = unsafeCSS(SpectrumTable);
     const localStyle = css`
@@ -213,13 +239,13 @@ export class DetailView extends SizedMixin(BaseGeneral, {
     if (super.styles !== undefined && Array.isArray(super.styles)) {
       return [...super.styles, SpectrumIconCSS, SpectrumTableCSS, localStyle];
     } else {
-      return [SpectrumIconCSS, SpectrumTableCSS, localStyle];
+      return [SpectrumTokensCSS, SpectrumTypographyCSS, SpectrumIconCSS, SpectrumTableCSS, localStyle];
     }
   }
 
   private renderStars() {
     let starsHtml = html``;
-    if(this.general !== null && this.general.stars !== null && this.general.stars !== undefined) {
+    if(this.general?.stars !== null && this.general?.stars !== undefined) {
       for (let i = 1; i <= 5; i++) {
         let starColor = 'var(--spectrum-yellow-400)';
         if (!AscendingLevels.enum['5red'].localeCompare((this.general.stars))) {
@@ -254,9 +280,37 @@ export class DetailView extends SizedMixin(BaseGeneral, {
   }
 
   private renderBasicStats() {
+    if(this.general ) {
+      this.ScoreDetails = PvPDetail(
+        this.general,
+        DetailView.InvestmentLevel,
+        this.useCase,
+        Display.enum.primary,
+      )
+    }
+
     let debugHTML = html``;
     if (DEBUG) {
+
       debugHTML = html`
+        TKRTips PvPDetail:<br/>
+        Attack Rank :<br />
+        &mdash;Attack: ${this.ScoreDetails.attackRank.attackScore}<br />
+        &mdash;March Size: ${this.ScoreDetails.attackRank.marchSizeScore}<br />
+        &mdash;DeHP: ${this.ScoreDetails.attackRank.DeHPScore}<br />
+        &mdash;DeDefense: ${this.ScoreDetails.attackRank.DeDefenseScore}<br />
+        &mdash;Range: ${this.ScoreDetails.attackRank.rangeScore}<br />
+        Toughness Rank:<br />
+        &mdash;HP: ${this.ScoreDetails.toughnessRank.HPScore}<br />
+        &mdash;Defense: ${this.ScoreDetails.toughnessRank.defenseScore}<br />
+        &mdash;DeAttack: ${this.ScoreDetails.toughnessRank.DeAttackScore}<br />
+        Preservation Rank:<br />
+        &mdash;Preservation: ${this.ScoreDetails.preservationRank.PreservationScore}<br />
+        &mdash;Debilitation: ${this.ScoreDetails.preservationRank.DebilitationScore}<br />
+        <br />
+      `;
+
+      debugHTML = html`${debugHTML}<br/>
         Summary EvAns:
         ${this.computedBuffs.get(
           BaseGeneral.InvestmentOptions2Key(DetailView.InvestmentLevel)
@@ -301,6 +355,7 @@ export class DetailView extends SizedMixin(BaseGeneral, {
         ${this.computedBuffs.get(
           BaseGeneral.InvestmentOptions2Key(DetailView.InvestmentLevel)
         )?.ToughnessRanking}<br />
+        
       `;
     }
     return html`
