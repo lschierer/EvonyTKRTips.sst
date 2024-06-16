@@ -1,26 +1,23 @@
 const DEBUG = false;
 const DEBUGT = false;
 
-import {
-  type ColumnComponent,
-  type Sorter,
-  TabulatorFull as Tabulator} from 'tabulator-tables';
+import { type ColumnComponent, type Sorter, TabulatorFull as Tabulator } from 'tabulator-tables';
 import TabulatorStyles from 'tabulator-tables/dist/css/tabulator.css?inline';
-import TabulatorSimpleUI from 'tabulator-tables/dist/css/tabulator_simple.css?inline'
+import TabulatorSimpleUI from 'tabulator-tables/dist/css/tabulator_simple.css?inline';
 
-import { ulid} from 'ulidx';
+import { ulid } from 'ulidx';
 
 import { customElement, property, state } from 'lit/decorators.js';
-import { ref, createRef, type Ref } from 'lit/directives/ref.js';
+import { createRef, ref, type Ref } from 'lit/directives/ref.js';
 
 import {
-  SizedMixin,
-  SpectrumElement,
+  css,
   type CSSResultArray,
   html,
-  css,
-  unsafeCSS,
   type PropertyValues,
+  SizedMixin,
+  SpectrumElement,
+  unsafeCSS,
 } from '@spectrum-web-components/base';
 
 import '@spectrum-css/tokens/dist/index.css';
@@ -30,26 +27,16 @@ import SpectrumTypography from '@spectrum-web-components/styles/typography.css?i
 import '@spectrum-css/icon/dist/index.css';
 import '@spectrum-css/table/dist/index.css';
 
-import {
-  AscendingLevels,
-  type BuffParamsType, CovenantAttributeCategory,
-  qualityColor,
-} from '@schemas/baseSchemas';
+import { AscendingLevels, type BuffParamsType, CovenantAttributeCategory, qualityColor } from '@schemas/baseSchemas';
 
-import {
-  Display,
-  generalUseCase,
-  type generalUseCaseType,
-} from '@schemas/generalsSchema';
+import { Display, generalUseCase, type generalUseCaseType } from '@schemas/generalsSchema';
 
-import {
-  type GeneralPairType,
-} from '@schemas/ExtendedGeneral';
+import { type GeneralPairType } from '@schemas/ExtendedGeneral';
 
-import {PairInvestment} from './PairInvestment';
+import { PairInvestment } from './PairInvestment';
 import { PvPBuffDetails, PvPDetail } from '../buffComputers/TKRTipsRanking/PvPDetail';
 
-import {GridData} from './GridPair';
+import { GridData } from './GridPair';
 
 @customElement('display-grid')
 export class DisplayGrid extends SizedMixin(SpectrumElement, {
@@ -60,19 +47,19 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
 
   @property({
     type: Object,
-    reflect: true
+    reflect: true,
   })
   public InvestmentLevel: BuffParamsType;
 
   @property({
     type: Object,
-    reflect: true
+    reflect: true,
   })
   public SecondaryInvestmentLevel: BuffParamsType;
 
   @property({
     type: String,
-    reflect: true
+    reflect: true,
   })
   public useCase: generalUseCaseType = generalUseCase.enum.all;
 
@@ -92,92 +79,6 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
 
   private gridRef: Ref<HTMLElement> = createRef();
 
-  handleMutation(): void {
-    return;
-  }
-
-
-
-  private async getData() {
-    if(this._DisplayGenerals.length < this.RawPairs.length) {
-      if(DEBUG) {
-        console.log(`getData populating _DisplayGenerals`)
-      }
-      this.RawPairs.map( (gp: GeneralPairType ) => {
-
-        const dp: GridData = {
-          id: ulid(),
-            Primary: {
-              Name: gp.primary.name,
-              Conflicts: gp.primary.conflicts.length,
-              PvPBuffDetails: {
-                attackRank: {
-                  attackScore:  -10000,
-                  marchSizeScore:  -10000,
-                  rangeScore:  -10000,
-                  rallyScore:  -10000,
-                  DeHPScore:  -10000,
-                  DeDefenseScore:  -10000,
-                },
-                toughnessRank: {
-                  HPScore:  -10000,
-                  defenseScore:  -10000,
-                  DeAttackScore:  -10000,
-                },
-                preservationRank: {
-                  PreservationScore:  -10000,
-                  DebilitationScore:  -10000,
-                },
-              },
-              Original: gp.primary,
-            },
-            Secondary: {
-              Name: gp.secondary.name,
-              Conflicts: gp.secondary.conflicts.length,
-              PvPBuffDetails: {
-                attackRank: {
-                  attackScore:  -10000,
-                  marchSizeScore:  -10000,
-                  rangeScore:  -10000,
-                  rallyScore:  -10000,
-                  DeHPScore:  -10000,
-                  DeDefenseScore:  -10000,
-                },
-                toughnessRank: {
-                  HPScore:  -10000,
-                  defenseScore:  -10000,
-                  DeAttackScore:  -10000,
-                },
-                preservationRank: {
-                  PreservationScore:  -10000,
-                  DebilitationScore:  -10000,
-                },
-              },
-              Original: gp.secondary,
-            },
-        };
-        this._DisplayGenerals.push(dp);
-      })
-    }
-    if(this.grid !== null && this.grid !== undefined && this._DisplayGenerals.length > 0) {
-      if(DEBUG){
-        console.log(`getData attempting to set data`)
-      }
-      await this.grid.setData(this._DisplayGenerals).then(async () => {
-        if(DEBUG) {
-          console.log(`getData setData then call`)
-        }
-        await this.UpdateInvestmentAndGridData()
-      }).catch((error) => {
-        console.error(error);
-      })
-    }else {
-      if(DEBUG) {
-        console.log(`getData unable to setData, ${this._DisplayGenerals.length} rows`)
-      }
-    }
-  }
-
   constructor() {
     super();
 
@@ -186,10 +87,9 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
     });
 
 
-
     this.addEventListener('InvestmentLevelUpdate', () => {
-      if(DEBUG){
-        console.log(`InvestmentLevelUpdate listener`)
+      if (DEBUG) {
+        console.log(`InvestmentLevelUpdate listener`);
       }
       void this.UpdateInvestmentAndGridData();
     });
@@ -220,123 +120,11 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
 
   }
 
-  private UpdateInvestmentAndGridData = async () => {
-    if(DEBUG) {
-      console.log(`UpdateInvestmentAndGridData`)
-    }
-    if(this.InvestmentSelectorRef.value !== undefined) {
-      if(DEBUG) {
-        console.log(`UpdateInvestmentAndGridData with target node`)
-      }
-      this.InvestmentLevel = this.InvestmentSelectorRef.value.PrimaryInvestmentLevel;
-
-      if(DEBUG) {
-        console.log(`UpdateInvestmentAndGridData: ${JSON.stringify(this.InvestmentLevel)}`);
-      }
-      if(this.grid !== null && this.grid !== undefined && this._DisplayGenerals.length > 0) {
-        if(DEBUG) {
-          console.log(`UpdateInvestmentAndGridData; with BuffParams & grid`)
-        }
-        let transaction: GridData[] = new Array<GridData>();
-        await Promise.all(this._DisplayGenerals.map(async (dg: GridData, index: number) => {
-          if(dg !== undefined && dg !== null) {
-            if(DEBUG){
-              console.log(`UpdateInvestmentAndGridData: before call to buffs ${index}`)
-            }
-            const pDetails: PvPBuffDetails = PvPDetail(
-              dg.Primary.Original,
-              this.InvestmentLevel,
-              this.useCase,
-              Display.enum.primary,
-            )
-            if(DEBUG){
-              console.log(`UpdateInvestmentAndGridData: ${JSON.stringify(pDetails)} computing buffs`)
-            }
-            dg.Primary.PvPBuffDetails = pDetails;
-
-            const sDetails: PvPBuffDetails = PvPDetail(
-              dg.Secondary.Original,
-              this.InvestmentLevel,
-              this.useCase,
-              Display.enum.secondary,
-            );
-            if(DEBUG){
-              console.log(`UpdateInvestmentAndGridData: ${JSON.stringify(sDetails)} computing buffs`)
-            }
-            dg.Secondary.PvPBuffDetails = sDetails;
-
-            transaction.push(dg)
-            const rem = index % 20;
-            if((index > 0) && rem < 1) {
-              if(DEBUG) {console.log(`rem was ${rem}`, index, index % 20)}
-              await this.grid?.updateData(transaction).then(() => {
-                if(DEBUG) {
-                  console.log(`UpdateInvestmentAndGridData updateData for ${transaction.length} entries in transaction`)
-                }
-                transaction = new Array<GridData>();
-              }).catch((error) => {
-                if(DEBUG){
-                  console.log(`UpdateInvestmentAndGridData updateData error: ${error}`)
-                }
-              })
-            }
-            if(DEBUG){
-              console.log(`UpdateInvestmentAndGridData ${transaction.length} pending in transaction`)
-            }
-          }
-        }))
-        if(transaction.length > 0) {
-          if(DEBUG) {
-            console.log(`calling final transaction`)
-          }
-          await this.grid?.updateData(transaction).then(() => {
-            if(DEBUG) {
-              console.log(`UpdateInvestmentAndGridData updateData for ${transaction.length} entries in transaction`)
-            }
-            transaction = new Array<GridData>();
-          }).catch((error) => {
-            if(DEBUG){
-              console.log(`UpdateInvestmentAndGridData updateData error: ${error}`)
-            }
-          })
-        }else {
-          if(DEBUG) {
-            console.log(`I seem to have exactly a multiple of 20`)
-          }
-        }
-        const sorters = this.grid.getSorters();
-        if(sorters.length > 0) {
-          const ns: Sorter[] = sorters.map((s) => {
-            return {
-              column: s.column.getField(),
-              dir: s.dir,
-            }
-          })
-          this.grid.setSort(ns)
-        }
-      }
-      this.requestUpdate('InvestmentLevel');
-    }
-
-  }
-
-  protected override updated(_changedProperties: PropertyValues): void {
-    super.updated(_changedProperties);
-    if(this.grid === null) {
-      this.renderGrid()
-    }
-  }
-
-  protected override  willUpdate(_changedProperties: PropertyValues) {
-    super.willUpdate(_changedProperties);
-
-  }
-
   public static override get styles(): CSSResultArray {
     const TabulatorCSS = unsafeCSS(TabulatorStyles);
     const TabulatorSimpleUICSS = unsafeCSS(TabulatorSimpleUI);
     const SpectrumTokensCSS = unsafeCSS(SpectrumTokens);
-    const SpectrumTypographyCSS = unsafeCSS(SpectrumTypography)
+    const SpectrumTypographyCSS = unsafeCSS(SpectrumTypography);
     const localStyle = css`
       
       :host {
@@ -402,6 +190,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       .tabulator .tabulator-header .tabulator-col .tabulator-col-content {
         padding: var(--spectrum-global-dimension-static-size-50)
       }
+      
       .tabulator .tabulator-header .tabulator-col.tabulator-sortable .tabulator-col-title {
         padding-right: var(--spectrum-global-dimension-static-size-25);
       }
@@ -418,28 +207,242 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
     }
   }
 
-  private renderGrid = (): void  => {
+  handleMutation(): void {
+    return;
+  }
+
+  protected override updated(_changedProperties: PropertyValues): void {
+    super.updated(_changedProperties);
+    if (this.grid === null) {
+      this.renderGrid();
+    }
+  }
+
+  protected override willUpdate(_changedProperties: PropertyValues) {
+    super.willUpdate(_changedProperties);
+
+  }
+
+  protected override render() {
+    if (DEBUG) {
+      console.log(`DisplayGrid render called`);
+      console.log(`${this._DisplayGenerals.length} pairs ready`);
+    }
+    if (Array.isArray(this._DisplayGenerals) && this._DisplayGenerals.length > 0) {
+      //set data here
+    }
+    return html`
+      <pair-investment class="Investment" ${ref(this.InvestmentSelectorRef)}></pair-investment>
+      <div class="tableContainer">
+        <div id="tableDiv" ${ref(this.gridRef)}></div>
+      </div>
+    `;
+  }
+
+  private async getData() {
+    if (this._DisplayGenerals.length < this.RawPairs.length) {
+      if (DEBUG) {
+        console.log(`getData populating _DisplayGenerals`);
+      }
+      this.RawPairs.map((gp: GeneralPairType) => {
+
+        const dp: GridData = {
+          id: ulid(),
+          Primary: {
+            Name: gp.primary.name,
+            Conflicts: gp.primary.conflicts.length,
+            PvPBuffDetails: {
+              attackRank: {
+                attackScore: -10000,
+                marchSizeScore: -10000,
+                rangeScore: -10000,
+                rallyScore: -10000,
+                DeHPScore: -10000,
+                DeDefenseScore: -10000,
+              },
+              toughnessRank: {
+                HPScore: -10000,
+                defenseScore: -10000,
+                DeAttackScore: -10000,
+              },
+              preservationRank: {
+                PreservationScore: -10000,
+                DebilitationScore: -10000,
+              },
+            },
+            Original: gp.primary,
+          },
+          Secondary: {
+            Name: gp.secondary.name,
+            Conflicts: gp.secondary.conflicts.length,
+            PvPBuffDetails: {
+              attackRank: {
+                attackScore: -10000,
+                marchSizeScore: -10000,
+                rangeScore: -10000,
+                rallyScore: -10000,
+                DeHPScore: -10000,
+                DeDefenseScore: -10000,
+              },
+              toughnessRank: {
+                HPScore: -10000,
+                defenseScore: -10000,
+                DeAttackScore: -10000,
+              },
+              preservationRank: {
+                PreservationScore: -10000,
+                DebilitationScore: -10000,
+              },
+            },
+            Original: gp.secondary,
+          },
+        };
+        this._DisplayGenerals.push(dp);
+      });
+    }
+    if (this.grid !== null && this.grid !== undefined && this._DisplayGenerals.length > 0) {
+      if (DEBUG) {
+        console.log(`getData attempting to set data`);
+      }
+      await this.grid.setData(this._DisplayGenerals).then(async () => {
+        if (DEBUG) {
+          console.log(`getData setData then call`);
+        }
+        await this.UpdateInvestmentAndGridData();
+      }).catch((error) => {
+        console.error(error);
+      });
+    } else {
+      if (DEBUG) {
+        console.log(`getData unable to setData, ${this._DisplayGenerals.length} rows`);
+      }
+    }
+  }
+
+  private UpdateInvestmentAndGridData = async () => {
+    if (DEBUG) {
+      console.log(`UpdateInvestmentAndGridData`);
+    }
+    if (this.InvestmentSelectorRef.value !== undefined) {
+      if (DEBUG) {
+        console.log(`UpdateInvestmentAndGridData with target node`);
+      }
+      this.InvestmentLevel = this.InvestmentSelectorRef.value.PrimaryInvestmentLevel;
+
+      if (DEBUG) {
+        console.log(`UpdateInvestmentAndGridData: ${JSON.stringify(this.InvestmentLevel)}`);
+      }
+      if (this.grid !== null && this.grid !== undefined && this._DisplayGenerals.length > 0) {
+        if (DEBUG) {
+          console.log(`UpdateInvestmentAndGridData; with BuffParams & grid`);
+        }
+        let transaction: GridData[] = new Array<GridData>();
+        await Promise.all(this._DisplayGenerals.map(async (dg: GridData, index: number) => {
+          if (dg !== undefined && dg !== null) {
+            if (DEBUG) {
+              console.log(`UpdateInvestmentAndGridData: before call to buffs ${index}`);
+            }
+            const pDetails: PvPBuffDetails = PvPDetail(
+              dg.Primary.Original,
+              this.InvestmentLevel,
+              this.useCase,
+              Display.enum.primary,
+            );
+            if (DEBUG) {
+              console.log(`UpdateInvestmentAndGridData: ${JSON.stringify(pDetails)} computing buffs`);
+            }
+            dg.Primary.PvPBuffDetails = pDetails;
+
+            const sDetails: PvPBuffDetails = PvPDetail(
+              dg.Secondary.Original,
+              this.InvestmentLevel,
+              this.useCase,
+              Display.enum.secondary,
+            );
+            if (DEBUG) {
+              console.log(`UpdateInvestmentAndGridData: ${JSON.stringify(sDetails)} computing buffs`);
+            }
+            dg.Secondary.PvPBuffDetails = sDetails;
+
+            transaction.push(dg);
+            const rem = index % 20;
+            if ((index > 0) && rem < 1) {
+              if (DEBUG) {
+                console.log(`rem was ${rem}`, index, index % 20);
+              }
+              await this.grid?.updateData(transaction).then(() => {
+                if (DEBUG) {
+                  console.log(`UpdateInvestmentAndGridData updateData for ${transaction.length} entries in transaction`);
+                }
+                transaction = new Array<GridData>();
+              }).catch((error) => {
+                if (DEBUG) {
+                  console.log(`UpdateInvestmentAndGridData updateData error: ${error}`);
+                }
+              });
+            }
+            if (DEBUG) {
+              console.log(`UpdateInvestmentAndGridData ${transaction.length} pending in transaction`);
+            }
+          }
+        }));
+        if (transaction.length > 0) {
+          if (DEBUG) {
+            console.log(`calling final transaction`);
+          }
+          await this.grid?.updateData(transaction).then(() => {
+            if (DEBUG) {
+              console.log(`UpdateInvestmentAndGridData updateData for ${transaction.length} entries in transaction`);
+            }
+            transaction = new Array<GridData>();
+          }).catch((error) => {
+            if (DEBUG) {
+              console.log(`UpdateInvestmentAndGridData updateData error: ${error}`);
+            }
+          });
+        } else {
+          if (DEBUG) {
+            console.log(`I seem to have exactly a multiple of 20`);
+          }
+        }
+        const sorters = this.grid.getSorters();
+        if (sorters.length > 0) {
+          const ns: Sorter[] = sorters.map((s) => {
+            return {
+              column: s.column.getField(),
+              dir: s.dir,
+            };
+          });
+          this.grid.setSort(ns);
+        }
+      }
+      this.requestUpdate('InvestmentLevel');
+    }
+
+  };
+
+  private renderGrid = (): void => {
     const overallAttack = 'overallAttack';
     const overallToughness = 'overallToughness';
     if (this.gridRef.value !== undefined) {
-      if(DEBUG) {
+      if (DEBUG) {
         console.log(`gridDiv is ${this.gridRef.value.tagName}`);
       }
-      const div = this.gridRef.value
-      if(div !== null && DEBUG) {
+      const div = this.gridRef.value;
+      if (div !== null && DEBUG) {
 
-        console.log(`local queryselector works`)
+        console.log(`local queryselector works`);
       }
       this.grid = new Tabulator(div, {
-        placeholder:"No Data Available",
+        placeholder: 'No Data Available',
         debugInvalidOptions: DEBUGT,
         debugEventsExternal: DEBUGT,
-        minHeight:"var(--spectrum-component-height-500)",
-        layout:"fitColumns",
+        minHeight: 'var(--spectrum-component-height-500)',
+        layout: 'fitColumns',
         columnHeaderSortMulti: true,
         columnDefaults: {
           tooltip: true,//show tool tips on cells
-          headerHozAlign: "center",
+          headerHozAlign: 'center',
         },
         columns: [
           {
@@ -448,7 +451,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
             formatter: 'rownum',
             headerSort: false,
             headerVertical: true,
-            hozAlign: "center",
+            hozAlign: 'center',
             resizable: false,
             frozen: true,
             width: '5em',
@@ -471,8 +474,8 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
                 field: 'Primary.Conflicts',
                 formatter: 'traffic',
                 formatterParams: {
-                  color: ['var(--sl-color-green)', 'var(--sl-color-blue)', 'var(--sl-color-yellow)', 'var(--sl-color-red)']
-                }
+                  color: ['var(--sl-color-green)', 'var(--sl-color-blue)', 'var(--sl-color-yellow)', 'var(--sl-color-red)'],
+                },
               },
               {
                 title: 'Secondary',
@@ -487,234 +490,186 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
                 field: 'Secondary.Conflicts',
                 formatter: 'traffic',
                 formatterParams: {
-                  color: ['var(--sl-color-green)', 'var(--sl-color-blue)', 'var(--sl-color-yellow)', 'var(--sl-color-red)']
-                }
+                  color: ['var(--sl-color-green)', 'var(--sl-color-blue)', 'var(--sl-color-yellow)', 'var(--sl-color-red)'],
+                },
               },
-              {
-                title: 'Primary',
-                field: 'Primary',
-                columns: [
-                  {
-                    title: 'Attack Rank',
-                    field: 'Primary.attackRank',
-                    columns: [
-                      {
-                        title: 'Attack Score',
-                        field: 'Primary.PvPBuffDetails.attackRank.attackScore',
-                      },
-                      {
-                        title: 'March Score',
-                        field: 'Primary.PvPBuffDetails.attackRank.marchSizeScore',
-                      },
-                      {
-                        title: 'Range Score',
-                        field: 'Primary.PvPBuffDetails.attackRank.rangeScore',
-                      },
-                      {
-                        title: 'Rally Score',
-                        field: 'Primary.PvPBuffDetails.attackRank.rallyScore',
-                      },
-                      {
-                        title: 'DeHP Score',
-                        field: 'Primary.PvPBuffDetails.attackRank.DeHPScore',
-                      },
-                      {
-                        title: 'DeDefense Score',
-                        field: 'Primary.PvPBuffDetails.attackRank.DeDefenseScore',
-                      }
-                    ]
-                  },
-                  {
-                    title: 'Toughness Rank',
-                    field: 'Primary.toughnessRank',
-                    columns: [
-                      {
-                        title: 'HP Score',
-                        field: 'Primary.PvPBuffDetails.toughnessRank.HPScore',
-                      },
-                      {
-                        title: 'Defense Score',
-                        field: 'Primary.PvPBuffDetails.toughnessRank.defenseScore',
-                      },
-                      {
-                        title: 'DeAttack Score',
-                        field: 'Primary.PvPBuffDetails.toughnessRank.DeAttackScore',
-                      }
-                    ]
-                  },
-                  {
-                    title: 'Preservation Rank',
-                    field: 'Primary.PreservationRank',
-                    columns: [
-                      {
-                        title: 'Preservation Score',
-                        field: 'Primary.PvPBuffDetails.preservationRank.PreservationScore',
-                        formatter: 'plaintext',
-                      },
-                      {
-                        title: 'Destabilization Score',
-                        field: 'Primary.PvPBuffDetails.preservationRank.DebilitationScore',
-                        formatter: 'plaintext',
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                title: 'Secondary',
-                field: 'Secondary',
-                columns: [
-                  {
-                    title: 'Attack Rank',
-                    field: 'Secondary.attackRank',
-                    columns: [
-                      {
-                        title: 'Attack Score',
-                        field: 'Secondary.PvPBuffDetails.attackRank.attackScore',
-                      },
-                      {
-                        title: 'March Score',
-                        field: 'Secondary.PvPBuffDetails.attackRank.marchSizeScore',
-                      },
-                      {
-                        title: 'Range Score',
-                        field: 'Secondary.PvPBuffDetails.attackRank.rangeScore',
-                      },
-                      {
-                        title: 'Rally Score',
-                        field: 'Secondary.PvPBuffDetails.attackRank.rallyScore',
-                      },
-                      {
-                        title: 'DeHP Score',
-                        field: 'Secondary.PvPBuffDetails.attackRank.DeHPScore',
-                      },
-                      {
-                        title: 'DeDefense Score',
-                        field: 'Secondary.PvPBuffDetails.attackRank.DeDefenseScore',
-                      }
-                    ]
-                  },
-                  {
-                    title: 'Toughness Rank',
-                    field: 'Secondary.toughnessRank',
-                    columns: [
-                      {
-                        title: 'HP Score',
-                        field: 'Secondary.PvPBuffDetails.toughnessRank.HPScore',
-                      },
-                      {
-                        title: 'Defense Score',
-                        field: 'Secondary.PvPBuffDetails.toughnessRank.defenseScore',
-                      },
-                      {
-                        title: 'DeAttack Score',
-                        field: 'Secondary.PvPBuffDetails.toughnessRank.DeAttackScore',
-                      }
-                    ]
-                  },
-                  {
-                    title: 'Preservation Rank',
-                    field: 'Secondary.PreservationRank',
-                    columns: [
-                      {
-                        title: 'Preservation Score',
-                        field: 'Secondary.PvPBuffDetails.preservationRank.PreservationScore',
-                        formatter: 'plaintext',
-                      },
-                      {
-                        title: 'Destabilization Score',
-                        field: 'Secondary.PvPBuffDetails.preservationRank.DebilitationScore',
-                        formatter: 'plaintext',
-                      }
-                    ]
-                  }
-                ]
-              },
-            ]
+              ]
           },
-
+          {
+                title: 'Attack Rank',
+                field: 'attackRank',
+                columns: [
+                  {
+                    title: 'Attack Score',
+                    field: 'attackRank.attackScore',
+                    mutator: (value: number, data: GridData) => {
+                      value = (data.Primary.PvPBuffDetails.attackRank.attackScore + data.Secondary.PvPBuffDetails.attackRank.attackScore);
+                      return value;
+                    },
+                  },
+                  {
+                    title: 'March Score',
+                    field: 'attackRank.marchSizeScore',
+                    mutator: (value: number, data: GridData) => {
+                      value = (data.Primary.PvPBuffDetails.attackRank.marchSizeScore + data.Secondary.PvPBuffDetails.attackRank.marchSizeScore);
+                      return value;
+                    },
+                  },
+                  {
+                    title: 'Range Score',
+                    field: 'attackRank.rangeScore',
+                    mutator: (value: number, data: GridData) => {
+                      value = (data.Primary.PvPBuffDetails.attackRank.rangeScore + data.Secondary.PvPBuffDetails.attackRank.rangeScore);
+                      return value;
+                    },
+                  },
+                  {
+                    title: 'Rally Score',
+                    field: 'attackRank.rallyScore',
+                    mutator: (value: number, data: GridData) => {
+                      value = (data.Primary.PvPBuffDetails.attackRank.rallyScore + data.Secondary.PvPBuffDetails.attackRank.rallyScore);
+                      return value;
+                    },
+                  },
+                  {
+                    title: 'DeHP Score',
+                    field: 'attackRank.DeHPScore',
+                    mutator: (value: number, data: GridData) => {
+                      value = (data.Primary.PvPBuffDetails.attackRank.DeHPScore + data.Secondary.PvPBuffDetails.attackRank.DeHPScore);
+                      return value;
+                    },
+                  },
+                  {
+                    title: 'DeDefense Score',
+                    field: 'attackRank.DeDefenseScore',
+                    mutator: (value: number, data: GridData) => {
+                      value = (data.Primary.PvPBuffDetails.attackRank.DeDefenseScore + data.Secondary.PvPBuffDetails.attackRank.DeDefenseScore);
+                      return value;
+                    },
+                  },
+                ],
+              },
+          {
+                title: 'Toughness Rank',
+                field: 'toughnessRank',
+                columns: [
+                  {
+                    title: 'HP Score',
+                    field: 'toughnessRank.HPScore',
+                    mutator: (value: number, data: GridData) => {
+                      value = (data.Primary.PvPBuffDetails.toughnessRank.HPScore + data.Secondary.PvPBuffDetails.toughnessRank.HPScore);
+                      return value;
+                    },
+                  },
+                  {
+                    title: 'Defense Score',
+                    field: 'toughnessRank.defenseScore',
+                    mutator: (value: number, data: GridData) => {
+                      value = (data.Primary.PvPBuffDetails.toughnessRank.defenseScore + data.Secondary.PvPBuffDetails.toughnessRank.defenseScore);
+                      return value;
+                    },
+                  },
+                  {
+                    title: 'DeAttack Score',
+                    field: 'toughnessRank.DeAttackScore',
+                    mutator: (value: number, data: GridData) => {
+                      value = (data.Primary.PvPBuffDetails.toughnessRank.DeAttackScore + data.Secondary.PvPBuffDetails.toughnessRank.DeAttackScore);
+                      return value;
+                    },
+                  },
+                ],
+              },
+          {
+                title: 'Preservation Rank',
+                field: 'PreservationRank',
+                columns: [
+                  {
+                    title: 'Preservation Score',
+                    field: 'PreservationRank.PreservationScore',
+                    mutator: (value: number, data: GridData) => {
+                      value = (data.Primary.PvPBuffDetails.preservationRank.PreservationScore + data.Secondary.PvPBuffDetails.preservationRank.PreservationScore);
+                      return value;
+                    },
+                  },
+                  {
+                    title: 'Destabilization Score',
+                    field: 'PreservationRank.DebilitationScore',
+                    mutator: (value: number, data: GridData) => {
+                      value = (data.Primary.PvPBuffDetails.preservationRank.DebilitationScore + data.Secondary.PvPBuffDetails.preservationRank.DebilitationScore);
+                      return value;
+                    },
+                  },
+                ],
+              },
         ],
-      })
+      });
       this.addEventListener('resize', () => {
         this.grid?.redraw();
-      })
+      });
       this.grid.on('tableBuilt', () => {
-        void this.getData()
+        void this.getData();
         const all = this.grid?.getColumns(true);
-        if(all) {
+        if (all) {
           const attack = all.find((column) => {
             const f = column.getField();
-            return !f.localeCompare(overallAttack)
-          })
-          if(attack) {
+            return !f.localeCompare(overallAttack);
+          });
+          if (attack) {
             this.colGroupToggle(null, attack);
           }
           const toughness = all.find((column) => {
             const f = column.getField();
-            return !f.localeCompare(overallToughness)
-          })
-          if(toughness) {
+            return !f.localeCompare(overallToughness);
+          });
+          if (toughness) {
             this.colGroupToggle(null, toughness);
           }
         }
       });
-      this.grid.on('headerDblClick', (e, column) => {this.colGroupToggle(e, column)})
+      this.grid.on('headerDblClick', (e, column) => {
+        this.colGroupToggle(e, column);
+      });
     }
-  }
+  };
+
   private colGroupToggle(e: UIEvent | null, c: ColumnComponent) {
-      const all = this.grid?.getColumns(true)
-      if (c !== null && c !== undefined && all !== undefined) {
-        const field = c.getField();
-        if (field.startsWith('overall')) {
-          c.toggle();
-          if(field.includes('Total')) {
-            //then this is the non-group version that defaults to hidden.
-            const groupName = field.replace('Total', '');
-            const group = all.find((column) => {
-              const f = column.getField();
-              return !f.localeCompare(groupName);
-            })
-            if(group !== undefined) {
-              group.show();
-              const children = group.getSubColumns();
-              if(DEBUG) {
-                console.log(`found ${children.length} columns for ${groupName}`);
-              }
-              
-            } else {
-              if(DEBUG) {
-                console.log(`failed to find group to unhide`)
-              }
+    const all = this.grid?.getColumns(true);
+    if (c !== null && c !== undefined && all !== undefined) {
+      const field = c.getField();
+      if (field.startsWith('overall')) {
+        c.toggle();
+        if (field.includes('Total')) {
+          //then this is the non-group version that defaults to hidden.
+          const groupName = field.replace('Total', '');
+          const group = all.find((column) => {
+            const f = column.getField();
+            return !f.localeCompare(groupName);
+          });
+          if (group !== undefined) {
+            group.show();
+            const children = group.getSubColumns();
+            if (DEBUG) {
+              console.log(`found ${children.length} columns for ${groupName}`);
             }
+
           } else {
-            //then this is the group version
-            const singleName = `${field}Total`;
-            const single = all.find((column) => {
-              const f = column.getField();
-              return !f.localeCompare(singleName);
-            })
-            if(single !== undefined) {
-              single.toggle();
+            if (DEBUG) {
+              console.log(`failed to find group to unhide`);
             }
+          }
+        } else {
+          //then this is the group version
+          const singleName = `${field}Total`;
+          const single = all.find((column) => {
+            const f = column.getField();
+            return !f.localeCompare(singleName);
+          });
+          if (single !== undefined) {
+            single.toggle();
           }
         }
       }
-      this.grid?.redraw();
-  }
-
-  protected override render() {
-    if (DEBUG) {
-      console.log(`DisplayGrid render called`);
-      console.log(`${this._DisplayGenerals.length} pairs ready`);
     }
-    if (Array.isArray(this._DisplayGenerals) && this._DisplayGenerals.length > 0) {
-      //set data here
-    }
-    return html`
-      <pair-investment class="Investment" ${ref(this.InvestmentSelectorRef)} ></pair-investment>
-      <div class="tableContainer">
-        <div id="tableDiv" ${ref(this.gridRef)} ></div>
-      </div>
-    `;
+    this.grid?.redraw();
   }
 }
