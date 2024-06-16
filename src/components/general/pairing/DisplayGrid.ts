@@ -406,9 +406,13 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
 
   };
 
+  static overallAttack = 'overallAttackRank';
+  static AttackDetails = 'attackRank';
+  static overallToughness = 'overallToughness';
+  static ToughnessDetails = 'ToughnessRank';
+
   private renderGrid = (): void => {
-    const overallAttack = 'overallAttack';
-    const overallToughness = 'overallToughness';
+
     if (this.gridRef.value !== undefined) {
       if (DEBUG) {
         console.log(`gridDiv is ${this.gridRef.value.tagName}`);
@@ -481,8 +485,21 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
               ]
           },
           {
+            title: 'Overall Attack Rank',
+            field: DisplayGrid.overallAttack,
+            mutator: (value: number, data: GridData) => {
+              value = (data.Primary.PvPBuffDetails.attackRank.attackScore + data.Secondary.PvPBuffDetails.attackRank.attackScore);
+              value += (data.Primary.PvPBuffDetails.attackRank.marchSizeScore + data.Secondary.PvPBuffDetails.attackRank.marchSizeScore);
+              value += (data.Primary.PvPBuffDetails.attackRank.rangeScore + data.Secondary.PvPBuffDetails.attackRank.rangeScore);
+              value += (data.Primary.PvPBuffDetails.attackRank.rallyScore + data.Secondary.PvPBuffDetails.attackRank.rallyScore);
+              value += (data.Primary.PvPBuffDetails.attackRank.DeHPScore + data.Secondary.PvPBuffDetails.attackRank.DeHPScore);
+              value += (data.Primary.PvPBuffDetails.attackRank.DeDefenseScore + data.Secondary.PvPBuffDetails.attackRank.DeDefenseScore);
+              return value;
+            },
+          },
+          {
                 title: 'Attack Rank',
-                field: 'attackRank',
+                field: DisplayGrid.AttackDetails,
                 columns: [
                   {
                     title: 'Attack Score',
@@ -598,14 +615,14 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
         if (all) {
           const attack = all.find((column) => {
             const f = column.getField();
-            return !f.localeCompare(overallAttack);
+            return !f.localeCompare(DisplayGrid.overallAttack);
           });
           if (attack) {
             this.colGroupToggle(null, attack);
           }
           const toughness = all.find((column) => {
             const f = column.getField();
-            return !f.localeCompare(overallToughness);
+            return !f.localeCompare(DisplayGrid.overallToughness);
           });
           if (toughness) {
             this.colGroupToggle(null, toughness);
@@ -622,40 +639,46 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
     const all = this.grid?.getColumns(true);
     if (c !== null && c !== undefined && all !== undefined) {
       const field = c.getField();
-      if (field.startsWith('overall')) {
+      let group: ColumnComponent | undefined;
+      if (!field.localeCompare(DisplayGrid.overallAttack)) {
         c.toggle();
-        if (field.includes('Total')) {
-          //then this is the non-group version that defaults to hidden.
-          const groupName = field.replace('Total', '');
-          const group = all.find((column) => {
-            const f = column.getField();
-            return !f.localeCompare(groupName);
-          });
-          if (group !== undefined) {
-            group.show();
-            const children = group.getSubColumns();
-            if (DEBUG) {
-              console.log(`found ${children.length} columns for ${groupName}`);
-            }
-
-          } else {
-            if (DEBUG) {
-              console.log(`failed to find group to unhide`);
-            }
-          }
-        } else {
-          //then this is the group version
-          const singleName = `${field}Total`;
-          const single = all.find((column) => {
-            const f = column.getField();
-            return !f.localeCompare(singleName);
-          });
-          if (single !== undefined) {
-            single.toggle();
-          }
+        group = all.find((column) => {
+          const f = column.getField();
+          return !f.localeCompare(DisplayGrid.AttackDetails);
+        });
+      } else if(!field.localeCompare(DisplayGrid.overallToughness)) {
+        c.toggle();
+        group = all.find((column) => {
+          const f = column.getField();
+          return !f.localeCompare(DisplayGrid.ToughnessDetails);
+        });
+      }else if(!field.localeCompare(DisplayGrid.AttackDetails)) {
+        group = c;
+        const single = all.find((column) => {
+          const f = column.getField();
+          return !f.localeCompare(DisplayGrid.overallAttack);
+        })
+        if(single) {
+          single.toggle();
+        }
+      } else if(!field.localeCompare(DisplayGrid.ToughnessDetails)) {
+        group = c;
+        const single = all.find((column) => {
+          const f = column.getField();
+          return !f.localeCompare(DisplayGrid.overallToughness);
+        })
+        if (single) {
+          single.toggle();
         }
       }
+      if (group !== undefined) {
+        group.show();
+      } else {
+        if (DEBUG) {
+          console.log(`failed to find group to unhide`);
+        }
+      }
+      this.grid?.redraw();
     }
-    this.grid?.redraw();
   }
 }
