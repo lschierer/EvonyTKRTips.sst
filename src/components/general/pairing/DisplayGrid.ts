@@ -246,7 +246,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       if (DEBUG) {
         console.log(`getData populating _DisplayGenerals`);
       }
-      this.RawPairs.map((gp: GeneralPairType) => {
+      this.RawPairs.forEach((gp: GeneralPairType) => {
 
         const dp: GridData = {
           id: ulid(),
@@ -299,6 +299,20 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
             Original: gp.secondary,
           },
         };
+        dp.Primary.PvPBuffDetails = PvPDetail(
+          dp.Primary.Original,
+          this.InvestmentLevel,
+          this.useCase,
+          Display.enum.primary,
+        );
+
+        dp.Secondary.PvPBuffDetails = PvPDetail(
+          dp.Secondary.Original,
+          this.InvestmentLevel,
+          this.useCase,
+          Display.enum.secondary,
+        );
+
         this._DisplayGenerals.push(dp);
       });
     }
@@ -306,11 +320,10 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       if (DEBUG) {
         console.log(`getData attempting to set data`);
       }
-      await this.grid.setData(this._DisplayGenerals).then(async () => {
+      await this.grid.setData(this._DisplayGenerals).then( () => {
         if (DEBUG) {
           console.log(`getData setData then call`);
         }
-        await this.UpdateInvestmentAndGridData();
       }).catch((error) => {
         console.error(error);
       });
@@ -338,7 +351,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
         if (DEBUGL) {
           console.log(`UpdateInvestmentAndGridData; with BuffParams & grid`);
         }
-        this._DisplayGenerals.map( (dg: GridData, index: number) => {
+        this._DisplayGenerals.forEach( (dg: GridData, index: number) => {
           if (dg !== undefined && dg !== null) {
             if (DEBUGL) {
               console.log(`UpdateInvestmentAndGridData: before call to buffs ${index}`);
@@ -364,15 +377,19 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
               console.log(`UpdateInvestmentAndGridData: ${JSON.stringify(sDetails)} computing buffs`);
             }
             dg.Secondary.PvPBuffDetails = sDetails;
-            if(this.grid) {
-              const result = this.grid?.updateRow(dg.id, dg)
-            }
+
           }
           if (DEBUGL) {
             console.log(`UpdateInvestmentAndGridData ${this._DisplayGenerals.length - index} pending`);
           }
           })
-
+          if(this.grid) {
+            await this.grid.setData(this._DisplayGenerals).then(() => {
+              if(DEBUGL) {
+                console.log(`set the entire _DisplayGenerals as a single lump`)
+              }
+            });
+          }
         const sorters = this.grid.getSorters();
         if (sorters.length > 0) {
           const ns: Sorter[] = sorters.map((s) => {
@@ -405,8 +422,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
         placeholder: 'No Data Available',
         debugInvalidOptions: DEBUGT,
         debugEventsExternal: DEBUGT,
-        minHeight: 'var(--spectrum-component-height-500)',
-        maxHeight: 'calc(var(--spectrum-component-height-500) * 5 + 1);',
+        height: 'calc(var(--spectrum-component-height-500) * 6 + 1);',
         layout: 'fitColumns',
         columnHeaderSortMulti: true,
         columnDefaults: {
