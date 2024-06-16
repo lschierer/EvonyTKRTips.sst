@@ -1,5 +1,6 @@
 const DEBUG = false;
 const DEBUGT = false;
+const DEBUGL = true;
 
 import { type ColumnComponent, type Sorter, TabulatorFull as Tabulator } from 'tabulator-tables';
 import TabulatorStyles from 'tabulator-tables/dist/css/tabulator.css?inline';
@@ -120,6 +121,24 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
 
   }
 
+
+
+  handleMutation(): void {
+    return;
+  }
+
+  protected override updated(_changedProperties: PropertyValues): void {
+    super.updated(_changedProperties);
+    if (this.grid === null) {
+      this.renderGrid();
+    }
+  }
+
+  protected override willUpdate(_changedProperties: PropertyValues) {
+    super.willUpdate(_changedProperties);
+
+  }
+
   public static override get styles(): CSSResultArray {
     const TabulatorCSS = unsafeCSS(TabulatorStyles);
     const TabulatorSimpleUICSS = unsafeCSS(TabulatorSimpleUI);
@@ -152,7 +171,6 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
         grid-row-start: 2;
         grid-column-start: 1;
         grid-column-end: span 5;
-        max-height: calc(var(--spectrum-component-height-500) * 5 + 1);
         overflow-x: hidden;
         border-bottom: var(--spectrum-border-width-100) solid var(--sl-color-gray-5);
         border-right: var(--spectrum-border-width-100) solid var(--sl-color-gray-5);
@@ -205,22 +223,6 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
     } else {
       return [TabulatorCSS, TabulatorSimpleUICSS, SpectrumTokensCSS, SpectrumTypographyCSS, localStyle];
     }
-  }
-
-  handleMutation(): void {
-    return;
-  }
-
-  protected override updated(_changedProperties: PropertyValues): void {
-    super.updated(_changedProperties);
-    if (this.grid === null) {
-      this.renderGrid();
-    }
-  }
-
-  protected override willUpdate(_changedProperties: PropertyValues) {
-    super.willUpdate(_changedProperties);
-
   }
 
   protected override render() {
@@ -320,26 +322,25 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
   }
 
   private UpdateInvestmentAndGridData = async () => {
-    if (DEBUG) {
+    if (DEBUGL) {
       console.log(`UpdateInvestmentAndGridData`);
     }
     if (this.InvestmentSelectorRef.value !== undefined) {
-      if (DEBUG) {
+      if (DEBUGL) {
         console.log(`UpdateInvestmentAndGridData with target node`);
       }
       this.InvestmentLevel = this.InvestmentSelectorRef.value.PrimaryInvestmentLevel;
 
-      if (DEBUG) {
+      if (DEBUGL) {
         console.log(`UpdateInvestmentAndGridData: ${JSON.stringify(this.InvestmentLevel)}`);
       }
       if (this.grid !== null && this.grid !== undefined && this._DisplayGenerals.length > 0) {
-        if (DEBUG) {
+        if (DEBUGL) {
           console.log(`UpdateInvestmentAndGridData; with BuffParams & grid`);
         }
-        let transaction: GridData[] = new Array<GridData>();
-        await Promise.all(this._DisplayGenerals.map(async (dg: GridData, index: number) => {
+        this._DisplayGenerals.map( (dg: GridData, index: number) => {
           if (dg !== undefined && dg !== null) {
-            if (DEBUG) {
+            if (DEBUGL) {
               console.log(`UpdateInvestmentAndGridData: before call to buffs ${index}`);
             }
             const pDetails: PvPBuffDetails = PvPDetail(
@@ -348,7 +349,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
               this.useCase,
               Display.enum.primary,
             );
-            if (DEBUG) {
+            if (DEBUGL) {
               console.log(`UpdateInvestmentAndGridData: ${JSON.stringify(pDetails)} computing buffs`);
             }
             dg.Primary.PvPBuffDetails = pDetails;
@@ -359,52 +360,19 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
               this.useCase,
               Display.enum.secondary,
             );
-            if (DEBUG) {
+            if (DEBUGL) {
               console.log(`UpdateInvestmentAndGridData: ${JSON.stringify(sDetails)} computing buffs`);
             }
             dg.Secondary.PvPBuffDetails = sDetails;
+            if(this.grid) {
+              const result = this.grid?.updateRow(dg.id, dg)
+            }
+          }
+          if (DEBUGL) {
+            console.log(`UpdateInvestmentAndGridData ${this._DisplayGenerals.length - index} pending`);
+          }
+          })
 
-            transaction.push(dg);
-            const rem = index % 20;
-            if ((index > 0) && rem < 1) {
-              if (DEBUG) {
-                console.log(`rem was ${rem}`, index, index % 20);
-              }
-              await this.grid?.updateData(transaction).then(() => {
-                if (DEBUG) {
-                  console.log(`UpdateInvestmentAndGridData updateData for ${transaction.length} entries in transaction`);
-                }
-                transaction = new Array<GridData>();
-              }).catch((error) => {
-                if (DEBUG) {
-                  console.log(`UpdateInvestmentAndGridData updateData error: ${error}`);
-                }
-              });
-            }
-            if (DEBUG) {
-              console.log(`UpdateInvestmentAndGridData ${transaction.length} pending in transaction`);
-            }
-          }
-        }));
-        if (transaction.length > 0) {
-          if (DEBUG) {
-            console.log(`calling final transaction`);
-          }
-          await this.grid?.updateData(transaction).then(() => {
-            if (DEBUG) {
-              console.log(`UpdateInvestmentAndGridData updateData for ${transaction.length} entries in transaction`);
-            }
-            transaction = new Array<GridData>();
-          }).catch((error) => {
-            if (DEBUG) {
-              console.log(`UpdateInvestmentAndGridData updateData error: ${error}`);
-            }
-          });
-        } else {
-          if (DEBUG) {
-            console.log(`I seem to have exactly a multiple of 20`);
-          }
-        }
         const sorters = this.grid.getSorters();
         if (sorters.length > 0) {
           const ns: Sorter[] = sorters.map((s) => {
@@ -438,6 +406,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
         debugInvalidOptions: DEBUGT,
         debugEventsExternal: DEBUGT,
         minHeight: 'var(--spectrum-component-height-500)',
+        maxHeight: 'calc(var(--spectrum-component-height-500) * 5 + 1);',
         layout: 'fitColumns',
         columnHeaderSortMulti: true,
         columnDefaults: {
@@ -522,6 +491,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
                       value = (data.Primary.PvPBuffDetails.attackRank.rangeScore + data.Secondary.PvPBuffDetails.attackRank.rangeScore);
                       return value;
                     },
+                    visible: false, //no current generals buff this, so until I handle skill books it adds nothing.
                   },
                   {
                     title: 'Rally Score',
