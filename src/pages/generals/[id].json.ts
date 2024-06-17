@@ -1,10 +1,15 @@
-import { type CovenantAttributeType, GeneralClass, type GeneralClassType } from '@schemas/generalsSchema';
+import {
+  type CovenantAttributeType,
+  type GeneralClassType,
+
+} from '@schemas/generalsSchema';
 import {
   type APIRoute,
   type InferGetStaticParamsType,
   type InferGetStaticPropsType,
 } from 'astro';
 import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
+import { type ConflictDatum} from '@schemas/conflictSchemas';
 
 import {
   ExtendedGeneral,
@@ -12,7 +17,6 @@ import {
 } from '@schemas/ExtendedGeneral.ts';
 import type { SpecialityType } from '@schemas/specialitySchema.ts';
 import type { BookType } from '@schemas/bookSchemas.ts';
-import type { ConflictDatumType } from '@schemas/conflictSchemas.ts';
 
 export const prerender = true;
 const DEBUG = false;
@@ -29,6 +33,7 @@ export async function getStaticPaths() {
 type Params = InferGetStaticParamsType<typeof getStaticPaths>; // eslint-disable-line
 type Props = InferGetStaticPropsType<typeof getStaticPaths>; // eslint-disable-line
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const GET: APIRoute = async ({ params, locals }) => {
   let id: string = params.id ? params.id : '';
   if (id !== '') {
@@ -40,9 +45,10 @@ export const GET: APIRoute = async ({ params, locals }) => {
     }
     console.log(`id is ${id}, params were ${JSON.stringify(params)}`);
 
-    const entry = await getEntry('generals', id);
+    const entry: CollectionEntry<'generals'> | undefined = await getEntry('generals', id);
     if (entry !== null && entry !== undefined) {
-      const gc = entry.data.general;
+       
+      const gc: GeneralClassType = entry.data.general;
       const eg: ExtendedGeneralType = {
         name: gc.name,
         leadership: gc.leadership,
@@ -61,13 +67,14 @@ export const GET: APIRoute = async ({ params, locals }) => {
         ascending: gc.ascending,
         specialities: new Array<SpecialityType>(),
         covenants: new Array<CovenantAttributeType>(),
-        conflicts: new Array<ConflictDatumType>(),
+        conflicts: new Array<ConflictDatum>(),
       };
       gc.books &&
         (await Promise.all(
           gc.books.map(async (gb) => {
-            const gbe = await getEntry('skillBooks', gb);
+            const gbe: CollectionEntry<'skillBooks'> | undefined = await getEntry('skillBooks', gb);
             if (gbe !== null && gbe !== undefined) {
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
               eg.books.push(gbe.data);
             }
           })
@@ -75,8 +82,9 @@ export const GET: APIRoute = async ({ params, locals }) => {
       gc.specialities &&
         (await Promise.all(
           gc.specialities.map(async (gs) => {
-            const gse = await getEntry('specialities', gs);
+            const gse: CollectionEntry<'specialities'> | undefined = await getEntry('specialities', gs);
             if (gse !== null && gse !== undefined) {
+               
               eg.specialities.push(gse.data);
             }
           })

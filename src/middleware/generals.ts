@@ -45,7 +45,7 @@ export const DisplayGeneralsMW = defineMiddleware(
           Array.isArray(locals.CachedGenerals) &&
           locals.CachedGenerals.length > 0
         ) {
-          const allDone = locals.CachedGenerals.some((element) => {
+          const allDone = locals.CachedGenerals.some((element: ExtendedGeneralType) => {
             if (!general.name.localeCompare(element.name)) {
               return true;
             }
@@ -82,7 +82,7 @@ export const DisplayGeneralsMW = defineMiddleware(
         return false;
       });
 
-    const HandlerLogic = async (locals: App.Locals) => {
+    const HandlerLogic = (locals: App.Locals) => {
       if (locals.CachedGenerals === undefined) {
         locals.CachedGenerals = new Array<ExtendedGeneralType>();
       }
@@ -103,8 +103,8 @@ export const DisplayGeneralsMW = defineMiddleware(
     //end of function definitions
 
     if (continueHandler) {
-      if (DEBUG) console.log(`DisplayGeneralsMW running`);
-      await HandlerLogic(locals);
+      if (DEBUG) { console.log(`DisplayGeneralsMW running`); }
+        HandlerLogic(locals);
     }
 
     return next();

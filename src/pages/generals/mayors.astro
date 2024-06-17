@@ -2,21 +2,16 @@
 export const prerender = true;
 
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
-import type {
-  InferGetStaticParamsType,
-  InferGetStaticPropsType,
-  GetStaticPaths,
-} from 'astro';
+
 import type { CollectionEntry } from 'astro:content';
-import { getEntry, getCollection } from 'astro:content';
-import type { ComponentProps } from 'astro/types';
+import { getEntry,  } from 'astro:content';
+
 
 import AllGenerals from '@components/general/AllGenerals.astro';
 import AllConflicts from '@components/general/AllConflicts.astro';
 
 import {
   generalSpecialists,
-  generalUseCase,
   type generalSpecialistsType
 } from '../../schemas/generalsSchema';
 

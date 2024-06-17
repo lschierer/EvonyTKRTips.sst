@@ -7,7 +7,7 @@ import type { SidebarEntry, Group } from '@astrojs/starlight/utils/navigation';
 
 const DEBUG = false;
 
-const { Props } = Astro.props;
+const { props } = Astro.props;
 
 const sidebar: Props['sidebar'] = Astro.props.sidebar;
 
@@ -36,7 +36,6 @@ if (generals !== undefined && Array.isArray(generals) && generals.length > 0) {
       const detailsBar = (Tentry as Group).entries;
       if (DEBUG) console.log(`found Generals as Tentry`);
       if (DEBUG) console.log(`entries is ${JSON.stringify(detailsBar)}`);
-      const Tindex = sidebar.indexOf(Tentry);
       for (const SEntry of detailsBar as SidebarEntry[]) {
         if (!SEntry.label.localeCompare('Details on Specific Generals')) {
           if (DEBUG) console.log(`found Details as SEntry`);

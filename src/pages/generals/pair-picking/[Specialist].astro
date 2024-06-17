@@ -8,22 +8,22 @@ import type {
   GetStaticPaths,
 } from 'astro';
 import type { CollectionEntry } from 'astro:content';
-import { getEntry, getCollection } from 'astro:content';
-import type { ComponentProps } from 'astro/types';
+import {  getCollection } from 'astro:content';
+
 
 import AllGenerals from '@components/general/AllGenerals.astro';
 import AllConflicts from '@components/general/AllConflicts.astro';
 
 import {
   generalSpecialists,
-  generalUseCase,
+
   type generalSpecialistsType
 } from '../../../schemas/generalsSchema';
 
 const DEBUG = false;
 
 export const getStaticPaths = (async () => {
-  const pairEntries = await getCollection('docs', ({id}) => {
+  const pairEntries: CollectionEntry<'docs'>[] = await getCollection('docs', ({id}) => {
     return id.includes('pair-picking');
   });
 

@@ -21,7 +21,6 @@ export const checkInvalidConditions = z
         conditions.push(Condition.enum.In_City);
         conditions.push(Condition.enum.In_Main_City);
         conditions.push(Condition.enum.Reinforcing);
-        conditions.push(Condition.enum['When not mine']);
         conditions.push(Condition.enum.When_City_Mayor);
         conditions.push(Condition.enum.When_City_Mayor_for_this_SubCity);
         conditions.push(Condition.enum.When_Defending_Outside_The_Main_City);
@@ -38,7 +37,6 @@ export const checkInvalidConditions = z
         conditions.push(Condition.enum.In_City);
         conditions.push(Condition.enum.In_Main_City);
         conditions.push(Condition.enum.Reinforcing);
-        conditions.push(Condition.enum['When not mine']);
         conditions.push(Condition.enum.When_City_Mayor);
         conditions.push(Condition.enum.When_City_Mayor_for_this_SubCity);
         conditions.push(Condition.enum.When_Defending_Outside_The_Main_City);
@@ -52,7 +50,6 @@ export const checkInvalidConditions = z
       } else if(!am.localeCompare(generalUseCase.enum.Reinforcement)){
         conditions.push(Condition.enum['Against Monsters']);
         conditions.push(Condition.enum.Marching);
-        conditions.push(Condition.enum['When not mine']);
         conditions.push(Condition.enum.When_City_Mayor);
         conditions.push(Condition.enum.When_City_Mayor_for_this_SubCity);
         conditions.push(Condition.enum.When_Rallying);

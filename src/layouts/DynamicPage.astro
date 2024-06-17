@@ -5,9 +5,10 @@ import type { ComponentProps } from 'astro/types';
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 type StarlightPageProps = ComponentProps<typeof StarlightPage>;
 
-const frontmatter = (Astro.props as StarlightPageProps).frontmatter;
----
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+const { frontmatter }: StarlightPageProps = (Astro.props as StarlightPageProps);
 
+---
 <StarlightPage frontmatter={frontmatter}>
   using DynamicPage Template
 </StarlightPage>

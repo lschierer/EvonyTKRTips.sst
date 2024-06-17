@@ -1,7 +1,5 @@
 ---
-import { Astro } from '../../../../.sst/platform/src/components/aws';
 export const prerender = true;
-import type { ComponentProps } from 'astro/types';
 import type {
   InferGetStaticParamsType,
   InferGetStaticPropsType,
@@ -9,14 +7,16 @@ import type {
 } from 'astro';
 
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+ 
 import { DetailView } from '@components/general/DetailView.ts';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import AllGenerals from '@components/general/AllGenerals.astro';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import AllConflicts from '@components/general/AllConflicts.astro';
 
 const DEBUG = true;
 
-import { getEntry, getCollection } from 'astro:content';
-import { ExtendedGeneralType } from '../../../schemas/ExtendedGeneral';
+import { getCollection } from 'astro:content';
 
 export const getStaticPaths = (async () => {
   const generalEntries = await getCollection('generals');

@@ -10,7 +10,7 @@ import {DisplayGrid} from './DisplayGrid'
 
 import {
   AscendingLevels,
-  type BuffParamsType,
+  type BuffParamsType, CovenantAttributeCategory,
   qualityColor,
 } from '../../../schemas/baseSchemas';
 
@@ -52,6 +52,7 @@ let MyInvestmentLevel: BuffParamsType = {
   special4: qualityColor.enum.Gold,
   special5: qualityColor.enum.Disabled,
   stars: AscendingLevels.enum['5red'],
+  covenants: CovenantAttributeCategory.enum.Disabled,
   dragon: true,
   beast: true,
 };
