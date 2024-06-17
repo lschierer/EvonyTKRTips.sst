@@ -10,10 +10,28 @@ export const sidebar = [
       {
         label: 'Tools for Picking Pairs',
         collapsed: true,
-        autogenerate: {
-          directory: '/generals/pair-picking',
-          collapsed: true,
-        },
+        items: [
+          {
+            label: 'Overview',
+            link: '/tools/pair-picking/',
+          },
+          {
+            label: 'Archers',
+            link: '/tools/pair-picking/archers/'
+          },
+          {
+            label: 'Ground',
+            link: '/tools/pair-picking/ground/'
+          },
+          {
+            label: 'Mounted',
+            link: '/tools/pair-picking/mounted/'
+          },
+          {
+            label: 'Siege',
+            link: '/tools/pair-picking/siege/'
+          },
+        ]
       },
       {
         label: 'Details on Specific Generals',

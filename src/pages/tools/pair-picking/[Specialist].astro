@@ -1,14 +1,10 @@
 ---
-export const prerender = true;
+export const prerender = false;
 
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
-import type {
-  InferGetStaticParamsType,
-  InferGetStaticPropsType,
-  GetStaticPaths,
-} from 'astro';
+
 import type { CollectionEntry } from 'astro:content';
-import {  getCollection } from 'astro:content';
+import { getEntry } from 'astro:content';
 
 
 import AllGenerals from '@components/general/AllGenerals.astro';
@@ -20,37 +16,23 @@ import {
   type generalSpecialistsType
 } from '../../../schemas/generalsSchema';
 
-const DEBUG = false;
+const DEBUG = true;
 
-export const getStaticPaths = (async () => {
-  const pairEntries: CollectionEntry<'docs'>[] = await getCollection('docs', ({id}) => {
-    return id.includes('pair-picking');
-  });
+const { Specialist } = Astro.params;
 
-  return pairEntries.map((entry) => {
-     console.log(`matched ${entry.slug}`)
-    const id = entry.slug;
-     const specialist = entry.slug.split('/').pop()
-    return ({
-      params: {
-        slug: id,
-        Specialist: specialist,
-      },
-      props: { entry },
-    })
-  });
-}) satisfies GetStaticPaths;
+if(DEBUG) {
+  console.log(`Specialist is ${Specialist}`);
+}
 
-type Params = InferGetStaticParamsType<typeof getStaticPaths>;
-type Props = InferGetStaticPropsType<typeof getStaticPaths>;
-
-const {entry}: Props = Astro.props;
-
-const { Specialist }: Params = Astro.params;
-/*let entry: CollectionEntry<'docs'> | undefined;
 if(Specialist !== null && Specialist !== undefined) {
-  entry = await getEntry('docs', `generals/pair-picking/${Specialist}`);
-}*/
+  if(DEBUG) {
+    console.log(`Specialist ${Specialist} not found`)
+    throw new Error('Specialist is required');
+  } else {
+    return Astro.redirect('/404');
+  }
+}
+const entry = await getEntry('tools', `pair-picking/${Specialist!.toLocaleString().toLocaleLowerCase()}/`);
 
 if(entry === undefined || entry === null) {
   if(DEBUG) {
@@ -61,21 +43,27 @@ if(entry === undefined || entry === null) {
   }
 }
 
+const { Content, headings } = await entry.render();
+
 let TargetClass: generalSpecialistsType;
-if(!Specialist.toLocaleLowerCase().localeCompare(generalSpecialists.enum.Archers.toLocaleLowerCase())) {
-  TargetClass = generalSpecialists.enum.Archers;
-} else if (!Specialist.toLocaleLowerCase().localeCompare(generalSpecialists.enum.Mounted.toLocaleLowerCase())) {
-  TargetClass = generalSpecialists.enum.Mounted;
-} else if (!Specialist.toLocaleLowerCase().localeCompare(generalSpecialists.enum.Monsters.toLocaleLowerCase())) {
-  TargetClass = generalSpecialists.enum.Mounted;
-} else if (! Specialist.toLocaleLowerCase().localeCompare(generalSpecialists.enum.Ground.toLocaleLowerCase())) {
-  TargetClass = generalSpecialists.enum.Ground;
-} else if (!Specialist.toLocaleLowerCase().localeCompare(generalSpecialists.enum.Siege.toLocaleLowerCase())) {
-  TargetClass = generalSpecialists.enum.Siege
-} else if (!Specialist.toLocaleLowerCase().localeCompare(generalSpecialists.enum.Wall.toLocaleLowerCase())) {
-  TargetClass = generalSpecialists.enum.Wall;
-} else if (!Specialist.toLocaleLowerCase().localeCompare(generalSpecialists.enum.Mayor.toLocaleLowerCase())) {
-  TargetClass = generalSpecialists.enum.Mayor;
+if(Specialist !== undefined && Specialist !== null) {
+  if(!Specialist.toLocaleLowerCase().localeCompare(generalSpecialists.enum.Archers.toLocaleLowerCase())) {
+    TargetClass = generalSpecialists.enum.Archers;
+  } else if (!Specialist.toLocaleLowerCase().localeCompare(generalSpecialists.enum.Mounted.toLocaleLowerCase())) {
+    TargetClass = generalSpecialists.enum.Mounted;
+  } else if (!Specialist.toLocaleLowerCase().localeCompare(generalSpecialists.enum.Monsters.toLocaleLowerCase())) {
+    TargetClass = generalSpecialists.enum.Mounted;
+  } else if (! Specialist.toLocaleLowerCase().localeCompare(generalSpecialists.enum.Ground.toLocaleLowerCase())) {
+    TargetClass = generalSpecialists.enum.Ground;
+  } else if (!Specialist.toLocaleLowerCase().localeCompare(generalSpecialists.enum.Siege.toLocaleLowerCase())) {
+    TargetClass = generalSpecialists.enum.Siege
+  } else if (!Specialist.toLocaleLowerCase().localeCompare(generalSpecialists.enum.Wall.toLocaleLowerCase())) {
+    TargetClass = generalSpecialists.enum.Wall;
+  } else if (!Specialist.toLocaleLowerCase().localeCompare(generalSpecialists.enum.Mayor.toLocaleLowerCase())) {
+    TargetClass = generalSpecialists.enum.Mayor;
+  } else {
+    TargetClass = undefined;
+  }
 } else {
   TargetClass = undefined;
 }
@@ -84,7 +72,6 @@ if(DEBUG) {
   console.log(`Specialist.astro Specialist ${Specialist} became TargetClass ${TargetClass}`)
 }
 
-const { Content } = await entry.render();
 ---
 
 <StarlightPage
@@ -94,7 +81,9 @@ const { Content } = await entry.render();
     tableOfContents: entry.data.tableOfContents,
   }}
 >
-  {DEBUG && `Dynamic Template`}
+  {(DEBUG && !prerender) && `Dynamic Template`}
+  {(DEBUG && prerender) && `Static Template`}
+
   {(TargetClass !== undefined) ? (<AllGenerals TargetClass={TargetClass} />) :
     (<AllGenerals />)}
   <AllConflicts />

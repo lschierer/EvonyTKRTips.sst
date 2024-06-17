@@ -9,16 +9,17 @@ import { GeneralElement } from '@schemas/generalsSchema';
 import { ConflictDatum } from '@schemas/conflictSchemas';
 
 export const collections = {
-  covenants: defineCollection({ type: 'data', schema: Covenant }),
-  docs: defineCollection({ schema: docsSchema() }),
-  specialities: defineCollection({ type: 'data', schema: Speciality }),
-  skillbooks: defineCollection({ type: 'data', schema: Book }),
-  i18n: defineCollection({ type: 'data', schema: i18nSchema() }),
   art: defineCollection({ type: 'data', schema: artTreasureSchema }),
   blazons: defineCollection({ type: 'data', schema: BlazonSetSchema }),
-  generals: defineCollection({ type: 'data', schema: GeneralElement }),
+  covenants: defineCollection({ type: 'data', schema: Covenant }),
+  docs: defineCollection({ schema: docsSchema() }),
   generalConflictData: defineCollection({
     type: 'data',
     schema: ConflictDatum,
   }),
+  generals: defineCollection({ type: 'data', schema: GeneralElement }),
+  i18n: defineCollection({ type: 'data', schema: i18nSchema() }),
+  skillbooks: defineCollection({ type: 'data', schema: Book }),
+  specialities: defineCollection({ type: 'data', schema: Speciality }),
+  tools: defineCollection({ type: 'content', schema: docsSchema()})
 };

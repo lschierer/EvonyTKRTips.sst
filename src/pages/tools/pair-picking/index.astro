@@ -1,0 +1,34 @@
+---
+export const prerender = false;
+
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+
+import type { CollectionEntry } from 'astro:content';
+import { getEntry } from 'astro:content';
+
+const DEBUG = true;
+
+const entry = await getEntry('tools', 'pair-picking');
+
+if(entry === undefined || entry === null) {
+  if(DEBUG) {
+  console.log(`index not found`)
+  throw new Error('index not found');
+  } else {
+    return Astro.redirect('/404');
+  }
+}
+const { Content, headings } = await entry.render();
+---
+<StarlightPage
+  frontmatter={{
+    title: entry.data.title,
+    lastUpdated: entry.data.lastUpdated,
+    tableOfContents: entry.data.tableOfContents,
+  }}
+>
+  {(DEBUG && !prerender) && `Dynamic Template`}
+  {(DEBUG && prerender) && `Static Template`}
+
+  <Content />
+</StarlightPage>

@@ -17,7 +17,10 @@ import {
 
 const DEBUG = false;
 
-export const DisplayGeneralsMWRoutes = ['/generals/'];
+export const DisplayGeneralsMWRoutes = [
+  '/generals/',
+  '/tools/'
+];
 
 export const DisplayGeneralsMW = defineMiddleware(
   async ({ locals, url }, next) => {
