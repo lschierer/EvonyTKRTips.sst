@@ -19,6 +19,7 @@ export default tseslint.config(
       ".nx/**/*.js",
       "src/env.d.ts",
       "src/sst-env.d.ts",
+      "sst-env.d.ts",
       "src/**/*.js",
       "sst.config.ts",
       "astro.config.ts",
