@@ -4,17 +4,14 @@ import {
   AscendingLevels,
   Buff,
   type BuffType,
-  BuffParams,
   type BuffParamsType,
 } from '@schemas/baseSchemas';
 
 import {
-  Ascending,
   type AscendingType, type generalUseCaseType,
 } from '@schemas/generalsSchema.ts';
 
 import {
-  ExtendedGeneral,
   type ExtendedGeneralType,
 } from '@schemas/ExtendedGeneral';
 

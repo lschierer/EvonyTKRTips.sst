@@ -4,25 +4,22 @@ import {
   AscendingLevels,
   Buff,
   type BuffType,
-  BuffParams,
   type BuffParamsType,
 } from '@schemas/baseSchemas';
 
 import {
-  Ascending,
   type AscendingType, type generalUseCaseType,
 } from '@schemas/generalsSchema.ts';
 
 import {
-  ExtendedGeneral,
   type ExtendedGeneralType,
 } from '@schemas/ExtendedGeneral';
 
 import {type BuffFunctionInterface} from '@lib/RankingInterfaces';
 import type { AttributeMultipliersType } from '@schemas/EvAns.zod';
 
-const DEBUG_AES = false;
-const DEBUG = false;
+const DEBUG_AES = true;
+const DEBUG = true;
 
 function buffDetailsReducerLogic(tbf: BuffFunctionInterface, index: number, ab: AscendingType, eg: ExtendedGeneralType, actual:BuffType, bp: BuffParamsType, useCase: generalUseCaseType, am: AttributeMultipliersType) {
   let a3 = 0;
