@@ -1,6 +1,6 @@
 const DEBUG = false;
 const DEBUGT = false;
-const DEBUGL = true;
+const DEBUGL = false;
 
 import { type ColumnComponent, type Sorter, TabulatorFull as Tabulator } from 'tabulator-tables';
 import TabulatorStyles from 'tabulator-tables/dist/css/tabulator.css?inline';
@@ -120,7 +120,6 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
     };
 
   }
-
 
 
   handleMutation(): void {
@@ -320,7 +319,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       if (DEBUG) {
         console.log(`getData attempting to set data`);
       }
-      await this.grid.setData(this._DisplayGenerals).then( () => {
+      await this.grid.setData(this._DisplayGenerals).then(() => {
         if (DEBUG) {
           console.log(`getData setData then call`);
         }
@@ -351,7 +350,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
         if (DEBUGL) {
           console.log(`UpdateInvestmentAndGridData; with BuffParams & grid`);
         }
-        this._DisplayGenerals.forEach( (dg: GridData, index: number) => {
+        this._DisplayGenerals.forEach((dg: GridData, index: number) => {
           if (dg !== undefined && dg !== null) {
             if (DEBUGL) {
               console.log(`UpdateInvestmentAndGridData: before call to buffs ${index}`);
@@ -382,14 +381,14 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
           if (DEBUGL) {
             console.log(`UpdateInvestmentAndGridData ${this._DisplayGenerals.length - index} pending`);
           }
-          })
-          if(this.grid) {
-            await this.grid.setData(this._DisplayGenerals).then(() => {
-              if(DEBUGL) {
-                console.log(`set the entire _DisplayGenerals as a single lump`)
-              }
-            });
-          }
+        });
+        if (this.grid) {
+          await this.grid.setData(this._DisplayGenerals).then(() => {
+            if (DEBUGL) {
+              console.log(`set the entire _DisplayGenerals as a single lump`);
+            }
+          });
+        }
         const sorters = this.grid.getSorters();
         if (sorters.length > 0) {
           const ns: Sorter[] = sorters.map((s) => {
@@ -410,6 +409,8 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
   static AttackDetails = 'attackRank';
   static overallToughness = 'overallToughness';
   static ToughnessDetails = 'ToughnessRank';
+  static overallPreservation = 'overallPreservation';
+  static PreservationDetails = 'PreservationDetails';
 
   private renderGrid = (): void => {
 
@@ -482,11 +483,12 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
                   color: ['var(--sl-color-green)', 'var(--sl-color-blue)', 'var(--sl-color-yellow)', 'var(--sl-color-red)'],
                 },
               },
-              ]
+            ],
           },
           {
             title: 'Overall Attack Rank',
             field: DisplayGrid.overallAttack,
+            visible: false,
             mutator: (value: number, data: GridData) => {
               value = (data.Primary.PvPBuffDetails.attackRank.attackScore + data.Secondary.PvPBuffDetails.attackRank.attackScore);
               value += (data.Primary.PvPBuffDetails.attackRank.marchSizeScore + data.Secondary.PvPBuffDetails.attackRank.marchSizeScore);
@@ -498,112 +500,133 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
             },
           },
           {
-                title: 'Attack Rank',
-                field: DisplayGrid.AttackDetails,
-                columns: [
-                  {
-                    title: 'Attack Score',
-                    field: 'attackRank.attackScore',
-                    mutator: (value: number, data: GridData) => {
-                      value = (data.Primary.PvPBuffDetails.attackRank.attackScore + data.Secondary.PvPBuffDetails.attackRank.attackScore);
-                      return value;
-                    },
-                  },
-                  {
-                    title: 'March Score',
-                    field: 'attackRank.marchSizeScore',
-                    mutator: (value: number, data: GridData) => {
-                      value = (data.Primary.PvPBuffDetails.attackRank.marchSizeScore + data.Secondary.PvPBuffDetails.attackRank.marchSizeScore);
-                      return value;
-                    },
-                  },
-                  {
-                    title: 'Range Score',
-                    field: 'attackRank.rangeScore',
-                    mutator: (value: number, data: GridData) => {
-                      value = (data.Primary.PvPBuffDetails.attackRank.rangeScore + data.Secondary.PvPBuffDetails.attackRank.rangeScore);
-                      return value;
-                    },
-                    visible: false, //no current generals buff this, so until I handle skill books it adds nothing.
-                  },
-                  {
-                    title: 'Rally Score',
-                    field: 'attackRank.rallyScore',
-                    mutator: (value: number, data: GridData) => {
-                      value = (data.Primary.PvPBuffDetails.attackRank.rallyScore + data.Secondary.PvPBuffDetails.attackRank.rallyScore);
-                      return value;
-                    },
-                  },
-                  {
-                    title: 'DeHP Score',
-                    field: 'attackRank.DeHPScore',
-                    mutator: (value: number, data: GridData) => {
-                      value = (data.Primary.PvPBuffDetails.attackRank.DeHPScore + data.Secondary.PvPBuffDetails.attackRank.DeHPScore);
-                      return value;
-                    },
-                  },
-                  {
-                    title: 'DeDefense Score',
-                    field: 'attackRank.DeDefenseScore',
-                    mutator: (value: number, data: GridData) => {
-                      value = (data.Primary.PvPBuffDetails.attackRank.DeDefenseScore + data.Secondary.PvPBuffDetails.attackRank.DeDefenseScore);
-                      return value;
-                    },
-                  },
-                ],
+            title: 'Attack Rank',
+            field: DisplayGrid.AttackDetails,
+            columns: [
+              {
+                title: 'Attack Score',
+                field: 'attackRank.attackScore',
+                mutator: (value: number, data: GridData) => {
+                  value = (data.Primary.PvPBuffDetails.attackRank.attackScore + data.Secondary.PvPBuffDetails.attackRank.attackScore);
+                  return value;
+                },
               },
+              {
+                title: 'March Score',
+                field: 'attackRank.marchSizeScore',
+                mutator: (value: number, data: GridData) => {
+                  value = (data.Primary.PvPBuffDetails.attackRank.marchSizeScore + data.Secondary.PvPBuffDetails.attackRank.marchSizeScore);
+                  return value;
+                },
+              },
+              {
+                title: 'Range Score',
+                field: 'attackRank.rangeScore',
+                mutator: (value: number, data: GridData) => {
+                  value = (data.Primary.PvPBuffDetails.attackRank.rangeScore + data.Secondary.PvPBuffDetails.attackRank.rangeScore);
+                  return value;
+                },
+                //visible: false, //no current generals buff this, so until I handle skill books it adds nothing.
+              },
+              {
+                title: 'Rally Score',
+                field: 'attackRank.rallyScore',
+                mutator: (value: number, data: GridData) => {
+                  value = (data.Primary.PvPBuffDetails.attackRank.rallyScore + data.Secondary.PvPBuffDetails.attackRank.rallyScore);
+                  return value;
+                },
+              },
+              {
+                title: 'DeHP Score',
+                field: 'attackRank.DeHPScore',
+                mutator: (value: number, data: GridData) => {
+                  value = (data.Primary.PvPBuffDetails.attackRank.DeHPScore + data.Secondary.PvPBuffDetails.attackRank.DeHPScore);
+                  return value;
+                },
+              },
+              {
+                title: 'DeDefense Score',
+                field: 'attackRank.DeDefenseScore',
+                mutator: (value: number, data: GridData) => {
+                  value = (data.Primary.PvPBuffDetails.attackRank.DeDefenseScore + data.Secondary.PvPBuffDetails.attackRank.DeDefenseScore);
+                  return value;
+                },
+              },
+            ],
+          },
           {
-                title: 'Toughness Rank',
-                field: 'toughnessRank',
-                columns: [
-                  {
-                    title: 'HP Score',
-                    field: 'toughnessRank.HPScore',
-                    mutator: (value: number, data: GridData) => {
-                      value = (data.Primary.PvPBuffDetails.toughnessRank.HPScore + data.Secondary.PvPBuffDetails.toughnessRank.HPScore);
-                      return value;
-                    },
-                  },
-                  {
-                    title: 'Defense Score',
-                    field: 'toughnessRank.defenseScore',
-                    mutator: (value: number, data: GridData) => {
-                      value = (data.Primary.PvPBuffDetails.toughnessRank.defenseScore + data.Secondary.PvPBuffDetails.toughnessRank.defenseScore);
-                      return value;
-                    },
-                  },
-                  {
-                    title: 'DeAttack Score',
-                    field: 'toughnessRank.DeAttackScore',
-                    mutator: (value: number, data: GridData) => {
-                      value = (data.Primary.PvPBuffDetails.toughnessRank.DeAttackScore + data.Secondary.PvPBuffDetails.toughnessRank.DeAttackScore);
-                      return value;
-                    },
-                  },
-                ],
-              },
+            title: 'Overall Toughness Rank',
+            field: DisplayGrid.overallToughness,
+            visible: false,
+            mutator: (value: number, data: GridData) => {
+              value = (data.Primary.PvPBuffDetails.toughnessRank.HPScore + data.Secondary.PvPBuffDetails.toughnessRank.HPScore);
+              value += (data.Primary.PvPBuffDetails.toughnessRank.defenseScore + data.Secondary.PvPBuffDetails.toughnessRank.defenseScore);
+              value += (data.Primary.PvPBuffDetails.toughnessRank.DeAttackScore + data.Secondary.PvPBuffDetails.toughnessRank.DeAttackScore);
+              return value;
+            },
+          },
           {
-                title: 'Preservation Rank',
-                field: 'PreservationRank',
-                columns: [
-                  {
-                    title: 'Preservation Score',
-                    field: 'PreservationRank.PreservationScore',
-                    mutator: (value: number, data: GridData) => {
-                      value = (data.Primary.PvPBuffDetails.preservationRank.PreservationScore + data.Secondary.PvPBuffDetails.preservationRank.PreservationScore);
-                      return value;
-                    },
-                  },
-                  {
-                    title: 'Destabilization Score',
-                    field: 'PreservationRank.DebilitationScore',
-                    mutator: (value: number, data: GridData) => {
-                      value = (data.Primary.PvPBuffDetails.preservationRank.DebilitationScore + data.Secondary.PvPBuffDetails.preservationRank.DebilitationScore);
-                      return value;
-                    },
-                  },
-                ],
+            title: 'Toughness Rank',
+            field: DisplayGrid.ToughnessDetails,
+            columns: [
+              {
+                title: 'HP Score',
+                field: 'toughnessRank.HPScore',
+                mutator: (value: number, data: GridData) => {
+                  value = (data.Primary.PvPBuffDetails.toughnessRank.HPScore + data.Secondary.PvPBuffDetails.toughnessRank.HPScore);
+                  return value;
+                },
               },
+              {
+                title: 'Defense Score',
+                field: 'toughnessRank.defenseScore',
+                mutator: (value: number, data: GridData) => {
+                  value = (data.Primary.PvPBuffDetails.toughnessRank.defenseScore + data.Secondary.PvPBuffDetails.toughnessRank.defenseScore);
+                  return value;
+                },
+              },
+              {
+                title: 'DeAttack Score',
+                field: 'toughnessRank.DeAttackScore',
+                mutator: (value: number, data: GridData) => {
+                  value = (data.Primary.PvPBuffDetails.toughnessRank.DeAttackScore + data.Secondary.PvPBuffDetails.toughnessRank.DeAttackScore);
+                  return value;
+                },
+              },
+            ],
+          },
+          {
+            title: 'Overall Preservation Rank',
+            field: DisplayGrid.overallPreservation,
+            visible: false,
+            mutator: (value: number, data: GridData) => {
+              value = (data.Primary.PvPBuffDetails.preservationRank.PreservationScore + data.Secondary.PvPBuffDetails.preservationRank.PreservationScore);
+              value += (data.Primary.PvPBuffDetails.preservationRank.DebilitationScore + data.Secondary.PvPBuffDetails.preservationRank.DebilitationScore);
+              return value;
+            },
+          },
+          {
+            title: 'Preservation Rank',
+            field: DisplayGrid.PreservationDetails,
+            columns: [
+              {
+                title: 'Preservation Score',
+                field: 'PreservationRank.PreservationScore',
+                mutator: (value: number, data: GridData) => {
+                  value = (data.Primary.PvPBuffDetails.preservationRank.PreservationScore + data.Secondary.PvPBuffDetails.preservationRank.PreservationScore);
+                  return value;
+                },
+              },
+              {
+                title: 'Destabilization Score',
+                field: 'PreservationRank.DebilitationScore',
+                mutator: (value: number, data: GridData) => {
+                  value = (data.Primary.PvPBuffDetails.preservationRank.DebilitationScore + data.Secondary.PvPBuffDetails.preservationRank.DebilitationScore);
+                  return value;
+                },
+              },
+            ],
+          },
         ],
       });
       this.addEventListener('resize', () => {
@@ -618,6 +641,9 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
             return !f.localeCompare(DisplayGrid.overallAttack);
           });
           if (attack) {
+            if(DEBUGT) {
+              console.log(`calling toggle from tableBuilt event for attack`)
+            }
             this.colGroupToggle(null, attack);
           }
           const toughness = all.find((column) => {
@@ -625,7 +651,20 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
             return !f.localeCompare(DisplayGrid.overallToughness);
           });
           if (toughness) {
+            if(DEBUGT) {
+              console.log(`calling toggle from tableBuilt event for toughness`)
+            }
             this.colGroupToggle(null, toughness);
+          }
+          const preservation = all.find((column) => {
+            const f = column.getField();
+            return !f.localeCompare(DisplayGrid.overallPreservation);
+          });
+          if (preservation) {
+            if(DEBUGT) {
+              console.log(`calling toggle from tableBuilt event for toughness`)
+            }
+            this.colGroupToggle(null, preservation);
           }
         }
       });
@@ -640,42 +679,57 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
     if (c !== null && c !== undefined && all !== undefined) {
       const field = c.getField();
       let group: ColumnComponent | undefined;
-      if (!field.localeCompare(DisplayGrid.overallAttack)) {
-        c.toggle();
-        group = all.find((column) => {
-          const f = column.getField();
+      let column: ColumnComponent | undefined;
+      if (!field.localeCompare(DisplayGrid.overallAttack) || !field.localeCompare(DisplayGrid.AttackDetails)) {
+        if (DEBUGT) {
+          console.log(`matched attack columns`);
+        }
+        group = all.find((testC) => {
+          const f = testC.getField();
           return !f.localeCompare(DisplayGrid.AttackDetails);
         });
-      } else if(!field.localeCompare(DisplayGrid.overallToughness)) {
-        c.toggle();
-        group = all.find((column) => {
-          const f = column.getField();
+        column = all.find((testC) => {
+          const f = testC.getField();
+          return !f.localeCompare(DisplayGrid.overallAttack);
+        });
+      } else if (!field.localeCompare(DisplayGrid.overallToughness) || !field.localeCompare(DisplayGrid.ToughnessDetails)) {
+        if (DEBUGT) {
+          console.log(`matched Toughness columns`);
+        }
+        group = all.find((testC) => {
+          const f = testC.getField();
           return !f.localeCompare(DisplayGrid.ToughnessDetails);
         });
-      }else if(!field.localeCompare(DisplayGrid.AttackDetails)) {
-        group = c;
-        const single = all.find((column) => {
-          const f = column.getField();
-          return !f.localeCompare(DisplayGrid.overallAttack);
-        })
-        if(single) {
-          single.toggle();
-        }
-      } else if(!field.localeCompare(DisplayGrid.ToughnessDetails)) {
-        group = c;
-        const single = all.find((column) => {
-          const f = column.getField();
+        column = all.find((testC) => {
+          const f = testC.getField();
           return !f.localeCompare(DisplayGrid.overallToughness);
-        })
-        if (single) {
-          single.toggle();
+        });
+      } else if (!field.localeCompare(DisplayGrid.overallPreservation) || !field.localeCompare(DisplayGrid.PreservationDetails)) {
+        if (DEBUGT) {
+          console.log(`matched Preservation columns`);
+        }
+        group = all.find((testC) => {
+          const f = testC.getField();
+          return !f.localeCompare(DisplayGrid.PreservationDetails);
+        });
+        column = all.find((testC) => {
+          const f = testC.getField();
+          return !f.localeCompare(DisplayGrid.overallPreservation);
+        });
+      }
+
+      if (group !== undefined) {
+        group.toggle();
+      } else {
+        if (DEBUGT) {
+          console.log(`failed to find group to unhide for ${field}`);
         }
       }
-      if (group !== undefined) {
-        group.show();
+      if (column !== undefined) {
+        column.toggle();
       } else {
-        if (DEBUG) {
-          console.log(`failed to find group to unhide`);
+        if (DEBUGT) {
+          console.log(`failed to find column to unhide for ${field}`);
         }
       }
       this.grid?.redraw();
