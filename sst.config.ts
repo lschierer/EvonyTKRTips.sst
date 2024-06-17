@@ -19,11 +19,22 @@ export default $config({
     };
   },
   async run() {
-    new sst.aws.Astro("EvonyTKRTips",{
-      domain: {
-        name: $app.stage === 'production' ? "evonytkrtips.net" : `${$app?.stage}.evonytkrtips.net`,
-        aliases: $app?.stage === 'production' ? ["www.evonytkrtips.net"] : [`www.${$app?.stage}.evonytkrtips.net`],
+    const EvonyVpc = new sst.aws.Vpc('EvonyVpc');
+
+    const EvonyCluster = new sst.aws.Cluster("EvonyTKRTips",{
+      vpc: EvonyVpc,
+    });
+
+    EvonyCluster.addService('EvonyService', {
+      public: {
+        ports: [
+          {
+            listen: '4321/http'
+          },
+        ],
       },
     });
+
+
   },
 });

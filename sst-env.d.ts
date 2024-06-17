@@ -3,8 +3,8 @@
 import "sst"
 declare module "sst" {
   export interface Resource {
-    EvonyTKRTips: {
-      type: "sst.aws.Astro"
+    EvonyService: {
+      type: "sst.aws.Service"
       url: string
     }
   }

@@ -5,21 +5,27 @@ import lit from "@astrojs/lit";
 import { sidebar } from './src/sidebar.ts';
 import circleDependency from 'vite-plugin-circular-dependency'
 
-import aws from "astro-sst";
+//import aws from "astro-sst";
+import node from '@astrojs/node';
+
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://evonytkrtips.net',
   output: "hybrid",
-  adapter: aws({
+  /*adapter: aws({
     //responseMode: "stream",
+  }),*/
+  adapter: node({
+    mode: 'standalone',
   }),
   devToolbar: {
     enabled: false
   },
   redirects: {
-    '/generals/pair-picking/cavalry/': '/generals/pair-picking/mounted/',
-    '/generals/pair-picking/monster-hunters/': '/generals/pair-picking/monsters/',
+    '/generals/pair-picking/cavalry/': '/tools/pair-picking/mounted/',
+    '/generals/pair-picking/monster-hunters/': '/tools/pair-picking/monsters/',
+    '/generals/pair-picking/[Specialist]': '/tools/pair-picking/[Specialist]/',
   },
   prefetch: {
     prefetchAll: false,
