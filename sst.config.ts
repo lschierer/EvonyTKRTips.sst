@@ -1,6 +1,7 @@
 /// <reference path="./.sst/platform/config.d.ts" />
-
 import { HostedZone } from "aws-cdk-lib/aws-route53";
+import * as pulumi from "@pulumi/pulumi";
+import { Subnet } from 'aws-cdk-lib/aws-ec2';
 
 
 export default $config({
@@ -13,28 +14,35 @@ export default $config({
       home: "aws",
       providers: {
         aws: {
-          region: "us-east-2"
-        }
+          region: "us-east-2",
+        },
+        docker: true,
+        pulumi: true,
+        awsx: {
+          region: "us-east-2",
+        },
       },
     };
   },
   async run() {
-    const EvonyVpc = new sst.aws.Vpc('EvonyVpc');
 
-    const EvonyCluster = new sst.aws.Cluster("EvonyTKRTips",{
-      vpc: EvonyVpc,
+    const vpc = new sst.aws.Vpc("EvonyVpc", {
+      transform: {
+        vpc: {
+          cidrBlock: "10.0.0.0/16",
+          assignGeneratedIpv6CidrBlock: true,
+        }
+      }
     });
 
-    EvonyCluster.addService('EvonyService', {
+    const cluster = new sst.aws.Cluster("EvonyCluster", { vpc });
+
+    cluster.addService("EvonyService", {
       public: {
         ports: [
-          {
-            listen: '4321/http'
-          },
+          { listen: "80/http" },
         ],
       },
     });
-
-
   },
 });
