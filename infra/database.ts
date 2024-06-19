@@ -1,10 +1,10 @@
-export const database = new sst.aws.Dynamo("Database", {
+export const database = new sst.aws.Dynamo('Database', {
   fields: {
-    PK: "string",
-    SK: "string",
+    PK: 'string',
+    SK: 'string',
   },
   primaryIndex: {
-    hashKey: "PK",
-    rangeKey: "SK",
+    hashKey: 'PK',
+    rangeKey: 'SK',
   },
 });
