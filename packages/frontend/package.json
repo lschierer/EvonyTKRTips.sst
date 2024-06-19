@@ -9,16 +9,30 @@
   "devDependencies": {
     "@custom-elements-manifest/analyzer": "^0.10.2",
     "@open-wc/testing": "^4.0.0",
-    "lit-analyzer": "^2.0.3",
+    "@cloudscape-design/browser-test-tools": "^3.0.0",
+    "@types/jest": "^28.1.8",
+    "@types/lodash": "^4.14.184",
+    "@types/node": "^16.18.11",
+    "@types/react": "^18.0.26",
+    "@types/react-dom": "^18.0.10",
     "vite": "^5.2.8"
   },
   "dependencies": {
     "@11ty/eleventy": "^2.0.1",
-    "@lit-labs/ssr": "^3.2.2",
-    "@lit/context": "^1.1.2",
-    "@lit/task": "^1.0.1",
-    "lit": "^3.1.4",
-    "require-esm-in-cjs": "^0.1.0",
-    "ts-lit-plugin": "^2.0.2"
+    "@cloudscape-design/components": "^3.0.662",
+    "@cloudscape-design/global-styles": "^1.0.27",
+    "@cloudscape-design/board-components": "^3.0.0",
+    "@cloudscape-design/code-view": "^3.0.5",
+    "@cloudscape-design/collection-hooks": "^1.0.0",
+    "@cloudscape-design/component-toolkit": "^1.0.0-beta",
+    "@cloudscape-design/design-tokens": "^3.0.0",
+    "@cloudscape-design/test-utils-core": "^1.0.0",
+    "@cloudscape-design/theming-runtime": "^1.0.0",
+    "lodash": "^4.17.21",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "sass": "^1.54.5",
+    "sass-loader": "^13.0.2",
+    "require-esm-in-cjs": "^0.1.0"
   }
 }
