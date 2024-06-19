@@ -5,20 +5,20 @@ import lit from "@astrojs/lit";
 import { sidebar } from './src/sidebar.ts';
 import circleDependency from 'vite-plugin-circular-dependency'
 
-//import aws from "astro-sst";
-import node from '@astrojs/node';
+import aws from "astro-sst";
+//import node from '@astrojs/node';
 
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://evonytkrtips.net',
   output: "hybrid",
-  /*adapter: aws({
+  adapter: aws({
     //responseMode: "stream",
-  }),*/
-  adapter: node({
-    mode: 'standalone',
   }),
+  /*adapter: node({
+    mode: 'standalone',
+  }),*/
   devToolbar: {
     enabled: false
   },

@@ -21,5 +21,5 @@ export const collections = {
   i18n: defineCollection({ type: 'data', schema: i18nSchema() }),
   skillbooks: defineCollection({ type: 'data', schema: Book }),
   specialities: defineCollection({ type: 'data', schema: Speciality }),
-  tools: defineCollection({ type: 'content', schema: docsSchema()})
+  tools: defineCollection({ schema: docsSchema()})
 };
