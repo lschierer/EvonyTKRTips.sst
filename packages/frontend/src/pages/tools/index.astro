@@ -1,0 +1,12 @@
+---
+import DirectoryList from '@components/DirectoryList.astro'
+import type { ComponentProps } from 'astro/types';
+type DirectoryListProps  = ComponentProps<DirectoryList>;
+
+const DP: DirectoryListProps = {
+  collection: 'tools',
+  recurse: true
+}
+
+---
+<DirectoryList {DP} />

@@ -1,0 +1,113 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import { LinkCard, CardGrid } from '@astrojs/starlight/components';
+
+interface Props {
+  collection?: string;
+  dir?: string;
+  recurse?: string;
+}
+let { collection, dir, recurse }: Props = Astro.props;
+
+if(collection === null || collection === undefined) {
+  collection = 'docs'
+}
+
+const thisC: string = collection;
+
+type docsContent = CollectionEntry<`${thisC}`>;
+
+const DEBUG = false;
+
+let slug: string = Astro.params.slug ?? '';
+const compstring: string = dir ?? slug ?? '';
+if (DEBUG) console.log(`compstring is ${compstring}`);
+
+const recurseComp: string = recurse ?? 'false';
+
+let count2 = 0;
+const allPages: CollectionEntry<`${thisC}`>[] = await getCollection(`${thisC}`);
+count2 = allPages.length;
+
+let searchPages: CollectionEntry<`${thisC}`>[] = allPages.filter(
+  (p: docsContent) => {
+    //using undefined because I do not know how to get the actual locale for the browser reliably.
+    if (p === undefined) return false;
+    else {
+      const c: docsContent = p;
+      if (!c.slug.includes(compstring)) {
+        return false;
+      } else {
+        if (!recurseComp.toLocaleLowerCase().localeCompare('false')) {
+          if (
+            p.slug.localeCompare(compstring, undefined, { sensitivity: 'base' })
+          ) {
+            return p.slug
+              .toLocaleLowerCase()
+              .startsWith(dir ? dir : compstring);
+          }
+        } else {
+          if (
+            p.slug.localeCompare(compstring, undefined, { sensitivity: 'base' })
+          ) {
+            if (p.slug.toLocaleLowerCase().startsWith(compstring)) {
+              let base: string = compstring;
+              let pComp: string = p.slug;
+              while (
+                base.length > 0 &&
+                pComp.toLocaleLowerCase().startsWith(base)
+              ) {
+                base = base.substring(1);
+                pComp = pComp.substring(1);
+              }
+              if (pComp.lastIndexOf('/') !== 0) {
+                if (DEBUG) console.log(`includes / pComp is ${pComp}`);
+                return true;
+              } else {
+                return false;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+);
+
+searchPages = searchPages.sort((a: docsContent, b: docsContent) => {
+  if (a.data.sidebar.order && b.data.sidebar.order) {
+    return a.data.sidebar.order - b.data.sidebar.order;
+  } else if (a.data.sidebar.order) {
+    return 0 - a.data.sidebar.order;
+  } else if (b.data.sidebar.order) {
+    return b.data.sidebar.order - 0;
+  } else {
+    return a.data.title.localeCompare(b.data.title, undefined, {
+      sensitivity: 'base',
+    });
+  }
+});
+
+const count = searchPages.length;
+const refTarget = dir ?? slug;
+
+let commentString = '<!--\n';
+commentString = `${commentString}count is ${count}\n`;
+commentString = `${commentString}count2 is ${count2}\n`;
+commentString = `${commentString}slug is ${slug}\n`;
+commentString = `${commentString}refTarget is ${refTarget}`;
+commentString = `${commentString}-->`;
+---
+
+<Fragment set:html={commentString} />
+
+<CardGrid stagger>
+  {
+    searchPages.map((p: docsContent) => {
+      const slug: string = '/'.concat(p.slug);
+      const title = p.data.title;
+      const desc = p.data.description;
+      return <LinkCard title={title} description={desc} href={slug} />;
+    })
+  }
+</CardGrid>
