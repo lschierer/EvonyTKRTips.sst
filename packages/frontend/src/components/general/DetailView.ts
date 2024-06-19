@@ -1,6 +1,6 @@
 const DEBUG = true;
 
-import { customElement,  state } from 'lit/decorators.js';
+import { customElement, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { type PropertyValues } from 'lit';
 
@@ -26,20 +26,20 @@ import {
   type BuffParamsType,
   qualityColor,
   type BuffType,
-  UnitSchema, CovenantAttributeCategory,
+  UnitSchema,
+  CovenantAttributeCategory,
 } from '@schemas/baseSchemas';
 
-import {
-  Display,
-
-} from '@schemas/generalsSchema';
+import { Display } from '@schemas/generalsSchema';
 
 import { ExtendedGeneralStatus } from '@schemas/ExtendedGeneral';
 
 import { BaseGeneral } from './BaseGeneral';
 
-import { PvPBuffDetails, PvPDetail } from './buffComputers/TKRTipsRanking/PvPDetail';
-
+import {
+  PvPBuffDetails,
+  PvPDetail,
+} from './buffComputers/TKRTipsRanking/PvPDetail';
 
 @customElement('detail-view')
 export class DetailView extends SizedMixin(BaseGeneral, {
@@ -85,11 +85,11 @@ export class DetailView extends SizedMixin(BaseGeneral, {
     beast: true,
   };
 
-
-
-  protected async willUpdate (_changedProperties: PropertyValues): Promise<void> {
-    if(DEBUG) {
-      console.log(`DetailView willUpdate`)
+  protected async willUpdate(
+    _changedProperties: PropertyValues,
+  ): Promise<void> {
+    if (DEBUG) {
+      console.log(`DetailView willUpdate`);
     }
     await super.willUpdate(_changedProperties);
     if (_changedProperties.has('general')) {
@@ -102,12 +102,12 @@ export class DetailView extends SizedMixin(BaseGeneral, {
           InComplete = false;
           const result = this.GeneralBuffs(
             Display.enum.summary,
-            DetailView.InvestmentLevel
+            DetailView.InvestmentLevel,
           );
           if (result) {
             this.EvAnsRanking =
               this.computedBuffs.get(
-                BaseGeneral.InvestmentOptions2Key(DetailView.InvestmentLevel)
+                BaseGeneral.InvestmentOptions2Key(DetailView.InvestmentLevel),
               )?.EvAnsRanking ?? -7;
           }
         } else {
@@ -239,61 +239,92 @@ export class DetailView extends SizedMixin(BaseGeneral, {
     if (super.styles !== undefined && Array.isArray(super.styles)) {
       return [...super.styles, SpectrumIconCSS, SpectrumTableCSS, localStyle];
     } else {
-      return [SpectrumTokensCSS, SpectrumTypographyCSS, SpectrumIconCSS, SpectrumTableCSS, localStyle];
+      return [
+        SpectrumTokensCSS,
+        SpectrumTypographyCSS,
+        SpectrumIconCSS,
+        SpectrumTableCSS,
+        localStyle,
+      ];
     }
   }
 
   private renderStars() {
     let starsHtml = html``;
-    if(this.general?.stars !== null && this.general?.stars !== undefined) {
+    if (this.general?.stars !== null && this.general?.stars !== undefined) {
       for (let i = 1; i <= 5; i++) {
         let starColor = 'var(--spectrum-yellow-400)';
-        if (!AscendingLevels.enum['5red'].localeCompare((this.general.stars))) {
+        if (!AscendingLevels.enum['5red'].localeCompare(this.general.stars)) {
           starColor = 'var(--spectrum-red-900)';
-        } else if (!AscendingLevels.enum['4red'].localeCompare((this.general.stars)) && i <= 4) {
+        } else if (
+          !AscendingLevels.enum['4red'].localeCompare(this.general.stars) &&
+          i <= 4
+        ) {
           starColor = 'var(--spectrum-red-900)';
-        } else if (!AscendingLevels.enum['3red'].localeCompare((this.general.stars)) && i <= 3) {
+        } else if (
+          !AscendingLevels.enum['3red'].localeCompare(this.general.stars) &&
+          i <= 3
+        ) {
           starColor = 'var(--spectrum-red-900)';
-        } else if (!AscendingLevels.enum['2red'].localeCompare((this.general.stars)) && i <= 2) {
+        } else if (
+          !AscendingLevels.enum['2red'].localeCompare(this.general.stars) &&
+          i <= 2
+        ) {
           starColor = 'var(--spectrum-red-900)';
-        } else if (!AscendingLevels.enum['1red'].localeCompare((this.general.stars)) && i <= 1) {
+        } else if (
+          !AscendingLevels.enum['1red'].localeCompare(this.general.stars) &&
+          i <= 1
+        ) {
           starColor = 'var(--spectrum-red-900)';
-        } else if (!AscendingLevels.enum['5purple'].localeCompare((this.general.stars))) {
+        } else if (
+          !AscendingLevels.enum['5purple'].localeCompare(this.general.stars)
+        ) {
           starColor = 'var(--spectrum-purple-900)';
-        } else if (!AscendingLevels.enum['4purple'].localeCompare((this.general.stars)) && i <= 4) {
+        } else if (
+          !AscendingLevels.enum['4purple'].localeCompare(this.general.stars) &&
+          i <= 4
+        ) {
           starColor = 'var(--spectrum-purple-900)';
-        } else if (!AscendingLevels.enum['3purple'].localeCompare((this.general.stars)) && i <= 3) {
+        } else if (
+          !AscendingLevels.enum['3purple'].localeCompare(this.general.stars) &&
+          i <= 3
+        ) {
           starColor = 'var(--spectrum-purple-900)';
-        } else if (!AscendingLevels.enum['2purple'].localeCompare((this.general.stars)) && i <= 2) {
+        } else if (
+          !AscendingLevels.enum['2purple'].localeCompare(this.general.stars) &&
+          i <= 2
+        ) {
           starColor = 'var(--spectrum-purple-900)';
-        } else if (!AscendingLevels.enum['1purple'].localeCompare((this.general.stars)) && i <= 1) {
+        } else if (
+          !AscendingLevels.enum['1purple'].localeCompare(this.general.stars) &&
+          i <= 1
+        ) {
           starColor = 'var(--spectrum-purple-900)';
         }
         starsHtml = html`${starsHtml}
-      <iconify-icon
-        style="color: ${starColor}"
-        icon="mdi:star"
-      ></iconify-icon>`;
+          <iconify-icon
+            style="color: ${starColor}"
+            icon="mdi:star"
+          ></iconify-icon>`;
       }
     }
     return starsHtml;
   }
 
   private renderBasicStats() {
-    if(this.general ) {
+    if (this.general) {
       this.ScoreDetails = PvPDetail(
         this.general,
         DetailView.InvestmentLevel,
         this.useCase,
         Display.enum.primary,
-      )
+      );
     }
 
     let debugHTML = html``;
     if (DEBUG) {
-
       debugHTML = html`
-        TKRTips PvPDetail:<br/>
+        TKRTips PvPDetail:<br />
         Attack Rank :<br />
         &mdash;Attack: ${this.ScoreDetails.attackRank.attackScore}<br />
         &mdash;March Size: ${this.ScoreDetails.attackRank.marchSizeScore}<br />
@@ -305,39 +336,40 @@ export class DetailView extends SizedMixin(BaseGeneral, {
         &mdash;Defense: ${this.ScoreDetails.toughnessRank.defenseScore}<br />
         &mdash;DeAttack: ${this.ScoreDetails.toughnessRank.DeAttackScore}<br />
         Preservation Rank:<br />
-        &mdash;Preservation: ${this.ScoreDetails.preservationRank.PreservationScore}<br />
-        &mdash;Debilitation: ${this.ScoreDetails.preservationRank.DebilitationScore}<br />
+        &mdash;Preservation:
+        ${this.ScoreDetails.preservationRank.PreservationScore}<br />
+        &mdash;Debilitation:
+        ${this.ScoreDetails.preservationRank.DebilitationScore}<br />
         <br />
       `;
 
-      debugHTML = html`${debugHTML}<br/>
+      debugHTML = html`${debugHTML}<br />
         Summary EvAns:
         ${this.computedBuffs.get(
-          BaseGeneral.InvestmentOptions2Key(DetailView.InvestmentLevel)
+          BaseGeneral.InvestmentOptions2Key(DetailView.InvestmentLevel),
         )?.EvAnsRanking}<br />
         Summary Attack:
         ${this.computedBuffs.get(
-          BaseGeneral.InvestmentOptions2Key(DetailView.InvestmentLevel)
+          BaseGeneral.InvestmentOptions2Key(DetailView.InvestmentLevel),
         )?.AttackRanking}<br />
         Summary Tough:
         ${this.computedBuffs.get(
-          BaseGeneral.InvestmentOptions2Key(DetailView.InvestmentLevel)
-        )?.ToughnessRanking}<br />
-      `;
+          BaseGeneral.InvestmentOptions2Key(DetailView.InvestmentLevel),
+        )?.ToughnessRanking}<br /> `;
       this.GeneralBuffs(Display.enum.primary, DetailView.InvestmentLevel);
       debugHTML = html`
         ${debugHTML}<br />
         Primary EvAns:
         ${this.computedBuffs.get(
-          BaseGeneral.InvestmentOptions2Key(DetailView.InvestmentLevel)
+          BaseGeneral.InvestmentOptions2Key(DetailView.InvestmentLevel),
         )?.EvAnsRanking}<br />
         Primary Attack:
         ${this.computedBuffs.get(
-          BaseGeneral.InvestmentOptions2Key(DetailView.InvestmentLevel)
+          BaseGeneral.InvestmentOptions2Key(DetailView.InvestmentLevel),
         )?.AttackRanking}<br />
         Primary Tough:
         ${this.computedBuffs.get(
-          BaseGeneral.InvestmentOptions2Key(DetailView.InvestmentLevel)
+          BaseGeneral.InvestmentOptions2Key(DetailView.InvestmentLevel),
         )?.ToughnessRanking}<br />
       `;
       this.GeneralBuffs(Display.enum.secondary, DetailView.InvestmentLevel);
@@ -345,17 +377,16 @@ export class DetailView extends SizedMixin(BaseGeneral, {
         ${debugHTML}<br />
         Assistant EvAns:
         ${this.computedBuffs.get(
-          BaseGeneral.InvestmentOptions2Key(DetailView.InvestmentLevel)
+          BaseGeneral.InvestmentOptions2Key(DetailView.InvestmentLevel),
         )?.EvAnsRanking}<br />
         Assistant Attack:
         ${this.computedBuffs.get(
-          BaseGeneral.InvestmentOptions2Key(DetailView.InvestmentLevel)
+          BaseGeneral.InvestmentOptions2Key(DetailView.InvestmentLevel),
         )?.AttackRanking}<br />
         Assistant Tough:
         ${this.computedBuffs.get(
-          BaseGeneral.InvestmentOptions2Key(DetailView.InvestmentLevel)
+          BaseGeneral.InvestmentOptions2Key(DetailView.InvestmentLevel),
         )?.ToughnessRanking}<br />
-        
       `;
     }
     return html`
@@ -380,7 +411,7 @@ export class DetailView extends SizedMixin(BaseGeneral, {
             ><strong>Total Before Ascending:</strong> ${this.general
               ? Math.floor(
                   this.general.leadership +
-                    this.general.leadership_increment * 45
+                    this.general.leadership_increment * 45,
                 )
               : 0}</span
           ><br />
@@ -389,7 +420,7 @@ export class DetailView extends SizedMixin(BaseGeneral, {
               ? Math.floor(
                   50 +
                     this.general.leadership +
-                    this.general.leadership_increment * 45
+                    this.general.leadership_increment * 45,
                 )
               : 0}</span
           ><br />
@@ -409,14 +440,14 @@ export class DetailView extends SizedMixin(BaseGeneral, {
           <span class="spectrum-Body spectrum-Body--sizeS"
             ><strong>Total Before Ascending:</strong> ${this.general
               ? Math.floor(
-                  this.general.attack + this.general.attack_increment * 45
+                  this.general.attack + this.general.attack_increment * 45,
                 )
               : 0}</span
           ><br />
           <span class="spectrum-Body spectrum-Body--sizeS"
             ><strong>Total with Ascending:</strong> ${this.general
               ? Math.floor(
-                  50 + this.general.attack + this.general.attack_increment * 45
+                  50 + this.general.attack + this.general.attack_increment * 45,
                 )
               : 0}</span
           ><br />
@@ -435,7 +466,7 @@ export class DetailView extends SizedMixin(BaseGeneral, {
             <span class="spectrum-Body spectrum-Body--sizeS"
               ><strong>Total Before Ascending:</strong> ${this.general
                 ? Math.floor(
-                    this.general.defense + this.general.defense_increment * 45
+                    this.general.defense + this.general.defense_increment * 45,
                   )
                 : 0}</span
             ><br />
@@ -444,7 +475,7 @@ export class DetailView extends SizedMixin(BaseGeneral, {
                 ? Math.floor(
                     50 +
                       this.general.defense +
-                      this.general.defense_increment * 45
+                      this.general.defense_increment * 45,
                   )
                 : 0}</span
             ><br />
@@ -464,7 +495,8 @@ export class DetailView extends SizedMixin(BaseGeneral, {
             <span class="spectrum-Body spectrum-Body--sizeS"
               ><strong>Total Before Ascending:</strong> ${this.general
                 ? Math.floor(
-                    this.general.politics + this.general.politics_increment * 45
+                    this.general.politics +
+                      this.general.politics_increment * 45,
                   )
                 : 0}</span
             ><br />
@@ -473,7 +505,7 @@ export class DetailView extends SizedMixin(BaseGeneral, {
                 ? Math.floor(
                     50 +
                       this.general.politics +
-                      this.general.politics_increment * 45
+                      this.general.politics_increment * 45,
                   )
                 : 0}</span
             ><br />
@@ -495,7 +527,7 @@ export class DetailView extends SizedMixin(BaseGeneral, {
     } else {
       if (DEBUG) {
         console.log(
-          `renderBooks for ${this.general?.name}; ${this.general.books.length} Books`
+          `renderBooks for ${this.general?.name}; ${this.general.books.length} Books`,
         );
       }
 
@@ -507,7 +539,7 @@ export class DetailView extends SizedMixin(BaseGeneral, {
               ${b.class !== 'all' ? b.class : 'all troops '}
               ${b.attribute ? b.attribute.replaceAll(/_/g, ' ') : ''}
               ${b.value!.number}${!b.value!.unit.localeCompare(
-                UnitSchema.enum.percentage
+                UnitSchema.enum.percentage,
               )
                 ? '%'
                 : ''}
@@ -545,7 +577,7 @@ export class DetailView extends SizedMixin(BaseGeneral, {
     } else {
       if (DEBUG) {
         console.log(
-          `renderSpecialities for ${this.general?.name}; ${this.general.specialities.length} Specialities`
+          `renderSpecialities for ${this.general?.name}; ${this.general.specialities.length} Specialities`,
         );
       }
 
@@ -569,7 +601,7 @@ export class DetailView extends SizedMixin(BaseGeneral, {
                 ${b.class !== 'all' ? b.class : 'all troops '}
                 ${b.attribute ? b.attribute.replaceAll(/_/g, ' ') : ''}
                 ${b.value!.number}${!b.value!.unit.localeCompare(
-                  UnitSchema.enum.percentage
+                  UnitSchema.enum.percentage,
                 )
                   ? '%'
                   : ''}
@@ -628,7 +660,7 @@ export class DetailView extends SizedMixin(BaseGeneral, {
       } else {
         if (DEBUG) {
           console.log(
-            `renderAscending for ${this.general?.name}; ${this.general.ascending?.length ?? 0} Ascending Attributes`
+            `renderAscending for ${this.general?.name}; ${this.general.ascending?.length ?? 0} Ascending Attributes`,
           );
         }
 
@@ -651,7 +683,7 @@ export class DetailView extends SizedMixin(BaseGeneral, {
                 ${b.class !== 'all' ? b.class : 'all troops '}
                 ${b.attribute ? b.attribute.replaceAll(/_/g, ' ') : ''}
                 ${b.value!.number}${!b.value!.unit.localeCompare(
-                  UnitSchema.enum.percentage
+                  UnitSchema.enum.percentage,
                 )
                   ? '%'
                   : ''}

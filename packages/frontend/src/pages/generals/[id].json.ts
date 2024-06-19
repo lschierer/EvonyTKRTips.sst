@@ -1,7 +1,6 @@
 import {
   type CovenantAttributeType,
   type GeneralClassType,
-
 } from '@schemas/generalsSchema';
 import {
   type APIRoute,
@@ -9,7 +8,7 @@ import {
   type InferGetStaticPropsType,
 } from 'astro';
 import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
-import { type ConflictDatum} from '@schemas/conflictSchemas';
+import { type ConflictDatum } from '@schemas/conflictSchemas';
 
 import {
   ExtendedGeneral,
@@ -45,9 +44,11 @@ export const GET: APIRoute = async ({ params, locals }) => {
     }
     console.log(`id is ${id}, params were ${JSON.stringify(params)}`);
 
-    const entry: CollectionEntry<'generals'> | undefined = await getEntry('generals', id);
+    const entry: CollectionEntry<'generals'> | undefined = await getEntry(
+      'generals',
+      id,
+    );
     if (entry !== null && entry !== undefined) {
-       
       const gc: GeneralClassType = entry.data.general;
       const eg: ExtendedGeneralType = {
         name: gc.name,
@@ -72,27 +73,27 @@ export const GET: APIRoute = async ({ params, locals }) => {
       gc.books &&
         (await Promise.all(
           gc.books.map(async (gb) => {
-            const gbe: CollectionEntry<'skillBooks'> | undefined = await getEntry('skillBooks', gb);
+            const gbe: CollectionEntry<'skillBooks'> | undefined =
+              await getEntry('skillBooks', gb);
             if (gbe !== null && gbe !== undefined) {
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
               eg.books.push(gbe.data);
             }
-          })
+          }),
         ));
       gc.specialities &&
         (await Promise.all(
           gc.specialities.map(async (gs) => {
-            const gse: CollectionEntry<'specialities'> | undefined = await getEntry('specialities', gs);
+            const gse: CollectionEntry<'specialities'> | undefined =
+              await getEntry('specialities', gs);
             if (gse !== null && gse !== undefined) {
-               
               eg.specialities.push(gse.data);
             }
-          })
+          }),
         ));
-      const v = ExtendedGeneral.safeParse(eg)
-      if(v.success){
-        if(DEBUG) {
-          console.log(`valid parse before response`)
+      const v = ExtendedGeneral.safeParse(eg);
+      if (v.success) {
+        if (DEBUG) {
+          console.log(`valid parse before response`);
         }
         return new Response(JSON.stringify(v.data), {
           status: 200,
@@ -101,15 +102,14 @@ export const GET: APIRoute = async ({ params, locals }) => {
           },
         });
       } else {
-        if(DEBUG) {
-          console.log(v.error.message)
+        if (DEBUG) {
+          console.log(v.error.message);
         }
         return new Response(null, {
           status: 404,
-          statusText: 'Invalid Build'
-        })
+          statusText: 'Invalid Build',
+        });
       }
-
     }
   }
   return new Response(null, {

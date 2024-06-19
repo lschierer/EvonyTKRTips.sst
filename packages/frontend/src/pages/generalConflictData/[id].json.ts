@@ -26,19 +26,20 @@ type Props = InferGetStaticPropsType<typeof getStaticPaths>; // eslint-disable-l
 export const GET: APIRoute = async ({ params }) => {
   const id = params.id;
   if (id !== undefined && id !== null) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const collectionArray: CollectionEntry<'generalConflictData'>[] =
-      await getCollection('generalConflictData', ({ data }: CollectionEntry<'generalConflictData'>) => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        const conflcitDatum: ConflictDatum = data;
-        const c = Object.values(conflcitDatum.members).flat();
-        if (Array.isArray(conflcitDatum.others)) {
-          c.push(...Object.values(conflcitDatum.others).flat());
-        }
-        if (c.includes(id)) {
-          return true;
-        }
-      });
+      await getCollection(
+        'generalConflictData',
+        ({ data }: CollectionEntry<'generalConflictData'>) => {
+          const conflcitDatum: ConflictDatum = data;
+          const c = Object.values(conflcitDatum.members).flat();
+          if (Array.isArray(conflcitDatum.others)) {
+            c.push(...Object.values(conflcitDatum.others).flat());
+          }
+          if (c.includes(id)) {
+            return true;
+          }
+        },
+      );
 
     if (collectionArray !== null && collectionArray !== undefined) {
       const result = collectionArray.map((ca) => {

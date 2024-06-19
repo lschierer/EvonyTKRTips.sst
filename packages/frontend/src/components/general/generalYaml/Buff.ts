@@ -161,7 +161,7 @@ export class GeneralBuffController implements ReactiveController {
             getValue(fieldLabel.concat('_attribute'));
           if (attribute === undefined || attribute === null) {
             console.log(
-              `${exportable}\n${initialBlanks}- attribute: value pending`
+              `${exportable}\n${initialBlanks}- attribute: value pending`,
             );
           } else {
             exportable = `${exportable}\n${initialBlanks}  - attribute: ${attribute}`;
@@ -172,7 +172,7 @@ export class GeneralBuffController implements ReactiveController {
             getValue(condition_label);
           if (condition === undefined || condition === null) {
             console.log(
-              `${exportable}\n${initialBlanks}  condition: value pending`
+              `${exportable}\n${initialBlanks}  condition: value pending`,
             );
           } else {
             if (condition.toLocaleString().localeCompare('always')) {
@@ -181,28 +181,28 @@ export class GeneralBuffController implements ReactiveController {
           }
 
           const tclass: number | string | boolean | null | undefined = getValue(
-            fieldLabel.concat('_class')
+            fieldLabel.concat('_class'),
           );
           if (tclass === undefined || tclass === null) {
             console.log(
-              `${exportable}\n${initialBlanks}  class: value pending`
+              `${exportable}\n${initialBlanks}  class: value pending`,
             );
           } else if (tclass !== 'all' && tclass !== 'none') {
             exportable = `${exportable}\n${initialBlanks}    class: ${tclass}`;
           }
 
           const tvalue: number | string | boolean | null | undefined = getValue(
-            fieldLabel.concat('_valueN')
+            fieldLabel.concat('_valueN'),
           );
           if (tvalue === undefined || tvalue === null) {
             console.log(
-              `${exportable}\n${initialBlanks}  value: value pending`
+              `${exportable}\n${initialBlanks}  value: value pending`,
             );
           } else {
             exportable = `${exportable}\n${initialBlanks}    value:`;
             exportable = `${exportable}\n${initialBlanks}      number: ${tvalue}`;
             let tcheck: number | string | boolean | null | undefined = getValue(
-              fieldLabel.concat('_valueU')
+              fieldLabel.concat('_valueU'),
             );
             if (tcheck === undefined || tcheck === 'percentage') {
               tcheck = 'percentage';

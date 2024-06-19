@@ -1,6 +1,5 @@
-import { customElement, property,  } from 'lit/decorators.js';
-import {ref} from 'lit/directives/ref.js';
-
+import { customElement, property } from 'lit/decorators.js';
+import { ref } from 'lit/directives/ref.js';
 
 import { z } from 'zod';
 
@@ -34,11 +33,8 @@ import SpectrumMedium from '@spectrum-css/vars/dist/spectrum-medium.css?inline';
 import SpectrumTokens from '@spectrum-css/tokens/dist/index.css?inline';
 import SpectrumPage from '@spectrum-css/page/dist/index.css?inline';
 
-
 import { Picker } from '@spectrum-web-components/picker';
-import {
-  RadioGroup,
-} from '@spectrum-web-components/radio';
+import { RadioGroup } from '@spectrum-web-components/radio';
 import { Slider } from '@spectrum-web-components/slider';
 
 import {
@@ -49,7 +45,7 @@ import {
   type qualityColorType,
 } from '@schemas/baseSchemas.ts';
 
-import { animal,  } from '@schemas/beastSchemas';
+import { animal } from '@schemas/beastSchemas';
 
 const DEBUG = false;
 
@@ -57,7 +53,6 @@ const DEBUG = false;
 export class PairInvestment extends SizedMixin(SpectrumElement, {
   noDefaultSize: true,
 }) {
-
   @property({
     type: Object,
     reflect: true,
@@ -105,17 +100,25 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
   }
 
   protected override updated(changedProperties: PropertyValues) {
-    if (changedProperties.has('PrimaryInvestmentLevel') || changedProperties.has('SecondaryInvestmentLevel')) {
-      if(DEBUG) {
-        console.log(`PairInvestment sending signal of InvestmentLevelUpdate`)
+    if (
+      changedProperties.has('PrimaryInvestmentLevel') ||
+      changedProperties.has('SecondaryInvestmentLevel')
+    ) {
+      if (DEBUG) {
+        console.log(`PairInvestment sending signal of InvestmentLevelUpdate`);
       }
-      this.dispatchEvent(new CustomEvent('InvestmentLevelUpdate', { bubbles: true, composed: true }));
+      this.dispatchEvent(
+        new CustomEvent('InvestmentLevelUpdate', {
+          bubbles: true,
+          composed: true,
+        }),
+      );
     }
   }
 
   private ascendingHandler(e: CustomEvent) {
-    if(DEBUG) {
-      console.log(`ascendingHandler start`)
+    if (DEBUG) {
+      console.log(`ascendingHandler start`);
     }
     let num = (e.target as Slider).value;
     if (num > 0) {
@@ -135,13 +138,15 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
   }
 
   private animalHandler(e: CustomEvent) {
-    if(DEBUG){
-      console.log(`animalHandler start`)
+    if (DEBUG) {
+      console.log(`animalHandler start`);
     }
     const na = (e.target as RadioGroup).selected;
     const v = animal.safeParse(na);
     if (v.success) {
-      if (!(e.target as RadioGroup).name.localeCompare('PrimaryAnimalSelector')) {
+      if (
+        !(e.target as RadioGroup).name.localeCompare('PrimaryAnimalSelector')
+      ) {
         if (!v.data.localeCompare(animal.enum.dragon)) {
           this.PrimaryInvestmentLevel.dragon = true;
           this.PrimaryInvestmentLevel.beast = false;
@@ -152,11 +157,15 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
           this.PrimaryInvestmentLevel.dragon = false;
           this.PrimaryInvestmentLevel.beast = false;
         }
-        if(DEBUG) {
-          console.log(`animial Handler Set PIL: ${JSON.stringify(this.PrimaryInvestmentLevel)}`)
+        if (DEBUG) {
+          console.log(
+            `animial Handler Set PIL: ${JSON.stringify(this.PrimaryInvestmentLevel)}`,
+          );
         }
         this.requestUpdate('PrimaryInvestmentLevel');
-      } else if(!(e.target as RadioGroup).name.localeCompare('SecondaryAnimalSelector')) {
+      } else if (
+        !(e.target as RadioGroup).name.localeCompare('SecondaryAnimalSelector')
+      ) {
         if (!v.data.localeCompare(animal.enum.dragon)) {
           this.SecondaryInvestmentLevel.dragon = true;
           this.SecondaryInvestmentLevel.beast = false;
@@ -167,18 +176,22 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
           this.SecondaryInvestmentLevel.dragon = false;
           this.SecondaryInvestmentLevel.beast = false;
         }
-        if(DEBUG) {
-          console.log(`animial Handler Set PIL: ${JSON.stringify(this.SecondaryInvestmentLevel)}`)
+        if (DEBUG) {
+          console.log(
+            `animial Handler Set PIL: ${JSON.stringify(this.SecondaryInvestmentLevel)}`,
+          );
         }
         this.requestUpdate('SecondaryInvestmentLevel');
       } else {
-        if(DEBUG) {
-          console.log(`invalid radio group `)
+        if (DEBUG) {
+          console.log(`invalid radio group `);
         }
       }
-    }else {
-      if(DEBUG) {
-        console.log(`problem parsing animal from ${na} for ${(e.target as RadioGroup).name}`)
+    } else {
+      if (DEBUG) {
+        console.log(
+          `problem parsing animal from ${na} for ${(e.target as RadioGroup).name}`,
+        );
       }
     }
   }
@@ -186,19 +199,35 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
   private disablePrimarySpeciality = (index: number): boolean => {
     const v = z.number().positive().gte(4).lte(5).safeParse(index);
     if (!v.success) {
-      if(DEBUG ) {
+      if (DEBUG) {
         console.log(`disablePrimarySpeciality: ${index}, skipping`);
       }
     } else {
       //then I can trust index, and it is easier to use than v.data;
-      if (qualityColor.enum.Gold.localeCompare(this.PrimaryInvestmentLevel.special1)) {
+      if (
+        qualityColor.enum.Gold.localeCompare(
+          this.PrimaryInvestmentLevel.special1,
+        )
+      ) {
         return true;
-      } else if (qualityColor.enum.Gold.localeCompare(this.PrimaryInvestmentLevel.special2)) {
+      } else if (
+        qualityColor.enum.Gold.localeCompare(
+          this.PrimaryInvestmentLevel.special2,
+        )
+      ) {
         return true;
-      } else if (qualityColor.enum.Gold.localeCompare(this.PrimaryInvestmentLevel.special3)) {
+      } else if (
+        qualityColor.enum.Gold.localeCompare(
+          this.PrimaryInvestmentLevel.special3,
+        )
+      ) {
         return true;
       } else if (index > 4) {
-        if (qualityColor.enum.Gold.localeCompare(this.PrimaryInvestmentLevel.special4)) {
+        if (
+          qualityColor.enum.Gold.localeCompare(
+            this.PrimaryInvestmentLevel.special4,
+          )
+        ) {
           return true;
         }
       } else {
@@ -211,19 +240,35 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
   private disableSecondarySpeciality = (index: number): boolean => {
     const v = z.number().positive().gte(4).lte(5).safeParse(index);
     if (!v.success) {
-      if(DEBUG) {
+      if (DEBUG) {
         console.log(`disableSecondarySpeciality: ${index}, skipping`);
       }
     } else {
       //then I can trust index, and it is easier to use than v.data;
-      if (qualityColor.enum.Gold.localeCompare(this.SecondaryInvestmentLevel.special1)) {
+      if (
+        qualityColor.enum.Gold.localeCompare(
+          this.SecondaryInvestmentLevel.special1,
+        )
+      ) {
         return true;
-      } else if (qualityColor.enum.Gold.localeCompare(this.SecondaryInvestmentLevel.special2)) {
+      } else if (
+        qualityColor.enum.Gold.localeCompare(
+          this.SecondaryInvestmentLevel.special2,
+        )
+      ) {
         return true;
-      } else if (qualityColor.enum.Gold.localeCompare(this.SecondaryInvestmentLevel.special3)) {
+      } else if (
+        qualityColor.enum.Gold.localeCompare(
+          this.SecondaryInvestmentLevel.special3,
+        )
+      ) {
         return true;
       } else if (index > 4) {
-        if (qualityColor.enum.Gold.localeCompare(this.SecondaryInvestmentLevel.special4)) {
+        if (
+          qualityColor.enum.Gold.localeCompare(
+            this.SecondaryInvestmentLevel.special4,
+          )
+        ) {
           return true;
         }
       } else {
@@ -242,29 +287,47 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
       const testable = v.data;
       if (testable === 1) {
         if (DEBUG) {
-          console.log(`primarySpecialityLevel returning ${this.PrimaryInvestmentLevel.special1} for #1`);
+          console.log(
+            `primarySpecialityLevel returning ${this.PrimaryInvestmentLevel.special1} for #1`,
+          );
         }
         return this.PrimaryInvestmentLevel.special1;
       } else if (testable === 2) {
         if (DEBUG) {
-          console.log(`primarySpecialityLevel returning ${this.PrimaryInvestmentLevel.special2}  for #2`);
+          console.log(
+            `primarySpecialityLevel returning ${this.PrimaryInvestmentLevel.special2}  for #2`,
+          );
         }
         return this.PrimaryInvestmentLevel.special2;
       } else if (testable === 3) {
         if (DEBUG) {
-          console.log(`primarySpecialityLevel returning ${this.PrimaryInvestmentLevel.special3} for #3`);
+          console.log(
+            `primarySpecialityLevel returning ${this.PrimaryInvestmentLevel.special3} for #3`,
+          );
         }
         return this.PrimaryInvestmentLevel.special3;
       } else if (testable === 4) {
         if (DEBUG) {
-          console.log(`primarySpecialityLevel returning ${this.PrimaryInvestmentLevel.special4} for #4`);
+          console.log(
+            `primarySpecialityLevel returning ${this.PrimaryInvestmentLevel.special4} for #4`,
+          );
         }
         if (
-          !qualityColor.enum.Gold.localeCompare(this.PrimaryInvestmentLevel.special1) &&
-          !qualityColor.enum.Gold.localeCompare(this.PrimaryInvestmentLevel.special2) &&
-          !qualityColor.enum.Gold.localeCompare(this.PrimaryInvestmentLevel.special3)
+          !qualityColor.enum.Gold.localeCompare(
+            this.PrimaryInvestmentLevel.special1,
+          ) &&
+          !qualityColor.enum.Gold.localeCompare(
+            this.PrimaryInvestmentLevel.special2,
+          ) &&
+          !qualityColor.enum.Gold.localeCompare(
+            this.PrimaryInvestmentLevel.special3,
+          )
         ) {
-          if (!qualityColor.enum.Disabled.localeCompare(this.PrimaryInvestmentLevel.special4)) {
+          if (
+            !qualityColor.enum.Disabled.localeCompare(
+              this.PrimaryInvestmentLevel.special4,
+            )
+          ) {
             this.PrimaryInvestmentLevel.special4 = qualityColor.enum.Green;
             return qualityColor.enum.Green;
           }
@@ -272,7 +335,9 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
         return this.PrimaryInvestmentLevel.special4;
       } else if (testable === 5) {
         if (DEBUG) {
-          console.log(`primarySpecialityLevel returning ${this.PrimaryInvestmentLevel.special5} for #5`);
+          console.log(
+            `primarySpecialityLevel returning ${this.PrimaryInvestmentLevel.special5} for #5`,
+          );
         }
         return this.PrimaryInvestmentLevel.special5;
       }
@@ -307,11 +372,21 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
           console.log(`secondarySpecialityLevel returning for #4`);
         }
         if (
-          !qualityColor.enum.Gold.localeCompare(this.SecondaryInvestmentLevel.special1) &&
-          !qualityColor.enum.Gold.localeCompare(this.SecondaryInvestmentLevel.special2) &&
-          !qualityColor.enum.Gold.localeCompare(this.SecondaryInvestmentLevel.special3)
+          !qualityColor.enum.Gold.localeCompare(
+            this.SecondaryInvestmentLevel.special1,
+          ) &&
+          !qualityColor.enum.Gold.localeCompare(
+            this.SecondaryInvestmentLevel.special2,
+          ) &&
+          !qualityColor.enum.Gold.localeCompare(
+            this.SecondaryInvestmentLevel.special3,
+          )
         ) {
-          if (!qualityColor.enum.Disabled.localeCompare(this.SecondaryInvestmentLevel.special4)) {
+          if (
+            !qualityColor.enum.Disabled.localeCompare(
+              this.SecondaryInvestmentLevel.special4,
+            )
+          ) {
             this.SecondaryInvestmentLevel.special4 = qualityColor.enum.Green;
             return qualityColor.enum.Green;
           }
@@ -328,62 +403,69 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
   };
 
   private AscendingHandler(e: CustomEvent) {
-    const picker = (e.target as Picker);
+    const picker = e.target as Picker;
     const v = AscendingLevels.safeParse(picker.value);
-    if(!v.success) {
-      console.log(`error parsing ascending level ${picker.value} for ${picker.id}`)
+    if (!v.success) {
+      console.log(
+        `error parsing ascending level ${picker.value} for ${picker.id}`,
+      );
       console.log(v.error.message);
-    }else {
+    } else {
       const value = v.data;
-      if(picker.id.includes('Primary')) {
-
+      if (picker.id.includes('Primary')) {
         this.PrimaryInvestmentLevel.stars = value;
-        if(DEBUG) {
-          console.log(`PairInvestment AscendingHandler: new value: ${value}`)
-          console.log(`PairInvestment AscendingHandler: PIL: ${JSON.stringify(this.PrimaryInvestmentLevel)}`)
+        if (DEBUG) {
+          console.log(`PairInvestment AscendingHandler: new value: ${value}`);
+          console.log(
+            `PairInvestment AscendingHandler: PIL: ${JSON.stringify(this.PrimaryInvestmentLevel)}`,
+          );
         }
-        this.requestUpdate('PrimaryInvestmentLevel')
-      }else {
-        if(DEBUG) {
-          console.log(`invalid picker id ${picker.id}`)
+        this.requestUpdate('PrimaryInvestmentLevel');
+      } else {
+        if (DEBUG) {
+          console.log(`invalid picker id ${picker.id}`);
         }
       }
     }
   }
 
   private CovenantHandler(e: CustomEvent) {
-    const picker = (e.target as Picker);
+    const picker = e.target as Picker;
     const v = CovenantAttributeCategory.safeParse(picker.value);
-    if(!v.success) {
-      if(DEBUG) {
-        console.log(`error parsing CovenantAttributeCategory for ${picker.value} of ${picker.id}`)
-        console.log(v.error.message)
+    if (!v.success) {
+      if (DEBUG) {
+        console.log(
+          `error parsing CovenantAttributeCategory for ${picker.value} of ${picker.id}`,
+        );
+        console.log(v.error.message);
       }
     } else {
       const value = v.data;
-      if(DEBUG) {
-        console.log(`CovenantHandler found ${value} for ${picker.id}`)
+      if (DEBUG) {
+        console.log(`CovenantHandler found ${value} for ${picker.id}`);
       }
-      if(picker.id.includes('Primary')){
+      if (picker.id.includes('Primary')) {
         this.PrimaryInvestmentLevel.covenants = value;
         this.requestUpdate('PrimaryInvestmentLevel');
       } else if (picker.id.includes('Secondary')) {
         this.SecondaryInvestmentLevel.covenants = value;
         this.requestUpdate('SecondaryInvestmentLevel');
       } else {
-        if(DEBUG) {
-          console.log(`unknown picker ${picker.id}`)
+        if (DEBUG) {
+          console.log(`unknown picker ${picker.id}`);
         }
       }
     }
   }
 
   private SpecialityHandler(e: CustomEvent) {
-    const picker = (e.target as Picker);
+    const picker = e.target as Picker;
     const v = qualityColor.safeParse(picker.value);
     if (!v.success) {
       if (DEBUG) {
-        console.log(`error parsing quality color ${picker.value} for ${picker.id}`);
+        console.log(
+          `error parsing quality color ${picker.value} for ${picker.id}`,
+        );
         console.log(v.error.message);
       }
     } else {
@@ -395,8 +477,12 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
             this.PrimaryInvestmentLevel.special4 = qualityColor.enum.Disabled;
             this.PrimaryInvestmentLevel.special5 = qualityColor.enum.Disabled;
           } else if (
-            !qualityColor.enum.Gold.localeCompare(this.PrimaryInvestmentLevel.special2) &&
-            !qualityColor.enum.Gold.localeCompare(this.PrimaryInvestmentLevel.special3)
+            !qualityColor.enum.Gold.localeCompare(
+              this.PrimaryInvestmentLevel.special2,
+            ) &&
+            !qualityColor.enum.Gold.localeCompare(
+              this.PrimaryInvestmentLevel.special3,
+            )
           ) {
             this.PrimaryInvestmentLevel.special4 = qualityColor.enum.Green;
           }
@@ -406,8 +492,12 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
             this.PrimaryInvestmentLevel.special4 = qualityColor.enum.Disabled;
             this.PrimaryInvestmentLevel.special5 = qualityColor.enum.Disabled;
           } else if (
-            !qualityColor.enum.Gold.localeCompare(this.PrimaryInvestmentLevel.special1) &&
-            !qualityColor.enum.Gold.localeCompare(this.PrimaryInvestmentLevel.special3)
+            !qualityColor.enum.Gold.localeCompare(
+              this.PrimaryInvestmentLevel.special1,
+            ) &&
+            !qualityColor.enum.Gold.localeCompare(
+              this.PrimaryInvestmentLevel.special3,
+            )
           ) {
             this.PrimaryInvestmentLevel.special4 = qualityColor.enum.Green;
           }
@@ -417,8 +507,12 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
             this.PrimaryInvestmentLevel.special4 = qualityColor.enum.Disabled;
             this.PrimaryInvestmentLevel.special5 = qualityColor.enum.Disabled;
           } else if (
-            !qualityColor.enum.Gold.localeCompare(this.PrimaryInvestmentLevel.special2) &&
-            !qualityColor.enum.Gold.localeCompare(this.PrimaryInvestmentLevel.special1)
+            !qualityColor.enum.Gold.localeCompare(
+              this.PrimaryInvestmentLevel.special2,
+            ) &&
+            !qualityColor.enum.Gold.localeCompare(
+              this.PrimaryInvestmentLevel.special1,
+            )
           ) {
             this.PrimaryInvestmentLevel.special4 = qualityColor.enum.Green;
           }
@@ -438,8 +532,12 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
             this.SecondaryInvestmentLevel.special4 = qualityColor.enum.Disabled;
             this.SecondaryInvestmentLevel.special5 = qualityColor.enum.Disabled;
           } else if (
-            !qualityColor.enum.Gold.localeCompare(this.SecondaryInvestmentLevel.special2) &&
-            !qualityColor.enum.Gold.localeCompare(this.SecondaryInvestmentLevel.special3)
+            !qualityColor.enum.Gold.localeCompare(
+              this.SecondaryInvestmentLevel.special2,
+            ) &&
+            !qualityColor.enum.Gold.localeCompare(
+              this.SecondaryInvestmentLevel.special3,
+            )
           ) {
             this.SecondaryInvestmentLevel.special4 = qualityColor.enum.Green;
           }
@@ -449,8 +547,12 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
             this.SecondaryInvestmentLevel.special4 = qualityColor.enum.Disabled;
             this.SecondaryInvestmentLevel.special5 = qualityColor.enum.Disabled;
           } else if (
-            !qualityColor.enum.Gold.localeCompare(this.SecondaryInvestmentLevel.special1) &&
-            !qualityColor.enum.Gold.localeCompare(this.SecondaryInvestmentLevel.special3)
+            !qualityColor.enum.Gold.localeCompare(
+              this.SecondaryInvestmentLevel.special1,
+            ) &&
+            !qualityColor.enum.Gold.localeCompare(
+              this.SecondaryInvestmentLevel.special3,
+            )
           ) {
             this.SecondaryInvestmentLevel.special4 = qualityColor.enum.Green;
           }
@@ -460,8 +562,12 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
             this.SecondaryInvestmentLevel.special4 = qualityColor.enum.Disabled;
             this.SecondaryInvestmentLevel.special5 = qualityColor.enum.Disabled;
           } else if (
-            !qualityColor.enum.Gold.localeCompare(this.SecondaryInvestmentLevel.special2) &&
-            !qualityColor.enum.Gold.localeCompare(this.SecondaryInvestmentLevel.special1)
+            !qualityColor.enum.Gold.localeCompare(
+              this.SecondaryInvestmentLevel.special2,
+            ) &&
+            !qualityColor.enum.Gold.localeCompare(
+              this.SecondaryInvestmentLevel.special1,
+            )
           ) {
             this.SecondaryInvestmentLevel.special4 = qualityColor.enum.Green;
           }
@@ -479,9 +585,9 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
   }
 
   private PresetHandler(e: CustomEvent) {
-    const picker = (e.target as Picker);
+    const picker = e.target as Picker;
     const option = picker.value;
-    if(picker.id.includes('Primary')) {
+    if (picker.id.includes('Primary')) {
       switch (option) {
         case 'Three Orange with Beast':
           this.PrimaryInvestmentLevel = {
@@ -494,7 +600,7 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
             covenants: CovenantAttributeCategory.enum['Faith Covenant'],
             dragon: false,
             beast: true,
-          }
+          };
           break;
         case 'Three Orange with Dragon':
           this.PrimaryInvestmentLevel = {
@@ -507,7 +613,7 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
             covenants: CovenantAttributeCategory.enum['Faith Covenant'],
             dragon: true,
             beast: false,
-          }
+          };
           break;
         case 'Four Yellow with Beast':
           this.PrimaryInvestmentLevel = {
@@ -520,7 +626,7 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
             covenants: CovenantAttributeCategory.enum['Civilization Covenant'],
             dragon: false,
             beast: true,
-          }
+          };
           break;
         case 'Four Yellow with Dragon':
           this.PrimaryInvestmentLevel = {
@@ -533,7 +639,7 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
             covenants: CovenantAttributeCategory.enum['Civilization Covenant'],
             dragon: true,
             beast: false,
-          }
+          };
           break;
         case 'Two Stars, Four Yellow, with Beast':
           this.PrimaryInvestmentLevel = {
@@ -546,7 +652,7 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
             covenants: CovenantAttributeCategory.enum['Civilization Covenant'],
             dragon: false,
             beast: true,
-          }
+          };
           break;
         case 'Two Stars, Four Yellow, with Dragon':
           this.PrimaryInvestmentLevel = {
@@ -559,7 +665,7 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
             covenants: CovenantAttributeCategory.enum['Civilization Covenant'],
             dragon: true,
             beast: false,
-          }
+          };
           break;
         case 'Three Stars, Four Yellow, with Dragon':
           this.PrimaryInvestmentLevel = {
@@ -572,7 +678,7 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
             covenants: CovenantAttributeCategory.enum['Civilization Covenant'],
             dragon: true,
             beast: false,
-          }
+          };
           break;
         case 'Four Stars, Four Yellow, with Dragon':
           this.PrimaryInvestmentLevel = {
@@ -585,7 +691,7 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
             covenants: CovenantAttributeCategory.enum['Civilization Covenant'],
             dragon: true,
             beast: false,
-          }
+          };
           break;
         case 'Five Stars, Four Yellow, with Dragon':
           this.PrimaryInvestmentLevel = {
@@ -598,7 +704,7 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
             covenants: CovenantAttributeCategory.enum['Civilization Covenant'],
             dragon: true,
             beast: false,
-          }
+          };
           break;
         default:
           this.PrimaryInvestmentLevel = {
@@ -611,9 +717,9 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
             covenants: CovenantAttributeCategory.enum.Disabled,
             dragon: false,
             beast: false,
-          }
+          };
       }
-    } else if(picker.id.includes('Secondary')) {
+    } else if (picker.id.includes('Secondary')) {
       switch (option) {
         case 'Three Orange with Beast':
           this.SecondaryInvestmentLevel = {
@@ -626,7 +732,7 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
             covenants: CovenantAttributeCategory.enum['Faith Covenant'],
             dragon: false,
             beast: true,
-          }
+          };
           break;
         case 'Three Orange with Dragon':
           this.SecondaryInvestmentLevel = {
@@ -639,7 +745,7 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
             covenants: CovenantAttributeCategory.enum['Faith Covenant'],
             dragon: true,
             beast: false,
-          }
+          };
           break;
         case 'Four Yellow with Beast':
           this.SecondaryInvestmentLevel = {
@@ -652,7 +758,7 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
             covenants: CovenantAttributeCategory.enum['Civilization Covenant'],
             dragon: false,
             beast: true,
-          }
+          };
           break;
         case 'Four Yellow with Dragon':
           this.SecondaryInvestmentLevel = {
@@ -665,7 +771,7 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
             covenants: CovenantAttributeCategory.enum['Civilization Covenant'],
             dragon: true,
             beast: false,
-          }
+          };
           break;
         default:
           this.SecondaryInvestmentLevel = {
@@ -678,23 +784,23 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
             covenants: CovenantAttributeCategory.enum.Disabled,
             dragon: false,
             beast: false,
-          }
+          };
       }
     }
   }
 
   private resetPicker(picker?: Element) {
     this.addEventListener('InvestmentLevelUpdate', (e) => {
-      if(DEBUG) {
-        console.log(`resetting picker value`)
+      if (DEBUG) {
+        console.log(`resetting picker value`);
       }
-      if(picker !== null && picker!== undefined) {
-        if(DEBUG) {
-          console.log(`picker is ${picker.id}`)
+      if (picker !== null && picker !== undefined) {
+        if (DEBUG) {
+          console.log(`picker is ${picker.id}`);
         }
         (picker as Picker).value = '';
       }
-    })
+    });
   }
 
   public static override get styles(): CSSResultArray {
@@ -704,17 +810,20 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
     const SpectrumMediumCSS = unsafeCSS(SpectrumMedium);
     const SpectrumPageCSS = unsafeCSS(SpectrumPage);
     const localStyle = css`
-      
       .GeneralOptions {
-        border-top: var(--spectrum-border-width-100) solid var(--sl-color-gray-5);
-        border-right: var(--spectrum-border-width-100) solid var(--sl-color-gray-5);
-        border-left: var(--spectrum-border-width-100) solid var(--sl-color-gray-5);
+        border-top: var(--spectrum-border-width-100) solid
+          var(--sl-color-gray-5);
+        border-right: var(--spectrum-border-width-100) solid
+          var(--sl-color-gray-5);
+        border-left: var(--spectrum-border-width-100) solid
+          var(--sl-color-gray-5);
         padding-left: var(--spectrum-spacing-75);
         padding-right: var(--spectrum-spacing-75);
         padding-bottom: var(--spectrum-spacing-75);
       }
-      
-      .row1, .row2 {
+
+      .row1,
+      .row2 {
         width: 100%;
         display: grid;
         grid-auto-rows: auto;
@@ -723,92 +832,106 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
         align-content: start;
         justify-content: space-around;
       }
-      
+
       .AnimalSelector {
         grid-row-start: 3;
         grid-column-end: span 4;
         justify-self: center;
       }
-      
+
       sp-picker {
         width: 100%;
       }
-      
+
       .Presets {
         width: 100%;
         grid-column-start: 4;
       }
-      
+
       .hidden {
         display: block;
       }
     `;
 
     if (super.styles !== undefined && Array.isArray(super.styles)) {
-      return [...super.styles, SpectrumTypographyCSS, SpectrumScaleMediumCSS, SpectrumTokensCSS, SpectrumMediumCSS, SpectrumPageCSS, localStyle];
+      return [
+        ...super.styles,
+        SpectrumTypographyCSS,
+        SpectrumScaleMediumCSS,
+        SpectrumTokensCSS,
+        SpectrumMediumCSS,
+        SpectrumPageCSS,
+        localStyle,
+      ];
     } else {
-      return [SpectrumTypographyCSS, SpectrumScaleMediumCSS, SpectrumTokensCSS, SpectrumMediumCSS, SpectrumPageCSS, localStyle];
+      return [
+        SpectrumTypographyCSS,
+        SpectrumScaleMediumCSS,
+        SpectrumTokensCSS,
+        SpectrumMediumCSS,
+        SpectrumPageCSS,
+        localStyle,
+      ];
     }
   }
 
   protected override render() {
-
     let primarySpecialityPickers = html``;
     for (let index = 1; index < 5; index++) {
       primarySpecialityPickers = html`${primarySpecialityPickers}
-      <div class="Speciality">
-        <sp-field-label for=${`PrimarySpeciality${index}`}>${`Speciality ${index}`}</sp-field-label>
-        <sp-picker
-          id=${`PrimarySpeciality${index}`}
-          size="m"
-          value=${this.primarySpecialityLevel(index)}
-          @change=${this.SpecialityHandler}
-          ?disabled=${this.disablePrimarySpeciality(index)}
-        >
-          ${qualityColor.options.map((ql) => {
-            return html`
-              <sp-menu-item value=${ql}>${ql}</sp-menu-item>
-            `;
-          })}
-        </sp-picker>
-      </div>
-      `;
+        <div class="Speciality">
+          <sp-field-label for=${`PrimarySpeciality${index}`}
+            >${`Speciality ${index}`}</sp-field-label
+          >
+          <sp-picker
+            id=${`PrimarySpeciality${index}`}
+            size="m"
+            value=${this.primarySpecialityLevel(index)}
+            @change=${this.SpecialityHandler}
+            ?disabled=${this.disablePrimarySpeciality(index)}
+          >
+            ${qualityColor.options.map((ql) => {
+              return html` <sp-menu-item value=${ql}>${ql}</sp-menu-item> `;
+            })}
+          </sp-picker>
+        </div> `;
     }
 
     let secondarySpecialityPickers = html``;
     for (let index = 1; index < 5; index++) {
       secondarySpecialityPickers = html`${secondarySpecialityPickers}
-      <div class="Speciality">
-        <sp-field-label for=${`SecondarySpeciality${index}`}>${`Speciality ${index}`}</sp-field-label>
-        <sp-picker
-          id=${`SecondarySpeciality${index}`}
-          size="m"
-          value=${this.secondarySpecialityLevel(index)}
-          @change=${this.SpecialityHandler}
-          ?disabled=${this.disableSecondarySpeciality(index)}
-        >
-          ${qualityColor.options.map((ql) => {
-            return html`
-              <sp-menu-item value=${ql}>${ql}</sp-menu-item>
-            `;
-          })}
-        </sp-picker>
-      </div>
-      `;
+        <div class="Speciality">
+          <sp-field-label for=${`SecondarySpeciality${index}`}
+            >${`Speciality ${index}`}</sp-field-label
+          >
+          <sp-picker
+            id=${`SecondarySpeciality${index}`}
+            size="m"
+            value=${this.secondarySpecialityLevel(index)}
+            @change=${this.SpecialityHandler}
+            ?disabled=${this.disableSecondarySpeciality(index)}
+          >
+            ${qualityColor.options.map((ql) => {
+              return html` <sp-menu-item value=${ql}>${ql}</sp-menu-item> `;
+            })}
+          </sp-picker>
+        </div> `;
     }
 
     return html`
-      <div class='PairInvestment'>
-        
-        <div class='GeneralOptions' id="Primary General">
-          <sp-field-label for="PrimaryInvestmentLevelGroup" class="spectrum-Heading spectrum-Heading--sizeS">Primary
-            General
+      <div class="PairInvestment">
+        <div class="GeneralOptions" id="Primary General">
+          <sp-field-label
+            for="PrimaryInvestmentLevelGroup"
+            class="spectrum-Heading spectrum-Heading--sizeS"
+            >Primary General
           </sp-field-label>
           <sp-field-group id="PrimaryInvestmentLevelGroup">
-            
             <div class="row1">
               <div class="AscendingLevel">
-                <sp-field-label for="PrimaryAscending">Ascending Level</sp-field-label>
+                <sp-field-label for="PrimaryAscending"
+                  >Ascending Level</sp-field-label
+                >
                 <sp-picker
                   id="PrimaryAscending"
                   size="m"
@@ -821,20 +944,22 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
                   <sp-menu-item value="3red">3</sp-menu-item>
                   <sp-menu-item value="4red">4</sp-menu-item>
                   <sp-menu-item value="5red">5</sp-menu-item>
-                </sp-picker>  
+                </sp-picker>
               </div>
               <div class="Covenants">
-                <sp-field-label for="PrimaryCovenantPicker">Covenant Level</sp-field-label>
+                <sp-field-label for="PrimaryCovenantPicker"
+                  >Covenant Level</sp-field-label
+                >
                 <sp-picker
                   id="PrimaryCovenantPicker"
                   size="m"
                   value=${this.PrimaryInvestmentLevel.covenants}
                   @change=${this.CovenantHandler}
-                  >
+                >
                   ${CovenantAttributeCategory.options.map((cac) => {
                     return html`
                       <sp-menu-item value=${cac}>${cac}</sp-menu-item>
-                    `                   
+                    `;
                   })}
                 </sp-picker>
               </div>
@@ -846,54 +971,69 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
                   label="Presets"
                   @change=${this.PresetHandler}
                   ${ref(this.resetPicker)}
-                  >
+                >
                   <sp-menu-item>Three Orange with Beast</sp-menu-item>
                   <sp-menu-item>Three Orange with Dragon</sp-menu-item>
                   <sp-menu-item>Four Yellow with Beast</sp-menu-item>
                   <sp-menu-item>Four Yellow with Dragon</sp-menu-item>
-                  <sp-menu-item>Two Stars, Four Yellow, with Beast</sp-menu-item>
-                  <sp-menu-item>Two Stars, Four Yellow, with Dragon</sp-menu-item>
-                  <sp-menu-item>Three Stars, Four Yellow, with Dragon</sp-menu-item>
-                  <sp-menu-item>Four Stars, Four Yellow, with Dragon</sp-menu-item>
-                  <sp-menu-item>Five Stars, Four Yellow, with Dragon</sp-menu-item>
+                  <sp-menu-item
+                    >Two Stars, Four Yellow, with Beast</sp-menu-item
+                  >
+                  <sp-menu-item
+                    >Two Stars, Four Yellow, with Dragon</sp-menu-item
+                  >
+                  <sp-menu-item
+                    >Three Stars, Four Yellow, with Dragon</sp-menu-item
+                  >
+                  <sp-menu-item
+                    >Four Stars, Four Yellow, with Dragon</sp-menu-item
+                  >
+                  <sp-menu-item
+                    >Five Stars, Four Yellow, with Dragon</sp-menu-item
+                  >
                 </sp-picker>
               </div>
             </div>
-            
-            <div class="row2">
-              ${primarySpecialityPickers}
-            </div>
+
+            <div class="row2">${primarySpecialityPickers}</div>
             <div class="row3">
               <div class="AnimalSelector non-content">
-                <sp-field-label for="PrimaryAnimalSelector">Primary Beast/Dragon:</sp-field-label>
+                <sp-field-label for="PrimaryAnimalSelector"
+                  >Primary Beast/Dragon:</sp-field-label
+                >
                 <sp-radio-group
                   class="AnimalSelector"
                   id="PrimaryAnimalSelector"
                   horizontal
                   name="PrimaryAnimalSelector"
-                  selected=${this.PrimaryInvestmentLevel.dragon ? animal.enum.dragon : this.PrimaryInvestmentLevel.beast ? animal.enum.beast : animal.enum.none}
+                  selected=${this.PrimaryInvestmentLevel.dragon
+                    ? animal.enum.dragon
+                    : this.PrimaryInvestmentLevel.beast
+                      ? animal.enum.beast
+                      : animal.enum.none}
                   @change=${this.animalHandler}
                 >
                   ${animal.options.map((ta) => {
-                    return html`
-                      <sp-radio value=${ta}>${ta}</sp-radio>
-                    `;
+                    return html` <sp-radio value=${ta}>${ta}</sp-radio> `;
                   })}
                 </sp-radio-group>
               </div>
             </div>
           </sp-field-group>
         </div>
-        
-        <div class='GeneralOptions' id="Secondary General">
-        <sp-field-label for="SecondaryInvestmentLevelGroup" class="spectrum-Heading spectrum-Heading--sizeS">Secondary
-          General
-        </sp-field-label>
-        <sp-field-group id="SecondaryInvestmentLevelGroup">
-          
+
+        <div class="GeneralOptions" id="Secondary General">
+          <sp-field-label
+            for="SecondaryInvestmentLevelGroup"
+            class="spectrum-Heading spectrum-Heading--sizeS"
+            >Secondary General
+          </sp-field-label>
+          <sp-field-group id="SecondaryInvestmentLevelGroup">
             <div class="row1">
               <div class="Covenants">
-                <sp-field-label for="SecondaryCovenantPicker">Covenant Level</sp-field-label>
+                <sp-field-label for="SecondaryCovenantPicker"
+                  >Covenant Level</sp-field-label
+                >
                 <sp-picker
                   id="SecondaryCovenantPicker"
                   size="m"
@@ -903,14 +1043,13 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
                   ${CovenantAttributeCategory.options.map((cac) => {
                     return html`
                       <sp-menu-item value=${cac}>${cac}</sp-menu-item>
-                    `
+                    `;
                   })}
                 </sp-picker>
               </div>
               <div class="Presets PreSetSelector non-content">
                 <sp-field-label for="SecondaryPreSet">PreSet</sp-field-label>
                 <sp-picker
-                  
                   id="SecondaryPreSet"
                   size="m"
                   label="Presets"
@@ -924,32 +1063,35 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
                 </sp-picker>
               </div>
             </div>
-            <div class="row2">
-              ${secondarySpecialityPickers}
-            </div>
+            <div class="row2">${secondarySpecialityPickers}</div>
             <div class="row3">
               <div class="AnimalSelector non-content">
-                <sp-field-label for="SecondaryAnimalSelector">Secondary Beast/Dragon*:</sp-field-label>
+                <sp-field-label for="SecondaryAnimalSelector"
+                  >Secondary Beast/Dragon*:</sp-field-label
+                >
                 <sp-radio-group
                   class="AnimalSelector"
                   id="SecondaryAnimalSelector"
                   horizontal
                   name="SecondaryAnimalSelector"
-                  selected=${this.SecondaryInvestmentLevel.dragon ? animal.enum.dragon : this.SecondaryInvestmentLevel.beast ? animal.enum.beast : animal.enum.none}
+                  selected=${this.SecondaryInvestmentLevel.dragon
+                    ? animal.enum.dragon
+                    : this.SecondaryInvestmentLevel.beast
+                      ? animal.enum.beast
+                      : animal.enum.none}
                   @change=${this.animalHandler}
                 >
                   ${animal.options.map((ta) => {
-                    return html`
-                      <sp-radio value=${ta}>${ta}</sp-radio>
-                    `;
+                    return html` <sp-radio value=${ta}>${ta}</sp-radio> `;
                   })}
                 </sp-radio-group>
               </div>
             </div>
-          <sp-help-text slot="help-text">*Note that a Secondary General's dragon or beast is used only to activate
-            buffs, not to provide them itself.
-          </sp-help-text>
-        </sp-field-group>
+            <sp-help-text slot="help-text"
+              >*Note that a Secondary General's dragon or beast is used only to
+              activate buffs, not to provide them itself.
+            </sp-help-text>
+          </sp-field-group>
         </div>
       </div>
     `;

@@ -1,16 +1,20 @@
-import {  type AttributeMultipliersType } from '@schemas/EvAns.zod.ts';
+import { type AttributeMultipliersType } from '@schemas/EvAns.zod.ts';
 
 const DEBUG = false;
 
-import { z  } from 'zod';
-import { ExtendedGeneral, type ExtendedGeneralType } from '@schemas/ExtendedGeneral.ts';
+import { z } from 'zod';
+import {
+  ExtendedGeneral,
+  type ExtendedGeneralType,
+} from '@schemas/ExtendedGeneral.ts';
 import { BuffParams, type BuffParamsType } from '@schemas/baseSchemas.ts';
 import {
   Display,
   type DisplayType,
   generalSpecialists,
   type generalSpecialistsType,
-  generalUseCase, type generalUseCaseType,
+  generalUseCase,
+  type generalUseCaseType,
 } from '@schemas/generalsSchema.ts';
 import * as Attributes from '@lib/EvAnsAttributeRanking';
 
@@ -44,11 +48,14 @@ export const PvPBuffDetails = z.object({
     PreservationScore: z.number(),
     DebilitationScore: z.number(),
   }),
-})
+});
 export type PvPBuffDetails = z.infer<typeof PvPBuffDetails>;
 
-const getAttributes = (useCase: generalUseCaseType, speciality: generalSpecialistsType): AttributeMultipliersType => {
-  switch(useCase) {
+const getAttributes = (
+  useCase: generalUseCaseType,
+  speciality: generalSpecialistsType,
+): AttributeMultipliersType => {
+  switch (useCase) {
     case generalUseCase.enum.Attack:
       switch (speciality) {
         case generalSpecialists.enum.Archers:
@@ -56,7 +63,7 @@ const getAttributes = (useCase: generalUseCaseType, speciality: generalSpecialis
         case generalSpecialists.enum.Ground:
           return Attributes.GroundPvPAttackAttributeMultipliers;
         case generalSpecialists.enum.Mounted:
-            return Attributes.MountedPvPAttackAttributeMultipliers;
+          return Attributes.MountedPvPAttackAttributeMultipliers;
         case generalSpecialists.enum.Siege:
           return Attributes.SiegePvPAttackAttributeMultipliers;
       }
@@ -73,7 +80,7 @@ const getAttributes = (useCase: generalUseCaseType, speciality: generalSpecialis
           return Attributes.SiegePvPReinforcementAttributeMultipliers;
       }
       break;
-  } 
+  }
   return {
     Offensive: {
       AllTroopAttack: 0,
@@ -149,48 +156,125 @@ const getAttributes = (useCase: generalUseCaseType, speciality: generalSpecialis
       InCityWounded2Death: 0,
       Wounded2DeathWhenAttacking: 0,
     },
-  }
-}
+  };
+};
 
-
-export const PvPDetail = z.function()
+export const PvPDetail = z
+  .function()
   .args(ExtendedGeneral, BuffParams, generalUseCase, Display)
   .returns(PvPBuffDetails)
-  .implement((eg: ExtendedGeneralType, bp: BuffParamsType, useCase: generalUseCaseType, display: DisplayType) =>{
-    if(DEBUG) {console.log(`\nPvPDetail start for ${eg.name} ${useCase} ${display}`)}
-    const am = getAttributes(useCase,eg.score_as);
-    
-    const returnable: PvPBuffDetails =  {
-      attackRank: {
-        attackScore: 0,
-        marchSizeScore: 0,
-        rangeScore: 0,
-        rallyScore: 0,
-        DeHPScore: 0,
-        DeDefenseScore: 0,
-      },
-      toughnessRank: {
-        HPScore: 0,
-        defenseScore: 0,
-        DeAttackScore: 0,
-      },
-      preservationRank: {
-        PreservationScore: 0,
-        DebilitationScore: 0,
+  .implement(
+    (
+      eg: ExtendedGeneralType,
+      bp: BuffParamsType,
+      useCase: generalUseCaseType,
+      display: DisplayType,
+    ) => {
+      if (DEBUG) {
+        console.log(`\nPvPDetail start for ${eg.name} ${useCase} ${display}`);
       }
-    }
-    
-    returnable.attackRank.attackScore = PvPAttackDetail(eg, bp, am, useCase, display);
-    returnable.attackRank.rangeScore = PvPRangeDetail(eg, bp, am, useCase,display);
-    returnable.attackRank.marchSizeScore = PvPMarchSizeDetail(eg, bp, am, useCase, display);
-    returnable.attackRank.rallyScore = PvPRallyDetail(eg, bp, am, useCase, display);
-    returnable.toughnessRank.DeAttackScore = PvPDeAttackDetail(eg, bp, am, useCase, display);
-    returnable.attackRank.DeHPScore = PvPDeHPDetail(eg, bp, am, useCase, display);
-    returnable.attackRank.DeDefenseScore = PvPDeDefenseDetail(eg, bp, am, useCase, display);
-    returnable.toughnessRank.HPScore = PvPHPDetail(eg, bp, am, useCase, display);
-    returnable.toughnessRank.defenseScore =  PvPDefenseDetail(eg, bp, am, useCase, display);
-    returnable.preservationRank.PreservationScore = PvPPreservationDetail(eg, bp, am, useCase, display);
-    returnable.preservationRank.DebilitationScore = PvPDebilitationDetail(eg, bp, am, useCase, display);
-    if(DEBUG) {console.log(`PvPDetail${eg.name} end: ${JSON.stringify(returnable)}\n`)}
-    return returnable;
-  })
+      const am = getAttributes(useCase, eg.score_as);
+
+      const returnable: PvPBuffDetails = {
+        attackRank: {
+          attackScore: 0,
+          marchSizeScore: 0,
+          rangeScore: 0,
+          rallyScore: 0,
+          DeHPScore: 0,
+          DeDefenseScore: 0,
+        },
+        toughnessRank: {
+          HPScore: 0,
+          defenseScore: 0,
+          DeAttackScore: 0,
+        },
+        preservationRank: {
+          PreservationScore: 0,
+          DebilitationScore: 0,
+        },
+      };
+
+      returnable.attackRank.attackScore = PvPAttackDetail(
+        eg,
+        bp,
+        am,
+        useCase,
+        display,
+      );
+      returnable.attackRank.rangeScore = PvPRangeDetail(
+        eg,
+        bp,
+        am,
+        useCase,
+        display,
+      );
+      returnable.attackRank.marchSizeScore = PvPMarchSizeDetail(
+        eg,
+        bp,
+        am,
+        useCase,
+        display,
+      );
+      returnable.attackRank.rallyScore = PvPRallyDetail(
+        eg,
+        bp,
+        am,
+        useCase,
+        display,
+      );
+      returnable.toughnessRank.DeAttackScore = PvPDeAttackDetail(
+        eg,
+        bp,
+        am,
+        useCase,
+        display,
+      );
+      returnable.attackRank.DeHPScore = PvPDeHPDetail(
+        eg,
+        bp,
+        am,
+        useCase,
+        display,
+      );
+      returnable.attackRank.DeDefenseScore = PvPDeDefenseDetail(
+        eg,
+        bp,
+        am,
+        useCase,
+        display,
+      );
+      returnable.toughnessRank.HPScore = PvPHPDetail(
+        eg,
+        bp,
+        am,
+        useCase,
+        display,
+      );
+      returnable.toughnessRank.defenseScore = PvPDefenseDetail(
+        eg,
+        bp,
+        am,
+        useCase,
+        display,
+      );
+      returnable.preservationRank.PreservationScore = PvPPreservationDetail(
+        eg,
+        bp,
+        am,
+        useCase,
+        display,
+      );
+      returnable.preservationRank.DebilitationScore = PvPDebilitationDetail(
+        eg,
+        bp,
+        am,
+        useCase,
+        display,
+      );
+      if (DEBUG) {
+        console.log(`PvPDetail${eg.name} end: ${JSON.stringify(returnable)}\n`);
+      }
+      return returnable;
+    },
+  );

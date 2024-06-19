@@ -1,4 +1,4 @@
-import {  z as zod } from 'zod';
+import { z as zod } from 'zod';
 
 import { GeneralClass, Covenant, CovenantAttribute } from './generalsSchema';
 import { Speciality } from './specialitySchema';

@@ -11,9 +11,15 @@ import {
   UnitSchema,
 } from '@schemas/baseSchemas';
 
-import {AttributeMultipliers, type AttributeMultipliersType} from '@schemas/EvAns.zod';
+import {
+  AttributeMultipliers,
+  type AttributeMultipliersType,
+} from '@schemas/EvAns.zod';
 import { checkInvalidConditions } from '../checkConditions';
-import { generalUseCase, type generalUseCaseType } from '@schemas/generalsSchema.ts';
+import {
+  generalUseCase,
+  type generalUseCaseType,
+} from '@schemas/generalsSchema.ts';
 
 const DEBUGRC = false;
 
@@ -21,50 +27,50 @@ const PvPRallyBuffClassCheck = z
   .function()
   .args(Buff, BuffParams, AttributeMultipliers)
   .returns(z.number())
-  .implement((tb: BuffType, iv: BuffParamsType, am: AttributeMultipliersType) => {
-    let score = 0;
-    let multiplier = 0;
-    if (tb !== null && tb !== undefined) {
-      if (tb.value !== null && tb.value !== undefined) {
-        if (!UnitSchema.enum.percentage.localeCompare(tb.value.unit)) {
-          if (tb.class !== null && tb.class !== undefined) {
-            if (!ClassEnum.enum.Archers.localeCompare(tb.class)) {
-              multiplier =
-                am?.Offensive.RallyCapacity ??
-                0;
-            } else if (!ClassEnum.enum.Ground.localeCompare(tb.class)) {
-              multiplier =
-                am?.Offensive.RallyCapacity ??
-                0;
-            } else if (!ClassEnum.enum.Mounted.localeCompare(tb.class)) {
-              multiplier =
-                am?.Offensive.RallyCapacity ??
-                0;
-            } else if (!ClassEnum.enum.Siege.localeCompare(tb.class)) {
-              multiplier =
-                am?.Offensive.RallyCapacity ??
-                0;
+  .implement(
+    (tb: BuffType, iv: BuffParamsType, am: AttributeMultipliersType) => {
+      let score = 0;
+      let multiplier = 0;
+      if (tb !== null && tb !== undefined) {
+        if (tb.value !== null && tb.value !== undefined) {
+          if (!UnitSchema.enum.percentage.localeCompare(tb.value.unit)) {
+            if (tb.class !== null && tb.class !== undefined) {
+              if (!ClassEnum.enum.Archers.localeCompare(tb.class)) {
+                multiplier = am?.Offensive.RallyCapacity ?? 0;
+              } else if (!ClassEnum.enum.Ground.localeCompare(tb.class)) {
+                multiplier = am?.Offensive.RallyCapacity ?? 0;
+              } else if (!ClassEnum.enum.Mounted.localeCompare(tb.class)) {
+                multiplier = am?.Offensive.RallyCapacity ?? 0;
+              } else if (!ClassEnum.enum.Siege.localeCompare(tb.class)) {
+                multiplier = am?.Offensive.RallyCapacity ?? 0;
+              } else {
+                multiplier = 0;
+              }
             } else {
-              multiplier = 0;
+              multiplier = am?.Offensive.RallyCapacity ?? 0;
             }
-          } else {
-            multiplier =
-              am?.Offensive.RallyCapacity ?? 0;
+            const additional = tb.value.number * multiplier;
+            if (DEBUGRC) {
+              console.log(`adding ${additional} to ${score}`);
+            }
+            score += additional;
           }
-          const additional = tb.value.number * multiplier;
-          if (DEBUGRC) {
-            console.log(`adding ${additional} to ${score}`);
-          }
-          score += additional;
         }
       }
-    }
-    return score;
-  });
+      return score;
+    },
+  );
 
 export const RallyBuff = z
   .function()
-  .args(z.string(), z.string(), Buff, BuffParams, generalUseCase, AttributeMultipliers)
+  .args(
+    z.string(),
+    z.string(),
+    Buff,
+    BuffParams,
+    generalUseCase,
+    AttributeMultipliers,
+  )
   .returns(z.number())
   .implement(
     (
@@ -73,7 +79,7 @@ export const RallyBuff = z
       tb: BuffType,
       iv: BuffParamsType,
       useCase: generalUseCaseType,
-      am: AttributeMultipliersType
+      am: AttributeMultipliersType,
     ) => {
       const multiplier = 0;
       if (tb === null || tb === undefined || iv === null || iv === undefined) {
@@ -85,7 +91,7 @@ export const RallyBuff = z
         let score = 0;
         if (tb?.value === undefined || tb.value === null) {
           console.log(
-            `how to score a buff with no value? gc is ${generalName}`
+            `how to score a buff with no value? gc is ${generalName}`,
           );
           return score;
         } else {
@@ -95,7 +101,7 @@ export const RallyBuff = z
           if (tb.attribute === undefined || tb.attribute === null) {
             if (DEBUGRC) {
               console.log(
-                `PvPRallyBuff: ${generalName}: ${buffName} has null attribute`
+                `PvPRallyBuff: ${generalName}: ${buffName} has null attribute`,
               );
             }
             return score;
@@ -104,7 +110,7 @@ export const RallyBuff = z
           ) {
             if (DEBUGRC) {
               console.log(
-                `PvPRallyBuff: ${generalName}: ${buffName} is not an Rally_Capacity buff`
+                `PvPRallyBuff: ${generalName}: ${buffName} is not an Rally_Capacity buff`,
               );
             }
             return score;
@@ -119,15 +125,15 @@ export const RallyBuff = z
                   tb.condition.includes(Condition.enum.Enemy_In_City) ||
                   tb.condition.includes(Condition.enum.Reduces_Enemy) ||
                   tb.condition.includes(
-                    Condition.enum.Reduces_Enemy_in_Attack
+                    Condition.enum.Reduces_Enemy_in_Attack,
                   ) ||
                   tb.condition.includes(
-                    Condition.enum.Reduces_Enemy_with_a_Dragon
+                    Condition.enum.Reduces_Enemy_with_a_Dragon,
                   )
                 ) {
                   if (DEBUGRC) {
                     console.log(
-                      `PvPRallyBuff: ${generalName}: ${buffName} detected attack debuff`
+                      `PvPRallyBuff: ${generalName}: ${buffName} detected attack debuff`,
                     );
                   }
                   return 0;
@@ -148,5 +154,5 @@ export const RallyBuff = z
         }
         return score;
       }
-    }
+    },
   );

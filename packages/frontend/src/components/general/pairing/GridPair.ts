@@ -17,6 +17,5 @@ export const GridData = z.object({
     PvPBuffDetails,
     Original: ExtendedGeneral,
   }),
-})
+});
 export type GridData = z.infer<typeof GridData>;
-

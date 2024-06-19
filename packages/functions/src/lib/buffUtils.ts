@@ -12,7 +12,7 @@ type BuffEffectiveMap = Record<
 
 const BuffEffectiveMap: BuffEffectiveMap = {
   [ActivationSituations.enum['Defense of Buildings']]: (
-    condition: ConditionType
+    condition: ConditionType,
   ) => {
     const trueCases: ConditionType[] = [
       Condition.enum.Attacking,
@@ -36,7 +36,7 @@ const BuffEffectiveMap: BuffEffectiveMap = {
     return false;
   },
   [ActivationSituations.enum['Defense of Camp']]: (
-    condition: ConditionType
+    condition: ConditionType,
   ) => {
     const trueCases: ConditionType[] = [
       Condition.enum.Attacking,
@@ -58,7 +58,7 @@ const BuffEffectiveMap: BuffEffectiveMap = {
     return false;
   },
   [ActivationSituations.enum['Defense of Self']]: (
-    condition: ConditionType
+    condition: ConditionType,
   ) => {
     const trueCases: ConditionType[] = [
       Condition.enum.Defending,
@@ -98,7 +98,7 @@ const BuffEffectiveMap: BuffEffectiveMap = {
     return false;
   },
   [ActivationSituations.enum['Rally Owner PvP']]: (
-    condition: ConditionType
+    condition: ConditionType,
   ) => {
     const trueCases: ConditionType[] = [
       Condition.enum.Attacking,
@@ -121,7 +121,7 @@ const BuffEffectiveMap: BuffEffectiveMap = {
     return false;
   },
   [ActivationSituations.enum['Rally Participant PvP']]: (
-    condition: ConditionType
+    condition: ConditionType,
   ) => {
     const trueCases: ConditionType[] = [
       Condition.enum.Attacking,
@@ -138,7 +138,7 @@ const BuffEffectiveMap: BuffEffectiveMap = {
     return false;
   },
   [ActivationSituations.enum['Reinforcement of Buildings']]: (
-    condition: ConditionType
+    condition: ConditionType,
   ) => {
     const trueCases: ConditionType[] = [
       Condition.enum.Attacking,
@@ -162,7 +162,7 @@ const BuffEffectiveMap: BuffEffectiveMap = {
     return false;
   },
   [ActivationSituations.enum['Reinforcement of Others']]: (
-    condition: ConditionType
+    condition: ConditionType,
   ) => {
     const trueCases: ConditionType[] = [
       Condition.enum.Defending,
@@ -200,7 +200,7 @@ const BuffEffectiveMap: BuffEffectiveMap = {
     return false;
   },
   [ActivationSituations.enum['Rally Owner Monster']]: (
-    condition: ConditionType
+    condition: ConditionType,
   ) => {
     const trueCases: ConditionType[] = [
       Condition.enum.Attacking,
@@ -220,7 +220,7 @@ const BuffEffectiveMap: BuffEffectiveMap = {
     return false;
   },
   [ActivationSituations.enum['Rally Participant Monster']]: (
-    condition: ConditionType
+    condition: ConditionType,
   ) => {
     const trueCases: ConditionType[] = [
       Condition.enum.Attacking,
@@ -241,7 +241,7 @@ const BuffEffectiveMap: BuffEffectiveMap = {
 
 export const isBuffEffective = (
   situation: ActivationSituationsType,
-  condition: ConditionType
+  condition: ConditionType,
 ) => {
   return BuffEffectiveMap[situation](condition);
 };

@@ -9,11 +9,22 @@ import {
   type BuffParamsType,
 } from '@schemas/baseSchemas';
 
-import { AttributeMultipliers, type AttributeMultipliersType } from '@schemas/EvAns.zod';
+import {
+  AttributeMultipliers,
+  type AttributeMultipliersType,
+} from '@schemas/EvAns.zod';
 
-import { Display, type DisplayType, generalUseCase, type generalUseCaseType } from '@schemas/generalsSchema';
+import {
+  Display,
+  type DisplayType,
+  generalUseCase,
+  type generalUseCaseType,
+} from '@schemas/generalsSchema';
 
-import { ExtendedGeneral, type ExtendedGeneralType } from '@schemas/ExtendedGeneral';
+import {
+  ExtendedGeneral,
+  type ExtendedGeneralType,
+} from '@schemas/ExtendedGeneral';
 import { PvPBSS } from './AttackingToughnessPvPBSS';
 import { PvPAES } from './AttackingToughnessPvPAES';
 import { PvP34SS } from './AttackingToughnessPvP34SS';
@@ -60,102 +71,102 @@ const Basic = z
     }
 
     let BasicAttack = eg.attack + 45 * eg.attack_increment;
-    if(DEBUG_BAS) {
-      console.log(`BasicAttack step1: ${BasicAttack}`)
+    if (DEBUG_BAS) {
+      console.log(`BasicAttack step1: ${BasicAttack}`);
     }
 
     BasicAttack += 500;
-    if(DEBUG_BAS) {
-      console.log(`BasicAttack with cultivation: ${BasicAttack}`)
+    if (DEBUG_BAS) {
+      console.log(`BasicAttack with cultivation: ${BasicAttack}`);
     }
     BasicAttack += AES_adjustment;
-    if(DEBUG_BAS) {
-      console.log(`BasicAttack with AES`)
+    if (DEBUG_BAS) {
+      console.log(`BasicAttack with AES`);
     }
-    if(BasicAttack < 900){
-      BasicAttack = BasicAttack * 0.1
-      if(DEBUG_BAS ) {
-        console.log(`BasicAttack less than 900, now ${BasicAttack}`)
+    if (BasicAttack < 900) {
+      BasicAttack = BasicAttack * 0.1;
+      if (DEBUG_BAS) {
+        console.log(`BasicAttack less than 900, now ${BasicAttack}`);
       }
     } else {
-      BasicAttack = 90 + (BasicAttack -900)*.2;
-      if(DEBUG_BAS) {
-        console.log(`BasicAttack > 900, now ${BasicAttack}`)
+      BasicAttack = 90 + (BasicAttack - 900) * 0.2;
+      if (DEBUG_BAS) {
+        console.log(`BasicAttack > 900, now ${BasicAttack}`);
       }
     }
 
     let BasicDefense = eg.defense + 45 * eg.defense_increment;
-    if(DEBUG_BAS) {
-      console.log(`BasicDefense step1: ${BasicDefense}`)
+    if (DEBUG_BAS) {
+      console.log(`BasicDefense step1: ${BasicDefense}`);
     }
 
-    BasicDefense += AES_adjustment
-    if(DEBUG_BAS) {
-      console.log(`BasicDefense with AES: ${BasicDefense}`)
+    BasicDefense += AES_adjustment;
+    if (DEBUG_BAS) {
+      console.log(`BasicDefense with AES: ${BasicDefense}`);
     }
     BasicDefense += 500;
-    if(DEBUG_BAS) {
-      console.log(`BasicDefense with cultivation: ${BasicDefense}`)
+    if (DEBUG_BAS) {
+      console.log(`BasicDefense with cultivation: ${BasicDefense}`);
     }
-    if(BasicDefense < 900){
-      BasicDefense = BasicDefense * 0.1
-      if(DEBUG_BAS ) {
-        console.log(`BasicDefense less than 900, now ${BasicDefense}`)
+    if (BasicDefense < 900) {
+      BasicDefense = BasicDefense * 0.1;
+      if (DEBUG_BAS) {
+        console.log(`BasicDefense less than 900, now ${BasicDefense}`);
       }
     } else {
-      BasicDefense = 90 + (BasicDefense -900)*.2;
-      if(DEBUG_BAS) {
-        console.log(`BasicDefense > 900, now ${BasicDefense}`)
+      BasicDefense = 90 + (BasicDefense - 900) * 0.2;
+      if (DEBUG_BAS) {
+        console.log(`BasicDefense > 900, now ${BasicDefense}`);
       }
     }
 
     let BasicLeaderShip = eg.leadership + 45 * eg.leadership_increment;
-    if(DEBUG_BAS) {
-      console.log(`BasicLeaderShip step1: ${BasicLeaderShip}`)
+    if (DEBUG_BAS) {
+      console.log(`BasicLeaderShip step1: ${BasicLeaderShip}`);
     }
 
-    BasicLeaderShip += AES_adjustment
-    if(DEBUG_BAS) {
-      console.log(`BasicLeadership with AES`)
+    BasicLeaderShip += AES_adjustment;
+    if (DEBUG_BAS) {
+      console.log(`BasicLeadership with AES`);
     }
     BasicLeaderShip += 500;
-      if(DEBUG_BAS) {
-      console.log(`BasicLeaderShip with cultivation: ${BasicLeaderShip}`)
+    if (DEBUG_BAS) {
+      console.log(`BasicLeaderShip with cultivation: ${BasicLeaderShip}`);
     }
-    if(BasicLeaderShip < 900){
-      BasicLeaderShip = BasicLeaderShip * 0.1
-      if(DEBUG_BAS ) {
-        console.log(`BasicLeaderShip less than 900, now ${BasicLeaderShip}`)
+    if (BasicLeaderShip < 900) {
+      BasicLeaderShip = BasicLeaderShip * 0.1;
+      if (DEBUG_BAS) {
+        console.log(`BasicLeaderShip less than 900, now ${BasicLeaderShip}`);
       }
     } else {
-      BasicLeaderShip = 90 + (BasicLeaderShip -900)*.2;
-      if(DEBUG_BAS) {
-        console.log(`BasicLeaderShip > 900, now ${BasicLeaderShip}`)
+      BasicLeaderShip = 90 + (BasicLeaderShip - 900) * 0.2;
+      if (DEBUG_BAS) {
+        console.log(`BasicLeaderShip > 900, now ${BasicLeaderShip}`);
       }
     }
 
     let BasicPolitics = eg.politics + 45 * eg.politics_increment;
-    if(DEBUG_BAS) {
-      console.log(`BasicPolitics step1: ${BasicPolitics}`)
+    if (DEBUG_BAS) {
+      console.log(`BasicPolitics step1: ${BasicPolitics}`);
     }
 
-    BasicPolitics += AES_adjustment
-    if(DEBUG_BAS) {
-      console.log(`BasicPolitics with AES ${BasicPolitics}`)
+    BasicPolitics += AES_adjustment;
+    if (DEBUG_BAS) {
+      console.log(`BasicPolitics with AES ${BasicPolitics}`);
     }
     BasicPolitics += 500;
-    if(DEBUG_BAS) {
-      console.log(`BasicPolitics with cultivation: ${BasicPolitics}`)
+    if (DEBUG_BAS) {
+      console.log(`BasicPolitics with cultivation: ${BasicPolitics}`);
     }
-    if(BasicPolitics < 900){
-      BasicPolitics = BasicPolitics * 0.1
-      if(DEBUG_BAS ) {
-        console.log(`BasicPolitics less than 900, now ${BasicPolitics}`)
+    if (BasicPolitics < 900) {
+      BasicPolitics = BasicPolitics * 0.1;
+      if (DEBUG_BAS) {
+        console.log(`BasicPolitics less than 900, now ${BasicPolitics}`);
       }
     } else {
-      BasicPolitics = 90 + (BasicPolitics -900)*.2;
-      if(DEBUG_BAS) {
-        console.log(`BasicPolitics > 900, now ${BasicPolitics}`)
+      BasicPolitics = 90 + (BasicPolitics - 900) * 0.2;
+      if (DEBUG_BAS) {
+        console.log(`BasicPolitics > 900, now ${BasicPolitics}`);
       }
     }
 
@@ -165,22 +176,24 @@ const Basic = z
     const PoliticsMultiplier = 0;
 
     const BAS =
-      Math.floor(BasicAttack * attackMultiplier ) +
-      Math.floor(BasicDefense * defenseMultiplier ) +
-      Math.floor(BasicLeaderShip * HPMultiplier  )+
+      Math.floor(BasicAttack * attackMultiplier) +
+      Math.floor(BasicDefense * defenseMultiplier) +
+      Math.floor(BasicLeaderShip * HPMultiplier) +
       Math.floor(BasicPolitics * PoliticsMultiplier);
 
     if (DEBUG_BAS) {
       console.log(
-        `BasicAttack: ${BasicAttack} = ${BasicAttack * attackMultiplier} for ${eg.name}`
+        `BasicAttack: ${BasicAttack} = ${BasicAttack * attackMultiplier} for ${eg.name}`,
       );
       console.log(
-        `BasicDefense: ${BasicDefense} = ${BasicDefense * defenseMultiplier} for ${eg.name}`
+        `BasicDefense: ${BasicDefense} = ${BasicDefense * defenseMultiplier} for ${eg.name}`,
       );
       console.log(
-        `BasicLeaderShip: ${BasicLeaderShip} = ${BasicLeaderShip * HPMultiplier} for ${eg.name}`
+        `BasicLeaderShip: ${BasicLeaderShip} = ${BasicLeaderShip * HPMultiplier} for ${eg.name}`,
       );
-      console.log(`BasicPolitics: ${BasicPolitics} = ${BasicPolitics * PoliticsMultiplier} for ${eg.name}`);
+      console.log(
+        `BasicPolitics: ${BasicPolitics} = ${BasicPolitics * PoliticsMultiplier} for ${eg.name}`,
+      );
       console.log(`BAS: ${BAS} for: ${eg.name}`);
     }
     return BAS;
@@ -188,10 +201,22 @@ const Basic = z
 
 export const MayorToughnessPvPBase = z
   .function()
-  .args(ExtendedGeneral, Display, BuffParams, generalUseCase, AttributeMultipliers)
+  .args(
+    ExtendedGeneral,
+    Display,
+    BuffParams,
+    generalUseCase,
+    AttributeMultipliers,
+  )
   .returns(z.number())
   .implement(
-    (eg: ExtendedGeneralType, display: DisplayType, bp: BuffParamsType, useCase: generalUseCaseType, am: AttributeMultipliersType) => {
+    (
+      eg: ExtendedGeneralType,
+      display: DisplayType,
+      bp: BuffParamsType,
+      useCase: generalUseCaseType,
+      am: AttributeMultipliersType,
+    ) => {
       if (DEBUG) {
         console.log(`${eg.name}: ArchersPvPAttack starting`);
       }
@@ -207,7 +232,7 @@ export const MayorToughnessPvPBase = z
         MarchSize: MarchSizeBuff,
         Preservation: PreservationBuff,
         Range: RangeBuff,
-      }
+      };
 
       const BAS = Basic(eg, am);
       const BSS = PvPBSS(eg, bp, typedBuffFunctions, useCase, am);
@@ -218,13 +243,11 @@ export const MayorToughnessPvPBase = z
       if (DEBUG) {
         console.log(`ArchersPvPAttack: ${eg.name}: BSS: ${BSS}`);
         console.log(
-          `ArchersPvPAttack: ${eg.name}: specialities: ${specialities}`
+          `ArchersPvPAttack: ${eg.name}: specialities: ${specialities}`,
         );
         console.log(`ArchersPvPAttack: ${eg.name}: BAS: ${BAS}`);
         console.log(`ArchersPvPAttack: ${eg.name}: AES: ${AES}`);
-        console.log(
-          `ArchersPvPAttack: ${eg.name}: TLGS (BSS & 34SS): ${TLGS}`
-        );
+        console.log(`ArchersPvPAttack: ${eg.name}: TLGS (BSS & 34SS): ${TLGS}`);
       }
       if (display.localeCompare(Display.enum.secondary)) {
         TLGS += BAS;
@@ -240,10 +263,9 @@ export const MayorToughnessPvPBase = z
       }
       if (DEBUG) {
         console.log(
-          `for ${eg.name} as ${display}:  BAS: ${BAS} BSS: ${BSS} AES: ${AES} specialities: ${specialities} TLGS: ${TLGS}`
+          `for ${eg.name} as ${display}:  BAS: ${BAS} BSS: ${BSS} AES: ${AES} specialities: ${specialities} TLGS: ${TLGS}`,
         );
       }
       return TLGS;
-    }
+    },
   );
-

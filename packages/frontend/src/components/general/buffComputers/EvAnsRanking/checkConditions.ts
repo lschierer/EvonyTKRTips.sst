@@ -1,6 +1,16 @@
-import {z} from 'zod';
-import { Buff, BuffParams, type BuffParamsType, type BuffType, Condition, type ConditionType } from '@schemas/baseSchemas';
-import { generalUseCase, type generalUseCaseType } from '@schemas/generalsSchema';
+import { z } from 'zod';
+import {
+  Buff,
+  BuffParams,
+  type BuffParamsType,
+  type BuffType,
+  Condition,
+  type ConditionType,
+} from '@schemas/baseSchemas';
+import {
+  generalUseCase,
+  type generalUseCaseType,
+} from '@schemas/generalsSchema';
 
 const DEBUGC = false;
 
@@ -8,14 +18,14 @@ export const checkInvalidConditions = z
   .function()
   .args(Buff, BuffParams, generalUseCase)
   .returns(z.boolean())
-  .implement((tb: BuffType, iv: BuffParamsType,am: generalUseCaseType) => {
+  .implement((tb: BuffType, iv: BuffParamsType, am: generalUseCaseType) => {
     if (tb.condition !== undefined && tb.condition !== null) {
       if (DEBUGC) {
         console.log(`null condition detected: ${JSON.stringify(tb)}`);
       }
       const conditions = Array<ConditionType>();
       const debuffConditions = Array<ConditionType>();
-      if(!am.localeCompare(generalUseCase.enum.Attack)) {
+      if (!am.localeCompare(generalUseCase.enum.Attack)) {
         conditions.push(Condition.enum['Against Monsters']);
         conditions.push(Condition.enum.Defending);
         conditions.push(Condition.enum.In_City);
@@ -29,7 +39,7 @@ export const checkInvalidConditions = z
         debuffConditions.push(Condition.enum.Enemy);
         debuffConditions.push(Condition.enum.Enemy_In_City);
         debuffConditions.push(Condition.enum.Reduces_Enemy);
-        debuffConditions.push(Condition.enum.Reduces_Enemy_in_Attack)
+        debuffConditions.push(Condition.enum.Reduces_Enemy_in_Attack);
         debuffConditions.push(Condition.enum.Reduces_Enemy_with_a_Dragon);
         debuffConditions.push(Condition.enum['Reduces Monster']);
       } else if (!am.localeCompare(generalUseCase.enum.Monsters)) {
@@ -45,9 +55,9 @@ export const checkInvalidConditions = z
         debuffConditions.push(Condition.enum.Enemy);
         debuffConditions.push(Condition.enum.Enemy_In_City);
         debuffConditions.push(Condition.enum.Reduces_Enemy);
-        debuffConditions.push(Condition.enum.Reduces_Enemy_in_Attack)
+        debuffConditions.push(Condition.enum.Reduces_Enemy_in_Attack);
         debuffConditions.push(Condition.enum.Reduces_Enemy_with_a_Dragon);
-      } else if(!am.localeCompare(generalUseCase.enum.Reinforcement)){
+      } else if (!am.localeCompare(generalUseCase.enum.Reinforcement)) {
         conditions.push(Condition.enum['Against Monsters']);
         conditions.push(Condition.enum.Marching);
         conditions.push(Condition.enum.When_City_Mayor);
@@ -61,18 +71,18 @@ export const checkInvalidConditions = z
         debuffConditions.push(Condition.enum.Reduces_Enemy);
         debuffConditions.push(Condition.enum.Reduces_Enemy_with_a_Dragon);
         debuffConditions.push(Condition.enum['Reduces Monster']);
-      }else {
-        console.log(`no list of conditions for this use case`)
+      } else {
+        console.log(`no list of conditions for this use case`);
         return false;
       }
 
-      const r1 = conditions.map((c)=> {
-        return !(tb.condition?.includes(c));
-      })
+      const r1 = conditions.map((c) => {
+        return !tb.condition?.includes(c);
+      });
       const r2 = debuffConditions.map((dc) => {
-        return !(tb.condition?.includes(dc));
-      })
-      if(r1.includes(false) || r2.includes(false)) {
+        return !tb.condition?.includes(dc);
+      });
+      if (r1.includes(false) || r2.includes(false)) {
         return false;
       }
 

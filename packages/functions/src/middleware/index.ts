@@ -7,7 +7,7 @@ const DEBUG = false;
 const defaultHandler = defineMiddleware(async (context, next) => {
   if (DEBUG) console.log(`toplevel Middleware running`);
   const thisRoute = context.url.pathname;
-  if(DEBUG) console.log(`middleware running ${thisRoute}`);
+  if (DEBUG) console.log(`middleware running ${thisRoute}`);
 
   return next();
 });

@@ -10,8 +10,10 @@ import {
   type generalUseCaseType,
 } from '@schemas/generalsSchema';
 
-import { ExtendedGeneral, type ExtendedGeneralType } from '@schemas/ExtendedGeneral';
-
+import {
+  ExtendedGeneral,
+  type ExtendedGeneralType,
+} from '@schemas/ExtendedGeneral';
 
 import { EvAnsPvPAttacking } from './Details/AttackPvPBase';
 import { EvAnsPvPReinforcement } from './Details/ReinforcementPvPBase';
@@ -36,51 +38,94 @@ export const EvAnsScoreComputer = z
       UseCase: generalUseCaseType,
       eg: ExtendedGeneralType,
       display: DisplayType,
-      bp: BuffParamsType
+      bp: BuffParamsType,
     ) => {
-      if(!UseCase.localeCompare(generalUseCase.enum.all)) {
-        if(DEBUG) {
-          console.log(`EvansScoreComputer detects useCase of all`)
+      if (!UseCase.localeCompare(generalUseCase.enum.all)) {
+        if (DEBUG) {
+          console.log(`EvansScoreComputer detects useCase of all`);
         }
         return 0;
-      } else if(!UseCase.localeCompare(generalUseCase.enum.Monsters)) {
+      } else if (!UseCase.localeCompare(generalUseCase.enum.Monsters)) {
         return 0; //EvAns has not released Attribute Multipliers for PvM and with his attention to detail, I am confident they *will* differ considerably.
       } else if (!UseCase.localeCompare(generalUseCase.enum.Attack)) {
         if (DEBUG) {
           console.log(`called for Attack use case`);
         }
         if (!generalSpecialists.enum.Archers.localeCompare(eg.score_as)) {
-          return EvAnsPvPAttacking(eg, display, bp, EvAnsAttributes.RangedPvPAttackAttributeMultipliers);
+          return EvAnsPvPAttacking(
+            eg,
+            display,
+            bp,
+            EvAnsAttributes.RangedPvPAttackAttributeMultipliers,
+          );
         }
         if (!generalSpecialists.enum.Ground.localeCompare(eg.score_as)) {
-          return EvAnsPvPAttacking(eg, display, bp, EvAnsAttributes.GroundPvPAttackAttributeMultipliers);
+          return EvAnsPvPAttacking(
+            eg,
+            display,
+            bp,
+            EvAnsAttributes.GroundPvPAttackAttributeMultipliers,
+          );
         }
         if (!generalSpecialists.enum.Mounted.localeCompare(eg.score_as)) {
-          return EvAnsPvPAttacking(eg, display, bp, EvAnsAttributes.MountedPvPAttackAttributeMultipliers);
+          return EvAnsPvPAttacking(
+            eg,
+            display,
+            bp,
+            EvAnsAttributes.MountedPvPAttackAttributeMultipliers,
+          );
         }
         if (!generalSpecialists.enum.Siege.localeCompare(eg.score_as)) {
-          return EvAnsPvPAttacking(eg, display, bp, EvAnsAttributes.SiegePvPAttackAttributeMultipliers);
+          return EvAnsPvPAttacking(
+            eg,
+            display,
+            bp,
+            EvAnsAttributes.SiegePvPAttackAttributeMultipliers,
+          );
         }
-      } else if (!UseCase.localeCompare(generalUseCase.enum.Reinforcement)){
+      } else if (!UseCase.localeCompare(generalUseCase.enum.Reinforcement)) {
         if (!generalSpecialists.enum.Archers.localeCompare(eg.score_as)) {
-          return EvAnsPvPReinforcement(eg, display, bp, EvAnsAttributes.RangedPvPReinforcementAttributeMultipliers);
+          return EvAnsPvPReinforcement(
+            eg,
+            display,
+            bp,
+            EvAnsAttributes.RangedPvPReinforcementAttributeMultipliers,
+          );
         }
         if (!generalSpecialists.enum.Ground.localeCompare(eg.score_as)) {
-          return EvAnsPvPReinforcement(eg, display, bp, EvAnsAttributes.GroundPvPReinforcementAttributeMultipliers);
+          return EvAnsPvPReinforcement(
+            eg,
+            display,
+            bp,
+            EvAnsAttributes.GroundPvPReinforcementAttributeMultipliers,
+          );
         }
         if (!generalSpecialists.enum.Mounted.localeCompare(eg.score_as)) {
-          return EvAnsPvPReinforcement(eg, display, bp, EvAnsAttributes.MountedPvPReinforcementAttributeMultipliers);
+          return EvAnsPvPReinforcement(
+            eg,
+            display,
+            bp,
+            EvAnsAttributes.MountedPvPReinforcementAttributeMultipliers,
+          );
         }
         if (!generalSpecialists.enum.Siege.localeCompare(eg.score_as)) {
-          return EvAnsPvPReinforcement(eg, display, bp, EvAnsAttributes.SiegePvPReinforcementAttributeMultipliers);
+          return EvAnsPvPReinforcement(
+            eg,
+            display,
+            bp,
+            EvAnsAttributes.SiegePvPReinforcementAttributeMultipliers,
+          );
         }
       } else {
-        if(DEBUG) {
-          console.log(`not called for Attack, Monsters, or Reinforcement use cases`);
+        if (DEBUG) {
+          console.log(
+            `not called for Attack, Monsters, or Reinforcement use cases`,
+          );
         }
       }
-      console.log(`${eg.name} ${UseCase} ${eg.score_as} did not match any scoring function`);
+      console.log(
+        `${eg.name} ${UseCase} ${eg.score_as} did not match any scoring function`,
+      );
       return -7;
-    }
+    },
   );
-

@@ -80,7 +80,7 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
   }
 
   public willUpdate(
-    _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>
+    _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>,
   ): void {
     super.willUpdate(_changedProperties);
     console.log(`index willUpdate`);
@@ -155,7 +155,7 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
         addValue('al5name', 'isSet');
       }
       console.log(
-        `${(target as Element).id} has ${(target as Textfield).value}`
+        `${(target as Element).id} has ${(target as Textfield).value}`,
       );
       addValue((target as Element).id, (target as Textfield).value);
       this.requestUpdate();
@@ -167,7 +167,7 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
     const target = e.target;
     if (target !== null && target !== undefined) {
       console.log(
-        `sformHander; ${(target as Element).id} has ${(target as Textfield).value}`
+        `sformHander; ${(target as Element).id} has ${(target as Textfield).value}`,
       );
       if ((target as Element).id.includes('_valueU')) {
         if ((target as Checkbox).checked === false) {
@@ -229,10 +229,10 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
       s1gT.push(this.buffs.render(b.qualityColor.enum.Green, `1.${i}`, 'left'));
       s1bT.push(this.buffs.render(b.qualityColor.enum.Blue, `1.${i}`, 'left'));
       s1pT.push(
-        this.buffs.render(b.qualityColor.enum.Purple, `1.${i}`, 'left')
+        this.buffs.render(b.qualityColor.enum.Purple, `1.${i}`, 'left'),
       );
       s1oT.push(
-        this.buffs.render(b.qualityColor.enum.Orange, `1.${i}`, 'left')
+        this.buffs.render(b.qualityColor.enum.Orange, `1.${i}`, 'left'),
       );
       s1GT.push(this.buffs.render(b.qualityColor.enum.Gold, `1.${i}`, 'left'));
     }
@@ -240,10 +240,10 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
       s2gT.push(this.buffs.render(b.qualityColor.enum.Green, `2.${i}`, 'left'));
       s2bT.push(this.buffs.render(b.qualityColor.enum.Blue, `2.${i}`, 'left'));
       s2pT.push(
-        this.buffs.render(b.qualityColor.enum.Purple, `2.${i}`, 'left')
+        this.buffs.render(b.qualityColor.enum.Purple, `2.${i}`, 'left'),
       );
       s2oT.push(
-        this.buffs.render(b.qualityColor.enum.Orange, `2.${i}`, 'left')
+        this.buffs.render(b.qualityColor.enum.Orange, `2.${i}`, 'left'),
       );
       s2GT.push(this.buffs.render(b.qualityColor.enum.Gold, `2.${i}`, 'left'));
     }
@@ -251,10 +251,10 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
       s3gT.push(this.buffs.render(b.qualityColor.enum.Green, `3.${i}`, 'left'));
       s3bT.push(this.buffs.render(b.qualityColor.enum.Blue, `3.${i}`, 'left'));
       s3pT.push(
-        this.buffs.render(b.qualityColor.enum.Purple, `3.${i}`, 'left')
+        this.buffs.render(b.qualityColor.enum.Purple, `3.${i}`, 'left'),
       );
       s3oT.push(
-        this.buffs.render(b.qualityColor.enum.Orange, `3.${i}`, 'left')
+        this.buffs.render(b.qualityColor.enum.Orange, `3.${i}`, 'left'),
       );
       s3GT.push(this.buffs.render(b.qualityColor.enum.Gold, `3.${i}`, 'left'));
     }
@@ -262,10 +262,10 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
       s4gT.push(this.buffs.render(b.qualityColor.enum.Green, `4.${i}`, 'left'));
       s4bT.push(this.buffs.render(b.qualityColor.enum.Blue, `4.${i}`, 'left'));
       s4pT.push(
-        this.buffs.render(b.qualityColor.enum.Purple, `4.${i}`, 'left')
+        this.buffs.render(b.qualityColor.enum.Purple, `4.${i}`, 'left'),
       );
       s4oT.push(
-        this.buffs.render(b.qualityColor.enum.Orange, `4.${i}`, 'left')
+        this.buffs.render(b.qualityColor.enum.Orange, `4.${i}`, 'left'),
       );
       s4GT.push(this.buffs.render(b.qualityColor.enum.Gold, `4.${i}`, 'left'));
     }
@@ -700,7 +700,7 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
             b.qualityColor.enum.Green,
             `1.`,
             'right',
-            's1numattrs'
+            's1numattrs',
           );
           console.log(`s1 is ${s1}`);
           exportable = `${exportable}\n${s1.values}`;
@@ -708,28 +708,28 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
             b.qualityColor.enum.Blue,
             '1.',
             'right',
-            's1numattrs'
+            's1numattrs',
           );
           exportable = `${exportable}\n${s2.values}`;
           const s3 = this.buffs.render(
             b.qualityColor.enum.Purple,
             '1.',
             'right',
-            's1numattrs'
+            's1numattrs',
           );
           exportable = `${exportable}\n${s3.values}`;
           const s4 = this.buffs.render(
             b.qualityColor.enum.Orange,
             '1.',
             'right',
-            's1numattrs'
+            's1numattrs',
           );
           exportable = `${exportable}\n${s4.values}`;
           const s5 = this.buffs.render(
             b.qualityColor.enum.Gold,
             '1.',
             'right',
-            's1numattrs'
+            's1numattrs',
           );
           exportable = `${exportable}\n${s5.values}`;
         }
@@ -742,35 +742,35 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
             b.qualityColor.enum.Green,
             '2.',
             'right',
-            's2numattrs'
+            's2numattrs',
           );
           exportable = `${exportable}\n${s1.values}`;
           const s2 = this.buffs.render(
             b.qualityColor.enum.Blue,
             '2.',
             'right',
-            's2numattrs'
+            's2numattrs',
           );
           exportable = `${exportable}\n${s2.values}`;
           const s3 = this.buffs.render(
             b.qualityColor.enum.Purple,
             '2.',
             'right',
-            's2numattrs'
+            's2numattrs',
           );
           exportable = `${exportable}\n${s3.values}`;
           const s4 = this.buffs.render(
             b.qualityColor.enum.Orange,
             '2.',
             'right',
-            's2numattrs'
+            's2numattrs',
           );
           exportable = `${exportable}\n${s4.values}`;
           const s5 = this.buffs.render(
             b.qualityColor.enum.Gold,
             '2.',
             'right',
-            's2numattrs'
+            's2numattrs',
           );
           exportable = `${exportable}\n${s5.values}`;
         }
@@ -783,35 +783,35 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
             b.qualityColor.enum.Green,
             '3.',
             'right',
-            's3numattrs'
+            's3numattrs',
           );
           exportable = `${exportable}\n${s1.values}`;
           const s2 = this.buffs.render(
             b.qualityColor.enum.Blue,
             '3.',
             'right',
-            's3numattrs'
+            's3numattrs',
           );
           exportable = `${exportable}\n${s2.values}`;
           const s3 = this.buffs.render(
             b.qualityColor.enum.Purple,
             '3.',
             'right',
-            's3numattrs'
+            's3numattrs',
           );
           exportable = `${exportable}\n${s3.values}`;
           const s4 = this.buffs.render(
             b.qualityColor.enum.Orange,
             '3.',
             'right',
-            's3numattrs'
+            's3numattrs',
           );
           exportable = `${exportable}\n${s4.values}`;
           const s5 = this.buffs.render(
             b.qualityColor.enum.Gold,
             '3.',
             'right',
-            's3numattrs'
+            's3numattrs',
           );
           exportable = `${exportable}\n${s5.values}`;
         }
@@ -824,7 +824,7 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
             b.qualityColor.enum.Green,
             '4.',
             'right',
-            's4numattrs'
+            's4numattrs',
           );
           console.log(`s1 is ${s1}`);
           exportable = `${exportable}\n${s1.values}`;
@@ -832,28 +832,28 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
             b.qualityColor.enum.Blue,
             '4.',
             'right',
-            's4numattrs'
+            's4numattrs',
           );
           exportable = `${exportable}\n${s2.values}`;
           const s3 = this.buffs.render(
             b.qualityColor.enum.Purple,
             '4.',
             'right',
-            's4numattrs'
+            's4numattrs',
           );
           exportable = `${exportable}\n${s3.values}`;
           const s4 = this.buffs.render(
             b.qualityColor.enum.Orange,
             '4.',
             'right',
-            's4numattrs'
+            's4numattrs',
           );
           exportable = `${exportable}\n${s4.values}`;
           const s5 = this.buffs.render(
             b.qualityColor.enum.Gold,
             '4.',
             'right',
-            's4numattrs'
+            's4numattrs',
           );
           exportable = `${exportable}\n${s5.values}`;
         }
@@ -873,7 +873,7 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
             (6).toString(),
             '.',
             'right',
-            'al1numattrs'
+            'al1numattrs',
           );
           console.log(`s1 is ${s1}`);
           exportable = `${exportable}\n${s1.values}`;
@@ -885,7 +885,7 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
             (7).toString(),
             '.',
             'right',
-            'al2numattrs'
+            'al2numattrs',
           );
           console.log(`s1 is ${s1}`);
           exportable = `${exportable}\n${s1.values}`;
@@ -897,7 +897,7 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
             (8).toString(),
             '.',
             'right',
-            'al3numattrs'
+            'al3numattrs',
           );
           console.log(`s1 is ${s1}`);
           exportable = `${exportable}\n${s1.values}`;
@@ -909,7 +909,7 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
             (9).toString(),
             '.',
             'right',
-            'al4numattrs'
+            'al4numattrs',
           );
           console.log(`s1 is ${s1}`);
           exportable = `${exportable}\n${s1.values}`;
@@ -921,14 +921,14 @@ export class GeneralYaml extends withStores(SpectrumElement, [formValues]) {
             (10).toString(),
             '.',
             'right',
-            'al5numattrs'
+            'al5numattrs',
           );
           console.log(`s1 is ${s1}`);
           exportable = `${exportable}\n${s1.values}`;
         }
       } else {
         console.log(
-          `ascending Pending check: ${this.buffEventPending.al1name}`
+          `ascending Pending check: ${this.buffEventPending.al1name}`,
         );
       }
     } else {

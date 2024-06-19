@@ -104,7 +104,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
       43: 720000,
       44: 790000,
       45: 860000,
-    })
+    }),
   );
 
   static WarHorn = new Map(
@@ -125,7 +125,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
       13: 44000,
       14: 50000,
       15: 60000,
-    })
+    }),
   );
 
   static Rank = new Map(
@@ -137,7 +137,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
       duke: 30000,
       archduke: 50000,
       regent: 100000,
-    })
+    }),
   );
 
   static VIP = new Map(
@@ -165,7 +165,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
       23: 116000,
       24: 138000,
       25: 160000,
-    })
+    }),
   );
 
   static DutyOfficer = new Map(
@@ -190,7 +190,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
         p: 0.3,
         s: 70000,
       },
-    })
+    }),
   );
 
   static ImperialSeat = new Map(
@@ -201,7 +201,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
       3: 0.15,
       4: 0.225,
       5: 0.3,
-    })
+    }),
   );
 
   static Research = new Map(
@@ -354,7 +354,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
           1: 0.005,
         },
       },
-    })
+    }),
   );
 
   static idealLand = new Map(
@@ -491,11 +491,11 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
         9: 4000,
         10: 5000,
       },
-    })
+    }),
   );
 
   protected willUpdate(
-    _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>
+    _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>,
   ): void {
     if (DEBUG) {
       console.log(`index willupdate`);
@@ -576,7 +576,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
             console.log(`Coordination r is ${r}`);
           }
           const v = Object.values(
-            MarchCalc.Research.get('Military')!.Coordination!
+            MarchCalc.Research.get('Military')!.Coordination!,
           )[r as number];
           if (DEBUG) {
             console.log(`Coordination v is ${v}`);
@@ -591,7 +591,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
             console.log(`AdvCoordination r is ${r}`);
           }
           const v = Object.values(
-            MarchCalc.Research.get('Military')!.AdvancedCordination!
+            MarchCalc.Research.get('Military')!.AdvancedCordination!,
           )[r as number];
           if (DEBUG) {
             console.log(`AdvCoordination v is ${v}`);
@@ -606,7 +606,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
             console.log(`SuperCoordination r is ${r}`);
           }
           const v = Object.values(
-            MarchCalc.Research.get('Military')!.SuperCoordination!
+            MarchCalc.Research.get('Military')!.SuperCoordination!,
           )[r as number];
           if (DEBUG) {
             console.log(`SuperCoordination v is ${v}`);
@@ -621,7 +621,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
             console.log(`SuprCoordination r is ${r}`);
           }
           const v = Object.values(
-            MarchCalc.Research.get('Military')!.SupremeCoordination!
+            MarchCalc.Research.get('Military')!.SupremeCoordination!,
           )[r as number];
           if (DEBUG) {
             console.log(`SuprCoordination v is ${v}`);
@@ -636,7 +636,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
             console.log(`Prestige r is ${r}`);
           }
           const v = Object.values(
-            MarchCalc.Research.get('MilitaryAdvance')!.Prestige!
+            MarchCalc.Research.get('MilitaryAdvance')!.Prestige!,
           )[r as number];
           if (DEBUG) {
             console.log(`Prestige v is ${v}`);
@@ -651,7 +651,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
             console.log(`AdvPrestige r is ${r}`);
           }
           const v = Object.values(
-            MarchCalc.Research.get('MilitaryAdvance')!.AdvancedPrestige!
+            MarchCalc.Research.get('MilitaryAdvance')!.AdvancedPrestige!,
           )[r as number];
           if (DEBUG) {
             console.log(`AdvPrestige v is ${v}`);
@@ -915,7 +915,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                   @change=${(e: CustomEvent) => {
                     addValue(
                       'Hideyoshi',
-                      (e.target as Switch).checked ? 'checked' : 'unchecked'
+                      (e.target as Switch).checked ? 'checked' : 'unchecked',
                     );
                     this.requestUpdate();
                   }}
@@ -977,7 +977,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                   @change=${(e: CustomEvent) => {
                     addValue(
                       'Banquet',
-                      (e.target as Switch).checked ? 'true' : 'false'
+                      (e.target as Switch).checked ? 'true' : 'false',
                     );
                     this.requestUpdate();
                   }}
@@ -1014,7 +1014,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                   @change=${(e: CustomEvent) => {
                     addValue(
                       'Crane',
-                      (e.target as Switch).checked ? 'checked' : 'unchecked'
+                      (e.target as Switch).checked ? 'checked' : 'unchecked',
                     );
                     this.requestUpdate();
                   }}
@@ -1048,7 +1048,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                   @change=${(e: CustomEvent) => {
                     addValue(
                       'Dracula',
-                      (e.target as Switch).checked ? 'checked' : 'unchecked'
+                      (e.target as Switch).checked ? 'checked' : 'unchecked',
                     );
                     this.requestUpdate();
                   }}
@@ -1082,7 +1082,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                   @change=${(e: CustomEvent) => {
                     addValue(
                       'DrinkingFountain',
-                      (e.target as Switch).checked ? 'checked' : 'unchecked'
+                      (e.target as Switch).checked ? 'checked' : 'unchecked',
                     );
                     this.requestUpdate();
                   }}
@@ -1102,7 +1102,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                                 }'
                   disabled="${getValue('DrinkingFountain') !== undefined &&
                   !(getValue('DrinkingFountain') as string).localeCompare(
-                    'checked'
+                    'checked',
                   )
                     ? nothing
                     : true}"
@@ -1120,7 +1120,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                   @change=${(e: CustomEvent) => {
                     addValue(
                       'Fountain',
-                      (e.target as Switch).checked ? 'checked' : 'unchecked'
+                      (e.target as Switch).checked ? 'checked' : 'unchecked',
                     );
                     this.requestUpdate();
                   }}
@@ -1154,7 +1154,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                   @change=${(e: CustomEvent) => {
                     addValue(
                       'Gondola',
-                      (e.target as Switch).checked ? 'checked' : 'unchecked'
+                      (e.target as Switch).checked ? 'checked' : 'unchecked',
                     );
                     this.requestUpdate();
                   }}
@@ -1188,7 +1188,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                   @change=${(e: CustomEvent) => {
                     addValue(
                       'HeavenlyFire',
-                      (e.target as Switch).checked ? 'checked' : 'unchecked'
+                      (e.target as Switch).checked ? 'checked' : 'unchecked',
                     );
                     this.requestUpdate();
                   }}
@@ -1224,7 +1224,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                   @change=${(e: CustomEvent) => {
                     addValue(
                       'RedDemon',
-                      (e.target as Switch).checked ? 'checked' : 'unchecked'
+                      (e.target as Switch).checked ? 'checked' : 'unchecked',
                     );
                     this.requestUpdate();
                   }}
@@ -1260,7 +1260,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                   @change=${(e: CustomEvent) => {
                     addValue(
                       'RoseSpring',
-                      (e.target as Switch).checked ? 'checked' : 'unchecked'
+                      (e.target as Switch).checked ? 'checked' : 'unchecked',
                     );
                     this.requestUpdate();
                   }}
@@ -1296,7 +1296,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                   @change=${(e: CustomEvent) => {
                     addValue(
                       'StMartin',
-                      (e.target as Switch).checked ? 'checked' : 'unchecked'
+                      (e.target as Switch).checked ? 'checked' : 'unchecked',
                     );
                     this.requestUpdate();
                   }}
@@ -1332,7 +1332,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                   @change=${(e: CustomEvent) => {
                     addValue(
                       'Windmill',
-                      (e.target as Switch).checked ? 'checked' : 'unchecked'
+                      (e.target as Switch).checked ? 'checked' : 'unchecked',
                     );
                     this.requestUpdate();
                   }}
@@ -1402,7 +1402,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                   @change=${(e: CustomEvent) => {
                     addValue(
                       'AdvCoordination',
-                      (e.target as NumberField).value
+                      (e.target as NumberField).value,
                     );
                     this.requestUpdate();
                   }}
@@ -1424,7 +1424,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                   @change=${(e: CustomEvent) => {
                     addValue(
                       'SuperCoordination',
-                      (e.target as NumberField).value
+                      (e.target as NumberField).value,
                     );
                     this.requestUpdate();
                   }}
@@ -1446,7 +1446,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                   @change=${(e: CustomEvent) => {
                     addValue(
                       'SuprCoordination',
-                      (e.target as NumberField).value
+                      (e.target as NumberField).value,
                     );
                     this.requestUpdate();
                   }}

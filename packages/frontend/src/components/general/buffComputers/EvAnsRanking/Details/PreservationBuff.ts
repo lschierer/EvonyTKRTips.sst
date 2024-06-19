@@ -11,9 +11,15 @@ import {
   UnitSchema,
 } from '@schemas/baseSchemas';
 
-import {AttributeMultipliers, type AttributeMultipliersType} from '@schemas/EvAns.zod';
+import {
+  AttributeMultipliers,
+  type AttributeMultipliersType,
+} from '@schemas/EvAns.zod';
 import { checkInvalidConditions } from '../checkConditions';
-import { generalUseCase, type generalUseCaseType } from '@schemas/generalsSchema.ts';
+import {
+  generalUseCase,
+  type generalUseCaseType,
+} from '@schemas/generalsSchema.ts';
 
 const DEBUGP = false;
 
@@ -21,56 +27,59 @@ const PvPPreservationBuffDetailCheck = z
   .function()
   .args(Buff, BuffParams, AttributeMultipliers)
   .returns(z.number())
-  .implement((tb: BuffType, iv: BuffParamsType, am: AttributeMultipliersType) => {
-    let score = 0;
-    let multiplier = 0;
-    if (tb !== null && tb !== undefined) {
-      if (tb.value !== null && tb.value !== undefined) {
-        if (!UnitSchema.enum.percentage.localeCompare(tb.value.unit)) {
-          if (tb.class !== null && tb.class !== undefined) {
-            //I have never actually seen a class condition on this buff, but this is how I think it would get scored by EvAns.
-            if (!ClassEnum.enum.Archers.localeCompare(tb.class)) {
-              if (tb.condition!.includes(Condition.enum.Attacking)) {
-                multiplier =
-                  am.Preservation
-                    .Death2WoundedWhenAttacking;
+  .implement(
+    (tb: BuffType, iv: BuffParamsType, am: AttributeMultipliersType) => {
+      let score = 0;
+      let multiplier = 0;
+      if (tb !== null && tb !== undefined) {
+        if (tb.value !== null && tb.value !== undefined) {
+          if (!UnitSchema.enum.percentage.localeCompare(tb.value.unit)) {
+            if (tb.class !== null && tb.class !== undefined) {
+              //I have never actually seen a class condition on this buff, but this is how I think it would get scored by EvAns.
+              if (!ClassEnum.enum.Archers.localeCompare(tb.class)) {
+                if (tb.condition!.includes(Condition.enum.Attacking)) {
+                  multiplier = am.Preservation.Death2WoundedWhenAttacking;
+                } else {
+                  multiplier = am.Preservation.Death2Wounded;
+                }
+              } else if (!ClassEnum.enum.Ground.localeCompare(tb.class)) {
+                multiplier = 0;
+              } else if (!ClassEnum.enum.Mounted.localeCompare(tb.class)) {
+                multiplier = 0;
+              } else if (!ClassEnum.enum.Siege.localeCompare(tb.class)) {
+                multiplier = 0;
               } else {
-                multiplier =
-                  am.Preservation
-                    .Death2Wounded;
+                multiplier = 0;
               }
-            } else if (!ClassEnum.enum.Ground.localeCompare(tb.class)) {
-              multiplier = 0;
-            } else if (!ClassEnum.enum.Mounted.localeCompare(tb.class)) {
-              multiplier = 0;
-            } else if (!ClassEnum.enum.Siege.localeCompare(tb.class)) {
-              multiplier = 0;
             } else {
-              multiplier = 0;
+              if (tb.condition?.includes(Condition.enum.Attacking)) {
+                multiplier = am.Preservation.Death2WoundedWhenAttacking;
+              } else {
+                multiplier = am.Preservation.Death2Wounded;
+              }
             }
-          } else {
-            if (tb.condition?.includes(Condition.enum.Attacking)) {
-              multiplier =
-                am.Preservation.Death2WoundedWhenAttacking;
-            } else {
-              multiplier =
-                am.Preservation.Death2Wounded;
+            const additional = tb.value.number * multiplier;
+            if (DEBUGP) {
+              console.log(`adding ${additional} to ${score}`);
             }
+            score += additional;
           }
-          const additional = tb.value.number * multiplier;
-          if (DEBUGP) {
-            console.log(`adding ${additional} to ${score}`);
-          }
-          score += additional;
         }
       }
-    }
-    return score;
-  });
+      return score;
+    },
+  );
 
 export const PreservationBuff = z
   .function()
-  .args(z.string(), z.string(), Buff, BuffParams, generalUseCase, AttributeMultipliers)
+  .args(
+    z.string(),
+    z.string(),
+    Buff,
+    BuffParams,
+    generalUseCase,
+    AttributeMultipliers,
+  )
   .returns(z.number())
   .implement(
     (
@@ -79,7 +88,7 @@ export const PreservationBuff = z
       tb: BuffType,
       iv: BuffParamsType,
       useCase: generalUseCaseType,
-      am: AttributeMultipliersType
+      am: AttributeMultipliersType,
     ) => {
       const multiplier = 0;
       if (tb === null || tb === undefined || iv === null || iv === undefined) {
@@ -91,7 +100,7 @@ export const PreservationBuff = z
         let score = 0;
         if (tb?.value === undefined || tb.value === null) {
           console.log(
-            `how to score a buff with no value? gc is ${generalName}`
+            `how to score a buff with no value? gc is ${generalName}`,
           );
           return score;
         } else {
@@ -101,7 +110,7 @@ export const PreservationBuff = z
           if (tb.attribute === undefined || tb.attribute === null) {
             if (DEBUGP) {
               console.log(
-                `PvPHPBuff: ${generalName}: ${buffName} has null attribute`
+                `PvPHPBuff: ${generalName}: ${buffName} has null attribute`,
               );
             }
             return score;
@@ -118,7 +127,7 @@ export const PreservationBuff = z
             //and both effectively useless.
             if (DEBUGP) {
               console.log(
-                `PvPHPBuff: ${generalName}: ${buffName} is not a Preservation buff`
+                `PvPHPBuff: ${generalName}: ${buffName} is not a Preservation buff`,
               );
             }
             return score;
@@ -133,15 +142,15 @@ export const PreservationBuff = z
                   tb.condition.includes(Condition.enum.Enemy_In_City) ||
                   tb.condition.includes(Condition.enum.Reduces_Enemy) ||
                   tb.condition.includes(
-                    Condition.enum.Reduces_Enemy_in_Attack
+                    Condition.enum.Reduces_Enemy_in_Attack,
                   ) ||
                   tb.condition.includes(
-                    Condition.enum.Reduces_Enemy_with_a_Dragon
+                    Condition.enum.Reduces_Enemy_with_a_Dragon,
                   )
                 ) {
                   if (DEBUGP) {
                     console.log(
-                      `PvPHPBuff: ${generalName}: ${buffName} detected debuff`
+                      `PvPHPBuff: ${generalName}: ${buffName} detected debuff`,
                     );
                   }
                   return 0;
@@ -162,5 +171,5 @@ export const PreservationBuff = z
         }
         return score;
       }
-    }
+    },
   );

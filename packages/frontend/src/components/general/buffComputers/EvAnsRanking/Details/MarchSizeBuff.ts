@@ -11,65 +11,68 @@ import {
   UnitSchema,
 } from '@schemas/baseSchemas';
 
-import {AttributeMultipliers, type AttributeMultipliersType} from '@schemas/EvAns.zod';
+import {
+  AttributeMultipliers,
+  type AttributeMultipliersType,
+} from '@schemas/EvAns.zod';
 import { checkInvalidConditions } from '../checkConditions';
-import { generalUseCase, type generalUseCaseType } from '@schemas/generalsSchema.ts';
+import {
+  generalUseCase,
+  type generalUseCaseType,
+} from '@schemas/generalsSchema.ts';
 const DEBUGMS = false;
 
 const PvPMarchSizeBuffClassCheck = z
   .function()
   .args(Buff, BuffParams, AttributeMultipliers)
   .returns(z.number())
-  .implement((tb: BuffType, iv: BuffParamsType, am: AttributeMultipliersType) => {
-    let score = 0;
-    let multiplier = 0;
-    if (tb !== null && tb !== undefined) {
-      if (tb.value !== null && tb.value !== undefined) {
-        if (!UnitSchema.enum.percentage.localeCompare(tb.value.unit)) {
-          if (tb.class !== null && tb.class !== undefined) {
-            if (!ClassEnum.enum.Archers.localeCompare(tb.class)) {
-              multiplier =
-                am?.Offensive
-                  .MarchSizeIncrease ?? 0;
-            } else if (!ClassEnum.enum.Ground.localeCompare(tb.class)) {
-              multiplier =
-                am?.Offensive
-                  .MarchSizeIncrease ?? 0;
-            } else if (!ClassEnum.enum.Mounted.localeCompare(tb.class)) {
-              multiplier =
-                am?.Offensive
-                  .MarchSizeIncrease ?? 0;
-            } else if (!ClassEnum.enum.Siege.localeCompare(tb.class)) {
-              multiplier =
-                am?.Offensive
-                  .MarchSizeIncrease ?? 0;
+  .implement(
+    (tb: BuffType, iv: BuffParamsType, am: AttributeMultipliersType) => {
+      let score = 0;
+      let multiplier = 0;
+      if (tb !== null && tb !== undefined) {
+        if (tb.value !== null && tb.value !== undefined) {
+          if (!UnitSchema.enum.percentage.localeCompare(tb.value.unit)) {
+            if (tb.class !== null && tb.class !== undefined) {
+              if (!ClassEnum.enum.Archers.localeCompare(tb.class)) {
+                multiplier = am?.Offensive.MarchSizeIncrease ?? 0;
+              } else if (!ClassEnum.enum.Ground.localeCompare(tb.class)) {
+                multiplier = am?.Offensive.MarchSizeIncrease ?? 0;
+              } else if (!ClassEnum.enum.Mounted.localeCompare(tb.class)) {
+                multiplier = am?.Offensive.MarchSizeIncrease ?? 0;
+              } else if (!ClassEnum.enum.Siege.localeCompare(tb.class)) {
+                multiplier = am?.Offensive.MarchSizeIncrease ?? 0;
+              } else {
+                //honestly only this one should ever be hit.  I can't think
+                //of a case where a general would have a class specific march
+                //increase.
+                multiplier = am?.Offensive.MarchSizeIncrease ?? 0;
+              }
             } else {
-              //honestly only this one should ever be hit.  I can't think
-              //of a case where a general would have a class specific march
-              //increase.
-              multiplier =
-                am?.Offensive
-                  .MarchSizeIncrease ?? 0;
+              multiplier = am?.Offensive.AllTroopAttack ?? 0;
             }
-          } else {
-            multiplier =
-              am?.Offensive.AllTroopAttack ??
-              0;
+            const additional = tb.value.number * multiplier;
+            if (DEBUGMS) {
+              console.log(`adding ${additional} to ${score}`);
+            }
+            score += additional;
           }
-          const additional = tb.value.number * multiplier;
-          if (DEBUGMS) {
-            console.log(`adding ${additional} to ${score}`);
-          }
-          score += additional;
         }
       }
-    }
-    return score;
-  });
+      return score;
+    },
+  );
 
 export const MarchSizeBuff = z
   .function()
-  .args(z.string(), z.string(), Buff, BuffParams, generalUseCase, AttributeMultipliers)
+  .args(
+    z.string(),
+    z.string(),
+    Buff,
+    BuffParams,
+    generalUseCase,
+    AttributeMultipliers,
+  )
   .returns(z.number())
   .implement(
     (
@@ -78,7 +81,7 @@ export const MarchSizeBuff = z
       tb: BuffType,
       iv: BuffParamsType,
       useCase: generalUseCaseType,
-      am: AttributeMultipliersType
+      am: AttributeMultipliersType,
     ) => {
       const multiplier = 0;
       if (tb === null || tb === undefined || iv === null || iv === undefined) {
@@ -90,19 +93,19 @@ export const MarchSizeBuff = z
         let score = 0;
         if (tb?.value === undefined || tb.value === null) {
           console.log(
-            `how to score a buff with no value? gc is ${generalName}`
+            `how to score a buff with no value? gc is ${generalName}`,
           );
           return score;
         } else {
           if (DEBUGMS) {
             console.log(
-              `PvPMarchSizeBuff: ${generalName}: ${buffName} has value`
+              `PvPMarchSizeBuff: ${generalName}: ${buffName} has value`,
             );
           }
           if (tb.attribute === undefined || tb.attribute === null) {
             if (DEBUGMS) {
               console.log(
-                `PvPMarchSizeBuff: ${generalName}: ${buffName} has null attribute`
+                `PvPMarchSizeBuff: ${generalName}: ${buffName} has null attribute`,
               );
             }
             return score;
@@ -111,7 +114,7 @@ export const MarchSizeBuff = z
           ) {
             if (DEBUGMS) {
               console.log(
-                `PvPMarchSizeBuff: ${generalName}: ${buffName} is not an March Size buff`
+                `PvPMarchSizeBuff: ${generalName}: ${buffName} is not an March Size buff`,
               );
             }
             return score;
@@ -126,15 +129,15 @@ export const MarchSizeBuff = z
                   tb.condition.includes(Condition.enum.Enemy_In_City) ||
                   tb.condition.includes(Condition.enum.Reduces_Enemy) ||
                   tb.condition.includes(
-                    Condition.enum.Reduces_Enemy_in_Attack
+                    Condition.enum.Reduces_Enemy_in_Attack,
                   ) ||
                   tb.condition.includes(
-                    Condition.enum.Reduces_Enemy_with_a_Dragon
+                    Condition.enum.Reduces_Enemy_with_a_Dragon,
                   )
                 ) {
                   if (DEBUGMS) {
                     console.log(
-                      `PvPMarchSizeBuff: ${generalName}: ${buffName} detected March Size debuff`
+                      `PvPMarchSizeBuff: ${generalName}: ${buffName} detected March Size debuff`,
                     );
                   }
                   return 0;
@@ -155,5 +158,5 @@ export const MarchSizeBuff = z
         }
         return score;
       }
-    }
+    },
   );

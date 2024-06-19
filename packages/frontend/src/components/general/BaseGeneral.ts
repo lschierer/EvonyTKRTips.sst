@@ -50,7 +50,7 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
 
   @property({
     type: Object,
-    reflect: true
+    reflect: true,
   })
   public general: ExtendedGeneralType | null = null;
 
@@ -89,10 +89,10 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
     });
 
     this.addEventListener('SpecialsComplete', (e: Event) =>
-      this.internalEvents(e)
+      this.internalEvents(e),
     );
     this.addEventListener('BooksComplete', (e: Event) =>
-      this.internalEvents(e)
+      this.internalEvents(e),
     );
   }
 
@@ -112,7 +112,7 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
     if (this.booksDone && this.specialitiesDone) {
       if (DEBUG) {
         console.log(
-          `BaseGeneral internalEvents calling requestUpdate ${this.booksDone} ${this.specialitiesDone}`
+          `BaseGeneral internalEvents calling requestUpdate ${this.booksDone} ${this.specialitiesDone}`,
         );
       }
       this.requestUpdate('general');
@@ -144,9 +144,8 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
     this.status = ExtendedGeneralStatus.enum.fetching;
     const currentPage = `${document.location.protocol}//${document.location.host}`;
     if (this.generalId.length > 0) {
-
       const gURL = new URL(`/generals/${this.generalId}.json`, currentPage);
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
       const data = await fetch(gURL)
         .then((response) => {
           if (response.ok) return response.json();
@@ -159,13 +158,13 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
       if (v3.success) {
         this.general = v3.data;
         this.dispatchEvent(
-          new CustomEvent('GeneralSet', { composed: false, bubbles: true })
+          new CustomEvent('GeneralSet', { composed: false, bubbles: true }),
         );
         this.requestUpdate('general');
       } else {
         if (DEBUG) {
           console.log(
-            `retrieved invalid general for ${this.generalId} from ${gURL.toString()}`
+            `retrieved invalid general for ${this.generalId} from ${gURL.toString()}`,
           );
         }
       }
@@ -186,7 +185,7 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
       } else {
         if (DEBUG) {
           console.log(`EvAnsBuff starting for ${this.general.name}`);
-          console.log(`EvAnsBuff has useCase ${this.useCase}`)
+          console.log(`EvAnsBuff has useCase ${this.useCase}`);
         }
         //figure out my state engine here
 
@@ -194,20 +193,20 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
           this.useCase,
           this.general,
           display,
-          BP
+          BP,
         );
 
         const AttackRank = AttackingScoreComputer(
           this.useCase,
           this.general,
           display,
-          BP
+          BP,
         );
         const ToughnessRank = ToughnessScoreComputer(
           this.useCase,
           this.general,
           display,
-          BP
+          BP,
         );
 
         const hashKey = BaseGeneral.InvestmentOptions2Key(BP);
@@ -220,7 +219,7 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
 
         if (DEBUG) {
           console.log(
-            `in GeneralBuffs, got scores: ${EvAnsRankScore} ${AttackRank} for ${this.general.name} ${display}`
+            `in GeneralBuffs, got scores: ${EvAnsRankScore} ${AttackRank} for ${this.general.name} ${display}`,
           );
           console.log(`${hashKey}: ${JSON.stringify(this.computedBuffs)}`);
         }
@@ -229,19 +228,19 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
     });
 
   protected async firstUpdated(
-    _changedProperties: PropertyValues
+    _changedProperties: PropertyValues,
   ): Promise<void> {
     super.firstUpdated(_changedProperties);
     if (this.generalId.length > 0 && this.general === null) {
       if (DEBUG) {
         console.log(
-          `BaseGeneral firstUpdated generalId prop for ${this.generalId ?? ''}`
+          `BaseGeneral firstUpdated generalId prop for ${this.generalId ?? ''}`,
         );
       }
       if (this.general === null) {
         if (DEBUG) {
           console.log(
-            `BaseGeneral firstUpdated generalId needs to getGeneral for ${this.generalId ?? ''}`
+            `BaseGeneral firstUpdated generalId needs to getGeneral for ${this.generalId ?? ''}`,
           );
         }
         await Promise.all([this.getGeneral(), delay(5)]);
@@ -249,14 +248,14 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
     } else {
       if (DEBUG) {
         console.log(
-          `BaseGeneral firstUpdated ${this.generalId} status ${this.status}`
+          `BaseGeneral firstUpdated ${this.generalId} status ${this.status}`,
         );
       }
     }
   }
 
   protected async willUpdate(
-    _changedProperties: PropertyValues
+    _changedProperties: PropertyValues,
   ): Promise<void> {
     super.willUpdate(_changedProperties);
     if (DEBUG) {
@@ -265,7 +264,7 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
     if (_changedProperties.has('general')) {
       if (DEBUG) {
         console.log(
-          `BaseGeneral willUpdate general prop for ${this.generalId ?? ''}`
+          `BaseGeneral willUpdate general prop for ${this.generalId ?? ''}`,
         );
       }
       if (this.general !== null) {
@@ -278,7 +277,7 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
             new CustomEvent('GeneralComplete', {
               composed: false,
               bubbles: true,
-            })
+            }),
           );
         }
       }

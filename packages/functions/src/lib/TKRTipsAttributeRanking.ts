@@ -78,7 +78,7 @@ export const AttributeMultipliersSchema = z.record(
       InCityWounded2Death: z.map(generalSpecialists, z.number()),
       Wounded2DeathWhenAttacking: z.map(generalSpecialists, z.number()),
     }),
-  })
+  }),
 );
 export type AttributeMultipliersSchemaType = z.infer<
   typeof AttributeMultipliersSchema

@@ -2,13 +2,9 @@ import { defineMiddleware } from 'astro:middleware';
 
 import { z } from 'zod';
 
-import {
-  type ConflictDatum,
-} from '@schemas/conflictSchemas';
+import { type ConflictDatum } from '@schemas/conflictSchemas';
 
-import {
-  GeneralClass,
-} from '@schemas/generalsSchema';
+import { GeneralClass } from '@schemas/generalsSchema';
 
 import {
   type GeneralPairType,
@@ -17,10 +13,7 @@ import {
 
 const DEBUG = false;
 
-export const DisplayGeneralsMWRoutes = [
-  '/generals/',
-  '/tools/'
-];
+export const DisplayGeneralsMWRoutes = ['/generals/', '/tools/'];
 
 export const DisplayGeneralsMW = defineMiddleware(
   async ({ locals, url }, next) => {
@@ -41,19 +34,21 @@ export const DisplayGeneralsMW = defineMiddleware(
       .implement((general) => {
         if (DEBUG) {
           console.log(
-            `middleware generals addEG2EGS running for ${general.name}`
+            `middleware generals addEG2EGS running for ${general.name}`,
           );
         }
         if (
           Array.isArray(locals.CachedGenerals) &&
           locals.CachedGenerals.length > 0
         ) {
-          const allDone = locals.CachedGenerals.some((element: ExtendedGeneralType) => {
-            if (!general.name.localeCompare(element.name)) {
-              return true;
-            }
-            return false;
-          });
+          const allDone = locals.CachedGenerals.some(
+            (element: ExtendedGeneralType) => {
+              if (!general.name.localeCompare(element.name)) {
+                return true;
+              }
+              return false;
+            },
+          );
           if (allDone) {
             return false;
           }
@@ -64,16 +59,16 @@ export const DisplayGeneralsMW = defineMiddleware(
             const present = locals.CachedGenerals.some(
               (element: ExtendedGeneralType) => {
                 return !element.name.localeCompare(valid.data.name);
-              }
+              },
             );
             if (!present) {
               locals.CachedGenerals.push(valid.data);
               if (DEBUG)
                 console.log(
-                  `addEG2EGS built a valid ExtendedGeneralType for ${general.name}`
+                  `addEG2EGS built a valid ExtendedGeneralType for ${general.name}`,
                 );
               console.log(
-                `addEG2EGS: map size: ${locals.CachedGenerals.length}`
+                `addEG2EGS: map size: ${locals.CachedGenerals.length}`,
               );
               return true;
             }
@@ -106,10 +101,12 @@ export const DisplayGeneralsMW = defineMiddleware(
     //end of function definitions
 
     if (continueHandler) {
-      if (DEBUG) { console.log(`DisplayGeneralsMW running`); }
-        HandlerLogic(locals);
+      if (DEBUG) {
+        console.log(`DisplayGeneralsMW running`);
+      }
+      HandlerLogic(locals);
     }
 
     return next();
-  }
+  },
 );

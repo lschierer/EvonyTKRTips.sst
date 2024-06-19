@@ -2,7 +2,11 @@ const DEBUG = false;
 const DEBUGT = false;
 const DEBUGL = false;
 
-import { type ColumnComponent, type Sorter, TabulatorFull as Tabulator } from 'tabulator-tables';
+import {
+  type ColumnComponent,
+  type Sorter,
+  TabulatorFull as Tabulator,
+} from 'tabulator-tables';
 import TabulatorStyles from 'tabulator-tables/dist/css/tabulator.css?inline';
 import TabulatorSimpleUI from 'tabulator-tables/dist/css/tabulator_simple.css?inline';
 
@@ -28,14 +32,26 @@ import SpectrumTypography from '@spectrum-web-components/styles/typography.css?i
 import '@spectrum-css/icon/dist/index.css';
 import '@spectrum-css/table/dist/index.css';
 
-import { AscendingLevels, type BuffParamsType, CovenantAttributeCategory, qualityColor } from '@schemas/baseSchemas';
+import {
+  AscendingLevels,
+  type BuffParamsType,
+  CovenantAttributeCategory,
+  qualityColor,
+} from '@schemas/baseSchemas';
 
-import { Display, generalUseCase, type generalUseCaseType } from '@schemas/generalsSchema';
+import {
+  Display,
+  generalUseCase,
+  type generalUseCaseType,
+} from '@schemas/generalsSchema';
 
 import { type GeneralPairType } from '@schemas/ExtendedGeneral';
 
 import { PairInvestment } from './PairInvestment';
-import { PvPBuffDetails, PvPDetail } from '../buffComputers/TKRTipsRanking/PvPDetail';
+import {
+  PvPBuffDetails,
+  PvPDetail,
+} from '../buffComputers/TKRTipsRanking/PvPDetail';
 
 import { GridData } from './GridPair';
 
@@ -70,7 +86,6 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
   //private tableDivRef: Ref<HTMLElement> = createRef()
   private InvestmentSelectorRef: Ref<PairInvestment> = createRef();
 
-
   private MutationObserver: MutationObserver;
 
   @state()
@@ -86,7 +101,6 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
     this.MutationObserver = new MutationObserver(() => {
       this.handleMutation();
     });
-
 
     this.addEventListener('InvestmentLevelUpdate', () => {
       if (DEBUG) {
@@ -118,9 +132,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       dragon: true,
       beast: true,
     };
-
   }
-
 
   handleMutation(): void {
     return;
@@ -135,7 +147,6 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
 
   protected override willUpdate(_changedProperties: PropertyValues) {
     super.willUpdate(_changedProperties);
-
   }
 
   public static override get styles(): CSSResultArray {
@@ -144,7 +155,6 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
     const SpectrumTokensCSS = unsafeCSS(SpectrumTokens);
     const SpectrumTypographyCSS = unsafeCSS(SpectrumTypography);
     const localStyle = css`
-      
       :host {
         --headerMargin: 2;
         width: 100%;
@@ -156,43 +166,47 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
         align-items: stretch;
         justify-content: start;
         align-content: start;
-        
       }
-      
+
       .Investment {
         grid-row-start: 1;
         grid-column-start: 1;
         grid-column-end: span 5;
         width: 100%;
       }
-      
+
       .tableContainer {
         grid-row-start: 2;
         grid-column-start: 1;
         grid-column-end: span 5;
         overflow-x: hidden;
-        border-bottom: var(--spectrum-border-width-100) solid var(--sl-color-gray-5);
-        border-right: var(--spectrum-border-width-100) solid var(--sl-color-gray-5);
-        border-left: var(--spectrum-border-width-100) solid var(--sl-color-gray-5);
-        
+        border-bottom: var(--spectrum-border-width-100) solid
+          var(--sl-color-gray-5);
+        border-right: var(--spectrum-border-width-100) solid
+          var(--sl-color-gray-5);
+        border-left: var(--spectrum-border-width-100) solid
+          var(--sl-color-gray-5);
       }
-      
+
       .tabulator {
         height: calc(var(--spectrum-component-height-500) * 5);
         font-size: var(--spectrum-global-dimension-font-size-25);
         width: 100%;
-        
+
         .tabulator-header {
           .tabulator-header-contents {
-            .tabulator-col, .tabulator-col-group {
-              max-height: calc(var(--spectrum-table-section-header-row-height-medium) * 4);
-              
+            .tabulator-col,
+            .tabulator-col-group {
+              max-height: calc(
+                var(--spectrum-table-section-header-row-height-medium) * 4
+              );
+
               .tabulator-col-content {
                 .tabulator-col-title-holder {
                   width: 100%;
                   display: flex;
                   flex-direction: row;
-                  
+
                   .tabulator-col-title {
                     white-space: normal;
                     width: 80%;
@@ -203,24 +217,39 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
           }
         }
       }
-      
+
       .tabulator .tabulator-header .tabulator-col .tabulator-col-content {
-        padding: var(--spectrum-global-dimension-static-size-50)
+        padding: var(--spectrum-global-dimension-static-size-50);
       }
-      
-      .tabulator .tabulator-header .tabulator-col.tabulator-sortable .tabulator-col-title {
+
+      .tabulator
+        .tabulator-header
+        .tabulator-col.tabulator-sortable
+        .tabulator-col-title {
         padding-right: var(--spectrum-global-dimension-static-size-25);
       }
-      
-      
+
       .hidden {
         display: block;
       }
     `;
     if (super.styles !== undefined && Array.isArray(super.styles)) {
-      return [...super.styles, TabulatorCSS, TabulatorSimpleUICSS, SpectrumTokensCSS, SpectrumTypographyCSS, localStyle];
+      return [
+        ...super.styles,
+        TabulatorCSS,
+        TabulatorSimpleUICSS,
+        SpectrumTokensCSS,
+        SpectrumTypographyCSS,
+        localStyle,
+      ];
     } else {
-      return [TabulatorCSS, TabulatorSimpleUICSS, SpectrumTokensCSS, SpectrumTypographyCSS, localStyle];
+      return [
+        TabulatorCSS,
+        TabulatorSimpleUICSS,
+        SpectrumTokensCSS,
+        SpectrumTypographyCSS,
+        localStyle,
+      ];
     }
   }
 
@@ -229,11 +258,17 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       console.log(`DisplayGrid render called`);
       console.log(`${this._DisplayGenerals.length} pairs ready`);
     }
-    if (Array.isArray(this._DisplayGenerals) && this._DisplayGenerals.length > 0) {
+    if (
+      Array.isArray(this._DisplayGenerals) &&
+      this._DisplayGenerals.length > 0
+    ) {
       //set data here
     }
     return html`
-      <pair-investment class="Investment" ${ref(this.InvestmentSelectorRef)}></pair-investment>
+      <pair-investment
+        class="Investment"
+        ${ref(this.InvestmentSelectorRef)}
+      ></pair-investment>
       <div class="tableContainer">
         <div id="tableDiv" ${ref(this.gridRef)}></div>
       </div>
@@ -246,7 +281,6 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
         console.log(`getData populating _DisplayGenerals`);
       }
       this.RawPairs.forEach((gp: GeneralPairType) => {
-
         const dp: GridData = {
           id: ulid(),
           Primary: {
@@ -315,20 +349,29 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
         this._DisplayGenerals.push(dp);
       });
     }
-    if (this.grid !== null && this.grid !== undefined && this._DisplayGenerals.length > 0) {
+    if (
+      this.grid !== null &&
+      this.grid !== undefined &&
+      this._DisplayGenerals.length > 0
+    ) {
       if (DEBUG) {
         console.log(`getData attempting to set data`);
       }
-      await this.grid.setData(this._DisplayGenerals).then(() => {
-        if (DEBUG) {
-          console.log(`getData setData then call`);
-        }
-      }).catch((error) => {
-        console.error(error);
-      });
+      await this.grid
+        .setData(this._DisplayGenerals)
+        .then(() => {
+          if (DEBUG) {
+            console.log(`getData setData then call`);
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     } else {
       if (DEBUG) {
-        console.log(`getData unable to setData, ${this._DisplayGenerals.length} rows`);
+        console.log(
+          `getData unable to setData, ${this._DisplayGenerals.length} rows`,
+        );
       }
     }
   }
@@ -341,19 +384,28 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       if (DEBUGL) {
         console.log(`UpdateInvestmentAndGridData with target node`);
       }
-      this.InvestmentLevel = this.InvestmentSelectorRef.value.PrimaryInvestmentLevel;
+      this.InvestmentLevel =
+        this.InvestmentSelectorRef.value.PrimaryInvestmentLevel;
 
       if (DEBUGL) {
-        console.log(`UpdateInvestmentAndGridData: ${JSON.stringify(this.InvestmentLevel)}`);
+        console.log(
+          `UpdateInvestmentAndGridData: ${JSON.stringify(this.InvestmentLevel)}`,
+        );
       }
-      if (this.grid !== null && this.grid !== undefined && this._DisplayGenerals.length > 0) {
+      if (
+        this.grid !== null &&
+        this.grid !== undefined &&
+        this._DisplayGenerals.length > 0
+      ) {
         if (DEBUGL) {
           console.log(`UpdateInvestmentAndGridData; with BuffParams & grid`);
         }
         this._DisplayGenerals.forEach((dg: GridData, index: number) => {
           if (dg !== undefined && dg !== null) {
             if (DEBUGL) {
-              console.log(`UpdateInvestmentAndGridData: before call to buffs ${index}`);
+              console.log(
+                `UpdateInvestmentAndGridData: before call to buffs ${index}`,
+              );
             }
             const pDetails: PvPBuffDetails = PvPDetail(
               dg.Primary.Original,
@@ -362,7 +414,9 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
               Display.enum.primary,
             );
             if (DEBUGL) {
-              console.log(`UpdateInvestmentAndGridData: ${JSON.stringify(pDetails)} computing buffs`);
+              console.log(
+                `UpdateInvestmentAndGridData: ${JSON.stringify(pDetails)} computing buffs`,
+              );
             }
             dg.Primary.PvPBuffDetails = pDetails;
 
@@ -373,13 +427,16 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
               Display.enum.secondary,
             );
             if (DEBUGL) {
-              console.log(`UpdateInvestmentAndGridData: ${JSON.stringify(sDetails)} computing buffs`);
+              console.log(
+                `UpdateInvestmentAndGridData: ${JSON.stringify(sDetails)} computing buffs`,
+              );
             }
             dg.Secondary.PvPBuffDetails = sDetails;
-
           }
           if (DEBUGL) {
-            console.log(`UpdateInvestmentAndGridData ${this._DisplayGenerals.length - index} pending`);
+            console.log(
+              `UpdateInvestmentAndGridData ${this._DisplayGenerals.length - index} pending`,
+            );
           }
         });
         if (this.grid) {
@@ -402,7 +459,6 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       }
       this.requestUpdate('InvestmentLevel');
     }
-
   };
 
   static overallAttack = 'overallAttackRank';
@@ -413,14 +469,12 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
   static PreservationDetails = 'PreservationDetails';
 
   private renderGrid = (): void => {
-
     if (this.gridRef.value !== undefined) {
       if (DEBUG) {
         console.log(`gridDiv is ${this.gridRef.value.tagName}`);
       }
       const div = this.gridRef.value;
       if (div !== null && DEBUG) {
-
         console.log(`local queryselector works`);
       }
       this.grid = new Tabulator(div, {
@@ -431,7 +485,7 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
         layout: 'fitColumns',
         columnHeaderSortMulti: true,
         columnDefaults: {
-          tooltip: true,//show tool tips on cells
+          tooltip: true, //show tool tips on cells
           headerHozAlign: 'center',
         },
         columns: [
@@ -464,7 +518,12 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
                 field: 'Primary.Conflicts',
                 formatter: 'traffic',
                 formatterParams: {
-                  color: ['var(--sl-color-green)', 'var(--sl-color-blue)', 'var(--sl-color-yellow)', 'var(--sl-color-red)'],
+                  color: [
+                    'var(--sl-color-green)',
+                    'var(--sl-color-blue)',
+                    'var(--sl-color-yellow)',
+                    'var(--sl-color-red)',
+                  ],
                 },
               },
               {
@@ -480,7 +539,12 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
                 field: 'Secondary.Conflicts',
                 formatter: 'traffic',
                 formatterParams: {
-                  color: ['var(--sl-color-green)', 'var(--sl-color-blue)', 'var(--sl-color-yellow)', 'var(--sl-color-red)'],
+                  color: [
+                    'var(--sl-color-green)',
+                    'var(--sl-color-blue)',
+                    'var(--sl-color-yellow)',
+                    'var(--sl-color-red)',
+                  ],
                 },
               },
             ],
@@ -490,12 +554,24 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
             field: DisplayGrid.overallAttack,
             visible: false,
             mutator: (value: number, data: GridData) => {
-              value = (data.Primary.PvPBuffDetails.attackRank.attackScore + data.Secondary.PvPBuffDetails.attackRank.attackScore);
-              value += (data.Primary.PvPBuffDetails.attackRank.marchSizeScore + data.Secondary.PvPBuffDetails.attackRank.marchSizeScore);
-              value += (data.Primary.PvPBuffDetails.attackRank.rangeScore + data.Secondary.PvPBuffDetails.attackRank.rangeScore);
-              value += (data.Primary.PvPBuffDetails.attackRank.rallyScore + data.Secondary.PvPBuffDetails.attackRank.rallyScore);
-              value += (data.Primary.PvPBuffDetails.attackRank.DeHPScore + data.Secondary.PvPBuffDetails.attackRank.DeHPScore);
-              value += (data.Primary.PvPBuffDetails.attackRank.DeDefenseScore + data.Secondary.PvPBuffDetails.attackRank.DeDefenseScore);
+              value =
+                data.Primary.PvPBuffDetails.attackRank.attackScore +
+                data.Secondary.PvPBuffDetails.attackRank.attackScore;
+              value +=
+                data.Primary.PvPBuffDetails.attackRank.marchSizeScore +
+                data.Secondary.PvPBuffDetails.attackRank.marchSizeScore;
+              value +=
+                data.Primary.PvPBuffDetails.attackRank.rangeScore +
+                data.Secondary.PvPBuffDetails.attackRank.rangeScore;
+              value +=
+                data.Primary.PvPBuffDetails.attackRank.rallyScore +
+                data.Secondary.PvPBuffDetails.attackRank.rallyScore;
+              value +=
+                data.Primary.PvPBuffDetails.attackRank.DeHPScore +
+                data.Secondary.PvPBuffDetails.attackRank.DeHPScore;
+              value +=
+                data.Primary.PvPBuffDetails.attackRank.DeDefenseScore +
+                data.Secondary.PvPBuffDetails.attackRank.DeDefenseScore;
               return value;
             },
           },
@@ -507,7 +583,9 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
                 title: 'Attack Score',
                 field: 'attackRank.attackScore',
                 mutator: (value: number, data: GridData) => {
-                  value = (data.Primary.PvPBuffDetails.attackRank.attackScore + data.Secondary.PvPBuffDetails.attackRank.attackScore);
+                  value =
+                    data.Primary.PvPBuffDetails.attackRank.attackScore +
+                    data.Secondary.PvPBuffDetails.attackRank.attackScore;
                   return value;
                 },
               },
@@ -515,7 +593,9 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
                 title: 'March Score',
                 field: 'attackRank.marchSizeScore',
                 mutator: (value: number, data: GridData) => {
-                  value = (data.Primary.PvPBuffDetails.attackRank.marchSizeScore + data.Secondary.PvPBuffDetails.attackRank.marchSizeScore);
+                  value =
+                    data.Primary.PvPBuffDetails.attackRank.marchSizeScore +
+                    data.Secondary.PvPBuffDetails.attackRank.marchSizeScore;
                   return value;
                 },
               },
@@ -523,7 +603,9 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
                 title: 'Range Score',
                 field: 'attackRank.rangeScore',
                 mutator: (value: number, data: GridData) => {
-                  value = (data.Primary.PvPBuffDetails.attackRank.rangeScore + data.Secondary.PvPBuffDetails.attackRank.rangeScore);
+                  value =
+                    data.Primary.PvPBuffDetails.attackRank.rangeScore +
+                    data.Secondary.PvPBuffDetails.attackRank.rangeScore;
                   return value;
                 },
                 //visible: false, //no current generals buff this, so until I handle skill books it adds nothing.
@@ -532,7 +614,9 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
                 title: 'Rally Score',
                 field: 'attackRank.rallyScore',
                 mutator: (value: number, data: GridData) => {
-                  value = (data.Primary.PvPBuffDetails.attackRank.rallyScore + data.Secondary.PvPBuffDetails.attackRank.rallyScore);
+                  value =
+                    data.Primary.PvPBuffDetails.attackRank.rallyScore +
+                    data.Secondary.PvPBuffDetails.attackRank.rallyScore;
                   return value;
                 },
               },
@@ -540,7 +624,9 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
                 title: 'DeHP Score',
                 field: 'attackRank.DeHPScore',
                 mutator: (value: number, data: GridData) => {
-                  value = (data.Primary.PvPBuffDetails.attackRank.DeHPScore + data.Secondary.PvPBuffDetails.attackRank.DeHPScore);
+                  value =
+                    data.Primary.PvPBuffDetails.attackRank.DeHPScore +
+                    data.Secondary.PvPBuffDetails.attackRank.DeHPScore;
                   return value;
                 },
               },
@@ -548,7 +634,9 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
                 title: 'DeDefense Score',
                 field: 'attackRank.DeDefenseScore',
                 mutator: (value: number, data: GridData) => {
-                  value = (data.Primary.PvPBuffDetails.attackRank.DeDefenseScore + data.Secondary.PvPBuffDetails.attackRank.DeDefenseScore);
+                  value =
+                    data.Primary.PvPBuffDetails.attackRank.DeDefenseScore +
+                    data.Secondary.PvPBuffDetails.attackRank.DeDefenseScore;
                   return value;
                 },
               },
@@ -559,9 +647,15 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
             field: DisplayGrid.overallToughness,
             visible: false,
             mutator: (value: number, data: GridData) => {
-              value = (data.Primary.PvPBuffDetails.toughnessRank.HPScore + data.Secondary.PvPBuffDetails.toughnessRank.HPScore);
-              value += (data.Primary.PvPBuffDetails.toughnessRank.defenseScore + data.Secondary.PvPBuffDetails.toughnessRank.defenseScore);
-              value += (data.Primary.PvPBuffDetails.toughnessRank.DeAttackScore + data.Secondary.PvPBuffDetails.toughnessRank.DeAttackScore);
+              value =
+                data.Primary.PvPBuffDetails.toughnessRank.HPScore +
+                data.Secondary.PvPBuffDetails.toughnessRank.HPScore;
+              value +=
+                data.Primary.PvPBuffDetails.toughnessRank.defenseScore +
+                data.Secondary.PvPBuffDetails.toughnessRank.defenseScore;
+              value +=
+                data.Primary.PvPBuffDetails.toughnessRank.DeAttackScore +
+                data.Secondary.PvPBuffDetails.toughnessRank.DeAttackScore;
               return value;
             },
           },
@@ -573,7 +667,9 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
                 title: 'HP Score',
                 field: 'toughnessRank.HPScore',
                 mutator: (value: number, data: GridData) => {
-                  value = (data.Primary.PvPBuffDetails.toughnessRank.HPScore + data.Secondary.PvPBuffDetails.toughnessRank.HPScore);
+                  value =
+                    data.Primary.PvPBuffDetails.toughnessRank.HPScore +
+                    data.Secondary.PvPBuffDetails.toughnessRank.HPScore;
                   return value;
                 },
               },
@@ -581,7 +677,9 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
                 title: 'Defense Score',
                 field: 'toughnessRank.defenseScore',
                 mutator: (value: number, data: GridData) => {
-                  value = (data.Primary.PvPBuffDetails.toughnessRank.defenseScore + data.Secondary.PvPBuffDetails.toughnessRank.defenseScore);
+                  value =
+                    data.Primary.PvPBuffDetails.toughnessRank.defenseScore +
+                    data.Secondary.PvPBuffDetails.toughnessRank.defenseScore;
                   return value;
                 },
               },
@@ -589,7 +687,9 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
                 title: 'DeAttack Score',
                 field: 'toughnessRank.DeAttackScore',
                 mutator: (value: number, data: GridData) => {
-                  value = (data.Primary.PvPBuffDetails.toughnessRank.DeAttackScore + data.Secondary.PvPBuffDetails.toughnessRank.DeAttackScore);
+                  value =
+                    data.Primary.PvPBuffDetails.toughnessRank.DeAttackScore +
+                    data.Secondary.PvPBuffDetails.toughnessRank.DeAttackScore;
                   return value;
                 },
               },
@@ -600,8 +700,14 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
             field: DisplayGrid.overallPreservation,
             visible: false,
             mutator: (value: number, data: GridData) => {
-              value = (data.Primary.PvPBuffDetails.preservationRank.PreservationScore + data.Secondary.PvPBuffDetails.preservationRank.PreservationScore);
-              value += (data.Primary.PvPBuffDetails.preservationRank.DebilitationScore + data.Secondary.PvPBuffDetails.preservationRank.DebilitationScore);
+              value =
+                data.Primary.PvPBuffDetails.preservationRank.PreservationScore +
+                data.Secondary.PvPBuffDetails.preservationRank
+                  .PreservationScore;
+              value +=
+                data.Primary.PvPBuffDetails.preservationRank.DebilitationScore +
+                data.Secondary.PvPBuffDetails.preservationRank
+                  .DebilitationScore;
               return value;
             },
           },
@@ -613,7 +719,11 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
                 title: 'Preservation Score',
                 field: 'PreservationRank.PreservationScore',
                 mutator: (value: number, data: GridData) => {
-                  value = (data.Primary.PvPBuffDetails.preservationRank.PreservationScore + data.Secondary.PvPBuffDetails.preservationRank.PreservationScore);
+                  value =
+                    data.Primary.PvPBuffDetails.preservationRank
+                      .PreservationScore +
+                    data.Secondary.PvPBuffDetails.preservationRank
+                      .PreservationScore;
                   return value;
                 },
               },
@@ -621,7 +731,11 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
                 title: 'Destabilization Score',
                 field: 'PreservationRank.DebilitationScore',
                 mutator: (value: number, data: GridData) => {
-                  value = (data.Primary.PvPBuffDetails.preservationRank.DebilitationScore + data.Secondary.PvPBuffDetails.preservationRank.DebilitationScore);
+                  value =
+                    data.Primary.PvPBuffDetails.preservationRank
+                      .DebilitationScore +
+                    data.Secondary.PvPBuffDetails.preservationRank
+                      .DebilitationScore;
                   return value;
                 },
               },
@@ -641,8 +755,8 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
             return !f.localeCompare(DisplayGrid.overallAttack);
           });
           if (attack) {
-            if(DEBUGT) {
-              console.log(`calling toggle from tableBuilt event for attack`)
+            if (DEBUGT) {
+              console.log(`calling toggle from tableBuilt event for attack`);
             }
             this.colGroupToggle(null, attack);
           }
@@ -651,8 +765,8 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
             return !f.localeCompare(DisplayGrid.overallToughness);
           });
           if (toughness) {
-            if(DEBUGT) {
-              console.log(`calling toggle from tableBuilt event for toughness`)
+            if (DEBUGT) {
+              console.log(`calling toggle from tableBuilt event for toughness`);
             }
             this.colGroupToggle(null, toughness);
           }
@@ -661,8 +775,8 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
             return !f.localeCompare(DisplayGrid.overallPreservation);
           });
           if (preservation) {
-            if(DEBUGT) {
-              console.log(`calling toggle from tableBuilt event for toughness`)
+            if (DEBUGT) {
+              console.log(`calling toggle from tableBuilt event for toughness`);
             }
             this.colGroupToggle(null, preservation);
           }
@@ -680,7 +794,10 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
       const field = c.getField();
       let group: ColumnComponent | undefined;
       let column: ColumnComponent | undefined;
-      if (!field.localeCompare(DisplayGrid.overallAttack) || !field.localeCompare(DisplayGrid.AttackDetails)) {
+      if (
+        !field.localeCompare(DisplayGrid.overallAttack) ||
+        !field.localeCompare(DisplayGrid.AttackDetails)
+      ) {
         if (DEBUGT) {
           console.log(`matched attack columns`);
         }
@@ -692,7 +809,10 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
           const f = testC.getField();
           return !f.localeCompare(DisplayGrid.overallAttack);
         });
-      } else if (!field.localeCompare(DisplayGrid.overallToughness) || !field.localeCompare(DisplayGrid.ToughnessDetails)) {
+      } else if (
+        !field.localeCompare(DisplayGrid.overallToughness) ||
+        !field.localeCompare(DisplayGrid.ToughnessDetails)
+      ) {
         if (DEBUGT) {
           console.log(`matched Toughness columns`);
         }
@@ -704,7 +824,10 @@ export class DisplayGrid extends SizedMixin(SpectrumElement, {
           const f = testC.getField();
           return !f.localeCompare(DisplayGrid.overallToughness);
         });
-      } else if (!field.localeCompare(DisplayGrid.overallPreservation) || !field.localeCompare(DisplayGrid.PreservationDetails)) {
+      } else if (
+        !field.localeCompare(DisplayGrid.overallPreservation) ||
+        !field.localeCompare(DisplayGrid.PreservationDetails)
+      ) {
         if (DEBUGT) {
           console.log(`matched Preservation columns`);
         }

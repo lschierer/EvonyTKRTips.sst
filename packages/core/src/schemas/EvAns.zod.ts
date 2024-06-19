@@ -82,6 +82,4 @@ export const AttributeMultipliers = zod.object({
   }),
 });
 
-export type AttributeMultipliersType = zod.output<
-  typeof AttributeMultipliers
->;
+export type AttributeMultipliersType = zod.output<typeof AttributeMultipliers>;

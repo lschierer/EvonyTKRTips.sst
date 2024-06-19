@@ -11,9 +11,15 @@ import {
   UnitSchema,
 } from '@schemas/baseSchemas';
 
-import {AttributeMultipliers, type AttributeMultipliersType} from '@schemas/EvAns.zod'
+import {
+  AttributeMultipliers,
+  type AttributeMultipliersType,
+} from '@schemas/EvAns.zod';
 import { checkInvalidConditions } from '../checkConditions';
-import { generalUseCase, type generalUseCaseType } from '@schemas/generalsSchema.ts';
+import {
+  generalUseCase,
+  type generalUseCaseType,
+} from '@schemas/generalsSchema.ts';
 
 const DEBUGD = false;
 
@@ -21,51 +27,50 @@ const PvPDefenseBuffClassCheck = z
   .function()
   .args(Buff, BuffParams, AttributeMultipliers)
   .returns(z.number())
-  .implement((tb: BuffType, iv: BuffParamsType, am: AttributeMultipliersType) => {
-    let score = 0;
-    let multiplier = 0;
-    if (tb !== null && tb !== undefined) {
-      if (tb.value !== null && tb.value !== undefined) {
-        if (!UnitSchema.enum.percentage.localeCompare(tb.value.unit)) {
-          if (tb.class !== null && tb.class !== undefined) {
-            if (!ClassEnum.enum.Archers.localeCompare(tb.class)) {
-              multiplier =
-                am?.Toughness.RangedDefense ??
-                0;
-            } else if (!ClassEnum.enum.Ground.localeCompare(tb.class)) {
-              multiplier =
-                am?.Toughness.GroundDefense ??
-                0;
-            } else if (!ClassEnum.enum.Mounted.localeCompare(tb.class)) {
-              multiplier =
-                am?.Toughness.MountedDefense ??
-                0;
-            } else if (!ClassEnum.enum.Siege.localeCompare(tb.class)) {
-              multiplier =
-                am?.Toughness.SiegeDefense ??
-                0;
+  .implement(
+    (tb: BuffType, iv: BuffParamsType, am: AttributeMultipliersType) => {
+      let score = 0;
+      let multiplier = 0;
+      if (tb !== null && tb !== undefined) {
+        if (tb.value !== null && tb.value !== undefined) {
+          if (!UnitSchema.enum.percentage.localeCompare(tb.value.unit)) {
+            if (tb.class !== null && tb.class !== undefined) {
+              if (!ClassEnum.enum.Archers.localeCompare(tb.class)) {
+                multiplier = am?.Toughness.RangedDefense ?? 0;
+              } else if (!ClassEnum.enum.Ground.localeCompare(tb.class)) {
+                multiplier = am?.Toughness.GroundDefense ?? 0;
+              } else if (!ClassEnum.enum.Mounted.localeCompare(tb.class)) {
+                multiplier = am?.Toughness.MountedDefense ?? 0;
+              } else if (!ClassEnum.enum.Siege.localeCompare(tb.class)) {
+                multiplier = am?.Toughness.SiegeDefense ?? 0;
+              } else {
+                multiplier = 0;
+              }
             } else {
-              multiplier = 0;
+              multiplier = am?.Toughness.AllTroopDefense ?? 0;
             }
-          } else {
-            multiplier =
-              am?.Toughness.AllTroopDefense ??
-              0;
+            const additional = tb.value.number * multiplier;
+            if (DEBUGD) {
+              console.log(`adding ${additional} to ${score}`);
+            }
+            score += additional;
           }
-          const additional = tb.value.number * multiplier;
-          if (DEBUGD) {
-            console.log(`adding ${additional} to ${score}`);
-          }
-          score += additional;
         }
       }
-    }
-    return score;
-  });
+      return score;
+    },
+  );
 
 export const DefenseBuff = z
   .function()
-  .args(z.string(), z.string(), Buff, BuffParams, generalUseCase, AttributeMultipliers)
+  .args(
+    z.string(),
+    z.string(),
+    Buff,
+    BuffParams,
+    generalUseCase,
+    AttributeMultipliers,
+  )
   .returns(z.number())
   .implement(
     (
@@ -74,7 +79,7 @@ export const DefenseBuff = z
       tb: BuffType,
       iv: BuffParamsType,
       useCase: generalUseCaseType,
-      am: AttributeMultipliersType
+      am: AttributeMultipliersType,
     ) => {
       const multiplier = 0;
       if (tb === null || tb === undefined || iv === null || iv === undefined) {
@@ -86,26 +91,26 @@ export const DefenseBuff = z
         let score = 0;
         if (tb?.value === undefined || tb.value === null) {
           console.log(
-            `how to score a buff with no value? gc is ${generalName}`
+            `how to score a buff with no value? gc is ${generalName}`,
           );
           return score;
         } else {
           if (DEBUGD) {
             console.log(
-              `PvPDefenseBuff: ${generalName}: ${buffName} has value`
+              `PvPDefenseBuff: ${generalName}: ${buffName} has value`,
             );
           }
           if (tb.attribute === undefined || tb.attribute === null) {
             if (DEBUGD) {
               console.log(
-                `PvPDefenseBuff: ${generalName}: ${buffName} has null attribute`
+                `PvPDefenseBuff: ${generalName}: ${buffName} has null attribute`,
               );
             }
             return score;
           } else if (Attribute.enum.Defense.localeCompare(tb.attribute)) {
             if (DEBUGD) {
               console.log(
-                `PvPDefenseBuff: ${generalName}: ${buffName} is not an Defense buff`
+                `PvPDefenseBuff: ${generalName}: ${buffName} is not an Defense buff`,
               );
             }
             return score;
@@ -120,15 +125,15 @@ export const DefenseBuff = z
                   tb.condition.includes(Condition.enum.Enemy_In_City) ||
                   tb.condition.includes(Condition.enum.Reduces_Enemy) ||
                   tb.condition.includes(
-                    Condition.enum.Reduces_Enemy_in_Attack
+                    Condition.enum.Reduces_Enemy_in_Attack,
                   ) ||
                   tb.condition.includes(
-                    Condition.enum.Reduces_Enemy_with_a_Dragon
+                    Condition.enum.Reduces_Enemy_with_a_Dragon,
                   )
                 ) {
                   if (DEBUGD) {
                     console.log(
-                      `PvPDefenseBuff: ${generalName}: ${buffName} detected debuff`
+                      `PvPDefenseBuff: ${generalName}: ${buffName} detected debuff`,
                     );
                   }
                   return 0;
@@ -149,5 +154,5 @@ export const DefenseBuff = z
         }
         return score;
       }
-    }
+    },
   );

@@ -36,22 +36,22 @@ export type Blazon = zod.infer<typeof BlazonSchema>;
 export const BlazonSetSchema = zod.object({
   set: zod.object({
     earth: BlazonSchema.refine(
-      (b: Blazon) => b.blazon.type === 'Earth'
+      (b: Blazon) => b.blazon.type === 'Earth',
     ).nullish(),
     wind: BlazonSchema.refine(
-      (b: Blazon) => b.blazon.type === 'Wind'
+      (b: Blazon) => b.blazon.type === 'Wind',
     ).nullish(),
     fire: BlazonSchema.refine(
-      (b: Blazon) => b.blazon.type === 'Fire'
+      (b: Blazon) => b.blazon.type === 'Fire',
     ).nullish(),
     ocean: BlazonSchema.refine(
-      (b: Blazon) => b.blazon.type === 'Ocean'
+      (b: Blazon) => b.blazon.type === 'Ocean',
     ).nullish(),
     light: BlazonSchema.refine(
-      (b: Blazon) => b.blazon.type === 'Light'
+      (b: Blazon) => b.blazon.type === 'Light',
     ).nullish(),
     shadow: BlazonSchema.refine(
-      (b: Blazon) => b.blazon.type === 'Shadow'
+      (b: Blazon) => b.blazon.type === 'Shadow',
     ).nullish(),
   }),
 });

@@ -13,12 +13,16 @@ import {
   UnitSchema,
 } from '@schemas/baseSchemas';
 
-import { AttributeMultipliers, type AttributeMultipliersType} from '@schemas/EvAns.zod';
-
+import {
+  AttributeMultipliers,
+  type AttributeMultipliersType,
+} from '@schemas/EvAns.zod';
 
 import { checkInvalidConditions } from '../checkConditions';
-import { generalUseCase, type generalUseCaseType } from '@schemas/generalsSchema.ts';
-
+import {
+  generalUseCase,
+  type generalUseCaseType,
+} from '@schemas/generalsSchema.ts';
 
 /* Debuffs have an extra consideration, as they are one of the primary places that push
  * the "condition" field into being an array instead of a singular adjective.
@@ -34,146 +38,147 @@ const DeDefenseBuffDetailCheck = z
   .function()
   .args(Buff, BuffParams, AttributeMultipliers)
   .returns(z.number())
-  .implement((tb: BuffType, iv: BuffParamsType,  am: AttributeMultipliersType) => {
-    let score = 0;
-    let multiplier = 0;
-    if (tb !== null && tb !== undefined) {
-      if (tb.condition !== null && tb.condition !== undefined) {
-        if (tb.value !== null && tb.value !== undefined) {
-          if (!UnitSchema.enum.percentage.localeCompare(tb.value.unit)) {
-            if (tb.class !== null && tb.class !== undefined) {
-              if (!ClassEnum.enum.Archers.localeCompare(tb.class)) {
-                if (
-                  tb.condition.includes(Condition.enum.Attacking) ||
-                  tb.condition.includes(Condition.enum.Marching) ||
-                  tb.condition.includes(Condition.enum.Enemy_In_City) ||
-                  tb.condition.includes(
-                    Condition.enum.Reduces_Enemy_in_Attack
-                  ) ||
-                  tb.condition.includes(
-                    Condition.enum.brings_dragon_or_beast_to_attack
-                  ) ||
-                  tb.condition.includes(
-                    Condition.enum.When_Defending_Outside_The_Main_City
-                  )
-                ) {
-                  multiplier =
-                    am.AttackingToughnessDebuff
-                      .ReduceEnemyRangedDefense;
+  .implement(
+    (tb: BuffType, iv: BuffParamsType, am: AttributeMultipliersType) => {
+      let score = 0;
+      let multiplier = 0;
+      if (tb !== null && tb !== undefined) {
+        if (tb.condition !== null && tb.condition !== undefined) {
+          if (tb.value !== null && tb.value !== undefined) {
+            if (!UnitSchema.enum.percentage.localeCompare(tb.value.unit)) {
+              if (tb.class !== null && tb.class !== undefined) {
+                if (!ClassEnum.enum.Archers.localeCompare(tb.class)) {
+                  if (
+                    tb.condition.includes(Condition.enum.Attacking) ||
+                    tb.condition.includes(Condition.enum.Marching) ||
+                    tb.condition.includes(Condition.enum.Enemy_In_City) ||
+                    tb.condition.includes(
+                      Condition.enum.Reduces_Enemy_in_Attack,
+                    ) ||
+                    tb.condition.includes(
+                      Condition.enum.brings_dragon_or_beast_to_attack,
+                    ) ||
+                    tb.condition.includes(
+                      Condition.enum.When_Defending_Outside_The_Main_City,
+                    )
+                  ) {
+                    multiplier =
+                      am.AttackingToughnessDebuff.ReduceEnemyRangedDefense;
+                  } else {
+                    multiplier =
+                      am.ReinforcingToughnessDebuff.ReduceEnemyRangedDefense;
+                  }
+                } else if (!ClassEnum.enum.Ground.localeCompare(tb.class)) {
+                  if (
+                    tb.condition.includes(Condition.enum.Attacking) ||
+                    tb.condition.includes(Condition.enum.Marching) ||
+                    tb.condition.includes(Condition.enum.Enemy_In_City) ||
+                    tb.condition.includes(
+                      Condition.enum.Reduces_Enemy_in_Attack,
+                    ) ||
+                    tb.condition.includes(
+                      Condition.enum.brings_dragon_or_beast_to_attack,
+                    ) ||
+                    tb.condition.includes(
+                      Condition.enum.When_Defending_Outside_The_Main_City,
+                    )
+                  ) {
+                    multiplier =
+                      am.AttackingToughnessDebuff.ReduceEnemyGroundDefense;
+                  } else {
+                    multiplier =
+                      am.ReinforcingToughnessDebuff.ReduceEnemyGroundDefense;
+                  }
+                } else if (!ClassEnum.enum.Mounted.localeCompare(tb.class)) {
+                  if (
+                    tb.condition.includes(Condition.enum.Attacking) ||
+                    tb.condition.includes(Condition.enum.Marching) ||
+                    tb.condition.includes(Condition.enum.Enemy_In_City) ||
+                    tb.condition.includes(
+                      Condition.enum.Reduces_Enemy_in_Attack,
+                    ) ||
+                    tb.condition.includes(
+                      Condition.enum.brings_dragon_or_beast_to_attack,
+                    ) ||
+                    tb.condition.includes(
+                      Condition.enum.When_Defending_Outside_The_Main_City,
+                    )
+                  ) {
+                    multiplier =
+                      am.AttackingToughnessDebuff.ReduceEnemyMountedDefense;
+                  } else {
+                    multiplier =
+                      am.ReinforcingToughnessDebuff.ReduceEnemyMountedDefense;
+                  }
+                } else if (!ClassEnum.enum.Siege.localeCompare(tb.class)) {
+                  if (
+                    tb.condition.includes(Condition.enum.Attacking) ||
+                    tb.condition.includes(Condition.enum.Marching) ||
+                    tb.condition.includes(Condition.enum.Enemy_In_City) ||
+                    tb.condition.includes(
+                      Condition.enum.Reduces_Enemy_in_Attack,
+                    ) ||
+                    tb.condition.includes(
+                      Condition.enum.brings_dragon_or_beast_to_attack,
+                    ) ||
+                    tb.condition.includes(
+                      Condition.enum.When_Defending_Outside_The_Main_City,
+                    )
+                  ) {
+                    multiplier =
+                      am.AttackingToughnessDebuff.ReduceEnemySiegeDefense;
+                  } else {
+                    multiplier =
+                      am.ReinforcingToughnessDebuff.ReduceEnemySiegeDefense;
+                  }
                 } else {
-                  multiplier =
-                    am
-                      .ReinforcingToughnessDebuff.ReduceEnemyRangedDefense;
-                }
-              } else if (!ClassEnum.enum.Ground.localeCompare(tb.class)) {
-                if (
-                  tb.condition.includes(Condition.enum.Attacking) ||
-                  tb.condition.includes(Condition.enum.Marching) ||
-                  tb.condition.includes(Condition.enum.Enemy_In_City) ||
-                  tb.condition.includes(
-                    Condition.enum.Reduces_Enemy_in_Attack
-                  ) ||
-                  tb.condition.includes(
-                    Condition.enum.brings_dragon_or_beast_to_attack
-                  ) ||
-                  tb.condition.includes(
-                    Condition.enum.When_Defending_Outside_The_Main_City
-                  )
-                ) {
-                  multiplier =
-                    am.AttackingToughnessDebuff
-                      .ReduceEnemyGroundDefense;
-                } else {
-                  multiplier =
-                    am
-                      .ReinforcingToughnessDebuff.ReduceEnemyGroundDefense;
-                }
-              } else if (!ClassEnum.enum.Mounted.localeCompare(tb.class)) {
-                if (
-                  tb.condition.includes(Condition.enum.Attacking) ||
-                  tb.condition.includes(Condition.enum.Marching) ||
-                  tb.condition.includes(Condition.enum.Enemy_In_City) ||
-                  tb.condition.includes(
-                    Condition.enum.Reduces_Enemy_in_Attack
-                  ) ||
-                  tb.condition.includes(
-                    Condition.enum.brings_dragon_or_beast_to_attack
-                  ) ||
-                  tb.condition.includes(
-                    Condition.enum.When_Defending_Outside_The_Main_City
-                  )
-                ) {
-                  multiplier =
-                    am.AttackingToughnessDebuff
-                      .ReduceEnemyMountedDefense;
-                } else {
-                  multiplier =
-                    am
-                      .ReinforcingToughnessDebuff.ReduceEnemyMountedDefense;
-                }
-              } else if (!ClassEnum.enum.Siege.localeCompare(tb.class)) {
-                if (
-                  tb.condition.includes(Condition.enum.Attacking) ||
-                  tb.condition.includes(Condition.enum.Marching) ||
-                  tb.condition.includes(Condition.enum.Enemy_In_City) ||
-                  tb.condition.includes(
-                    Condition.enum.Reduces_Enemy_in_Attack
-                  ) ||
-                  tb.condition.includes(
-                    Condition.enum.brings_dragon_or_beast_to_attack
-                  ) ||
-                  tb.condition.includes(
-                    Condition.enum.When_Defending_Outside_The_Main_City
-                  )
-                ) {
-                  multiplier =
-                    am.AttackingToughnessDebuff
-                      .ReduceEnemySiegeDefense;
-                } else {
-                  multiplier =
-                    am
-                      .ReinforcingToughnessDebuff.ReduceEnemySiegeDefense;
+                  multiplier = 0;
                 }
               } else {
-                multiplier = 0;
+                if (
+                  tb.condition.includes(Condition.enum.Attacking) ||
+                  tb.condition.includes(Condition.enum.Marching) ||
+                  tb.condition.includes(Condition.enum.Enemy_In_City) ||
+                  tb.condition.includes(
+                    Condition.enum.Reduces_Enemy_in_Attack,
+                  ) ||
+                  tb.condition.includes(
+                    Condition.enum.brings_dragon_or_beast_to_attack,
+                  ) ||
+                  tb.condition.includes(
+                    Condition.enum.When_Defending_Outside_The_Main_City,
+                  )
+                ) {
+                  multiplier =
+                    am.AttackingToughnessDebuff.ReduceEnemyAllDefense;
+                } else {
+                  multiplier =
+                    am.ReinforcingToughnessDebuff.ReduceEnemyAllDefense;
+                }
               }
-            } else {
-              if (
-                tb.condition.includes(Condition.enum.Attacking) ||
-                tb.condition.includes(Condition.enum.Marching) ||
-                tb.condition.includes(Condition.enum.Enemy_In_City) ||
-                tb.condition.includes(Condition.enum.Reduces_Enemy_in_Attack) ||
-                tb.condition.includes(
-                  Condition.enum.brings_dragon_or_beast_to_attack
-                ) ||
-                tb.condition.includes(
-                  Condition.enum.When_Defending_Outside_The_Main_City
-                )
-              ) {
-                multiplier =
-                  am.AttackingToughnessDebuff
-                    .ReduceEnemyAllDefense;
-              } else {
-                multiplier =
-                  am.ReinforcingToughnessDebuff
-                    .ReduceEnemyAllDefense;
+              const additional = Math.abs(tb.value.number) * multiplier;
+              if (DEBUG) {
+                console.log(`adding ${additional} to ${score}`);
               }
+              score += additional;
             }
-            const additional = Math.abs(tb.value.number) * multiplier;
-            if (DEBUG) {
-              console.log(`adding ${additional} to ${score}`);
-            }
-            score += additional;
           }
         }
       }
-    }
-    return score;
-  });
+      return score;
+    },
+  );
 
 export const DeDefenseBuff = z
   .function()
-  .args(z.string(), z.string(), Buff, BuffParams, generalUseCase, AttributeMultipliers)
+  .args(
+    z.string(),
+    z.string(),
+    Buff,
+    BuffParams,
+    generalUseCase,
+    AttributeMultipliers,
+  )
   .returns(z.number())
   .implement(
     (
@@ -182,9 +187,11 @@ export const DeDefenseBuff = z
       tb: BuffType,
       iv: BuffParamsType,
       useCase: generalUseCaseType,
-      am: AttributeMultipliersType
+      am: AttributeMultipliersType,
     ) => {
-      if(DEBUG) {console.log(`DeDefenseBuff ${generalName} ${buffName} ${useCase}`)}
+      if (DEBUG) {
+        console.log(`DeDefenseBuff ${generalName} ${buffName} ${useCase}`);
+      }
       if (tb === null || tb === undefined || iv === null || iv === undefined) {
         return -1000;
       } else {
@@ -194,24 +201,26 @@ export const DeDefenseBuff = z
         const score = 0;
         if (tb?.value === undefined || tb.value === null) {
           console.log(
-            `how to score a buff with no value? gc is ${generalName}`
+            `how to score a buff with no value? gc is ${generalName}`,
           );
           return score;
         } else {
           if (DEBUG) {
-            console.log(`PvPDeDefenseBuff: ${generalName}: ${buffName} has value`);
+            console.log(
+              `PvPDeDefenseBuff: ${generalName}: ${buffName} has value`,
+            );
           }
           if (tb.attribute === undefined || tb.attribute === null) {
             if (DEBUG) {
               console.log(
-                `PvPDeDefenseBuff: ${generalName}: ${buffName} has null attribute`
+                `PvPDeDefenseBuff: ${generalName}: ${buffName} has null attribute`,
               );
             }
             return score;
           } else if (Attribute.enum.Defense.localeCompare(tb.attribute)) {
             if (DEBUG) {
               console.log(
-                `PvPDeDefenseBuff: ${generalName}: ${buffName} is not an Defense debuff`
+                `PvPDeDefenseBuff: ${generalName}: ${buffName} is not an Defense debuff`,
               );
             }
             return score;
@@ -226,18 +235,18 @@ export const DeDefenseBuff = z
                   tb.condition.includes(Condition.enum.Enemy_In_City) ||
                   tb.condition.includes(Condition.enum.Reduces_Enemy) ||
                   tb.condition.includes(
-                    Condition.enum.Reduces_Enemy_in_Attack
+                    Condition.enum.Reduces_Enemy_in_Attack,
                   ) ||
                   tb.condition.includes(
-                    Condition.enum.Reduces_Enemy_with_a_Dragon
+                    Condition.enum.Reduces_Enemy_with_a_Dragon,
                   )
                 ) {
                   if (DEBUG) {
                     console.log(
-                      `PvPDeDefenseBuff: ${generalName}: ${buffName} detected Defense debuff`
+                      `PvPDeDefenseBuff: ${generalName}: ${buffName} detected Defense debuff`,
                     );
                   }
-                  return DeDefenseBuffDetailCheck(tb, iv,  am);
+                  return DeDefenseBuffDetailCheck(tb, iv, am);
                 } else {
                   //I am *ONLY* looking for debuffs here. DO NOT handle anything not a debuff.
                   return score;
@@ -255,5 +264,5 @@ export const DeDefenseBuff = z
         }
         return score;
       }
-    }
+    },
   );

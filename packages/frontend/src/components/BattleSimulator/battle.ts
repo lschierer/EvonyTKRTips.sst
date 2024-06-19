@@ -58,7 +58,7 @@ export class EvonyBattle extends withStores(SpectrumElement, [formValues]) {
   }
 
   public override willUpdate(
-    _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>
+    _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>,
   ): void {
     super.willUpdate(_changedProperties);
     const fv = formValues.value;

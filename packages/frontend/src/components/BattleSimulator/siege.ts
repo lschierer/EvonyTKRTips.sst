@@ -108,7 +108,7 @@ export class EvonySiege extends withStores(SpectrumElement, [formValues]) {
   accessor range: number = 0;
 
   public override willUpdate(
-    _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>
+    _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>,
   ): void {
     super.willUpdate(_changedProperties);
     if (DEBUG) {
