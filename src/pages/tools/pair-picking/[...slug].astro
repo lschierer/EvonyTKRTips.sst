@@ -4,7 +4,7 @@ export const prerender = false;
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 
 import type { CollectionEntry } from 'astro:content';
-import { getEntry } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 
 
 import AllGenerals from '@components/general/AllGenerals.astro';
@@ -18,26 +18,26 @@ import {
 
 const DEBUG = true;
 
-const { Specialist } = Astro.params;
+const { slug } = Astro.params;
 
 if(DEBUG) {
-  console.log(`Specialist is ${Specialist}`);
+  console.log(`slug is ${slug}`);
 }
 
-if(Specialist !== null && Specialist !== undefined) {
+if(slug === null || slug === undefined) {
   if(DEBUG) {
-    console.log(`Specialist ${Specialist} not found`)
-    throw new Error('Specialist is required');
+    console.log(`slug ${slug} not provided`)
+    throw new Error('slug is required');
   } else {
     return Astro.redirect('/404');
   }
 }
-const entry = await getEntry('tools', `pair-picking/${Specialist!.toLocaleString().toLocaleLowerCase()}/`);
+const entry = await getEntry('tools', `pair-picking/${slug}`);
 
 if(entry === undefined || entry === null) {
   if(DEBUG) {
-    console.log(`Specialist ${Specialist} not found`)
-    throw new Error('Specialist is required');
+    console.log(`slug ${slug} not found`)
+    throw new Error('slug is required');
   } else {
     return Astro.redirect('/404');
   }
@@ -46,20 +46,20 @@ if(entry === undefined || entry === null) {
 const { Content, headings } = await entry.render();
 
 let TargetClass: generalSpecialistsType;
-if(Specialist !== undefined && Specialist !== null) {
-  if(!Specialist.toLocaleLowerCase().localeCompare(generalSpecialists.enum.Archers.toLocaleLowerCase())) {
+if(slug !== undefined && slug !== null) {
+  if(!slug.toLocaleLowerCase().localeCompare(generalSpecialists.enum.Archers.toLocaleLowerCase())) {
     TargetClass = generalSpecialists.enum.Archers;
-  } else if (!Specialist.toLocaleLowerCase().localeCompare(generalSpecialists.enum.Mounted.toLocaleLowerCase())) {
+  } else if (!slug.toLocaleLowerCase().localeCompare(generalSpecialists.enum.Mounted.toLocaleLowerCase())) {
     TargetClass = generalSpecialists.enum.Mounted;
-  } else if (!Specialist.toLocaleLowerCase().localeCompare(generalSpecialists.enum.Monsters.toLocaleLowerCase())) {
+  } else if (!slug.toLocaleLowerCase().localeCompare(generalSpecialists.enum.Monsters.toLocaleLowerCase())) {
     TargetClass = generalSpecialists.enum.Mounted;
-  } else if (! Specialist.toLocaleLowerCase().localeCompare(generalSpecialists.enum.Ground.toLocaleLowerCase())) {
+  } else if (!slug.toLocaleLowerCase().localeCompare(generalSpecialists.enum.Ground.toLocaleLowerCase())) {
     TargetClass = generalSpecialists.enum.Ground;
-  } else if (!Specialist.toLocaleLowerCase().localeCompare(generalSpecialists.enum.Siege.toLocaleLowerCase())) {
+  } else if (!slug.toLocaleLowerCase().localeCompare(generalSpecialists.enum.Siege.toLocaleLowerCase())) {
     TargetClass = generalSpecialists.enum.Siege
-  } else if (!Specialist.toLocaleLowerCase().localeCompare(generalSpecialists.enum.Wall.toLocaleLowerCase())) {
+  } else if (!slug.toLocaleLowerCase().localeCompare(generalSpecialists.enum.Wall.toLocaleLowerCase())) {
     TargetClass = generalSpecialists.enum.Wall;
-  } else if (!Specialist.toLocaleLowerCase().localeCompare(generalSpecialists.enum.Mayor.toLocaleLowerCase())) {
+  } else if (!slug.toLocaleLowerCase().localeCompare(generalSpecialists.enum.Mayor.toLocaleLowerCase())) {
     TargetClass = generalSpecialists.enum.Mayor;
   } else {
     TargetClass = undefined;
@@ -69,7 +69,7 @@ if(Specialist !== undefined && Specialist !== null) {
 }
 
 if(DEBUG) {
-  console.log(`Specialist.astro Specialist ${Specialist} became TargetClass ${TargetClass}`)
+  console.log(`Specialist.astro slug ${slug} became TargetClass ${TargetClass}`)
 }
 
 ---
