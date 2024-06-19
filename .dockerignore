@@ -2,3 +2,20 @@
 
 # sst
 .sst
+cdk.context.json
+sst.config.ts
+sst-env.d.ts
+
+.astro
+astro.config.ts
+
+.git
+.gitignore
+
+node_modules
+
+Dockerfile
+
+eslint.config.js
+tsconfig.eslint.json
+
