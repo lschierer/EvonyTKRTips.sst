@@ -19,10 +19,4 @@ export default [
   eslintConfigPrettier,
 ];
 
-/*olddefault [
-  {languageOptions: { globals: globals.browser }},
-  pluginJs.configs.recommended,
-  ...tseslint.configs.recommended,
-	eslintConfigPrettier,
-];
-*/
+
