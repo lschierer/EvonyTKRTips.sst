@@ -1,0 +1,93 @@
+---
+slug: pair-picking
+title: Evaluating Relative Strength of Pairs
+authors: Luke Schierer
+tableOfContents: false
+sidebar:
+  order: 1
+---
+
+Most sites offering ratings of generals have flaws. While I personally have really appreciated the work done
+on [EvonyAnswers], I find that even it falls down when I do not want, or cannot afford, to split my
+attention between separate generals for attack and re-enforcement, or want to know what is the best pair for a
+secondary use case that will receive less attention.
+
+This hopes to help partially close that gap. Unlike most sites, I am
+evaluating pairs, not individual generals. I am making some judgements on
+buffs you might need, but far fewer than [EvonyAnswers] does. Where
+[EvonyAnswers] provides just a few numbers per pair, one each at fully ascended
+and at four yellow specialities but no ascending for each of the two
+primary use cases (Attacking and Reinforcing), I am allowing for effectively
+infinitely variable levels of investment. I have used [EvonyAnswers] Attribute
+Ranking System to help simplify the display, reducing several different
+buffs into just a small handful of numbers for easier analysis. However, by
+breaking the single [EvonyAnswers] Attribute Ranking Score into several scores,
+I hope to offer greater insight into _why_ the general is ranked that way, and
+also allow the user to focus in on particular aspects of strength that matter
+most to that user.
+
+The EvAns Estimate columns, where available, represent my best effort at reproducing
+the Attribute Ranking Scores from [EvonyAnswers] as [documented here]. I have not
+succeeded in accurately doing so, hence they are labeled "estimates." Despite many
+hours of trying to find any flaws in my algorithm, I am variable amounts off, with each
+general off a unique amount.
+
+**_Since All columns use the same algorithm, albeit in slightly different ways, please use
+these tables at your own risk, and consider this a work in progress._**
+
+The 4 main troop types, Archers, Cavalry, Ground, and Siege, each have two additional columns
+specific to me: an "Adjusted Attack Score" and an "Adjusted Toughness Score." The Adjusted Attack
+is comprised of your general's march capacity buffs, attack buffs, HP *de*buffs, and defense *de*buffs.
+The Adjusted Toughness Score is comprised of your general's HP buffs, defense buffs, and attack *de*buffs.
+Buffs that [EvonyAnswers] lists as "Preservation," and "Debilitation" are currently entirely ignored.
+Range increase buffs are used towards the Adjusted Attack for Archers and Siege types, however, In-Battle
+speed buffs are currently ignored for Ground and Cavalry types. Additionally, the Rally capacity is
+counted towards Attack only for the Attack case, not for the Reinforcing case. Lastly, Buffs and Debuffs are
+adjusted in all cases to account for conditions where they do and do not take effect (I actually think this might
+be where I and [EvonyAnswers] might be drawing different conclusions, and thus different scores).
+
+For anyone trying to reproduce _my_ numbers, I have used the multipliers listed at [EvonyAnswers] as of the "4.2.0"
+version. I'm strongly considering customizing them, and if so, will post the ones I use on a page similar to what
+was done there.
+
+Wall Generals are evaluated very similar to the way a Reinforcing use case general is evaluated, with the exception
+that all troop types are used, and march size is irrelevant. Mayors for Sub Cities however, really only need to be
+evaluated for their various debuffs. These need to be evaluated with much more granularity, with Anti-Attack and
+Anti-Toughness debuffs shown for any given investment level for each potential Mayor. I may include a Toughness
+column in the sense that will help yur Mayor _have troops_ and thus _get used_ but a Mayor's contribution to your
+attack is going to be, as has been discussed elsewhere, massively limited by the anemic troops and miniscule troop
+counts available to that Mayor. Thus I will be entirely discounting a Mayor's attack buffs.
+
+Eventually I would like to allow for Officer comparison, but that's really only useful if I can figure out
+how to do side-by-side comparison of generals _at different investment_ levels. Otherwise the analysis is
+trivial. Currently I can only do one investment level per table, and until that limitation is solved, putting
+officers into a table is pointless.
+
+Like all my pages, this is a work in progress. I hope to do more with it
+over time. Right now the lists of generals are based on static assessment of
+which generals do and do not conflict, thus it is possible that there are
+both false positives and false negatives. It also currently has a medium
+set of generals. I hope to continue to expand that over time.
+
+Don't see the general you want to compare? Go to the [General Yaml Creator]
+and fill in the values. You can submit it to me any time the box on the
+right is green, but the more information you provide, the less I have to
+find before I can post it.
+
+## Usage Key
+
+- Standard skill books
+  - If a general conflicts no matter where in the pair
+    this book is used, you will see an orange dot next to the general's name.
+  - If the general conflicts only if he or she does not personally have that skill
+    book, you will see a blue dot next to his or her name.
+  - In either case, any skill book(s) you yourself add are not counted towards buffs at this time.
+- General Covenants are not counted towards buffs at this time.
+- General Soul Binding is not counted towards buffs at this time.
+- Buffs that require a Spiritual Beast or Dragon to activate are indicated by a magenta (pink) dot
+  next to the general's name. This will override a blue dot, but not an orange dot.
+- Gray dots means there are no special considerations.
+
+[EvonyAnswers]: https://www.evonyanswers.com/
+[General Yaml Creator]: ../../../reference/generalyaml/
+[documented here]: https://www.evonyanswers.com/post/evony-answers-attribute-methodology-explanation

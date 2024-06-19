@@ -1,0 +1,40 @@
+---
+title: Siege General Pairs
+author:
+  - 'Luke Schierer'
+sidebar:
+  order: 6
+---
+
+When looking at siege generals, you need to consider your use case. There are two use cases.
+
+- Attacking
+  - Siege bomb rallies
+  - Stealing massive amounts of [RSS] from an otherwise dead keep.
+  - Attacking a keep on your own
+  - The first march intending to hold a building
+- Reinforcing
+  - Sending siege to an alliance member's keep
+  - Sending siege to reinforce a building an alliance member
+    already owns
+
+Unfortunately, the generals that are good at the attacking use case are at best
+mediocre for the reinforcing use case. However, unlike other troop types, with
+siege we find that while the best reinforcing pairs will not be the absolute
+best attack pairs, they will not be unnacceptably bad either. **Light spenders
+should look at the reinforcing table** and accept that their siege attack pair
+will never be optimized for attacking. Since siege repair requires gems,
+the repair bill alone would probably preclude siege attacks for these players
+anyway.
+
+## Attacking Pairs
+
+<AttackPairs generalClass="Siege" useCase="Attack"></AttackPairs>
+
+## Reinforcing Pairs
+
+<AttackPairs generalClass="Siege" useCase="Reinforcement"></AttackPairs>/
+
+import AttackPairs from '../../../components/general/pairing/AttackPairs.astro';
+
+[RSS]: ../../../reference/glossary/#rss
