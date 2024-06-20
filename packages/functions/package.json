@@ -1,8 +1,8 @@
 {
-  "name": "@aws-monorepo/functions",
+  "name": "@evonytkrtips/functions",
   "version": "0.0.0",
   "dependencies": {
-    "@aws-monorepo/core": "workspace:*"
+    "@evonytkrtips/core": "workspace:*"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.137"

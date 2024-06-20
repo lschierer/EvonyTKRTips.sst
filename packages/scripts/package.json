@@ -1,8 +1,8 @@
 {
-  "name": "@aws-monorepo/scripts",
+  "name": "@evonytkrtips/scripts",
   "version": "0.0.0",
   "dependencies": {
-    "@aws-monorepo/core": "workspace:*"
+    "@evonytkrtips/core": "workspace:*"
   },
   "scripts": {
     "shell": "sst shell tsx"

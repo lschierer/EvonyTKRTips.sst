@@ -108,7 +108,7 @@
 export default $config({
   app(input) {
     return {
-      name: 'aws-monorepo',
+      name: 'EvonyTKRTips',
       removal: input?.stage === 'production' ? 'retain' : 'remove',
       home: 'aws',
     };
