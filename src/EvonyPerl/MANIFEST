@@ -1,0 +1,14 @@
+Build.PL
+Changes
+lib/Convenant.pm
+lib/General.pm
+lib/GeneralConflictData.pm
+lib/GeneralPair.pm
+lib/SkillBook.pm
+lib/Speciality.pm
+MANIFEST			This list of files
+README
+t/00-load.t
+t/manifest.t
+t/pod-coverage.t
+t/pod.t
