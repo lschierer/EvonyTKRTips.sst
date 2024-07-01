@@ -1,6 +1,6 @@
 ---
 name: King's Ambition
-attribute:
+levels:
   - level: Green
     buff:
       - attribute: Death_to_Soul

@@ -1,5 +1,6 @@
+---
 name: Battle of Narva
-attribute:
+levels:
   - level: Green
     buff:
       - attribute: Attack

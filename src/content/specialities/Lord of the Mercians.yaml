@@ -1,6 +1,6 @@
 ---
 name: Lord of the Mercians
-attribute:
+levels:
   - level: Green
     buff:
       - attribute: Attack

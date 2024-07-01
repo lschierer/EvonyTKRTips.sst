@@ -1,6 +1,6 @@
 ---
 name: Chief Controller of Eastern Wu
-attribute:
+levels:
   - level: Green
     buff:
       - attribute: Attack

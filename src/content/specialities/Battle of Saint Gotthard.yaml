@@ -1,6 +1,6 @@
 ---
 name: Battle of Saint Gotthard
-attribute:
+levels:
   - level: Green
     buff:
       - attribute: Attack

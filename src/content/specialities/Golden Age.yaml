@@ -1,6 +1,6 @@
 ---
 name: Golden Age
-attribute:
+levels:
   - level: 'Green'
     buff:
       - attribute: Attack

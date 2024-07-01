@@ -1,9 +1,9 @@
 ---
 name: Bash
-attribute:
+levels:
   - level: Green
     buff:
-      - attribute: Attack
+      - levels: Attack
         class: Archers
         value:
           number: 1

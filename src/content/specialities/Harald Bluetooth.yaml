@@ -1,6 +1,6 @@
 ---
 name: Harald Bluetooth
-attribute:
+levels:
   - level: Green
     buff:
       - attribute: Wounded_to_Death

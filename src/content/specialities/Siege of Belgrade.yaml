@@ -1,6 +1,6 @@
 ---
 name: Siege of Belgrade
-attribute:
+levels:
   - level: 'Green'
     buff:
       - attribute: Attack

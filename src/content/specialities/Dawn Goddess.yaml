@@ -1,6 +1,6 @@
 ---
 name: Dawn Goddess
-attribute:
+levels:
   - level: 'Green'
     buff:
       - attribute: Attack

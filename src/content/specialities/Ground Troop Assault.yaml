@@ -1,6 +1,6 @@
 ---
 name: Ground Troop Assault
-attribute:
+levels:
   - level: Green
     buff:
       - attribute: Attack

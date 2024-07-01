@@ -1,6 +1,6 @@
 ---
 name: Unparalleled Leader
-attribute:
+levels:
   - level: 'Green'
     buff:
       - attribute: Death_to_Wounded

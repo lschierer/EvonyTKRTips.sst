@@ -1,6 +1,6 @@
 ---
 name: Persicus Maximus
-attribute:
+levels:
   - level: 'Green'
     buff:
       - attribute: Attack

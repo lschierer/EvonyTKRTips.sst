@@ -1,6 +1,6 @@
 ---
 name: Siege
-attribute:
+levels:
   - level: Green
     buff:
       - attribute: March_Size_Capacity

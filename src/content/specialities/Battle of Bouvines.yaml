@@ -1,6 +1,6 @@
 ---
 name: Battle of Bouvines
-attribute:
+levels:
   - level: 'Green'
     buff:
       - attribute: Attack

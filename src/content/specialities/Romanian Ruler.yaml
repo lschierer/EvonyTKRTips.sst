@@ -1,6 +1,6 @@
 ---
 name: Romanian Ruler
-attribute:
+levels:
   - level: Green
     buff:
       - attribute: Attack

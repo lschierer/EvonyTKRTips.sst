@@ -1,6 +1,6 @@
 ---
 name: Prince of Essling
-attribute:
+levels:
   - level: Green
     buff:
       - attribute: Attack

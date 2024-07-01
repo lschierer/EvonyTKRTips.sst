@@ -1,6 +1,6 @@
 ---
 name: Ranged Troop Assault
-attribute:
+levels:
   - level: Green
     buff:
       - attribute: Attack

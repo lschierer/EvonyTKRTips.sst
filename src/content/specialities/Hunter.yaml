@@ -1,6 +1,6 @@
 ---
 name: Hunter
-attribute:
+levels:
   - level: Green
     buff:
       - condition:

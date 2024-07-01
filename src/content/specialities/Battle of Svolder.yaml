@@ -1,6 +1,6 @@
 ---
 name: Battle of Svolder
-attribute:
+levels:
   - level: Green
     buff:
       - attribute: Attack

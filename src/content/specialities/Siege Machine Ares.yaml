@@ -1,6 +1,6 @@
 ---
 name: Siege Machine Ares
-attribute:
+levels:
   - level: Green
     buff:
       - attribute: Attack

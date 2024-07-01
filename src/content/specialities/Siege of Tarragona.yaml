@@ -1,6 +1,6 @@
 ---
 name: Siege of Tarragona
-attribute:
+levels:
   - level: 'Green'
     buff:
       - attribute: Attack

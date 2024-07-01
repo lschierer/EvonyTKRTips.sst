@@ -1,6 +1,6 @@
 ---
 name: Iron Warrior
-attribute:
+levels:
   - level: 'Green'
     buff:
       - attribute: Wounded_to_Death

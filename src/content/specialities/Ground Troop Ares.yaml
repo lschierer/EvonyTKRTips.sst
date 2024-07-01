@@ -1,6 +1,6 @@
 ---
 name: Ground Troop Ares
-attribute:
+levels:
   - level: Green
     buff:
       - attribute: Attack

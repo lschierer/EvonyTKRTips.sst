@@ -1,6 +1,6 @@
 ---
 name: Defeat the Liao army
-attribute:
+levels:
   - level: 'Green'
     buff:
       - attribute: Attack

@@ -1,6 +1,6 @@
 ---
 name: Blackbeard
-attribute:
+levels:
   - level: Green
     buff:
       - attribute: Attack

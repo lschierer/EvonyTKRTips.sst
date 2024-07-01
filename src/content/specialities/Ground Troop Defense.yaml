@@ -1,6 +1,6 @@
 ---
 name: Ground Troop defense
-attribute:
+levels:
   - level: Green
     buff:
       - attribute: HP

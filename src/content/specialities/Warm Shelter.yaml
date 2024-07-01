@@ -1,6 +1,6 @@
 ---
 name: Warm Shelter
-attribute:
+levels:
   - level: 'Green'
     buff:
       - attribute: Attack

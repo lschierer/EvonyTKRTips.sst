@@ -1,6 +1,6 @@
 ---
 name: Golden Throne
-attribute:
+levels:
   - level: Green
     buff:
       - attribute: Attack

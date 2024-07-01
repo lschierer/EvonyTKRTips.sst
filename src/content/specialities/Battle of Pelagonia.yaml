@@ -1,6 +1,6 @@
 ---
 name: Battle of Pelagonia
-attribute:
+levels:
   - level: 'Green'
     buff:
       - attribute: Attack

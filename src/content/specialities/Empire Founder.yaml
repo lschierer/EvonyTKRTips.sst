@@ -1,43 +1,43 @@
 ---
 name: Empire Founder
-attribute:
+levels:
   - level: Green
     buff:
-    - attribute: SubCity Construction Speed
-      condition:
-      - When_City_Mayor_for_this_SubCity
-      value:
-        number: 0
-        unit: percentage
-    - level: Blue
-      buff:
       - attribute: SubCity Construction Speed
         condition:
-        - When_City_Mayor_for_this_SubCity
+          - When_City_Mayor_for_this_SubCity
         value:
           number: 0
           unit: percentage
-    - level: Purple
-      buff:
+  - level: Blue
+    buff:
       - attribute: SubCity Construction Speed
         condition:
-        - When_City_Mayor_for_this_SubCity
+          - When_City_Mayor_for_this_SubCity
         value:
           number: 0
           unit: percentage
-    - level: Orange
-      buff:
+  - level: Purple
+    buff:
       - attribute: SubCity Construction Speed
         condition:
-        - When_City_Mayor_for_this_SubCity
+          - When_City_Mayor_for_this_SubCity
         value:
           number: 0
           unit: percentage
-    - level: Gold
-      buff:
+  - level: Orange
+    buff:
       - attribute: SubCity Construction Speed
         condition:
-        - When_City_Mayor_for_this_SubCity
+          - When_City_Mayor_for_this_SubCity
+        value:
+          number: 0
+          unit: percentage
+  - level: Gold
+    buff:
+      - attribute: SubCity Construction Speed
+        condition:
+          - When_City_Mayor_for_this_SubCity
         value:
           number: 80
           unit: percentage

@@ -1,6 +1,6 @@
 ---
 name: Strike
-attribute:
+levels:
   - level: Green
     buff:
       - attribute: Marching_Speed

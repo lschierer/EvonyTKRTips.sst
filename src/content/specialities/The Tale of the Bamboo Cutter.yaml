@@ -1,6 +1,6 @@
 ---
 name: The Tale of the Bamboo Cutter
-attribute:
+levels:
   - level: Green
     buff:
       - attribute: Attack

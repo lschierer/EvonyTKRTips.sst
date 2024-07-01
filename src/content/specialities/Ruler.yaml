@@ -1,6 +1,6 @@
 ---
 name: Ruler
-attribute:
+levels:
   - level: Green
     buff:
       - attribute: SubCity_Troop_Capacity

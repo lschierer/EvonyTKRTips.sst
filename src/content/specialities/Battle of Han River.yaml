@@ -1,6 +1,6 @@
 ---
 name: Battle of Han River
-attribute:
+levels:
   - level: Green
     buff:
       - attribute: Attack

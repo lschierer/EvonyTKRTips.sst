@@ -1,6 +1,6 @@
 ---
 name: Battle of the Dunes
-attribute:
+levels:
   - level: Green
     buff:
       - attribute: Attack

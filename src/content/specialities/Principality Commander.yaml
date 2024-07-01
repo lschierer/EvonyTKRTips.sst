@@ -1,6 +1,6 @@
 ---
 name: Principality Commander
-attribute:
+levels:
   - level: 'Green'
     buff:
       - attribute: Attack

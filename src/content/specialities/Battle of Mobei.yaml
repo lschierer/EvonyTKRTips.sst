@@ -1,6 +1,6 @@
 ---
 name: Battle of Mobei
-attribute:
+levels:
   - level: 'Green'
     buff:
       - attribute: March_Time
