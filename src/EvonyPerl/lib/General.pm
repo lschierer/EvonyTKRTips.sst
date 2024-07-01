@@ -1,12 +1,15 @@
 package General;
 
-use 5.006;
-use strict;
-use warnings;
+use 5.40;
+use Moo;
+use strictures 2;
+use Types::Standard qw(Int);
+
+use namespace::clean;
 
 =head1 NAME
 
-General - The great new General!
+Evony TKR General Object
 
 =head1 VERSION
 
@@ -14,12 +17,12 @@ Version 0.01
 
 =cut
 
-our $VERSION = '0.01';
+our $VERSION = 'v0.01'; # should match version line above.
 
 
 =head1 SYNOPSIS
 
-Quick summary of what the module does.
+SubRoutines and attributes necessary to compare generals in Evony TKR.
 
 Perhaps a little code snippet.
 

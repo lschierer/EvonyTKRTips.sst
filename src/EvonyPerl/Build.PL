@@ -22,7 +22,8 @@ my $builder = Module::Build->new(
         'Cpanel::JSON::XS'  => '4.38',
         'JSON::MaybeXS'     => '1.004005',
         'Moo'               => '2.005005',
-        'Type::Tiny'         => '2.004000',
+        'Type::Tiny'        => '2.004000',
+        'namespace::clean'  => '0.27',
 
     },
     add_to_cleanup     => [ 'EvonyPerl-*' ],
