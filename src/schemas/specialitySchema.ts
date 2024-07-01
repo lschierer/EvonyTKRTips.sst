@@ -10,6 +10,6 @@ export type SpecialityLevelType = zod.infer<typeof SpecialityLevel>;
 
 export const Speciality = zod.object({
   name: zod.string(),
-  attribute: zod.array(SpecialityLevel).nonempty(),
+  levels: zod.array(SpecialityLevel).nonempty(),
 });
 export type SpecialityType = zod.infer<typeof Speciality>;
