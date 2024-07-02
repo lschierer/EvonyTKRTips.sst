@@ -1,10 +1,10 @@
 #!perl
-use 5.006;
+use 5.40.0;
 use strict;
 use warnings;
 use Test::More;
 
-plan tests => 8;
+plan tests => 5;
 
 sub not_in_file_ok {
     my ($filename, %regex) = @_;
@@ -50,12 +50,9 @@ TODO: {
     "placeholder date/time"       => qr(Date/time)
   );
 
-  module_boilerplate_ok('lib/General.pm');
-  module_boilerplate_ok('lib/Speciality.pm');
-  module_boilerplate_ok('lib/SkillBook.pm');
-  module_boilerplate_ok('lib/GeneralConflictData.pm');
-  module_boilerplate_ok('lib/Convenant.pm');
-  module_boilerplate_ok('lib/GeneralPair.pm');
+  module_boilerplate_ok('lib/Game/Evony/General.pm');
+  module_boilerplate_ok('lib/Game/Evony/Speciality.pm');
+  module_boilerplate_ok('lib/Game/Evony/Specialist.pm');
 
 
 }

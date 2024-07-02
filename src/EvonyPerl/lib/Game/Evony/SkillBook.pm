@@ -1,4 +1,4 @@
-package Speciality;
+package Game::Evony::SkillBook;
 
 use 5.006;
 use strict;
@@ -6,7 +6,7 @@ use warnings;
 
 =head1 NAME
 
-Speciality - The great new Speciality!
+Game::Evony::SkillBook - The great new Game::Evony::SkillBook!
 
 =head1 VERSION
 
@@ -23,9 +23,9 @@ Quick summary of what the module does.
 
 Perhaps a little code snippet.
 
-    use Speciality;
+    use Game::Evony::SkillBook;
 
-    my $foo = Speciality->new();
+    my $foo = Game::Evony::SkillBook->new();
     ...
 
 =head1 EXPORT
@@ -51,12 +51,12 @@ sub function2 {
 
 =head1 AUTHOR
 
- Luke Schierer, C<< <luke at schierer.org> >>
+ Luke Schierer, C<< < lschiere at amazon.com> >>
 
 =head1 BUGS
 
-Please report any bugs or feature requests to C<bug-evonyperl at rt.cpan.org>, or through
-the web interface at L<https://rt.cpan.org/NoAuth/ReportBug.html?Queue=EvonyPerl>.  I will be notified, and then you'll
+Please report any bugs or feature requests to C<bug-. at rt.cpan.org>, or through
+the web interface at L<https://rt.cpan.org/NoAuth/ReportBug.html?Queue=.>.  I will be notified, and then you'll
 automatically be notified of progress on your bug as I make changes.
 
 
@@ -66,7 +66,7 @@ automatically be notified of progress on your bug as I make changes.
 
 You can find documentation for this module with the perldoc command.
 
-    perldoc Speciality
+    perldoc Game::Evony::SkillBook
 
 
 You can also look for information at:
@@ -75,15 +75,15 @@ You can also look for information at:
 
 =item * RT: CPAN's request tracker (report bugs here)
 
-L<https://rt.cpan.org/NoAuth/Bugs.html?Dist=EvonyPerl>
+L<https://rt.cpan.org/NoAuth/Bugs.html?Dist=.>
 
 =item * CPAN Ratings
 
-L<https://cpanratings.perl.org/d/EvonyPerl>
+L<https://cpanratings.perl.org/d/.>
 
 =item * Search CPAN
 
-L<https://metacpan.org/release/EvonyPerl>
+L<https://metacpan.org/release/.>
 
 =back
 
@@ -95,11 +95,11 @@ L<https://metacpan.org/release/EvonyPerl>
 
 This software is Copyright (c) 2024 by  Luke Schierer.
 
-This program is released under the following license:
+This is free software, licensed under:
 
-  CC_BY_4_0
+  The Artistic License 2.0 (GPL Compatible)
 
 
 =cut
 
-1; # End of Speciality
+1; # End of Game::Evony::SkillBook

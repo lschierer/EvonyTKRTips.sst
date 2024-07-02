@@ -1,15 +1,12 @@
-package General;
+package Game::Evony::Covenant;
 
-use 5.40;
-use Moo;
-use strictures 2;
-use Types::Standard qw(Int);
-
-use namespace::clean;
+use 5.006;
+use strict;
+use warnings;
 
 =head1 NAME
 
-Evony TKR General Object
+Game::Evony::Covenant - The great new Game::Evony::Covenant!
 
 =head1 VERSION
 
@@ -17,18 +14,18 @@ Version 0.01
 
 =cut
 
-our $VERSION = 'v0.01'; # should match version line above.
+our $VERSION = '0.01';
 
 
 =head1 SYNOPSIS
 
-SubRoutines and attributes necessary to compare generals in Evony TKR.
+Quick summary of what the module does.
 
 Perhaps a little code snippet.
 
-    use General;
+    use Game::Evony::Covenant;
 
-    my $foo = General->new();
+    my $foo = Game::Evony::Covenant->new();
     ...
 
 =head1 EXPORT
@@ -54,12 +51,12 @@ sub function2 {
 
 =head1 AUTHOR
 
- Luke Schierer, C<< <luke at schierer.org> >>
+ Luke Schierer, C<< < lschiere at amazon.com> >>
 
 =head1 BUGS
 
-Please report any bugs or feature requests to C<bug-evonyperl at rt.cpan.org>, or through
-the web interface at L<https://rt.cpan.org/NoAuth/ReportBug.html?Queue=EvonyPerl>.  I will be notified, and then you'll
+Please report any bugs or feature requests to C<bug-. at rt.cpan.org>, or through
+the web interface at L<https://rt.cpan.org/NoAuth/ReportBug.html?Queue=.>.  I will be notified, and then you'll
 automatically be notified of progress on your bug as I make changes.
 
 
@@ -69,7 +66,7 @@ automatically be notified of progress on your bug as I make changes.
 
 You can find documentation for this module with the perldoc command.
 
-    perldoc General
+    perldoc Game::Evony::Covenant
 
 
 You can also look for information at:
@@ -78,15 +75,15 @@ You can also look for information at:
 
 =item * RT: CPAN's request tracker (report bugs here)
 
-L<https://rt.cpan.org/NoAuth/Bugs.html?Dist=EvonyPerl>
+L<https://rt.cpan.org/NoAuth/Bugs.html?Dist=.>
 
 =item * CPAN Ratings
 
-L<https://cpanratings.perl.org/d/EvonyPerl>
+L<https://cpanratings.perl.org/d/.>
 
 =item * Search CPAN
 
-L<https://metacpan.org/release/EvonyPerl>
+L<https://metacpan.org/release/.>
 
 =back
 
@@ -98,11 +95,11 @@ L<https://metacpan.org/release/EvonyPerl>
 
 This software is Copyright (c) 2024 by  Luke Schierer.
 
-This program is released under the following license:
+This is free software, licensed under:
 
-  CC_BY_4_0
+  The Artistic License 2.0 (GPL Compatible)
 
 
 =cut
 
-1; # End of General
+1; # End of Game::Evony::Covenant

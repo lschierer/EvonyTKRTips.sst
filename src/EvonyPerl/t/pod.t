@@ -1,5 +1,5 @@
 #!perl
-use 5.006;
+use 5.40.0;
 use strict;
 use warnings;
 use Test::More;
