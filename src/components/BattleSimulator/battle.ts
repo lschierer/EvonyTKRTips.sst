@@ -1,4 +1,4 @@
-import { css, html, type CSSResultArray, type PropertyValueMap } from 'lit';
+import { css, html, type CSSResultArray, type PropertyValues } from 'lit';
 import { state } from 'lit/decorators.js';
 
 import { withStores } from '@nanostores/lit';
@@ -58,7 +58,7 @@ export class EvonyBattle extends withStores(SpectrumElement, [formValues]) {
   }
 
   public override willUpdate(
-    _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>
+    _changedProperties: PropertyValues | Map<PropertyKey, unknown>
   ): void {
     super.willUpdate(_changedProperties);
     const fv = formValues.value;
@@ -150,119 +150,119 @@ export class EvonyBattle extends withStores(SpectrumElement, [formValues]) {
 
   public static override get styles(): CSSResultArray {
     const localstyle = css`
-            span.H3 {
-              color: var(--sl-color-text-accent);
-              font-size: var(--sl-text-h3);
-              font-weight: bold;
-              margin-left: 1rem;
-            }
-            span.H4 {
-              color: var(--sl-color-text-accent);
-              font-size: var(--sl-text-h4);
-              font-weight: bold;
-              margin-left: 2rem;
-            }
-            
-            span.bold {
-              color: var(--sl-color-text-accent);
-              font-weight: bold;
-            }
+      span.H3 {
+        color: var(--sl-color-text-accent);
+        font-size: var(--sl-text-h3);
+        font-weight: bold;
+        margin-left: 1rem;
+      }
+      span.H4 {
+        color: var(--sl-color-text-accent);
+        font-size: var(--sl-text-h4);
+        font-weight: bold;
+        margin-left: 2rem;
+      }
 
-            .grid{ display: grid; }
-            
+      span.bold {
+        color: var(--sl-color-text-accent);
+        font-weight: bold;
+      }
 
-            div.Buffs {
-                width=100%;
-            }
+      .grid {
+        display: grid;
+      }
 
-            div.Attacker div.Defender {
-              padding-top: 1.5rem;
-            }
+      div.Buffs {
+        width: 100%;
+      }
 
-            div.Values {
-              width=100%;
-              display: flex;
-              flex-direction: row;
-              flex-wrap: wrap;
-              justify-content: space-between;
-              margin-left: 3rem;
+      div.Attacker div.Defender {
+        padding-top: 1.5rem;
+      }
 
-              & div.Value {
-                  display: flex;
-                  flex-direction: column;
-                  flex: 1 1 auto;
-              }
-          }
+      div.Values {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-left: 3rem;
 
-          div.Results {
-            width=100%;
-            margin-top: 2rem;
-            border-top: solid 1px var(--sl-color-accent-low);
-          }
-          div.troops {
-            grid-template-columns: repeat(60, 1fr);
-            grid-auto-rows: minmax(1rem, auto);
-            column-gap: 0.5px;
-            row-gap: 0.1px;
-            justify-items: center;
-            justify-content: space-around;
-            align-items: center;
-          }                
+        & div.Value {
+          display: flex;
+          flex-direction: column;
+          flex: 1 1 auto;
+        }
+      }
 
-          div.troopTableHeading {
-            grid-column-end: span 60;
-            grid-row-end: span 2;
-          }
+      div.Results {
+        width: 100%;
+        margin-top: 2rem;
+        border-top: solid 1px var(--sl-color-accent-low);
+      }
+      div.troops {
+        grid-template-columns: repeat(60, 1fr);
+        grid-auto-rows: minmax(1rem, auto);
+        column-gap: 0.5px;
+        row-gap: 0.1px;
+        justify-items: center;
+        justify-content: space-around;
+        align-items: center;
+      }
 
-          div.tierTableHeading {
-            display: inline-grid;
-            grid-template-columns: subgrid;
-            grid-template-rows: subgrid;
-            grid-column-end: span 4;
-            grid-row: 1;
-            grid-row-end: span 2;
-            justify-items: end;
-            justify-content: end;
-            align-self: start;
-          }
+      div.troopTableHeading {
+        grid-column-end: span 60;
+        grid-row-end: span 2;
+      }
 
-          div.tierLabel {
-            grid-column-end: span 4;
-            grid-row-end: span 1;
-            align-self: start;
-          }
+      div.tierTableHeading {
+        display: inline-grid;
+        grid-template-columns: subgrid;
+        grid-template-rows: subgrid;
+        grid-column-end: span 4;
+        grid-row: 1;
+        grid-row-end: span 2;
+        justify-items: end;
+        justify-content: end;
+        align-self: start;
+      }
 
-          div.classTableHeading {
-            grid-column-end: span 1;
-            grid-row-end: span 1;
-            align-self: end;
-          }
+      div.tierLabel {
+        grid-column-end: span 4;
+        grid-row-end: span 1;
+        align-self: start;
+      }
 
-          div.ResultRow {
-            display: inline-grid;
-            grid-template-columns: subgrid;
-            grid-template-rows: subgrid;
-            grid-column-start: 1;
-            grid-column-end: span 60;
-            grid-row-end: span 1;
-            border: 0.6px solid;
-            justify-items: end;
-            justify-content: end;
-          }
+      div.classTableHeading {
+        grid-column-end: span 1;
+        grid-row-end: span 1;
+        align-self: end;
+      }
 
-          div.AttackersTroops {
-            background-color: var(--theme2-green);
-          }
+      div.ResultRow {
+        display: inline-grid;
+        grid-template-columns: subgrid;
+        grid-template-rows: subgrid;
+        grid-column-start: 1;
+        grid-column-end: span 60;
+        grid-row-end: span 1;
+        border: 0.6px solid;
+        justify-items: end;
+        justify-content: end;
+      }
 
-          div.DefendersTroops {
-            background-color: var(--theme2-red);
-          }
-          
-          evony-siege {
-            border: 0.1px solid black;
-          }
+      div.AttackersTroops {
+        background-color: var(--theme2-green);
+      }
 
-          `;
+      div.DefendersTroops {
+        background-color: var(--theme2-red);
+      }
+
+      evony-siege {
+        border: 0.1px solid black;
+      }
+    `;
     if (super.styles !== null && super.styles !== undefined) {
       return [super.styles, localstyle];
     } else return [localstyle];

@@ -18,8 +18,8 @@ export const getStaticPaths = (async () => {
   }));
 }) satisfies GetStaticPaths;
 
-type Params = InferGetStaticParamsType<typeof getStaticPaths>; // eslint-disable-line
-type Props = InferGetStaticPropsType<typeof getStaticPaths>; // eslint-disable-line
+type Params = InferGetStaticParamsType<typeof getStaticPaths>;
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
 export const GET: APIRoute = async ({ params }) => {
   let id: string = params.id ? params.id : '';

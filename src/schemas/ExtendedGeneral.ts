@@ -1,8 +1,8 @@
-import {  z as zod } from 'zod';
+import { z as zod } from 'zod';
 
-import { GeneralClass, Covenant, CovenantAttribute } from './generalsSchema';
+import { GeneralClass, CovenantAttribute } from './generalsSchema';
 import { Speciality } from './specialitySchema';
-import { Book, specialSkillBook, standardSkillBook } from './bookSchemas';
+import { Book } from './bookSchemas';
 import { ConflictDatum } from './conflictSchemas';
 
 export const ExtendedGeneralStatus = zod.enum([

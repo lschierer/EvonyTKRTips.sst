@@ -3,16 +3,18 @@ import { z } from 'zod';
 import {
   AscendingLevels,
   BuffParams,
-  type BuffParamsType, CovenantAttributeCategory,
+  type BuffParamsType,
+  CovenantAttributeCategory,
   qualityColor,
 } from '@schemas/baseSchemas';
 
 import {
   Display,
   type DisplayType,
-
-  type generalRoleType, generalSpecialists,
-  generalUseCase, type generalUseCaseType,
+  type generalRoleType,
+  generalSpecialists,
+  generalUseCase,
+  type generalUseCaseType,
 } from '@schemas/generalsSchema';
 
 import {
@@ -22,7 +24,10 @@ import {
 
 import { AttackingScoreComputer } from '../buffComputers/TKRTipsRanking/AttackScoreComputer';
 import { ToughnessScoreComputer } from '../buffComputers/TKRTipsRanking/ToughnessScoreComputer';
-import { type MayorBuffDetails, MayorDetail } from '../buffComputers/TKRTipsRanking/MayorDetail';
+import {
+  type MayorBuffDetails,
+  MayorDetail,
+} from '../buffComputers/TKRTipsRanking/MayorDetail';
 
 const DEBUG = false;
 
@@ -36,8 +41,8 @@ export class GridMayor {
   }
 
   set useCase(value: generalUseCaseType) {
-    const v = generalUseCase.safeParse(value)
-    if(v.success) {
+    const v = generalUseCase.safeParse(value);
+    if (v.success) {
       this._useCase = v.data;
     }
   }
@@ -52,7 +57,7 @@ export class GridMayor {
     this._generalId = pId;
   }
 
-  // @ts-ignore
+  // @ts-expect-error initialized later
   private _eg: ExtendedGeneralType;
 
   get eg(): ExtendedGeneralType {
@@ -67,9 +72,7 @@ export class GridMayor {
         this._generalId = this._eg.name;
       }
       if (DEBUG) {
-        console.log(
-          `GridPair set primary; _primary.name: ${this._eg.name}`
-        );
+        console.log(`GridPair set primary; _primary.name: ${this._eg.name}`);
         console.log(`GridPair set primary; _primaryId: ${this._generalId}`);
       }
     }
@@ -83,25 +86,23 @@ export class GridMayor {
     const value = Math.floor(this.pEvAnsRanking);
     if (DEBUG) {
       console.log(`pEvAnsRanking for ${this.generalId} ${this.pEvAnsRanking} `);
-      console.log(
-        `tEvAnsRanking ${this.generalId} ${value}`
-      );
+      console.log(`tEvAnsRanking ${this.generalId} ${value}`);
     }
     return value;
   }
 
   private pAttackRanking = 0;
   get AttackRanking(): number {
-    return this.pAttackRanking
+    return this.pAttackRanking;
   }
 
   private pToughnessRanking = 0;
   get ToughnessRanking(): number {
-    return this.pToughnessRanking ;
+    return this.pToughnessRanking;
   }
 
   private pAttack = 0;
-  get Attack():number {
+  get Attack(): number {
     return this.pAttack;
   }
 
@@ -166,8 +167,8 @@ export class GridMayor {
 
   public getSkillBooks(forG: generalRoleType) {
     //this will eventually need to handle skill books that are not built in
-    if(DEBUG) {
-      console.log(`${forG}`)
+    if (DEBUG) {
+      console.log(`${forG}`);
     }
   }
 
@@ -186,7 +187,7 @@ export class GridMayor {
 
     const r1 = this.GeneralBuffs(Display.enum.primary);
 
-    return (r1);
+    return r1;
   }
 
   //from https://www.evonyanswers.com/post/evony-answers-attribute-methodology-explanation
@@ -215,8 +216,8 @@ export class GridMayor {
         const Details: MayorBuffDetails = MayorDetail(
           this._eg,
           this.pInvestment,
-          generalSpecialists.enum.Mayor,
-          )
+          generalSpecialists.enum.Mayor
+        );
 
         this.pAttack = Details.Attack;
         this.pDeAttack = Details.DeAttack;
@@ -244,7 +245,7 @@ export class GridMayor {
           return false;
         }
       } else if (!display.localeCompare(Display.enum.secondary)) {
-        if(DEBUG) {
+        if (DEBUG) {
           console.log(`mayors do not support secondaries`);
         }
         return false;

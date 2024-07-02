@@ -50,7 +50,7 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
 
   @property({
     type: Object,
-    reflect: true
+    reflect: true,
   })
   public general: ExtendedGeneralType | null = null;
 
@@ -144,7 +144,6 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
     this.status = ExtendedGeneralStatus.enum.fetching;
     const currentPage = `${document.location.protocol}//${document.location.host}`;
     if (this.generalId.length > 0) {
-
       const gURL = new URL(`/generals/${this.generalId}.json`, currentPage);
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const data = await fetch(gURL)
@@ -186,7 +185,7 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
       } else {
         if (DEBUG) {
           console.log(`EvAnsBuff starting for ${this.general.name}`);
-          console.log(`EvAnsBuff has useCase ${this.useCase}`)
+          console.log(`EvAnsBuff has useCase ${this.useCase}`);
         }
         //figure out my state engine here
 
@@ -255,9 +254,7 @@ export class BaseGeneral extends SizedMixin(SpectrumElement, {
     }
   }
 
-  protected async willUpdate(
-    _changedProperties: PropertyValues
-  ): Promise<void> {
+  protected willUpdate(_changedProperties: PropertyValues): void {
     super.willUpdate(_changedProperties);
     if (DEBUG) {
       console.log(`BaseGeneral willUpdate started ${this.generalId ?? ''}`);

@@ -3,7 +3,6 @@ export const prerender = false;
 
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 
-import type { CollectionEntry } from 'astro:content';
 import { getEntry } from 'astro:content';
 
 const DEBUG = true;
@@ -18,7 +17,7 @@ if(entry === undefined || entry === null) {
     return Astro.redirect('/404');
   }
 }
-const { Content, headings } = await entry.render();
+const { Content } = await entry.render();
 ---
 <StarlightPage
   frontmatter={{

@@ -2,7 +2,6 @@
 
 import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
-import eslintPluginAstro from 'eslint-plugin-astro';
 import eslintConfigPrettier from "eslint-config-prettier";
 import unusedImports from "eslint-plugin-unused-imports";
 
@@ -38,8 +37,11 @@ export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
   ...tseslint.configs.stylisticTypeChecked,
-  ...eslintPluginAstro.configs['flat/recommended'],
   {
+    rules: {
+      "no-unused-vars": "off",
+      "@typescript-eslint/no-unused-vars": "off",
+    },
     languageOptions: {
       parserOptions: {
         project: './tsconfig.json',

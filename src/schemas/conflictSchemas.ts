@@ -2,10 +2,7 @@ import { z as zod } from 'zod';
 
 import { standardSkillBook } from './bookSchemas';
 
-export const bookCondition = zod.enum([
-  'when not mine',
-  'all the time',
-])
+export const bookCondition = zod.enum(['when not mine', 'all the time']);
 export type bookCondition = zod.infer<typeof bookCondition>;
 
 export const bookConflict = zod.object({
@@ -35,4 +32,3 @@ export const ConflictDatum = zod.object({
   books: zod.array(bookConflict).optional(),
 });
 export type ConflictDatum = zod.infer<typeof ConflictDatum>;
-

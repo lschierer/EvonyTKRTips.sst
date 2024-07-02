@@ -2,7 +2,7 @@ import {
   css,
   html,
   type CSSResultArray,
-  type PropertyValueMap,
+  type PropertyValues,
   nothing,
 } from 'lit';
 import { state } from 'lit/decorators.js';
@@ -495,7 +495,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
   );
 
   protected willUpdate(
-    _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>
+    _changedProperties: PropertyValues | Map<PropertyKey, unknown>
   ): void {
     if (DEBUG) {
       console.log(`index willupdate`);
@@ -933,7 +933,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                     addValue('TH_S3', (e.target as Picker).value);
                     this.requestUpdate();
                   }}
-                  disabled="${this.TH_S3 ? nothing : true}"
+                  ?disabled="${this.TH_S3 ? nothing : true}"
                 >
                   <sp-menu-item value="Green">Green</sp-menu-item>
                   <sp-menu-item value="Blue">Blue</sp-menu-item>
@@ -952,7 +952,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                     addValue('TH_S4', (e.target as Picker).value);
                     this.requestUpdate();
                   }}
-                  disabled="${this.TH_S4 ? nothing : true}"
+                  ?disabled="${this.TH_S4 ? nothing : true}"
                 >
                   <sp-menu-item value="Green">Green</sp-menu-item>
                   <sp-menu-item value="Blue">Blue</sp-menu-item>
@@ -970,7 +970,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                 <sp-switch
                   emphasized
                   id="Banquet"
-                  checked="${getValue('Banquet') !== undefined &&
+                  ?checked="${getValue('Banquet') !== undefined &&
                   !(getValue('Banquet') as string).localeCompare('true')
                     ? getValue('Banquet')
                     : nothing}"
@@ -986,14 +986,16 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                 >
                 <sp-number-field
                   id="BNF"
-                  value="${getValue('BNF') !== undefined ? getValue('BNF') : 1}"
+                  ?value="${getValue('BNF') !== undefined
+                    ? getValue('BNF')
+                    : 1}"
                   min="1"
                   max="10"
                   format-options='{
                                     "signDisplay": "never",
                                     "maximumFractionDigits": 0
                                 }'
-                  disabled="${getValue('Banquet') !== undefined &&
+                  ?disabled="${getValue('Banquet') !== undefined &&
                   !(getValue('Banquet') as string).localeCompare('true')
                     ? nothing
                     : true}"
@@ -1007,7 +1009,7 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                 <sp-switch
                   emphasized
                   id="Crane"
-                  checked="${getValue('Crane') !== undefined &&
+                  ?checked="${getValue('Crane') !== undefined &&
                   !(getValue('Crane') as string).localeCompare('true')
                     ? getValue('Crane')
                     : nothing}"
@@ -1023,14 +1025,16 @@ export class MarchCalc extends withStores(SpectrumElement, [formValues]) {
                 >
                 <sp-number-field
                   id="CNF"
-                  value="${getValue('CNF') !== undefined ? getValue('CNF') : 1}"
+                  ?value="${getValue('CNF') !== undefined
+                    ? getValue('CNF')
+                    : 1}"
                   min="1"
                   max="10"
                   format-options='{
                                     "signDisplay": "never",
                                     "maximumFractionDigits": 0
                                 }'
-                  disabled="${getValue('Crane') !== undefined &&
+                  ?disabled="${getValue('Crane') !== undefined &&
                   !(getValue('Crane') as string).localeCompare('checked')
                     ? nothing
                     : true}"

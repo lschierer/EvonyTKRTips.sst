@@ -32,7 +32,6 @@ export function arrayDifference(a: T[], b: T[]) {
   return _difference;
 }
 
-export function arrayUniqueFilter(value: any, index: number, self: any[]) {
-   
+export function arrayUniqueFilter(value: never, index: number, self: never[]) {
   return self.indexOf(value) === index;
 }

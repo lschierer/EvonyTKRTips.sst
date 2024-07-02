@@ -11,11 +11,16 @@ import {
   UnitSchema,
 } from '@schemas/baseSchemas';
 
-import { AttributeMultipliers, type AttributeMultipliersType} from '@schemas/EvAns.zod'
-
+import {
+  AttributeMultipliers,
+  type AttributeMultipliersType,
+} from '@schemas/EvAns.zod';
 
 import { checkInvalidConditions } from '../checkConditions';
-import { generalUseCase, type generalUseCaseType } from '@schemas/generalsSchema.ts';
+import {
+  generalUseCase,
+  type generalUseCaseType,
+} from '@schemas/generalsSchema.ts';
 
 const DEBUGT = false;
 
@@ -33,14 +38,14 @@ const PvPDebilitationBuffDetailCheck = z
   .function()
   .args(Buff, BuffParams, AttributeMultipliers)
   .returns(z.number())
-  .implement((tb: BuffType, iv: BuffParamsType, am: AttributeMultipliersType) => {
-    let score = 0;
-    let multiplier = 0;
-    if (tb !== null && tb !== undefined) {
-      if (tb.condition !== null && tb.condition !== undefined) {
-        if (tb.value !== null && tb.value !== undefined) {
-          if (!UnitSchema.enum.percentage.localeCompare(tb.value.unit)) {
-
+  .implement(
+    (tb: BuffType, iv: BuffParamsType, am: AttributeMultipliersType) => {
+      let score = 0;
+      let multiplier = 0;
+      if (tb !== null && tb !== undefined) {
+        if (tb.condition !== null && tb.condition !== undefined) {
+          if (tb.value !== null && tb.value !== undefined) {
+            if (!UnitSchema.enum.percentage.localeCompare(tb.value.unit)) {
               if (
                 tb.condition.includes(Condition.enum.Attacking) ||
                 tb.condition.includes(Condition.enum.Marching) ||
@@ -52,16 +57,11 @@ const PvPDebilitationBuffDetailCheck = z
                   Condition.enum.When_Defending_Outside_The_Main_City
                 )
               ) {
-                multiplier =
-                  am.Debilitation
-                    .Wounded2DeathWhenAttacking;
+                multiplier = am.Debilitation.Wounded2DeathWhenAttacking;
               } else if (tb.condition.includes(Condition.enum.Enemy_In_City)) {
-                am.Debilitation
-                  .InCityWounded2Death;
+                multiplier = am.Debilitation.InCityWounded2Death;
               } else {
-                multiplier =
-                  am.Debilitation
-                    .Wounded2Death;
+                multiplier = am.Debilitation.Wounded2Death;
               }
             }
             const additional = Math.abs(tb.value.number) * multiplier;
@@ -71,14 +71,21 @@ const PvPDebilitationBuffDetailCheck = z
             score += additional;
           }
         }
-
+      }
+      return score;
     }
-    return score;
-  });
+  );
 
 export const DebilitationBuff = z
   .function()
-  .args(z.string(), z.string(), Buff, BuffParams, generalUseCase, AttributeMultipliers)
+  .args(
+    z.string(),
+    z.string(),
+    Buff,
+    BuffParams,
+    generalUseCase,
+    AttributeMultipliers
+  )
   .returns(z.number())
   .implement(
     (

@@ -3,8 +3,7 @@ export const prerender = false;
 
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 
-import type { CollectionEntry } from 'astro:content';
-import { getCollection, getEntry } from 'astro:content';
+import { getEntry } from 'astro:content';
 
 
 import AllGenerals from '@components/general/AllGenerals.astro';
@@ -43,7 +42,7 @@ if(entry === undefined || entry === null) {
   }
 }
 
-const { Content, headings } = await entry.render();
+const { Content } = await entry.render();
 
 let TargetClass: generalSpecialistsType;
 if(slug !== undefined && slug !== null) {

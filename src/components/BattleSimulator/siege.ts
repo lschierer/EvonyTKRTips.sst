@@ -1,4 +1,4 @@
-import { css, html, type CSSResultArray, type PropertyValueMap } from 'lit';
+import { css, html, type CSSResultArray, type PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 
 import { withStores } from '@nanostores/lit';
@@ -108,7 +108,7 @@ export class EvonySiege extends withStores(SpectrumElement, [formValues]) {
   accessor range: number = 0;
 
   public override willUpdate(
-    _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>
+    _changedProperties: PropertyValues | Map<PropertyKey, unknown>
   ): void {
     super.willUpdate(_changedProperties);
     if (DEBUG) {

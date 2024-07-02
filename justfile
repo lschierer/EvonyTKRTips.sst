@@ -32,3 +32,4 @@ pre-build: install
 
 deploy: build
     ${SST} deploy --stage generals-db2 --verbose
+

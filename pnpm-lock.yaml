@@ -242,6 +242,9 @@ importers:
       lit:
         specifier: ^3.1.4
         version: 3.1.4
+      mkdirp:
+        specifier: ^3.0.1
+        version: 3.0.1
       nanodelay:
         specifier: ^2.0.2
         version: 2.0.2
@@ -254,6 +257,9 @@ importers:
       remark:
         specifier: ^15.0.1
         version: 15.0.1
+      rimraf:
+        specifier: ^5.0.7
+        version: 5.0.7
       rxjs:
         specifier: ^7.8.1
         version: 7.8.1
@@ -4246,6 +4252,11 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
+  mkdirp@3.0.1:
+    resolution: {integrity: sha512-+NsyUUAZDmo6YVHzL/stxSu3t9YS1iljliy3BSDrXJ/dkn1KYdmtZODGGjLcc9XLgVVpH4KshHB8XmZgMhaBXg==}
+    engines: {node: '>=10'}
+    hasBin: true
+
   module-details-from-path@1.0.3:
     resolution: {integrity: sha512-ySViT69/76t8VhE1xXHK6Ch4NcDd26gx0MzKXLO+F7NOtnqH68d9zF94nT8ZWSxXh8ELOERsnJO/sWt1xZYw5A==}
 
@@ -5128,6 +5139,11 @@ packages:
   reusify@1.0.4:
     resolution: {integrity: sha512-U9nH88a3fc/ekCF1l0/UP1IosiuIjyTh7hBvXVMHYgVcfGvt897Xguj2UOLDeI5BG2m7/uwyaLVT6fbtCwTyzw==}
     engines: {iojs: '>=1.0.0', node: '>=0.10.0'}
+
+  rimraf@5.0.7:
+    resolution: {integrity: sha512-nV6YcJo5wbLW77m+8KjH8aB/7/rxQy9SZ0HY5shnwULfS+9nmTtVXAJET5NdZmCzA4fPI/Hm1wo/Po/4mopOdg==}
+    engines: {node: '>=14.18'}
+    hasBin: true
 
   robust-predicates@3.0.2:
     resolution: {integrity: sha512-IXgzBWvWQwE6PrDI05OvmXUIruQTcoMDzRsOd5CDvHCVLcLHMTSYvOK5Cm46kWqlV3yAbuSpBZdJ5oP5OUoStg==}
@@ -11036,6 +11052,8 @@ snapshots:
 
   mkdirp@1.0.4: {}
 
+  mkdirp@3.0.1: {}
+
   module-details-from-path@1.0.3: {}
 
   mrmime@2.0.0: {}
@@ -11991,6 +12009,10 @@ snapshots:
   retry@0.12.0: {}
 
   reusify@1.0.4: {}
+
+  rimraf@5.0.7:
+    dependencies:
+      glob: 10.4.2
 
   robust-predicates@3.0.2: {}
 
