@@ -559,7 +559,7 @@ export class DetailView extends SizedMixin(BaseGeneral, {
         `;
       });
       const a2 = this.general.specialities.map((gs, index) => {
-        const a3 = gs.attribute.map((s) => {
+        const a3 = gs.levels.map((s) => {
           const a4 = s.buff.map((b: BuffType) => {
             return html`
               <li>

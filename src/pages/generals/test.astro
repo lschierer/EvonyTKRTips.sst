@@ -1,4 +1,5 @@
 ---
+import { CovenantAttributeCategory } from '../../schemas/baseSchemas';
 import type { ComponentProps } from 'astro/types';
 import AllGenerals from '@components/general/AllGenerals.astro';
 import AllConflicts from '@components/general/AllConflicts.astro';
@@ -18,7 +19,8 @@ const desiredInvestment: BuffParamsType = {
   special3: qualityColor.enum.Gold,
   special4: qualityColor.enum.Gold,
   special5: qualityColor.enum.Gold,
-  stars: AscendingLevels.enum[10],
+  stars: AscendingLevels.enum['5red'],
+  covenants: CovenantAttributeCategory.enum['Civilization Covenant'],
   dragon: true,
   beast: true,
 };

@@ -41,7 +41,7 @@ export const SpecialityBuffs =
           let thisSpecial: SpecialityLevelType | undefined;
           switch(choice) {
             case qualityColor.enum.Gold:
-              thisSpecial = special.attribute.find((sa) => {
+              thisSpecial = special.levels.find((sa) => {
                 return !sa.level.localeCompare(qualityColor.enum.Gold)
               })
               additional = specialExists(eg.name, special.name,  useCase, bp, am, BuffComp, thisSpecial);
@@ -49,7 +49,7 @@ export const SpecialityBuffs =
               accumulator += additional;
             // eslint-disable-next-line no-fallthrough
             case qualityColor.enum.Orange:
-              thisSpecial = special.attribute.find((sa) => {
+              thisSpecial = special.levels.find((sa) => {
                 return !sa.level.localeCompare(qualityColor.enum.Orange)
               })
               additional = specialExists(eg.name, special.name, useCase, bp, am, BuffComp, thisSpecial);
@@ -59,7 +59,7 @@ export const SpecialityBuffs =
               accumulator += additional;
             // eslint-disable-next-line no-fallthrough
             case qualityColor.enum.Purple:
-              thisSpecial = special.attribute.find((sa) => {
+              thisSpecial = special.levels.find((sa) => {
                 return !sa.level.localeCompare(qualityColor.enum.Purple)
               })
               additional = specialExists(eg.name, special.name, useCase, bp, am, BuffComp, thisSpecial);
@@ -69,7 +69,7 @@ export const SpecialityBuffs =
               accumulator += additional;
             // eslint-disable-next-line no-fallthrough
             case qualityColor.enum.Blue:
-              thisSpecial = special.attribute.find((sa) => {
+              thisSpecial = special.levels.find((sa) => {
                 return !sa.level.localeCompare(qualityColor.enum.Blue)
               })
               additional = specialExists(eg.name, special.name, useCase, bp, am, BuffComp, thisSpecial);
@@ -79,7 +79,7 @@ export const SpecialityBuffs =
               accumulator += additional;
             // eslint-disable-next-line no-fallthrough
             case qualityColor.enum.Green:
-              thisSpecial = special.attribute.find((sa) => {
+              thisSpecial = special.levels.find((sa) => {
                 return !sa.level.localeCompare(qualityColor.enum.Green)
               })
               additional = specialExists(eg.name, special.name, useCase, bp, am, BuffComp, thisSpecial);

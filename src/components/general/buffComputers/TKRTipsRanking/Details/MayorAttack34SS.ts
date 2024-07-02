@@ -1,7 +1,5 @@
-import { z } from 'zod';
 
 import {
-  BuffParams,
   type BuffParamsType, type BuffType,
   qualityColor,
 } from '@schemas/baseSchemas';
@@ -9,7 +7,6 @@ import {
 import { Speciality, type SpecialityType } from '@schemas/specialitySchema';
 
 import {
-  ExtendedGeneral,
   type ExtendedGeneralType,
 } from '@schemas/ExtendedGeneral';
 
@@ -69,7 +66,7 @@ export const PvP34SS = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFu
         if (DEBUG_34SS) {
           console.log('');
           console.log(`--- ${special.name} ---`);
-          console.log(JSON.stringify(special.attribute));
+          console.log(JSON.stringify(special.levels));
           console.log(`accumulator: ${a1}`);
           console.log(`---`);
         }
@@ -82,7 +79,7 @@ export const PvP34SS = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFu
             return a1;
           } else {
             const specialB: SpecialityType = v.data;
-            const AA_total = specialB.attribute.reduce((a2, sa, index2) => {
+            const AA_total: number = specialB.levels.reduce((a2, sa, index2) => {
               if (sa === undefined || sa === null) {
                 return a2;
               } else {
@@ -162,7 +159,7 @@ export const PvP34SS = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFu
                       `sa ${index1} ${index2} matches as an enabled Blue`,
                     );
                   }
-                  const bt = sa.buff.reduce((aBlue, sb, index3) => {
+                  const bt = sa.buff.reduce((aBlue, sb) => {
                     let buff_total = 0;
                     if (sb === undefined || sb === null) {
                       return aBlue;
@@ -206,7 +203,7 @@ export const PvP34SS = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFu
                       `sa ${index1} ${index2} matches as an enabled Purple`,
                     );
                   }
-                  const pt = sa.buff.reduce((aPurple, sb, index3) => {
+                  const pt = sa.buff.reduce((aPurple, sb) => {
                     let buff_total = 0;
                     if (sb === undefined || sb === null) {
                       return aPurple;
@@ -255,7 +252,7 @@ export const PvP34SS = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFu
                       `sa ${index1} ${index2} matches as an enabled Orange`,
                     );
                   }
-                  const ot = sa.buff.reduce((aOrange, sb, index3) => {
+                  const ot = sa.buff.reduce((aOrange, sb) => {
                     let buff_total = 0;
                     if (sb === undefined || sb === null) {
                       return aOrange;
@@ -289,7 +286,7 @@ export const PvP34SS = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFu
                       `sa ${index1} ${index2} matches as an enabled Gold`,
                     );
                   }
-                  const goldT = sa.buff.reduce((aGold, sb, index3) => {
+                  const goldT = sa.buff.reduce((aGold, sb) => {
                     let buff_total = 0;
                     if (sb === undefined || sb === null) {
                       return aGold;

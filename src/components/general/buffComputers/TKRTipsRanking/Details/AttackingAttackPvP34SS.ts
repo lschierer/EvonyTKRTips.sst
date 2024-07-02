@@ -1,7 +1,4 @@
-import { z } from 'zod';
-
 import {
-  BuffParams,
   type BuffParamsType, type BuffType,
   qualityColor,
 } from '@schemas/baseSchemas';
@@ -9,7 +6,6 @@ import {
 import { Speciality, type SpecialityType } from '@schemas/specialitySchema';
 
 import {
-  ExtendedGeneral,
   type ExtendedGeneralType,
 } from '@schemas/ExtendedGeneral';
 
@@ -69,7 +65,7 @@ export const PvP34SS = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFu
         if (DEBUG_34SS) {
           console.log('');
           console.log(`--- ${special.name} ---`);
-          console.log(JSON.stringify(special.attribute));
+          console.log(JSON.stringify(special.levels));
           console.log(`accumulator: ${a1}`);
           console.log(`---`);
         }
@@ -82,7 +78,7 @@ export const PvP34SS = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFu
             return a1;
           } else {
             const specialB: SpecialityType = v.data;
-            const AA_total = specialB.attribute.reduce((a2, sa, index2) => {
+            const AA_total = specialB.levels.reduce((a2, sa, index2) => {
               if (sa === undefined || sa === null) {
                 return a2;
               } else {
@@ -169,6 +165,11 @@ export const PvP34SS = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFu
                     } else {
                       buff_total = buffReductionLogic(specialB, eg, sb, bp, typedBuffFunction, useCase, am);
                     }
+                    if (DEBUG_34SS) {
+                      console.log(
+                        `Blue ${index3} adding ${buff_total} to ${aBlue}`,
+                      );
+                    }
                     aBlue += buff_total;
                     return aBlue;
                   }, 0);
@@ -212,6 +213,11 @@ export const PvP34SS = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFu
                       return aPurple;
                     } else {
                       buff_total = buffReductionLogic(specialB, eg, sb, bp, typedBuffFunction, useCase, am);
+                    }
+                    if (DEBUG_34SS) {
+                      console.log(
+                        `Purple ${index3} adding ${buff_total} to ${aPurple}`,
+                      );
                     }
                     aPurple += buff_total;
                     return aPurple;
@@ -262,6 +268,11 @@ export const PvP34SS = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFu
                     } else {
                       buff_total = buffReductionLogic(specialB, eg, sb, bp, typedBuffFunction, useCase, am);
                     }
+                    if (DEBUG_34SS) {
+                      console.log(
+                        `Orange ${index3} adding ${buff_total} to ${aOrange}`,
+                      );
+                    }
                     aOrange += buff_total;
                     return aOrange;
                   }, 0);
@@ -295,6 +306,11 @@ export const PvP34SS = (eg: ExtendedGeneralType, bp: BuffParamsType, typedBuffFu
                       return aGold;
                     } else {
                       buff_total = buffReductionLogic(specialB, eg, sb, bp, typedBuffFunction, useCase, am);
+                    }
+                    if (DEBUG_34SS) {
+                      console.log(
+                        `Gold ${index3} adding ${buff_total} to ${aGold}`,
+                      );
                     }
                     aGold += buff_total;
                     return aGold;
