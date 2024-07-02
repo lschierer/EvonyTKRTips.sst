@@ -1,6 +1,6 @@
 ---
 name: Founding Father
-attribute:
+levels:
   - level: Green
     buff:
       - attribute: Attack

@@ -1,6 +1,6 @@
 ---
 name: Battle of Faventia
-attribute:
+levels:
   - level: 'Green'
     buff:
       - attribute: Attack
