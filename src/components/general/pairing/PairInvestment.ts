@@ -887,11 +887,7 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
             id=${`PrimarySpeciality${index}`}
             size="m"
             value=${this.primarySpecialityLevel(index)}
-            @change=${
-              // eslint-disable-next-line @typescript-eslint/unbound-method
-              this
-                .SpecialityHandler  
-            }
+            @change=${this.SpecialityHandler}
             ?disabled=${this.disablePrimarySpeciality(index)}
           >
             ${qualityColor.options.map((ql) => {
@@ -912,11 +908,7 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
             id=${`SecondarySpeciality${index}`}
             size="m"
             value=${this.secondarySpecialityLevel(index)}
-            @change=${
-              // eslint-disable-next-line @typescript-eslint/unbound-method
-              this
-                .SpecialityHandler  
-            }
+            @change=${this.SpecialityHandler}
             ?disabled=${this.disableSecondarySpeciality(index)}
           >
             ${qualityColor.options.map((ql) => {
@@ -944,11 +936,7 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
                   id="PrimaryAscending"
                   size="m"
                   value=${this.PrimaryInvestmentLevel.stars}
-                  @change=${
-                    // eslint-disable-next-line @typescript-eslint/unbound-method
-                    this
-                      .AscendingHandler  
-                  }
+                  @change=${this.AscendingHandler}
                 >
                   <sp-menu-item value="0stars">0</sp-menu-item>
                   <sp-menu-item value="1red">1</sp-menu-item>
@@ -966,11 +954,7 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
                   id="PrimaryCovenantPicker"
                   size="m"
                   value=${this.PrimaryInvestmentLevel.covenants}
-                  @change=${
-                    // eslint-disable-next-line @typescript-eslint/unbound-method
-                    this
-                      .CovenantHandler  
-                  }
+                  @change=${this.CovenantHandler}
                 >
                   ${CovenantAttributeCategory.options.map((cac) => {
                     return html`
@@ -985,17 +969,8 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
                   id="PrimaryPreSet"
                   size="m"
                   label="Presets"
-                  @change=${
-                    // eslint-disable-next-line @typescript-eslint/unbound-method
-                    this
-                      .PresetHandler  
-                  }
-                  ${
-                    ref(
-                      // eslint-disable-next-line @typescript-eslint/unbound-method
-                      this.resetPicker
-                    )  
-                  }
+                  @change=${this.PresetHandler}
+                  ${ref(this.resetPicker)}
                 >
                   <sp-menu-item>Three Orange with Beast</sp-menu-item>
                   <sp-menu-item>Three Orange with Dragon</sp-menu-item>
@@ -1036,11 +1011,7 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
                     : this.PrimaryInvestmentLevel.beast
                       ? animal.enum.beast
                       : animal.enum.none}
-                  @change=${
-                    // eslint-disable-next-line @typescript-eslint/unbound-method
-                    this
-                      .animalHandler  
-                  }
+                  @change=${this.animalHandler}
                 >
                   ${animal.options.map((ta) => {
                     return html` <sp-radio value=${ta}>${ta}</sp-radio> `;
@@ -1067,11 +1038,7 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
                   id="SecondaryCovenantPicker"
                   size="m"
                   value=${this.SecondaryInvestmentLevel.covenants}
-                  @change=${
-                    // eslint-disable-next-line @typescript-eslint/unbound-method
-                    this
-                      .CovenantHandler  
-                  }
+                  @change=${this.CovenantHandler}
                 >
                   ${CovenantAttributeCategory.options.map((cac) => {
                     return html`
@@ -1086,17 +1053,8 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
                   id="SecondaryPreSet"
                   size="m"
                   label="Presets"
-                  @change=${
-                    // eslint-disable-next-line @typescript-eslint/unbound-method
-                    this
-                      .PresetHandler  
-                  }
-                  ${
-                    ref(
-                      // eslint-disable-next-line @typescript-eslint/unbound-method
-                      this.resetPicker
-                    )  
-                  }
+                  @change=${this.PresetHandler}
+                  ${ref(this.resetPicker)}
                 >
                   <sp-menu-item>Three Orange with Beast</sp-menu-item>
                   <sp-menu-item>Three Orange with Dragon</sp-menu-item>
@@ -1121,11 +1079,7 @@ export class PairInvestment extends SizedMixin(SpectrumElement, {
                     : this.SecondaryInvestmentLevel.beast
                       ? animal.enum.beast
                       : animal.enum.none}
-                  @change=${
-                    // eslint-disable-next-line @typescript-eslint/unbound-method
-                    this
-                      .animalHandler  
-                  }
+                  @change=${this.animalHandler}
                 >
                   ${animal.options.map((ta) => {
                     return html` <sp-radio value=${ta}>${ta}</sp-radio> `;
