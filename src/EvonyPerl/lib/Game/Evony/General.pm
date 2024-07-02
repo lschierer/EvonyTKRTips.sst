@@ -3,6 +3,13 @@ package Game::Evony::General;
 use 5.40.0;
 use strict;
 use warnings;
+use strictures 2;
+use Types::Standard qw( Str Int Enum ArrayRef Object );
+use Type::Params -sigs;
+
+use Moo;
+use Moo::Role;
+use namespace::autoclean;
 
 =head1 NAME
 
@@ -32,6 +39,17 @@ Perhaps a little code snippet.
 
 A list of functions that can be exported.  You can delete this section
 if you don't export anything, such as for a purely object-oriented module.
+
+=head1 ATTRIBUTES
+
+=cut
+
+has 'name' => (
+  is => 'ro',
+  isa => 'Str',
+)
+
+
 
 =head1 SUBROUTINES/METHODS
 
