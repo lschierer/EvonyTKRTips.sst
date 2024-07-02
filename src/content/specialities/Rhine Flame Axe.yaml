@@ -1,6 +1,6 @@
 ---
 name: Rhine Flame Axe
-attribute:
+levels:
   - level: Green
     buff:
       - attribute: Attack

@@ -1,6 +1,6 @@
 ---
 name: War God
-attribute:
+levels:
   - level: 'Green'
     buff:
       - attribute: Attack

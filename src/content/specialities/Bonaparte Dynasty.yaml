@@ -1,6 +1,6 @@
 ---
 name: Bonaparte Dynasty
-attribute:
+levels:
   - level: 'Green'
     buff:
       - attribute: Attack

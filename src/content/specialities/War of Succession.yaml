@@ -1,6 +1,6 @@
 ---
 name: War of Succession
-attribute:
+levels:
   - level: Green
     buff:
       - attribute: Attack

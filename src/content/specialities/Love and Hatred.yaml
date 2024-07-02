@@ -1,6 +1,6 @@
 ---
 name: Love and Hatred
-attribute:
+levels:
   - level: 'Green'
     buff:
       - attribute: Attack

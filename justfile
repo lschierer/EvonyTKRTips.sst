@@ -9,7 +9,8 @@ export SST := `which sst`
 
 install:
     ${PNPM} install
-
+    ./bin/perldeps.sh
+    
 dev: install
     ${PNPM} run dev
 

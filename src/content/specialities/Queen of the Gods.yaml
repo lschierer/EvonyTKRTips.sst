@@ -1,6 +1,6 @@
 ---
 name: Queen of the Gods
-attribute:
+levels:
   - level: 'Green'
     buff:
       - attribute: Attack

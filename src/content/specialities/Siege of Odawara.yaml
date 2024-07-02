@@ -1,6 +1,6 @@
 ---
 name: Siege of Odawara
-attribute:
+levels:
   - level: Green
     buff:
       - attribute: Attack

@@ -1,6 +1,6 @@
 ---
 name: Battle of Alte Veste
-attribute:
+levels:
   - level: Green
     buff:
       - attribute: Attack

@@ -1,6 +1,6 @@
 ---
 name: Light of Wisdom
-attribute:
+levels:
   - level: 'Green'
     buff:
       - attribute: Attack

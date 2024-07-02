@@ -1,6 +1,6 @@
 ---
 name: Battle of Lalakaon
-attribute:
+levels:
   - level: 'Green'
     buff:
       - attribute: Attack

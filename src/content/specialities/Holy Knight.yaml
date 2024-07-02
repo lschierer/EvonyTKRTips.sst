@@ -1,6 +1,6 @@
 ---
 name: Holy Knight
-attribute:
+levels:
   - level: 'Green'
     buff:
       - attribute: Attack

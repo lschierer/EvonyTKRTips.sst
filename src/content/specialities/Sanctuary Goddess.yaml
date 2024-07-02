@@ -1,6 +1,6 @@
 ---
 name: Sanctuary Goddess
-attribute:
+levels:
   - level: 'Green'
     buff:
       - attribute: Attack

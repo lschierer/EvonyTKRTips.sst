@@ -1,6 +1,6 @@
 ---
 name: Conquests in Jiangdong
-attribute:
+levels:
   - level: Green
     buff:
       - attribute: Attack

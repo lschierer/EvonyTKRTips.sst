@@ -1,6 +1,6 @@
 ---
 name: Wild Hunt Valkyrie
-attribute:
+levels:
   - level: Green
     buff:
       - attribute: Attack

@@ -1,6 +1,6 @@
 ---
 name: King of the Black Army
-attribute:
+levels:
   - level: Green
     buff:
       - attribute: Attack

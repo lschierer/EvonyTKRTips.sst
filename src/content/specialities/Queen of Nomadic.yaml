@@ -1,6 +1,6 @@
 ---
 name: Queen of Nomadic
-attribute:
+levels:
   - level: 'Green'
     buff:
       - attribute: Attack

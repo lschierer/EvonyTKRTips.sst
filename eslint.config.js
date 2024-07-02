@@ -12,6 +12,7 @@ export default tseslint.config(
 			".astro/*.js",
 			".astro/*.ts",
       "astro.config.ts",
+			"commitlint.config.js",
       "dist/**/*.js",
       "dist/**/*.mjs",
       "eslint.config.js",

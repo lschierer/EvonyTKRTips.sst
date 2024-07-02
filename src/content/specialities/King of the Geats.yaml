@@ -1,6 +1,6 @@
 ---
 name: King of the Geats
-attribute:
+levels:
   - level: Green
     buff:
       - attribute: Attack

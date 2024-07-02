@@ -1,6 +1,6 @@
 ---
 name: Conquest of the Eastern Turks
-attribute:
+levels:
   - level: 'Green'
     buff:
       - attribute: Attack

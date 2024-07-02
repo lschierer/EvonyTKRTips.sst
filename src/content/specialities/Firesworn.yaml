@@ -1,6 +1,6 @@
 ---
 name: Firesworn
-attribute:
+levels:
   - level: Green
     buff:
       - attribute: Attack

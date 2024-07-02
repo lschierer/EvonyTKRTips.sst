@@ -1,6 +1,6 @@
 ---
 name: Paladin
-attribute:
+levels:
   - level: Green
     buff:
       - attribute: Attack

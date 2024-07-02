@@ -1,6 +1,6 @@
 ---
 name: Mounted Troop Ares
-attribute:
+levels:
   - level: Green
     buff:
       - attribute: Attack

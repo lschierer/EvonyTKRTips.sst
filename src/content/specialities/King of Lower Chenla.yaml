@@ -1,6 +1,6 @@
 ---
 name: King of Lower Chenla
-attribute:
+levels:
   - level: 'Green'
     buff:
       - attribute: Attack

@@ -1,6 +1,6 @@
 ---
 name: Sabotage
-attribute:
+levels:
   - level: Green
     buff:
       - attribute: Defense

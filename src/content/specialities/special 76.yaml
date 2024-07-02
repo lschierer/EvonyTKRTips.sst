@@ -1,6 +1,6 @@
 ---
 name: Ranged Troop Formation
-attribute:
+levels:
   - level: Green
     buff:
       - attribute: Attack

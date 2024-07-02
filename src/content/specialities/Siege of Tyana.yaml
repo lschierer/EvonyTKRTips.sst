@@ -1,6 +1,6 @@
 ---
 name: Siege of Tyana
-attribute:
+levels:
   - level: Green
     buff:
       - condition:

@@ -1,6 +1,6 @@
 ---
 name: Ground Troop Formation
-attribute:
+levels:
   - level: Green
     buff:
       - attribute: Attack

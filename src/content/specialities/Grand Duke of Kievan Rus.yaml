@@ -1,6 +1,6 @@
 ---
 name: Grand Duke of Kievan Rus
-attribute:
+levels:
   - level: Green
     buff:
       - attribute: Attack

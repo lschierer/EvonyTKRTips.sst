@@ -1,6 +1,6 @@
 ---
 name: Manipulation
-attribute:
+levels:
   - level: Green
     buff:
       - attribute: Defense

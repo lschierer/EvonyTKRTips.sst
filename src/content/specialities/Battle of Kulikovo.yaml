@@ -1,6 +1,6 @@
 ---
 name: Battle of Kulikovo
-attribute:
+levels:
   - level: 'Green'
     buff:
       - attribute: Attack

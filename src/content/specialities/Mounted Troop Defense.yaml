@@ -1,6 +1,6 @@
 ---
 name: Mounted Troop Defense
-attribute:
+levels:
   - level: Green
     buff:
       - attribute: HP

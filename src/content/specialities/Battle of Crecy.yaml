@@ -1,6 +1,6 @@
 ---
 name: Battle of Crecy
-attribute:
+levels:
   - level: 'Green'
     buff:
       - attribute: Attack
@@ -51,13 +51,13 @@ attribute:
           unit: percentage
   - level: 'Gold'
     buff:
-    - attribute: Attack
-      class: Archers
-      value:
-        number: 14
-        unit: percentage
-    - attribute: HP
-      class: Archers
-      value:
-        number: 6
-        unit: percentage
+      - attribute: Attack
+        class: Archers
+        value:
+          number: 14
+          unit: percentage
+      - attribute: HP
+        class: Archers
+        value:
+          number: 6
+          unit: percentage

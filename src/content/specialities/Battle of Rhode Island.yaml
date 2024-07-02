@@ -1,6 +1,6 @@
 ---
 name: Battle of Rhode Island
-attribute:
+levels:
   - level: Green
     buff:
       - attribute: Attack

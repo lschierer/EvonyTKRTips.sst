@@ -1,6 +1,6 @@
 ---
 name: Battle of Kleidion
-attribute:
+levels:
   - level: 'Green'
     buff:
       - attribute: Attack

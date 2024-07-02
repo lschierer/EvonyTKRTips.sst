@@ -1,6 +1,6 @@
 ---
 name: Battle of Kadesh
-attribute:
+levels:
   - level: 'Green'
     buff:
       - attribute: Attack

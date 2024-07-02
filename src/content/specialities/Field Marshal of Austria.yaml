@@ -1,6 +1,6 @@
 ---
 name: Field Marshal of Austria
-attribute:
+levels:
   - level: Green
     buff:
       - attribute: Attack
