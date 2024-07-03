@@ -11,18 +11,6 @@ use Moo;
 use Moo::Role;
 use namespace::autoclean;
 
-=head1 NAME
-
-Game::Evony::General - The great new Game::Evony::General!
-
-=head1 VERSION
-
-Version 0.01
-
-=cut
-
-our $VERSION = '0.01';
-
 
 =head1 SYNOPSIS
 
@@ -40,7 +28,11 @@ Perhaps a little code snippet.
 A list of functions that can be exported.  You can delete this section
 if you don't export anything, such as for a purely object-oriented module.
 
-=head1 ATTRIBUTES
+=attr name
+
+The name of the Evony General represented as a string.
+Once set, this should not be changed (Moo should enforce
+that it cannot be changed).
 
 =cut
 
