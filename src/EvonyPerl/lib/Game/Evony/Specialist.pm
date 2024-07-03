@@ -19,14 +19,9 @@ our $VERSION = '0.01';
 
 =head1 SYNOPSIS
 
-Quick summary of what the module does.
-
-Perhaps a little code snippet.
-
-    use Game::Evony::Specialist;
-
-    my $foo = Game::Evony::Specialist->new();
-    ...
+Generals in Evony specialize in particular roles.
+The roles differ in very minor details.  This is implements
+the common code required to deal with any specialization.
 
 =head1 EXPORT
 
