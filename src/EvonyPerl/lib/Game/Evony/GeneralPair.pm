@@ -1,8 +1,10 @@
-package Game::Evony::GeneralPair;
-
 use 5.40.0;
 use strict;
 use warnings;
+package Game::Evony::GeneralPair;
+
+# ABSTRACT: Game::Evony support for handling Generals as a pair instead of as individuals
+
 use Moo;
 use Types::Standard qw( Str Int Enum ArrayRef InstanceOf );
 use Type::Params qw( signature );
@@ -13,10 +15,7 @@ use namespace::autoclean;
 In Evony, most generals are most usefully evaluated as part of a pair,
 not as a stand-alone general.
 
-=head1 EXPORT
-
-A list of functions that can be exported.  You can delete this section
-if you don't export anything, such as for a purely object-oriented module.
+=cut
 
 =attr primary
 
@@ -41,4 +40,4 @@ has 'secondary' => (
 );
 
 
-1; # End of Game::Evony::GeneralPair
+1;
