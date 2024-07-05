@@ -1,4 +1,4 @@
-use 5.40.0;
+use 5.38.0;
 use strict;
 use warnings;
 package Game::Evony::GeneralPair;
