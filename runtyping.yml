@@ -1,4 +1,0 @@
-targetFile: ./src/schemas/EvAns.zod.ts
-sourceTypes:
-  file: ./src/schemas/EvAnsAttributeRanking.ts
-  type: [GroundScoreWeightings, GroundPvPAttributeMultipliers]

@@ -20,15 +20,13 @@ lint:
 
 check: install lint
     ${PNPM} astro check;
-    # ${PNPM} tsc -p tsconfig.node.json --noEmit;
 
 build: install pre-build
-    #${PNPM} tsc -p tsconfig.node.json
     #./bin/generalDetailsPages.sh
     ${PNPM} astro build
 
 pre-build: install
-    # ${PNPM} tsc -p tsconfig.node.json
+    echo "no pre-build steps yet"
 
 deploy: build
     ${SST} deploy --stage generals-db2 --verbose
