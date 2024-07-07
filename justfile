@@ -6,8 +6,13 @@ set dotenv-load
 
 export PNPM := `which pnpm`
 export SST := `which sst`
+export GIT := `which git`
 
-install:
+pre-install:
+    ${GIT} submodule init
+    ${GIT} submodule sync --recursive
+
+install: pre-install
     ${PNPM} install
     ./bin/perldeps.sh
     
@@ -26,7 +31,7 @@ build: install pre-build
     ${PNPM} astro build
 
 pre-build: install
-    echo "no pre-build steps yet"
+    echo "no prebuild commands yet"
 
 deploy: build
     ${SST} deploy --stage generals-db2 --verbose
