@@ -10,7 +10,7 @@ export GIT := `which git`
 
 pre-install:
     ${GIT} submodule init
-    ${GIT} submodule sync --recursive
+    ${GIT} submodule update --init --recursive
 
 install: pre-install
     ${PNPM} install
