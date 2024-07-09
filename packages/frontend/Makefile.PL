@@ -7,22 +7,29 @@ WriteMakefile(
   PREREQ_PM => {
     'Mojolicious'                       => '9.37',
     'Mojolicious::Plugin::Status'       => '1.17',
-    'JSON'                              => 'any',
-    'JSON::PP'                          => 'any',
+    'CPAN::DistnameInfo'                => 'any',
     'Cpanel::JSON::XS'                  => 'any',
-    'JSON::MaybeXS'                     => 'any',
     'Dist::Zilla'                       => 'any',
     'Dist::Zilla::Plugin::Git'          => 'any',
     'Dist::Zilla::PluginBundle::Git'    => 'any',
-    'Pod::Weaver'                       => 'any',
+    'HTML::Scrubber'                    => 'any',
+    'JSON'                              => 'any',
+    'JSON::MaybeXS'                     => 'any',
+    'JSON::PP'                          => 'any',
+    'PadWalker'                         => 'any',
+    'Plack'                             => 'any',
     'Pod::Elemental::Transformer'       => 'any',
     'Pod::Elemental::Transformer::List' => 'any',
-    'Plack'                             => 'any',
+    'Pod::Weaver'                       => 'any'
   },
   test_requires => {
-      'Test::Pod'             => 'any',
-      'Test::Pod::Coverage'   => 'any',
-      'Test2::Tools::Process' => 'any'
+    'Test::Inter'             => 'any',
+    'Test::Memory::Cycle'     => 'any',
+    'Test::NoWarnings'        => 'any',
+    'Test::Pod'               => 'any',
+    'Test::Pod::Coverage'     => 'any',
+    'Test2::Tools::Process'   => 'any',
+    'Devel::Cycle'            => 'any'
   },
   test => {TESTS => 't/*.t'}
 );
