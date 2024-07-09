@@ -1,0 +1,5 @@
+services:
+  web:
+    build: ./packages/frontend
+    ports:
+      - "3000:3000"
