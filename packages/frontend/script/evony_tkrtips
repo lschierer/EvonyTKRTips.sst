@@ -2,10 +2,16 @@
 
 use strict;
 use warnings;
+use 5.38.0;
 
+use Plack::Builder;
 use Mojo::File qw(curfile);
 use lib curfile->dirname->sibling('lib')->to_string;
 use Mojolicious::Commands;
-
 # Start command line interface for application
-Mojolicious::Commands->start_app('EvonyTKRTips');
+
+builder {
+    enable 'Deflater';
+    Mojolicious::Commands->start_app('EvonyTKRTips');
+}
+

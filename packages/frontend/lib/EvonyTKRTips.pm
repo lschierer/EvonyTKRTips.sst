@@ -1,3 +1,4 @@
+use 5.38.0;
 package EvonyTKRTips;
 use Mojo::Base 'Mojolicious', -signatures;
 

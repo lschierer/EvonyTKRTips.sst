@@ -7,6 +7,7 @@ WriteMakefile(
   PREREQ_PM => {
     'Mojolicious'                       => '9.37',
     'Mojolicious::Plugin::Status'       => '1.17',
+    'Mojolicious::Plugin::Config'       => 'any',
     'CPAN::DistnameInfo'                => 'any',
     'Cpanel::JSON::XS'                  => 'any',
     'Dist::Zilla'                       => 'any',
