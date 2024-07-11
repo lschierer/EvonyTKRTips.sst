@@ -1,32 +1,43 @@
 {
   "name": "@evonytkrtips/frontend",
+  "type": "module",
   "version": "1.0.0",
   "scripts": {
-    "build": "tsc --build",
-    "common": "pnpm --filter common",
-    "css-compile": "sass --style compressed --source-map --embed-sources --no-error-css --load-path=node_modules scss/:css/",
-    "css-lint": "stylelint scss/",
-    "css-prefix": "postcss --replace css/styles.css --use autoprefixer --map",
-    "css": "css-compile && css-prefix",
-    "server": "sirv --dev --no-clear --port 3000",
-    "start": "npm-run-all --parallel watch server",
-    "test": "css-lint && css"
+    "build": "npx tsc --build ./",
+    "build:test": "npm run build && npm test",
+    "build:watch": "npm run build -- --watch",
+    "dev": "npx nodemon lib/index.js server",
+    "start": "NODE_ENV=production node lib/index.js server -l http://*:8080",
+    "test": "node --test test/*.js"
   },
   "author": "Luke Schierer",
   "license": "ISC",
   "dependencies": {
-    "iconify-icon": "^2.1.0",
+    "@mojojs/core": "^1.26.4",
     "@popperjs/core": "^2.11.8",
-    "bootstrap": "^5.3.3"
+    "bootstrap": "^5.3.3",
+    "iconify-icon": "^2.1.0"
   },
   "devDependencies": {
+    "@types/busboy": "^1.5.0",
+    "@types/js-yaml": "^4.0.3",
+    "@types/mime-types": "^2.1.0",
+    "@types/node": "^20.0.0",
+    "@types/nopt": "^3.0.29",
+    "@types/react": "^18.2.37",
+    "@types/stack-utils": "^2.0.1",
+    "@types/tough-cookie": "^4.0.2",
+    "@types/ws": "^8.5.3",
     "autoprefixer": "^10.4.19",
+    "css-lint": "^1.0.1",
     "nodemon": "^3.1.4",
     "postcss": "^8.4.39",
     "postcss-cli": "^11.0.0",
     "sass": "^1.77.6",
     "sirv-cli": "^2.0.2",
     "stylelint": "^16.6.1",
-    "stylelint-config-twbs-bootstrap": "^14.1.0"
+    "stylelint-config-twbs-bootstrap": "^14.1.0",
+    "tap": "^18.1.0",
+    "typescript": "^5.2.0"
   }
 }
