@@ -1,3 +1,0 @@
-[submodule "packages/ikiwiki"]
-	path = packages/ikiwiki
-	url = git@github.com:lschierer/ikiwiki.git
