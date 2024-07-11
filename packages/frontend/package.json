@@ -1,0 +1,32 @@
+{
+  "name": "@evonytkrtips/frontend",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "tsc --build",
+    "common": "pnpm --filter common",
+    "css-compile": "sass --style compressed --source-map --embed-sources --no-error-css --load-path=node_modules scss/:css/",
+    "css-lint": "stylelint scss/",
+    "css-prefix": "postcss --replace css/styles.css --use autoprefixer --map",
+    "css": "css-compile && css-prefix",
+    "server": "sirv --dev --no-clear --port 3000",
+    "start": "npm-run-all --parallel watch server",
+    "test": "css-lint && css"
+  },
+  "author": "Luke Schierer",
+  "license": "ISC",
+  "dependencies": {
+    "iconify-icon": "^2.1.0",
+    "@popperjs/core": "^2.11.8",
+    "bootstrap": "^5.3.3"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.19",
+    "nodemon": "^3.1.4",
+    "postcss": "^8.4.39",
+    "postcss-cli": "^11.0.0",
+    "sass": "^1.77.6",
+    "sirv-cli": "^2.0.2",
+    "stylelint": "^16.6.1",
+    "stylelint-config-twbs-bootstrap": "^14.1.0"
+  }
+}
