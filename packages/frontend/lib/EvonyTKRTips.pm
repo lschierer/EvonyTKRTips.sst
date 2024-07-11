@@ -1,4 +1,5 @@
 use 5.38.0;
+use utf8;
 package EvonyTKRTips;
 use Mojo::Base 'Mojolicious', -signatures;
 
