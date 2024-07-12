@@ -1,0 +1,19 @@
+{
+  "name": "@evonytkrtips/generals",
+  "type": "module",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "run-s lint:src build:js lint:test docs",
+    "build:js": "tsc",
+    "clean": "rimraf lib",
+    "lint": "eslint --config ../../eslint.config.js ./src",
+    "watch": "node-dev ./src"
+  },
+  "author": "Luke Schierer",
+  "license": "ISC",
+  "devDependencies": {
+    "node-dev": "^8.0.0",
+    "ts-node": "^10.9.2"
+  }
+}
