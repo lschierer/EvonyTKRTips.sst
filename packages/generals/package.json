@@ -15,5 +15,8 @@
   "devDependencies": {
     "node-dev": "^8.0.0",
     "ts-node": "^10.9.2"
+  },
+  "dependencies": {
+    "zod": "^3.23.8"
   }
 }

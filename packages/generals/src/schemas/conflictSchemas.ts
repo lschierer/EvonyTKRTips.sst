@@ -14,14 +14,16 @@ export type bookConflict = zod.infer<typeof bookConflict>;
 export const nameConflictUlid = zod.string().ulid();
 export type nameConflictUlid = zod.infer<typeof nameConflictUlid>;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const nameConflicts = zod.object({
   nameConflictUlidType: zod.array(zod.string()),
 });
 export type nameConflictsTypes = zod.infer<typeof nameConflicts>;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const otherConflicts = zod.record(
   zod.literal('other'),
-  zod.array(zod.string())
+  zod.array(zod.string()),
 );
 export type otherConflictType = zod.infer<typeof otherConflicts>;
 
