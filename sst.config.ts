@@ -1,28 +1,49 @@
+// eslint-disable-next-line @typescript-eslint/triple-slash-reference
 /// <reference path="./.sst/platform/config.d.ts" />
-
-import { HostedZone } from "aws-cdk-lib/aws-route53";
-
 
 export default $config({
   app(input) {
     return {
-      name: "evonytkrtips",
-      profile: "home",
-      buildCommand: "pnpm run build",
-      removal: input?.stage === "production" ? "retain" : "remove",
-      home: "aws",
+      name: 'evonytkrtips',
+      profile: 'home',
+      buildCommand: 'pnpm run build',
+      removal: input?.stage === 'production' ? 'retain' : 'remove',
+      home: 'aws',
       providers: {
         aws: {
-          region: "us-east-2"
-        }
+          region: 'us-east-2',
+        },
       },
     };
   },
+  // eslint-disable-next-line @typescript-eslint/require-await
   async run() {
-    new sst.aws.Astro("EvonyTKRTips",{
-      domain: {
-        name: $app.stage === 'production' ? "evonytkrtips.net" : `${$app?.stage}.evonytkrtips.net`,
-        aliases: $app?.stage === 'production' ? ["www.evonytkrtips.net"] : [`www.${$app?.stage}.evonytkrtips.net`],
+    const EvonyVpc = new sst.aws.Vpc('EvonyVpc', {
+      transform: {
+        vpc: {
+          assignGeneratedIpv6CidrBlock: true,
+          enableDnsHostnames: true,
+          enableDnsSupport: true,
+          cidrBlock: '10.0.0.0/16',
+        },
+      },
+    });
+
+    const EvonyCluster = new sst.aws.Cluster('EvonyTKRTips', {
+      vpc: EvonyVpc,
+    });
+
+    EvonyCluster.addService('EvonyService', {
+      scaling: {
+        min: 1,
+        max: 2,
+      },
+      public: {
+        ports: [
+          {
+            listen: '3000/http',
+          },
+        ],
       },
     });
   },
