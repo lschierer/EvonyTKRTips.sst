@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "types": ["@types/node"],
+    "noEmit": true,
+    "allowJs": true
+  },
+  "extends": "./tsconfig.base.json",
+  "include": [
+    "sst.config.ts",
+    "sst-env.d.ts",
+    "commitlint.config.js",
+    "eslint.config.js",
+    "src/**/*.ts"
+  ]
+}

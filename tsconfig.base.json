@@ -9,7 +9,6 @@
     "module": "ESNext",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
 
     /* Linting */
     "noUnusedLocals": true,

@@ -61,8 +61,8 @@ export default tseslint.config(
       },
       parserOptions: {
         project: [
-          './tsconfig.json',
-          './packages/*/tsconfig.json'
+          'tsconfig.eslint.json',
+          './packages/*/tsconfig.eslint.json'
         ],
         tsconfigRootDir: import.meta.dirname,
       },
@@ -89,12 +89,6 @@ export default tseslint.config(
       ],
 
     }
-  },
-  {
-    files: [
-      "src/**/*.{js,mjs,cjs,ts}",
-      "projects/frontend/src/**/*.{js,mjs,cjs,ts}"
-    ]
   },
   {
     files: [

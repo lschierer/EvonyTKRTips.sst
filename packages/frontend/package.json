@@ -3,10 +3,10 @@
   "type": "module",
   "version": "1.0.0",
   "scripts": {
-    "build": "npx tsc --build ./",
-    "build:test": "npm run build && npm test",
-    "build:watch": "npm run build -- --watch",
-    "dev": "npx nodemon lib/index.js server",
+    "build": "pnpm tsc --build ./",
+    "build:test": "pnpm run build && pnpm test",
+    "build:watch": "pnpm run build -- --watch",
+    "dev": "pnpm nodemon lib/index.js server",
     "start": "NODE_ENV=production node lib/index.js server -l http://*:8080",
     "test": "node --test test/*.js"
   },

@@ -1,12 +1,9 @@
 {
   "extends": "./tsconfig.build.json",
   "compilerOptions": {
-    "composite": false,
-    "rootDir": "."
+    "outDir": "lib",
+    "rootDir": "src",
+    "composite": true
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx"
-  ]
+  "include": ["src/**/*"]
 }
-
