@@ -46,6 +46,7 @@ export default tseslint.config(
       "**/build/**",
       "**/out/**",
       "packages/frontend/lib/**",
+      "src/components"
     ],
   },
   eslint.configs.recommended,
