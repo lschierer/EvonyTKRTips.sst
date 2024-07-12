@@ -4,10 +4,10 @@
   "version": "1.0.0",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "run-s lint:src build:js lint:test docs",
+    "build": "run-s lint:src build:js ",
     "build:js": "tsc",
     "clean": "rimraf lib",
-    "lint": "eslint --config ../../eslint.config.js ./src",
+    "lint:src": "eslint --config ../../eslint.config.js ./src",
     "watch": "node-dev ./src"
   },
   "author": "Luke Schierer",
