@@ -51,8 +51,10 @@ export const MayorDetail = z
       }
       const am = MayorAttributeMultipliers.MayorPvPAttackAttributeMultipliers;
 
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const useCase = generalUseCase.enum.Mayor; //I intend to use this in the future
+      if(DEBUG) {
+        console.log(`useCase is ${useCase}`)
+      }
       const returnable = {
         Attack: 0,
         DeAttack: 0,

@@ -27,7 +27,7 @@ const PvPDefenseBuffClassCheck = z
   .args(Buff, BuffParams, AttributeMultipliers)
   .returns(z.number())
   .implement(
-    (tb: BuffType, iv: BuffParamsType, am: AttributeMultipliersType) => {
+    (tb: BuffType, _iv: BuffParamsType, am: AttributeMultipliersType) => {
       let score = 0;
       let multiplier = 0;
       if (tb !== null && tb !== undefined) {

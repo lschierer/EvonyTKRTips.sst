@@ -35,7 +35,7 @@ import { HPBuff } from './HPBuff';
 import { DefenseBuff } from './DefenseBuff';
 import { DeAttackBuff } from './DeAttackBuff';
 import { DeHPBuff } from './DeHPBuff';
-import { DeDefenseBuff } from './DeDefense.ts';
+import { DeDefenseBuff } from './DeDefense';
 import { PreservationBuff } from './PreservationBuff';
 import { DebilitationBuff } from './DebilitationBuff';
 import { RangeBuff } from './RangeBuff';

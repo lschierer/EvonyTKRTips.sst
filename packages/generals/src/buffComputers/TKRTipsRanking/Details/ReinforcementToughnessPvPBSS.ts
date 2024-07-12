@@ -12,7 +12,7 @@ import {
   type specialSkillBookType,
 } from '../../../schemas/bookSchemas';
 
-import { type BuffFunctionInterface } from '../../../RankingInterfaces.ts';
+import { type BuffFunctionInterface } from '../../../RankingInterfaces';
 import type { generalUseCaseType } from '../../../schemas/generalsSchema';
 
 const DEBUG_BSS = false;

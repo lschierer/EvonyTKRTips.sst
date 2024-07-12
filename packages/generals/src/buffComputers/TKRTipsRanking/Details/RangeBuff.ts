@@ -28,7 +28,7 @@ const PvPRangeBuffClassCheck = z
   .args(Buff, BuffParams, AttributeMultipliers)
   .returns(z.number())
   .implement(
-    (tb: BuffType, iv: BuffParamsType, am: AttributeMultipliersType) => {
+    (tb: BuffType, _iv: BuffParamsType, am: AttributeMultipliersType) => {
       let score = 0;
       let multiplier = 0;
       if (tb !== null && tb !== undefined) {
@@ -79,11 +79,11 @@ export const RangeBuff = z
       buffName: string,
       generalName: string,
       tb: BuffType,
-      iv: BuffParamsType,
+      _iv: BuffParamsType,
       useCase: generalUseCaseType,
       am: AttributeMultipliersType,
     ) => {
-      if (tb === null || tb === undefined || iv === null || iv === undefined) {
+      if (tb === null || tb === undefined || _iv === null || _iv === undefined) {
         return -1000;
       } else {
         if (DEBUGRB) {
@@ -116,7 +116,7 @@ export const RangeBuff = z
           } else {
             //check if buff has some conditions that never work for PvP
             if (tb.condition !== null && tb.condition !== undefined) {
-              if (checkInvalidConditions(tb, iv, useCase, false)) {
+              if (checkInvalidConditions(tb, _iv, useCase, false)) {
                 //I probably ought to rename that function, but if I get here,
                 //there were no invalid conditions
                 if (
@@ -138,7 +138,7 @@ export const RangeBuff = z
                   return 0;
                 } else {
                   //I think all other conditions that matter have been checked
-                  score = PvPRangeBuffClassCheck(tb, iv, am);
+                  score = PvPRangeBuffClassCheck(tb, _iv, am);
                 }
               } else {
                 //if I get here, there were invalid conditions
@@ -147,7 +147,7 @@ export const RangeBuff = z
             } else {
               //if I get here, there were no conditions to check, but there is
               //an attack attribute.
-              score = PvPRangeBuffClassCheck(tb, iv, am);
+              score = PvPRangeBuffClassCheck(tb, _iv, am);
             }
           }
         }

@@ -1,17 +1,17 @@
 const DEBUG = false;
 
-import { type ExtendedGeneralType } from '../../../schemas/ExtendedGeneral.ts';
+import { type ExtendedGeneralType } from '../../../schemas/ExtendedGeneral';
 import { type generalUseCaseType } from '../../../schemas/generalsSchema';
 import {
   type BuffParamsType,
   qualityColor,
   type qualityColorType,
-} from '../../../schemas/baseSchemas.ts';
+} from '../../../schemas/baseSchemas';
 import { type AttributeMultipliersType } from '../../../schemas/EvAns.zod';
 import type {
   SpecialityLevelType,
   SpecialityType,
-} from '../../../schemas/specialitySchema.ts';
+} from '../../../schemas/specialitySchema';
 import { type BuffFunction } from '../../../RankingInterfaces';
 
 const specialExists = (

@@ -1,7 +1,6 @@
 import mojo, {yamlConfigPlugin} from '@mojojs/core';
-import { type App } from '@mojojs/core/lib/app';
 
-export const app: App = mojo();
+export const app = mojo();
 
 app.plugin(yamlConfigPlugin);
 app.secrets = app.config.secrets;

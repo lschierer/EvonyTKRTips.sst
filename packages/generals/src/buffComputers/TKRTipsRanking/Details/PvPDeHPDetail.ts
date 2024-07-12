@@ -5,11 +5,11 @@ import { z } from 'zod';
 import {
   ExtendedGeneral,
   type ExtendedGeneralType,
-} from '../../../schemas/ExtendedGeneral.ts';
+} from '../../../schemas/ExtendedGeneral';
 import {
   BuffParams,
   type BuffParamsType,
-} from '../../../schemas/baseSchemas.ts';
+} from '../../../schemas/baseSchemas';
 import {
   Display,
   type DisplayType,
@@ -23,8 +23,8 @@ import {
 
 import { DeHPBuff } from './DeHPBuff';
 
-import { AscendingBuffs } from './AES_SingleScope.ts';
-import { SpecialityBuffs } from './Speciality_SingleScope.ts';
+import { AscendingBuffs } from './AES_SingleScope';
+import { SpecialityBuffs } from './Speciality_SingleScope';
 import { SkillBookBuffs } from './SkillBook_SingleScore';
 import { CovenantBuffs } from './Covenant_SingleScope';
 

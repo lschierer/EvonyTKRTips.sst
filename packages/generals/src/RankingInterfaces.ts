@@ -1,6 +1,6 @@
-import type { BuffType, BuffParamsType } from '@schemas/baseSchemas';
-import type { AttributeMultipliersType } from '@schemas/EvAns.zod';
-import type { generalUseCaseType } from '@schemas/generalsSchema';
+import type { BuffType, BuffParamsType } from './schemas/baseSchemas';
+import type { AttributeMultipliersType } from './schemas/EvAns.zod';
+import type { generalUseCaseType } from './schemas/generalsSchema';
 
 export type BuffFunction = (
   name: string,

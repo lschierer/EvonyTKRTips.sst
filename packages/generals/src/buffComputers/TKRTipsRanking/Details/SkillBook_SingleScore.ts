@@ -1,10 +1,10 @@
-import type { BookType } from '../../../schemas/bookSchemas.ts';
+import type { BookType } from '../../../schemas/bookSchemas';
 
 const DEBUG = false;
 
-import { type ExtendedGeneralType } from '../../../schemas/ExtendedGeneral.ts';
+import { type ExtendedGeneralType } from '../../../schemas/ExtendedGeneral';
 import { type generalUseCaseType } from '../../../schemas/generalsSchema';
-import { type BuffParamsType } from '../../../schemas/baseSchemas.ts';
+import { type BuffParamsType } from '../../../schemas/baseSchemas';
 import { type AttributeMultipliersType } from '../../../schemas/EvAns.zod';
 
 import { type BuffFunction } from '../../../RankingInterfaces';
