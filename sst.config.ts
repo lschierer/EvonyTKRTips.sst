@@ -24,7 +24,6 @@ export default $config({
           assignGeneratedIpv6CidrBlock: true,
           enableDnsHostnames: true,
           enableDnsSupport: true,
-          cidrBlock: '10.0.0.0/16',
         },
       },
     });

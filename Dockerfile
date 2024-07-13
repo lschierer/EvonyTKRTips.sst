@@ -22,7 +22,7 @@ RUN sed -i -e "s|\.\.\/\.\.|\.|" /app/tsconfig.build.json
 WORKDIR /app
 RUN pnpm -r install
 
-COPY packages/frontend/lib packages/frontend/public packages/frontend/config.yml /app/
+COPY packages/frontend/views packages/frontend/lib packages/frontend/public packages/frontend/config.yml /app/
 
 EXPOSE 3000
-CMD node /app/index.js server
+ENTRYPOINT ["node",  '/app/index.js', 'server']
