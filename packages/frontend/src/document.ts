@@ -29,7 +29,7 @@ export const document = (options: { url: URL; title?: string }) => html`
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-      <title>${options.title ?? 'Hello Gracile'}</title>
+      <title>${options.title ?? 'Evony TKR Tips'}</title>
     </head>
 
     <body>
