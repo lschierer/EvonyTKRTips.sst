@@ -1,12 +1,19 @@
 import mojo, { yamlConfigPlugin } from '@mojojs/core';
-import { App } from '@mojojs/core/lib/app';
+import { type MojoApp } from '@mojojs/core';
+import nunjucksPlugin from 'mojo-plugin-nunjucks';
 
-export const app: App = mojo();
+export const app: MojoApp = mojo();
+app.plugin(nunjucksPlugin);
+app.renderer.defaultEngine = 'njk';
 
 app.plugin(yamlConfigPlugin);
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 app.secrets = app.config.secrets;
 
-app.get('/').to('example#welcome');
+app.get('/', async (ctx) => {
+  await ctx.render({
+    view: 'index',
+  });
+});
 
 await app.start();
