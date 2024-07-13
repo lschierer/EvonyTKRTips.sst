@@ -16,7 +16,8 @@
     "@mojojs/core": "^1.26.4",
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.3",
-    "iconify-icon": "^2.1.0"
+    "iconify-icon": "^2.1.0",
+    "mojo-plugin-nunjucks": "^1.0.4"
   },
   "devDependencies": {
     "@types/busboy": "^1.5.0",
