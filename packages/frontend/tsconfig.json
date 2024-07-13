@@ -1,6 +1,7 @@
 {
   "extends": "./tsconfig.build.json",
   "compilerOptions": {
+    "module": "esnext",
     "outDir": "lib",
     "rootDir": "src",
     "composite": true
