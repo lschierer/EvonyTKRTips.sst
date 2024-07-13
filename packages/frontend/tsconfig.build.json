@@ -1,15 +1,18 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "lib": ["ESNext", "DOM"],
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "target": "ES2020",
-    "module": "node16",
+    "module": "ESNext",
     "sourceMap": true,
     "declaration": true,
     "incremental": true,
-    "moduleResolution": "node16",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "moduleDetection": "force",
     "esModuleInterop": true,
     "noErrorTruncation": true,
-    "strict": true
+    "strict": true,
+    "noEmit": true
   }
 }
