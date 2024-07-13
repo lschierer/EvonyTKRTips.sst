@@ -1,46 +1,19 @@
 {
   "name": "@evonytkrtips/frontend",
-  "type": "module",
-  "version": "1.0.0",
-  "scripts": {
-    "build": "pnpm tsc --build ./",
-    "build:test": "pnpm run build && pnpm test",
-    "build:watch": "pnpm run build -- --watch",
-    "dev": "pnpm nodemon lib/index.js server",
-    "start": "NODE_ENV=production node lib/index.js server -l http://*:8080",
-    "test": "node --test test/*.js"
-  },
   "author": "Luke Schierer",
-  "license": "ISC",
+  "type": "module",
+  "version": "0.2.0",
+  "scripts": {
+    "dev": "gracile-dev",
+    "build": "gracile build",
+    "preview": "gracile preview"
+  },
   "dependencies": {
-    "@mojojs/core": "^1.26.4",
-    "@popperjs/core": "^2.11.8",
+    "@gracile/gracile": "0.1.1",
     "bootstrap": "^5.3.3",
-    "iconify-icon": "^2.1.0",
-    "mojo-plugin-nunjucks": "^1.0.4",
-    "nunjucks-markdown": "^2.0.1"
+    "iconify-icon": "^2.1.0"
   },
   "devDependencies": {
-    "@types/busboy": "^1.5.0",
-    "@types/js-yaml": "^4.0.3",
-    "@types/mime-types": "^2.1.0",
-    "@types/node": "^20.0.0",
-    "@types/nopt": "^3.0.29",
-    "@types/nunjucks": "^3.2.6",
-    "@types/react": "^18.2.37",
-    "@types/stack-utils": "^2.0.1",
-    "@types/tough-cookie": "^4.0.2",
-    "@types/ws": "^8.5.3",
-    "autoprefixer": "^10.4.19",
-    "css-lint": "^1.0.1",
-    "nodemon": "^3.1.4",
-    "postcss": "^8.4.39",
-    "postcss-cli": "^11.0.0",
-    "sass": "^1.77.6",
-    "sirv-cli": "^2.0.2",
-    "stylelint": "^16.6.1",
-    "stylelint-config-twbs-bootstrap": "^14.1.0",
-    "tap": "^18.1.0",
-    "typescript": "^5.2.0"
+    "typescript": "5.5.3"
   }
 }

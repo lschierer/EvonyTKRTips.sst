@@ -1,9 +1,3 @@
 {
-  "extends": "./tsconfig.build.json",
-  "compilerOptions": {
-    "outDir": "lib",
-    "rootDir": "src",
-    "composite": true
-  },
-  "include": ["src/**/*"]
+  "extends": "@gracile/gracile/tsconfigs/strictest"
 }

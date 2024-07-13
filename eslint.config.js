@@ -45,7 +45,7 @@ export default tseslint.config(
       "**/dist/**",
       "**/build/**",
       "**/out/**",
-      "packages/frontend/lib/**",
+      "packages/frontend/gracile.config.ts",
       "src/components"
     ],
   },
