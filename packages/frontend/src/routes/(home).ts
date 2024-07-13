@@ -8,7 +8,9 @@ export default defineRoute({
 
   template: () => html`
     <!--  -->
-    <h1>Evony TKR Tips</h1>
+    <div class="container py-4 px-3 mx-auto">
+      <h1>Evony TKR Tips</h1>
+    </div>
     <!--  -->
   `,
 });
