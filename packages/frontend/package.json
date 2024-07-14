@@ -12,7 +12,8 @@
     "@gracile/gracile": "0.1.1",
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.3",
-    "iconify-icon": "^2.1.0"
+    "iconify-icon": "^2.1.0",
+    "lit": "^3.1.4"
   },
   "devDependencies": {
     "@types/bootstrap": "^5.2.10",
