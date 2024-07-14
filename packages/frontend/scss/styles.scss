@@ -1,2 +1,32 @@
-// Import all of Bootstrap's CSS
+// Custom.scss
+// Option A: Include all of Bootstrap
+
+// Include any default variable overrides here (though functions won't be available)
+
+/*
+ Blue Ivy
+ hex #3090C7
+ RGB: 48, 144, 199
+ HSL: 201.85deg, 61.13%, 48.43%
+*/
+
+/*
+ Silk Blue
+ hex #488AC7
+ RGB: 72, 138, 199
+ HSL: 208.82deg, 53.14%, 53.14%
+*/
+
+$primary: #3090c7;
+$secondary: #488ac7;
+$success: #45c730;
+$info: #afece7;
+$warning: #c78548;
+$danger: #c73044;
+$light: #e0ffff;
+$dark: #00008b;
+
+
 @import "../node_modules/bootstrap/scss/bootstrap";
+
+// Then add additional custom code here

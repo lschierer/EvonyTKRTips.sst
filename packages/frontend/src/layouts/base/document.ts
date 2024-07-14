@@ -1,6 +1,6 @@
 import { helpers } from '@gracile/gracile/document';
 import { html } from '@gracile/gracile/server-html';
-import { navbar } from './partials/navbar';
+import { navbar } from '../../partials/navbar';
 
 export const document = (options: { url: URL; title?: string }) => html`
   <!doctype html>
