@@ -20,6 +20,9 @@
     },
     {
       "path": "./packages/generals"
+    },
+    {
+      "path": "./packages/Game-EvonyTKR"
     }
   ]
 }
