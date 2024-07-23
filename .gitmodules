@@ -1,0 +1,3 @@
+[submodule "packages/Game-EvonyTKR"]
+	path = packages/Game-EvonyTKR
+	url = git@github.com:lschierer/Game-EvonyTKR.git
