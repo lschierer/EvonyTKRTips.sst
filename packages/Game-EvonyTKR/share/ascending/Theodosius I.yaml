@@ -63,7 +63,7 @@ ascending:
         number: 20
         unit: percentage
     - attribute: Defense
-      class: Seige
+      class: Siege
       condition:
         - Marching
       value:
