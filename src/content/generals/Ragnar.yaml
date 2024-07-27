@@ -1,0 +1,109 @@
+---
+general:
+  name: Ragnar
+  level: '1'
+  display: summary
+  score_as: Archers
+  stars: '5red'
+  leadership: 124
+  leadership_increment: 8.88
+  attack: 135
+  attack_increment: 9.36
+  defense: 118
+  defense_increment: 8.22
+  politics: 100
+  politics_increment: 7.96
+  books:
+    - Unstoppable Force
+  specialities:
+    - Ranged Troop Formation
+    - Siege
+    - Ranged Troop Ares
+    - Viking Leader
+  ascending:
+    - level: 1red
+      buff:
+        - attribute: Attack
+          class: Archers
+          condition:
+            - Marching
+          value:
+            number: 15
+            unit: percentage
+        - attribute: Defense
+          class: Archers
+          condition:
+            - Marching
+          value:
+            number: 10
+            unit: percentage
+    - level: 2red
+      buff:
+        - attribute: Death_to_Wounded
+          condition:
+            - Marching
+          value:
+            number: 8
+            unit: percentage
+    - level: 3red
+      buff:
+        - attribute: March_Size_Capacity
+          condition:
+            - Attacking
+          value:
+            number: 8
+            unit: percentage
+        - attribute: HP
+          class: Archers
+          condition:
+            - Attacking
+          value:
+            number: 10
+            unit: percentage
+    - level: 4red
+      buff:
+        - attribute: Attack
+          class: Archers
+          condition:
+            - Marching
+          value:
+            number: 10
+            unit: percentage
+        - attribute: Defense
+          class: Archers
+          condition:
+            - Marching
+          value:
+            number: 10
+            unit: percentage
+        - attribute: HP
+          class: Archers
+          condition:
+            - Marching
+          value:
+            number: 10
+            unit: percentage
+    - level: 5red
+      buff:
+        - attribute: Attack
+          class: Archers
+          condition:
+            - Marching
+          value:
+            number: 35
+            unit: percentage
+        - attribute: Defense
+          class: Archers
+          condition:
+            - Marching
+          value:
+            number: 20
+            unit: percentage
+        - attribute: HP
+          class: Archers
+          condition:
+            - Marching
+          value:
+            number: 20
+            unit: percentage
+        
