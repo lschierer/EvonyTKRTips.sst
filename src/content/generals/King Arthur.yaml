@@ -1,0 +1,80 @@
+---
+general:
+  name: King Arthur
+  leadership: 115
+  attack: 109
+  defense: 105
+  politics: 94
+  leadership_increment: 9.08
+  attack_increment: 8.14
+  defense_increment: 8.25
+  politics_increment: 7.33
+  display: summary
+  level: '1'
+  stars: '5red'
+  score_as: Mounted
+  books:
+    - Caliburn
+  specialities:
+    - Mounted Troop Formation
+    - Bash
+    - King's Ambition
+    - Legendary Knight
+  ascending:
+    - level: '1red'
+      buff:
+        - attribute: Attack
+          class: Mounted
+          condition:
+            - Marching
+          value:
+            number: 20
+            unit: percentage
+    - level: '2red'
+      buff:
+        - attribute: Wounded_to_Death
+          condition:
+            - Marching
+          value:
+            number: 8
+            unit: percentage
+    - level: '3red'
+      buff:
+        - attribute: Rally_Capacity
+          condition:
+            - When_Rallying
+          value:
+            number: 8
+            unit: percentage
+    - level: '4red'
+      buff:
+        - attribute: Defense
+          class: Mounted
+          condition:
+            - Marching
+          value:
+            number: 20
+            unit: percentage
+        - attribute: HP
+          class: Mounted
+          condition:
+            - Marching
+          value:
+            number: 20
+            unit: percentage
+    - level: '5red'
+      buff:
+        - attribute: Attack
+          class: Mounted
+          condition:
+            - Marching
+          value:
+            number: 15
+            unit: percentage
+        - attribute: Attack
+          class: Archers
+          condition:
+            - Marching
+          value:
+            number: 15
+            unit: percentage
