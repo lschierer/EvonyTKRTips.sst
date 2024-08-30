@@ -1,24 +1,25 @@
 /// <reference path="./.sst/platform/config.d.ts" />
 
-import { build } from "astro";
-import { App } from "aws-cdk-lib";
-
 export default $config({
   app(input) {
     return {
-      name: "EvonyTKRTips",
-      removal: input?.stage === "prod" ? "retain" : "remove",
+      name: "evonytkrtips",
+      removal: input?.stage.toLocaleLowerCase().includes('prod') ? "retain" : "remove",
       home: "aws",
-      region: "us-east-2",
+      providers: {
+        aws: {
+          profile: 'home',
+        }
+      },
     };
   },
   async run() {
-    new sst.aws.Astro("Site", {
-      build: {
-        command: 'pnpm build',
-        output: 'dist',
-      }
-      
+    new sst.aws.Astro("MyWeb", {
+      domain: {
+        name: $app.stage.toLocaleLowerCase().includes('prod') ? 
+          'evonytkrtips.net' :
+          `${$app.stage}.evonytkrtips.net`,
+      },
     });
   },
 });
