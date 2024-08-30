@@ -5,7 +5,7 @@ export AWS_PROFILE := 'home'
 set dotenv-load
 
 export PNPM := `which pnpm`
-export SST := `which sst`
+export SST := "$PNPM sst"
 
 install:
     ${PNPM} install
