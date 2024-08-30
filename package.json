@@ -131,5 +131,9 @@
   },
   "overrides": {
     "graphql": "16.5.0"
+  },
+  "packageManager": "pnpm@9.6.0",
+  "engine": {
+    "node": "22.5.1"
   }
 }
