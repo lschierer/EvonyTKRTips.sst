@@ -25,6 +25,7 @@ export default tseslint.config(
       ".sst/**/*.js",
       ".sst/**/*.ts",
 			".sst/**/*.mjs",
+      "stacks/**",
     ],
   },
   eslint.configs.recommended,

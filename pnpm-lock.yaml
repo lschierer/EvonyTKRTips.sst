@@ -50,9 +50,6 @@ importers:
       '@spectrum-css/icon':
         specifier: ^7.1.3
         version: 7.1.3(@spectrum-css/tokens@14.3.1)
-      '@spectrum-css/page':
-        specifier: ^8.1.2
-        version: 8.1.2(@spectrum-css/tokens@14.3.1)
       '@spectrum-css/sidenav':
         specifier: ^5.1.2
         version: 5.1.2(@spectrum-css/icon@7.1.3(@spectrum-css/tokens@14.3.1))(@spectrum-css/tokens@14.3.1)
@@ -62,9 +59,6 @@ importers:
       '@spectrum-css/tokens':
         specifier: ^14.3.1
         version: 14.3.1
-      '@spectrum-css/typography':
-        specifier: ^6.1.2
-        version: 6.1.2(@spectrum-css/tokens@14.3.1)
       '@spectrum-css/vars':
         specifier: ^9.0.8
         version: 9.0.8
@@ -197,9 +191,6 @@ importers:
       astro:
         specifier: ^4.15.1
         version: 4.15.1(@types/node@22.5.1)(rollup@4.21.2)(typescript@5.5.4)
-      astro-sst:
-        specifier: 2.43.5
-        version: 2.43.5
       bcp-47:
         specifier: ^2.1.0
         version: 2.1.0
@@ -242,9 +233,6 @@ importers:
       sharp:
         specifier: ^0.33.5
         version: 0.33.5
-      sst:
-        specifier: 3.0.78
-        version: 3.0.78(aws-crt@1.22.0)
       strnum:
         specifier: ^1.0.5
         version: 1.0.5
@@ -303,6 +291,9 @@ importers:
       '@typescript-eslint/parser':
         specifier: ^8.3.0
         version: 8.3.0(eslint@9.9.1)(typescript@5.5.4)
+      astro-sst:
+        specifier: 2.43.5
+        version: 2.43.5
       aws-cdk-lib:
         specifier: 2.142.1
         version: 2.142.1(constructs@10.3.0)
@@ -339,6 +330,9 @@ importers:
       rollup-plugin-tsconfig-paths:
         specifier: ^1.5.2
         version: 1.5.2(rollup@4.21.2)(typescript@5.5.4)
+      sst:
+        specifier: 3.0.78
+        version: 3.0.78(aws-crt@1.22.0)
       starlight-links-validator:
         specifier: ^0.11.0
         version: 0.11.0(@astrojs/starlight@0.26.1(astro@4.15.1(@types/node@22.5.1)(rollup@4.21.2)(typescript@5.5.4)))(astro@4.15.1(@types/node@22.5.1)(rollup@4.21.2)(typescript@5.5.4))
@@ -1509,11 +1503,6 @@ packages:
     peerDependencies:
       '@spectrum-css/tokens': '>=14'
 
-  '@spectrum-css/page@8.1.2':
-    resolution: {integrity: sha512-gT3F8wsxP2msEqFZEpGaqYEHwx4nPywIUUdMTxlqjuVyYN1yn/rh3BvTK1C4OpRmmTSNWm/m/bd+yOKA3xxvFA==}
-    peerDependencies:
-      '@spectrum-css/tokens': '>=14'
-
   '@spectrum-css/sidenav@5.1.2':
     resolution: {integrity: sha512-+QWu4zq0TlXZEzw/6BYbtXh+E2QH7FtH94QCa761VdmqC8mn9ULKNPQt3dCJL+RL7S6pjepqxJjzh8jXwg/UKg==}
     peerDependencies:
@@ -1530,11 +1519,6 @@ packages:
 
   '@spectrum-css/tokens@14.3.1':
     resolution: {integrity: sha512-YQBEvccp5jC9dxNMSLb708ucrxY64nExvFfJ0iQ+ddlAraOykFFoCTGcQ5UvSNp31Dp348H05PB7zRoStl0Jdg==}
-
-  '@spectrum-css/typography@6.1.2':
-    resolution: {integrity: sha512-yEFXrd3SZicIDZI/tPjtJV23sqifTxAaV962EURv5taz+4OHFHGd4CkBCAyg2UlFdSW581Av1fgKrB4pKHtJMQ==}
-    peerDependencies:
-      '@spectrum-css/tokens': '>=14'
 
   '@spectrum-css/vars@9.0.8':
     resolution: {integrity: sha512-rGfd7jqXOdR69bEjrRP58ynuIeJU0czPfwQvzhtCzg7jKVukV+efNHqrs086sC6xutB3W4TF71K/dZMr3oyTyg==}
@@ -6472,10 +6456,6 @@ snapshots:
     dependencies:
       '@spectrum-css/tokens': 14.3.1
 
-  '@spectrum-css/page@8.1.2(@spectrum-css/tokens@14.3.1)':
-    dependencies:
-      '@spectrum-css/tokens': 14.3.1
-
   '@spectrum-css/sidenav@5.1.2(@spectrum-css/icon@7.1.3(@spectrum-css/tokens@14.3.1))(@spectrum-css/tokens@14.3.1)':
     dependencies:
       '@spectrum-css/tokens': 14.3.1
@@ -6487,10 +6467,6 @@ snapshots:
       '@spectrum-css/tokens': 14.3.1
 
   '@spectrum-css/tokens@14.3.1': {}
-
-  '@spectrum-css/typography@6.1.2(@spectrum-css/tokens@14.3.1)':
-    dependencies:
-      '@spectrum-css/tokens': 14.3.1
 
   '@spectrum-css/vars@9.0.8': {}
 

@@ -42,10 +42,10 @@ export default defineConfig({
 	      '@spectrum-web-components/styles/typography.css',
         '@spectrum-web-components/styles/scale-medium.css',
         '@spectrum-css/tokens/dist/index.css',
-        '@spectrum-css/typography/dist/index.css',
+        //'@spectrum-css/typography/dist/index.css',
         '@spectrum-css/vars/dist/spectrum-global.css',
         '@spectrum-css/vars/dist/spectrum-medium.css',
-        '@spectrum-css/page/dist/index.css',
+        //'@spectrum-css/page/dist/index.css',
         './src/styles/styles.css',
       ],
       head: [
