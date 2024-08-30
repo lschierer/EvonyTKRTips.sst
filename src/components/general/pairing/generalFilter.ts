@@ -1,11 +1,8 @@
-import {html, css, nothing, type CSSResultArray, type PropertyValues, type PropertyValueMap} from "lit";
-import {customElement, property, state} from 'lit/decorators.js';
+import {html, css, nothing, type CSSResultArray,  type PropertyValues} from "lit";
+import {customElement,  state} from 'lit/decorators.js';
 import {ref} from 'lit/directives/ref.js';
 
-import {z} from 'zod';
 
-import { action, onMount, task} from "nanostores";
-import { logger } from '@nanostores/logger'
 import {withStores} from "@nanostores/lit";
 
 import '@spectrum-web-components/action-button/sp-action-button.js';
@@ -25,27 +22,18 @@ import '@spectrum-web-components/tooltip/sp-tooltip.js';
 import {SpectrumElement} from "@spectrum-web-components/base";
 import {
   Menu,
-  MenuGroup,
-  MenuItem,
-  MenuDivider
 } from '@spectrum-web-components/menu';
-import { Button, ClearButton, CloseButton } from '@spectrum-web-components/button';
+import { Button, } from '@spectrum-web-components/button';
 
 const DEBUG = false;
-
-import * as b from '@schemas/baseSchemas.ts'
 
 import * as util from '../../../lib/util';
 
 import {
   GeneralArray,
-    type GeneralElementType,
-    GeneralElement,
 } from "@schemas/generalsSchema";
 
 import { 
-  GeneralToggle,
-  type GeneralToggleType,
   allGenerals, 
   filteredPrimaries, 
   selections, 
@@ -69,6 +57,7 @@ export class GeneralFilter extends withStores(SpectrumElement, [allGenerals, fil
 
   constructor() {
     super();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     selections.subscribe(sp => {
       if(DEBUG){console.log(`requesting update for selections subscribe`)}
       this.requestUpdate();
@@ -121,10 +110,13 @@ export class GeneralFilter extends withStores(SpectrumElement, [allGenerals, fil
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private MutationObserverCallback = (mutationList: MutationRecord[], observer: MutationObserver) => {
     for (const mutation of mutationList) {
       if (mutation.type === "childList") {
+          //blah
       } else if (mutation.type === "attributes") {
+        //blah
       }
     }
   };
@@ -136,7 +128,7 @@ export class GeneralFilter extends withStores(SpectrumElement, [allGenerals, fil
     
   }
 
-  protected willUpdate(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+  protected willUpdate(_changedProperties: PropertyValues ): void {
       super.willUpdate(_changedProperties);
   }
 
@@ -186,10 +178,12 @@ export class GeneralFilter extends withStores(SpectrumElement, [allGenerals, fil
     const oldValues = this.primaryValues.sort();
     const vdiff:string[] = new Array<string>();
     const vUnion = new Set<string>();
+    // eslint-disable-next-line @typescript-eslint/prefer-for-of
     for(let i = 0; i < oldValues.length; i++) {
       const v1 = oldValues[i];
       if(v1 !== null && v1 !== undefined) {
         const k1 = Object.keys(v1)[0];
+        // eslint-disable-next-line @typescript-eslint/prefer-for-of
         for(let j = 0 ; j < values.length; j++) {
           if(vUnion.has(k1)){
             continue;
@@ -243,7 +237,7 @@ export class GeneralFilter extends withStores(SpectrumElement, [allGenerals, fil
   public toggleSecondarySelection(e: CustomEvent) {
     const values = new Set((e.target as Menu).value.split(','));
     const oldValues = new Set(this.secondaryValues);
-    const vdiff:string[] = [...util.setDifference(values, oldValues)];
+    const vdiff:string[] = ([...util.setDifference(values, oldValues)] as string[]);
     this.secondaryValues = [...values];
     if(vdiff.includes("all")){
       console.log(`I should reset`)
@@ -292,6 +286,7 @@ export class GeneralFilter extends withStores(SpectrumElement, [allGenerals, fil
     if(primaries !== null && primaries !== undefined) {
       if( secondaries !== null && secondaries !== undefined) {
         if( generals !== undefined && generals !== null) {
+          // eslint-disable-next-line @typescript-eslint/prefer-for-of
           for(let i = 0; i < generals.length; i++) {
             if(generals[i] !== null && generals[i] !== undefined) {
               const v = generals[i];
@@ -299,6 +294,7 @@ export class GeneralFilter extends withStores(SpectrumElement, [allGenerals, fil
               let p = false;
               let s = false;
               if(primaries.length > 0) {
+                // eslint-disable-next-line @typescript-eslint/prefer-for-of
                 for(let i  = 0; i < primaries.length; i++) {
                   const r = primaries[i];
                   const tk = Object.keys(r)[0];
@@ -315,6 +311,7 @@ export class GeneralFilter extends withStores(SpectrumElement, [allGenerals, fil
                 `
               }
               if(secondaries.length > 0) {
+                // eslint-disable-next-line @typescript-eslint/prefer-for-of
                 for(let i  = 0; i < secondaries.length; i++) {
                   const r = secondaries[i];
                   const tk = Object.keys(r)[0];
