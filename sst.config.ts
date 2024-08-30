@@ -19,12 +19,12 @@ export default $config({
             if (event.type === "branch" && event.branch === "production" && event.action === "pushed") {
               return {
                 stage: "production",
-                runner: { engine: "codebuild", compute: "large" }
+                runner: { engine: "codebuild", compute: "small" }
               };
             } else if (event.type === "branch" && event.branch === "astro_starlight" && event.action === "pushed") {
               return {
                 stage: "dev",
-                runner: { engine: "codebuild", compute: "large" }
+                runner: { engine: "codebuild", compute: "small" }
               };
             }
           }
