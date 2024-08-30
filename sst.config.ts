@@ -9,7 +9,6 @@ export default $config({
       home: "aws",
       providers: {
         aws: {
-          profile: "home",
           region: 'us-east-2',
         },
       },
