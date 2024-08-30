@@ -13,24 +13,24 @@ export default $config({
           region: 'us-east-2',
         },
       },
-    };
-  },
-  console: {
-    autodeploy: {
-      target(event) {
-        if (event.type === "branch" && event.branch === "production" && event.action === "pushed") {
-          return {
-            stage: "production",
-            runner: { engine: "codebuild", compute: "large" }
-          };
-        } else if (event.type === "branch" && event.branch === "astro_starlight" && event.action === "pushed") {
-          return {
-            stage: "dev",
-            runner: { engine: "codebuild", compute: "large" }
-          };
+      console: {
+        autodeploy: {
+          target(event) {
+            if (event.type === "branch" && event.branch === "production" && event.action === "pushed") {
+              return {
+                stage: "production",
+                runner: { engine: "codebuild", compute: "large" }
+              };
+            } else if (event.type === "branch" && event.branch === "astro_starlight" && event.action === "pushed") {
+              return {
+                stage: "dev",
+                runner: { engine: "codebuild", compute: "large" }
+              };
+            }
+          }
         }
-      }
-    }
+      },
+    };
   },
   async run() {
     const site = new sst.aws.Astro("Site", {
