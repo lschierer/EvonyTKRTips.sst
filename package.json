@@ -121,7 +121,6 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-astro": "^1.2.3",
     "is-stream": "^4.0.1",
-    "node": "^22.7.0",
     "postcss-import": "^16.1.0",
     "prettier": "^3.3.3",
     "remark-lint": "^10.0.0",

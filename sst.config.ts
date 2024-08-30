@@ -16,7 +16,7 @@ export default $config({
   async run() {
     new sst.aws.Astro("MyWeb", {
       domain: {
-        name: $app.stage.toLocaleLowerCase().includes('prod') ? 
+        name: $app?.stage.toLocaleLowerCase().includes('prod') ? 
           'evonytkrtips.net' :
           `${$app.stage}.evonytkrtips.net`,
       },
