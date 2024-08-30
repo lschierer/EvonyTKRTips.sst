@@ -26,6 +26,11 @@ export default $config({
                 stage: "dev",
                 runner: { engine: "codebuild", compute: "small" }
               };
+            } else if(event.action === "pushed") {
+              return {
+                stage: event.branch,
+                runner: { engine: "codebuild", compute: "small" }
+              };
             }
           }
         }
