@@ -27,6 +27,11 @@ export default defineConfig({
         Footer: './src/components/footer.astro',
       },
       customCss: [
+	      '@spectrum-web-components/styles/typography.css',
+        '@spectrum-web-components/styles/scale-medium.css',
+        '@spectrum-css/vars/dist/spectrum-global.css',
+        '@spectrum-css/vars/dist/spectrum-medium.css',
+        //'@spectrum-css/page/dist/index-vars.css',
         './src/styles/styles.css',
       ],
       head: [
@@ -66,6 +71,7 @@ export default defineConfig({
       minify: false,
       cssMinify: false,
     },
+
   },
 
   // Process images with sharp: https://docs.astro.build/en/guides/assets/#using-sharp

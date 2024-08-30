@@ -10,12 +10,6 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-/* import the global stylesheets */
-@import '@spectrum-web-components/styles/typography.css';
-@import '@spectrum-web-components/styles/scale-medium.css';
-@import "@spectrum-css/vars/dist/spectrum-global.css";
-@import "@spectrum-css/vars/dist/spectrum-medium.css";
-@import "@spectrum-css/page/dist/index-vars.css";
 
 /* Color Theme Swatches in Hex */ 
 .Cyan-600-Theme-1-1-hex { color: #0486B4; } /*oklch(58.23% 0.118 231.71)*/
