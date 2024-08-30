@@ -1,15 +1,15 @@
 {
-  "name": "EvonyTKRTips",
+  "name": "evonytkrtips",
   "type": "module",
   "version": "0.4.2",
   "scripts": {
-    "dev": "sst bind astro dev",
-    "start": "astro dev",
-    "build": "pnpm install && echo RootDir=${PWD} > .env && pnpm just build",
-    "preview": "astro preview",
     "astro": "astro",
+    "build": "pnpm install && echo RootDir=${PWD} > .env && pnpm just build",
+    "dev": "sst bind astro dev",
+    "preview": "astro preview",
     "sst:deploy": "sst deploy",
-    "sst:dev": "sst dev"
+    "sst:dev": "sst dev",
+    "start": "astro dev"
   },
   "dependencies": {
     "@astrojs/lit": "^4.3.0",
@@ -75,6 +75,7 @@
     "@webcomponents/template-shadowroot": "^0.2.1",
     "add": "^2.0.6",
     "astro": "^4.15.1",
+    "astro-sst": "2.43.5",
     "bcp-47": "^2.1.0",
     "d3": "^7.9.0",
     "d3-dsv": "^3.0.1",
@@ -89,6 +90,7 @@
     "path-scurry": "^2.0.0",
     "remark": "^15.0.1",
     "sharp": "^0.33.5",
+    "sst": "3.0.78",
     "strnum": "^1.0.5",
     "ulidx": "^2.4.1",
     "xstate": "^5.18.0",
@@ -98,6 +100,7 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.3",
     "@astrojs/ts-plugin": "^1.10.1",
+    "@babel/preset-typescript": "^7.24.7",
     "@eslint/js": "^9.9.1",
     "@tsconfig/node18": "^18.2.4",
     "@tsconfig/node20": "^20.1.4",
@@ -106,10 +109,10 @@
     "@types/d3-format": "^3.0.4",
     "@types/d3-hierarchy": "^3.1.7",
     "@types/d3-selection": "^3.0.10",
-    "@types/node": "^20.16.2",
+    "@types/node": "^22.5.1",
     "@typescript-eslint/eslint-plugin": "^8.3.0",
     "@typescript-eslint/parser": "^8.3.0",
-    "astro-sst": "2.42.0",
+    "astro-sst": "two",
     "aws-cdk-lib": "2.142.1",
     "constructs": "10.3.0",
     "cssnano": "^7.0.5",
@@ -122,13 +125,16 @@
     "postcss-import": "^16.1.0",
     "prettier": "^3.3.3",
     "remark-lint": "^10.0.0",
-    "sst": "2.42.0",
+    "rollup-plugin-tsconfig-paths": "^1.5.2",
+    "sst": "3.0.78",
     "starlight-links-validator": "^0.11.0",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "tslib": "^2.7.0",
     "typescript": "^5.5.4",
-    "typescript-eslint": "^8.3.0"
+    "typescript-eslint": "^8.3.0",
+    "vite-plugin-no-bundle": "^4.0.0",
+    "vite-plugin-shared-modules": "^0.2.2"
   },
   "overrides": {
     "graphql": "16.5.0"

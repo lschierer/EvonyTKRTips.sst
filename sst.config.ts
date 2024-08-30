@@ -1,16 +1,24 @@
-import { SSTConfig } from "sst";
-import { Web } from "./stacks/Web";
+/// <reference path="./.sst/platform/config.d.ts" />
 
-export default {
-  config(_input) {
+import { build } from "astro";
+import { App } from "aws-cdk-lib";
+
+export default $config({
+  app(input) {
     return {
       name: "EvonyTKRTips",
-      profile: "home",
+      removal: input?.stage === "prod" ? "retain" : "remove",
+      home: "aws",
       region: "us-east-2",
     };
   },
-  stacks(app) {
-    app
-      .stack(Web);
-  }
-} satisfies SSTConfig;
+  async run() {
+    new sst.aws.Astro("Site", {
+      build: {
+        command: 'pnpm build',
+        output: 'dist',
+      }
+      
+    });
+  },
+});
