@@ -27,7 +27,6 @@ import '@spectrum-web-components/number-field/sp-number-field.js';
 import '@spectrum-web-components/picker/sp-picker.js';
 import '@spectrum-web-components/split-view/sp-split-view.js';
 import '@spectrum-web-components/status-light/sp-status-light.js';
-import '@spectrum-web-components/table/elements.js';
 import '@spectrum-web-components/textfield/sp-textfield.js';
 import '@spectrum-web-components/tooltip/sp-tooltip.js';
 import { Picker } from '@spectrum-web-components/picker';

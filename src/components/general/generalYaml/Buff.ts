@@ -10,7 +10,6 @@ const DEBUG = false;
 import '@spectrum-web-components/button/sp-button.js';
 import '@spectrum-web-components/card/sp-card.js';
 import '@spectrum-web-components/checkbox/sp-checkbox.js';
-import '@spectrum-web-components/table/elements.js';
 import '@spectrum-web-components/field-group/sp-field-group.js';
 import '@spectrum-web-components/field-label/sp-field-label.js';
 import '@spectrum-web-components/help-text/sp-help-text.js';

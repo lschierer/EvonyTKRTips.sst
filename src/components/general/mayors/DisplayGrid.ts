@@ -24,12 +24,8 @@ import {
   type PropertyValues,
 } from '@spectrum-web-components/base';
 
-import '@spectrum-css/tokens/dist/index.css';
 import SpectrumTokens from '@spectrum-css/tokens/dist/index.css?inline';
-import '@spectrum-css/typography/dist/index.css';
 import SpectrumTypography from '@spectrum-web-components/styles/typography.css?inline';
-import '@spectrum-css/icon/dist/index.css';
-import '@spectrum-css/table/dist/index.css';
 
 import {
   AscendingLevels,
