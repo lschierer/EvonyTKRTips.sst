@@ -1,0 +1,28 @@
+---
+name: Spirit of Zuidama
+buff:
+  - attribute: Attack
+    class: Archers
+    value:
+      number: 45
+      unit: percentage
+  - attribute: Defense
+    class: Archers
+    value:
+      number: 35
+      unit: percentage
+  - attribute: Defense
+    class: Siege
+    value:
+      number: 35
+      unit: percentage
+  - attribute: HP
+    class: Archers
+    value:
+      number: 35
+      unit: percentage
+  - attribute: HP
+    class: Siege
+    value:
+      number: 35
+      unit: percentage

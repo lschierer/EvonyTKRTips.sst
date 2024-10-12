@@ -1,0 +1,75 @@
+name: Tachibana Ginchiyo
+generals:
+  - Himiko
+  - Frigg
+  - Hestia
+attributes:
+  - category: War Covenant
+    type: personal
+    buff:
+      - attribute: HP
+        class: Archers
+        value:
+          number: 10
+          unit: percentage
+  - category: Cooperation Covenant
+    type: personal
+    buff:
+      - attribute: Wounded_to_Death
+        condition:
+          - Enemy
+          - Attacking
+        value:
+          number: 10
+          unit: percentage
+  - category: Peace Covenant
+    type: passive
+    buff:
+      - attribute: Training_Speed
+        class: Archers
+        value:
+          number: 10
+          unit: percentage
+  - category: Faith Covenant
+    type: personal
+    buff:
+      - attribute: Attack
+        condition:
+          - Reinforcing
+        class: Archers
+        value:
+          number: 5
+          unit: percentage
+  - category: Faith Covenant
+    type: passive
+    buff:
+      - attribute: Defense
+        condition:
+          - Reinforcing
+        class: Archers
+        value:
+          number: 5
+          unit: percentage
+  - category: Honor Covenant
+    type: personal
+    buff:
+      - attribute: HP
+        condition:
+          - When_Rallying
+        class: Archers
+        value:
+          number: 5
+          unit: percentage
+  - category: Civilization Covenant
+    type: personal
+    buff:
+      - attribute: Attack
+        class: Archers
+        value:
+          number: 5
+          unit: percentage
+      - attribute: Defense
+        class: Archers
+        value:
+          number: 10
+          unit: percentage

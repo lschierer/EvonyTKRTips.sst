@@ -1,0 +1,110 @@
+---
+general:
+  name: Marco Polo
+  display: summary
+  leadership: 111
+  leadership_increment: 8.32
+  attack: 145
+  attack_increment: 9.62
+  defense: 122
+  defense_increment: 8.78
+  politics: 101
+  politics_increment: 7.78
+  stars: '5red'
+  score_as: Mounted
+  book: Ride the Waves
+  level: '1'
+  specialities:
+    - Mounted Troop Formation
+    - Annihilation
+    - Mounted Troop Ares
+    - The Million
+  ascending:
+    - level: '1red'
+      buff:
+        - attribute: Attack
+          class: Mounted
+          condition:
+            - Marching
+          value:
+            number: 25
+            unit: percentage
+        - attribute: HP
+          class: Mounted
+          value:
+            number: 15
+            unit: percentage
+    - level: '2red'
+      buff:
+        - attribute: Death_to_Wounded
+          condition:
+            - Marching
+          value:
+            number: 8
+            unit: percentage
+    - level: '3red'
+      buff:
+        - attribute: Attack
+          class: Mounted
+          condition:
+            - Attacking
+          value:
+            number: 30
+            unit: percentage
+        - attribute: March_Size_Capacity
+          value:
+            number: 8
+            unit: percentage
+    - level: '4red'
+      buff:
+        - attribute: Defense
+          class: Ground
+          condition:
+            - Enemy
+          value:
+            number: 10
+            unit: percentage
+        - attribute: Defense
+          class: Mounted
+          condition:
+            - Enemy
+          value:
+            number: 10
+            unit: percentage
+        - attribute: HP
+          class: Ground
+          condition:
+            - Enemy
+          value:
+            number: 10
+            unit: percentage
+        - attribute: HP
+          class: Mounted
+          condition:
+            - Enemy
+          value:
+            number: 10
+            unit: percentage
+    - level: '5red'
+      buff:
+        - attribute: Attack
+          class: Mounted
+          condition:
+            - Marching
+          value:
+            number: 40
+            unit: percentage
+        - attribute: Defense
+          class: Mounted
+          condition:
+            - Marching
+          value:
+            number: 25
+            unit: percentage
+        - attribute: HP
+          class: Mounted
+          condition:
+            - Marching
+          value:
+            number: 25
+            unit: percentage

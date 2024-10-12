@@ -1,0 +1,23 @@
+---
+name: Silesian Wars
+buff:
+  - attribute: Attack
+    class: Archers
+    value:
+      number: 45
+      unit: percentage
+  - attribute: HP
+    class: Archers
+    value:
+      number: 45
+      unit: percentage
+  - attribute: Defense
+    class: Archers
+    value:
+      number: 30
+      unit: percentage
+  - attribute: Defense
+    class: Siege
+    value:
+      number: 30
+      unit: percentage

@@ -1,0 +1,18 @@
+---
+name: Whirlwind Iron Axe
+buff:
+  - attribute: Attack
+    class: Mounted
+    value:
+      number: 45
+      unit: percentage
+  - attribute: Defense
+    class: Ground
+    value:
+      number: 35
+      unit: percentage
+  - attribute: Defense
+    class: Mounted
+    value:
+      number: 35
+      unit: percentage

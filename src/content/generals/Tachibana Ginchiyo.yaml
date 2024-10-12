@@ -1,0 +1,101 @@
+---
+general:
+  name: Tachibana Ginchiyo
+  display: summary
+  leadership: 130
+  leadership_increment: 8.93
+  attack: 126
+  attack_increment: 8.88
+  defense: 121
+  defense_increment: 8.71
+  politics: 107
+  politics_increment: 8.01
+  stars: '5red'
+  level: '1'
+  score_as: Archers
+  books:
+    - Spirit of Zuidama
+  specialities:
+    - Ranged Troop Defense
+    - Bash
+    - Ranged Troop Ares
+    - Siege of Yanagawa
+  ascending:
+    - level: 1red
+      buff:
+        - attribute: Attack
+          class: Archers
+          value:
+            number: 5
+            unit: percentage
+        - attribute: Attack
+          class: Siege
+          value:
+            number: 5
+            unit: percentage
+        - attribute: HP
+          class: Archers
+          value:
+            number: 10
+            unit: percentage
+        - attribute: HP
+          class: Siege
+          value:
+            number: 10
+            unit: percentage
+    - level: 2red
+      buff:
+        - attribute: Death_to_Wounded
+          value:
+            number: 8
+            unit: percentage
+    - level: 3red
+      buff:
+        - attribute: Attack
+          class: Archers
+          value:
+            number: 20
+            unit: percentage
+        - attribute: Defense
+          class: Archers
+          value:
+            number: 20
+            unit: percentage
+        - attribute: HP
+          class: Archers
+          value:
+            number: 20
+            unit: percentage
+    - level: 4red
+      buff:
+        - attribute: Defense
+          class: Archers
+          value:
+            number: 5
+            unit: percentage
+        - attribute: HP
+          class: Archers
+          value:
+            number: 5
+            unit: percentage
+        - attribute: March_Size_Capacity
+          value:
+            number: 8
+            unit: percentage
+    - level: 5red
+      buff:
+        - attribute: Attack
+          class: Archers
+          value:
+            number: 20
+            unit: percentage
+        - attribute: Defense
+          class: Archers
+          value:
+            number: 15
+            unit: percentage
+        - attribute: HP
+          class: Archers
+          value:
+            number: 15
+            unit: percentage
